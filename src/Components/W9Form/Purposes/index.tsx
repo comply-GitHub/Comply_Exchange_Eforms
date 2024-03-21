@@ -311,6 +311,7 @@ export default function Fedral_tax(props: any) {
             handleSubmit,
             handleChange,
             isSubmitting,
+            setFieldValue,
             submitForm,
           }) => (
             <Form onSubmit={handleSubmit}>
@@ -1082,7 +1083,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {setExpanded(false); setFieldValue("federalTaxClassificationId",1)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1128,7 +1129,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {setExpanded(false); setFieldValue("federalTaxClassificationId",3)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1216,7 +1217,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {setExpanded(false); setFieldValue("federalTaxClassificationId",4)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
