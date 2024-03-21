@@ -192,6 +192,7 @@ const W8Ben: React.FC = () => {
     const pixelRatio = 3;
     let first = true;
     const data: any = document.getElementById('pdf-content');
+    console.log(data, "pdf123123123")
     const pageHeight = 295; // Set the desired height of each page in the PDF
 
     const doc = new jsPDF("p", "mm");
