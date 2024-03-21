@@ -1,0 +1,43 @@
+.css-j204z7-MuiFormControlLabel-root .MuiFormControlLabel-label {
+    font-size: 13px;
+  
+
+}
+.textfield1 input{
+    height: 0.624em !important;
+}
+// .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+//     height:0.415em
+// }
+
+.statusHeader{
+    display: grid; 
+    grid-template-columns: 10% 90%;
+    border-top: 1px solid black ;
+    border-bottom: 1px solid black ;  
+    height: 35px;   
+    margin: 10px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.statusPart{
+    background-color: black;  
+    padding-left: 5px;
+    height: 100%;
+    align-self: center;
+    color: white ;
+}
+.statusTitle{
+    padding-left: 5px;
+    align-self: center;
+}
+
+.inner_content>div:nth-child(2){
+    overflow: auto;
+    //margin: 10px;
+  }
+  
+  body{
+    overflow: auto;
+  }

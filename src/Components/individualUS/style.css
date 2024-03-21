@@ -1,0 +1,92 @@
+
+.warningColor{
+    color: #ffc107;
+}
+
+.dangerColor{
+    color: red;
+}
+
+.primaryColor{
+    color: #007bff;
+}
+
+.css-sgoict-MuiCardHeader-action {
+
+    margin-top: 0px !important;
+    margin-right: 0px !important;
+    margin-bottom: 0px !important;
+}
+
+.inner_content .entity_box .details_sec input[type="radio"]:checked + label:before, .inner_content .entity_box .details_sec input[type="radio"]:not(:checked) + label:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 24px !important;
+    height: 24px !important;
+    border: 1px solid #d8d7d7;
+    border-radius: 100%;
+    background: #fff;
+}
+.inner_content .entity_box .details_sec input[type="radio"]:checked, .inner_content .entity_box .details_sec input[type="radio"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+}
+
+.input {
+    border: 1px solid #d9d9d9 !important;
+    height: 36px !important;
+    line-height: 36px !important;
+    background: #fff !important;
+    font-size: 13px !important;
+    color: #000 !important;
+    font-style: normal !important;
+    border-radius: 1px !important;
+    padding: 0 10px !important;
+}
+
+.MuiInput-underline::after{
+    border: none !important;
+    content: none !important;
+}
+.MuiInput-underline::before{
+    border: none !important;
+    content: none !important;
+}
+
+.inner_content .btn_submit {
+    border: 1px solid #0095dd;
+    background: #0095dd;
+    height: 45px;
+    line-height: normal;
+    text-align: center;
+    font-size: 16px;
+    text-transform: uppercase;
+    border-radius: 0px;
+    color: #fff;
+    padding: 0 35px;
+    letter-spacing: 1px;
+}
+.btn.disabled, .btn:disabled {
+    background-color: #D2D2D4 !important;
+    border-color: #d2d2d2 !important;
+    color: #4a4a4a !important;
+}
+.warningColor{
+    height: .65em !important;
+}
+
+
+select {
+    padding: 0 10px;
+    color: #7e7e7e !important;
+    font-style: italic;
+    height: 36px !important;
+}
+
+select:focus-visible{
+
+    outline: none !important;
+}
+

@@ -1,0 +1,280 @@
+.inputClass input {
+    padding: 0px 10px;
+    color: rgb(126, 126, 126);
+    /* font-style: italic; */
+    height: 3rem;
+    // width: 14rem;
+    // text-align: center;
+    color: black;
+}
+
+.inputClassFull input {
+    padding: 0px 10px;
+    color: rgb(126, 126, 126);
+    /* font-style: italic; */
+    // height: 2rem;
+    // width: 36.8rem;
+    // text-align: center;
+    color: black;
+}
+.w-100{
+    width: 100%;
+}
+
+
+.input-w9-cstm {
+margin-top: 4px;
+}
+.input-w9-cstm::before , .input-w9-cstm::after{
+display: none;
+}
+
+
+// overlay class
+.overlay-div:hover{
+    right: 0.8% !important;
+
+}
+.overlay-div {
+    position: fixed;
+    right: 0.8%;
+    width: fit-content;
+    z-index: 1;
+    transform: rotate(270deg);
+    transform-origin: right;
+    top: 15%;
+}
+.overlay-div .overlay-div-group{
+    display: flex;
+    font-weight: 500;
+    font-size: 12px;
+}
+.overlay-div .overlay-div-group div{
+    margin: 0px 7px;
+    height: 30px;
+    min-width: max-content;
+}
+
+// overlay class end
+
+
+
+// ------------------------------------------------ viewInstructions btn css-----------------------------------------------
+.viewInstructions:hover{
+    transform: scale(1.1);
+    z-index: 100;
+}
+.viewInstructions:hover.viewInstructions:before{
+    left: -39 !important;
+}
+.viewInstructions:before {
+    border-left: 20px solid transparent;
+    border-right: 20px solid #6b7b88;
+    border-top: 30px solid transparent;
+    position: absolute;
+    top: 0px;
+    left: -39px;
+    content: "";
+    width: 0px;
+    height: 0px;
+}
+.viewInstructions:after {
+    border-left: 20px solid #6b7b88;
+    border-right: 20px solid transparent;
+    border-top: 30px solid transparent;
+    position: absolute;
+    top: 0px;
+    right: -39px;
+    content: "";
+    width: 0px;
+    height: 0px;
+}
+.viewInstructions {
+    margin-top: auto !important;
+    padding: 3px 20px;
+    position: relative;
+    cursor: pointer;
+    background: #6b7b88;
+    width: auto;
+    transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    color: #fff;
+    z-index: 0;
+    border: none;
+    height: 30px;
+}
+// ------------------------------------------------ viewInstructions btn css end-----------------------------------------------
+
+// ------------------------------------------------ viewform btn css ----------------------------------------------------------
+
+.viewform:hover{
+
+    transform: scale(1.1);
+    z-index: 100;
+}
+.viewform {
+    margin-top: auto !important;
+    height: 30px;
+    position: relative;
+    background: #ffae00;
+    cursor: pointer;
+    width: auto;
+    transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    color: #fff;
+    z-index: 1;
+    border: none;
+    padding: 3px 10px;
+}
+
+.viewform:before {
+    border-left: 20px solid transparent;
+    border-right: 20px solid #ffae00;
+    border-top: 30px solid transparent;
+    position: absolute;
+    top: 0px;
+    left: -39px;
+    content: "";
+    width: 0px;
+    height: 0px;
+}
+
+.viewform:after {
+    border-left: 20px solid #ffae00;
+    border-right: 20px solid transparent;
+    border-top: 30px solid transparent;
+    position: absolute;
+    top: 0px;
+    right: -39px;
+    content: "";
+    width: 0px;
+    height: 0px;
+}
+.popup-sidemenu-active{
+    display: block;
+    position: absolute;
+    right: 0px;
+    width: 300px;
+    min-height: 250px;
+    background: #d8dce6;
+    z-index: 999;
+    padding: 0px;
+    transition: all 1.5s ease;
+
+    .popup-sidemenu-inner-div{
+        width: 100%;
+        height: 100%;
+        position: relative;
+        padding: 0 10px 10px 10px;
+        .content{
+            background-color: white;
+            margin-top: 10px;
+
+            h5{
+                    width: 100%;
+                    height: 36px;
+                    text-align: center;
+                    padding-top: 9px;
+                    color: #000;
+                    background-color: #e7e7e7;
+                    font-weight: normal;
+                    margin-bottom: 0;
+                    border-radius: 0px;
+                    font-size: 13px;
+                    font-weight: 500 !important;
+
+            }
+            a:hover{
+                cursor: pointer;
+                text-decoration: underline;
+            }
+                a{
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                    padding-top: 5px;
+                    width: 100%;
+                    text-align: center;
+                    display: block;
+                    font-size: 11px !important;
+                }
+        }
+        button{
+            position: absolute;
+            left: -28px;
+            top: -10px;
+            margin: 0px;
+            width: 30px;
+            height:40px;
+            font-size: 21px;
+            background: #6b7b88;
+            text-align: center;
+            color: #fff;
+            cursor: pointer;
+            padding: 0px;
+            line-height: normal !important;
+            font-family: sans-serif;
+            border: none;
+        }
+    }
+}
+.popup-sidemenu-inactive{
+display: none;
+transition: all 1.5s ease;
+}
+// ------------------------------------------------ viewform btn css end-----------------------------------------------
+
+
+// ------------------------------------------------ helpvideo btn css ----------------------------------------------------------
+
+.helpvideo:hover{
+
+    transform: scale(1.1);
+    z-index: 100;
+}
+.helpvideo a{
+   color: #fff;
+   text-decoration: none !important;
+}
+.helpvideo {
+    margin-top: auto !important;
+    height: 30px;
+    position: relative;
+    background: #0095dd;
+    cursor: pointer;
+    width: auto;
+    transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    color: #fff;
+    z-index: 2;
+    border: none;
+    padding: 3px 10px;
+}
+
+.helpvideo:before {
+    border-left: 20px solid transparent;
+    border-right: 20px solid #0095dd;
+    border-top: 30px solid transparent;
+    position: absolute;
+    top: 0px;
+    left: -39px;
+    content: "";
+    width: 0px;
+    height: 0px;
+}
+
+.helpvideo:after {
+    border-left: 20px solid #0095dd;
+    border-right: 20px solid transparent;
+    border-top: 30px solid transparent;
+    position: absolute;
+    top: 0px;
+    right: -39px;
+    content: "";
+    width: 0px;
+    height: 0px;
+}
+
+// ------------------------------------------------ helpvideo btn css end-----------------------------------------------
+
+
+

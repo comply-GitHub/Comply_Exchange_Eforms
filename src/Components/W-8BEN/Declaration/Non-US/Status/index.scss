@@ -1,0 +1,44 @@
+.css-j204z7-MuiFormControlLabel-root .MuiFormControlLabel-label {
+    font-size: 14px;
+    // margin-top: 10px;
+
+}
+.css-hyxlzm {
+    // margin-top: 10px;
+}
+.dividr{
+    background-color: black !important;
+  
+}
+input[type="date" ]::placeholder { 
+    word-spacing: 20px !important;
+  }
+.form input{
+    height: 30px;
+    font-size: 17px;
+    
+    background-color: rgb(234, 231, 231);
+}
+.form {
+    width: 40%;
+}
+.form select{
+    height: 50px;
+    font-size: 18px;
+   
+    
+}
+.mt-2 {
+    // margin-top: 0.7rem!important;
+}
+
+input[type="date"] { 
+    padding-inline: 10px !important;
+    border: thin solid gray !important;
+    background: white !important;
+    text-transform: uppercase !important;
+  }
+  .number input{
+    background-color: white !important;
+    border:0.5px solid black
+  }
