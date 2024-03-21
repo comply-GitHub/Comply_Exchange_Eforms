@@ -48,10 +48,10 @@ export const TaxPayerSchema = () => {
           .required("Please Specify Reason"),
     }),
     foreignTINCountry: Yup.string().when("tinisFTINNotLegallyRequired", {
-      is: (value: any) => value === "No" || value === "",
+      is: (value: any) => value === "No" || value === "" || value == undefined,
       then: () =>
-        Yup.string()
-          .required("Please select Foreign Tin Country"),
+        Yup.number()
+          .notOneOf([0], "Please select Foreign Tin Country"),
     }),
     foreignTIN: Yup.string()
       .test(
@@ -74,13 +74,15 @@ export const TaxPayerSchema = () => {
           //   return value >= 25 && value < 100;
           // }
 
-          if (foreignTINCountry >= 0 && isFTINLegally === false && (isNotAvailable === "No" || isNotAvailable === undefined)) {
-            if (!value) {
+          //if (foreignTINCountry >= 0 && isFTINLegally === false && (isNotAvailable === "No" || isNotAvailable === undefined)) {
+          if (isFTINLegally === false && (isNotAvailable === "No" || isNotAvailable === undefined)) {
+            if (value) {
+              return value?.length > 0;
+            } else
               return createError({
                 message: "The Foreign tin field is required"
               });
-            } else
-              return value?.length > 0;
+
           }
 
           return true

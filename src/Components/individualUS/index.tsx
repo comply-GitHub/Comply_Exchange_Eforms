@@ -110,7 +110,7 @@ export default function IndividualUs() {
   const Payment = auth?.configurations?.requestBankAccountInformation;
   const PaymentMandatry = auth?.configurations?.requestBankAccountInformationAndWhenYesMakeMandatory;
 
-  console.log(userType,Income,IncomeMandatory,Payment,PaymentMandatry, "99");
+  console.log(userType, Income, IncomeMandatory, Payment, PaymentMandatry, "99");
 
   const [payload, setPayload] = useState({
     id: 0,
@@ -854,14 +854,14 @@ export default function IndividualUs() {
             className="underline-none"
           >
             <Formik
-            
+
               initialValues={initialValues}
               enableReinitialize
               validateOnChange={true}
               validateOnBlur={true}
               validateOnMount={true}
               onSubmit={(values, { setSubmitting }) => {
-                if(IncomeMandatory === true && incomeErrors.length > 0 ){
+                if (IncomeMandatory === true && incomeErrors.length > 0) {
                   return;
 
                 }
@@ -5301,18 +5301,18 @@ export default function IndividualUs() {
                                     onClick={() => handleOpen("it")}
                                   >
                                     Income Type
-                                   {IncomeMandatory === true ?( ""):
-                                   <span
-                                   style={{
-                                     fontSize: "13px",
-                                     color: "grey",
-                                     marginLeft: "4px",
-                                     marginTop: "11px",
-                                   }}
-                                 >
-                                   (Optional)
-                                 </span>
-                                   }
+                                    {IncomeMandatory === true ? ("") :
+                                      <span
+                                        style={{
+                                          fontSize: "13px",
+                                          color: "grey",
+                                          marginLeft: "4px",
+                                          marginTop: "11px",
+                                        }}
+                                      >
+                                        (Optional)
+                                      </span>
+                                    }
                                     <Tooltip
                                       style={{
                                         backgroundColor: "black",
@@ -5360,9 +5360,9 @@ export default function IndividualUs() {
                                       />
                                     </Tooltip>
                                   </div>
-                                  { touched.incomeTypeId && incomeErrors.length>0 && IncomeMandatory === true ?
-                                      <p  className="error mb-0">Mandatory Information Required</p>
-                                     : null
+                                  {touched.incomeTypeId && incomeErrors.length > 0 && IncomeMandatory === true ?
+                                    <p className="error mb-0">Mandatory Information Required</p>
+                                    : null
                                   }
                                 </div>
                               }
@@ -5477,9 +5477,9 @@ export default function IndividualUs() {
                                             />
                                           )}
                                         </span>
-                                        {selectedValues[i] === '0' && IncomeMandatory === true && incomeErrors.length>0 && touched.incomeTypeId? (
+                                        {selectedValues[i] === '0' && IncomeMandatory === true && incomeErrors.length > 0 && touched.incomeTypeId ? (
                                           <p className="error">Please select an income type.</p>
-                                        ):""}
+                                        ) : ""}
                                         {/* {errors.incomeTypeId && touched.incomeTypeId ?(  <p className="error">{errors.incomeTypeId}</p>):""} */}
                                       </FormControl>
                                     </div>
@@ -5522,18 +5522,18 @@ export default function IndividualUs() {
                                     onClick={() => handleOpen("it")}
                                   >
                                     Income Code
-                                    {IncomeMandatory === true ?(""):
-                                    <span
-                                    style={{
-                                      fontSize: "13px",
-                                      color: "grey",
-                                      marginLeft: "4px",
-                                      marginTop: "11px",
+                                    {IncomeMandatory === true ? ("") :
+                                      <span
+                                        style={{
+                                          fontSize: "13px",
+                                          color: "grey",
+                                          marginLeft: "4px",
+                                          marginTop: "11px",
 
-                                    }}
-                                  >
-                                    (Optional)
-                                  </span>
+                                        }}
+                                      >
+                                        (Optional)
+                                      </span>
                                     }
                                     <Tooltip
                                       style={{
@@ -5578,9 +5578,9 @@ export default function IndividualUs() {
                                       />
                                     </Tooltip>
                                   </div>
-                                  { touched.incomeTypeId && incomeErrors.length>0 && IncomeMandatory === true ?
-                                      <p  className="error mb-0">Mandatory Information Required</p>
-                                     : null
+                                  {touched.incomeTypeId && incomeErrors.length > 0 && IncomeMandatory === true ?
+                                    <p className="error mb-0">Mandatory Information Required</p>
+                                    : null
                                   }
                                 </div>
                               }
@@ -5690,9 +5690,9 @@ export default function IndividualUs() {
                                             />
                                           )}
                                         </span>
-                                        {selectedValues[i] === '0' && IncomeMandatory === true && incomeErrors.length>0 && touched.incomeTypeId? (
+                                        {selectedValues[i] === '0' && IncomeMandatory === true && incomeErrors.length > 0 && touched.incomeTypeId ? (
                                           <p className="error">Please select an income type.</p>
-                                        ):""}
+                                        ) : ""}
                                       </FormControl>
                                     </div>
                                   );
@@ -5745,18 +5745,18 @@ export default function IndividualUs() {
                               >
                                 Payment Type
 
-                               {PaymentMandatry === true ?( ""):
-                               <span
-                               style={{
-                                 fontSize: "13px",
-                                 color: "grey",
-                                 marginLeft: "4px",
-                                 marginTop: "11px",
-                               }}
-                             >
-                               (Optional)
-                             </span>
-                               }
+                                {PaymentMandatry === true ? ("") :
+                                  <span
+                                    style={{
+                                      fontSize: "13px",
+                                      color: "grey",
+                                      marginLeft: "4px",
+                                      marginTop: "11px",
+                                    }}
+                                  >
+                                    (Optional)
+                                  </span>
+                                }
                                 <Tooltip
                                   style={{ backgroundColor: "black", color: "white" }}
                                   title={
@@ -6351,7 +6351,7 @@ export default function IndividualUs() {
                                       id="outlined"
                                       name="payResidentalCountryId"
                                       defaultValue={0}
-                                      placeholder="Enter Residential Country"
+                                      // placeholder="Enter Residential Country"
                                       // onChange={handleChange}
                                       onChange={(e) => {
                                         handleChange(e);

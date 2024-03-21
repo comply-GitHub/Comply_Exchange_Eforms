@@ -1244,13 +1244,13 @@ export default function Entity() {
                                 <Typography color="inherit">
                                   Basic details - Entity
                                 </Typography>
-                                <a 
-                                
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setToolInfo("basic");
-                                }}   
-                                
+                                <a
+
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setToolInfo("basic");
+                                  }}
+
                                 >
                                   <Typography
                                     style={{
@@ -1269,7 +1269,7 @@ export default function Entity() {
                             <Info
                               onClick={(e) => {
                                 e.stopPropagation();
-                               
+
                               }}
                               style={{
                                 color: "#ffc107",
@@ -1345,7 +1345,7 @@ export default function Entity() {
                         </Typography>
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px" ,cursor:"pointer"}}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -1589,11 +1589,11 @@ export default function Entity() {
                                 <Typography color="inherit">
                                   Taxpayer information
                                 </Typography>
-                                <a 
+                                <a
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     setToolInfo("tin");
-                                  }}   
+                                  }}
                                 >
                                   <Typography
                                     style={{
@@ -1612,7 +1612,7 @@ export default function Entity() {
                             <Info
                               onClick={(e) => {
                                 e.stopPropagation();
-                               
+
                               }}
                               style={{
                                 color: "#ffc107",
@@ -1756,7 +1756,7 @@ export default function Entity() {
 
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px" ,cursor:"pointer"}}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -2264,12 +2264,12 @@ export default function Entity() {
                                 <Typography color="inherit">
                                   Address Details
                                 </Typography>
-                                <a 
-                                 onClick={(e) => {
-                                  e.stopPropagation();
-                                  setToolInfo("Address");
-                                }}   
-                                
+                                <a
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setToolInfo("Address");
+                                  }}
+
                                 >
                                   <Typography
                                     style={{
@@ -2288,7 +2288,7 @@ export default function Entity() {
                             <Info
                               onClick={(e) => {
                                 e.stopPropagation();
-                               
+
                               }}
                               style={{
                                 color: "#ffc107",
@@ -2362,7 +2362,7 @@ export default function Entity() {
 
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px",cursor:"pointer" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -2796,7 +2796,7 @@ export default function Entity() {
                                   underline="none"
                                   style={{
                                     marginTop: "10px",
-                                    fontSize: "16px",cursor:"pointer"
+                                    fontSize: "16px", cursor: "pointer"
                                   }}
                                   onClick={() => {
                                     setToolInfo("");
@@ -2950,7 +2950,7 @@ export default function Entity() {
                                         underline="none"
                                         style={{
                                           marginTop: "10px",
-                                          fontSize: "16px",cursor:"pointer"
+                                          fontSize: "16px", cursor: "pointer"
                                         }}
                                         onClick={() => {
                                           setToolInfo("");
@@ -3099,7 +3099,7 @@ export default function Entity() {
                                       underline="none"
                                       style={{
                                         marginTop: "10px",
-                                        fontSize: "16px",cursor:"pointer"
+                                        fontSize: "16px", cursor: "pointer"
                                       }}
                                       onClick={() => {
                                         setToolInfo("");
@@ -3245,7 +3245,7 @@ export default function Entity() {
                                       underline="none"
                                       style={{
                                         marginTop: "10px",
-                                        fontSize: "16px",cursor:"pointer"
+                                        fontSize: "16px", cursor: "pointer"
                                       }}
                                       onClick={() => {
                                         setToolInfo("");
@@ -3615,11 +3615,11 @@ export default function Entity() {
                                 <Typography color="inherit">
                                   Contact Details
                                 </Typography>
-                                <a 
-                                 onClick={(e) => {
-                                  e.stopPropagation();
-                                  setToolInfo("Contact");
-                                }}
+                                <a
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setToolInfo("Contact");
+                                  }}
                                 >
                                   <Typography
                                     style={{
@@ -3638,7 +3638,7 @@ export default function Entity() {
                             <Info
                               onClick={(e) => {
                                 e.stopPropagation();
-                               
+
                               }}
                               style={{
                                 color: "#ffc107",
@@ -3721,7 +3721,7 @@ export default function Entity() {
                         </Typography>
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px",cursor:"pointer" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -4062,12 +4062,12 @@ export default function Entity() {
                                   <Typography color="inherit">
                                     Q&A, Income Type
                                   </Typography>
-                                  <a 
-                                   onClick={(e) => {
-                                    e.stopPropagation();
-                                    setToolInfo("income");
-                                  }}
-                                  
+                                  <a
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setToolInfo("income");
+                                    }}
+
                                   >
                                     <Typography
                                       style={{
@@ -4086,7 +4086,7 @@ export default function Entity() {
                               <Info
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                 
+
                                 }}
                                 style={{
                                   color: "#ffc107",
@@ -4139,7 +4139,7 @@ export default function Entity() {
 
                             <Link
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" ,cursor:"pointer"}}
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -4255,7 +4255,7 @@ export default function Entity() {
                                   <Typography color="inherit">
                                     Q&A, Income Type
                                   </Typography>
-                                  <a  onClick={(e) => {
+                                  <a onClick={(e) => {
                                     e.stopPropagation();
                                     setToolInfo("income");
                                   }}>
@@ -4276,7 +4276,7 @@ export default function Entity() {
                               <Info
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                 
+
                                 }}
                                 style={{
                                   color: "#ffc107",
@@ -4329,7 +4329,7 @@ export default function Entity() {
 
                             <Link
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" ,cursor:"pointer"}}
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -4453,11 +4453,11 @@ export default function Entity() {
                                 {" "}
                                 information
                               </Typography>
-                              <a 
-                               onClick={(e) => {
-                                e.stopPropagation();
-                                setToolInfo("Payment");
-                              }}
+                              <a
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setToolInfo("Payment");
+                                }}
                               >
                                 <Typography
                                   style={{
@@ -4476,7 +4476,7 @@ export default function Entity() {
                           <Info
                             onClick={(e) => {
                               e.stopPropagation();
-                             
+
                             }}
                             style={{
                               color: "#ffc107",
@@ -4526,7 +4526,7 @@ export default function Entity() {
 
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px" ,cursor:"pointer"}}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -4626,11 +4626,11 @@ export default function Entity() {
                                       {" "}
                                       information
                                     </Typography>
-                                    <a 
-                                     onClick={(e) => {
-                                      e.stopPropagation();
-                                      setToolInfo("Account1");
-                                    }}
+                                    <a
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setToolInfo("Account1");
+                                      }}
                                     >
                                       <Typography
                                         style={{
@@ -4649,7 +4649,7 @@ export default function Entity() {
                                 <Info
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                   
+
                                   }}
                                   style={{
                                     color: "#ffc107",
@@ -4766,7 +4766,7 @@ export default function Entity() {
 
                             <Link
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" ,cursor:"pointer"}}
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -5011,7 +5011,7 @@ export default function Entity() {
                                     }}
                                     id="outlined"
                                     name="payResidentalCountryId"
-                                    placeholder="Enter Residential Country"
+                                    // placeholder="Enter Residential Country"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.payResidentalCountryId}
@@ -5176,7 +5176,7 @@ export default function Entity() {
                                       }}
                                       // id="outlined"
                                       name="payStateOrProvince"
-                                      placeholder="Enter State OR Provience"
+                                      // placeholder="Enter State OR Provience"
                                       onChange={handleChange}
                                       onBlur={handleBlur}
                                       value={values.payStateOrProvince}
@@ -5221,7 +5221,7 @@ export default function Entity() {
                                       }}
                                       id="outlined"
                                       name="payStateOrProvince"
-                                      placeholder="Enter State OR Provience"
+                                      //placeholder="Enter State OR Provience"
                                       onChange={handleChange}
                                       onBlur={handleBlur}
                                       error={Boolean(
