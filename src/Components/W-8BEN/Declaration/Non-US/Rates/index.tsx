@@ -87,7 +87,8 @@ const GetAllIncomeCodesReducer = useSelector(
   
 
   const viewPdf=()=>{
-    history("/w8Ben_pdf", { replace: true });
+    history("/w8Ben_pdf");
+    // history("/w8Ben_pdf", { replace: true });
   }
   return (
     <section

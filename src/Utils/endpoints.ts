@@ -82,7 +82,7 @@ GetByW8EXPFormFormEntityNonUs:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
  
  //Form GetAPI's
  GetByW9IndividualEntityUSFormId:"/W9IndividualEntity/GetByW9IndividualEntityUSFormId",
- GetByW8BENIndividualId:"W8BENIndividual/GetByW8BENIndividualId",
+ GetByW8BENIndividualId:"/W8BENIndividual/GetByW8BENIndividualId",
  GetByW8ECIIndividualId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
  formPDFFieldData:"/FormTypes/GetPDFFieldValuesbyFormID",
 };

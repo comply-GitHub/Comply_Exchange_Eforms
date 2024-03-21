@@ -92,7 +92,8 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const history = useNavigate();
 
   const viewPdf=()=>{
-    history("/w8Ben_pdf", { replace: true });
+    // history("/w8Ben_pdf", { replace: true });
+    history("/w8Ben_pdf");
   }
   return (
     <>

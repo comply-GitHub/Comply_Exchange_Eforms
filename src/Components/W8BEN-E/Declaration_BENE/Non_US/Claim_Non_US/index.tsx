@@ -13,6 +13,7 @@ import {
   Checkbox,
 } from "@mui/material";
 import { Info } from "@mui/icons-material";
+import Infoicon from "../../../../../assets/img/info.png";
 import { Formik, Form } from "formik";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
@@ -154,7 +155,7 @@ export default function FCTA_Reporting(props: any) {
             <Paper style={{ padding: "10px" }}>
               <Formik
                 validateOnChange={true}
-                // validateOnBlur={true}
+                 validateOnBlur={true}
                 validateOnMount={true}
                 initialValues={initialValues}
                 enableReinitialize
@@ -210,6 +211,79 @@ export default function FCTA_Reporting(props: any) {
                   submitForm
                 }) => (
                   <Form onSubmit={handleSubmit}>
+                     {/* {values.isSubmissionClaimTreaty && clickCount === 1 ? (<div  style={{backgroundColor: "#e8e1e1" , padding:"10px"}}>
+                  <Typography>
+                  Treaty107
+                  <span className="mx-1">
+                  <img src={Infoicon} style={{color: "#ffc107",height:"22px",
+                  width:"20px",
+                  boxShadow:"inherit",
+                 
+
+                         
+                          cursor: "pointer",
+                          marginBottom:"3px"
+                         
+                        }}/>
+                    
+              The country selected does not match the resident country selected earlier in the process. Your agent may contact you for further information.
+
+ 
+                  </span>
+   
+                  
+                  </Typography>
+                  <Typography>
+                  Treaty120
+                  <span className="mx-1">
+                  <img src={Infoicon} style={{color: "#ffc107",height:"22px",
+                  width:"20px",
+                  boxShadow:"inherit",
+                 
+
+                         
+                          cursor: "pointer",
+                          marginBottom:"3px"
+                         
+                        }}/>
+                    
+The treaty country chosen does not match the country selected earlier as the primary residence address country. Please review the selections for accuracy. Generally the primary residence address country will be the same country applicable for treaty claim purposes. The withholding agent may need to request further information depending on answers given elsewhere and attachments supplied.
+ 
+                  </span>
+   
+                  
+                  </Typography>
+                
+                
+                 
+                </div>):""}
+                {!values.isSubmissionClaimTreaty && clickCount === 1 ? (
+                
+                <div  style={{backgroundColor: "#e8e1e1" , padding:"10px"}}>
+                  <Typography>
+                  Treaty119
+                  <span className="mx-1">
+                  <img src={Infoicon} style={{color: "#ffc107",height:"22px",
+                  width:"20px",
+                  boxShadow:"inherit",
+                 
+
+                         
+                          cursor: "pointer",
+                          marginBottom:"3px"
+                         
+                        }}/>
+                    
+ You have made a selection that indicates you do not wish to claim treaty benefits that may be available. If this is correct please continue to the next stage. Your agent may contact you for further information.
+ 
+                  </span>
+   
+                  
+                  </Typography>
+                
+                
+                 
+                </div>):""} */}
                     <>{console.log(errors, values, "valeeeeeeeeeee")}</>
                     <div>
                       <div style={{ margin: "10px" }}>

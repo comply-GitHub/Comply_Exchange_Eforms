@@ -103,7 +103,7 @@ export default function Fedral_tax(props: any) {
     partnershipTrustAuthority:
       getReducerData?.partnershipTrustAuthority ?? true,
     IsAgreeWithDeclaration: getReducerData?.getAgreeWithDeclaration ?? true,
-    // statusId: 1,
+    statusId: 1,
     stepName: `/${urlValue}`,
   };
   const [toolInfo, setToolInfo] = useState("");
@@ -270,8 +270,8 @@ export default function Fedral_tax(props: any) {
             selectedTaxClassification == 0
               ? firstSchema
               : selectedTaxClassification == 1
-                ? firstStepSchema
-                : firstStepBusinessSchema
+              ? firstStepSchema
+              : firstStepBusinessSchema
           } // Uncomment after testing ,this is validation Schema
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(true);
@@ -311,7 +311,6 @@ export default function Fedral_tax(props: any) {
             handleSubmit,
             handleChange,
             isSubmitting,
-            setFieldValue,
             submitForm,
           }) => (
             <Form onSubmit={handleSubmit}>
@@ -629,7 +628,7 @@ export default function Fedral_tax(props: any) {
                                   onBlur={handleBlur}
                                   error={Boolean(
                                     touched.federalTaxClassificationId &&
-                                    errors.federalTaxClassificationId
+                                      errors.federalTaxClassificationId
                                   )}
                                   name="federalTaxClassificationId"
                                   value={values.federalTaxClassificationId}
@@ -649,12 +648,12 @@ export default function Fedral_tax(props: any) {
                                   })}
                                 </Select>
                                 {errors.federalTaxClassificationId &&
-                                  touched.federalTaxClassificationId ? (
+                                touched.federalTaxClassificationId ? (
                                   <div>
                                     <Typography color="error">
                                       <p className="error">
                                         {typeof errors.federalTaxClassificationId ===
-                                          "string"
+                                        "string"
                                           ? errors.federalTaxClassificationId
                                           : ""}
                                       </p>
@@ -874,7 +873,7 @@ export default function Fedral_tax(props: any) {
                                       // }
                                       error={Boolean(
                                         touched.businessName &&
-                                        errors.businessName
+                                          errors.businessName
                                       )}
                                       // style={{
                                       //   width: "200%",
@@ -897,7 +896,7 @@ export default function Fedral_tax(props: any) {
                           ) : null}
                         </Typography>
                         {obValues?.isUSEntity == true &&
-                          values.federalTaxClassificationId == 4 ? (
+                        values.federalTaxClassificationId == 4 ? (
                           <div>
                             <Typography style={{ marginTop: "20px" }}>
                               Are you providing this form to a partnership,
@@ -910,7 +909,7 @@ export default function Fedral_tax(props: any) {
                               <FormControl
                                 error={Boolean(
                                   touched.partnershipTrustAuthority &&
-                                  errors.partnershipTrustAuthority
+                                    errors.partnershipTrustAuthority
                                 )}
                               >
                                 <RadioGroup
@@ -934,12 +933,12 @@ export default function Fedral_tax(props: any) {
                                   />
                                 </RadioGroup>
                                 {errors.partnershipTrustAuthority &&
-                                  touched.partnershipTrustAuthority ? (
+                                touched.partnershipTrustAuthority ? (
                                   <div>
                                     <Typography color="error">
                                       <p className="error">
                                         {typeof errors.partnershipTrustAuthority ===
-                                          "string"
+                                        "string"
                                           ? errors.partnershipTrustAuthority
                                           : ""}
                                       </p>
@@ -1083,7 +1082,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {setExpanded(false); setFieldValue("federalTaxClassificationId",1)}}>Confirm</Button>
+                                    <Button variant="contained">Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1129,7 +1128,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {setExpanded(false); setFieldValue("federalTaxClassificationId",3)}}>Confirm</Button>
+                                    <Button variant="contained">Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1217,7 +1216,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {setExpanded(false); setFieldValue("federalTaxClassificationId",4)}}>Confirm</Button>
+                                    <Button variant="contained">Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>

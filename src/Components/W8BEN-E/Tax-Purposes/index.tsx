@@ -78,7 +78,7 @@ export default function Fedral_tax(props: any) {
     isHybridStatus: 0,
     isSubmissionSingleUSOwner: "",
     isDisRegardedSection1446: "",
-    // statusId: 1,
+    statusId: 1,
     stepName: `/${urlValue}`,
   });
 

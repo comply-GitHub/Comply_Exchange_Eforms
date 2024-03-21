@@ -40,8 +40,8 @@ const DynamicForm: React.FC<InputProps> = ({
   const dispatch = useDispatch();
   //   const [formList, setFormList] = useState<FormData[]>([]);
   const initialFormData: FormData = {
-    option1: "",
-    option2: "",
+    option1: "0",
+    option2: "0",
     text: "",
     number: 0,
   };
@@ -51,6 +51,7 @@ const DynamicForm: React.FC<InputProps> = ({
   const [selectedOption, setSelectedOption] = useState("");
 
   useEffect(() => {
+    handleAddDefaultOption();
     dispatch(getAllCountries());
   }, []);
   useEffect(() => {
@@ -60,7 +61,9 @@ const DynamicForm: React.FC<InputProps> = ({
   const getCountriesReducer = useSelector(
     (state: any) => state.getCountriesReducer
   );
-
+  const handleAddDefaultOption = () => {
+    setFormList([initialFormData]); 
+  };
   const handleAdd = () => {
     setFormList([...formList, formData]);
     setFormData(initialFormData);

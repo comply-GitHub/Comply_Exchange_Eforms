@@ -62,7 +62,8 @@ export default function Certifications(props: any) {
       setExpanded(isExpanded ? panel : false);
     };
     const viewPdf=()=>{
-      history("/w8Ben_pdf", { replace: true });
+      // history("/w8Ben_pdf", { replace: true });
+      history("/w8Ben_pdf");
     }
   return (
     <section
@@ -95,7 +96,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
-      <div className="row w-100 h-100">
+      <div className="row w-100">
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>
             <BreadCrumbComponent breadCrumbCode={1282} formName={3} />

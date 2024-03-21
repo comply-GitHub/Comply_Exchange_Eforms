@@ -18,7 +18,7 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import InfoIcon from "@mui/icons-material/Info";
-import { GetHelpVideoDetails, postW8BEN_EForm, postW9Form } from "../../../Redux/Actions"
+import { GetHelpVideoDetails, postW8BEN_EForm } from "../../../Redux/Actions"
 import Declaration from "../../reusables/Declaration";
 import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -107,10 +107,10 @@ export default function Penalties() {
                 year: 'numeric',
               }),
               agentId: authDetails?.agentId,
-              accountHolderBasicDetailsId: authDetails?.accountHolderId,
+              accountHolderBasicDetailId: authDetails?.accountHolderId,
             }
             dispatch(
-              postW9Form(temp, (data: any) => {
+              postW8BEN_EForm(temp, (data: any) => {
                 setSubmitting(true);
                 localStorage.setItem(
                   "PrevStepData",
@@ -177,7 +177,7 @@ export default function Penalties() {
               <div className="row w-100 h-100">
                 <div className="col-4">
                   <div style={{ padding: "20px 0px", height: "100%" }}>
-                    <BreadCrumbComponent breadCrumbCode={1285} formName={FormTypeId.W9} />
+                    <BreadCrumbComponent breadCrumbCode={1285} formName={3} />
 
                   </div>
                 </div>
@@ -435,12 +435,7 @@ export default function Penalties() {
                               name="confirmationCode"
                               value={values.confirmationCode}
                               onBlur={handleBlur}
-                              onChange={(e) => {
-                                handleChange(e)
-                                setTimeout(() => {
-                                  setShowRecoverSection(false)
-                                }, 200);
-                              }}
+                              onChange={handleChange}
                               error={Boolean(
                                 touched.confirmationCode && errors.confirmationCode
                               )}
@@ -753,7 +748,7 @@ export default function Penalties() {
                               const urlValue =
                                 window.location.pathname.substring(1);
                               dispatch(
-                                postW9Form(
+                                postW8BEN_EForm(
                                   {
                                     ...prevStepData,
                                     ...values,
@@ -776,8 +771,9 @@ export default function Penalties() {
                           //type="submit"
                           onClick={() => {
                             submitForm().then((data: any) => {
-                              history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9/SubmitW9");
+                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE");
                             }).catch(() => {
+
                             })
                           }}
                           disabled={!isValid || !values.isCheckAcceptance}
@@ -801,7 +797,7 @@ export default function Penalties() {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history('/US_Purposes/Back/Exemption/Tax/Certificates')
+                            history('/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE')
                           }
 
                           }

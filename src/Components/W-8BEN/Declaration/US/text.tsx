@@ -40,17 +40,18 @@ const DynamicForm: React.FC<InputProps> = ({
   const dispatch = useDispatch();
   //   const [formList, setFormList] = useState<FormData[]>([]);
   const initialFormData: FormData = {
-    option1: "",
-    option2: "",
+    option1: "0",
+    option2: "0",
     text: "",
     number: 0,
   };
 //   const [allocation, setAllocation] = useState(0);
   const [toolInfo, setToolInfo] = useState("");
-  const [formData, setFormData] = useState<FormData>(initialFormData);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [formData, setFormData] = useState(initialFormData);
+  const [selectedOption, setSelectedOption] = useState("0");
 
   useEffect(() => {
+    handleAddDefaultOption();
     dispatch(getAllCountries());
   }, []);
   useEffect(() => {
@@ -60,6 +61,9 @@ const DynamicForm: React.FC<InputProps> = ({
   const getCountriesReducer = useSelector(
     (state: any) => state.getCountriesReducer
   );
+  const handleAddDefaultOption = () => {
+    setFormList([initialFormData]); // Add default option to formList
+  };
 
   const handleAdd = () => {
     setFormList([...formList, formData]);
@@ -534,7 +538,7 @@ const DynamicForm: React.FC<InputProps> = ({
                         prevFormList.map((prevForm: any, i: any) =>
                           i === index
                             ? { ...prevForm, option1: e.target.value }
-                            : prevForm
+                            : "0"
                         )
                       );
                     }}
@@ -589,18 +593,21 @@ const DynamicForm: React.FC<InputProps> = ({
                     <input
                       type="number"
                       value={form.number}
-                      onChange={(e) =>
-                        setFormList((prevFormList: any) =>
-                          prevFormList.map((prevForm: any, i: any) =>
-                            i === index
-                              ? {
-                                  ...prevForm,
-                                  number: parseInt(e.target.value, 10),
-                                }
-                              : prevForm
-                          )
-                        )
-                      }
+                      onChange={(e) => {
+                        const inputValue = parseInt(e.target.value, 10);
+                        if (inputValue >= 0) {
+                            setFormList((prevFormList: any) =>
+                                prevFormList.map((prevForm: any, i: any) =>
+                                    i === index
+                                        ? {
+                                            ...prevForm,
+                                            number: inputValue,
+                                        }
+                                        : prevForm
+                                )
+                            );
+                        }
+                    }}
                       className="col-md-6 col-12"
                       style={{
                         padding: " 0 10px",
@@ -668,18 +675,21 @@ const DynamicForm: React.FC<InputProps> = ({
                     <input
                       type="number"
                       value={form.number}
-                      onChange={(e) =>
-                        setFormList((prevFormList: any) =>
-                          prevFormList.map((prevForm: any, i: any) =>
-                            i === index
-                              ? {
-                                  ...prevForm,
-                                  number: parseInt(e.target.value, 10),
-                                }
-                              : prevForm
-                          )
-                        )
-                      }
+                      onChange={(e) => {
+                        const inputValue = parseInt(e.target.value, 10);
+                        if (inputValue >= 0) {
+                            setFormList((prevFormList: any) =>
+                                prevFormList.map((prevForm: any, i: any) =>
+                                    i === index
+                                        ? {
+                                            ...prevForm,
+                                            number: inputValue,
+                                        }
+                                        : prevForm
+                                )
+                            );
+                        }
+                    }}
                       className="col-md-6 col-12"
                       style={{
                         padding: " 0 10px",
@@ -755,18 +765,21 @@ const DynamicForm: React.FC<InputProps> = ({
                         height: "3rem",
                       }}
                       value={form.number}
-                      onChange={(e) =>
-                        setFormList((prevFormList: any) =>
-                          prevFormList.map((prevForm: any, i: any) =>
-                            i === index
-                              ? {
-                                  ...prevForm,
-                                  number: parseInt(e.target.value, 10),
-                                }
-                              : prevForm
-                          )
-                        )
-                      }
+                      onChange={(e) => {
+                        const inputValue = parseInt(e.target.value, 10);
+                        if (inputValue >= 0) {
+                            setFormList((prevFormList: any) =>
+                                prevFormList.map((prevForm: any, i: any) =>
+                                    i === index
+                                        ? {
+                                            ...prevForm,
+                                            number: inputValue,
+                                        }
+                                        : prevForm
+                                )
+                            );
+                        }
+                    }}
                     />
                   </FormControl>
                 </>

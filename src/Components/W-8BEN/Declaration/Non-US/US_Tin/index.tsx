@@ -18,7 +18,7 @@ import "./index.scss";
 import checksolid from "../../../../../assets/img/check-solid.png";
 import { useNavigate } from "react-router-dom";
 import {
-  W8_state, getTinTypes, getAllCountries, GetHelpVideoDetails, postW8BEN_EForm,
+  W8_state, getTinTypes, getAllCountries, GetHelpVideoDetails, postW8BENForm,
 } from "../../../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import Accordion from "@mui/material/Accordion";
@@ -81,7 +81,8 @@ export default function Tin(props: any) {
   }
 
   const viewPdf = () => {
-    history("/w8Ben_pdf", { replace: true });
+    // history("/w8Ben_pdf", { replace: true });
+    history("/w8Ben_pdf");
   }
 
   function getUStinValue() {
@@ -106,7 +107,7 @@ export default function Tin(props: any) {
       getTinTypes(authDetails?.agentId, (data: any) => {
         setUStinArray(data);
         let datas = data.filter((ele: any) => {
-          return ele.usEntity === false;
+          return ele.usEntity === false || ele.usIndividual === true;
         });
         setUStinvalue(datas);
       })
@@ -114,19 +115,20 @@ export default function Tin(props: any) {
     LoadData();
   }, [authDetails]);
 
-  useEffect(() => {
-    console.log(authDetails,"AUTHDETAILSSSS")
+  // useEffect(() => {
+  //   console.log(authDetails,"AUTHDETAILSSSS")
 
-    dispatch(
-      getTinTypes(authDetails?.agentId, (data: any) => {
-        setUStinArray(data);
-        let datas = data.filter((ele: any) => {
-          return ele.usEntity === false || ele.usIndividual === true;
-        });
-        setUStinvalue(datas);
-      })
-    );
-  }, [authDetails])
+  //   dispatch(
+  //     getTinTypes(authDetails?.agentId, (data: any) => {
+  //       setUStinArray(data);
+  //       let datas = data.filter((ele: any) => {
+  //         return ele.usEntity === false || ele.usIndividual === true;
+  //       });
+  //       setUStinvalue(datas);
+  //     })
+  //   );
+  //   LoadData();
+  // }, [authDetails])
 
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
@@ -190,7 +192,7 @@ export default function Tin(props: any) {
           </div>
         </div>
       </div>
-      <div className="row w-100 h-100">
+      <div className="row w-100">
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>
             <BreadCrumbComponent breadCrumbCode={1249} formName={3} />
@@ -219,7 +221,7 @@ export default function Tin(props: any) {
                   };
                   const returnPromise = new Promise((resolve, reject) => {
                     dispatch(
-                      postW8BEN_EForm(temp,
+                      postW8BENForm(temp,
                         (responseData: any) => {
                           localStorage.setItem("PrevStepData", JSON.stringify(temp));
                           resolve(responseData);
@@ -1080,7 +1082,7 @@ export default function Tin(props: any) {
                           submitForm().then(() => {
                             const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                             const urlValue = window.location.pathname.substring(1);
-                            dispatch(postW8BEN_EForm(
+                            dispatch(postW8BENForm(
                               {
                                 ...prevStepData,
                                 stepName: `/${urlValue}`
@@ -1098,7 +1100,7 @@ export default function Tin(props: any) {
                         submitForm().then(() => {
                           const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                           const urlValue = window.location.pathname.substring(1);
-                          dispatch(postW8BEN_EForm(
+                          dispatch(postW8BENForm(
                             {
                               ...prevStepData,
                               stepName: `/${urlValue}`
@@ -1124,7 +1126,7 @@ export default function Tin(props: any) {
                         onClick={() => {
                           submitForm().then(() => {
                             history(
-                              "/Ben/Tax_Purpose_Ben/Declaration_Ben/Non_US/Claim_Ben_E"
+                              "/W-8BEN/Declaration/US_Tin/Claim"
                             );
                           })
                         }}
