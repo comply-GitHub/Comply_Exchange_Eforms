@@ -31,8 +31,9 @@ import { useNavigate } from "react-router-dom";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import View_Insructions from "../../viewInstruction";
 import { useLocation } from "react-router-dom";
-import GlobalValues from "../../../Utils/constVals";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 export default function FCTA_Reporting(props: any) {
   const dispatch = useDispatch();
   const location = useLocation();

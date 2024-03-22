@@ -26,8 +26,9 @@ import { useDispatch, useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import View_Insructions from "../../viewInstruction";
 import { useLocation } from "react-router-dom";
-import GlobalValues from "../../../Utils/constVals";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 
 export default function Tin(props: any) {
   const dispatch = useDispatch();

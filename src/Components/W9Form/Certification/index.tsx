@@ -23,7 +23,8 @@ import { useNavigate } from "react-router-dom";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import View_Insructions from "../../viewInstruction";
 import { useLocation } from "react-router-dom";
-import GlobalValues from "../../../Utils/constVals";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 
 export default function Certifications(props: any) {
   const location = useLocation();
@@ -448,7 +449,7 @@ export default function Certifications(props: any) {
                       <div
                         style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}
                       >
-                        <Button
+                        {/* <Button
                           onClick={() => {
                             submitForm().then((data) => {
                               history(GlobalValues.basePageRoute)
@@ -461,7 +462,22 @@ export default function Certifications(props: any) {
                           style={{ color: "white" }}
                         >
                           SAVE & EXIT
-                        </Button>
+                        </Button> */}
+                          <SaveAndExit Callback={() => {
+                            submitForm().then((data) => {
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              dispatch(postW9Form(
+                                {
+                                  ...prevStepData,
+                                  stepName: `/${urlValue}`
+                                }
+                                , () => { }))
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          }} formTypeId={FormTypeId.W9} />
                         <Button
 
                           variant="contained"

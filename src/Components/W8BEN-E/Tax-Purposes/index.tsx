@@ -782,7 +782,7 @@ export default function Fedral_tax(props: any) {
                                           value={values.countryOfIncorporation}
                                           onChange={handleChange}
                                           autoComplete="countryOfIncorporation"
-                                          placeholder="Business Name"
+                                          // placeholder="Business Name"
                                           onBlur={handleBlur}
                                           style={{
                                             padding: " 0 10px",
@@ -1090,7 +1090,7 @@ export default function Fedral_tax(props: any) {
                                             value={values.countryOfIncorporation}
                                             onChange={handleChange}
                                             autoComplete="countryOfIncorporation"
-                                            placeholder="Business Name"
+                                            // placeholder="Business Name"
                                             onBlur={handleBlur}
                                             style={{
                                               padding: " 0 10px",
