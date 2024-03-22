@@ -139,8 +139,8 @@ export default function Certifications(props: any) {
               //   );
               // }}
               onSubmit={(values, { setSubmitting }) => {
+                history("/W-8BEN/Declaration/US_Tin/Certificates/Submit_Ben")
                 setSubmitting(true);
-                console.log(values, "vallllll");
                 let temp = {
                   ...PrevStepData,
                   ...values,

@@ -113,6 +113,8 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
         initialValues={initialValue}
         validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
+          history("/Certificates");
+         
           if (clickCount === 0) {
         
             setClickCount(clickCount+1);
