@@ -278,6 +278,12 @@ export const LoadExistingFormData = (formTypeId: number, AccountHolderId: number
           JSON.stringify(responseData.data)
         );
         switch (formTypeId) {
+          case FormTypeId.BEN:
+            dispatch({
+              type: Utils.actionName.InsertW8BENIndividualNonUS,
+              payload: { ...responseData?.data },
+            });
+            break;
           case FormTypeId.BENE:
             dispatch({
               type: Utils.actionName.InsertW8BENEEntityNonUSForm,
@@ -519,6 +525,32 @@ export const getBENformData = (_id: Number, callback: any = () => { console.log(
             type: Utils.actionName.GetByW8BENIndividualId,
             payload: {
               GetByW8BENEntityNonUSFormData: resData.data,
+            },
+          });
+
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
+
+export const getExpformData = (_id: Number, callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetByW8EXPIndividualId,
+      `?AccountHolderBasicDetailId=${_id}`,
+      (resData) => {
+        if (resData.status === 200) {
+          if (callback) {
+            callback(resData.data)
+          }
+          dispatch({
+            type: Utils.actionName.GetByW8EXPIndividualId,
+            payload: {
+              GetByW8EXPEntityNonUSFormData: resData.data,
             },
           });
 
@@ -1245,7 +1277,7 @@ export const postW9Form = (value: any, callback: Function, errorCallback: Functi
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.InsertW9IndividualEntityUSForm,
-      convertToFormData(value),
+      value,
       (responseData) => {
         let { data } = responseData;
         dispatch({
@@ -1264,25 +1296,35 @@ export const postW9Form = (value: any, callback: Function, errorCallback: Functi
       },
       (error) => {
         errorCallback({ message: "Some error occured", error: error });
-      },
-      "multi"
+      }
     );
   };
 };
 
-export const postW8BENForm = (value: any, callback: Function): any => {
+export const postW8BENForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.InsertW8BENIndividualNonUS,
+      // convertToFormData(value),
       value,
       (responseData) => {
         let { data } = responseData;
         dispatch({
           type: Utils.actionName.InsertW8BENIndividualNonUS,
-          payload: { data: data.data },
+          payload: {...value, Response: data },
         });
         if (responseData) {
           if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback({ message: "Internal server error occured", payload: responseData })
           } else {
             if (callback) {
               callback();
@@ -1290,8 +1332,18 @@ export const postW8BENForm = (value: any, callback: Function): any => {
           }
         }
       },
-      (error) => {
-      }
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(error)
+      },
+      // "multi"
     );
   };
 };

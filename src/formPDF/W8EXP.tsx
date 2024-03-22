@@ -1,15 +1,188 @@
 'use client'
 
-import { Button } from "@mui/material";
+import { Button,Typography } from "@mui/material";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import useAuth from "../customHooks/useAuth";
+import { getAllCountries, getExpformData } from "../Redux/Actions";
 
 export default function FormW8EXP() {
 
-  const contentRef: any = useRef()
+  const dispatch = useDispatch();
+  const history = useNavigate();
+  const contentRef:any = useRef(null);
+  const { authDetails } = useAuth();
   //  const contentRef = useRef<HTMLDivElement>(null);
   const [pageData, setPageData]: any = useState()
+
+  const getCountriesReducer = useSelector(
+    (state: any) => state.getCountriesReducer
+  );
+  // const contentRef = useRef<HTMLDivElement>(null);
+  const [values, setValues] = useState( {
+  accountHolderBasicDetailId: 0,
+  agentId: 0,
+  formTypeSelectionId: 2,
+  eciUsTinTypeId: 0,
+  eciUsTin: "",
+  streetNumberName: "",
+  aptSuite: "",
+  cityTown: "",
+  stateProvinceId: 0,
+  zipPostalCode: "",
+  chapter3Status: 0,
+  firstName: "",
+  lastName: "",
+  countryOfResidence: null,
+  businessName: "",
+  businessDisgradedEntity: "",
+  countryOfIncorporation: 0,
+  isHybridStatus: 0,
+  descriptionHybridStatus: "",
+  attachSupportingDocument: "",
+  attachSupportingDocumentFile: null,
+  isSubmissionSingleUSOwner: false,
+  isDisRegardedSection1446: false,
+  isExemptionfromBackup: null,
+  interestDividendPaymentId: null,
+  brokerTransactionsId: null,
+  barterExchangeTransactionId: null,
+  paymentOver600RequiredId: null,
+  paymentThirdPartyNetworkId: null,
+  isExemptionFATCAReportings: null,
+  fatcaReportingId: null,
+  usTinTypeId: 0,
+  usTin: "",
+  notAvailable: false,
+  notAvailableReason: "",
+  foreignTINCountry: 0,
+  foreignTIN: "",
+  isFTINLegally: false,
+  isNotAvailable: false,
+  fTinNotAvailableReason: "",
+  alternativeTINFormat: false,
+  isExplanationNotLegallyFTIN: false,
+  itemIncomeType: null,
+  incomeDescription: null,
+  isAppplicationCheck: false,
+  isBeneficialOwnerIncome: false,
+  isAmountCertificationUS: false,
+  isBeneficialOwnerGrossIncome: false,
+  isBeneficialOwnerNotUSPerson: false,
+  isAuthorizeWithHoldingAgent: false,
+  isCapacityForm: false,
+  isTaxpayerIdentificationNumber: null,
+  isIRS: null,
+  isUSCitizen: null,
+  isFATCACode: null,
+  isIRSBackupWithHolding: null,
+  isElectronicForm: false,
+  signedBy: null,
+  confirmationCode: null,
+  date: null,
+  isAcceptanceDeclarations: null,
+  securityWord: null,
+  hint: null,
+  yourConfirmationCode: null,
+  isAgreeWithDeclaration: null,
+  isConsentRecipent: null,
+  isNotConsentRecipent: null,
+  statusId: null,
+  stepName: "",
+} );
+const [lValues,setLValues]=useState({
+agentId: 3,
+businessTypeId: 1,
+selectedEntity: false,
+isUSEntity: false,
+isUSIndividual: false,
+uniqueIdentifier: "",
+firstName: "",
+lastName: "",
+countryOfCitizenshipId: 0,
+dob: "",
+nameOfDisregarded: "",
+entityName: "",
+taxpayerIdTypeID: 0,
+usTin: "",
+foreignTINCountryId: 0,
+foreignTIN: "",
+foreignTINNotAvailable: false,
+alternativeTINFormat: false,
+giin: "",
+permanentResidentialCountryId: "",
+permanentResidentialStreetNumberandName: "",
+permanentResidentialAptSuite: "",
+permanentResidentialCityorTown: "",
+permanentResidentialStateorProvince: "",
+permanentResidentialZipPostalCode: "",
+isAddressRuralRoute: false,
+isAddressPostOfficeBox: false,
+isCareOfAddress: false,
+isalternativebusinessaddress: false,
+permanentResidentialCountryId1: 0,
+permanentResidentialStreetNumberandName1: "",
+permanentResidentialAptSuite1: "",
+permanentResidentialCityorTown1: "",
+permanentResidentialStateorProvince1: "",
+permanentResidentialZipPostalCode1: "",
+contactFirstName: "",
+contactLastName: "",
+contactEmail: "",
+primaryContactNumberId: 0,
+primaryContactNumber: "",
+alternativeNumberId: 0,
+alternativeNumber: "",
+alternativeNumberId1: 0,
+alternativeNumber1: "",
+incomeTypeId: [
+      0
+  ],
+paymentTypeId: 0,
+accountHolderName: "",
+accountBankName: "",
+accountBankBranchLocationId: 0,
+accountNumber: "",
+abaRouting: "",
+iban: "",
+swiftCode: "",
+bankCode: "",
+makePayable: "",
+payResidentalCountryId: 0,
+payStreetNumberAndName: "",
+payAptSuite: "",
+vatId: 0,
+vat: "",
+doingBusinessAsName: "",
+payCityorTown: "",
+payStateOrProvince: "",
+payZipPostalCode: "",
+sortCode: "",
+bsb: "",
+capacityId: 1,
+isCorrectPaymentPurposes: false,
+isConfirmed: false,
+taxpayerIdTypeName: "",
+usTinTypeId: 0,
+permanentresidentialzippostalcode: ""
+})
+  function getFieldValues(arrayOfObjects: any) {
+    setValues(arrayOfObjects.map((obj: any) => obj.fieldValue));
+  }
+
+  useEffect(() => {
+    dispatch(
+      getAllCountries()
+    );
+    setLValues(JSON.parse(localStorage.getItem("agentDetails") || "{}"));
+  }, []);
+
+  useEffect(() => {
+    (dispatch(getExpformData(authDetails?.agentId,(data:any)=>{setValues(data)})))
+  },[authDetails])
 
   const downloadPDF = async () => {
     const pixelRatio = 3;
@@ -43,6 +216,22 @@ export default function FormW8EXP() {
   
 };
 
+  const getCountries = (countryId: any) => {
+    let countryName = null;
+    for (let i = 0; i < getCountriesReducer?.allCountriesData?.length; i++) {
+        if (getCountriesReducer?.allCountriesData[i].id == countryId) {
+            countryName = getCountriesReducer?.allCountriesData[i].name;
+            break;
+        }
+    }
+    console.log(countryName, "countryName");
+    return countryName;
+}
+
+  const backFunction = () => {
+    // window.location.href = window.location.href;
+    history(-1);
+  };
 
   return (
     <>
@@ -149,7 +338,7 @@ tax-exempt organizations, foreign private foundations, and governments of U.S. p
                         marginBottom: "15px",
                       }}
                     >
-                      UID : 6utykj
+                      UID : {lValues.uniqueIdentifier}
                     </p>
                     <h3
                       style={{
@@ -639,7 +828,7 @@ owned by the foreign sovereign)
                       }}
                     >
                       {" "}
-                      asd1, asd1
+                      {lValues.permanentResidentialAptSuite}{" "}{lValues.permanentResidentialStreetNumberandName}
                     </p>
                   </td>
                 </tr>
@@ -668,7 +857,7 @@ owned by the foreign sovereign)
                                 lineHeight: "1.4",
                               }}
                             >
-                              asd1, AS, asd1
+                             {lValues.permanentResidentialCityorTown} {" "} {lValues.permanentResidentialZipPostalCode}
                             </p>
                           </td>
                           <td
@@ -688,7 +877,7 @@ owned by the foreign sovereign)
                               }}
                             >
                               {" "}
-                              United States
+                              {getCountries(lValues.permanentResidentialCountryId)}
                             </p>
                           </td>
                         </tr>
@@ -713,11 +902,12 @@ owned by the foreign sovereign)
                     <p
                       style={{
                         width: "100%",
+                        color: "blue",
                         marginLeft: "30.72px",
                         marginBottom: "0px",
                         minHeight: "24px",
                       }}
-                    ></p>
+                    >{lValues.permanentResidentialAptSuite1}{" "}{lValues.permanentResidentialStreetNumberandName1}</p>
                   </td>
                 </tr>
                 <tr>
@@ -782,7 +972,7 @@ owned by the foreign sovereign)
                               }}
                             >
                               {" "}
-                              DCD12
+                              {values.foreignTIN}
                             </p>
                         </div>
                       </div>
@@ -810,7 +1000,7 @@ owned by the foreign sovereign)
                         marginBottom: "0px",
                         minHeight: "24px",
                       }}
-                    ></p>
+                    >A/C #: asd1, VAT : 123456789</p>
                   </td>
                 </tr>
               </tbody>
@@ -1901,7 +2091,7 @@ required to establish your status as a foreign government, international organiz
                                           fontWeight:"600",
                                         }}
                                       >
-                                        111
+                                         {values.signedBy}
                                       </span>
                   
                                     </div>
@@ -2053,7 +2243,7 @@ required to establish your status as a foreign government, international organiz
                             <span
                               style={{ fontSize: "17px", fontWeight: "bold" }}
                             >
-                              W-8BEN
+                              W-8EXP
                             </span>{" "}
                             (Rev. 10-2021)
                           </td>
@@ -2077,7 +2267,7 @@ required to establish your status as a foreign government, international organiz
                           </td>
                           <td style={{ width: "30%", color: "#1133a9",textAlign:"center" }}>
                             <a href="mailto:abhay.singh2@mail.com" style={{ color: "#1133a9",fontWeight:"600",}}>
-                              abhay.singh2@mail.com
+                            {lValues.contactEmail}
                             </a>
                           </td>
                         </tr>
@@ -2159,7 +2349,7 @@ required to establish your status as a foreign government, international organiz
               <tbody>
                 <tr>
                   <td style={{ width: "50%" }}>Entity Name:</td>
-                  <td style={{ width: "50%" }}>111</td>
+                  <td style={{ width: "50%" }}>{lValues.entityName}</td>
                 </tr>
                 <tr>
                   <td style={{ width: "50%" }}>Capacity:</td>
@@ -2184,10 +2374,10 @@ required to establish your status as a foreign government, international organiz
                   <td style={{ width: "50%" }}>
                     {" "}
                     <a
-                      href="mailto:abhay.singh2@mail.com"
+                      href={lValues.contactEmail}
                       style={{ color: "#000", textDecoration: "none" }}
                     >
-                      dxc@gmail.com
+                     {lValues.contactEmail}
                     </a>{" "}
                   </td>
                 </tr>
@@ -2197,19 +2387,19 @@ required to establish your status as a foreign government, international organiz
                 </tr>
                 <tr>
                   <td style={{ width: "50%" }}>Day time contact number:</td>
-                  <td style={{ width: "50%" }}>United States 8638676734</td>
+                  <td style={{ width: "50%" }}> {lValues.primaryContactNumber}</td>
                 </tr>
                 <tr>
                   <td style={{ width: "50%" }}>
                     Day time Alternate contact number:
                   </td>
-                  <td style={{ width: "50%" }}>United States 534534535</td>
+                  <td style={{ width: "50%" }}>{lValues.alternativeNumber}</td>
                 </tr>
                 <tr>
                   <td style={{ width: "50%" }}>
                     Day time Alternate contact number:
                   </td>
-                  <td style={{ width: "50%" }}>United States 534534535</td>
+                  <td style={{ width: "50%" }}> {lValues.alternativeNumber1}</td>
                 </tr>
                 <tr>
                   <td style={{ width: "50%" }}>Signatory email address:</td>
@@ -2396,21 +2586,75 @@ required to establish your status as a foreign government, international organiz
                 </tr>
               </tbody>
             </table>
+            <div style={{ paddingTop: "20px" , display:"flex", justifyContent:"space-between"}}>
+            <Button
+              onClick={downloadPDF}
+              variant="contained"
+              style={{
+                border: "1px solid #0095dd",
+                background: "#0095dd",
+                height: "45px",
+                lineHeight: "normal",
+                textAlign: "center",
+                fontSize: "16px",
+                textTransform: "uppercase",
+                borderRadius: "0px",
+                color: "#fff",
+                padding: "0 35px",
+                letterSpacing: "1px",
+              }}
+              className="btn btn_submit  btn-primary-agent"
+            >
+              Download PDF
+            </Button>
+            <Button
+              onClick={backFunction}
+              variant="contained"
+              style={{
+                border: "1px solid #0095dd",
+                background: "#0095dd",
+                height: "45px",
+                lineHeight: "normal",
+                textAlign: "center",
+                fontSize: "16px",
+                textTransform: "uppercase",
+                borderRadius: "0px",
+                color: "#fff",
+                padding: "0 35px",
+                letterSpacing: "1px",
+              }}
+              className="btn btn_submit  btn-primary-agent"
+            >
+              Back
+            </Button>
+          </div>
+          <div className="container-fluid">
+          <footer>
+            <div className="row mx-1">
+              <Typography
+                className="mx-2"
+                align="left"
+                style={{
+                  marginBottom: "10px",
+                  color: "white",
+                  fontSize: "12px",
+                }}
+              >
+                © Comply Exchange Ltd.2023 - Version: 2.2.0.29 - Render
+                Time:8.6691538s
+              </Typography>
+              <div className="col-12 col-sm-8 col-md-6 col-lg-6 footer_nav">
+                <ul className="nav inner_header_right"></ul>
+              </div>
+            </div>
+          </footer>
+        </div>
           </section>
         </div>
+       
       </section>
-      <section
-        style={{
-          maxWidth: "960px",
-          width: "100%",
-          textAlign: "start",
-          margin: "20px auto",
-        }}
-      >
-        <Button variant="contained" onClick={downloadPDF}>
-          click me
-        </Button>
-      </section>
+     
+     
     </>
   )
 }

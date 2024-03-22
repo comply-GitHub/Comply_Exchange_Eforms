@@ -74,7 +74,7 @@ const ActionName = {
     UpsertSaveAndExitCreds:"UpsertSaveAndExitCreds",
     GetByW8BENIndividualId:"GetByW8BENIndividualId",
     GetByW8ECIIndividualId:"GetByW8ECIIndividualId",
-
+    GetByW8EXPIndividualId:"GetByW8EXPIndividualId",
     //errors
     UpdateError:"UpdateError"
   };

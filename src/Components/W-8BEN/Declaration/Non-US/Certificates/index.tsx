@@ -16,6 +16,9 @@ import { postW8BENForm,GetHelpVideoDetails } from "../../../../../Redux/Actions"
 import { certificateSchema_w8Ben } from "../../../../../schemas/w8Exp";
 import checksolid from "../../../../../assets/img/check-solid.png";
 import InfoIcon from "@mui/icons-material/Info";
+import GlobalValues from "../../../../../Utils/constVals";
+import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
+import useAuth from "../../../../../customHooks/useAuth";
 import { useNavigate, useLocation } from "react-router-dom";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -25,10 +28,17 @@ import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 export default function Certifications(props: any) {
   const history = useNavigate();
   const location = useLocation();
+  const { authDetails } = useAuth();
   const dispatch = useDispatch();
 
   useEffect(() => {
-   
+    setInitialValue((prev: any) => {
+      return {
+        ...prev,
+        ...PrevStepData,
+        ...(W8BENData ? W8BENData : {}),
+      };
+    });
     dispatch(GetHelpVideoDetails());
 
   }, []);
@@ -40,7 +50,7 @@ export default function Certifications(props: any) {
   const handleClose2 = () => setOpen2(false);
   const [toolInfo, setToolInfo] = useState("");
   const [expanded, setExpanded] = React.useState<string | false>("");
-  const initialValue = {
+  const [initialValue, setInitialValue] = useState({
     isBeneficialOwnerIncome: false,
     isAmountCertificationUS: false,
     isBeneficialOwnerGrossIncome: false,
@@ -49,20 +59,21 @@ export default function Certifications(props: any) {
     isCapacityForm: false,
     isBackup: false,
     isElectronicForm: false,
-  };
+  });
   const urlValue = location.pathname.substring(1);
   const agentDefaultDetails = JSON.parse(
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
 
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-
+  const W8BENData = useSelector((state: any) => state.W8BEN);
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
     const viewPdf=()=>{
-      history("/w8Ben_pdf", { replace: true });
+      // history("/w8Ben_pdf", { replace: true });
+      history("/w8Ben_pdf");
     }
   return (
     <section
@@ -95,7 +106,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
-      <div className="row w-100 h-100">
+      <div className="row w-100">
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>
             <BreadCrumbComponent breadCrumbCode={1282} formName={3} />
@@ -104,37 +115,70 @@ export default function Certifications(props: any) {
         <div className="col-8 mt-3">
           <div style={{ padding: "16px" }}>
             <Formik
-              validateOnChange={false}
-              validateOnBlur={false}
+              validateOnChange={true}
+              validateOnBlur={true}
+              validateOnMount={true}
               initialValues={initialValue}
               enableReinitialize
               validationSchema={certificateSchema_w8Ben}
+              // onSubmit={(values, { setSubmitting }) => {
+              //   setSubmitting(true);
+              //   console.log(values, "vallllll");
+              //   const new_obj = { ...PrevStepData, stepName: `/${urlValue}` };
+              //   const result = { ...new_obj, ...values };
+              //   dispatch(
+              //     postW8BENForm(result, () => {
+              //       localStorage.setItem(
+              //         "PrevStepData",
+              //         JSON.stringify(result)
+              //       );
+              //       history(
+              //         "/W-8BEN/Declaration/US_Tin/Certification_Substitute"
+              //       );
+              //     })
+              //   );
+              // }}
               onSubmit={(values, { setSubmitting }) => {
+                history("/W-8BEN/Declaration/US_Tin/Certificates/Submit_Ben")
                 setSubmitting(true);
-                console.log(values, "vallllll");
-                const new_obj = { ...PrevStepData, stepName: `/${urlValue}` };
-                const result = { ...new_obj, ...values };
-                dispatch(
-                  postW8BENForm(result, () => {
-                    localStorage.setItem(
-                      "PrevStepData",
-                      JSON.stringify(result)
-                    );
-                    history(
-                      "/W-8BEN/Declaration/US_Tin/Certification_Substitute"
-                    );
-                  })
-                );
+                let temp = {
+                  ...PrevStepData,
+                  ...values,
+                  agentId: authDetails?.agentId,
+                  accountHolderBasicDetailId: authDetails?.accountHolderId,
+                };
+                const returnPromise = new Promise((resolve, reject) => {
+                  dispatch(
+                    postW8BENForm(
+                      temp,
+                      (res: any) => {
+                        localStorage.setItem(
+                          "PrevStepData",
+                          JSON.stringify(temp)
+                        );
+
+                        resolve(res);
+                      },
+                      (err: any) => {
+                        reject(err);
+                      }
+                    )
+                  );
+                });
+                return returnPromise;
+               
               }}
             >
               {({
-                errors,
-                touched,
-                handleBlur,
-                values,
-                handleSubmit,
-                handleChange,
-                setFieldValue,
+                 errors,
+                 touched,
+                 handleBlur,
+                 values,
+                 handleSubmit,
+                 handleChange,
+                 setFieldValue,
+                 isValid,
+                 submitForm,
               }) => (
                 <Form onSubmit={handleSubmit}>
                   <Paper style={{ padding: "14px" }}>
@@ -605,10 +649,35 @@ export default function Certifications(props: any) {
                         marginTop: "40px",
                       }}
                     >
-                      <Button variant="contained" style={{ color: "white" }}>
-                        {" "}
-                        SAVE & EXIT{" "}
-                      </Button>
+                        <SaveAndExit
+                        formTypeId={3}
+                        Callback={() => {
+                          submitForm()
+                            .then((data) => {
+                              const prevStepData = JSON.parse(
+                                localStorage.getItem("PrevStepData") || "{}"
+                              );
+                              const urlValue =
+                                window.location.pathname.substring(1);
+                              dispatch(
+                                postW8BENForm(
+                                  {
+                                    ...prevStepData,
+                                    ...values,
+                                    stepName: `/${urlValue}`,
+                                  },
+                                  () => {
+                                    history(GlobalValues.basePageRoute);
+                                  }
+                                )
+                              );
+                            })
+                            .catch((err) => {
+                              console.log(err);
+                            });
+                        }}
+
+                      ></SaveAndExit>
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}

@@ -103,10 +103,10 @@ export default function Tin(props: any) {
     dispatch(GetHelpVideoDetails());
     dispatch(getAllCountries());
     dispatch(
-      getTinTypes(3, (data: any) => {
+      getTinTypes(authDetails?.agentId, (data: any) => {
         setUStinArray(data);
         let datas = data.filter((ele: any) => {
-          return ele.usEntity === false;
+          return ele.usEntity === false || ele.usIndividual === true;
         });
         setUStinvalue(datas);
       })

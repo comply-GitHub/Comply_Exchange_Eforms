@@ -42,7 +42,7 @@ export default function Backup_witholding(props: any) {
     handleChange,
     setselectedContinue,
   } = props;
-
+ 
   const urlValue = location.pathname.substring(1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const initialValue = {
@@ -85,7 +85,7 @@ export default function Backup_witholding(props: any) {
     );
   }, [authDetails])
 
-  const viewPdf = () => {
+  const viewPdf=()=>{
     history("w9_pdf");
   }
   return (
@@ -133,17 +133,17 @@ export default function Backup_witholding(props: any) {
             const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
             const result = { ...new_obj, ...values };
             // history("/US_Purposes/Back/Exemption")
-            const submitPromise = new Promise((resolve, reject) => {
+            const submitPromise=new Promise((resolve,reject)=>{
               dispatch(
                 postW9Form(result, () => {
                   localStorage.setItem("PrevStepData", JSON.stringify(result))
                   //history("/US_Purposes/Back/Exemption")
                   resolve("success");
                   setSubmitting(false);
-                }, (error: any) => { reject(error) })
+                },(error:any)=>{reject(error)})                
               );
-            });
-            return submitPromise;
+            });            
+            return submitPromise;            
           }}
         >
           {({
@@ -500,8 +500,8 @@ export default function Backup_witholding(props: any) {
                           {errors.isExemptionfromBackup && touched.isExemptionfromBackup ? (
                             <div>
                               <Typography color="error">
-
-                                {typeof errors.isExemptionfromBackup === "string" ? errors.isExemptionfromBackup : ""}
+                                
+                                {typeof errors.isExemptionfromBackup  ==="string" ? errors.isExemptionfromBackup:""}
                               </Typography>
                             </div>
                           ) : (
@@ -924,114 +924,97 @@ export default function Backup_witholding(props: any) {
                         </Typography>
                       </Paper>
                     </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        marginTop: "80px",
-                      }}
-                    >
-                      {/* <Button
-                        disabled={isSubmitting}
-                        variant="contained"
-                        style={{ color: "white", marginTop: "20px" }}
-                        onClick={() => {
-                          submitForm().then((data) => {
-                            history(GlobalValues.basePageRoute)
-                          }).catch((error) => {
-                            console.log(error);
-                          })
-                        }}
-                      >
-                        SAVE & EXIT
-                      </Button> */}
-                       <SaveAndExit Callback={() => {
-                            submitForm().then((data) => {
-                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                              const urlValue = window.location.pathname.substring(1);
-                              dispatch(postW9Form(
-                                {
-                                  ...prevStepData,
-                                  stepName: `/${urlValue}`
-                                }
-                                , () => { }))
-                              history(GlobalValues.basePageRoute)
-                            }).catch((err) => {
-                              console.log(err);
-                            })
-                          }} formTypeId={FormTypeId.W9} />
-                      <Button
-                        variant="contained"
-                        style={{ color: "white", marginLeft: "10px", marginTop: "20px" }}
-                        onClick={viewPdf}
-                      >
-                        View Form
-                      </Button>
-                      {values.isExemptionfromBackup == 2 ? (<Button
-                        disabled={isSubmitting}
-                        //type="submit"
-                        variant="contained"
-                        style={{ color: "white", marginLeft: "15px", marginTop: "20px" }}
-                        onClick={() => {
-                          submitForm().then(() => {
-                            history("/US_Purposes/Back/Exemption")
-                          }).catch((errors) => {
-                            console.log(errors);
-                          })
-                        }}
-                      >
-                        Continue
-                      </Button>) : (<Button
-                        // disabled={!isRadioSelected}
-                        //type="submit"
-                        disabled={isSubmitting}
-                        variant="contained"
-                        style={{ color: "white", marginLeft: "15px", marginTop: "20px" }}
-                        onClick={() => {
-                          submitForm().then(() => {
-                            history("/US_Purposes/Back/Exemption")
-                          }).catch((errors) => {
-                            console.log(errors);
-                          })
-                        }}
-                      >
-                        Continue
-                      </Button>)}
-                    </div>
-                    <Typography
-                      align="center"
-                      style={{
-                        color: "#adadac",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: "20px",
-                      }}
-                    >
-                      Do you want to go back?
-                    </Typography>
-                    <Typography align="center">
-                      <Button
-                        onClick={() => {
-                          history("/W9/purposes")
-                        }}
-
-                        variant="contained"
-                        style={{
-                          color: "white",
-                          backgroundColor: "black",
-                          marginTop: "10px",
-                          marginBottom: "20px",
-                        }}
-                      >
-                        Back
-                      </Button>
-                    </Typography>
-
                   </Paper>
                 </div>
               </div>
 
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "80px",
+                }}
+              >
+                <Button 
+                disabled={isSubmitting}
+                variant="contained" 
+                style={{ color: "white", marginTop: "20px" }}
+                onClick={()=>{
+                  submitForm().then((data)=>{
+                    history(GlobalValues.basePageRoute)
+                  }).catch((error)=>{
+                    console.log(error);
+                  })
+                }}
+                >
+                  SAVE & EXIT
+                </Button>
+                <Button
+                  variant="contained"
+                  style={{ color: "white", marginLeft: "10px", marginTop: "20px" }}
+                  onClick={viewPdf}
+                >
+                  View Form
+                </Button>
+                {values.isExemptionfromBackup == 2 ? (<Button
+                  disabled={isSubmitting}
+                  //type="submit"
+                  variant="contained"
+                  style={{ color: "white", marginLeft: "15px", marginTop: "20px" }}
+                  onClick={()=>{
+                    submitForm().then(()=>{
+                      history("/US_Purposes/Back/Exemption")
+                    }).catch((errors)=>{
+                      console.log(errors);
+                    })
+                  }}
+                >
+                  Continue
+                </Button>) : (<Button
+                  // disabled={!isRadioSelected}
+                  //type="submit"
+                  disabled={isSubmitting}
+                  variant="contained"
+                  style={{ color: "white", marginLeft: "15px", marginTop: "20px" }}
+                  onClick={()=>{
+                    submitForm().then(()=>{
+                      history("/US_Purposes/Back/Exemption")
+                    }).catch((errors)=>{
+                      console.log(errors);
+                    })
+                  }}
+                >
+                  Continue
+                </Button>)}
+              </div>
+              <Typography
+                align="center"
+                style={{
+                  color: "#adadac",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: "20px",
+                }}
+              >
+                Do you want to go back?
+              </Typography>
+              <Typography align="center">
+                <Button
+                  onClick={() => {
+                    history("/W9/purposes")
+                  }}
 
+                  variant="contained"
+                  style={{
+                    color: "white",
+                    backgroundColor: "black",
+                    marginTop: "10px",
+                    marginBottom: "20px",
+                  }}
+                >
+                  Back
+                </Button>
+              </Typography>
             </Form>
           )}
         </Formik>

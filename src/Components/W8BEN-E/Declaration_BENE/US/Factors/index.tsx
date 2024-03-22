@@ -53,6 +53,7 @@ export default function Factors() {
   }
 
   useEffect(() => {
+    
     dispatch(GetHelpVideoDetails());
   }, [])
 

@@ -35,7 +35,7 @@ export const chapter4Schema = () => {
     isPassiveNFFE40B: Yup.boolean(),
     isPassiveNFFE40C: Yup.boolean().when(["chapter4Status", "isPassiveNFFE40B"], ([chapter4Status, isPassiveNFFE40B], schema) => {
       console.log(isPassiveNFFE40B)
-      if (chapter4Status === 2) {
+      if (chapter4Status == 2) {
         if (isPassiveNFFE40B !== true) {
           return schema.isTrue("please check b or c checkbox");
         } else {
@@ -45,21 +45,7 @@ export const chapter4Schema = () => {
         return schema;
       }
 
-    }),
-    isCertify39: Yup.boolean().when(['chapter4Status'], ([chapter4Status], schema) => {
-      if (chapter4Status === 6) {
-        return schema.oneOf([true], 'Please check this checkbox');
-      } else {
-        return schema;
-      }
-    }),
-    isCertify22Entity: Yup.boolean().when(['chapter4Status'], ([chapter4Status], schema) => {
-      if (chapter4Status === 9) {
-        return schema.oneOf([true], 'Please check this checkbox');
-      } else {
-        return schema;
-      }
-    }),
+    })
 
   });
 };

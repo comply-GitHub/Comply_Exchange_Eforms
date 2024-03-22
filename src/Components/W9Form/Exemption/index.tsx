@@ -67,7 +67,7 @@ export default function FCTA_Reporting(props: any) {
   const urlValue = location.pathname.substring(1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const initialValue = {
-    isExemptionFATCAReportings: getReducerData?.isExemptionFATCAReportings ?? false,
+    isExemptionFATCAReportings: getReducerData?.isExemptionFATCAReportings ??  false,
     ReportingId: getReducerData?.ReportingId ?? ""
   };
 
@@ -84,7 +84,7 @@ export default function FCTA_Reporting(props: any) {
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
 
-  const viewPdf = () => {
+  const viewPdf=()=>{
     history("w9_pdf");
   }
   return (
@@ -130,8 +130,8 @@ export default function FCTA_Reporting(props: any) {
           setSubmitting(true);
           const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
           let result = { ...new_obj, ...values };
-          result = { ...result, isExemptionFATCAReportings: result.isExemptionFATCAReportings == "true" };
-          console.log("values ex", values)
+          result = { ...result, isExemptionFATCAReportings:  result.isExemptionFATCAReportings=="true" };
+          console.log("values ex",values)
           const submitPromise = new Promise((resolve, reject) => {
             if (clickCount === 0) {
               setClickCount(clickCount + 1);
@@ -140,7 +140,7 @@ export default function FCTA_Reporting(props: any) {
             } else {
               dispatch(
                 postW9Form(result, () => {
-                  localStorage.setItem("PrevStepData", JSON.stringify(result));
+                  localStorage.setItem("PrevStepData", JSON.stringify(result));  
                   resolve("success");
                   setSubmitting(false);
                 },
@@ -149,12 +149,12 @@ export default function FCTA_Reporting(props: any) {
                     setSubmitting(false);
                   }
                 )
-              );
+              );              
             }
-
+              
           })
           return submitPromise;
-
+          
         }}
       >
         {({
@@ -279,7 +279,7 @@ export default function FCTA_Reporting(props: any) {
                       {errors.isExemptionFATCAReportings && touched.isExemptionFATCAReportings ? (
                         <div>
                           <Typography color="error">
-                            {typeof errors.isExemptionFATCAReportings === "string" ? errors.isExemptionFATCAReportings : ""}
+                            {typeof errors.isExemptionFATCAReportings==="string" ? errors.isExemptionFATCAReportings : "" }
                           </Typography>
                         </div>
                       ) : (
@@ -352,94 +352,78 @@ export default function FCTA_Reporting(props: any) {
                               )}
                             </select>
                           </FormControl>
-                          <p className="error">{typeof errors.ReportingId === "string" ? errors.ReportingId : ""}</p>
+                          <p className="error">{typeof errors.ReportingId==="string" ? errors.ReportingId : ""}</p>
 
                         </>
                       ) : ""}
                     </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        marginTop: "80px",
-                      }}
-                    >
-                      {/* <Button
-                        variant="contained"
-                        style={{ color: "white" }}
-                        onClick={() => {
-                          submitForm().then((data) => {
-                            history(GlobalValues.basePageRoute)
-                          }).catch((error) => {
-                            console.log(error);
-                          })
-                        }}
-                      >
-                        SAVE & EXIT
-                      </Button> */}
-                       <SaveAndExit Callback={() => {
-                            submitForm().then((data) => {
-                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                              const urlValue = window.location.pathname.substring(1);
-                              dispatch(postW9Form(
-                                {
-                                  ...prevStepData,
-                                  stepName: `/${urlValue}`
-                                }
-                                , () => { }))
-                              history(GlobalValues.basePageRoute)
-                            }).catch((err) => {
-                              console.log(err);
-                            })
-                          }} formTypeId={FormTypeId.W9} />
-                      <Button
-                        // type="submit"
-                        onClick={() => {
-                          submitForm().then((data) => {
-                            history("/US_Purposes/Back/Exemption/Tax")
-                          }).catch((error) => {
-                            console.log(error);
-                          })
-                        }}
-                        variant="contained"
-                        style={{ color: "white", marginLeft: "15px" }}
-                      >
-                        Continue
-                      </Button>
-
-                    </div>
-                    <Typography
-                      align="center"
-                      style={{
-                        color: "#adadac",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: "20px",
-                      }}
-                    >
-                      Do you want to go back?
-                    </Typography>
-                    <Typography align="center">
-                      <Button
-                        onClick={() => {
-                          history("/US_Purposes/Back")
-                        }}
-                        variant="contained"
-                        style={{
-                          color: "white",
-                          backgroundColor: "black",
-                          marginTop: "10px",
-                          marginBottom: "20px",
-                        }}
-                      >
-                        Back
-                      </Button>
-                    </Typography>
                   </Paper>
                 </div>
               </div>
             </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "80px",
+              }}
+            >
+              <Button
+                variant="contained"
+                style={{ color: "white" }}
+                onClick={() => {
+                  submitForm().then((data) => {
+                    history(GlobalValues.basePageRoute)
+                  }).catch((error) => {
+                    console.log(error);
+                  })
+                }}
+              >
+                SAVE & EXIT
+              </Button>
+              <Button
+                // type="submit"
+                onClick={() => {
+                  submitForm().then((data) => {
+                    history("/US_Purposes/Back/Exemption/Tax")
+                  }).catch((error) => {
+                    console.log(error);
+                  })
+                }}
+                variant="contained"
+                style={{ color: "white", marginLeft: "15px" }}
+              >
+                Continue
+              </Button>
 
+            </div>
+            <Typography
+              align="center"
+              style={{
+                color: "#adadac",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "20px",
+              }}
+            >
+              Do you want to go back?
+            </Typography>
+            <Typography align="center">
+              <Button
+                onClick={() => {
+                  history("/US_Purposes/Back")
+                }}
+                variant="contained"
+                style={{
+                  color: "white",
+                  backgroundColor: "black",
+                  marginTop: "10px",
+                  marginBottom: "20px",
+                }}
+              >
+                Back
+              </Button>
+            </Typography>
           </Form>
         )}
       </Formik>

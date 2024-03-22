@@ -97,6 +97,7 @@ export default function Penalties() {
         validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
           const returnPromise = new Promise((resolve, reject) => {
+
             let temp = {
               ...PrevStepData,
               ...values,
@@ -120,7 +121,10 @@ export default function Penalties() {
                 reject(err);
               })
             );
+
+
           })
+
           return returnPromise;
         }
         }

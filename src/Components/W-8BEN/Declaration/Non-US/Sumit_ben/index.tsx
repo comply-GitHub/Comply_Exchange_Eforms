@@ -43,7 +43,7 @@ const Declaration = (props: any) => {
     IsSubmit: false,
     IsSubmit_not: false,
   };
-  const viewPdf = () => {
+  const viewPdf=()=>{
     history("w8Ben_pdf");
   }
   return (
@@ -62,7 +62,7 @@ const Declaration = (props: any) => {
                 setSubmitting(true);
                 const new_obj = {
                   ...PrevStepData,
-                  //statusId: 2,
+                  statusId: 2,
                   stepName: `/${urlValue}`,
                 };
                 const result = { ...PrevStepData, ...values };
@@ -331,9 +331,9 @@ const Declaration = (props: any) => {
                           <Checkbox
                             name="IsSubmit"
                             value={values.IsSubmit}
-                            onChange={(e) => {
+                            onChange={(e)=>{
                               handleChange(e);
-                              setTimeout(() => { setFieldValue("IsSubmit_not", false) }, 50)
+                              setTimeout(()=>{setFieldValue("IsSubmit_not",false)},50)
                             }}
                             checked={values.IsSubmit}
                           />
@@ -348,9 +348,9 @@ const Declaration = (props: any) => {
                           <Checkbox
                             name="IsSubmit_not"
                             value={values.IsSubmit_not}
-                            onChange={(e) => {
+                            onChange={(e)=>{
                               handleChange(e);
-                              setTimeout(() => { setFieldValue("IsSubmit", false) }, 50)
+                              setTimeout(()=>{setFieldValue("IsSubmit",false)},50)
                             }}
                             checked={values.IsSubmit_not}
                           />

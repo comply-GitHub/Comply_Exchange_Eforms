@@ -70,7 +70,7 @@ const Declaration = (props: any) => {
                   ...values,
                   agentId: authDetails?.agentId,
                   accountHolderBasicDetailId: authDetails?.accountHolderId,
-                  // statusId: 1,
+                  statusId: 1,
                 };
                 const returnPromise = new Promise((resolve, reject) => {
                   dispatch(

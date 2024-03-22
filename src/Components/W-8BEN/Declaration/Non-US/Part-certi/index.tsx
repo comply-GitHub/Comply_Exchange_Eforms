@@ -32,12 +32,19 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { partCertiSchema } from "../../../../../schemas/w8Ben";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import { useLocation } from "react-router-dom";
+import SecurityCodeRecover from "../../../../Reusable/SecurityCodeRecover";
+import useAuth from "../../../../../customHooks/useAuth";
+import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import moment from "moment";
+type ValuePiece = Date | null;
+type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function Penalties() {
   const location = useLocation();
   const [open2, setOpen2] = useState(false);
   const handleClickOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
+  const [value, onChange] = useState<Value2>(null);
   const [expanded, setExpanded] = React.useState<string | false>("");
   const [showRecoverSection, setShowRecoverSection] = useState(false);
   const [payload, setPayload] = useState({
@@ -49,7 +56,8 @@ export default function Penalties() {
  const agentDefaultDetails = JSON.parse(
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
-
+  const W8BENData = useSelector((state: any) => state.W8BEN);
+  // const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
 const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
     // const toggleRecoverSection = () => {
     //   setShowRecoverSection(true);
@@ -78,13 +86,15 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
   const initialValue = {
-    signedBy: "",
+    signedBy: W8BENData?.signedBy ?? "",
     EnterconfirmationCode:"",
-    confirmationCode: "",
-    date: moment().format(),
-    isAgreeWithDeclaration: false,
-    question:"",
-    word :""
+    confirmationCode: W8BENData?.confirmationCode ?? "",
+    date:W8BENData?.date ?? new Date().toLocaleDateString('en-US', { month: '2-digit',
+    day: '2-digit',
+    year: 'numeric',
+  }),
+  isCheckAcceptance: W8BENData?.isCheckAcceptance ? true : false
+   
   };
  
 
@@ -92,7 +102,8 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const history = useNavigate();
 
   const viewPdf=()=>{
-    history("/w8Ben_pdf", { replace: true });
+    // history("/w8Ben_pdf", { replace: true });
+    history("/w8Ben_pdf");
   }
   return (
     <>
@@ -102,6 +113,8 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
         initialValues={initialValue}
         validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
+          history("/Certificates");
+         
           if (clickCount === 0) {
         
             setClickCount(clickCount+1);
@@ -119,14 +132,16 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
         }}
       >
         {({
-          errors,
-          touched,
-          handleBlur,
-          values,
-          handleSubmit,
-          handleChange,
-          isSubmitting,
-          setFieldValue
+         errors,
+         touched,
+         handleBlur,
+         values,
+         handleSubmit,
+         handleChange,
+         isSubmitting,
+         setFieldValue,
+         isValid,
+         submitForm
         }) => (
           <Form onSubmit={handleSubmit}>
             <section
@@ -321,321 +336,339 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                         ""
                       )}
 
-                      <Input
-                       className="inputTextField"
-                        id="outlined"
-                        fullWidth
-                        type="text"
-                        name="signedBy"
-                        value={values.signedBy}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        error={Boolean(touched.signedBy && errors.signedBy)}
-                      />
-                      <p className="error">{errors.signedBy}</p>
-                    </div>
+<Input
+                            className="inputTextField"
+                            id="outlined"
+                            fullWidth
+                            type="text"
+                            name="signedBy"
+                            value={values.signedBy}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            error={Boolean(touched.signedBy && errors.signedBy)}
+                          />
+                          <p className="error">{typeof (errors.signedBy) === "string" ? errors.signedBy : ""}</p>
+                        </div>
 
-                    <div className="col-md-6 col-12">
-                      <Typography style={{ fontSize: "15px" }}>
-                        Enter Confirmation Code:
-                        <span style={{ color: "red" }}>*</span>
-                        <span>
-                          <Tooltip
-                            style={{ backgroundColor: "black", color: "white" }}
-                            title={
-                              <>
-                                <Typography color="inherit">
-                                  Exemptions - Backup Withholding
+                        <div className="col-md-6 col-12">
+                          <Typography style={{ fontSize: "15px" }}>
+                            Enter Confirmation Code:
+                            <span style={{ color: "red" }}>*</span>
+                            <span>
+                              <Tooltip
+                                style={{ backgroundColor: "black", color: "white" }}
+                                title={
+                                  <>
+                                    <Typography color="inherit">
+                                      Exemptions - Backup Withholding
+                                    </Typography>
+                                    <a onClick={() => setToolInfo("password")}>
+                                      <Typography
+                                        style={{
+                                          cursor: "pointer",
+                                          textDecorationLine: "underline",
+                                        }}
+                                        align="center"
+                                      >
+                                        {" "}
+                                        View More...
+                                      </Typography>
+                                    </a>
+                                  </>
+                                }
+                              >
+                                <InfoIcon
+                                  style={{
+                                    color: "#ffc107",
+                                    fontSize: "20px",
+                                    cursor: "pointer",
+                                    verticalAlign: "super",
+                                  }}
+                                />
+                              </Tooltip>
+                            </span>
+                          </Typography>
+
+                          {toolInfo === "password" ? (
+                            <div>
+                              <Paper
+                                style={{
+                                  backgroundColor: "#dedcb1",
+                                  padding: "15px",
+                                  marginBottom: "10px",
+                                }}
+                              >
+                                <Typography>
+                                  To authenticate the electronic signature you must
+                                  enter the alpha numeric token you received at the
+                                  start of the process. If you cannot remember your
+                                  confirmation code, you can click the 'Recover
+                                  Password' link to answer your security question
+                                  again and receive it.
                                 </Typography>
-                                <a onClick={() => setToolInfo("password")}>
-                                  <Typography
-                                    style={{
-                                      cursor: "pointer",
-                                      textDecorationLine: "underline",
-                                    }}
-                                    align="center"
-                                  >
-                                    {" "}
-                                    View More...
-                                  </Typography>
-                                </a>
-                              </>
-                            }
-                          >
-                            <InfoIcon
-                              style={{
-                                color: "#ffc107",
-                                fontSize: "20px",
-                                cursor: "pointer",
-                                verticalAlign: "super",
+
+                                <Typography style={{ marginTop: "10px" }}>
+                                  If you do not wish to submit the electronic form
+                                  at this stage, you will need to exit the process
+                                  and undertake again at a later date.
+                                </Typography>
+
+                                <Link
+                                  href="#"
+                                  underline="none"
+                                  style={{ marginTop: "10px", fontSize: "16px" }}
+                                  onClick={() => {
+                                    setToolInfo("");
+                                  }}
+                                >
+                                  --Show Less--
+                                </Link>
+                              </Paper>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          <div>
+                            <Input
+                              className="inputTextField"
+                              id="outlined"
+                              fullWidth
+                              name="confirmationCode"
+                              value={values.confirmationCode}
+                              onBlur={handleBlur}
+                              onChange={(e) => {
+                                handleChange(e)
+                                setTimeout(() => {
+                                  setShowRecoverSection(false)
+                                }, 200);
                               }}
+                              error={Boolean(
+                                touched.confirmationCode && errors.confirmationCode
+                              )}
+                              type="password"
+
+                              style={{ width: "100%" }}
                             />
-                          </Tooltip>
-                        </span>
-                      </Typography>
-
-                      {toolInfo === "password" ? (
-                        <div>
-                          <Paper
-                            style={{
-                              backgroundColor: "#dedcb1",
-                              padding: "15px",
-                              marginBottom: "10px",
-                            }}
-                          >
-                            <Typography>
-                              To authenticate the electronic signature you must
-                              enter the alpha numeric token you received at the
-                              start of the process. If you cannot remember your
-                              confirmation code, you can click the 'Recover
-                              Password' link to answer your security question
-                              again and receive it.
-                            </Typography>
-
-                            <Typography style={{ marginTop: "10px" }}>
-                              If you do not wish to submit the electronic form
-                              at this stage, you will need to exit the process
-                              and undertake again at a later date.
-                            </Typography>
-
-                            <Link
-                              href="#"
-                              underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" }}
-                              onClick={() => {
-                                setToolInfo("");
+                            <span
+                              onClick={toggleRecoverSection}
+                              style={{
+                                fontSize: "16px",
+                                color: "blue",
+                                marginLeft: "10px",
+                                cursor: "pointer"
                               }}
                             >
-                              --Show Less--
-                            </Link>
-                          </Paper>
+                              Recover Password
+                            </span>
+                            <p className="error">{touched.confirmationCode && typeof (errors.confirmationCode) == "string" ? errors.confirmationCode : ""}</p>
+                          </div>
                         </div>
-                      ) : (
-                        ""
-                      )}
-                      <div>
-                      <Input
-                        className="inputTextField"
-                        id="outlined"
-                        fullWidth
-                          name="EnterconfirmationCode"
-                          value={values.EnterconfirmationCode}
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          error={Boolean(
-                            touched.EnterconfirmationCode && errors.EnterconfirmationCode
-                          )}
-                          type="password"
-                          
-                          style={{ width: "100%" }}
-                        />
-                        <span
-                        onClick={toggleRecoverSection}
-                          style={{
-                            fontSize: "16px",
-                            color: "blue",
-                            marginLeft: "10px",
-                            cursor:"pointer"
-                          }}
-                        >
-                          Recover Password
-                        </span>
-                        <p className="error">{errors.EnterconfirmationCode}</p>
                       </div>
-                    </div>
-                  </div>
-                  {showRecoverSection &&(<div style={{margin:"10px"}}>
-  <Typography align="left" style={{fontWeight:"bold"}}>
-  Electronic Signature Confirmation Code Recovery
-  </Typography>
-  <Typography style={{fontSize:"14px"}}>
-  To recover your Confirmation Code, please type in your security word below. Select the 'Hint?' if you need a reminder of your security word.
-  </Typography>
+                      {showRecoverSection &&
+                        (<div style={{ margin: "10px" }}>
+                          <Typography align="left" style={{ fontWeight: "bold" }}>
+                            Electronic Signature Confirmation Code Recovery
+                          </Typography>
+                          <Typography style={{ fontSize: "14px" }}>
+                            To recover your Confirmation Code, please type in your security word below. Select the 'Hint?' if you need a reminder of your security word.
+                          </Typography>
 
-  <div className="d-flex my-3 col-8">
-    <Typography className="my-2 col-4" style={{fontWeight:"bold"}}>Security Word</Typography>
-    <Input className=" col-4 inputTextField"
-   
+                          {/* <div className="d-flex my-3 col-8">
+                          <Typography className="my-2 col-4" style={{ fontWeight: "bold" }}>Security Word</Typography>
+                          <Input className=" col-4 inputTextField"
+
+                            style={{
+                              color: "black !important",
+
+                              width: "50%",
+                              backgroundColor: "#fff"
+                            }}
+                            fullWidth
+                            type="text"
+                            name="word"
+                            onChange={handleChange}
+                            value={values.word}
+
+
+                          />
+
+
+
+                        </div>
+                        {securityWordError && <p className="error">{securityWordError}</p>}
+                        <div className="d-flex my-3 col-8">
+                          <Link className="my-2 col-4" onClick={() => { setFieldValue("question", obValues.securityQuestion.question) }}>Hint?</Link>
+                          <Input className=" col-4 inputTextField"
+                            style={{
+                              color: "black",
+                              fontSize: "13px",
+                              width: "50%",
+                              backgroundColor: "#e3e6e4"
+                            }}
+                            fullWidth
+                            type="text"
+                            disabled
+                            value={values.question}
+
+
+                          />
+                        </div>
+                        <div className="d-flex my-3 col-8 ">
+                          <Typography className="my-2 col-4" style={{ fontWeight: "bold" }}>Confirmation Code</Typography>
+                          <Input className=" col-3 inputTextField blackText"
+                            style={{
+                              color: "#7e7e7e",
+                              fontStyle: "italic",
+                              width: "50%",
+                              backgroundColor: "#e3e6e4"
+                            }}
+                            fullWidth
+                            disabled
+                            value={values.confirmationCode}
+                            type="text"
+
+
+                          />
+                          <Typography className="col-1 mx-2 my-1" >
+                            <ContentCopy
+
+                              onClick={() => {
+                                navigator.clipboard.writeText(
+                                  values.confirmationCode
+                                );
+                              }}
+                              style={{ fontSize: "18px", marginTop: "5px" }}
+                            />
+                          </Typography>
+
+                        </div>
+                        <Typography className=" my-4 col-8 " align="center" >
+                          <Button onClick={() => {
+                            if (!values.word) {
+                              setSecurityWordError("Please enter the security word");
+                            } else {
+                              const storedSecurityWord = obValues.securityAnswer;
+                              if (values.word !== storedSecurityWord) {
+                                setSecurityWordError("Security word does not match");
+                                setIsSecurityWordMatched(false);
+                              } else {
+                                setSecurityWordError("");
+                                setIsSecurityWordMatched(true);
+                                setFieldValue("confirmationCode", obValues.confirmationCode);
+                              }
+                            }
+                          }} style={{ justifyContent: "center" }} variant="contained" size="small">
+                            OK
+                          </Button>
+                        </Typography> */}
+
+                          <SecurityCodeRecover setRecoverPassword={setShowRecoverSection} ></SecurityCodeRecover>
+
+                        </div>
+                        )}
+
+
+
+                      <div
+                        className="row"
                         style={{
-                         color:"black !important",
-                         
-                          width: "50%",
-                          backgroundColor:"#fff"
+                          margin: "10px",
+
+                          marginTop: "20px",
                         }}
-                        fullWidth
-                        type="text"
-                        name="word"
-                        onChange={handleChange}
-                        value={values.word}
-                        
-                        
-                      />
- 
+                      >
+                        <div className="col-12 col-md-6 p-0">
+                          <Typography align="left" style={{ padding: "0px" }}>
+                            <Typography style={{ fontSize: "15px" }}>
+                              Date
+                            </Typography>
+                            {/* <TextField */}
+                            <FormControl style={{ width: "100%" }}>
+                              <Input
+                                className="inputTextField"
+                                id="outlined"
+                                fullWidth
+                                name="date"
+                                value={
+                                  new Date().toLocaleDateString('en-US', {
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    year: 'numeric',
+                                  })
+                                }
+                                onBlur={handleBlur}
+                                readOnly={true}
+                              />
 
+                            </FormControl>
 
-  </div>
-  {securityWordError && <p className="error">{securityWordError}</p>}
-  <div className="d-flex my-3 col-8">
-  <Link className="my-2 col-4" onClick={()=>{setFieldValue("question", obValues.securityQuestion.question)}}>Hint?</Link>
-  <Input className=" col-4 inputTextField"
-                        style={{
-                         color:"black",
-                         fontSize:"13px",
-                          width: "50%",
-                          backgroundColor:"#e3e6e4"
-                        }}
-                        fullWidth
-                        type="text"
-                        disabled
-                        value={values.question}
-                        
-                        
-                      />
-  </div>
-  <div className="d-flex my-3 col-8 ">
-    <Typography className="my-2 col-4" style={{fontWeight:"bold"}}>Confirmation Code</Typography>
-    <Input className=" col-3 inputTextField blackText"
-                        style={{
-                          color: "#7e7e7e",
-                          fontStyle: "italic",
-                          width: "50%",
-                          backgroundColor:"#e3e6e4"
-                        }}
-                        fullWidth
-                        disabled
-                        value={values.confirmationCode}
-                        type="text"
-                       
-                        
-                      />
-                       <Typography className="col-1 mx-2 my-1" >
-                      {values.confirmationCode ?(<ContentCopy
-                  
-                        onClick={() => {
-                          navigator.clipboard.writeText(
-                            values.confirmationCode
-                          );
-                        }}
-                        style={{ fontSize: "18px", marginTop: "5px" }}
-                      />):""}
-                    </Typography>
-
-  </div>
-  <Typography className=" my-4 col-8 "align="center" >
-<Button onClick={() => {
-        if (!values.word) {
-          setSecurityWordError("Please enter the security word");
-        } else {
-          const storedSecurityWord = obValues.securityAnswer;
-          if (values.word !== storedSecurityWord) {
-            setSecurityWordError("Security word does not match");
-            setIsSecurityWordMatched(false);
-          } else {
-            setSecurityWordError(""); 
-            setIsSecurityWordMatched(true);
-            setFieldValue("confirmationCode", obValues.confirmationCode);
-          }
-        }
-      }}style={{justifyContent:"center"}}  variant="contained" size="small">
-  OK
-</Button>
-  </Typography>
-</div>)}
-
-
-                  <div
-                    className="row"
-                    style={{
-                      margin: "10px",
-
-                      marginTop: "20px",
-                    }}
-                  >
-                    <div className="col-12 col-md-6 p-0">
-                      <Typography align="left" style={{ padding: "0px" }}>
-                        <Typography style={{ fontSize: "15px" }}>
-                          Date
-                        </Typography>
-                        {/* <TextField */}
-                          <FormControl style={{ width: "100%" }}>
-                          <Input
-                        className="inputTextField"
-                        id="outlined"
-                        fullWidth
-                          name="date"
-                          value={moment(values.date).format('DD/MM/YYYY')}
-                          onBlur={handleBlur}
-                          disabled
-                        />
-                        
-                          </FormControl>
-                         
-                        
-                      </Typography>
-                    </div>
-                  </div>
-
-                  <Typography style={{ display: "flex" }}>
-                    <Checkbox
-                      name="isAgreeWithDeclaration"
-                      value={values.isAgreeWithDeclaration}
-                      checked={values.isAgreeWithDeclaration}
-                      onChange={handleChange}
-                    />
-                    <Typography
-                      style={{
-                        fontSize: "15px",
-                        color: "black",
-                       
-                      }}
-                    >
-                      Please "check" box to confirm your acceptance with the
-                      above declarations{" "}
-                      {errors.isAgreeWithDeclaration &&
-                      touched.isAgreeWithDeclaration ? (
-                        <div>
-                          <Typography color="error">
-                            {errors.isAgreeWithDeclaration}
+                            {/* /> */}
+                            {/* <p className="error">{errors.date}</p> */}
                           </Typography>
                         </div>
-                      ) : (
-                        ""
-                      )}
-                      <span>
-                        <Tooltip
-                          style={{ backgroundColor: "black", color: "white" }}
-                          title={
-                            <>
-                              <Typography color="inherit">
-                                Certification information
-                              </Typography>
-                              <a onClick={() => setToolInfo("check")}>
-                                <Typography
-                                  style={{
-                                    cursor: "pointer",
-                                    textDecorationLine: "underline",
-                                  }}
-                                  align="center"
-                                >
-                                  {" "}
-                                  View More...
-                                </Typography>
-                              </a>
-                            </>
-                          }
+                      </div>
+
+                      <Typography style={{ display: "flex", marginLeft: "10px" }}>
+                        <Checkbox
+                          name="isCheckAcceptance"
+                          value={values.isCheckAcceptance}
+                          checked={values.isCheckAcceptance}
+                          onChange={handleChange}
+                        />
+                        <Typography
+                          style={{
+                            fontSize: "15px",
+                            color: "black",
+
+                          }}
                         >
-                          <InfoIcon
-                            style={{
-                              color: "#ffc107",
-                              fontSize: "20px",
-                              cursor: "pointer",
-                              verticalAlign: "super",
-                            }}
-                          />
-                        </Tooltip>
-                      </span>
-                    </Typography>
-                  </Typography>
+                          Please "check" box to confirm your acceptance with the
+                          above declarations{" "}
+                          {errors.isCheckAcceptance &&
+                            touched.isCheckAcceptance ? (
+                            <div>
+                              <Typography color="error">
+                                {errors.isCheckAcceptance}
+                              </Typography>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          <span>
+                            <Tooltip
+                              style={{ backgroundColor: "black", color: "white" }}
+                              title={
+                                <>
+                                  <Typography color="inherit">
+                                    Certification information
+                                  </Typography>
+                                  <a onClick={() => setToolInfo("check")}>
+                                    <Typography
+                                      style={{
+                                        cursor: "pointer",
+                                        textDecorationLine: "underline",
+                                      }}
+                                      align="center"
+                                    >
+                                      {" "}
+                                      View More...
+                                    </Typography>
+                                  </a>
+                                </>
+                              }
+                            >
+                              <InfoIcon
+                                style={{
+                                  color: "#ffc107",
+                                  fontSize: "20px",
+                                  cursor: "pointer",
+                                  verticalAlign: "super",
+                                }}
+                              />
+                            </Tooltip>
+                          </span>
+                        </Typography>
+                      </Typography>
                   {toolInfo === "check" ? (
                     <div>
                       <Paper
@@ -703,15 +736,32 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                     >
                     View Form
                     </Button>
-                    <Button
-                      onClick={() => {
-                        setOpen2(true);
-                      }}
-                      variant="contained"
-                      style={{ color: "white" , marginLeft: "15px" }}
-                    >
-                      SAVE & EXIT
-                    </Button>
+                    <div style={{ color: "white", marginLeft: "15px" }}>
+                          <SaveAndExit Callback={() => {
+                            submitForm().then(() => {
+                              const prevStepData = JSON.parse(
+                                localStorage.getItem("PrevStepData") || "{}"
+                              );
+                              const urlValue =
+                                window.location.pathname.substring(1);
+                              dispatch(
+                                postW8BENForm(
+                                  {
+                                    ...prevStepData,
+                                    ...values,
+                                    stepName: `/${urlValue}`,
+                                  },
+                                  () => {
+                                    history(GlobalValues.basePageRoute);
+                                  }
+                                )
+                              );
+                            })
+                              .catch((err) => {
+                                console.log(err);
+                              })
+                          }} formTypeId={FormTypeId.BEN} />
+                        </div>
                     <Button
                       type="submit"
                       // onClick={() => {

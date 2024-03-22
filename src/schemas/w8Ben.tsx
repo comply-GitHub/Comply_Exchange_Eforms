@@ -160,17 +160,28 @@ export const US_TINSchema = () => {
 };
 export const claimSchemaaa = () => {
   return Yup.object().shape({
-    isSubmissionClaimTreaty: Yup.string().required(
+    isClaimTreaty: Yup.string().required(
       "Please select one of the options"
     ),
-    permanentResidentialCountryId: Yup.string().when("isSubmissionClaimTreaty", {
-      is: "yes",
-      then: () => Yup.string().required("Please select owner"),
+    ownerResidentId: Yup.string().when(["isClaimTreaty"], {
+      is: (isClaimTreaty: any) => isClaimTreaty === "yes",
+      then: () => Yup.string().notOneOf(["", "0"], "Please select a Country from the list")
     }),
-    // permanentResidentialCountryId: Yup.string().required(
-    //   "Please select one of the options"
-    // ),
-   
+    limitationBenefitsId: Yup.string().when(["ownerResidentId"], ([ownerResidentId], schema) => {
+      if (ownerResidentId && ownerResidentId != "" && ownerResidentId !== "0") {
+        return schema.notOneOf(["", "0"], "Please select an option.");
+      } else {
+        return schema;
+      }
+    }),
+    isSubmissionClaimTreaty: Yup.string().when(["ownerResidentId"], ([ownerResidentId], schema) => {
+      //console.log(ownerResidentId,"valeeeeeeeeeee")
+      if (ownerResidentId != undefined && ownerResidentId != "" && ownerResidentId !== "0") {
+        return schema.notOneOf(["", undefined, null], "Please select an option.");
+      } else {
+        return schema;
+      }
+    }),
   });
 };
 
@@ -244,40 +255,29 @@ export const certificateSchema = () => {
 
 export const partCertiSchema = () => {
   return Yup.object().shape({
-    signedBy: Yup.string().required("Please enter "),
-    EnterconfirmationCode: Yup.string()
-    .required("Please enter code")
-    .test(
-      'match',
-      'Confirmation code does not match',
-      function (value) {
-        const storedConfirmationCode = obValues?.confirmationCode;
-        return !storedConfirmationCode || value === storedConfirmationCode;
-      }
-    ),
-    confirmationCode: Yup.string().when("showRecoverSection", {
-      is: true,
-      then: () =>
-      Yup.string() .required("Please enter code")
-    .test(
-      'match',
-      'Confirmation code does not match',
-      function (value) {
-        const storedConfirmationCode = obValues?.confirmationCode;
-        return !storedConfirmationCode || value === storedConfirmationCode;
-      }
-    ),
-  }),
+
+    signedBy: Yup.string().required("Please enter name of the person signing the form"),
+    confirmationCode: Yup.string()
+      .required("Please enter code")
+    // .test(
+    //   'match',
+    //   'Confirmation code does not match',
+    //   function (value) {
+    //     const storedConfirmationCode = obValues?.confirmationCode;
+    //     return !storedConfirmationCode || value === storedConfirmationCode;
+    //   }
+    // ), 
+    ,
     // word: Yup.boolean().when("EnterconfirmationCode", {
     //   is: "no",
     //   then: () => Yup.string().required("Please select owner"),
     // }),
-  date: Yup.date(),
-  isAgreeWithDeclaration: Yup.boolean().oneOf(
-    [true],
-    "Please mark the checkbox"
-  ),
-});
+    date: Yup.date(),
+    isAcceptanceDeclarations: Yup.boolean().oneOf(
+      [true],
+      "Please mark the checkbox"
+    ),
+  });
 };
 
 export const declarationsSchema = () => {
