@@ -84,6 +84,7 @@ GetByW8EXPFormFormEntityNonUs:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
  GetByW9IndividualEntityUSFormId:"/W9IndividualEntity/GetByW9IndividualEntityUSFormId",
  GetByW8BENIndividualId:"/W8BENIndividual/GetByW8BENIndividualId",
  GetByW8ECIIndividualId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
+ GetByW8EXPIndividualId:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
  formPDFFieldData:"/FormTypes/GetPDFFieldValuesbyFormID",
 };
 export default EndPoint;

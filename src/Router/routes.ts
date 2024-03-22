@@ -93,6 +93,10 @@ const W8Eci= React.lazy(
   () => import("../formPDF/W8ECI")
 );
 
+const W8Exp= React.lazy(
+  () => import("../formPDF/W8EXP")
+);
+
 const Presence = React.lazy(() => import("../Components/Form8233/SubstantialPresence"));
 const TaxPay = React.lazy(() => import("../Components/Form8233/Taxpayer"));
 const Owner = React.lazy(() => import("../Components/Form8233/owner"));
@@ -534,6 +538,15 @@ const ROUTES: Array<RouteType> = [
     Component: W8Eci,
     isPrivate: true,
   },
+
+  {
+    name: "Formw8Exp",
+    path: "w8Exp_pdf",
+    id: 7,
+    Component: W8Exp,
+    isPrivate: true,
+  },
+  
   
   {
     name: "Tax_Purpose_BenE",

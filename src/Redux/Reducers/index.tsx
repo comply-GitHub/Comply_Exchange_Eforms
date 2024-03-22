@@ -26,11 +26,20 @@ const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType
   SendOTPMail,GetByW9IndividualEntityUSFormId,
   GetCountriesTreaty,GetCountryArticleByID,
   UpsertSpecialRateAndConditionsIncomeTypes,
+  GetByW8EXPIndividualId,
 } = Utils.actionName
 
 
 let initialState: any = [];
 
+export const getExpFormDataReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case GetByW8EXPIndividualId:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}
 export const formPDFFieldDataReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case formPDFFieldData:
