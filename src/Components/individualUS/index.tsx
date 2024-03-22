@@ -790,7 +790,7 @@ export default function IndividualUs() {
                         <img src={individual} />
                       </div>
                       <span style={{ fontSize: "14px", fontWeight: "600" }}>
-                        Individual (Azure)
+                        Individual 
                       </span> 
                     </div>
                   </button>

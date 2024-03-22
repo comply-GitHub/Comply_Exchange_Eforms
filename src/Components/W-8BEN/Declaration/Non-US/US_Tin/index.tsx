@@ -63,7 +63,7 @@ export default function Tin(props: any) {
     const temp = {
       ...PrevStepData,
       ...W8BENData,
-      usTinTypeId: obValues?.taxpayerIdTypeID?.toString() ?? W8BENData?.usTinTypeId,
+      usTinTypeId: obValues?.taxpayerIdTypeID?.toString() ?? (W8BENData?.usTinTypeId ? W8BENData?.usTinTypeId : "1" ),
       usTin: W8BENData?.usTin == "" ? obValues?.usTin : W8BENData?.usTin,
       notAvailable: W8BENData?.notAvailable ? W8BENData?.notAvailable : false,
       notAvailableReason: W8BENData?.notAvailableReason || "",
@@ -135,16 +135,17 @@ export default function Tin(props: any) {
   );
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
-
+console.log(obValues.taxpayerIdTypeID,"pp")
   const dispatch = useDispatch();
   const [initialValue, setInitialValues] = useState({
     usTinTypeId: obValues.taxpayerIdTypeID?.toString(),
+    
     usTin: obValues.usTin,
     tinValue: "",
     notAvailable: false,
     notAvailableReason: "",
     foreignTINCountry: obValues.foreignTINCountryId == null || obValues.foreignTINCountryId == ""
-      || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId,
+      || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId.toString(),
     foreignTIN: "",
     isFTINLegally: false,
     isNotAvailable: "",
@@ -217,8 +218,10 @@ export default function Tin(props: any) {
                     isNotAvailable: values?.isNotAvailable === "Yes",
                     alternativeTINFormat: values?.alternativeTINFormat === "No",
                     isExplanationNotLegallyFTIN: values?.isExplanationNotLegallyFTIN == "Yes",
+
                     stepName: null,
                   };
+                
                   const returnPromise = new Promise((resolve, reject) => {
                     dispatch(
                       postW8BENForm(temp,
@@ -245,6 +248,7 @@ export default function Tin(props: any) {
                   handleBlur,
                   values,
                   handleSubmit,
+                
                   handleChange,
                   setFieldValue,
                   submitForm,
@@ -570,7 +574,9 @@ export default function Tin(props: any) {
                             onBlur={handleBlur}
                             value={values.foreignTINCountry}
                             onChange={(e) => {
+                             
                               handleChange(e);
+                              
                             }}
                           >
                             <option value={0}>---select---</option>

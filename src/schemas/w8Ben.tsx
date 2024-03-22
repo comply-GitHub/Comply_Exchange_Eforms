@@ -255,40 +255,29 @@ export const certificateSchema = () => {
 
 export const partCertiSchema = () => {
   return Yup.object().shape({
-    signedBy: Yup.string().required("Please enter "),
-    EnterconfirmationCode: Yup.string()
-    .required("Please enter code")
-    .test(
-      'match',
-      'Confirmation code does not match',
-      function (value) {
-        const storedConfirmationCode = obValues?.confirmationCode;
-        return !storedConfirmationCode || value === storedConfirmationCode;
-      }
-    ),
-    confirmationCode: Yup.string().when("showRecoverSection", {
-      is: true,
-      then: () =>
-      Yup.string() .required("Please enter code")
-    .test(
-      'match',
-      'Confirmation code does not match',
-      function (value) {
-        const storedConfirmationCode = obValues?.confirmationCode;
-        return !storedConfirmationCode || value === storedConfirmationCode;
-      }
-    ),
-  }),
+
+    signedBy: Yup.string().required("Please enter name of the person signing the form"),
+    confirmationCode: Yup.string()
+      .required("Please enter code")
+    // .test(
+    //   'match',
+    //   'Confirmation code does not match',
+    //   function (value) {
+    //     const storedConfirmationCode = obValues?.confirmationCode;
+    //     return !storedConfirmationCode || value === storedConfirmationCode;
+    //   }
+    // ), 
+    ,
     // word: Yup.boolean().when("EnterconfirmationCode", {
     //   is: "no",
     //   then: () => Yup.string().required("Please select owner"),
     // }),
-  date: Yup.date(),
-  isAgreeWithDeclaration: Yup.boolean().oneOf(
-    [true],
-    "Please mark the checkbox"
-  ),
-});
+    date: Yup.date(),
+    isAcceptanceDeclarations: Yup.boolean().oneOf(
+      [true],
+      "Please mark the checkbox"
+    ),
+  });
 };
 
 export const declarationsSchema = () => {
