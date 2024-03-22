@@ -31,8 +31,9 @@ import { useNavigate } from "react-router-dom";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import View_Insructions from "../../viewInstruction";
 import { useLocation } from "react-router-dom";
-import GlobalValues from "../../../Utils/constVals";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 export default function FCTA_Reporting(props: any) {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -363,7 +364,7 @@ export default function FCTA_Reporting(props: any) {
                         marginTop: "80px",
                       }}
                     >
-                      <Button
+                      {/* <Button
                         variant="contained"
                         style={{ color: "white" }}
                         onClick={() => {
@@ -375,7 +376,22 @@ export default function FCTA_Reporting(props: any) {
                         }}
                       >
                         SAVE & EXIT
-                      </Button>
+                      </Button> */}
+                       <SaveAndExit Callback={() => {
+                            submitForm().then((data) => {
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              dispatch(postW9Form(
+                                {
+                                  ...prevStepData,
+                                  stepName: `/${urlValue}`
+                                }
+                                , () => { }))
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          }} formTypeId={FormTypeId.W9} />
                       <Button
                         // type="submit"
                         onClick={() => {
