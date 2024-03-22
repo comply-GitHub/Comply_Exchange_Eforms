@@ -166,7 +166,7 @@ const SecurityCodeRecover = ({ setRecoverPassword, hideBack = false }: any) => {
                                 />
                             </Button>
                             {copying ?
-                                <Alert icon={<Check fontSize="inherit" />} severity="success" sx={{ height: "36px" }}>
+                                <Alert icon={<Check fontSize="inherit" />} severity="success" >
                                     Copied
                                 </Alert> : ""
                             }
