@@ -536,6 +536,32 @@ export const getBENformData = (_id: Number, callback: any = () => { console.log(
     );
   };
 };
+
+export const getExpformData = (_id: Number, callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetByW8EXPIndividualId,
+      `?AccountHolderBasicDetailId=${_id}`,
+      (resData) => {
+        if (resData.status === 200) {
+          if (callback) {
+            callback(resData.data)
+          }
+          dispatch({
+            type: Utils.actionName.GetByW8EXPIndividualId,
+            payload: {
+              GetByW8EXPEntityNonUSFormData: resData.data,
+            },
+          });
+
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
 export const getBENEformData = (_id: Number, callback: any = () => { console.log("") }): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(

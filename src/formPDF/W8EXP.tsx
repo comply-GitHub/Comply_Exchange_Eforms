@@ -4,12 +4,185 @@ import { Button } from "@mui/material";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import useAuth from "../customHooks/useAuth";
+import { getAllCountries, getExpformData } from "../Redux/Actions";
 
 export default function FormW8EXP() {
 
-  const contentRef: any = useRef()
+  const dispatch = useDispatch();
+  const history = useNavigate();
+  const contentRef:any = useRef(null);
+  const { authDetails } = useAuth();
   //  const contentRef = useRef<HTMLDivElement>(null);
   const [pageData, setPageData]: any = useState()
+
+  const getCountriesReducer = useSelector(
+    (state: any) => state.getCountriesReducer
+  );
+  // const contentRef = useRef<HTMLDivElement>(null);
+  const [values, setValues] = useState( {
+    accountHolderBasicDetailId: 0,
+  agentId: 0,
+  formTypeSelectionId: 2,
+  eciUsTinTypeId: 0,
+  eciUsTin: "",
+  streetNumberName: "",
+  aptSuite: "",
+  cityTown: "",
+  stateProvinceId: 0,
+  zipPostalCode: "",
+  chapter3Status: 0,
+  firstName: "",
+  lastName: "",
+  countryOfResidence: null,
+  businessName: "",
+  businessDisgradedEntity: "",
+  countryOfIncorporation: 0,
+  isHybridStatus: 0,
+  descriptionHybridStatus: "",
+  attachSupportingDocument: "",
+  attachSupportingDocumentFile: null,
+  isSubmissionSingleUSOwner: false,
+  isDisRegardedSection1446: false,
+  isExemptionfromBackup: null,
+  interestDividendPaymentId: null,
+  brokerTransactionsId: null,
+  barterExchangeTransactionId: null,
+  paymentOver600RequiredId: null,
+  paymentThirdPartyNetworkId: null,
+  isExemptionFATCAReportings: null,
+  fatcaReportingId: null,
+  usTinTypeId: 0,
+  usTin: "",
+  notAvailable: false,
+  notAvailableReason: "",
+  foreignTINCountry: 0,
+  foreignTIN: "",
+  isFTINLegally: false,
+  isNotAvailable: false,
+  fTinNotAvailableReason: "",
+  alternativeTINFormat: false,
+  isExplanationNotLegallyFTIN: false,
+  itemIncomeType: null,
+  incomeDescription: null,
+  isAppplicationCheck: false,
+  isBeneficialOwnerIncome: false,
+  isAmountCertificationUS: false,
+  isBeneficialOwnerGrossIncome: false,
+  isBeneficialOwnerNotUSPerson: false,
+  isAuthorizeWithHoldingAgent: false,
+  isCapacityForm: false,
+  isTaxpayerIdentificationNumber: null,
+  isIRS: null,
+  isUSCitizen: null,
+  isFATCACode: null,
+  isIRSBackupWithHolding: null,
+  isElectronicForm: false,
+  signedBy: null,
+  confirmationCode: null,
+  date: null,
+  isAcceptanceDeclarations: null,
+  securityWord: null,
+  hint: null,
+  yourConfirmationCode: null,
+  isAgreeWithDeclaration: null,
+  isConsentRecipent: null,
+  isNotConsentRecipent: null,
+  statusId: null,
+  stepName: "",
+} );
+const [lValues,setLValues]=useState({
+agentId: 3,
+businessTypeId: 1,
+selectedEntity: false,
+isUSEntity: false,
+isUSIndividual: false,
+uniqueIdentifier: "",
+firstName: "",
+lastName: "",
+countryOfCitizenshipId: 0,
+dob: "",
+nameOfDisregarded: "",
+entityName: "",
+taxpayerIdTypeID: 0,
+usTin: "",
+foreignTINCountryId: 0,
+foreignTIN: "",
+foreignTINNotAvailable: false,
+alternativeTINFormat: false,
+giin: "",
+permanentResidentialCountryId: "",
+permanentResidentialStreetNumberandName: "",
+permanentResidentialAptSuite: "",
+permanentResidentialCityorTown: "",
+permanentResidentialStateorProvince: "",
+permanentResidentialZipPostalCode: "",
+isAddressRuralRoute: false,
+isAddressPostOfficeBox: false,
+isCareOfAddress: false,
+isalternativebusinessaddress: false,
+permanentResidentialCountryId1: 0,
+permanentResidentialStreetNumberandName1: "",
+permanentResidentialAptSuite1: "",
+permanentResidentialCityorTown1: "",
+permanentResidentialStateorProvince1: "",
+permanentResidentialZipPostalCode1: "",
+contactFirstName: "",
+contactLastName: "",
+contactEmail: "",
+primaryContactNumberId: 0,
+primaryContactNumber: "",
+alternativeNumberId: 0,
+alternativeNumber: "",
+alternativeNumberId1: 0,
+alternativeNumber1: "",
+incomeTypeId: [
+      0
+  ],
+paymentTypeId: 0,
+accountHolderName: "",
+accountBankName: "",
+accountBankBranchLocationId: 0,
+accountNumber: "",
+abaRouting: "",
+iban: "",
+swiftCode: "",
+bankCode: "",
+makePayable: "",
+payResidentalCountryId: 0,
+payStreetNumberAndName: "",
+payAptSuite: "",
+vatId: 0,
+vat: "",
+doingBusinessAsName: "",
+payCityorTown: "",
+payStateOrProvince: "",
+payZipPostalCode: "",
+sortCode: "",
+bsb: "",
+capacityId: 1,
+isCorrectPaymentPurposes: false,
+isConfirmed: false,
+taxpayerIdTypeName: "",
+usTinTypeId: 0,
+permanentresidentialzippostalcode: ""
+})
+  function getFieldValues(arrayOfObjects: any) {
+    setValues(arrayOfObjects.map((obj: any) => obj.fieldValue));
+  }
+
+  useEffect(() => {
+    dispatch(
+      getAllCountries()
+    );
+    setLValues(JSON.parse(localStorage.getItem("agentDetails") || "{}"));
+  }, []);
+
+  useEffect(() => {
+    // (dispatch(getExpformData(authDetails?.agentId,(data:any)=>{setValues(data)})))
+  },[authDetails])
 
   const downloadPDF = async () => {
     const pixelRatio = 3;
@@ -43,6 +216,22 @@ export default function FormW8EXP() {
   
 };
 
+  const getCountries = (countryId: any) => {
+    let countryName = null;
+    for (let i = 0; i < getCountriesReducer?.allCountriesData?.length; i++) {
+        if (getCountriesReducer?.allCountriesData[i].id == countryId) {
+            countryName = getCountriesReducer?.allCountriesData[i].name;
+            break;
+        }
+    }
+    console.log(countryName, "countryName");
+    return countryName;
+}
+
+  const backFunction = () => {
+    // window.location.href = window.location.href;
+    history(-1);
+  };
 
   return (
     <>
