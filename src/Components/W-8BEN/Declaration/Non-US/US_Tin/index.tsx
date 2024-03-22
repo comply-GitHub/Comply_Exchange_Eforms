@@ -18,7 +18,7 @@ import "./index.scss";
 import checksolid from "../../../../../assets/img/check-solid.png";
 import { useNavigate } from "react-router-dom";
 import {
-  W8_state, getTinTypes, getAllCountries, GetHelpVideoDetails, postW8BENForm,
+  W8_state, getTinTypes, getAllCountries, GetHelpVideoDetails, postW8BENForm, LoadExistingFormData,
 } from "../../../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import Accordion from "@mui/material/Accordion";
@@ -68,7 +68,7 @@ export default function Tin(props: any) {
       notAvailable: W8BENData?.notAvailable ? W8BENData?.notAvailable : false,
       notAvailableReason: W8BENData?.notAvailableReason || "",
       foreignTINCountry: obValues.foreignTINCountryId == null || obValues.foreignTINCountryId == ""
-        || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId,
+        || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId.toString(),
       foreignTIN: W8BENData?.foreignTIN !== "" ? W8BENData?.foreignTIN : "",
       isFTINLegally: W8BENData?.isFTINLegally ? W8BENData?.isFTINLegally : false,
       isNotAvailable: W8BENData?.isNotAvailable ? (W8BENData?.isNotAvailable == true && W8BENData?.alternativeTINFormat == false ? "Yes" : "") : "",
@@ -100,7 +100,6 @@ export default function Tin(props: any) {
       setExpanded(isExpanded ? panel : false);
     };
   useEffect(() => {
-    console.log(authDetails,"AUTHDETAILSSSSSSSSSSSSS")
     dispatch(GetHelpVideoDetails());
     dispatch(getAllCountries());
     dispatch(
@@ -713,7 +712,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                         <div className="col-lg-5 col-12">
                           <Typography style={{ fontSize: "14px" }}>
                             Foreign TIN{" "}
-                            {values.foreignTINCountry == 257 ? (
+                            {values.foreignTINCountry == "257" ? (
                               <span>
                                 {" "}
                                 <Tooltip
