@@ -14,7 +14,6 @@ import {
   Input,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
 import { Divider } from "@mui/material";
 import { Info } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -38,6 +37,8 @@ import { GetAgentCountriesImportantForEform } from "../../../../../Redux/Actions
 import moment from "moment";
 import Infoicon from "../../../../../assets/img/info.png";
 import { useLocation } from "react-router-dom";
+import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
+import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 export default function Factors() {
   const location = useLocation();
   const urlValue = location.pathname.substring(1);
@@ -237,6 +238,7 @@ export default function Factors() {
                   handleChange,
                   isSubmitting,
                   setFieldValue,
+                  submitForm,
                 }) => (
                   <Form onSubmit={handleSubmit}>
     <>{console.log("VALUESSS",values)}</>
@@ -2158,9 +2160,24 @@ export default function Factors() {
                         marginTop: "80px",
                       }}
                     >
-                      <Button variant="contained" style={{ color: "white" }}>
+                      {/* <Button variant="contained" style={{ color: "white" }}>
                         SAVE & EXIT
-                      </Button>
+                      </Button> */}
+                      <SaveAndExit Callback={() => {
+                            submitForm().then((data:any) => {
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              dispatch(postW8BENForm(
+                                {
+                                  ...prevStepData,
+                                  stepName: `/${urlValue}`
+                                }
+                                , () => { }))
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err:any) => {
+                              console.log(err);
+                            })
+                          }} formTypeId={FormTypeId.BEN} />
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
