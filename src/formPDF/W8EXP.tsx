@@ -1,6 +1,6 @@
 'use client'
 
-import { Button,Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useEffect, useRef, useState } from "react";
@@ -13,7 +13,7 @@ export default function FormW8EXP() {
 
   const dispatch = useDispatch();
   const history = useNavigate();
-  const contentRef:any = useRef(null);
+  const contentRef: any = useRef(null);
   const { authDetails } = useAuth();
   //  const contentRef = useRef<HTMLDivElement>(null);
   const [pageData, setPageData]: any = useState()
@@ -22,153 +22,153 @@ export default function FormW8EXP() {
     (state: any) => state.getCountriesReducer
   );
   // const contentRef = useRef<HTMLDivElement>(null);
-  const [values, setValues] = useState( {
-  accountHolderBasicDetailId: 0,
-  agentId: 0,
-  formTypeSelectionId: 2,
-  eciUsTinTypeId: 0,
-  eciUsTin: "",
-  streetNumberName: "",
-  aptSuite: "",
-  cityTown: "",
-  stateProvinceId: 0,
-  zipPostalCode: "",
-  chapter3Status: 0,
-  firstName: "",
-  lastName: "",
-  countryOfResidence: null,
-  businessName: "",
-  businessDisgradedEntity: "",
-  countryOfIncorporation: 0,
-  isHybridStatus: 0,
-  descriptionHybridStatus: "",
-  attachSupportingDocument: "",
-  attachSupportingDocumentFile: null,
-  isSubmissionSingleUSOwner: false,
-  isDisRegardedSection1446: false,
-  isExemptionfromBackup: null,
-  interestDividendPaymentId: null,
-  brokerTransactionsId: null,
-  barterExchangeTransactionId: null,
-  paymentOver600RequiredId: null,
-  paymentThirdPartyNetworkId: null,
-  isExemptionFATCAReportings: null,
-  fatcaReportingId: null,
-  usTinTypeId: 0,
-  usTin: "",
-  notAvailable: false,
-  notAvailableReason: "",
-  foreignTINCountry: 0,
-  foreignTIN: "",
-  isFTINLegally: false,
-  isNotAvailable: false,
-  fTinNotAvailableReason: "",
-  alternativeTINFormat: false,
-  isExplanationNotLegallyFTIN: false,
-  itemIncomeType: null,
-  incomeDescription: null,
-  isAppplicationCheck: false,
-  isBeneficialOwnerIncome: false,
-  isAmountCertificationUS: false,
-  isBeneficialOwnerGrossIncome: false,
-  isBeneficialOwnerNotUSPerson: false,
-  isAuthorizeWithHoldingAgent: false,
-  isCapacityForm: false,
-  isTaxpayerIdentificationNumber: null,
-  isIRS: null,
-  isUSCitizen: null,
-  isFATCACode: null,
-  isIRSBackupWithHolding: null,
-  isElectronicForm: false,
-  signedBy: null,
-  confirmationCode: null,
-  date: null,
-  isAcceptanceDeclarations: null,
-  securityWord: null,
-  hint: null,
-  yourConfirmationCode: null,
-  isAgreeWithDeclaration: null,
-  isConsentRecipent: null,
-  isNotConsentRecipent: null,
-  statusId: null,
-  stepName: "",
-} );
-const [lValues,setLValues]=useState({
-agentId: 3,
-businessTypeId: 1,
-selectedEntity: false,
-isUSEntity: false,
-isUSIndividual: false,
-uniqueIdentifier: "",
-firstName: "",
-lastName: "",
-countryOfCitizenshipId: 0,
-dob: "",
-nameOfDisregarded: "",
-entityName: "",
-taxpayerIdTypeID: 0,
-usTin: "",
-foreignTINCountryId: 0,
-foreignTIN: "",
-foreignTINNotAvailable: false,
-alternativeTINFormat: false,
-giin: "",
-permanentResidentialCountryId: "",
-permanentResidentialStreetNumberandName: "",
-permanentResidentialAptSuite: "",
-permanentResidentialCityorTown: "",
-permanentResidentialStateorProvince: "",
-permanentResidentialZipPostalCode: "",
-isAddressRuralRoute: false,
-isAddressPostOfficeBox: false,
-isCareOfAddress: false,
-isalternativebusinessaddress: false,
-permanentResidentialCountryId1: 0,
-permanentResidentialStreetNumberandName1: "",
-permanentResidentialAptSuite1: "",
-permanentResidentialCityorTown1: "",
-permanentResidentialStateorProvince1: "",
-permanentResidentialZipPostalCode1: "",
-contactFirstName: "",
-contactLastName: "",
-contactEmail: "",
-primaryContactNumberId: 0,
-primaryContactNumber: "",
-alternativeNumberId: 0,
-alternativeNumber: "",
-alternativeNumberId1: 0,
-alternativeNumber1: "",
-incomeTypeId: [
+  const [values, setValues] = useState({
+    accountHolderBasicDetailId: 0,
+    agentId: 0,
+    formTypeSelectionId: 2,
+    eciUsTinTypeId: 0,
+    eciUsTin: "",
+    streetNumberName: "",
+    aptSuite: "",
+    cityTown: "",
+    stateProvinceId: 0,
+    zipPostalCode: "",
+    chapter3Status: 0,
+    firstName: "",
+    lastName: "",
+    countryOfResidence: null,
+    businessName: "",
+    businessDisgradedEntity: "",
+    countryOfIncorporation: 0,
+    isHybridStatus: 0,
+    descriptionHybridStatus: "",
+    attachSupportingDocument: "",
+    attachSupportingDocumentFile: null,
+    isSubmissionSingleUSOwner: false,
+    isDisRegardedSection1446: false,
+    isExemptionfromBackup: null,
+    interestDividendPaymentId: null,
+    brokerTransactionsId: null,
+    barterExchangeTransactionId: null,
+    paymentOver600RequiredId: null,
+    paymentThirdPartyNetworkId: null,
+    isExemptionFATCAReportings: null,
+    fatcaReportingId: null,
+    usTinTypeId: 0,
+    usTin: "",
+    notAvailable: false,
+    notAvailableReason: "",
+    foreignTINCountry: 0,
+    foreignTIN: "",
+    isFTINLegally: false,
+    isNotAvailable: false,
+    fTinNotAvailableReason: "",
+    alternativeTINFormat: false,
+    isExplanationNotLegallyFTIN: false,
+    itemIncomeType: null,
+    incomeDescription: null,
+    isAppplicationCheck: false,
+    isBeneficialOwnerIncome: false,
+    isAmountCertificationUS: false,
+    isBeneficialOwnerGrossIncome: false,
+    isBeneficialOwnerNotUSPerson: false,
+    isAuthorizeWithHoldingAgent: false,
+    isCapacityForm: false,
+    isTaxpayerIdentificationNumber: null,
+    isIRS: null,
+    isUSCitizen: null,
+    isFATCACode: null,
+    isIRSBackupWithHolding: null,
+    isElectronicForm: false,
+    signedBy: null,
+    confirmationCode: null,
+    date: null,
+    isAcceptanceDeclarations: null,
+    securityWord: null,
+    hint: null,
+    yourConfirmationCode: null,
+    isAgreeWithDeclaration: null,
+    isConsentRecipent: null,
+    isNotConsentRecipent: null,
+    statusId: null,
+    stepName: "",
+  });
+  const [lValues, setLValues] = useState({
+    agentId: 3,
+    businessTypeId: 1,
+    selectedEntity: false,
+    isUSEntity: false,
+    isUSIndividual: false,
+    uniqueIdentifier: "",
+    firstName: "",
+    lastName: "",
+    countryOfCitizenshipId: 0,
+    dob: "",
+    nameOfDisregarded: "",
+    entityName: "",
+    taxpayerIdTypeID: 0,
+    usTin: "",
+    foreignTINCountryId: 0,
+    foreignTIN: "",
+    foreignTINNotAvailable: false,
+    alternativeTINFormat: false,
+    giin: "",
+    permanentResidentialCountryId: "",
+    permanentResidentialStreetNumberandName: "",
+    permanentResidentialAptSuite: "",
+    permanentResidentialCityorTown: "",
+    permanentResidentialStateorProvince: "",
+    permanentResidentialZipPostalCode: "",
+    isAddressRuralRoute: false,
+    isAddressPostOfficeBox: false,
+    isCareOfAddress: false,
+    isalternativebusinessaddress: false,
+    permanentResidentialCountryId1: 0,
+    permanentResidentialStreetNumberandName1: "",
+    permanentResidentialAptSuite1: "",
+    permanentResidentialCityorTown1: "",
+    permanentResidentialStateorProvince1: "",
+    permanentResidentialZipPostalCode1: "",
+    contactFirstName: "",
+    contactLastName: "",
+    contactEmail: "",
+    primaryContactNumberId: 0,
+    primaryContactNumber: "",
+    alternativeNumberId: 0,
+    alternativeNumber: "",
+    alternativeNumberId1: 0,
+    alternativeNumber1: "",
+    incomeTypeId: [
       0
-  ],
-paymentTypeId: 0,
-accountHolderName: "",
-accountBankName: "",
-accountBankBranchLocationId: 0,
-accountNumber: "",
-abaRouting: "",
-iban: "",
-swiftCode: "",
-bankCode: "",
-makePayable: "",
-payResidentalCountryId: 0,
-payStreetNumberAndName: "",
-payAptSuite: "",
-vatId: 0,
-vat: "",
-doingBusinessAsName: "",
-payCityorTown: "",
-payStateOrProvince: "",
-payZipPostalCode: "",
-sortCode: "",
-bsb: "",
-capacityId: 1,
-isCorrectPaymentPurposes: false,
-isConfirmed: false,
-taxpayerIdTypeName: "",
-usTinTypeId: 0,
-permanentresidentialzippostalcode: ""
-})
+    ],
+    paymentTypeId: 0,
+    accountHolderName: "",
+    accountBankName: "",
+    accountBankBranchLocationId: 0,
+    accountNumber: "",
+    abaRouting: "",
+    iban: "",
+    swiftCode: "",
+    bankCode: "",
+    makePayable: "",
+    payResidentalCountryId: 0,
+    payStreetNumberAndName: "",
+    payAptSuite: "",
+    vatId: 0,
+    vat: "",
+    doingBusinessAsName: "",
+    payCityorTown: "",
+    payStateOrProvince: "",
+    payZipPostalCode: "",
+    sortCode: "",
+    bsb: "",
+    capacityId: 1,
+    isCorrectPaymentPurposes: false,
+    isConfirmed: false,
+    taxpayerIdTypeName: "",
+    usTinTypeId: 0,
+    permanentresidentialzippostalcode: ""
+  })
   function getFieldValues(arrayOfObjects: any) {
     setValues(arrayOfObjects.map((obj: any) => obj.fieldValue));
   }
@@ -181,8 +181,8 @@ permanentresidentialzippostalcode: ""
   }, []);
 
   useEffect(() => {
-    (dispatch(getExpformData(authDetails?.agentId,(data:any)=>{setValues(data)})))
-  },[authDetails])
+    (dispatch(getExpformData(authDetails?.agentId, (data: any) => { setValues(data) })))
+  }, [authDetails])
 
   const downloadPDF = async () => {
     const pixelRatio = 3;
@@ -213,20 +213,20 @@ permanentresidentialzippostalcode: ""
     }
 
     doc.save("Download.pdf");
-  
-};
+
+  };
 
   const getCountries = (countryId: any) => {
     let countryName = null;
     for (let i = 0; i < getCountriesReducer?.allCountriesData?.length; i++) {
-        if (getCountriesReducer?.allCountriesData[i].id == countryId) {
-            countryName = getCountriesReducer?.allCountriesData[i].name;
-            break;
-        }
+      if (getCountriesReducer?.allCountriesData[i].id == countryId) {
+        countryName = getCountriesReducer?.allCountriesData[i].name;
+        break;
+      }
     }
     console.log(countryName, "countryName");
     return countryName;
-}
+  }
 
   const backFunction = () => {
     // window.location.href = window.location.href;
@@ -235,7 +235,7 @@ permanentresidentialzippostalcode: ""
 
   return (
     <>
-         <section ref={contentRef} style={{fontSize:"12px"}}>
+      <section ref={contentRef} style={{ fontSize: "12px" }}>
         <div
           style={{
             padding: "0",
@@ -290,13 +290,13 @@ permanentresidentialzippostalcode: ""
                     }}
                   >
                     <h1 style={{ fontSize: "13.5px", fontWeight: "700" }}>
-                      CCertificate of Foreign Government or Other Foreign 
-                       <br></br> Organization for United States Tax 
+                      CCertificate of Foreign Government or Other Foreign
+                      <br></br> Organization for United States Tax
                       <br></br>  Withholding and Reporting
                     </h1>
                     <h3 style={{ fontSize: "12px", fontWeight: "700" }}>
-                    (For use by foreign governments, international organizations, foreign central banks of issue, foreign 
-tax-exempt organizations, foreign private foundations, and governments of U.S. possessions.)
+                      (For use by foreign governments, international organizations, foreign central banks of issue, foreign
+                      tax-exempt organizations, foreign private foundations, and governments of U.S. possessions.)
                     </h3>
                     <ul
                       style={{
@@ -311,7 +311,7 @@ tax-exempt organizations, foreign private foundations, and governments of U.S. p
                         Code.
                       </li>
                       <li>
-                        &#9658; Section references are to the Internal Revenue Code. 
+                        &#9658; Section references are to the Internal Revenue Code.
                       </li>
                       <li>
                         &#9658; Give this form to the withholding agent or payer. Do not send to the IRS.
@@ -374,7 +374,7 @@ tax-exempt organizations, foreign private foundations, and governments of U.S. p
                 margin: "10px auto",
               }}
             >
-              <tbody style={{alignItems:"justify"}}>
+              <tbody style={{ alignItems: "justify" }}>
                 <tr>
                   <td
                     style={{
@@ -404,31 +404,31 @@ tax-exempt organizations, foreign private foundations, and governments of U.S. p
                         marginTop: "15px",
                       }}
                     >
-       
+
                       <li style={{ marginBottom: "6px" }}>
-                      A foreign government or other foreign organization that is not claiming the applicability of section(s) 115(2), 501(c), 892, 895,
-                      <br></br>or 1443(b)
-                
+                        A foreign government or other foreign organization that is not claiming the applicability of section(s) 115(2), 501(c), 892, 895,
+                        <br></br>or 1443(b)
+
                         . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
                         . . . . . . . . . . . . . . . . .
                         . . . . . . . . . . . . . . . . .
-                        . . . . . . . . . . . . . . . . . 
-                        . . . . . . . . . . . . . . . . . . . . 
+                        . . . . . . . . . . . . . . . . .
+                        . . . . . . . . . . . . . . . . . . . .
                         . . . . . . . . . . . .  .. W-8BEN or W-8BEN-E
                       </li>
                       <li style={{ marginBottom: "6px" }}>
-                      A beneficial owner solely claiming foreign status or treaty benefits . . . . . .  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W-8BEN-E or W-8IMY
+                        A beneficial owner solely claiming foreign status or treaty benefits . . . . . .  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W-8BEN-E or W-8IMY
                       </li>
                       <li style={{ marginBottom: "6px" }}>
-                      A foreign partnership or a foreign trust . . . . . . . . . . . . . .  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W-8BEN-E or W-8IMY
+                        A foreign partnership or a foreign trust . . . . . . . . . . . . . .  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W-8BEN-E or W-8IMY
                       </li>
                       <li style={{ marginBottom: "6px" }}>
-                      A person claiming that income is effectively connected with the conduct of a trade or business in the United States   . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+                        A person claiming that income is effectively connected with the conduct of a trade or business in the United States   . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
                         . . . . . . W-8ECI
                       </li>
                       <li style={{ marginBottom: "6px" }}>
-                      A person acting as an intermediary 
-                      . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W-8IMY
+                        A person acting as an intermediary
+                        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W-8IMY
                       </li>
                     </ul>
                   </td>
@@ -468,10 +468,10 @@ tax-exempt organizations, foreign private foundations, and governments of U.S. p
                         display: "flex",
                       }}
                     >
-                      <p style={{ margin: "auto",fontSize:"18px"  }}>Part I</p>
+                      <p style={{ margin: "auto", fontSize: "18px" }}>Part I</p>
                     </div>{" "}
                   </td>
-                  <td style={{ padding: "0px 10px", fontWeight: "900",fontSize:"18px"  }}>
+                  <td style={{ padding: "0px 10px", fontWeight: "900", fontSize: "18px" }}>
                     {" "}
                     <strong>Identification of Beneficial Owner</strong>
                   </td>
@@ -508,7 +508,7 @@ tax-exempt organizations, foreign private foundations, and governments of U.S. p
                         1
                       </div>
                       <div style={{ float: "left" }}>
-                      Name of organization
+                        Name of organization
                       </div>
                     </div>
                     <p
@@ -542,7 +542,7 @@ tax-exempt organizations, foreign private foundations, and governments of U.S. p
                         2
                       </div>
                       <div style={{ float: "left" }}>
-                      Country of incorporation or organization
+                        Country of incorporation or organization
                       </div>
                     </div>
                     <p
@@ -566,79 +566,79 @@ tax-exempt organizations, foreign private foundations, and governments of U.S. p
                       padding: "0px 10px",
                     }}
                   >
-                    <div style={{display:"flex"}}>
-                    <div style={{  display: "flex" }}>
+                    <div style={{ display: "flex" }}>
+                      <div style={{ display: "flex" }}>
+                        <div
+                          style={{
+                            float: "left",
+                            paddingRight: "10px",
+                            width: "20px",
+                          }}
+                        >
+                          3
+                        </div>
+                        <div style={{ float: "left", width: "48px", borderRight: "1px solid #000000" }}>
+                          Type of entity
+                        </div>
+                      </div>
                       <div
                         style={{
-                          float: "left",
-                          paddingRight: "10px",
-                          width: "20px",
+                          width: "calc(100% - 15px)",
+                          display: "table",
+                          marginTop: "10px",
+                          fontSize: "14px",
+                          lineHeight: "1.3",
                         }}
                       >
-                        3
+                        <ul
+                          style={{
+                            width: "100%",
+                            display: "flex",
+                            flexFlow: "row wrap",
+                            gap: "6px 0",
+                            listStyle: "none",
+                          }}
+                        >
+                          <li style={{ width: "50%", display: "flex" }}>
+                            <div>
+                              <input type="checkbox" name="" id="" />
+                            </div> &nbsp; Foreign government
+                          </li>
+                          <li style={{ width: "50%", display: "flex" }}>
+                            <div>
+                              <input type="checkbox" name="" id="" />
+                            </div>&nbsp;
+                            Foreign tax-exempt organization
+                          </li>
+                          <li style={{ width: "50%", display: "flex" }}>
+                            <div>
+                              <input type="checkbox" name="" id="" />
+                            </div>&nbsp;
+                            International organization
+                          </li>
+                          <li style={{ width: "50%", display: "flex" }}>
+                            <div>
+                              <input type="checkbox" name="" id="" />
+                            </div> &nbsp;
+                            Foreign private foundation
+                          </li>
+                          <li style={{ width: "50%", display: "flex" }}>
+                            <div>
+                              <input type="checkbox" name="" id="" />
+                            </div>
+                            &nbsp;
+                            Foreign central bank of issue (not wholly
+                            owned by the foreign sovereign)
+                          </li>
+                          <li style={{ width: "50%", display: "flex" }}>
+                            <div>
+                              <input type="checkbox" name="" id="" />
+                            </div>
+                            &nbsp;
+                            Government of a U.S. possession
+                          </li>
+                        </ul>
                       </div>
-                      <div style={{ float: "left",width:"48px",borderRight:"1px solid #000000" }}>
-                        Type of entity
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        width: "calc(100% - 15px)",
-                        display: "table",
-                        marginTop: "10px",
-                        fontSize: "14px",
-                        lineHeight: "1.3",
-                      }}
-                    >
-                      <ul
-                        style={{
-                          width: "100%",
-                          display: "flex",
-                          flexFlow: "row wrap",
-                          gap: "6px 0",
-                          listStyle: "none",
-                        }}
-                      >
-                        <li style={{ width: "50%", display: "flex" }}>
-                        <div>
-                            <input type="checkbox" name="" id="" /> 
-                          </div> &nbsp; Foreign government
-                        </li>
-                        <li style={{ width: "50%", display: "flex" }}>
-                        <div>
-                            <input type="checkbox" name="" id="" /> 
-                          </div>&nbsp;
-                          Foreign tax-exempt organization
-                        </li>
-                        <li style={{ width: "50%", display: "flex" }}>
-                        <div>
-                            <input type="checkbox" name="" id="" /> 
-                          </div>&nbsp;
-                          International organization
-                        </li>
-                        <li style={{ width: "50%", display: "flex" }}>
-                        <div>
-                            <input type="checkbox" name="" id="" /> 
-                          </div> &nbsp;
-                          Foreign private foundation
-                        </li>
-                        <li style={{ width: "50%", display: "flex" }}>
-                          <div>
-                            <input type="checkbox" name="" id="" /> 
-                          </div>
-                          &nbsp;
-                          Foreign central bank of issue (not wholly 
-owned by the foreign sovereign)
-                        </li>
-                        <li style={{ width: "50%", display: "flex" }}>
-                        <div>
-                            <input type="checkbox" name="" id="" /> 
-                          </div>
-                           &nbsp;
-                          Government of a U.S. possession
-                        </li>
-                      </ul>
-                    </div>
                     </div>
                   </td>
                 </tr>
@@ -661,7 +661,7 @@ owned by the foreign sovereign)
                         4
                       </div>
                       <div style={{ float: "left" }}>
-                      Chapter 4 Status (FATCA status):
+                        Chapter 4 Status (FATCA status):
                       </div>
                     </div>
                     <div
@@ -677,112 +677,112 @@ owned by the foreign sovereign)
                         style={{
                           width: "50%",
                           listStyle: "none",
-                          paddingLeft:"22px",
-                          gap:"6px 0",
-                          display:"flex",
-                          flexDirection:"column",
+                          paddingLeft: "22px",
+                          gap: "6px 0",
+                          display: "flex",
+                          flexDirection: "column",
                         }}
                       >
-                         <li style={{ width: "100%", display: "flex" }}>
+                        <li style={{ width: "100%", display: "flex" }}>
                           <div>
-                            <input type="checkbox" name="" id="" /> 
+                            <input type="checkbox" name="" id="" />
                           </div>
                           &nbsp;
                           Participating FFI.
                         </li>
                         <li style={{ width: "100%", display: "flex" }}>
                           <div>
-                            <input type="checkbox" name="" id="" /> 
+                            <input type="checkbox" name="" id="" />
                           </div>
                           &nbsp;
                           Reporting Model 1 FFI.
                         </li>
                         <li style={{ width: "100%", display: "flex" }}>
                           <div>
-                            <input type="checkbox" checked name="" id="" /> 
+                            <input type="checkbox" checked name="" id="" />
                           </div>
                           &nbsp;
                           Reporting Model 2 FFI.
                         </li>
                         <li style={{ width: "100%", display: "flex" }}>
                           <div>
-                            <input type="checkbox" checked name="" id="" /> 
+                            <input type="checkbox" checked name="" id="" />
                           </div>
                           &nbsp;
                           Registered deemed-compliant FFI (other than a Reporting Model 1 FFI).
                         </li>
                         <li style={{ width: "100%", display: "flex" }}>
                           <div>
-                            <input type="checkbox" checked name="" id="" /> 
+                            <input type="checkbox" checked name="" id="" />
                           </div>
                           &nbsp;
                           Nonreporting IGA FFI. Complete Part III.
                         </li>
                         <li style={{ width: "100%", display: "flex" }}>
                           <div>
-                            <input type="checkbox" checked name="" id="" /> 
+                            <input type="checkbox" checked name="" id="" />
                           </div>
                           &nbsp;
                           Territory financial institution. Complete Part III.
                         </li>
                         <li style={{ width: "100%", display: "flex" }}>
                           <div>
-                            <input type="checkbox" checked name="" id="" /> 
+                            <input type="checkbox" checked name="" id="" />
                           </div>
                           &nbsp;
                           International organization.
                         </li>
                       </ul>
-                      <ul    
-                          style={{
+                      <ul
+                        style={{
                           width: "50%",
                           listStyle: "none",
-                          paddingLeft:"18px",
-                          gap:"6px 0",
-                          display:"flex",
-                          flexDirection:"column",
+                          paddingLeft: "18px",
+                          gap: "6px 0",
+                          display: "flex",
+                          flexDirection: "column",
 
                         }}>
-                                <li style={{ width: "100%", display: "flex" }}>
+                        <li style={{ width: "100%", display: "flex" }}>
                           <div>
-                            <input type="checkbox" name="" id="" /> 
+                            <input type="checkbox" name="" id="" />
                           </div>
                           &nbsp;
-                          Foreign government (including a political subdivision), 
-                          government of a U.S. possession, or foreign central bank of 
+                          Foreign government (including a political subdivision),
+                          government of a U.S. possession, or foreign central bank of
                           issue. Complete Part III.
                         </li>
                         <li style={{ width: "100%", display: "flex" }}>
                           <div>
-                            <input type="checkbox" name="" id="" /> 
+                            <input type="checkbox" name="" id="" />
                           </div>
                           &nbsp;
                           Exempt retirement plan of foreign government. Complete Part III.
                         </li>
                         <li style={{ width: "100%", display: "flex" }}>
                           <div>
-                            <input type="checkbox" checked name="" id="" /> 
+                            <input type="checkbox" checked name="" id="" />
                           </div>
                           &nbsp;
                           501(c) organization. Complete Part III.
                         </li>
                         <li style={{ width: "100%", display: "flex" }}>
                           <div>
-                            <input type="checkbox" checked name="" id="" /> 
+                            <input type="checkbox" checked name="" id="" />
                           </div>
                           &nbsp;
                           Passive NFFE. Complete Part III.
                         </li>
                         <li style={{ width: "100%", display: "flex" }}>
                           <div>
-                            <input type="checkbox" checked name="" id="" /> 
+                            <input type="checkbox" checked name="" id="" />
                           </div>
                           &nbsp;
                           Direct reporting NFFE.
                         </li>
                         <li style={{ width: "100%", display: "flex" }}>
                           <div>
-                            <input type="checkbox" checked name="" id="" /> 
+                            <input type="checkbox" checked name="" id="" />
                           </div>
                           &nbsp;
                           Sponsored direct reporting NFFE. Complete Part III.
@@ -791,7 +791,7 @@ owned by the foreign sovereign)
                     </div>
                   </td>
                 </tr>
-                
+
                 <tr>
                   <td
                     colSpan={2}
@@ -857,7 +857,7 @@ owned by the foreign sovereign)
                                 lineHeight: "1.4",
                               }}
                             >
-                             {lValues.permanentResidentialCityorTown} {" "} {lValues.permanentResidentialZipPostalCode}
+                              {lValues.permanentResidentialCityorTown} {" "} {lValues.permanentResidentialZipPostalCode}
                             </p>
                           </td>
                           <td
@@ -896,7 +896,7 @@ owned by the foreign sovereign)
                     <div style={{ width: "100%", display: "flex" }}>
                       <div style={{ paddingRight: "10px" }}>6</div>
                       <div>
-                      Mailing address (if different from above).
+                        Mailing address (if different from above).
                       </div>
                     </div>
                     <p
@@ -918,62 +918,62 @@ owned by the foreign sovereign)
                       padding: "0px 10px",
                     }}
                   >
-                    <div style={{display:"flex"}}>
-                      <div style={{ width: "33%", display: "flex",borderRight:"1px solid" }}>
+                    <div style={{ display: "flex" }}>
+                      <div style={{ width: "33%", display: "flex", borderRight: "1px solid" }}>
                         <div style={{ paddingRight: "10px" }}>7</div>
                         <div>
-                        <div>
-                        U.S. TIN, if required (see instructions)
-                        </div>
-                        <p
-                              style={{
-                                color: "rgb(5, 5, 129)",
-                                width: "100%",
-                                margin: "6px 0 0",
-                                lineHeight: "1.4",
-                              }}
-                            >
-                              {" "}
-                              QIEIN: 11-1111111
-                            </p>
+                          <div>
+                            U.S. TIN, if required (see instructions)
+                          </div>
+                          <p
+                            style={{
+                              color: "rgb(5, 5, 129)",
+                              width: "100%",
+                              margin: "6px 0 0",
+                              lineHeight: "1.4",
+                            }}
+                          >
+                            {" "}
+                            QIEIN: 11-1111111
+                          </p>
                         </div>
                       </div>
-                      <div style={{ width: "33%", display: "flex",borderRight:"1px solid" }}>
-                        <div style={{ paddingRight: "10px",paddingLeft: "10px" }}>8a</div>
+                      <div style={{ width: "33%", display: "flex", borderRight: "1px solid" }}>
+                        <div style={{ paddingRight: "10px", paddingLeft: "10px" }}>8a</div>
                         <div>
-                        <div>
-                        GIIN
-                        </div>
-                        <p
-                              style={{
-                                color: "rgb(5, 5, 129)",
-                                width: "100%",
-                                margin: "6px 0 0",
-                                lineHeight: "1.4",
-                              }}
-                            >
-                              {" "}
-                              
-                            </p>
+                          <div>
+                            GIIN
+                          </div>
+                          <p
+                            style={{
+                              color: "rgb(5, 5, 129)",
+                              width: "100%",
+                              margin: "6px 0 0",
+                              lineHeight: "1.4",
+                            }}
+                          >
+                            {" "}
+
+                          </p>
                         </div>
                       </div>
                       <div style={{ width: "33%", display: "flex" }}>
-                        <div style={{ paddingRight: "10px",paddingLeft: "10px" }}>b</div>
+                        <div style={{ paddingRight: "10px", paddingLeft: "10px" }}>b</div>
                         <div>
-                        <div>
-                        Foreign TIN (see instructions) <span style={{color: "#050581 !important",}}>&#x2713;</span>
-                        </div>
-                        <p
-                              style={{
-                                color: "rgb(5, 5, 129)",
-                                width: "100%",
-                                margin: "6px 0 0",
-                                lineHeight: "1.4",
-                              }}
-                            >
-                              {" "}
-                              {values.foreignTIN}
-                            </p>
+                          <div>
+                            Foreign TIN (see instructions) <span style={{ color: "#050581 !important", }}>&#x2713;</span>
+                          </div>
+                          <p
+                            style={{
+                              color: "rgb(5, 5, 129)",
+                              width: "100%",
+                              margin: "6px 0 0",
+                              lineHeight: "1.4",
+                            }}
+                          >
+                            {" "}
+                            {values.foreignTIN}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -990,7 +990,7 @@ owned by the foreign sovereign)
                     <div style={{ width: "100%", display: "flex" }}>
                       <div style={{ paddingRight: "10px" }}>9</div>
                       <div>
-                      Reference number(s) (see instructions)
+                        Reference number(s) (see instructions)
                       </div>
                     </div>
                     <p
@@ -1054,10 +1054,10 @@ owned by the foreign sovereign)
                         display: "flex",
                       }}
                     >
-                      <p style={{ margin: "auto",fontSize:"18px" }}>Part II</p>
+                      <p style={{ margin: "auto", fontSize: "18px" }}>Part II</p>
                     </div>{" "}
                   </td>
-                  <td style={{ padding: "0px 10px", fontWeight: "900",fontSize:"18px"  }}>
+                  <td style={{ padding: "0px 10px", fontWeight: "900", fontSize: "18px" }}>
                     {" "}
                     <strong>Qualification Statement for Chapter 3 Status</strong>
                   </td>
@@ -1077,18 +1077,18 @@ owned by the foreign sovereign)
               <tbody>
 
                 <tr>
-                  <td style={{ width: "30.72px",fontWeight:"bolder" }}>10</td>
-                  <td style={{ padding: "10px 0", fontWeight:"bolder" }}>
-               
-                  For a foreign government:
+                  <td style={{ width: "30.72px", fontWeight: "bolder" }}>10</td>
+                  <td style={{ padding: "10px 0", fontWeight: "bolder" }}>
+
+                    For a foreign government:
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",textAlign:"center",display:"flex" }}>
-                    <div style={{margin:"9px auto auto auto"}}>
+                  <td style={{ width: "30.72px", textAlign: "center", display: "flex" }}>
+                    <div style={{ margin: "9px auto auto auto" }}>
                       a
                     </div>
-                    </td>
+                  </td>
                   <td style={{ padding: "10px 0" }}>
                     <input
                       type="checkbox"
@@ -1100,23 +1100,23 @@ owned by the foreign sovereign)
                         marginRight: "10px",
                       }}
                     />{" "}
-                   I certify that the entity identified in Part I is a foreign government within the meaning of section 892 and the payments are within the scope of the exemption granted by section 892.
+                    I certify that the entity identified in Part I is a foreign government within the meaning of section 892 and the payments are within the scope of the exemption granted by section 892.
                   </td>
                 </tr>
                 <tr>
-                <td style={{ width: "30.72px" }}></td>
-                  <td style={{ fontSize: "14px", fontWeight: "600",padding: "10px 0"  }}>
+                  <td style={{ width: "30.72px" }}></td>
+                  <td style={{ fontSize: "14px", fontWeight: "600", padding: "10px 0" }}>
                     Check box 10b or box 10c, whichever applies.
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",textAlign:"center",display:"flex" }}>
-                    <div style={{margin:"9px auto auto auto"}}>
+                  <td style={{ width: "30.72px", textAlign: "center", display: "flex" }}>
+                    <div style={{ margin: "9px auto auto auto" }}>
                       b
                     </div>
-                    </td>
+                  </td>
                   <td style={{ padding: "10px 0" }}>
-                    <div style={{display:"flex"}}>              
+                    <div style={{ display: "flex" }}>
                       <input
                         type="checkbox"
                         name=""
@@ -1127,11 +1127,11 @@ owned by the foreign sovereign)
                           marginRight: "10px",
                         }}
                       />{" "}
-                      <div style={{display:"flex"}}>
+                      <div style={{ display: "flex" }}>
                         <div>
-                        The entity identified in Part I is an integral part of the government of
+                          The entity identified in Part I is an integral part of the government of
                         </div>
-                        <div style={{width:"495px", borderBottom:"1px solid", marginLeft:"5px"}}>
+                        <div style={{ width: "495px", borderBottom: "1px solid", marginLeft: "5px" }}>
 
                         </div>.
                       </div>
@@ -1139,13 +1139,13 @@ owned by the foreign sovereign)
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",textAlign:"center",display:"flex" }}>
-                    <div style={{margin:"9px auto auto auto"}}>
+                  <td style={{ width: "30.72px", textAlign: "center", display: "flex" }}>
+                    <div style={{ margin: "9px auto auto auto" }}>
                       c
                     </div>
-                    </td>
+                  </td>
                   <td style={{ padding: "10px 0" }}>
-                    <div style={{display:"flex"}}>              
+                    <div style={{ display: "flex" }}>
                       <input
                         type="checkbox"
                         name=""
@@ -1156,11 +1156,11 @@ owned by the foreign sovereign)
                           marginRight: "10px",
                         }}
                       />{" "}
-                      <div style={{display:"flex"}}>
+                      <div style={{ display: "flex" }}>
                         <div>
                           The entity identified in Part I is a controlled entity of the government of
                         </div>
-                        <div style={{width:"480px", borderBottom:"1px solid", marginLeft:"5px"}}>
+                        <div style={{ width: "480px", borderBottom: "1px solid", marginLeft: "5px" }}>
 
                         </div>.
                       </div>
@@ -1169,10 +1169,10 @@ owned by the foreign sovereign)
                 </tr>
 
                 <tr>
-                  <td style={{ width: "30.72px",fontWeight:"bolder" }}>11</td>
-                  <td style={{ padding: "10px 0", fontWeight:"bolder" }}>
-               
-                  For a foreign government:
+                  <td style={{ width: "30.72px", fontWeight: "bolder" }}>11</td>
+                  <td style={{ padding: "10px 0", fontWeight: "bolder" }}>
+
+                    For a foreign government:
                   </td>
                 </tr>
 
@@ -1203,7 +1203,7 @@ owned by the foreign sovereign)
                     />
                     <div style={{ padding: "0px" }}>
                       <label style={{ padding: "0px", margin: "0px" }}>
-                      I certify that:
+                        I certify that:
                       </label>
                       <p style={{ padding: "0px", margin: "0px" }}>
                         <ul
@@ -1215,10 +1215,10 @@ owned by the foreign sovereign)
                           }}
                         >
                           <li>
-                          The entity identified in Part I is an international organization within the meaning of section 7701(a)(18), <strong>and</strong>
+                            The entity identified in Part I is an international organization within the meaning of section 7701(a)(18), <strong>and</strong>
                           </li>
                           <li>
-                          The payments are within the scope of the exemption granted by section 892.
+                            The payments are within the scope of the exemption granted by section 892.
                           </li>
                         </ul>
                       </p>
@@ -1226,11 +1226,11 @@ owned by the foreign sovereign)
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",fontWeight:"bolder" }}>12</td>
-                  <td style={{ padding: "10px 0", fontWeight:"bolder" }}>
-               
-                  For a foreign central bank of issue (not wholly owned by the foreign sovereign):
-                </td>
+                  <td style={{ width: "30.72px", fontWeight: "bolder" }}>12</td>
+                  <td style={{ padding: "10px 0", fontWeight: "bolder" }}>
+
+                    For a foreign central bank of issue (not wholly owned by the foreign sovereign):
+                  </td>
                 </tr>
                 <tr>
                   <td
@@ -1259,7 +1259,7 @@ owned by the foreign sovereign)
                     />
                     <div style={{ padding: "0px" }}>
                       <label style={{ padding: "0px", margin: "0px" }}>
-                      I certify that:
+                        I certify that:
                       </label>
                       <p style={{ padding: "0px", margin: "0px" }}>
                         <ul
@@ -1271,13 +1271,13 @@ owned by the foreign sovereign)
                           }}
                         >
                           <li>
-                          The entity identified in Part I is a foreign central bank of issue,
+                            The entity identified in Part I is a foreign central bank of issue,
                           </li>
                           <li>
-                          The entity identified in Part I does not hold obligations or bank deposits to which this form relates for use in connection with the conduct of a commercial banking function or other commercial activity, <strong>and</strong>
+                            The entity identified in Part I does not hold obligations or bank deposits to which this form relates for use in connection with the conduct of a commercial banking function or other commercial activity, <strong>and</strong>
                           </li>
                           <li>
-                          The payments are within the scope of the exemption granted by section 895.
+                            The payments are within the scope of the exemption granted by section 895.
                           </li>
                         </ul>
                       </p>
@@ -1286,11 +1286,11 @@ owned by the foreign sovereign)
                 </tr>
 
                 <tr>
-                  <td style={{ width: "30.72px",fontWeight:"bolder" }}>13</td>
-                  <td style={{ padding: "10px 0", fontWeight:"bolder" }}>
-               
-                  For a foreign tax-exempt organization, including foreign private foundations:
-                </td>
+                  <td style={{ width: "30.72px", fontWeight: "bolder" }}>13</td>
+                  <td style={{ padding: "10px 0", fontWeight: "bolder" }}>
+
+                    For a foreign tax-exempt organization, including foreign private foundations:
+                  </td>
                 </tr>
                 <tr>
                   <td
@@ -1315,30 +1315,30 @@ owned by the foreign sovereign)
                         border: "1px solid #000",
                         marginRight: "10px",
                         marginBottom: "auto",
-                        opacity:"0"
+                        opacity: "0"
                       }}
                     />
                     <div style={{ padding: "0px" }}>
                       <label style={{ padding: "0px", margin: "0px" }}>
-                      If any of the income to which this certification relates constitutes income includible under section 512 in computing the entity’s unrelated business taxable income, attach a statement identifying the amounts.
+                        If any of the income to which this certification relates constitutes income includible under section 512 in computing the entity’s unrelated business taxable income, attach a statement identifying the amounts.
                       </label>
                     </div>
                   </td>
                 </tr>
                 <tr>
                   <td style={{ width: "30.72px" }}></td>
-                    <td style={{ fontSize: "14px", fontWeight: "600",padding: "10px 0"  }}>
+                  <td style={{ fontSize: "14px", fontWeight: "600", padding: "10px 0" }}>
                     Check either box 13a or box 13b
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",textAlign:"center",display:"flex" }}>
-                    <div style={{margin:"9px auto auto auto"}}>
+                  <td style={{ width: "30.72px", textAlign: "center", display: "flex" }}>
+                    <div style={{ margin: "9px auto auto auto" }}>
                       a
                     </div>
-                    </td>
+                  </td>
                   <td style={{ padding: "10px 0" }}>
-                    <div style={{display:"flex"}}>         
+                    <div style={{ display: "flex" }}>
                       <input
                         type="checkbox"
                         name=""
@@ -1351,17 +1351,17 @@ owned by the foreign sovereign)
                         }}
                       />{" "}
                       <div>
-                      I certify that the entity identified in Part I has been issued a determination letter by the IRS dated <span style={{color:"rgb(5, 5, 129)", borderBottom:"1px solid black",width:"122px"}}>11-20-2023</span>that is currently in effect and that concludes that it is an exempt organization described in section 501(c).
+                        I certify that the entity identified in Part I has been issued a determination letter by the IRS dated <span style={{ color: "rgb(5, 5, 129)", borderBottom: "1px solid black", width: "122px" }}>11-20-2023</span>that is currently in effect and that concludes that it is an exempt organization described in section 501(c).
                       </div>
                     </div>
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",textAlign:"center",display:"flex" }}>
-                    <div style={{margin:"9px auto auto auto"}}>
+                  <td style={{ width: "30.72px", textAlign: "center", display: "flex" }}>
+                    <div style={{ margin: "9px auto auto auto" }}>
                       b
                     </div>
-                    </td>
+                  </td>
                   <td style={{ padding: "10px 0" }}>
                     <input
                       type="checkbox"
@@ -1373,21 +1373,21 @@ owned by the foreign sovereign)
                         marginRight: "10px",
                       }}
                     />{" "}
-                  I have attached to this form an opinion from U.S. counsel concluding that the entity identified in Part I is described in section 501(c).
+                    I have attached to this form an opinion from U.S. counsel concluding that the entity identified in Part I is described in section 501(c).
                   </td>
                 </tr>
                 <tr>
                   <td style={{ width: "30.72px" }}></td>
-                    <td style={{ fontSize: "14px", fontWeight: "600",padding: "10px 0"  }}>
+                  <td style={{ fontSize: "14px", fontWeight: "600", padding: "10px 0" }}>
                     For section 501(c)(3) organizations only, check either box 13c or box 13d.
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",textAlign:"center",display:"flex" }}>
-                    <div style={{margin:"9px auto auto auto"}}>
+                  <td style={{ width: "30.72px", textAlign: "center", display: "flex" }}>
+                    <div style={{ margin: "9px auto auto auto" }}>
                       c
                     </div>
-                    </td>
+                  </td>
                   <td style={{ padding: "10px 0" }}>
                     <input
                       type="checkbox"
@@ -1399,18 +1399,18 @@ owned by the foreign sovereign)
                         marginRight: "10px",
                       }}
                     />{" "}
-                      If the determination letter or opinion of counsel concludes that the entity identified in Part I is described in section 501(c)(3), 
-                      I certify that the organization is not a private foundation described in section 509. I have attached an affidavit of the
-                      organization setting forth sufficient facts for the IRS to determine that the organization is not a private foundation because it 
-                      meets one of the exceptions described in section 509(a)(1), (2), (3), or (4).
+                    If the determination letter or opinion of counsel concludes that the entity identified in Part I is described in section 501(c)(3),
+                    I certify that the organization is not a private foundation described in section 509. I have attached an affidavit of the
+                    organization setting forth sufficient facts for the IRS to determine that the organization is not a private foundation because it
+                    meets one of the exceptions described in section 509(a)(1), (2), (3), or (4).
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",textAlign:"center",display:"flex" }}>
-                    <div style={{margin:"9px auto auto auto"}}>
+                  <td style={{ width: "30.72px", textAlign: "center", display: "flex" }}>
+                    <div style={{ margin: "9px auto auto auto" }}>
                       d
                     </div>
-                    </td>
+                  </td>
                   <td style={{ padding: "10px 0" }}>
                     <input
                       type="checkbox"
@@ -1422,16 +1422,16 @@ owned by the foreign sovereign)
                         marginRight: "10px",
                       }}
                     />{" "}
-                      If the determination letter or opinion of counsel concludes that the entity identified in Part I is described in section 501(c)(3), I certify that the organization is a private foundation described in section 509.
+                    If the determination letter or opinion of counsel concludes that the entity identified in Part I is described in section 501(c)(3), I certify that the organization is a private foundation described in section 509.
                   </td>
                 </tr>
-                
+
                 <tr>
-                  <td style={{ width: "30.72px",fontWeight:"bolder" }}>14</td>
-                  <td style={{ padding: "10px 0", fontWeight:"bolder" }}>
-               
-                  For a government of a U.S. possession:
-                </td>
+                  <td style={{ width: "30.72px", fontWeight: "bolder" }}>14</td>
+                  <td style={{ padding: "10px 0", fontWeight: "bolder" }}>
+
+                    For a government of a U.S. possession:
+                  </td>
                 </tr>
                 <tr>
                   <td
@@ -1460,7 +1460,7 @@ owned by the foreign sovereign)
                     />
                     <div style={{ padding: "0px" }}>
                       <label style={{ padding: "0px", margin: "0px" }}>
-                      I certify that the entity identified in Part I is a government of a possession of the United States, or is a political subdivision thereof, and is claiming the exemption granted by section 115(2).
+                        I certify that the entity identified in Part I is a government of a possession of the United States, or is a political subdivision thereof, and is claiming the exemption granted by section 115(2).
                       </label>
                     </div>
                   </td>
@@ -1500,13 +1500,13 @@ owned by the foreign sovereign)
                         display: "flex",
                       }}
                     >
-                      <p style={{ margin: "auto" ,fontSize:"18px" }}>Part III</p>
+                      <p style={{ margin: "auto", fontSize: "18px" }}>Part III</p>
                     </div>{" "}
                   </td>
-                  <td style={{ padding: "0px 10px", fontWeight: "900",fontSize:"18px"}}>
+                  <td style={{ padding: "0px 10px", fontWeight: "900", fontSize: "18px" }}>
                     {" "}
                     <strong>
-                    Qualification Statement for Chapter 4 Status (if required)
+                      Qualification Statement for Chapter 4 Status (if required)
                     </strong>
                   </td>
                 </tr>
@@ -1526,10 +1526,10 @@ owned by the foreign sovereign)
               <tbody>
 
                 <tr>
-                  <td style={{ width: "30.72px",fontWeight:"bolder" }}>15</td>
-                  <td style={{ padding: "10px 0", fontWeight:"bolder" }}>
-               
-                  For a nonreporting IGA FFI:
+                  <td style={{ width: "30.72px", fontWeight: "bolder" }}>15</td>
+                  <td style={{ padding: "10px 0", fontWeight: "bolder" }}>
+
+                    For a nonreporting IGA FFI:
                   </td>
                 </tr>
                 <tr>
@@ -1559,7 +1559,7 @@ owned by the foreign sovereign)
                     />
                     <div style={{ padding: "0px" }}>
                       <label style={{ padding: "0px", margin: "0px" }}>
-                      I certify that the entity identified in Part I:
+                        I certify that the entity identified in Part I:
                       </label>
                       <p style={{ padding: "0px", margin: "0px" }}>
                         <ul
@@ -1571,37 +1571,37 @@ owned by the foreign sovereign)
                           }}
                         >
                           <li>
-                           <div style={{}}>
-                            <div>
-                            Meets the requirements to be considered a nonreporting financial institution pursuant to an applicable IGA between the United States
-                            </div>
-                           <div style={{display:"flex"}}>
-                           and <div style={{color:"rgb(5, 5, 129)", borderBottom:"1px solid black",width:"806px"}}></div>;
-                            </div>
+                            <div style={{}}>
+                              <div>
+                                Meets the requirements to be considered a nonreporting financial institution pursuant to an applicable IGA between the United States
+                              </div>
+                              <div style={{ display: "flex" }}>
+                                and <div style={{ color: "rgb(5, 5, 129)", borderBottom: "1px solid black", width: "806px" }}></div>;
+                              </div>
                             </div>
                           </li>
                           <li>
-                            <div style={{display:"flex"}}>
-                              Is treated as a <div style={{color:"rgb(5, 5, 129)", borderBottom:"1px solid black",width:"415px"}}></div> under the provisions of the applicable IGA (see instructions);<strong>and</strong>
+                            <div style={{ display: "flex" }}>
+                              Is treated as a <div style={{ color: "rgb(5, 5, 129)", borderBottom: "1px solid black", width: "415px" }}></div> under the provisions of the applicable IGA (see instructions);<strong>and</strong>
                             </div>
                           </li>
                           <li>
                             If you are an FFI treated as a registered deemed-compliant FFI under an applicable Model 2 IGA, provide your GIIN:
                           </li>
-                          <li style={{display:"flex"}}>
-                          &#9654;<div style={{color:"rgb(5, 5, 129)", borderBottom:"1px solid black",width:"750px"}}></div>
+                          <li style={{ display: "flex" }}>
+                            &#9654;<div style={{ color: "rgb(5, 5, 129)", borderBottom: "1px solid black", width: "750px" }}></div>
                           </li>
                         </ul>
                       </p>
                     </div>
                   </td>
                 </tr>
-                
+
                 <tr>
-                  <td style={{ width: "30.72px",fontWeight:"bolder" }}>16</td>
-                  <td style={{ padding: "10px 0", fontWeight:"bolder" }}>
-               
-                  For a territory financial institution:
+                  <td style={{ width: "30.72px", fontWeight: "bolder" }}>16</td>
+                  <td style={{ padding: "10px 0", fontWeight: "bolder" }}>
+
+                    For a territory financial institution:
                   </td>
                 </tr>
                 <tr>
@@ -1631,18 +1631,18 @@ owned by the foreign sovereign)
                     />
                     <div style={{ padding: "0px" }}>
                       <label style={{ padding: "0px", margin: "0px" }}>
-                      I certify that the entity identified in Part I is a financial institution (other than an investment entity) that is incorporated or
-organized under the laws of a possession of the United States.
+                        I certify that the entity identified in Part I is a financial institution (other than an investment entity) that is incorporated or
+                        organized under the laws of a possession of the United States.
                       </label>
                     </div>
                   </td>
                 </tr>
-                
+
                 <tr>
-                  <td style={{ width: "30.72px",fontWeight:"bolder" }}>17</td>
-                  <td style={{ padding: "10px 0", fontWeight:"bolder" }}>
-               
-                  For a foreign government (including a political subdivision), government of a U.S. possession, or foreign central bank of issue:
+                  <td style={{ width: "30.72px", fontWeight: "bolder" }}>17</td>
+                  <td style={{ padding: "10px 0", fontWeight: "bolder" }}>
+
+                    For a foreign government (including a political subdivision), government of a U.S. possession, or foreign central bank of issue:
                   </td>
                 </tr>
                 <tr>
@@ -1672,19 +1672,19 @@ organized under the laws of a possession of the United States.
                     />
                     <div style={{ padding: "0px" }}>
                       <label style={{ padding: "0px", margin: "0px" }}>
-                      I certify that the entity identified in Part I is the beneficial owner of the payment and is not engaged in commercial financial
-                      activities of a type engaged in by an insurance company, custodial institution, or depository institution with respect to the
-                      payments, accounts, or obligations for which this form is submitted (except as permitted in Regulations section 1.1471-6(h)(2)).
+                        I certify that the entity identified in Part I is the beneficial owner of the payment and is not engaged in commercial financial
+                        activities of a type engaged in by an insurance company, custodial institution, or depository institution with respect to the
+                        payments, accounts, or obligations for which this form is submitted (except as permitted in Regulations section 1.1471-6(h)(2)).
                       </label>
                     </div>
                   </td>
                 </tr>
-                
+
                 <tr>
-                  <td style={{ width: "30.72px",fontWeight:"bolder" }}>18</td>
-                  <td style={{ padding: "10px 0", fontWeight:"bolder" }}>
-               
-                  For an exempt retirement plan of a foreign government:
+                  <td style={{ width: "30.72px", fontWeight: "bolder" }}>18</td>
+                  <td style={{ padding: "10px 0", fontWeight: "bolder" }}>
+
+                    For an exempt retirement plan of a foreign government:
                   </td>
                 </tr>
                 <tr>
@@ -1714,7 +1714,7 @@ organized under the laws of a possession of the United States.
                     />
                     <div style={{ padding: "0px" }}>
                       <label style={{ padding: "0px", margin: "0px" }}>
-                      I certify that the entity identified in Part I:
+                        I certify that the entity identified in Part I:
                       </label>
                       <p style={{ padding: "0px", margin: "0px" }}>
                         <ul
@@ -1726,16 +1726,16 @@ organized under the laws of a possession of the United States.
                           }}
                         >
                           <li>
-                          Is established and sponsored by a foreign government, international organization, central bank of issue, or government of a
-                          U.S. possession (each as defined in Regulations section 1.1471-6 or an applicable Model 1 or Model 2 IGA) to provide
-                          retirement, disability, or death benefits to beneficiaries or participants that are current or former employees of the sponsor (or
-                          persons designated by such employees); <strong>or</strong>
+                            Is established and sponsored by a foreign government, international organization, central bank of issue, or government of a
+                            U.S. possession (each as defined in Regulations section 1.1471-6 or an applicable Model 1 or Model 2 IGA) to provide
+                            retirement, disability, or death benefits to beneficiaries or participants that are current or former employees of the sponsor (or
+                            persons designated by such employees); <strong>or</strong>
                           </li>
                           <li>
-                          Is established and sponsored by a foreign government, international organization, central bank of issue, or government of a
-                          U.S. possession (each as defined in Regulations section 1.1471-6 or an applicable Model 1 or Model 2 IGA) to provide
-                          retirement, disability, or death benefits to beneficiaries or participants that are not current or former employees of such
-                          sponsor, but are in consideration of personal services performed for the sponsor.
+                            Is established and sponsored by a foreign government, international organization, central bank of issue, or government of a
+                            U.S. possession (each as defined in Regulations section 1.1471-6 or an applicable Model 1 or Model 2 IGA) to provide
+                            retirement, disability, or death benefits to beneficiaries or participants that are not current or former employees of such
+                            sponsor, but are in consideration of personal services performed for the sponsor.
                           </li>
                         </ul>
                       </p>
@@ -1743,20 +1743,20 @@ organized under the laws of a possession of the United States.
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",fontWeight:"bolder" }}>19</td>
-                  <td style={{ padding: "10px 0", fontWeight:"bolder" }}>
-               
-                  For a 501(c) organization:
+                  <td style={{ width: "30.72px", fontWeight: "bolder" }}>19</td>
+                  <td style={{ padding: "10px 0", fontWeight: "bolder" }}>
+
+                    For a 501(c) organization:
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",textAlign:"center",display:"flex" }}>
-                    <div style={{margin:"9px auto auto auto",fontWeight:"bolder"}}>
-                      
+                  <td style={{ width: "30.72px", textAlign: "center", display: "flex" }}>
+                    <div style={{ margin: "9px auto auto auto", fontWeight: "bolder" }}>
+
                     </div>
-                    </td>
+                  </td>
                   <td style={{ padding: "10px 0" }}>
-                    <div style={{display:"flex"}}>              
+                    <div style={{ display: "flex" }}>
                       <input
                         type="checkbox"
                         name=""
@@ -1767,29 +1767,29 @@ organized under the laws of a possession of the United States.
                           marginRight: "10px",
                         }}
                       />{" "}
-                      <div style={{display:"flex"}}>
+                      <div style={{ display: "flex" }}>
                         <div>
-                        I certify that the entity identified in Part I is an entity described in section 501(c) but is not an insurance company described in section 501(c)(15).
+                          I certify that the entity identified in Part I is an entity described in section 501(c) but is not an insurance company described in section 501(c)(15).
                         </div>
                       </div>
                     </div>
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",fontWeight:"bolder" }}>20</td>
-                  <td style={{ padding: "10px 0", fontWeight:"bolder" }}>
-               
-                  For a passive NFFE:
+                  <td style={{ width: "30.72px", fontWeight: "bolder" }}>20</td>
+                  <td style={{ padding: "10px 0", fontWeight: "bolder" }}>
+
+                    For a passive NFFE:
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",textAlign:"center",display:"flex" }}>
-                    <div style={{margin:"9px auto auto auto",fontWeight:"bolder"}}>
+                  <td style={{ width: "30.72px", textAlign: "center", display: "flex" }}>
+                    <div style={{ margin: "9px auto auto auto", fontWeight: "bolder" }}>
                       a
                     </div>
-                    </td>
+                  </td>
                   <td style={{ padding: "10px 0" }}>
-                    <div style={{display:"flex"}}>              
+                    <div style={{ display: "flex" }}>
                       <input
                         type="checkbox"
                         name=""
@@ -1800,28 +1800,28 @@ organized under the laws of a possession of the United States.
                           marginRight: "10px",
                         }}
                       />{" "}
-                      <div style={{display:"flex"}}>
+                      <div style={{ display: "flex" }}>
                         <div>
-                        I certify that the entity identified in Part I is a foreign entity that is not a financial institution (other than an investment entity organized in a possession of the United States).
+                          I certify that the entity identified in Part I is a foreign entity that is not a financial institution (other than an investment entity organized in a possession of the United States).
                         </div>
                       </div>
                     </div>
                   </td>
                 </tr>
                 <tr>
-                <td style={{ width: "30.72px" }}></td>
-                  <td style={{ fontSize: "14px", fontWeight: "600",padding: "10px 0"  }}>
-                  Check box 20b or 20c, whichever applies.
+                  <td style={{ width: "30.72px" }}></td>
+                  <td style={{ fontSize: "14px", fontWeight: "600", padding: "10px 0" }}>
+                    Check box 20b or 20c, whichever applies.
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",textAlign:"center",display:"flex" }}>
-                    <div style={{margin:"9px auto auto auto",fontWeight:"bolder"}}>
-                          b
+                  <td style={{ width: "30.72px", textAlign: "center", display: "flex" }}>
+                    <div style={{ margin: "9px auto auto auto", fontWeight: "bolder" }}>
+                      b
                     </div>
-                    </td>
+                  </td>
                   <td style={{ padding: "10px 0" }}>
-                    <div style={{display:"flex"}}>              
+                    <div style={{ display: "flex" }}>
                       <input
                         type="checkbox"
                         name=""
@@ -1832,22 +1832,22 @@ organized under the laws of a possession of the United States.
                           marginRight: "10px",
                         }}
                       />{" "}
-                      <div style={{display:"flex"}}>
+                      <div style={{ display: "flex" }}>
                         <div>
-                        I further certify that the entity identified in Part I has no substantial U.S. owners, <strong>or</strong>
+                          I further certify that the entity identified in Part I has no substantial U.S. owners, <strong>or</strong>
                         </div>
                       </div>
                     </div>
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",textAlign:"center",display:"flex" }}>
-                    <div style={{margin:"9px auto auto auto",fontWeight:"bolder"}}>
-                   c
+                  <td style={{ width: "30.72px", textAlign: "center", display: "flex" }}>
+                    <div style={{ margin: "9px auto auto auto", fontWeight: "bolder" }}>
+                      c
                     </div>
-                    </td>
+                  </td>
                   <td style={{ padding: "10px 0" }}>
-                    <div style={{display:"flex"}}>              
+                    <div style={{ display: "flex" }}>
                       <input
                         type="checkbox"
                         name=""
@@ -1858,29 +1858,29 @@ organized under the laws of a possession of the United States.
                           marginRight: "10px",
                         }}
                       />{" "}
-                      <div style={{display:"flex"}}>
+                      <div style={{ display: "flex" }}>
                         <div>
-                        I further certify that the entity identified in Part I has provided a statement including the name, address, and TIN of each 
-substantial U.S. owner of the NFFE (see instructions).
+                          I further certify that the entity identified in Part I has provided a statement including the name, address, and TIN of each
+                          substantial U.S. owner of the NFFE (see instructions).
                         </div>
                       </div>
                     </div>
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",textAlign:"center",display:"flex" }}>
-                    <div style={{margin:"9px auto auto auto" ,fontWeight:"bolder"}}>
+                  <td style={{ width: "30.72px", textAlign: "center", display: "flex" }}>
+                    <div style={{ margin: "9px auto auto auto", fontWeight: "bolder" }}>
                       21
                     </div>
-                    </td>
-                  <td style={{ padding: "10px 0",fontWeight:"bolder" }}>
-                    <div style={{display:"flex"}}>              
-                
-                      <div style={{display:"flex"}}>
+                  </td>
+                  <td style={{ padding: "10px 0", fontWeight: "bolder" }}>
+                    <div style={{ display: "flex" }}>
+
+                      <div style={{ display: "flex" }}>
                         <div>
-                        Name of sponsoring entity
+                          Name of sponsoring entity
                         </div>
-                        <div style={{width:"495px", borderBottom:"1px solid", marginLeft:"5px"}}>
+                        <div style={{ width: "495px", borderBottom: "1px solid", marginLeft: "5px" }}>
 
                         </div>.
                       </div>
@@ -1888,13 +1888,13 @@ substantial U.S. owner of the NFFE (see instructions).
                   </td>
                 </tr>
                 <tr>
-                  <td style={{ width: "30.72px",textAlign:"center",display:"flex" }}>
-                    <div style={{margin:"9px auto auto auto",fontWeight:"bolder"}}>
-                   
+                  <td style={{ width: "30.72px", textAlign: "center", display: "flex" }}>
+                    <div style={{ margin: "9px auto auto auto", fontWeight: "bolder" }}>
+
                     </div>
-                    </td>
+                  </td>
                   <td style={{ padding: "10px 0" }}>
-                    <div style={{display:"flex"}}>              
+                    <div style={{ display: "flex" }}>
                       <input
                         type="checkbox"
                         name=""
@@ -1905,15 +1905,15 @@ substantial U.S. owner of the NFFE (see instructions).
                           marginRight: "10px",
                         }}
                       />{" "}
-                      <div style={{display:"flex"}}>
+                      <div style={{ display: "flex" }}>
                         <div>
-                        I certify that the entity identified in Part I is a direct reporting NFFE that is sponsored by the entity identified in line 21.
+                          I certify that the entity identified in Part I is a direct reporting NFFE that is sponsored by the entity identified in line 21.
                         </div>
                       </div>
                     </div>
                   </td>
-                </tr>            
-    
+                </tr>
+
               </tbody>
             </table>
             {/* -------------------------------------------------- III end--------------------------------------------------------------- */}
@@ -1948,13 +1948,13 @@ substantial U.S. owner of the NFFE (see instructions).
                         display: "flex",
                       }}
                     >
-                      <p style={{ margin: "auto" ,fontSize:"18px" }}>Part IV</p>
+                      <p style={{ margin: "auto", fontSize: "18px" }}>Part IV</p>
                     </div>{" "}
                   </td>
-                  <td style={{ padding: "0px 10px", fontWeight: "900",fontSize:"18px"}}>
+                  <td style={{ padding: "0px 10px", fontWeight: "900", fontSize: "18px" }}>
                     {" "}
                     <strong>
-                    Certification
+                      Certification
                     </strong>
                   </td>
                 </tr>
@@ -1970,14 +1970,14 @@ substantial U.S. owner of the NFFE (see instructions).
               cellPadding={0}
             >
               <tbody>
-              <tr>
+                <tr>
                   <td
                     colSpan={2}
-                  
+
                   >
-                    Furthermore, I authorize this form to be provided to any withholding agent that has control, receipt, or custody of the payments 
-of which I am the beneficial owner or any withholding agent that can disburse or make payments of the amounts of which I am
-the beneficial owner.
+                    Furthermore, I authorize this form to be provided to any withholding agent that has control, receipt, or custody of the payments
+                    of which I am the beneficial owner or any withholding agent that can disburse or make payments of the amounts of which I am
+                    the beneficial owner.
                   </td>
                 </tr>
                 <tr>
@@ -1985,11 +1985,11 @@ the beneficial owner.
                     colSpan={2}
                     style={{ fontSize: "16px", fontWeight: "600" }}
                   >
-                   agree that I will submit a new form within 30 days if any certification made on this form becomes incorrect.
+                    agree that I will submit a new form within 30 days if any certification made on this form becomes incorrect.
                   </td>
                 </tr>
 
-        
+
                 {/* <tr>
                   <td colSpan={2}>
                     <p style={{ color: "#1133a9",marginBottom:"0px" }}>
@@ -1998,9 +1998,9 @@ the beneficial owner.
                   </td>
                 </tr> */}
                 <tr>
-                  <td colSpan={2} style={{ color: "#1133a9",fontWeight:"600", }}>
-                  The Internal Revenue Service does not require your consent to any provisions of this document other than the certifications
-required to establish your status as a foreign government, international organization, foreign central bank of issue, foreign taxexempt organization, foreign private foundation, or government of a U.S. possession, and your chapter 4 status (if required).
+                  <td colSpan={2} style={{ color: "#1133a9", fontWeight: "600", }}>
+                    The Internal Revenue Service does not require your consent to any provisions of this document other than the certifications
+                    required to establish your status as a foreign government, international organization, foreign central bank of issue, foreign taxexempt organization, foreign private foundation, or government of a U.S. possession, and your chapter 4 status (if required).
                   </td>
                 </tr>
 
@@ -2015,13 +2015,13 @@ required to establish your status as a foreign government, international organiz
                             style={{
                               fontSize: "22px",
                               fontWeight: "bold",
-                              display:"flex",
+                              display: "flex",
                             }}
                           >
-                           <div style={{minWidth:"maxcontent", marginTop:"auto",marginBottom:"auto"}}>Sign Here</div> 
-                            <div style={{height:"0px",width:"0px",borderTop:"25px solid transparent", borderLeft:"16px solid #000000",borderBottom:"25px solid transparent", marginLeft:"5px"}}></div>
+                            <div style={{ minWidth: "maxcontent", marginTop: "auto", marginBottom: "auto" }}>Sign Here</div>
+                            <div style={{ height: "0px", width: "0px", borderTop: "25px solid transparent", borderLeft: "16px solid #000000", borderBottom: "25px solid transparent", marginLeft: "5px" }}></div>
                           </td>
-                          <td style={{ width: "85%",fontSize:"11px" }}>
+                          <td style={{ width: "85%", fontSize: "11px" }}>
                             <table
                               style={{
                                 borderCollapse: "collapse",
@@ -2050,7 +2050,7 @@ required to establish your status as a foreign government, international organiz
                                           display: "table-cell",
                                           textAlign: "left",
                                           width: "60%",
-                                          fontWeight:"600",
+                                          fontWeight: "600",
                                         }}
                                       >
                                         111
@@ -2062,14 +2062,14 @@ required to establish your status as a foreign government, international organiz
                                         }}
                                       >
                                         {" "}
-                                       
+
                                       </span>
                                     </div>
                                   </td>
-                                  
+
                                   <td
                                     style={{
-                                      
+
                                       padding: "0 10px",
                                       color: "#1133a9",
                                       verticalAlign: "bottom",
@@ -2079,8 +2079,8 @@ required to establish your status as a foreign government, international organiz
                                       style={{
                                         display: "table",
                                         borderBottom: "1px solid #000",
-                                        width:"100%"
-                                        
+                                        width: "100%"
+
                                       }}
                                     >
                                       <span
@@ -2088,21 +2088,21 @@ required to establish your status as a foreign government, international organiz
                                           display: "table-cell",
                                           textAlign: "left",
                                           width: "60%",
-                                          fontWeight:"600",
+                                          fontWeight: "600",
                                         }}
                                       >
-                                         {values.signedBy}
+                                        {values.signedBy}
                                       </span>
-                  
+
                                     </div>
                                   </td>
-                                 
+
                                   <td
                                     style={{
                                       width: "20%",
                                       borderBottom: "1px solid #000",
                                       color: "#1133a9",
-                                      fontWeight:"600",
+                                      fontWeight: "600",
                                     }}
                                   >
                                     17-10-2023
@@ -2114,23 +2114,24 @@ required to establish your status as a foreign government, international organiz
                                       width: "50%",
                                       color: "#1133a9",
                                       textAlign: "center",
-                                      fontWeight:"600",
+                                      fontWeight: "600",
                                     }}
                                   >
                                     <p >
-                                      <span style={{fontSize:"8px"}}>
-                                      Self Certified Electronic Signature Of The Individual Authorized To Sign For The Beneficial Owner.
+                                      <span style={{ fontSize: "8px" }}>
+                                        Self Certified Electronic Signature Of The Individual Authorized To Sign For The Beneficial Owner.
                                       </span>
-                                    <br></br>
-                                    <span style={{fontSize:"14px"}}> (Self certification electronic signature)</span>
+                                      <br></br>
+                                      <span style={{ fontSize: "14px" }}> (Self certification electronic signature)</span>
 
                                     </p>
                                   </td>
-                                  <td  style={{
-                                      
-                                      padding: "0 10px",textAlign:"center"}}
-                                      >
-                                  Print Name
+                                  <td style={{
+
+                                    padding: "0 10px", textAlign: "center"
+                                  }}
+                                  >
+                                    Print Name
                                   </td>
                                   <td
                                     style={{
@@ -2161,12 +2162,12 @@ required to establish your status as a foreign government, international organiz
                             style={{
                               fontSize: "22px",
                               fontWeight: "bold",
-                              display:"flex",
+                              display: "flex",
                             }}
                           >
-                        
+
                           </td>
-                          <td style={{ width: "85%",fontSize:"11px" }}>
+                          <td style={{ width: "85%", fontSize: "11px" }}>
                             <table
                               style={{
                                 borderCollapse: "collapse",
@@ -2175,28 +2176,28 @@ required to establish your status as a foreign government, international organiz
                               cellSpacing="10"
                             >
                               <tbody>
-                              <tr>
-                                <td>
-                                <input
-                                  type="checkbox"
-                                  checked
-                                  name=""
-                                  id=""
-                                  style={{
-                                    background: "#fff",
-                                    border: "1px solid #000",
-                                    marginRight: "10px",
-                                    marginBottom: "auto",
-                                  }}
-                                />
-                              
-                                  <strong>
+                                <tr>
+                                  <td>
+                                    <input
+                                      type="checkbox"
+                                      checked
+                                      name=""
+                                      id=""
+                                      style={{
+                                        background: "#fff",
+                                        border: "1px solid #000",
+                                        marginRight: "10px",
+                                        marginBottom: "auto",
+                                      }}
+                                    />
 
-                                  I certify that I have the capacity to sign for the entity identified on line 1 of this form.◘
-                                  </strong>
-                     
-                                </td>
-                              </tr>
+                                    <strong>
+
+                                      I certify that I have the capacity to sign for the entity identified on line 1 of this form.◘
+                                    </strong>
+
+                                  </td>
+                                </tr>
                               </tbody>
                             </table>
                           </td>
@@ -2228,15 +2229,15 @@ required to establish your status as a foreign government, international organiz
                       style={{ width: "100%", borderCollapse: "collapse" }}
                     >
                       <tbody>
-                        <tr style={{fontSize:"13px"}}>
+                        <tr style={{ fontSize: "13px" }}>
                           <td style={{ width: "40%", fontSize: "15px" }}>
                             <strong>
-                            
+
                             </strong>
                           </td>
                           <td style={{ width: "10%", color: "#1133a9" }}></td>
                           <td style={{ width: "20%", textAlign: "center" }}>
-                           
+
                           </td>
                           <td style={{ width: "30%", textAlign: "center" }}>
                             Form{" "}
@@ -2248,26 +2249,26 @@ required to establish your status as a foreign government, international organiz
                             (Rev. 10-2021)
                           </td>
                         </tr>
-                        <tr style={{fontSize:"13px",fontWeight:"500"}}>
-                          <td style={{ width: "40%", color: "#1133a9",fontWeight:"600", }}>
-                            Electronic Submission Confirmation: 
+                        <tr style={{ fontSize: "13px", fontWeight: "500" }}>
+                          <td style={{ width: "40%", color: "#1133a9", fontWeight: "600", }}>
+                            Electronic Submission Confirmation:
                           </td>
-                          <td style={{ width: "10%", color: "#1133a9",fontWeight:"600", }}>
-                           YVQ7NL
+                          <td style={{ width: "10%", color: "#1133a9", fontWeight: "600", }}>
+                            YVQ7NL
                           </td>
                           <td
                             style={{
                               width: "20%",
                               color: "#1133a9",
                               textAlign: "center",
-                              fontWeight:"600",
+                              fontWeight: "600",
                             }}
                           >
                             Email Address :
                           </td>
-                          <td style={{ width: "30%", color: "#1133a9",textAlign:"center" }}>
-                            <a href="mailto:abhay.singh2@mail.com" style={{ color: "#1133a9",fontWeight:"600",}}>
-                            {lValues.contactEmail}
+                          <td style={{ width: "30%", color: "#1133a9", textAlign: "center" }}>
+                            <a href="mailto:abhay.singh2@mail.com" style={{ color: "#1133a9", fontWeight: "600", }}>
+                              {lValues.contactEmail}
                             </a>
                           </td>
                         </tr>
@@ -2279,7 +2280,7 @@ required to establish your status as a foreign government, international organiz
             </table>
           </section>
 
-            {/* -------------------------------------------------- IV Certification end--------------------------------------------------------------- */}
+          {/* -------------------------------------------------- IV Certification end--------------------------------------------------------------- */}
 
           <section style={{ breakAfter: 'page', breakBefore: 'page' }}>
             <table style={{ borderCollapse: "collapse", width: "100%", maxWidth: "920px", margin: "40px auto" }}>
@@ -2377,7 +2378,7 @@ required to establish your status as a foreign government, international organiz
                       href={lValues.contactEmail}
                       style={{ color: "#000", textDecoration: "none" }}
                     >
-                     {lValues.contactEmail}
+                      {lValues.contactEmail}
                     </a>{" "}
                   </td>
                 </tr>
@@ -2410,10 +2411,10 @@ required to establish your status as a foreign government, international organiz
                   <td style={{ width: "50%" }}>&nbsp;</td>
                 </tr>
                 <tr>
-                  <td style={{ width: "50%"}}>
+                  <td style={{ width: "50%" }}>
                     Forms Exchange Agent (Business Unit):
                   </td>
-                  <td style={{ width: "50%"}}>ValueCoders</td>
+                  <td style={{ width: "50%" }}>ValueCoders</td>
                 </tr>
                 <tr>
                   <td style={{ width: "50%" }}>Agent Contact Name:</td>
@@ -2480,7 +2481,7 @@ required to establish your status as a foreign government, international organiz
                     }}
                   >
                     <strong>
-                    Further Information:
+                      Further Information:
                     </strong>
                   </th>
                 </tr>
@@ -2542,7 +2543,7 @@ required to establish your status as a foreign government, international organiz
                   >
                     <strong>
 
-                    No U.S. Source Income Declaration
+                      No U.S. Source Income Declaration
                     </strong>
                   </td>
                   <td style={{ borderBottom: "2px solid #000" }}>Not Applicable</td>
@@ -2586,75 +2587,75 @@ required to establish your status as a foreign government, international organiz
                 </tr>
               </tbody>
             </table>
-            <div style={{ paddingTop: "20px" , display:"flex", justifyContent:"space-between"}}>
-            <Button
-              onClick={downloadPDF}
-              variant="contained"
-              style={{
-                border: "1px solid #0095dd",
-                background: "#0095dd",
-                height: "45px",
-                lineHeight: "normal",
-                textAlign: "center",
-                fontSize: "16px",
-                textTransform: "uppercase",
-                borderRadius: "0px",
-                color: "#fff",
-                padding: "0 35px",
-                letterSpacing: "1px",
-              }}
-              className="btn btn_submit  btn-primary-agent"
-            >
-              Download PDF
-            </Button>
-            <Button
-              onClick={backFunction}
-              variant="contained"
-              style={{
-                border: "1px solid #0095dd",
-                background: "#0095dd",
-                height: "45px",
-                lineHeight: "normal",
-                textAlign: "center",
-                fontSize: "16px",
-                textTransform: "uppercase",
-                borderRadius: "0px",
-                color: "#fff",
-                padding: "0 35px",
-                letterSpacing: "1px",
-              }}
-              className="btn btn_submit  btn-primary-agent"
-            >
-              Back
-            </Button>
-          </div>
-          <div className="container-fluid">
-          <footer>
-            <div className="row mx-1">
-              <Typography
-                className="mx-2"
-                align="left"
+            <div style={{ paddingTop: "20px", display: "flex", justifyContent: "space-between" }}>
+              <Button
+                onClick={downloadPDF}
+                variant="contained"
                 style={{
-                  marginBottom: "10px",
-                  color: "white",
-                  fontSize: "12px",
+                  border: "1px solid #0095dd",
+                  background: "#0095dd",
+                  height: "45px",
+                  lineHeight: "normal",
+                  textAlign: "center",
+                  fontSize: "16px",
+                  textTransform: "uppercase",
+                  borderRadius: "0px",
+                  color: "#fff",
+                  padding: "0 35px",
+                  letterSpacing: "1px",
                 }}
+                className="btn btn_submit  btn-primary-agent"
               >
-                © Comply Exchange Ltd.2023 - Version: 2.2.0.29 - Render
-                Time:8.6691538s
-              </Typography>
-              <div className="col-12 col-sm-8 col-md-6 col-lg-6 footer_nav">
-                <ul className="nav inner_header_right"></ul>
-              </div>
+                Download PDF
+              </Button>
+              <Button
+                onClick={backFunction}
+                variant="contained"
+                style={{
+                  border: "1px solid #0095dd",
+                  background: "#0095dd",
+                  height: "45px",
+                  lineHeight: "normal",
+                  textAlign: "center",
+                  fontSize: "16px",
+                  textTransform: "uppercase",
+                  borderRadius: "0px",
+                  color: "#fff",
+                  padding: "0 35px",
+                  letterSpacing: "1px",
+                }}
+                className="btn btn_submit  btn-primary-agent"
+              >
+                Back
+              </Button>
             </div>
-          </footer>
-        </div>
+            <div className="container-fluid">
+              <footer>
+                <div className="row mx-1">
+                  <Typography
+                    className="mx-2"
+                    align="left"
+                    style={{
+                      marginBottom: "10px",
+                      color: "white",
+                      fontSize: "12px",
+                    }}
+                  >
+                    © Comply Exchange Ltd.2023 - Version: 2.2.0.29 - Render
+                    Time:8.6691538s
+                  </Typography>
+                  <div className="col-12 col-sm-8 col-md-6 col-lg-6 footer_nav">
+                    <ul className="nav inner_header_right"></ul>
+                  </div>
+                </div>
+              </footer>
+            </div>
           </section>
         </div>
-       
+
       </section>
-     
-     
+
+
     </>
   )
 }

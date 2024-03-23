@@ -60,6 +60,11 @@ GetByW8BENEEntityNonUSFormId:"/W8BENEEntity/GetByW8BENEEntityNonUSFormId",
 GetByW8ECIIndividualEntityNonUSFormId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
 GetByW8EXPFormFormEntityNonUs:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
 
+//Pdf apis
+GetECIPdf:"/W8ECIIndividualEntity/GetECIPdf",
+GetBENPdf:"/W8BENIndividual/GetBENPdf",
+GetBENEPdf:"/W8BENEEntity/GetBENEPdf",
+
  //Account Holder Endpoints
  UpsertAccountHolderIncomeAllocation:"/AccountHolderDetail/UpsertAccountHolderIncomeAllocation",
  GetAccountHolderIncomeAllocation:"/AccountHolderDetail/GetAccountHolderIncomeAllocation",
