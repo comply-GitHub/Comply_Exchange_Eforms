@@ -25,6 +25,13 @@ export const EntitySchema = () => {
           .required("Please select an option")
           .notOneOf([0], "Please select a valid option"),
     }),
+    vat: Yup.string().when("vatId", {
+      is: (vatId: any) =>
+        (vatId != 0 && vatId != 2 ),
+        then: () => Yup.string()
+        .required("Please Enter Vat Id") }),
+     
+  
     // countryOfCitizenshipId: Yup.number()
     // .required('Please select a country'),
     // dob: Yup.date()

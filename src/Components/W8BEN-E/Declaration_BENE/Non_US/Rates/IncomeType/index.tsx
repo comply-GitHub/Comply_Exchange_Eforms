@@ -86,11 +86,11 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                 />) : ""}
               </Typography>
               <div className="col-12 d-flex" style={{ justifyContent: "space-between" }}>
-                <div className="col-5">
+                <div className="col-6">
                   <Typography
                     align="left"
                     style={{
-                      fontSize: "22px",
+                      fontSize: "17px",
                       marginTop: "10px",
                     }}
                   >
@@ -101,9 +101,10 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                     >
                       *
                     </span>
-                    <span></span>
+                   
                   </Typography>
-                  <FormControl className="w-100">
+                 <div className='col-10'>
+                 <FormControl className="w-100 ">
                     <select
                       style={{
                         padding: " 0 10px",
@@ -129,13 +130,14 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                     </select>
 
                   </FormControl>
+                  </div>
                   <p className="error">{typeof (errors.articleBeneficalOwner) == "string" ? errors.articleBeneficalOwner : ""}</p>
                 </div>
                 <div className="col-5">
                   <Typography
                     align="left"
                     style={{
-                      fontSize: "22px",
+                      fontSize: "17px",
                       marginTop: "10px",
                     }}
                   >
@@ -181,7 +183,7 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                 <div className="col-10">
                   <Typography
                     align="left"
-                    style={{ fontSize: "22px", marginTop: "10px" }}
+                    style={{ fontSize: "17px", marginTop: "10px" }}
                   >
                     Enter the Subparagraph of the Article being
                     claimed:{" "}
@@ -217,7 +219,7 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                   <Typography
                     align="left"
                     style={{
-                      fontSize: "22px",
+                      fontSize: "17px",
                       marginTop: "10px",
                     }}
                   >
@@ -249,7 +251,10 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                     >
                       <option value="">---select---</option>
                       {articleBeneficialOwner?.treatyRates?.split(",").map((ele: string) => {
-                        return <option value={ele}>{ele}</option>
+                        return <option  key={ele}
+                        value={ele}>{ele}</option>
+
+                       
                       })}
                     </select>
                     <p className="error">{typeof (errors.withHoldingClaim) == "string" ? errors.withHoldingClaim : ""}</p>
@@ -259,7 +264,7 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                   <Typography
                     align="left"
                     style={{
-                      fontSize: "22px",
+                      fontSize: "17px",
                       marginTop: "10px",
                     }}
                   >
@@ -271,6 +276,8 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                     </span>
                     <span></span>
                   </Typography>
+                  <>{console.log(articleBeneficialOwner?.treatyRates,"11")}</>
+                  {/* <>{console.log(GetAllIncomeCodesReducer.allCountriesIncomeCodeData?.filter((ele: any) => articleBeneficialOwner?.articlesIncomeCodes?.split(",").includes(ele?.name.split("-")[0].trim())),"1234")}</> */}
                   <FormControl className="w-100">
                     <select
                       style={{
@@ -292,8 +299,9 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                       <option value="0">---select---</option>
                       {
 
-                        GetAllIncomeCodesReducer.allCountriesIncomeCodeData?.filter((ele: any) => articleBeneficialOwner?.articlesIncomeCodes?.split(",").includes(ele?.name.split("-")[0].trim())).map(
+                        GetAllIncomeCodesReducer.allCountriesIncomeCodeData?.filter((ele: any) => articleBeneficialOwner?.articlesIncomeCodes?.split(",")).map(
                           (ele: any) => (
+                            
                             <option
                               key={ele?.id}
                               value={ele?.id}

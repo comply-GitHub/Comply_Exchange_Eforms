@@ -159,7 +159,7 @@ export default function Fedral_tax(props: any) {
   }
 
   const viewPdf = () => {
-    history("/w8BenE_pdf", { replace: true });
+    history("/w8BenE_pdf");
   }
 
   return (
@@ -1318,17 +1318,20 @@ export default function Fedral_tax(props: any) {
                           >
                             SAVE & EXIT
                           </Button> */}
-                          <SaveAndExit Callback=
-                            {() => {
-                              validateForm().then((err) => {
-                                if (Object.keys(err).length == 0) {
-                                  submitForm().then((data) => {
-                                    history(GlobalValues.basePageRoute);
-                                  }).catch((error) => {
-                                    console.log(error);
-                                  })
+                          <SaveAndExit Callback={()=>{
+                             submitForm().then(() => {
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              dispatch(postW8BEN_EForm(
+                                {
+                                  ...prevStepData,
+                                  stepName: `/${urlValue}`
                                 }
-                              })
+                                , () => { }))
+                              history(
+                                GlobalValues.basePageRoute
+                              );
+                            })
                             }} formTypeId={FormTypeId.BENE} />
 
                           <Button

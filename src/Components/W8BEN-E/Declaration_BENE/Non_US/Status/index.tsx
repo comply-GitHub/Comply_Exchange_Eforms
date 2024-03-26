@@ -2353,7 +2353,7 @@ export default function Fedral_tax(props: any) {
                         <Typography align="center">
                           <Button
                             onClick={() => {
-                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/US/Factors_BenE");
+                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE");
                             }}
                             variant="contained"
                             style={{

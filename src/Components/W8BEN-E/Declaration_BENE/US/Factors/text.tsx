@@ -69,12 +69,15 @@ const DynamicForm: React.FC<InputProps> = ({
     setFormData(initialFormData);
   };
 
-  const handleRemove = (index: any) => {
-    let arr = formList;
-    arr.splice(index, 1);
-    setFormList(arr);
-  };
 
+  const handleRemove = (index: any) => {
+    // Create a copy of the formList array
+    const newArr = [...formList];
+    // Remove the item at the specified index
+    newArr.splice(index, 1);
+    // Update the state with the new array
+    setFormList(newArr);
+  };
   return (
     <div>
       {formList?.map((form: any, index: any) => (
