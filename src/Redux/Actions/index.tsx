@@ -1296,7 +1296,8 @@ export const postW9Form = (value: any, callback: Function, errorCallback: Functi
       },
       (error) => {
         errorCallback({ message: "Some error occured", error: error });
-      }
+      },
+      "multi"
     );
   };
 };
