@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormW8IMY from "../../../formPDF/W8IMY";
 // import Form1 from "../../formPDF/form1";
 // import Formw9 from "../../formPDF/formw9";
@@ -21,6 +21,11 @@ export default function Term() {
   const pdfRefnew = useRef(null);
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+
+  useEffect(()=>{
+    document.title = "Thank You"
+  },[])
+
 
   const handleDownload = () => {
     if (pdfUrl) {

@@ -281,6 +281,11 @@ export default function Entity() {
     }
   }
 
+
+// useEffect(() =>{
+// document.title=""
+// },[])
+
   useEffect(() => {
     dispatch(getAllCountries());
     dispatch(getAllCountriesCode());

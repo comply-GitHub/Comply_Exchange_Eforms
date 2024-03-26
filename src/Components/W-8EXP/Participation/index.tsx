@@ -49,6 +49,11 @@ export default function Penalties() {
     setShowRecoverSection(!showRecoverSection);
     setSecurityWordError("");
   };
+
+  useEffect(()=>{
+    document.title = "Certfication II"
+  },[])
+
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, []);

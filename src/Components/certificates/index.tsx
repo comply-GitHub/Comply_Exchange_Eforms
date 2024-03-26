@@ -45,6 +45,10 @@ export default function Certificates(props: any) {
     }
   };
 
+  useEffect(()=>{
+    document.title = "Form Selection"
+  },[])
+
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
     let onboardingStingifiedData = localStorage.getItem("agentDetails");

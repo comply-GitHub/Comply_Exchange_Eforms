@@ -9,6 +9,11 @@ export default function View_Insructions(props: any) {
     // const handleCanvaClose = () => {
     //   setCanvaBx(false);
     // }
+
+    
+    // useEffect(()=>{
+    //   document.title = ""
+    // },[])
   return <>
    <div
           className={`offcanvas offcanvas-end ${canvaBx ? "show" : " "}`}

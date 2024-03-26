@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { SubmitSchema } from "../../../schemas/submit";
@@ -16,12 +16,20 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { SubmitSchemaECI } from "../../../schemas/w8ECI";
 
+
+
+
 const Declaration = (props: any) => {
   const { open, setOpen } = props;
   const { authDetails } = useAuth();
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(()=>{
+    document.title = "Electronic Signature Confirmation"
+  },[])
+
   const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,9 +52,12 @@ const Declaration = (props: any) => {
     isNotConsentRecipent: W8ECIData.isNotConsentRecipent ?? false
   };
 
+ 
+  
   const viewPdf = () => {
     history("/w8Eci_pdf", { replace: true });
   }
+
   return (
     <Fragment>
       <section
@@ -120,6 +131,7 @@ const Declaration = (props: any) => {
                       Electronic Signature Confirmation
                     </Typography>
                   }
+
                   <Divider style={{ background: "black" }} />
 
                   <div>

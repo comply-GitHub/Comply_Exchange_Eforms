@@ -53,6 +53,10 @@ const DialogEdit = (props: any) => {
     securityAnswer: "",
   };
 
+  useEffect(()=>{
+    document.title = "Comply Exchange"
+  },[])
+
   useEffect(() => {
     dispatch(postSecurityCode(() => console.log("hi")));
     dispatch(getSecurityQuestions());

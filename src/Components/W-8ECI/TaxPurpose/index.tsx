@@ -84,6 +84,11 @@ export default function Fedral_tax(props: any) {
   const handleFileChange = (e: any) => {
     setSelectedFile(e.target.files[0]);
   }
+
+  useEffect(()=>{
+    document.title = "Chapter III"
+  },[])
+
   useEffect(() => {
     dispatch(getAllCountries());
     dispatch(getAllCountriesCode());

@@ -99,6 +99,11 @@ export default function Tin(props: any) {
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
+
+    useEffect(()=>{
+      document.title = "Tax-Payer"
+    },[])
+
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
     dispatch(getAllCountries());

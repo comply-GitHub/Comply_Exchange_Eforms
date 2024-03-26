@@ -12,6 +12,8 @@ import { Form, Formik } from "formik";
 import { W8_state_ECI } from "../../../Redux/Actions";
 import { useDispatch } from "react-redux";
 
+
+
 const Declaration = (props: any) => {
   const { open, setOpen } = props;
   const handleClose = () => {
@@ -22,6 +24,10 @@ const Declaration = (props: any) => {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsCheckboxChecked(event.target.checked);
   };
+
+  // useEffect(()=>{
+  //   document.title = ""
+  // },[])
 
   const history = useNavigate();
   const dispatch = useDispatch();

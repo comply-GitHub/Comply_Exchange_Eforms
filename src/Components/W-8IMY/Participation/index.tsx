@@ -44,6 +44,11 @@ export default function Penalties() {
     dispatch(GetHelpVideoDetails());
   
   }, []);
+
+  useEffect(()=>{
+    document.title = "Certification II"
+  },[])
+
     const toggleRecoverSection = () => {
       setShowRecoverSection(true);
      
