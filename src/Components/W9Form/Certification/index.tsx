@@ -50,7 +50,9 @@ export default function Certifications(props: any) {
   const handleCanvaClose = () => {
     setCanvaBx(false);
   }
-
+  useEffect(()=>{
+    document.title = "Certification I"
+  },[])
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, [])

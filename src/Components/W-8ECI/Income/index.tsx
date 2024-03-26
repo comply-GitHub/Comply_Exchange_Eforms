@@ -50,6 +50,10 @@ export default function Factors() {
   const history = useNavigate();
   const dispatch = useDispatch();
 
+  useEffect(()=>{
+    document.title = "Income-Report"
+  },[])
+
   useEffect(() => {
     setInitialValue({ isAppplicationCheck: W8ECIData?.isAppplicationCheck ?? false })
   }, [authDetails])

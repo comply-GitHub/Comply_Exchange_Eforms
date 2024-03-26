@@ -82,6 +82,11 @@ export default function Factors() {
   const history = useNavigate();
   const [expanded, setExpanded] = React.useState<string | false>("");
   const [clickCount, setClickCount] = useState(0);
+  
+  useEffect(() => {
+ document.title="Comply Exchange"
+  }, []);
+
   useEffect(() => {
     dispatch(getAllCountries());
     dispatch(GetHelpVideoDetails());

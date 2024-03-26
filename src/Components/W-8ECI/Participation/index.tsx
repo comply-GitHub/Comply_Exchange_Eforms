@@ -54,6 +54,11 @@ export default function Penalties() {
     setShowRecoverSection(!showRecoverSection);
     setSecurityWordError("");
   };
+
+  useEffect(()=>{
+    document.title = "Certfication II"
+  },[])
+
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, []);
@@ -164,7 +169,7 @@ export default function Penalties() {
                   </div>
                 </div>
               </div>
-              <div className="row w-100 h-100">
+              <div className="row w-100">
                 <div className="col-4">
                   <div style={{ padding: "20px 0px", height: "100%" }}>
                     <BreadCrumbComponent breadCrumbCode={1301} formName={4} />

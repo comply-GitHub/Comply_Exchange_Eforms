@@ -35,6 +35,10 @@ useEffect(()=>{
   dispatch(GetHelpVideoDetails());
 },[])
 
+useEffect(()=>{
+  document.title = "Steps | Substantial Presence Test"
+},[])
+
 const GethelpData = useSelector(
   (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
 );

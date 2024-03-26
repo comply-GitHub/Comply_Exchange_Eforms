@@ -76,6 +76,11 @@ export default function Backup_witholding(props: any) {
       setExpanded(isExpanded ? panel : false);
     };
   const [toolInfo, setToolInfo] = useState("");
+
+  useEffect(()=>{
+    document.title = "Comply Exchange"
+  },[])
+
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
     dispatch(

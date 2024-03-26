@@ -56,6 +56,9 @@ export default function Penalties() {
 
     setSecurityWordError("");
   };
+  useEffect(()=>{
+    document.title = "Certifications II"
+  },[])
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, [])

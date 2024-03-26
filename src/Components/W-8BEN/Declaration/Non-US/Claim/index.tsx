@@ -46,6 +46,11 @@ export default function FCTA_Reporting(props: any) {
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
 const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+
+
+useEffect(()=>{
+  document.title = "Treaty Claim Statement"
+},[])
 useEffect(() => {
    
   dispatch(GetHelpVideoDetails());

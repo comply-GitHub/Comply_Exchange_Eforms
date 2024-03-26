@@ -69,7 +69,9 @@ export default function FCTA_Reporting(props: any) {
     isExemptionFATCAReportings: getReducerData?.isExemptionFATCAReportings ?? false,
     ReportingId: getReducerData?.ReportingId ?? ""
   };
-
+  useEffect(()=>{
+    document.title = "Exemptions Fatca"
+  },[])
   useEffect(() => {
     dispatch(GetAgentFATCAEntityGIINChallengeDisabledForEformAction());
     dispatch(GetHelpVideoDetails());

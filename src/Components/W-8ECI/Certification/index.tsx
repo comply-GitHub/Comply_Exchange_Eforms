@@ -47,6 +47,10 @@ export default function Certifications(props: any) {
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
 
+  useEffect(()=>{
+    document.title = "Certfication I"
+  },[])
+
   useEffect(() => {
     setInitialValue((prev: any) => {
       return {

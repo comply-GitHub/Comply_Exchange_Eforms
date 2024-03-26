@@ -30,6 +30,10 @@ export default function Certifications(props: any) {
   const { authDetails } = useAuth()
   const history = useNavigate();
 
+  useEffect(()=>{
+    document.title = "Certfication I"
+  },[])
+
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, []);

@@ -119,6 +119,9 @@ export default function Fedral_tax(props: any) {
     setInitialValues({ ...initialValue, ...temp });
 
   }
+  useEffect(()=>{
+    document.title = "Chapter IV"
+  },[])
 
   useEffect(() => {
     dispatch(GetSubstantialUsPassiveNFE(authDetails?.accountHolderId,

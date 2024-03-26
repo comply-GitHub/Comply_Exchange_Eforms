@@ -37,6 +37,9 @@ export default function Penalties() {
     word :""
   };
   
+  // useEffect(()=>{
+  //   document.title = ""
+  // },[])
 
   useEffect(()=>{
     dispatch(GetHelpVideoDetails());

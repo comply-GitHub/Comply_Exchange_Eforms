@@ -109,7 +109,9 @@ export default function Fedral_tax(props: any) {
       setInitialValue(tempData);
     }
   }
-
+useEffect(()=>{
+  document.title = "Comply Important URLs and Passwords"
+},[])
 
   useEffect(() => {
     dispatch(getAllCountries());

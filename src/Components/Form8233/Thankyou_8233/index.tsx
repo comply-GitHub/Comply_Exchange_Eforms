@@ -16,12 +16,16 @@ import { useNavigate } from "react-router-dom";
 
 export default function Term() {
   //States
+
   const history = useNavigate();
   const pdfRef = useRef(null);
   const pdfRefnew = useRef(null);
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
+
+
+  
   const handleDownload = () => {
     if (pdfUrl) {
       const link = document.createElement("a");
@@ -103,6 +107,7 @@ export default function Term() {
               If you are using a public computer, please clear your cookies.
             </Typography>
           </Paper>
+            
           <Typography align="center">
             <div className="mt-5" style={{ justifyContent: "center" }}>
              
@@ -154,5 +159,7 @@ export default function Term() {
         </footer>
       </div>
     </section>
+
+    
   );
 }

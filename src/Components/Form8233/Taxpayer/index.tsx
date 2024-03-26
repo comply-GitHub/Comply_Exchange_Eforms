@@ -57,9 +57,18 @@ export default function Tin(props: any) {
     isNotLegallyFTIN: "",
   };
  
+  // useEffect(()=>{
+  //   document.title = ""
+  // },[])
+
   const [ustinArray, setUStinArray] = useState([]);
   const [ustinValue, setUStinvalue] = useState([]);
   const [notUsIndividual , setNonUsIndividual] = useState([]);
+
+  useEffect(()=>{
+    document.title = "Tax-Payer"
+  },[])
+
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
     dispatch(getAllCountries())   

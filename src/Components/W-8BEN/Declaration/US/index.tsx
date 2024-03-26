@@ -52,6 +52,11 @@ export default function Factors() {
     history("/w8Ben_pdf", { replace: true });
   }
 
+ 
+  useEffect(()=>{
+    document.title = "Income-Report"
+  },[])
+
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, [])

@@ -69,7 +69,9 @@ export default function Tin(props: any) {
   const handleCanvaClose = () => {
     setCanvaBx(false);
   }
-
+  useEffect(()=>{
+    document.title = "Tax-Payer"
+  },[])
 
   const formatTin = (e: any, values: any): any => {
     if (e.key === "Backspace" || e.key === "Delete") return;

@@ -26,7 +26,10 @@ export default function Certifications(props: any) {
   const history = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-
+ 
+  useEffect(()=>{
+    document.title = "Certification I"
+  },[])
   useEffect(() => {
    
     dispatch(GetHelpVideoDetails());

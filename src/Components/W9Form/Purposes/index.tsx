@@ -63,6 +63,11 @@ export default function Fedral_tax(props: any) {
   var getReducerData = useSelector(
     (state: any) => state?.GetByW9FormReducer?.GetByW9FormData
   );
+
+  useEffect(()=>{
+    document.title = "Chapter III"
+  },[])
+
   useEffect(() => {
     // GetByW9FormReducer
     setIsFormFilling(localStorage.getItem("isFormFilling") || "");
