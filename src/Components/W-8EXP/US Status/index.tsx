@@ -375,7 +375,7 @@ export default function Fedral_tax(props: any) {
                                     value={values.chapter3StatusId}
                                     onChange={handleChange}
                                     autoComplete="businessName"
-                                    placeholder="Business Name"
+                                    // placeholder="Business Name"
                                     onBlur={handleBlur}
                                     style={{
                                       padding: " 0 10px",
@@ -607,7 +607,7 @@ export default function Fedral_tax(props: any) {
                                           value={values.countryOfIncorporationId}
                                           onChange={handleChange}
                                           autoComplete="countryOfIncorporationId"
-                                          placeholder="County of Incorporation"
+                                          // placeholder="County of Incorporation"
                                           onBlur={handleBlur}
                                           style={{
                                             padding: " 0 10px",
@@ -845,7 +845,7 @@ export default function Fedral_tax(props: any) {
                                           value={values.countryOfIncorporationId}
                                           onChange={handleChange}
                                           autoComplete="countryOfIncorporationId"
-                                          placeholder="Business Name"
+                                          //placeholder="Business Name"
                                           onBlur={handleBlur}
                                           style={{
                                             padding: " 0 10px",

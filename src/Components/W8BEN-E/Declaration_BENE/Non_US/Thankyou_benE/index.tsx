@@ -13,9 +13,14 @@ import { useRef } from "react";
 
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../../../../customHooks/useAuth";
+import { useDispatch } from "react-redux";
+import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
 
 export default function Term() {
-  //States
+  //States  
+  const { authDetails } = useAuth();
+  const dispatch = useDispatch();
   const history = useNavigate();
   const pdfRef = useRef(null);
   const pdfRefnew = useRef(null);
@@ -109,9 +114,9 @@ export default function Term() {
 
               <div style={{ marginTop: "25px" }}>
                 <Button
-                  //type="submit"
+                  // type="submit"
                   onClick={() => {
-                    history("/w8BenE_pdf");
+                    dispatch(GetBenEPdf(authDetails?.accountHolderId))
                   }}
                   style={{
                     border: "1px solid #0095dd",
@@ -129,7 +134,7 @@ export default function Term() {
                   }}
                   className="btn btn_submit  btn-primary-agent"
                 >
-                  View Form
+                  Download Pdf
                 </Button>
                 <Button
                   type="submit"

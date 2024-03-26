@@ -60,6 +60,11 @@ GetByW8BENEEntityNonUSFormId:"/W8BENEEntity/GetByW8BENEEntityNonUSFormId",
 GetByW8ECIIndividualEntityNonUSFormId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
 GetByW8EXPFormFormEntityNonUs:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
 
+//Pdf apis
+GetECIPdf:"/W8ECIIndividualEntity/GetECIPdf",
+GetBENPdf:"/W8BENIndividual/GetBENPdf",
+GetBENEPdf:"/W8BENEEntity/GetBENEPdf",
+
  //Account Holder Endpoints
  UpsertAccountHolderIncomeAllocation:"/AccountHolderDetail/UpsertAccountHolderIncomeAllocation",
  GetAccountHolderIncomeAllocation:"/AccountHolderDetail/GetAccountHolderIncomeAllocation",
@@ -82,8 +87,9 @@ GetByW8EXPFormFormEntityNonUs:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
  
  //Form GetAPI's
  GetByW9IndividualEntityUSFormId:"/W9IndividualEntity/GetByW9IndividualEntityUSFormId",
- GetByW8BENIndividualId:"W8BENIndividual/GetByW8BENIndividualId",
+ GetByW8BENIndividualId:"/W8BENIndividual/GetByW8BENIndividualId",
  GetByW8ECIIndividualId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
+ GetByW8EXPIndividualId:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
  formPDFFieldData:"/FormTypes/GetPDFFieldValuesbyFormID",
 };
 export default EndPoint;

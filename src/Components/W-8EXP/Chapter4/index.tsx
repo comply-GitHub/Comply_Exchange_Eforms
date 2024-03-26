@@ -368,6 +368,10 @@ export default function Fedral_tax(props: any) {
                                   Chapter 4 Status Guide
                                 </Button>
                               </Typography>
+
+
+                            </div>
+                            <div>
                               {toolInfo === "basic" ? (
                                 <div>
                                   <Paper

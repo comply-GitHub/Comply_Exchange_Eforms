@@ -26,8 +26,9 @@ import { useDispatch, useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import View_Insructions from "../../viewInstruction";
 import { useLocation } from "react-router-dom";
-import GlobalValues from "../../../Utils/constVals";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 
 export default function Tin(props: any) {
   const dispatch = useDispatch();
@@ -91,11 +92,11 @@ export default function Tin(props: any) {
     Tin: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin : getReducerData?.tiN_USTIN,
   };
   const [selectedTaxClassification, setSelectedTaxClassification] =
-    useState(0);
+  useState(0);
   const handleTaxClassificationChange = (
     event: any
-  ) => {
-
+    ) => {
+    
     setSelectedTaxClassification(event.target.value);
   };
   useEffect(() => {
@@ -126,7 +127,7 @@ export default function Tin(props: any) {
     };
   const [toolInfo, setToolInfo] = useState("");
 
-  const viewPdf = () => {
+  const viewPdf=()=>{
     history("w9_pdf");
   }
   return (
@@ -165,7 +166,7 @@ export default function Tin(props: any) {
       </div>
       <Formik
         initialValues={initialValue}
-        enableReinitialize
+        enableReinitialize      
         validateOnChange={false}
         validateOnBlur={false}
         validationSchema={
@@ -176,28 +177,28 @@ export default function Tin(props: any) {
               : firstStepBusinessSchema
         } // Uncomment after testing ,this is validation Schema
         onSubmit={(values, { setSubmitting }) => {
-
-
+          
+          
           const submitPromise = new Promise((resolve, reject) => {
             if (clickCount === 0) {
               setClickCount(clickCount + 1);
             } else {
-              setSubmitting(true);
+                setSubmitting(true);
               const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
               const result = { ...new_obj, ...values };
               dispatch(
                 postW9Form(result, () => {
                   localStorage.setItem("PrevStepData", JSON.stringify(result))
-                  if (continueId == 1) {
+                  if(continueId==1){
                     setcontinueId(0);
-                    history("/US_Purposes/Back/Exemption/Tax/Certificates")
+                   history("/US_Purposes/Back/Exemption/Tax/Certificates")
                   }
                   setSubmitting(false);
                   resolve("success");
                 }, (error: any) => { reject(error); setSubmitting(false); })
               );
-
-
+             
+              
             }
 
           });
@@ -449,77 +450,75 @@ export default function Tin(props: any) {
 
                       </div>
                     </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        marginTop: "80px",
-                      }}
-                    >
-                      <Button variant="contained" style={{ color: "white" }}
-                        onClick={() => {
-                          submitForm().then((data) => {
-                            history(GlobalValues.basePageRoute)
-                          }).catch((error) => {
-                            console.log(error);
-                          })
-                        }}>
-                        SAVE & EXIT
-                      </Button>
-                      <Button variant="contained" onClick={viewPdf} style={{ color: "white", marginLeft: "15px" }}>
-                        View Form
-                      </Button>
-                      <Button
-                        // type="submit" 
-
-                        onClick={() => {
-                          setcontinueId(1);
-                          submitForm().then((data) => {
-                            // history("/US_Purposes/Back/Exemption/Tax/Certificates")
-                          }).catch((error) => {
-                            console.log(error);
-                          })
-                        }}
-                        variant="contained"
-                        style={{ color: "white", marginLeft: "15px" }}
-                      >
-                        Continue
-                      </Button>
-                    </div>
-                    <Typography
-                      align="center"
-                      style={{
-                        color: "#adadac",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: "20px",
-                      }}
-                    >
-                      Do you want to go back?
-                    </Typography>
-                    <Typography align="center">
-                      <Button
-                        onClick={() => {
-                          history("/US_Purposes/Back/Exemption")
-                        }}
-                        variant="contained"
-                        style={{
-                          color: "white",
-                          backgroundColor: "black",
-                          marginTop: "10px",
-                          marginBottom: "20px",
-                        }}
-                      >
-                        Back
-                      </Button>
-                    </Typography>
-
                   </Paper>
                 </div>
               </div>
             </div>
 
-
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "80px",
+              }}
+            >
+              <Button variant="contained" style={{ color: "white" }}
+                onClick={() => {
+                  submitForm().then((data) => {
+                    history(GlobalValues.basePageRoute)
+                  }).catch((error) => {
+                    console.log(error);
+                  })
+                }}>
+                SAVE & EXIT
+              </Button>
+              <Button variant="contained" onClick={viewPdf} style={{ color: "white", marginLeft: "15px" }}>
+                View Form
+              </Button>
+              <Button
+               // type="submit" 
+                              
+                onClick={() => {
+                  setcontinueId(1);
+                  submitForm().then((data) => {
+                   // history("/US_Purposes/Back/Exemption/Tax/Certificates")
+                  }).catch((error) => {
+                    console.log(error);
+                  })
+                }}
+                variant="contained"
+                style={{ color: "white", marginLeft: "15px" }}
+              >
+                Continue
+              </Button>
+            </div>
+            <Typography
+              align="center"
+              style={{
+                color: "#adadac",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "20px",
+              }}
+            >
+              Do you want to go back?
+            </Typography>
+            <Typography align="center">
+              <Button
+                onClick={() => {
+                  history("/US_Purposes/Back/Exemption")
+                }}
+                variant="contained"
+                style={{
+                  color: "white",
+                  backgroundColor: "black",
+                  marginTop: "10px",
+                  marginBottom: "20px",
+                }}
+              >
+                Back
+              </Button>
+            </Typography>
           </Form>
         )}
       </Formik>

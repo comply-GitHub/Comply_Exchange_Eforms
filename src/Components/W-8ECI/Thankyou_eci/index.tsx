@@ -13,9 +13,14 @@ import { useRef } from "react";
 
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
+import useAuth from "../../../customHooks/useAuth";
 
 export default function Term() {
   //States
+  const { authDetails } = useAuth();
+  const dispatch = useDispatch();
   const history = useNavigate();
   const pdfRef = useRef(null);
   const pdfRefnew = useRef(null);
@@ -116,7 +121,8 @@ export default function Term() {
                 <Button
                   //type="submit"
                   onClick={() => {
-                    history("/w8Eci_pdf");
+                    // history("/w8Eci_pdf");
+                    dispatch(GetEciPdf(authDetails?.accountHolderId))
                   }}
                   style={{
                     border: "1px solid #0095dd",
@@ -134,7 +140,7 @@ export default function Term() {
                   }}
                   className="btn btn_submit  btn-primary-agent"
                 >
-                  View PDF
+                  Download PDF
                 </Button>
                 <Button
                   type="submit"

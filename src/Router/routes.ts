@@ -62,8 +62,6 @@ const Exemption = React.lazy(() => import("../Components/W9Form/Exemption"));
 const tax = React.lazy(() => import("../Components/W9Form/tax"));
 const Certificates_w9 = React.lazy(() => import("../Components/W9Form/Certification"));
 const Penlities_W9 = React.lazy(() => import("../Components/W9Form/penalities"));
-const SubmitW9 = React.lazy(() => import("../Components/W9Form/Submit_W9"));
-const ThankyouW9 = React.lazy(() => import("../Components/W9Form/Thankyou"));
 //
 const Eci = React.lazy(() => import("../Components/W-8ECI/Info"));
 const TaxPurpose = React.lazy(() => import("../Components/W-8ECI/TaxPurpose"));
@@ -93,6 +91,10 @@ const W8BENE = React.lazy(
 );
 const W8Eci= React.lazy(
   () => import("../formPDF/W8ECI")
+);
+
+const W8Exp= React.lazy(
+  () => import("../formPDF/W8EXP")
 );
 
 const Presence = React.lazy(() => import("../Components/Form8233/SubstantialPresence"));
@@ -509,21 +511,6 @@ const ROUTES: Array<RouteType> = [
     isPrivate: true,
   },
   {
-    name: "Submit_W9",
-    path: "US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9/SubmitW9",
-    id: 7,
-    Component: SubmitW9,
-    isPrivate: true,
-  },
-  {
-    name: "ThankyouW9",
-    path: "US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9/SubmitW9/ThankyouW9",
-    id: 7,
-    Component: ThankyouW9,
-    isPrivate: true,
-  },  
-  
-  {
     name: "Formw9",
     path: "w9_pdf",
     id: 7,
@@ -551,6 +538,15 @@ const ROUTES: Array<RouteType> = [
     Component: W8Eci,
     isPrivate: true,
   },
+
+  {
+    name: "Formw8Exp",
+    path: "w8Exp_pdf",
+    id: 7,
+    Component: W8Exp,
+    isPrivate: true,
+  },
+  
   
   {
     name: "Tax_Purpose_BenE",

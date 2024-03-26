@@ -10,7 +10,7 @@ import {
   W8_state,
   GetHelpVideoDetails,
   UpsertAccountHolderIncomeAllocation,
-  postW8BEN_EForm,
+  postW8BENForm,
   GetAccountHolderIncomeAllocation
 } from "../../../../Redux/Actions";
 import DynamicForm from "./text";
@@ -49,7 +49,8 @@ export default function Factors() {
     }
   };
   const viewPdf=()=>{
-    history("/w8Ben_pdf", { replace: true });
+    history("/w8Ben_pdf");
+    // history("/w8Ben_pdf", { replace: true });
   }
 
  
@@ -151,7 +152,7 @@ export default function Factors() {
       const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
       const temp = { ...prevStepData, stepName: `/${urlValue}` }
       dispatch(
-        postW8BEN_EForm(temp, () => {
+        postW8BENForm(temp, () => {
           localStorage.setItem("PrevStepData", JSON.stringify(temp));
         },
           (error: any) => {

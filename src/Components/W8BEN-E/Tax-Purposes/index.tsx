@@ -78,7 +78,7 @@ export default function Fedral_tax(props: any) {
     isHybridStatus: 0,
     isSubmissionSingleUSOwner: "",
     isDisRegardedSection1446: "",
-    // statusId: 1,
+    statusId: 1,
     stepName: `/${urlValue}`,
   });
 
@@ -161,7 +161,7 @@ useEffect(()=>{
   }
 
   const viewPdf = () => {
-    history("/w8BenE_pdf", { replace: true });
+    history("/w8BenE_pdf");
   }
 
   return (
@@ -196,7 +196,7 @@ useEffect(()=>{
             </div>
           </div>
         </div>
-        <div className="row w-100 h-100">
+        <div className="row w-100">
           <div className="col-4">
             <div style={{ padding: "20px 0px", height: "100%" }}>
               <BreadCrumbComponent breadCrumbCode={1203} formName={3} />
@@ -784,7 +784,7 @@ useEffect(()=>{
                                           value={values.countryOfIncorporation}
                                           onChange={handleChange}
                                           autoComplete="countryOfIncorporation"
-                                          placeholder="Business Name"
+                                          // placeholder="Business Name"
                                           onBlur={handleBlur}
                                           style={{
                                             padding: " 0 10px",
@@ -1092,7 +1092,7 @@ useEffect(()=>{
                                             value={values.countryOfIncorporation}
                                             onChange={handleChange}
                                             autoComplete="countryOfIncorporation"
-                                            placeholder="Business Name"
+                                            // placeholder="Business Name"
                                             onBlur={handleBlur}
                                             style={{
                                               padding: " 0 10px",
@@ -1320,17 +1320,20 @@ useEffect(()=>{
                           >
                             SAVE & EXIT
                           </Button> */}
-                          <SaveAndExit Callback=
-                            {() => {
-                              validateForm().then((err) => {
-                                if (Object.keys(err).length == 0) {
-                                  submitForm().then((data) => {
-                                    history(GlobalValues.basePageRoute);
-                                  }).catch((error) => {
-                                    console.log(error);
-                                  })
+                          <SaveAndExit Callback={()=>{
+                             submitForm().then(() => {
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              dispatch(postW8BEN_EForm(
+                                {
+                                  ...prevStepData,
+                                  stepName: `/${urlValue}`
                                 }
-                              })
+                                , () => { }))
+                              history(
+                                GlobalValues.basePageRoute
+                              );
+                            })
                             }} formTypeId={FormTypeId.BENE} />
 
                           <Button

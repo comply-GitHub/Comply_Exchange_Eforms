@@ -13,6 +13,7 @@ import {
   Checkbox,
 } from "@mui/material";
 import { Info } from "@mui/icons-material";
+import Infoicon from "../../../../../assets/img/info.png";
 import { Formik, Form } from "formik";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
@@ -137,27 +138,30 @@ export default function FCTA_Reporting(props: any) {
         </div>
       </div>
 
-      <div className="row w-100 h-100">
+      <div className="row w-100 ">
         <div className="col-4">
           <div
             style={{
               padding: "20px 0px",
               height: "100%",
-              backgroundColor: "#0c3d69",
+              // backgroundColor: "#0c3d69",
             }}
           >
             <BreadCrumbComponent breadCrumbCode={1253} formName={3} />
           </div>
         </div>
-        <div className="col-8 mt-3" style={{ backgroundColor: "#0c3d69" }}>
-          <div style={{ padding: "13px ", backgroundColor: "#0c3d69" }}>
+        <div className="col-8 mt-3" >
+          <div style={{ padding: "13px ", }}>
             <Paper style={{ padding: "10px" }}>
               <Formik
                 validateOnChange={true}
-                // validateOnBlur={true}
+                 validateOnBlur={true}
                 validateOnMount={true}
+                
                 initialValues={initialValues}
                 enableReinitialize
+              
+             
                 validationSchema={claimSchemaW8BenE}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
@@ -210,6 +214,79 @@ export default function FCTA_Reporting(props: any) {
                   submitForm
                 }) => (
                   <Form onSubmit={handleSubmit}>
+                     {/* {values.isSubmissionClaimTreaty && clickCount === 1 ? (<div  style={{backgroundColor: "#e8e1e1" , padding:"10px"}}>
+                  <Typography>
+                  Treaty107
+                  <span className="mx-1">
+                  <img src={Infoicon} style={{color: "#ffc107",height:"22px",
+                  width:"20px",
+                  boxShadow:"inherit",
+                 
+
+                         
+                          cursor: "pointer",
+                          marginBottom:"3px"
+                         
+                        }}/>
+                    
+              The country selected does not match the resident country selected earlier in the process. Your agent may contact you for further information.
+
+ 
+                  </span>
+   
+                  
+                  </Typography>
+                  <Typography>
+                  Treaty120
+                  <span className="mx-1">
+                  <img src={Infoicon} style={{color: "#ffc107",height:"22px",
+                  width:"20px",
+                  boxShadow:"inherit",
+                 
+
+                         
+                          cursor: "pointer",
+                          marginBottom:"3px"
+                         
+                        }}/>
+                    
+The treaty country chosen does not match the country selected earlier as the primary residence address country. Please review the selections for accuracy. Generally the primary residence address country will be the same country applicable for treaty claim purposes. The withholding agent may need to request further information depending on answers given elsewhere and attachments supplied.
+ 
+                  </span>
+   
+                  
+                  </Typography>
+                
+                
+                 
+                </div>):""}
+                {!values.isSubmissionClaimTreaty && clickCount === 1 ? (
+                
+                <div  style={{backgroundColor: "#e8e1e1" , padding:"10px"}}>
+                  <Typography>
+                  Treaty119
+                  <span className="mx-1">
+                  <img src={Infoicon} style={{color: "#ffc107",height:"22px",
+                  width:"20px",
+                  boxShadow:"inherit",
+                 
+
+                         
+                          cursor: "pointer",
+                          marginBottom:"3px"
+                         
+                        }}/>
+                    
+ You have made a selection that indicates you do not wish to claim treaty benefits that may be available. If this is correct please continue to the next stage. Your agent may contact you for further information.
+ 
+                  </span>
+   
+                  
+                  </Typography>
+                
+                
+                 
+                </div>):""} */}
                     <>{console.log(errors, values, "valeeeeeeeeeee")}</>
                     <div>
                       <div style={{ margin: "10px" }}>
@@ -535,7 +612,7 @@ export default function FCTA_Reporting(props: any) {
                                     </div>
                                   </div>
                                   <p className="error">
-                                    {touched.ownerResidentId ? errors.ownerResidentId : ""}
+                                    {touched.ownerResidentId && errors.ownerResidentId? (<p>{errors.ownerResidentId}</p>): ""}
                                   </p>
                                 </FormControl>
                               </div>
@@ -578,10 +655,10 @@ export default function FCTA_Reporting(props: any) {
                                       </select>
                                     </div>
                                   </div>
-
                                   <p className="error">
-                                    {touched.limitationBenefitsId ? errors.limitationBenefitsId : ""}
+                                    {touched.limitationBenefitsId && errors.limitationBenefitsId? (<p>{errors.limitationBenefitsId}</p>): ""}
                                   </p>
+                                 
                                 </FormControl>
                               </div>
                                 <div>

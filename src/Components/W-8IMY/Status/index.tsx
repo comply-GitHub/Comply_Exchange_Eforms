@@ -48,7 +48,7 @@ export default function Fedral_tax(props: any) {
     lastName: "",
     businessName: "",
     federalTaxClassificationId: 0,
-    federal:""
+    federal: ""
   };
   const [toolInfo, setToolInfo] = useState("");
   const history = useNavigate();
@@ -66,7 +66,7 @@ export default function Fedral_tax(props: any) {
     dispatch(getAllCountries());
     dispatch(getAllCountriesCode());
     dispatch(getAllCountriesIncomeCode());
-     dispatch(GetHelpVideoDetails());
+    dispatch(GetHelpVideoDetails());
     dispatch(GetChapter3Status());
   }, []);
   const GethelpData = useSelector(
@@ -115,38 +115,38 @@ export default function Fedral_tax(props: any) {
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[7].id === 9 ? (
-  <a
-    href={GethelpData[7].fieldValue}
-    target="popup"
-    onClick={() =>
-      window.open(
-        GethelpData[7].fieldValue,
-        'name',
-        `width=${GethelpData[7].width},height=${GethelpData[7].height},top=${GethelpData[7].top},left=${GethelpData[7].left}`
-      )
-    }
-  >
-    Help Video
-  </a>
-) : (
-  ""
-)}
+                <a
+                  href={GethelpData[7].fieldValue}
+                  target="popup"
+                  onClick={() =>
+                    window.open(
+                      GethelpData[7].fieldValue,
+                      'name',
+                      `width=${GethelpData[7].width},height=${GethelpData[7].height},top=${GethelpData[7].top},left=${GethelpData[7].left}`
+                    )
+                  }
+                >
+                  Help Video
+                </a>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>
         <div className="row w-100 h-100">
           <div className="col-4">
-            <div style={{ padding: "20px 0px",height:"100%"}}>
-            <BreadCrumbComponent breadCrumbCode={1203} formName={7} />
-      </div>
-           
+            <div style={{ padding: "20px 0px", height: "100%" }}>
+              <BreadCrumbComponent breadCrumbCode={1203} formName={7} />
+            </div>
+
           </div>
           <div className="col-8 mt-3">
             <div style={{ padding: "13px" }}>
               <Paper style={{ padding: "10px" }}>
                 <Formik
-                validateOnChange={false}
-                validateOnBlur={false}
+                  validateOnChange={false}
+                  validateOnBlur={false}
                   initialValues={initialValue}
                   validationSchema={TaxPurposeSchema}
                   onSubmit={(values, { setSubmitting }) => {
@@ -315,7 +315,7 @@ export default function Fedral_tax(props: any) {
                                     value={values.federalTaxClassificationId}
                                     onChange={handleChange}
                                     autoComplete="businessName"
-                                    placeholder="Business Name"
+                                    // placeholder="Business Name"
                                     onBlur={handleBlur}
                                     style={{
                                       padding: " 0 10px",
@@ -340,608 +340,496 @@ export default function Fedral_tax(props: any) {
                                 </FormControl>
                               </div>
                             </div>
-{values.federalTaxClassificationId == 1 ||values.federalTaxClassificationId == 6 ||values.federalTaxClassificationId == 7 || values.federalTaxClassificationId == 8 ||values.federalTaxClassificationId == 9 || values.federalTaxClassificationId == 10 ||values.federalTaxClassificationId == 11 || values.federalTaxClassificationId == 12 ||values.federalTaxClassificationId == 13 ?(
-<>
+                            {values.federalTaxClassificationId == 1 || values.federalTaxClassificationId == 6 || values.federalTaxClassificationId == 7 || values.federalTaxClassificationId == 8 || values.federalTaxClassificationId == 9 || values.federalTaxClassificationId == 10 || values.federalTaxClassificationId == 11 || values.federalTaxClassificationId == 12 || values.federalTaxClassificationId == 13 ? (
+                              <>
 
-<div
-                              style={{ marginTop: "20px", display: "flex" }}
-                              className="col-12"
-                            >
-                              <div className="col-6">
-                                <Typography
-                                  align="left"
-                                  className="d-flex w-60 "
-                                  style={{ fontSize: "13px" }}
+                                <div
+                                  style={{ marginTop: "20px", display: "flex" }}
+                                  className="col-12"
                                 >
-                                  Business Name:
-                                  <span style={{ color: "red" }}>*</span>
-                                  <span>
-                                    <Tooltip
-                                      style={{
-                                        backgroundColor: "black",
-                                        color: "white",
-                                      }}
-                                      title={
-                                        <>
-                                          <Typography color="inherit">
-                                            Name details
+                                  <div className="col-6">
+                                    <Typography
+                                      align="left"
+                                      className="d-flex w-60 "
+                                      style={{ fontSize: "13px" }}
+                                    >
+                                      Business Name:
+                                      <span style={{ color: "red" }}>*</span>
+                                      <span>
+                                        <Tooltip
+                                          style={{
+                                            backgroundColor: "black",
+                                            color: "white",
+                                          }}
+                                          title={
+                                            <>
+                                              <Typography color="inherit">
+                                                Name details
+                                              </Typography>
+                                              <a
+                                                onClick={() => setToolInfo("name")}
+                                              >
+                                                <Typography
+                                                  style={{
+                                                    cursor: "pointer",
+                                                    textDecorationLine: "underline",
+                                                  }}
+                                                  align="center"
+                                                >
+                                                  {" "}
+                                                  View More...
+                                                </Typography>
+                                              </a>
+                                            </>
+                                          }
+                                        >
+                                          <Info
+                                            style={{
+                                              color: "#ffc107",
+                                              fontSize: "10px",
+                                              cursor: "pointer",
+                                              verticalAlign: "super",
+                                            }}
+                                          />
+                                        </Tooltip>
+                                      </span>
+                                    </Typography>
+                                    {toolInfo === "name" ? (
+                                      <div>
+                                        <Paper
+                                          style={{
+                                            backgroundColor: "#dedcb1",
+                                            padding: "15px",
+                                            marginBottom: "10px",
+                                          }}
+                                        >
+                                          <Typography>
+                                            Please enter the first and last name of
+                                            the person who is required or has been
+                                            requested to submit an information
+                                            return.
                                           </Typography>
-                                          <a
-                                            onClick={() => setToolInfo("name")}
+                                          <Typography
+                                            style={{
+                                              marginTop: "10px",
+                                              fontWeight: "550",
+                                            }}
                                           >
-                                            <Typography
-                                              style={{
-                                                cursor: "pointer",
-                                                textDecorationLine: "underline",
-                                              }}
-                                              align="center"
-                                            >
-                                              {" "}
-                                              View More...
-                                            </Typography>
-                                          </a>
-                                        </>
-                                      }
-                                    >
-                                      <Info
-                                        style={{
-                                          color: "#ffc107",
-                                          fontSize: "10px",
-                                          cursor: "pointer",
-                                          verticalAlign: "super",
-                                        }}
-                                      />
-                                    </Tooltip>
-                                  </span>
-                                </Typography>
-                                {toolInfo === "name" ? (
-                                  <div>
-                                    <Paper
-                                      style={{
-                                        backgroundColor: "#dedcb1",
-                                        padding: "15px",
-                                        marginBottom: "10px",
-                                      }}
-                                    >
-                                      <Typography>
-                                        Please enter the first and last name of
-                                        the person who is required or has been
-                                        requested to submit an information
-                                        return.
-                                      </Typography>
-                                      <Typography
-                                        style={{
-                                          marginTop: "10px",
-                                          fontWeight: "550",
-                                        }}
-                                      >
-                                        Specific instructions for U.S.
-                                        individuals and sole proprietors: U.S.
-                                        individuals:
-                                      </Typography>
-                                      <Typography style={{ marginTop: "10px" }}>
-                                        If you are an{" "}
-                                        <span style={{ fontWeight: "550" }}>
-                                          individual
-                                        </span>
-                                        , you must enter the name shown on your
-                                        income tax return. However, if you have
-                                        changed your last name, for instance,
-                                        due to marriage without informing the
-                                        Social Security Administration of the
-                                        name change, enter your first name, the
-                                        last name shown on your social security
-                                        card, and your new last name. In certain
-                                        situations we may need to contact you
-                                        for further verification.
-                                      </Typography>
-                                      <Typography style={{ marginTop: "10px" }}>
-                                        <span style={{ fontWeight: "550" }}>
-                                          Joint names:
-                                        </span>
-                                        If the account is in joint names, both
-                                        parties will need to submit separate
-                                        submissions.
-                                      </Typography>
-                                      <Typography style={{ marginTop: "10px" }}>
-                                        <span style={{ fontWeight: "550" }}>
-                                          {" "}
-                                          Sole proprietor:
-                                        </span>
-                                        Enter your individual name as shown on
-                                        your income tax return on the 'Name'
-                                        line. You may enter your business,
-                                        trade, or 'doing business as (DBA)' name
-                                        on the 'Business name' line.
-                                      </Typography>
-
-                                      <Link
-                                        href="#"
-                                        underline="none"
-                                        style={{
-                                          marginTop: "10px",
-                                          fontSize: "16px",
-                                        }}
-                                        onClick={() => {
-                                          setToolInfo("");
-                                        }}
-                                      >
-                                        --Show Less--
-                                      </Link>
-                                    </Paper>
-                                  </div>
-                                ) : (
-                                  ""
-                                )}
-
-                                <FormControl className="w-100">
-                                  <TextField
-                                    autoComplete="firstName"
-                                    type="text"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={
-                                      touched.firstName && errors.firstName
-                                    }
-                                    error={Boolean(
-                                      touched.firstName && errors.firstName
-                                    )}
-                                    name="firstName"
-                                    className="inputClassFull"
-                                    value={values.firstName}
-                                  />
-                                </FormControl>
-                              </div>
-                              <div
-                                className="col-6"
-                                style={{ marginLeft: "10px" }}
-                              >
-                                <Typography
-                                  align="left"
-                                  className="d-flex w-60 "
-                                  style={{ fontSize: "13px" }}
-                                >
-                                  Business Name or disregarded entity name if
-                                  different:
-                                </Typography>
-
-                                <FormControl className="w-100">
-                                  <TextField
-                                    autoComplete="lastName"
-                                    type="text"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={
-                                      touched.lastName && errors.lastName
-                                    }
-                                    error={Boolean(
-                                      touched.lastName && errors.lastName
-                                    )}
-                                    name="lastName"
-                                    value={values.lastName}
-                                    className="inputClass"
-                                  />
-                                </FormControl>
-                              </div>
-                            </div>
-
-                            <>
-                              <div className="row">
-                                <div className=" col-12">
-                                  <Typography
-                                    align="left"
-                                    className="d-flex w-60 "
-                                    style={{
-                                      fontSize: "13px",
-                                      marginTop: "15px",
-                                    }}
-                                  >
-                                    Country of incorporation / organization:
-                                    <span style={{ color: "red" }}>*</span>
-                                  </Typography>
-
-                                  <FormControl className="w-50">
-                                    <select
-                                      name="businessName"
-                                      value={values.businessName}
-                                      onChange={handleChange}
-                                      autoComplete="businessName"
-                                      placeholder="Business Name"
-                                      onBlur={handleBlur}
-                                      style={{
-                                        padding: " 0 10px",
-                                        color: "#7e7e7e",
-                                        fontStyle: "italic",
-                                        height: "36px",
-                                      }}
-                                    >
-                                      <option value="">---select---</option>
-                                      <option value={257}>
-                                        United Kingdom
-                                      </option>
-                                      <option value={258}>United States</option>
-                                      <option value="">---</option>
-                                      {getCountriesReducer.allCountriesData?.map(
-                                        (ele: any) => (
-                                          <option key={ele?.id} value={ele?.id}>
-                                            {ele?.name}
-                                          </option>
-                                        )
-                                      )}
-                                    </select>
-                                    <p className="error">
-                                      {errors.businessName}
-                                    </p>
-                                  </FormControl>
-                                </div>
-                              </div>
-                            </>
-</>):""}
-
-
-{values.federalTaxClassificationId == 2 ||values.federalTaxClassificationId == 3 || values.federalTaxClassificationId == 4 ||values.federalTaxClassificationId == 5 ?(<>
-<>
-
-<div
-                              style={{ marginTop: "20px", display: "flex" }}
-                              className="col-12"
-                            >
-                              <div className="col-6">
-                                <Typography
-                                  align="left"
-                                  className="d-flex w-60 "
-                                  style={{ fontSize: "13px" }}
-                                >
-                                  Business Name:
-                                  <span style={{ color: "red" }}>*</span>
-                                  <span>
-                                    <Tooltip
-                                      style={{
-                                        backgroundColor: "black",
-                                        color: "white",
-                                      }}
-                                      title={
-                                        <>
-                                          <Typography color="inherit">
-                                            Name details
+                                            Specific instructions for U.S.
+                                            individuals and sole proprietors: U.S.
+                                            individuals:
                                           </Typography>
-                                          <a
-                                            onClick={() => setToolInfo("name")}
-                                          >
-                                            <Typography
-                                              style={{
-                                                cursor: "pointer",
-                                                textDecorationLine: "underline",
-                                              }}
-                                              align="center"
-                                            >
+                                          <Typography style={{ marginTop: "10px" }}>
+                                            If you are an{" "}
+                                            <span style={{ fontWeight: "550" }}>
+                                              individual
+                                            </span>
+                                            , you must enter the name shown on your
+                                            income tax return. However, if you have
+                                            changed your last name, for instance,
+                                            due to marriage without informing the
+                                            Social Security Administration of the
+                                            name change, enter your first name, the
+                                            last name shown on your social security
+                                            card, and your new last name. In certain
+                                            situations we may need to contact you
+                                            for further verification.
+                                          </Typography>
+                                          <Typography style={{ marginTop: "10px" }}>
+                                            <span style={{ fontWeight: "550" }}>
+                                              Joint names:
+                                            </span>
+                                            If the account is in joint names, both
+                                            parties will need to submit separate
+                                            submissions.
+                                          </Typography>
+                                          <Typography style={{ marginTop: "10px" }}>
+                                            <span style={{ fontWeight: "550" }}>
                                               {" "}
-                                              View More...
-                                            </Typography>
-                                          </a>
-                                        </>
-                                      }
-                                    >
-                                      <Info
-                                        style={{
-                                          color: "#ffc107",
-                                          fontSize: "10px",
-                                          cursor: "pointer",
-                                          verticalAlign: "super",
-                                        }}
+                                              Sole proprietor:
+                                            </span>
+                                            Enter your individual name as shown on
+                                            your income tax return on the 'Name'
+                                            line. You may enter your business,
+                                            trade, or 'doing business as (DBA)' name
+                                            on the 'Business name' line.
+                                          </Typography>
+
+                                          <Link
+                                            href="#"
+                                            underline="none"
+                                            style={{
+                                              marginTop: "10px",
+                                              fontSize: "16px",
+                                            }}
+                                            onClick={() => {
+                                              setToolInfo("");
+                                            }}
+                                          >
+                                            --Show Less--
+                                          </Link>
+                                        </Paper>
+                                      </div>
+                                    ) : (
+                                      ""
+                                    )}
+
+                                    <FormControl className="w-100">
+                                      <TextField
+                                        autoComplete="firstName"
+                                        type="text"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={
+                                          touched.firstName && errors.firstName
+                                        }
+                                        error={Boolean(
+                                          touched.firstName && errors.firstName
+                                        )}
+                                        name="firstName"
+                                        className="inputClassFull"
+                                        value={values.firstName}
                                       />
-                                    </Tooltip>
-                                  </span>
-                                </Typography>
-                                {toolInfo === "name" ? (
-                                  <div>
-                                    <Paper
-                                      style={{
-                                        backgroundColor: "#dedcb1",
-                                        padding: "15px",
-                                        marginBottom: "10px",
-                                      }}
-                                    >
-                                      <Typography>
-                                        Please enter the first and last name of
-                                        the person who is required or has been
-                                        requested to submit an information
-                                        return.
-                                      </Typography>
-                                      <Typography
-                                        style={{
-                                          marginTop: "10px",
-                                          fontWeight: "550",
-                                        }}
-                                      >
-                                        Specific instructions for U.S.
-                                        individuals and sole proprietors: U.S.
-                                        individuals:
-                                      </Typography>
-                                      <Typography style={{ marginTop: "10px" }}>
-                                        If you are an{" "}
-                                        <span style={{ fontWeight: "550" }}>
-                                          individual
-                                        </span>
-                                        , you must enter the name shown on your
-                                        income tax return. However, if you have
-                                        changed your last name, for instance,
-                                        due to marriage without informing the
-                                        Social Security Administration of the
-                                        name change, enter your first name, the
-                                        last name shown on your social security
-                                        card, and your new last name. In certain
-                                        situations we may need to contact you
-                                        for further verification.
-                                      </Typography>
-                                      <Typography style={{ marginTop: "10px" }}>
-                                        <span style={{ fontWeight: "550" }}>
-                                          Joint names:
-                                        </span>
-                                        If the account is in joint names, both
-                                        parties will need to submit separate
-                                        submissions.
-                                      </Typography>
-                                      <Typography style={{ marginTop: "10px" }}>
-                                        <span style={{ fontWeight: "550" }}>
-                                          {" "}
-                                          Sole proprietor:
-                                        </span>
-                                        Enter your individual name as shown on
-                                        your income tax return on the 'Name'
-                                        line. You may enter your business,
-                                        trade, or 'doing business as (DBA)' name
-                                        on the 'Business name' line.
-                                      </Typography>
-
-                                      <Link
-                                        href="#"
-                                        underline="none"
-                                        style={{
-                                          marginTop: "10px",
-                                          fontSize: "16px",
-                                        }}
-                                        onClick={() => {
-                                          setToolInfo("");
-                                        }}
-                                      >
-                                        --Show Less--
-                                      </Link>
-                                    </Paper>
+                                    </FormControl>
                                   </div>
-                                ) : (
-                                  ""
-                                )}
-
-                                <FormControl className="w-100">
-                                  <TextField
-                                    autoComplete="firstName"
-                                    type="text"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={
-                                      touched.firstName && errors.firstName
-                                    }
-                                    error={Boolean(
-                                      touched.firstName && errors.firstName
-                                    )}
-                                    name="firstName"
-                                    className="inputClassFull"
-                                    value={values.firstName}
-                                  />
-                                </FormControl>
-                              </div>
-                              <div
-                                className="col-6  "
-                                style={{ marginLeft: "10px" }}
-                              >
-                                <Typography
-                                  align="left"
-                                  className="d-flex w-60 "
-                                  style={{ fontSize: "13px" }}
-                                >
-                                  Business Name or disregarded entity name if
-                                  different:
-                                </Typography>
-
-                                <FormControl className="w-100">
-                                  <TextField
-                                    autoComplete="lastName"
-                                    type="text"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    helperText={
-                                      touched.lastName && errors.lastName
-                                    }
-                                    error={Boolean(
-                                      touched.lastName && errors.lastName
-                                    )}
-                                    name="lastName"
-                                    value={values.lastName}
-                                    className="inputClass"
-                                  />
-                                </FormControl>
-                              </div>
-                            </div>
-
-                            <>
-                              <div className="row">
-                                <div className=" col-12">
-                                  <Typography
-                                    align="left"
-                                    className="d-flex w-60 "
-                                    style={{
-                                      fontSize: "13px",
-                                      marginTop: "15px",
-                                    }}
+                                  <div
+                                    className="col-6"
+                                    style={{ marginLeft: "10px" }}
                                   >
-                                    Country of incorporation / organization:
-                                    <span style={{ color: "red" }}>*</span>
-                                  </Typography>
-
-                                  <FormControl className="w-50">
-                                    <select
-                                      name="businessName"
-                                      value={values.businessName}
-                                      onChange={handleChange}
-                                      autoComplete="businessName"
-                                      placeholder="Business Name"
-                                      onBlur={handleBlur}
-                                      style={{
-                                        padding: " 0 10px",
-                                        color: "#7e7e7e",
-                                        fontStyle: "italic",
-                                        height: "36px",
-                                      }}
+                                    <Typography
+                                      align="left"
+                                      className="d-flex w-60 "
+                                      style={{ fontSize: "13px" }}
                                     >
-                                      <option value="">---select---</option>
-                                      <option value={257}>
-                                        United Kingdom
-                                      </option>
-                                      <option value={258}>United States</option>
-                                      <option value="">---</option>
-                                      {getCountriesReducer.allCountriesData?.map(
-                                        (ele: any) => (
-                                          <option key={ele?.id} value={ele?.id}>
-                                            {ele?.name}
-                                          </option>
-                                        )
-                                      )}
-                                    </select>
-                                    <p className="error">
-                                      {errors.businessName}
-                                    </p>
-                                  </FormControl>
+                                      Business Name or disregarded entity name if
+                                      different:
+                                    </Typography>
+
+                                    <FormControl className="w-100">
+                                      <TextField
+                                        autoComplete="lastName"
+                                        type="text"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={
+                                          touched.lastName && errors.lastName
+                                        }
+                                        error={Boolean(
+                                          touched.lastName && errors.lastName
+                                        )}
+                                        name="lastName"
+                                        value={values.lastName}
+                                        className="inputClass"
+                                      />
+                                    </FormControl>
+                                  </div>
                                 </div>
-                              </div>
-                            </>
-</>
 
-                            <div>
-                              <Typography
-                                className="mt-3"
-                                style={{
-                                  fontSize: "15px",
-                                }}
-                              >
-                                Hybrid status:
-                              </Typography>
-                              <FormControl>
-                                <RadioGroup
-                                  row
-                                  defaultValue="Not"
-                                  aria-labelledby="demo-row-radio-buttons-group-label"
-                                  name="row-radio-buttons-group"
-                                  //   value={values.isHeldUSCitizenship}
-                                  onChange={handleChange}
-                                  id="isHeldUSCitizenship"
+                                <>
+                                  <div className="row">
+                                    <div className=" col-12">
+                                      <Typography
+                                        align="left"
+                                        className="d-flex w-60 "
+                                        style={{
+                                          fontSize: "13px",
+                                          marginTop: "15px",
+                                        }}
+                                      >
+                                        Country of incorporation / organization:
+                                        <span style={{ color: "red" }}>*</span>
+                                      </Typography>
+
+                                      <FormControl className="w-50">
+                                        <select
+                                          name="businessName"
+                                          value={values.businessName}
+                                          onChange={handleChange}
+                                          autoComplete="businessName"
+                                          //  placeholder="Business Name"
+                                          onBlur={handleBlur}
+                                          style={{
+                                            padding: " 0 10px",
+                                            color: "#7e7e7e",
+                                            fontStyle: "italic",
+                                            height: "36px",
+                                          }}
+                                        >
+                                          <option value="">---select---</option>
+                                          <option value={257}>
+                                            United Kingdom
+                                          </option>
+                                          <option value={258}>United States</option>
+                                          <option value="">---</option>
+                                          {getCountriesReducer.allCountriesData?.map(
+                                            (ele: any) => (
+                                              <option key={ele?.id} value={ele?.id}>
+                                                {ele?.name}
+                                              </option>
+                                            )
+                                          )}
+                                        </select>
+                                        <p className="error">
+                                          {errors.businessName}
+                                        </p>
+                                      </FormControl>
+                                    </div>
+                                  </div>
+                                </>
+                              </>) : ""}
+
+
+                            {values.federalTaxClassificationId == 2 || values.federalTaxClassificationId == 3 || values.federalTaxClassificationId == 4 || values.federalTaxClassificationId == 5 ? (<>
+                              <>
+
+                                <div
+                                  style={{ marginTop: "20px", display: "flex" }}
+                                  className="col-12"
                                 >
-                                  <FormControlLabel
-                                    control={<Radio />}
-                                    value="Yes"
-                                    name="isHeldUSCitizenship"
-                                    label="Hybrid"
-                                  />
-                                  <FormControlLabel
-                                    control={<Radio />}
-                                    value="No"
-                                    name="isHeldUSCitizenship"
-                                    label="Reverse Hybrid"
-                                  />
-                                  <FormControlLabel
-                                    control={<Radio />}
-                                    value="Not"
-                                    name="isHeldUSCitizenship"
-                                    label="Not Applicable"
-                                  />
-                                </RadioGroup>
-                                <p className="error">
-                                  {/* {errors.isHeldUSCitizenship} */}
-                                </p>
-                              </FormControl>
-                            </div>
+                                  <div className="col-6">
+                                    <Typography
+                                      align="left"
+                                      className="d-flex w-60 "
+                                      style={{ fontSize: "13px" }}
+                                    >
+                                      Business Name:
+                                      <span style={{ color: "red" }}>*</span>
+                                      <span>
+                                        <Tooltip
+                                          style={{
+                                            backgroundColor: "black",
+                                            color: "white",
+                                          }}
+                                          title={
+                                            <>
+                                              <Typography color="inherit">
+                                                Name details
+                                              </Typography>
+                                              <a
+                                                onClick={() => setToolInfo("name")}
+                                              >
+                                                <Typography
+                                                  style={{
+                                                    cursor: "pointer",
+                                                    textDecorationLine: "underline",
+                                                  }}
+                                                  align="center"
+                                                >
+                                                  {" "}
+                                                  View More...
+                                                </Typography>
+                                              </a>
+                                            </>
+                                          }
+                                        >
+                                          <Info
+                                            style={{
+                                              color: "#ffc107",
+                                              fontSize: "10px",
+                                              cursor: "pointer",
+                                              verticalAlign: "super",
+                                            }}
+                                          />
+                                        </Tooltip>
+                                      </span>
+                                    </Typography>
+                                    {toolInfo === "name" ? (
+                                      <div>
+                                        <Paper
+                                          style={{
+                                            backgroundColor: "#dedcb1",
+                                            padding: "15px",
+                                            marginBottom: "10px",
+                                          }}
+                                        >
+                                          <Typography>
+                                            Please enter the first and last name of
+                                            the person who is required or has been
+                                            requested to submit an information
+                                            return.
+                                          </Typography>
+                                          <Typography
+                                            style={{
+                                              marginTop: "10px",
+                                              fontWeight: "550",
+                                            }}
+                                          >
+                                            Specific instructions for U.S.
+                                            individuals and sole proprietors: U.S.
+                                            individuals:
+                                          </Typography>
+                                          <Typography style={{ marginTop: "10px" }}>
+                                            If you are an{" "}
+                                            <span style={{ fontWeight: "550" }}>
+                                              individual
+                                            </span>
+                                            , you must enter the name shown on your
+                                            income tax return. However, if you have
+                                            changed your last name, for instance,
+                                            due to marriage without informing the
+                                            Social Security Administration of the
+                                            name change, enter your first name, the
+                                            last name shown on your social security
+                                            card, and your new last name. In certain
+                                            situations we may need to contact you
+                                            for further verification.
+                                          </Typography>
+                                          <Typography style={{ marginTop: "10px" }}>
+                                            <span style={{ fontWeight: "550" }}>
+                                              Joint names:
+                                            </span>
+                                            If the account is in joint names, both
+                                            parties will need to submit separate
+                                            submissions.
+                                          </Typography>
+                                          <Typography style={{ marginTop: "10px" }}>
+                                            <span style={{ fontWeight: "550" }}>
+                                              {" "}
+                                              Sole proprietor:
+                                            </span>
+                                            Enter your individual name as shown on
+                                            your income tax return on the 'Name'
+                                            line. You may enter your business,
+                                            trade, or 'doing business as (DBA)' name
+                                            on the 'Business name' line.
+                                          </Typography>
 
-                            <div className="mt-2">
-                              <Typography
-                                style={{
-                                  fontSize: "15px",
-                                }}
-                              >
-                                Please provide a description of your hybrid
-                                status and if applicable attach additional
-                                information to substantiate your statement for
-                                United States tax purposes.
-                              </Typography>
-                              <FormControl className="w-100 textfield1">
-                                <TextField className="textfield1" />
-                              </FormControl>
-                              <div className="d-flex mt-3 ">
+                                          <Link
+                                            href="#"
+                                            underline="none"
+                                            style={{
+                                              marginTop: "10px",
+                                              fontSize: "16px",
+                                            }}
+                                            onClick={() => {
+                                              setToolInfo("");
+                                            }}
+                                          >
+                                            --Show Less--
+                                          </Link>
+                                        </Paper>
+                                      </div>
+                                    ) : (
+                                      ""
+                                    )}
+
+                                    <FormControl className="w-100">
+                                      <TextField
+                                        autoComplete="firstName"
+                                        type="text"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={
+                                          touched.firstName && errors.firstName
+                                        }
+                                        error={Boolean(
+                                          touched.firstName && errors.firstName
+                                        )}
+                                        name="firstName"
+                                        className="inputClassFull"
+                                        value={values.firstName}
+                                      />
+                                    </FormControl>
+                                  </div>
+                                  <div
+                                    className="col-6  "
+                                    style={{ marginLeft: "10px" }}
+                                  >
+                                    <Typography
+                                      align="left"
+                                      className="d-flex w-60 "
+                                      style={{ fontSize: "13px" }}
+                                    >
+                                      Business Name or disregarded entity name if
+                                      different:
+                                    </Typography>
+
+                                    <FormControl className="w-100">
+                                      <TextField
+                                        autoComplete="lastName"
+                                        type="text"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        helperText={
+                                          touched.lastName && errors.lastName
+                                        }
+                                        error={Boolean(
+                                          touched.lastName && errors.lastName
+                                        )}
+                                        name="lastName"
+                                        value={values.lastName}
+                                        className="inputClass"
+                                      />
+                                    </FormControl>
+                                  </div>
+                                </div>
+
+                                <>
+                                  <div className="row">
+                                    <div className=" col-12">
+                                      <Typography
+                                        align="left"
+                                        className="d-flex w-60 "
+                                        style={{
+                                          fontSize: "13px",
+                                          marginTop: "15px",
+                                        }}
+                                      >
+                                        Country of incorporation / organization:
+                                        <span style={{ color: "red" }}>*</span>
+                                      </Typography>
+
+                                      <FormControl className="w-50">
+                                        <select
+                                          name="businessName"
+                                          value={values.businessName}
+                                          onChange={handleChange}
+                                          autoComplete="businessName"
+                                          // placeholder="Business Name"
+                                          onBlur={handleBlur}
+                                          style={{
+                                            padding: " 0 10px",
+                                            color: "#7e7e7e",
+                                            fontStyle: "italic",
+                                            height: "36px",
+                                          }}
+                                        >
+                                          <option value="">---select---</option>
+                                          <option value={257}>
+                                            United Kingdom
+                                          </option>
+                                          <option value={258}>United States</option>
+                                          <option value="">---</option>
+                                          {getCountriesReducer.allCountriesData?.map(
+                                            (ele: any) => (
+                                              <option key={ele?.id} value={ele?.id}>
+                                                {ele?.name}
+                                              </option>
+                                            )
+                                          )}
+                                        </select>
+                                        <p className="error">
+                                          {errors.businessName}
+                                        </p>
+                                      </FormControl>
+                                    </div>
+                                  </div>
+                                </>
+                              </>
+
+                              <div>
                                 <Typography
-                                 
+                                  className="mt-3"
                                   style={{
                                     fontSize: "15px",
                                   }}
                                 >
-                                  Attach supporting documentation:
-                                </Typography>
-                                <input
-                                 className="mx-2"
-                                  type="file"
-                                  style={{ fontSize: "12px" }}
-                                />
-                              </div>
-                              <div className="mt-2">
-                                <Typography
-                                  style={{
-                                    fontSize: "15px",
-                                  }}
-                                >
-                                  Is this submission being made on behalf of a
-                                  disregarded entity that has a Single U.S.
-                                  Owner?
+                                  Hybrid status:
                                 </Typography>
                                 <FormControl>
                                   <RadioGroup
                                     row
-                                    defaultValue="No"
-                                    aria-labelledby="demo-row-radio-buttons-group-label"
-                                    name="row-radio-buttons-group"
-                                    value={values.federal}
-                                    onChange={handleChange}
-                                    
-                                  >
-                                    <FormControlLabel
-                                      control={<Radio />}
-                                      value="Yes"
-                                      name="federal"
-                                      label="Yes"
-                                    />
-                                    <FormControlLabel
-                                      control={<Radio />}
-                                      value="No"
-                                      name="federal"
-                                      label="No"
-                                    />
-                                  </RadioGroup>
-                                  <p className="error">
-                                    {/* {errors.isHeldUSCitizenship} */}
-                                  </p>
-                                </FormControl>
-                              </div>
-                             {values.federal == "Yes" ?( 
-                             <div>
-                                <Typography
-                                  style={{
-                                    fontSize: "15px",
-                                  }}
-                                >
-                                  Are you considered disregarded for purposes of
-                                  Section 1446?
-                                </Typography>
-                                <FormControl>
-                                  <RadioGroup
-                                    row
-                                    defaultValue="No"
+                                    defaultValue="Not"
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="row-radio-buttons-group"
                                     //   value={values.isHeldUSCitizenship}
@@ -952,24 +840,136 @@ export default function Fedral_tax(props: any) {
                                       control={<Radio />}
                                       value="Yes"
                                       name="isHeldUSCitizenship"
-                                      label="Yes"
+                                      label="Hybrid"
                                     />
                                     <FormControlLabel
                                       control={<Radio />}
                                       value="No"
                                       name="isHeldUSCitizenship"
-                                      label="No"
+                                      label="Reverse Hybrid"
+                                    />
+                                    <FormControlLabel
+                                      control={<Radio />}
+                                      value="Not"
+                                      name="isHeldUSCitizenship"
+                                      label="Not Applicable"
                                     />
                                   </RadioGroup>
                                   <p className="error">
                                     {/* {errors.isHeldUSCitizenship} */}
                                   </p>
                                 </FormControl>
-                              </div>):values.federal == "No" ?(
-                                ""
-                              ):""}
-                            </div>
-</>):""}
+                              </div>
+
+                              <div className="mt-2">
+                                <Typography
+                                  style={{
+                                    fontSize: "15px",
+                                  }}
+                                >
+                                  Please provide a description of your hybrid
+                                  status and if applicable attach additional
+                                  information to substantiate your statement for
+                                  United States tax purposes.
+                                </Typography>
+                                <FormControl className="w-100 textfield1">
+                                  <TextField className="textfield1" />
+                                </FormControl>
+                                <div className="d-flex mt-3 ">
+                                  <Typography
+
+                                    style={{
+                                      fontSize: "15px",
+                                    }}
+                                  >
+                                    Attach supporting documentation:
+                                  </Typography>
+                                  <input
+                                    className="mx-2"
+                                    type="file"
+                                    style={{ fontSize: "12px" }}
+                                  />
+                                </div>
+                                <div className="mt-2">
+                                  <Typography
+                                    style={{
+                                      fontSize: "15px",
+                                    }}
+                                  >
+                                    Is this submission being made on behalf of a
+                                    disregarded entity that has a Single U.S.
+                                    Owner?
+                                  </Typography>
+                                  <FormControl>
+                                    <RadioGroup
+                                      row
+                                      defaultValue="No"
+                                      aria-labelledby="demo-row-radio-buttons-group-label"
+                                      name="row-radio-buttons-group"
+                                      value={values.federal}
+                                      onChange={handleChange}
+
+                                    >
+                                      <FormControlLabel
+                                        control={<Radio />}
+                                        value="Yes"
+                                        name="federal"
+                                        label="Yes"
+                                      />
+                                      <FormControlLabel
+                                        control={<Radio />}
+                                        value="No"
+                                        name="federal"
+                                        label="No"
+                                      />
+                                    </RadioGroup>
+                                    <p className="error">
+                                      {/* {errors.isHeldUSCitizenship} */}
+                                    </p>
+                                  </FormControl>
+                                </div>
+                                {values.federal == "Yes" ? (
+                                  <div>
+                                    <Typography
+                                      style={{
+                                        fontSize: "15px",
+                                      }}
+                                    >
+                                      Are you considered disregarded for purposes of
+                                      Section 1446?
+                                    </Typography>
+                                    <FormControl>
+                                      <RadioGroup
+                                        row
+                                        defaultValue="No"
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        name="row-radio-buttons-group"
+                                        //   value={values.isHeldUSCitizenship}
+                                        onChange={handleChange}
+                                        id="isHeldUSCitizenship"
+                                      >
+                                        <FormControlLabel
+                                          control={<Radio />}
+                                          value="Yes"
+                                          name="isHeldUSCitizenship"
+                                          label="Yes"
+                                        />
+                                        <FormControlLabel
+                                          control={<Radio />}
+                                          value="No"
+                                          name="isHeldUSCitizenship"
+                                          label="No"
+                                        />
+                                      </RadioGroup>
+                                      <p className="error">
+                                        {/* {errors.isHeldUSCitizenship} */}
+                                      </p>
+                                    </FormControl>
+                                  </div>) : values.federal == "No" ? (
+                                    ""
+                                  ) : ""}
+                              </div>
+                            </>) : ""}
 
 
                           </Typography>

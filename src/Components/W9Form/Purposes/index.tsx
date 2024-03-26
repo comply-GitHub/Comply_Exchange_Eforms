@@ -41,8 +41,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import View_Insructions from "../../viewInstruction";
-import GlobalValues from "../../../Utils/constVals";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -108,7 +109,7 @@ export default function Fedral_tax(props: any) {
     partnershipTrustAuthority:
       getReducerData?.partnershipTrustAuthority ?? true,
     IsAgreeWithDeclaration: getReducerData?.getAgreeWithDeclaration ?? true,
-    // statusId: 1,
+    statusId: 0,
     stepName: `/${urlValue}`,
   };
   const [toolInfo, setToolInfo] = useState("");
@@ -275,8 +276,8 @@ export default function Fedral_tax(props: any) {
             selectedTaxClassification == 0
               ? firstSchema
               : selectedTaxClassification == 1
-                ? firstStepSchema
-                : firstStepBusinessSchema
+              ? firstStepSchema
+              : firstStepBusinessSchema
           } // Uncomment after testing ,this is validation Schema
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(true);
@@ -286,7 +287,7 @@ export default function Fedral_tax(props: any) {
               partnershipTrustAuthority:
                 JSON.stringify(temp.partnershipTrustAuthority) == "true",
             };
-
+console.log(newValue,"newValuenewValue")
             const submitPromise = new Promise((resolve, reject) => {
               dispatch(
                 postW9Form(
@@ -633,7 +634,7 @@ export default function Fedral_tax(props: any) {
                                   onBlur={handleBlur}
                                   error={Boolean(
                                     touched.federalTaxClassificationId &&
-                                    errors.federalTaxClassificationId
+                                      errors.federalTaxClassificationId
                                   )}
                                   name="federalTaxClassificationId"
                                   value={values.federalTaxClassificationId}
@@ -653,12 +654,12 @@ export default function Fedral_tax(props: any) {
                                   })}
                                 </Select>
                                 {errors.federalTaxClassificationId &&
-                                  touched.federalTaxClassificationId ? (
+                                touched.federalTaxClassificationId ? (
                                   <div>
                                     <Typography color="error">
                                       <p className="error">
                                         {typeof errors.federalTaxClassificationId ===
-                                          "string"
+                                        "string"
                                           ? errors.federalTaxClassificationId
                                           : ""}
                                       </p>
@@ -878,7 +879,7 @@ export default function Fedral_tax(props: any) {
                                       // }
                                       error={Boolean(
                                         touched.businessName &&
-                                        errors.businessName
+                                          errors.businessName
                                       )}
                                       // style={{
                                       //   width: "200%",
@@ -901,7 +902,7 @@ export default function Fedral_tax(props: any) {
                           ) : null}
                         </Typography>
                         {obValues?.isUSEntity == true &&
-                          values.federalTaxClassificationId == 4 ? (
+                        values.federalTaxClassificationId == 4 ? (
                           <div>
                             <Typography style={{ marginTop: "20px" }}>
                               Are you providing this form to a partnership,
@@ -914,7 +915,7 @@ export default function Fedral_tax(props: any) {
                               <FormControl
                                 error={Boolean(
                                   touched.partnershipTrustAuthority &&
-                                  errors.partnershipTrustAuthority
+                                    errors.partnershipTrustAuthority
                                 )}
                               >
                                 <RadioGroup
@@ -938,12 +939,12 @@ export default function Fedral_tax(props: any) {
                                   />
                                 </RadioGroup>
                                 {errors.partnershipTrustAuthority &&
-                                  touched.partnershipTrustAuthority ? (
+                                touched.partnershipTrustAuthority ? (
                                   <div>
                                     <Typography color="error">
                                       <p className="error">
                                         {typeof errors.partnershipTrustAuthority ===
-                                          "string"
+                                        "string"
                                           ? errors.partnershipTrustAuthority
                                           : ""}
                                       </p>
@@ -1308,7 +1309,7 @@ export default function Fedral_tax(props: any) {
                             marginTop: "80px",
                           }}
                         >
-                          <Button
+                          {/* <Button
                             variant="contained"
                             style={{ color: "white" }}
                             disabled={isSubmitting}
@@ -1323,7 +1324,22 @@ export default function Fedral_tax(props: any) {
                             }}
                           >
                             SAVE & EXIT
-                          </Button>
+                          </Button> */}
+                           <SaveAndExit Callback={() => {
+                            submitForm().then((data) => {
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              dispatch(postW9Form(
+                                {
+                                  ...prevStepData,
+                                  stepName: `/${urlValue}`
+                                }
+                                , () => { }))
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          }} formTypeId={FormTypeId.W9} />
                           <Button
                             // type="submit"
                             // disabled={isSubmitting}

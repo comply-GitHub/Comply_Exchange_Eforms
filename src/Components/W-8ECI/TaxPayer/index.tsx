@@ -38,6 +38,7 @@ export default function Tin(props: any) {
   const W8ECIData = useSelector((state: any) => state.W8ECI);
   const LoadData = () => {
     const temp = {
+      ...initialValue,
       ...W8ECIData,
       usTinTypeId: W8ECIData?.usTinTypeId?.toString() ?? obValues.taxpayerIdTypeID?.toString() ?? "",
       usTin: W8ECIData?.usTin ?? obValues?.usTin,
@@ -75,7 +76,7 @@ export default function Tin(props: any) {
       })
     );
 
-  }, [authDetails, W8ECIData])
+  }, [authDetails])
 
   // const initialValue = {
   //   usTinTypeId: obValues.usTinTypeId,
@@ -95,8 +96,7 @@ export default function Tin(props: any) {
     tinValue: "",
     notAvailable: false,
     notAvailableReason: "",
-    foreignTINCountry: obValues.foreignTINCountryId == null || obValues.foreignTINCountryId == ""
-      || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId,
+    foreignTINCountry: 0,
     foreignTIN: "",
     isNotAvailable: "",
     isFTINLegally: false,
@@ -825,7 +825,7 @@ export default function Tin(props: any) {
                                 type="text"
                                 disabled={
                                   values.isFTINLegally ||
-                                  values.foreignTINCountry == "1"
+                                  values.foreignTINCountry == 1
 
 
 
@@ -856,7 +856,7 @@ export default function Tin(props: any) {
                                 type="text"
                                 disabled={
                                   values.isFTINLegally ||
-                                  values.foreignTINCountry == "1" ||
+                                  values.foreignTINCountry == 1 ||
                                   values.isNotAvailable === "Yes"
                                 }
                                 placeholder="ENTER FOREIGN TIN"

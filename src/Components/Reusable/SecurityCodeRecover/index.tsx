@@ -43,7 +43,14 @@ const SecurityCodeRecover = ({ setRecoverPassword, hideBack = false }: any) => {
         data[e.target.name] = e.target.value;
         setPayload(data);
     }
-
+    // const handleChange = (e: any) => {
+    //     const { name, value } = e.target;
+    //     setPayload(prevState => ({
+    //         ...prevState,
+    //         [name]: value
+    //     }));
+    // };
+    
     const handleHint = (e: any) => {
         dispatch(GetSecurityQuestion(authDetails?.accountHolderId, (data: any) => {
             console.log(data, "security question")
@@ -166,7 +173,7 @@ const SecurityCodeRecover = ({ setRecoverPassword, hideBack = false }: any) => {
                                 />
                             </Button>
                             {copying ?
-                                <Alert icon={<Check fontSize="inherit" />} severity="success" sx={{ height: "36px" }}>
+                                <Alert icon={<Check fontSize="inherit" />} severity="success" >
                                     Copied
                                 </Alert> : ""
                             }
