@@ -104,7 +104,7 @@ export default function Fedral_tax(props: any) {
     partnershipTrustAuthority:
       getReducerData?.partnershipTrustAuthority ?? true,
     IsAgreeWithDeclaration: getReducerData?.getAgreeWithDeclaration ?? true,
-    statusId: 1,
+    statusId: 0,
     stepName: `/${urlValue}`,
   };
   const [toolInfo, setToolInfo] = useState("");
@@ -282,7 +282,7 @@ export default function Fedral_tax(props: any) {
               partnershipTrustAuthority:
                 JSON.stringify(temp.partnershipTrustAuthority) == "true",
             };
-
+console.log(newValue,"newValuenewValue")
             const submitPromise = new Promise((resolve, reject) => {
               dispatch(
                 postW9Form(
