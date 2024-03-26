@@ -162,10 +162,11 @@ const getApiCall = (
   endPoint: string,
   params: string = '',
   successCallback: (response: any) => void,
-  errorCallback: (error: ApiResponse) => void
+  errorCallback: (error: ApiResponse) => void,
+  isArrayBuffer=false
 ) => {
   Utils.constants.axios
-    .get(Utils.constants.API_URL + endPoint + params, { headers: headers })
+    .get(Utils.constants.API_URL + endPoint + params, { headers: headers, responseType: isArrayBuffer?"arraybuffer":"json"})
     .then((response) => {
       successCallback(response);
     })

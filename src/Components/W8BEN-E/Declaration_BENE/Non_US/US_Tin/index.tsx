@@ -112,7 +112,7 @@ export default function Tin(props: any) {
       })
     );
     LoadData();
-  }, []);
+  }, [authDetails]);
 
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
