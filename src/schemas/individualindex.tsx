@@ -49,7 +49,11 @@ export const individualSchema = (Cert: string, payment: boolean, income: boolean
           .notOneOf([0], "Please select a valid option"),
     }) : Yup.number(),
 
-
+vat:Cert === "GEN" ? Yup.string().when("vatId", {
+  is: (vatId: any) =>
+    (vatId != 0 && vatId != 2 ),
+  then: () => Yup.string().required("Please Enter Vat Id")
+}): Yup.string(),
     // incomeTypeId: income === true ? Yup.array().of(Yup.string())
     // .required("Please select an option")
     // .notOneOf(['0'], "Please select a valid option"):Yup.object(),

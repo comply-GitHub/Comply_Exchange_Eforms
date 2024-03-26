@@ -1628,7 +1628,7 @@ export default function Entity() {
                         <p className="error mb-0">
                           {errors?.taxpayerIdTypeID  && touched?.taxpayerIdTypeID||
                             errors?.usTin &&  touched?.usTin||
-                            errors?.vatId &&  touched?.vatId
+                            errors?.vatId &&  touched?.vatId || errors?.vat && touched?.vat
                             ? "Mandatory Information Required!"
                             : ""}
                         </p>
@@ -2128,10 +2128,12 @@ export default function Entity() {
                                   // onKeyDown={formatTin}
                                   onChange={handleChange}
                                   inputProps={{ maxLength: 11 }}
-                                  // onBlur={handleBlur}
+                                  onBlur={handleBlur}
+                                  error={Boolean(touched.vat && errors.vat)}
                                   //   error={Boolean(touched.usTin && errors.vat)}
                                   value={values.vat}
                                 />
+                                {errors.vat && touched.vat ? <p className="error">{errors.vat}</p> : <></>}
                               </FormControl>
                             </div>
                           </div>

@@ -138,27 +138,30 @@ export default function FCTA_Reporting(props: any) {
         </div>
       </div>
 
-      <div className="row w-100 h-100">
+      <div className="row w-100 ">
         <div className="col-4">
           <div
             style={{
               padding: "20px 0px",
               height: "100%",
-              backgroundColor: "#0c3d69",
+              // backgroundColor: "#0c3d69",
             }}
           >
             <BreadCrumbComponent breadCrumbCode={1253} formName={3} />
           </div>
         </div>
-        <div className="col-8 mt-3" style={{ backgroundColor: "#0c3d69" }}>
-          <div style={{ padding: "13px ", backgroundColor: "#0c3d69" }}>
+        <div className="col-8 mt-3" >
+          <div style={{ padding: "13px ", }}>
             <Paper style={{ padding: "10px" }}>
               <Formik
                 validateOnChange={true}
                  validateOnBlur={true}
                 validateOnMount={true}
+                
                 initialValues={initialValues}
                 enableReinitialize
+              
+             
                 validationSchema={claimSchemaW8BenE}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
@@ -609,7 +612,7 @@ The treaty country chosen does not match the country selected earlier as the pri
                                     </div>
                                   </div>
                                   <p className="error">
-                                    {touched.ownerResidentId ? errors.ownerResidentId : ""}
+                                    {touched.ownerResidentId && errors.ownerResidentId? (<p>{errors.ownerResidentId}</p>): ""}
                                   </p>
                                 </FormControl>
                               </div>
@@ -652,10 +655,10 @@ The treaty country chosen does not match the country selected earlier as the pri
                                       </select>
                                     </div>
                                   </div>
-
                                   <p className="error">
-                                    {touched.limitationBenefitsId ? errors.limitationBenefitsId : ""}
+                                    {touched.limitationBenefitsId && errors.limitationBenefitsId? (<p>{errors.limitationBenefitsId}</p>): ""}
                                   </p>
+                                 
                                 </FormControl>
                               </div>
                                 <div>
