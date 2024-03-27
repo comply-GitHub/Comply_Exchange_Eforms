@@ -68,6 +68,9 @@ export default function Fedral_tax(props: any) {
   useEffect(()=>{
     document.title = "Chapter III"
   },[])
+  useEffect(()=>{
+    setSelectedTaxClassification(getReducerData?.federalTaxClassificationId)
+  },[getReducerData])
 
   useEffect(() => {
     // GetByW9FormReducer
