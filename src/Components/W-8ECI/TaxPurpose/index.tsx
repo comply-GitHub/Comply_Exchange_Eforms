@@ -43,7 +43,7 @@ export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const {
     handleTaxClassificationChange,
-    selectedTaxClassification,
+    // selectedTaxClassification,
     data,
     handleChange,
     setselectedContinue,
@@ -76,7 +76,7 @@ export default function Fedral_tax(props: any) {
   const [toolInfo, setToolInfo] = useState("");
   const history = useNavigate();
   const [expanded, setExpanded] = React.useState<string | false>("");
-
+  const [selectedTaxClassification, setSelectedTaxClassification] = useState(0);
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -131,6 +131,10 @@ export default function Fedral_tax(props: any) {
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpandedState(newExpanded ? panel : false);
     };
+
+    const confirmFunction = (value:any,setFieldValue:any) => {
+      setExpandedState(""); setFieldValue("chapter3Status",value);setSelectedTaxClassification(value)
+    }
   const W9Data = useSelector((state: any) => state.w9Data);
   return (
     <>
@@ -221,6 +225,7 @@ export default function Fedral_tax(props: any) {
                     isSubmitting,
                     isValid,
                     submitForm,
+                    setFieldValue,
                   }) => (
                     <Form onSubmit={handleSubmit}>
                       <div style={{ width: "100%" }}>
@@ -1020,7 +1025,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained"onClick={() => {confirmFunction(1,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1060,7 +1065,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(2,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1127,7 +1132,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(3,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1193,7 +1198,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(4,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1235,7 +1240,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(5,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1270,7 +1275,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(6,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1301,7 +1306,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(7,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1373,7 +1378,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(8,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1479,7 +1484,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(9,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1510,7 +1515,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(10,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1544,7 +1549,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(11,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1620,7 +1625,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(12,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1670,7 +1675,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(13,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
