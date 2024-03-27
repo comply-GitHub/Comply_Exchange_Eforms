@@ -267,6 +267,9 @@ export const LoadExistingFormData = (formTypeId: number, AccountHolderId: number
     case FormTypeId.W8EXP:
       Endpoint = Utils.EndPoint.GetByW8EXPFormFormEntityNonUs + `?AccountHolderBasicDetailId=${AccountHolderId}`
       break;
+    case FormTypeId.F8233:
+      Endpoint = Utils.EndPoint.GetByForm8233IndividualNonUSFormId + `?AccountHolderBasicDetailId=${AccountHolderId}`
+      break;
     default:
       return;
   }
@@ -1953,3 +1956,53 @@ export const UpsertIncomeReportDescription = (payload: any, callback: Function, 
       )
   }
 }
+
+
+
+//Form 8233 post request
+export const post8233_EForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.InsertForm8233IndividualNonUSForm,
+      convertToFormData(value),
+      (responseData) => {
+        let { data } = responseData;
+        //console.log("Form 8233 Response Data",responseData);
+        dispatch({
+          type: Utils.actionName.InsertForm8233IndividualNonUSForm,
+          payload: { ...value, Response: data },
+        });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback({ message: "Internal server error occured", payload: responseData })
+          } else {
+            if (callback) {
+              callback();
+            }
+          }
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(error)
+      },
+      "multi"
+    );
+  };
+};
