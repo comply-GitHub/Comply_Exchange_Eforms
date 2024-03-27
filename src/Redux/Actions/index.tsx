@@ -252,6 +252,9 @@ export const SignInSaveAndExit = (value: any, callback: Function, errorCallback:
 export const LoadExistingFormData = (formTypeId: number, AccountHolderId: number, callback: Function, errorCallback: Function) => {
   let Endpoint = "";
   switch (formTypeId) {
+    case FormTypeId.W9:
+      Endpoint = Utils.EndPoint.GetByW9IndividualEntityUSFormId + `?AccountHolderBasicDetailId=${AccountHolderId}`
+      break;
     case FormTypeId.BEN:
       Endpoint = Utils.EndPoint.GetByW8BENIndividualId + `?AccountHolderBasicDetailId=${AccountHolderId}`
       break;
