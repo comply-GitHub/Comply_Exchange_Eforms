@@ -130,7 +130,7 @@ export default function Fedral_tax(props: any) {
   return (
     <>
       <section
-        className="inner_content"
+        
         style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
       >
         <div className="overlay-div">
@@ -158,7 +158,7 @@ export default function Fedral_tax(props: any) {
             </div>
           </div>
         </div>
-        <div className="row w-100 h-100">
+        <div className="row w-100">
           <div className="col-4">
             <div style={{ padding: "20px 0px", height: "100%" }}>
               <BreadCrumbComponent breadCrumbCode={1203} formName={4} />
@@ -868,7 +868,7 @@ export default function Fedral_tax(props: any) {
                           </Typography>
                         </div>
 
-                        <div style={{ padding: "10px", width: "100%" }}>
+                        <div style={{ padding: "10px"}}>
                           <Accordion
                             expanded={expanded === "groupPanel"}
                             onChange={handleChangeAccodion("groupPanel")}
