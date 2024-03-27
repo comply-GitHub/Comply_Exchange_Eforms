@@ -53,6 +53,10 @@ export default function Tin(props: any) {
     }
   };
 
+  // useEffect(()=>{
+  //   document.title = ""
+  // },[])
+
   useEffect(() => {
     dispatch(GetAgentDocumentationMandatoryForEformAction());
     dispatch(GetHelpVideoDetails());

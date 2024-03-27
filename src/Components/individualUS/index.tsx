@@ -64,6 +64,7 @@ import GlobalValues from "../../Utils/constVals";
 import useAuth from "../../customHooks/useAuth";
 import Utils from "../../Utils";
 // import { CheckBox } from '@mui/icons-material';
+
 type ValuePiece = Date | null;
 console.log(Date, "date");
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
@@ -95,6 +96,8 @@ export default function IndividualUs() {
   const [stateList1, setallStateById1] = useState([]);
   const [stateList2, setallStateById2] = useState([]);
   // const [touched, setTouched] = useState(false);
+
+
 
   console.log("hhh", ustinValue)
   const allCountriesData = useSelector(
@@ -264,6 +267,10 @@ export default function IndividualUs() {
     isConfirmed: false,
     taxpayerIdTypeName: ""
   });
+
+  useEffect(()=>{
+    document.title = "OnBoarding"
+  },[])
 
   const formatTin = (e: any, values: any): any => {
     if (e.key === "Backspace" || e.key === "Delete") return;

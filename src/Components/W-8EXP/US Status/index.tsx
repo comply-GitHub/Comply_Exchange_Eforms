@@ -89,6 +89,9 @@ export default function Fedral_tax(props: any) {
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
+    useEffect(()=>{
+      document.title = "Chapter III"
+    },[])
   useEffect(() => {
     dispatch(getAllCountries());
     dispatch(getAllCountriesCode());

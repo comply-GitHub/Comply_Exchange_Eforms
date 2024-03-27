@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormW8IMY from "../../../../../formPDF/W8IMY";
 // import Form1 from "../../formPDF/form1";
 // import Formw9 from "../../formPDF/formw9";
@@ -28,9 +28,21 @@ export default function Term() {
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
-
-
-
+  const handleDownload = () => {
+    if (pdfUrl) {
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.setAttribute("download", "generatedPDF.pdf"); 
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+    }
+  };
+  useEffect(()=>{
+    document.title = "Thank You"
+  },[])
+ 
 
   return (
     <section

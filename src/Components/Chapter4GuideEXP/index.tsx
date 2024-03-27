@@ -20,6 +20,10 @@ import { ExpandMore } from "@mui/icons-material";
 
 export default function Chapter4(props: any) {
 
+// useEffect(() =>{
+// document.title=""
+// },[])
+
   const history = useNavigate();
   const handleChangeAccodion =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {

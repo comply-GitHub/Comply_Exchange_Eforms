@@ -90,6 +90,10 @@ export default function Tin(props: any) {
     history("/w8Eci_pdf", { replace: true });
   }
 
+  useEffect(()=>{
+    document.title = "Steps | ECI Mandatory Information"
+  },[])
+
   useEffect(() => {
     dispatch(
       getTinTypes(authDetails?.agentId, (data: any) => {

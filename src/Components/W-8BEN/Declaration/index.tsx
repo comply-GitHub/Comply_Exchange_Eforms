@@ -15,10 +15,13 @@ export default function Term() {
 
   const history = useNavigate();
   const dispatch = useDispatch();
-  useEffect(() => {
-   
-    dispatch(GetHelpVideoDetails());
 
+  useEffect(()=>{
+    document.title = "Comply Exchange"
+  },[])
+
+  useEffect(() => {
+    dispatch(GetHelpVideoDetails());
   }, []);
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData

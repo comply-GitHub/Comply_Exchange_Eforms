@@ -30,6 +30,10 @@ const [expandedState, setExpandedState] = React.useState<string | false>(
 "groupPanel"
 );
 
+// useEffect(() => {
+// document.title=""
+// },[]);
+
 const handleChangeAccodionState =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpandedState(newExpanded ? panel : false);

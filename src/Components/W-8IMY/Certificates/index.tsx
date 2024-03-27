@@ -36,6 +36,10 @@ export default function Certifications(props: any) {
     isBeneficialOwnerNotUSPerson: false,
    
   };
+  useEffect(()=>{
+    document.title = "Certification I"
+  },[])
+
 
   useEffect(() => {
     

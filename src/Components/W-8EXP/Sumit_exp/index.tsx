@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { SubmitSchema } from "../../../schemas/submit";
@@ -27,6 +27,10 @@ const Declaration = (props: any) => {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsCheckboxChecked(event.target.checked);
   };
+
+  useEffect(()=>{
+    document.title = "Electronic Signature Confirmation"
+  },[])
 
   const history = useNavigate();
   const dispatch = useDispatch();

@@ -64,6 +64,11 @@ export default function Fedral_tax(props: any) {
   var getReducerData = useSelector(
     (state: any) => state?.GetByW9FormReducer?.GetByW9FormData
   );
+
+  useEffect(()=>{
+    document.title = "Chapter III"
+  },[])
+
   useEffect(() => {
     // GetByW9FormReducer
     setIsFormFilling(localStorage.getItem("isFormFilling") || "");
@@ -77,6 +82,10 @@ export default function Fedral_tax(props: any) {
   const viewPdf = () => {
     history("/w9_pdf", { replace: true });
   };
+
+  const confirmFunction = (value:any,setFieldValue:any) => {
+    setExpandedState(""); setFieldValue("federalTaxClassificationId",value);setSelectedTaxClassification(value)
+  }
 
   const getObvalues = () => {
     console.log(formFillingData, "qwerty");
@@ -312,6 +321,7 @@ console.log(newValue,"newValuenewValue")
             handleSubmit,
             handleChange,
             isSubmitting,
+            setFieldValue,
             submitForm,
           }) => (
             <Form onSubmit={handleSubmit}>
@@ -1083,7 +1093,7 @@ console.log(newValue,"newValuenewValue")
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(1,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1129,7 +1139,7 @@ console.log(newValue,"newValuenewValue")
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(3,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1217,7 +1227,7 @@ console.log(newValue,"newValuenewValue")
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {confirmFunction(4,setFieldValue)}}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>

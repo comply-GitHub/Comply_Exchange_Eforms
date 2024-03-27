@@ -30,7 +30,10 @@ export default function Certifications(props: any) {
   const location = useLocation();
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
-
+ 
+  useEffect(()=>{
+    document.title = "Certification I"
+  },[])
   useEffect(() => {
     setInitialValue((prev: any) => {
       return {

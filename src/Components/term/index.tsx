@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
 import GlobalValues from "../../Utils/constVals";
 import { useSelector } from "react-redux";
-
+import "./btnStyle.scss";
 export default function Term() {
   const history = useNavigate();
   const [open, setOpen] = useState(false);
@@ -28,6 +28,10 @@ export default function Term() {
     //   GlobalValues.basePageRoute="/IndividualUs";
     // }
   }
+
+  useEffect(()=>{
+    document.title = "Comply Exchange"
+  },[])
 
   useEffect(() => {
     LoadRoute();
@@ -190,26 +194,14 @@ export default function Term() {
 
           </Paper>
           <div
-            className="d-flex mx-5 mt-5"
+            className="d-flex mx-5 mt-5 buttonEffect"
             style={{ justifyContent: "center" }}
           >
             <Button
               type="button"
               // disabled
               onClick={() => history(GlobalValues.basePageRoute)}
-              style={{
-                border: "1px solid #0095dd",
-                background: "#0095dd",
-                height: "45px",
-                lineHeight: "normal",
-                textAlign: "center",
-                fontSize: "16px",
-                textTransform: "uppercase",
-                borderRadius: "0px",
-                color: "#fff",
-                padding: "0 35px",
-                letterSpacing: "1px",
-              }}
+              
               className="btn btn_submit  btn-primary-agent"
             >
               Reject
@@ -221,20 +213,7 @@ export default function Term() {
                 history("/Security")
                 // setOpen(true)
               }
-              style={{
-                border: "1px solid #0095dd",
-                background: "#0095dd",
-                height: "45px",
-                lineHeight: "normal",
-                textAlign: "center",
-                fontSize: "16px",
-                marginLeft: "12px",
-                textTransform: "uppercase",
-                borderRadius: "0px",
-                color: "#fff",
-                padding: "0 35px",
-                letterSpacing: "1px",
-              }}
+              
               className="btn btn_submit  btn-primary-agent"
             >
               Accept

@@ -36,7 +36,9 @@ const Login = () => {
     autoplay: true,
     adaptiveHeight: true,
   };
-
+  // useEffect(()=>{
+  //   document.title = ""
+  // },[])
   useEffect(() => {
     localStorage.clear();
   }, []);

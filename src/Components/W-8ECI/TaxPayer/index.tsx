@@ -55,6 +55,10 @@ export default function Tin(props: any) {
     }
     setInitialValues(temp);
   }
+ 
+  useEffect(() => {
+      document.title="Tax-Payer"
+  }, []);
 
 
   useEffect(() => {

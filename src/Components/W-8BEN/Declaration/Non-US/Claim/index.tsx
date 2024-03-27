@@ -65,6 +65,7 @@ export default function FCTA_Reporting(props: any) {
 
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   useEffect(() => {
+    document.title = "Treaty Claim Statement"
     dispatch(GetHelpVideoDetails());
   }, []);
   const getCountriesData = useSelector((state: any) =>

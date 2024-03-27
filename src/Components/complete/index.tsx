@@ -1,4 +1,4 @@
-import React, { useState,useRef } from "react";
+import React, { useState,useRef, useEffect } from "react";
 import FormW8IMY from "../../formPDF/W8IMY";
 // import Form1 from "../../formPDF/form1";
 import Formw9 from "../../formPDF/formw9";
@@ -39,6 +39,10 @@ export default function Term() {
   //   } else {
   //   }
   // };
+
+// useEffect(()=>{
+// document.title=""
+// },[])
 
   const handleDownload = async () => {
    

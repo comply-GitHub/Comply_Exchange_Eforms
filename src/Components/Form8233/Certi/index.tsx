@@ -15,6 +15,9 @@ export default function Certifications(props: any) {
   useEffect(()=>{
     dispatch(GetHelpVideoDetails());
   });
+  // useEffect(()=>{
+  //   document.title = ""
+  // },[])
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );

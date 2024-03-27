@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormW8Exp from "../../../formPDF/W8EXP";
 // import Form1 from "../../formPDF/form1";
 // import Formw9 from "../../formPDF/formw9";
@@ -34,7 +34,9 @@ export default function Term() {
     }
   };
 
- 
+  useEffect(()=>{
+    document.title = "Thank You"
+  },[])
 
   return (
     <section

@@ -79,6 +79,9 @@ export default function Tin(props: any) {
     localStorage.getItem("agentDetails") ?? "null"
   );
 
+  useEffect(()=>{
+    document.title = "Tax-Payer"
+  },[])
 
   function getUStinValue() {
     let val:string=""

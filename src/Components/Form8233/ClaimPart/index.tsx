@@ -37,6 +37,11 @@ export default function Tin(props: any) {
   };
   const dispatch = useDispatch();
   const history = useNavigate();
+
+  // useEffect(()=>{
+  //   document.title = ""
+  // },[])
+  
   useEffect(()=>{
     dispatch(GetHelpVideoDetails());
     dispatch(GetIncomeTypes())

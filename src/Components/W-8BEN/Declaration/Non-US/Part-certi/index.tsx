@@ -72,6 +72,11 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
      
       setSecurityWordError("");
     };
+
+    useEffect(()=>{
+      document.title = "Certification II"
+    },[])
+
     useEffect(() => {
    
       dispatch(GetHelpVideoDetails());
