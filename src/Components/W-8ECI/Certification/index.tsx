@@ -529,6 +529,7 @@ export default function Certifications(props: any) {
                               }}
                               style={{
                                 color: "blue",
+                                cursor:"pointer",
                                 fontSize: "16px",
                                 marginLeft: "5px",
                               }}

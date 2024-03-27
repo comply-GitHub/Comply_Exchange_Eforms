@@ -174,13 +174,16 @@ export default function Penalties() {
                   </div>
                 </div>
               </div>
-              <div className="row w-100 h-100">
+              <div className="row w-100">
+                
                 <div className="col-4">
                   <div style={{ padding: "20px 0px", height: "100%" }}>
                     <BreadCrumbComponent breadCrumbCode={1285} formName={3} />
 
                   </div>
                 </div>
+
+
                 <div className="col-8 mt-3">
 
                   <div style={{ padding: "14px" }}>
@@ -819,6 +822,8 @@ export default function Penalties() {
                       </Typography>
                     </Paper>
                   </div>
+
+
                 </div>
               </div>
             </section>

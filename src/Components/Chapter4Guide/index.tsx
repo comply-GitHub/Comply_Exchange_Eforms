@@ -19,8 +19,7 @@ import { ExpandMore } from "@mui/icons-material";
 
 
 export default function Chapter4(props: any) {
-
-  const history = useNavigate();
+ const history = useNavigate();
 const handleChangeAccodion =
 (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
   setExpanded(newExpanded ? panel : false);
@@ -33,13 +32,24 @@ const [expandedState, setExpandedState] = React.useState<string | false>(
 // useEffect(() => {
 // document.title=""
 // },[]);
+const [isContinueEnabled, setIsContinueEnabled] = React.useState(false);
+const [isBackVisible, setIsBackVisible] = React.useState(false);
+const [expanded, setExpanded] = React.useState<string | false>("");
+const handleChangeAccodionState = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+  setExpandedState(newExpanded ? panel : false);
+  setIsContinueEnabled(newExpanded); // Enable "Continue" button when any accordion panel is expanded
+};
 
-const handleChangeAccodionState =
-    (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-      setExpandedState(newExpanded ? panel : false);
-    };
-  const [expanded, setExpanded] = React.useState<string | false>("");
+const handleContinue = () => {
+  setIsBackVisible(true); // Show the "Back" button when "Continue" is clicked
+};
 
+const handleBack = () => {
+  setIsBackVisible(false);
+  history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Status_BenE");
+
+
+};
   return (
     <section
     className="inner_content"
@@ -327,12 +337,12 @@ const handleChangeAccodionState =
                             Close
                           </Button>
                           <Button
-                           
+                            onClick={handleContinue}
                             variant="contained"
-                            disabled
+                            disabled={!isContinueEnabled}
                             style={{
-                              color: "grey",
                              
+                              opacity: isContinueEnabled ? 1 : 0.5,
                               marginTop: "10px",
                               marginBottom: "20px",
                               marginLeft:"10px"
@@ -341,6 +351,21 @@ const handleChangeAccodionState =
                           >
                             Confirm
                           </Button>
+
+                          {isBackVisible && (
+  <Button
+    onClick={handleBack}
+    variant="outlined"
+    style={{
+     
+      marginTop: "10px",
+      marginBottom: "20px",
+      marginLeft: "10px"
+    }}
+  >
+    Back
+  </Button>
+)}
                           </Typography>
                         
                             </div>
