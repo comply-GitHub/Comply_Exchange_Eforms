@@ -132,7 +132,8 @@ export default function Tin(props: any) {
           handleSubmit,
           handleChange,
           isSubmitting,
-          setFieldValue
+          setFieldValue,
+          submitForm
         }) => (
           <Form onSubmit={handleSubmit}>
               

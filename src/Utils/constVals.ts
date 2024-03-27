@@ -19,6 +19,7 @@ export const FormTypeId={
     BENE:3,
     W8ECI:4,
     W8EXP:6,
+    F8233:7
 };
 
 export const FormTypeSelection={
