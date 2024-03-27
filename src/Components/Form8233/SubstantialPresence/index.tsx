@@ -23,6 +23,7 @@ import { SubstantialSchema } from "../../../schemas/8233";
 import { CREATE_8233,GetHelpVideoDetails } from "../../../Redux/Actions";
 import { useDispatch ,useSelector} from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 export default function Presence(props: any) {
   const initialValue = {
     daysAvailableInThisYear: "",
@@ -449,9 +450,10 @@ const GethelpData = useSelector(
                     marginTop: "80px",
                   }}
                 >
-                  <Button variant="contained" style={{ color: "white" }}>
+                  {/* <Button variant="contained" style={{ color: "white" }}>
                     SAVE & EXIT
-                  </Button>
+                  </Button> */}
+                  <SaveAndExit Callback={()=>{console.log("asdfg")}} formTypeId={2} />
                   <Button
                     variant="contained"
                     style={{ color: "white", marginLeft: "15px" }}
