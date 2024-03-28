@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import FormW8IMY from "../../../../../formPDF/W8IMY";
-// import Form1 from "../../formPDF/form1";
-// import Formw9 from "../../formPDF/formw9";
-// import FormEXP from "../../formPDF/formEXP";
-
 import { Typography, Button } from "@mui/material";
+
 import Paper from "@mui/material/Paper";
 import DoneIcon from "@mui/icons-material/Done";
 
@@ -12,10 +8,9 @@ import { useRef } from "react";
 
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
-import W8Ben from "../../../../../formPDF/W8BEN";
-import useAuth from "../../../../../customHooks/useAuth";
+import useAuth from "../../../customHooks/useAuth";
 import { useDispatch } from "react-redux";
-import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
+import { GetBenPdf } from "../../../Redux/Actions/PfdActions";
 
 export default function Term() {
   //States  
@@ -116,22 +111,22 @@ export default function Term() {
                 <Button
                   //type="submit"
                   onClick={() => {
-                    dispatch(GetBenPdf(authDetails?.accountHolderId))
+                    // dispatch(GetW9Pdf(authDetails?.accountHolderId))
                   }}
-                  // style={{
-                  //   border: "1px solid #0095dd",
-                  //   background: "black",
-                  //   height: "35px",
-                  //   lineHeight: "normal",
-                  //   textAlign: "center",
-                  //   fontSize: "16px",
-                  //   marginLeft: "12px",
-                  //   textTransform: "uppercase",
-                  //   borderRadius: "0px",
-                  //   color: "#ffff",
-                  //   padding: "0 35px",
-                  //   letterSpacing: "1px",
-                  // }}
+                  style={{
+                    border: "1px solid #0095dd",
+                    background: "black",
+                    height: "35px",
+                    lineHeight: "normal",
+                    textAlign: "center",
+                    fontSize: "16px",
+                    marginLeft: "12px",
+                    textTransform: "uppercase",
+                    borderRadius: "0px",
+                    color: "#ffff",
+                    padding: "0 35px",
+                    letterSpacing: "1px",
+                  }}
                   className="btn btn_submit  btn-primary-agent"
                 >
                   Download PDF
@@ -141,9 +136,20 @@ export default function Term() {
                   onClick={() => {
                     history("/Certificates");
                   }}
-                  // style={{
-               
-                  // }}
+                  style={{
+                    border: "1px solid #0095dd",
+                    background: "black",
+                    height: "35px",
+                    lineHeight: "normal",
+                    textAlign: "center",
+                    fontSize: "16px",
+                    marginLeft: "12px",
+                    textTransform: "uppercase",
+                    borderRadius: "0px",
+                    color: "#ffff",
+                    padding: "0 35px",
+                    letterSpacing: "1px",
+                  }}
                   className="btn btn_submit  btn-primary-agent"
                 >
                   Exit

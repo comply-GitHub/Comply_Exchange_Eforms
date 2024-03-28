@@ -1,5 +1,5 @@
 import React, { Fragment, Component, useState, useEffect } from "react";
-import Slider from "react-slick";
+// import Slider from "react-slick";
 import bg1 from "../../Utils/originals/city.jpg";
 import logo from "../../assets/img/logo.png";
 import bg2 from "../../Utils/originals/citydark.jpg";
@@ -36,10 +36,9 @@ const Login = () => {
     autoplay: true,
     adaptiveHeight: true,
   };
-  // useEffect(()=>{
-  //   document.title = ""
-  // },[])
+  
   useEffect(() => {
+    document.title="Login | Comply Exchange"
     localStorage.clear();
   }, []);
 

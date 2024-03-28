@@ -40,9 +40,9 @@ export default function Term() {
   //   }
   // };
 
-// useEffect(()=>{
-// document.title=""
-// },[])
+useEffect(()=>{
+document.title="Thank You"
+},[])
 
   const handleDownload = async () => {
    

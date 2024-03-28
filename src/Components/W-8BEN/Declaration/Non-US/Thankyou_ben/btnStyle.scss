@@ -1,0 +1,20 @@
+.buttonEffect {
+    gap:10px;
+    .btn_submit {
+        border: 1px solid #0095dd;
+        background: black;
+        height:35px;
+        lineHeight: normal;
+        textAlign: center;
+        fontSize: 16px;
+        marginLeft: 12px;
+        textTransform: uppercase;
+        borderRadius: 0px;
+        color: #ffff;
+        padding: 0 35px;
+        letterSpacing: "1px",
+    }
+    .btn_submit:hover {
+        background-color: #d2dee4 !important;
+      }
+}

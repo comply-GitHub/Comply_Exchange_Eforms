@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { SubmitSchema } from "../../schemas/submit";
@@ -26,7 +26,9 @@ const Declaration = (props: any) => {
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
-
+  useEffect(()=>{
+    document.title = "Electronic Signature Confirmation"
+  },[])
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -403,6 +405,7 @@ const Declaration = (props: any) => {
 
                       onClick={() => {
                         history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
+                        // history("/Complete")
                       }}
                     >
                       Back

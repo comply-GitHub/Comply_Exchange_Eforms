@@ -177,7 +177,7 @@ export default function Penalties() {
                   </div>
                 </div>
               </div>
-              <div className="row w-100 h-100">
+              <div className="row w-100 ">
                 <div className="col-4">
                   <div style={{ padding: "20px 0px", height: "100%" }}>
                     <BreadCrumbComponent breadCrumbCode={1285} formName={3} />
@@ -774,7 +774,7 @@ export default function Penalties() {
                           //type="submit"
                           onClick={() => {
                             submitForm().then((data: any) => {
-                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE");
+                              history("/W9_Submit");
                             }).catch(() => {
 
                             })
@@ -800,7 +800,7 @@ export default function Penalties() {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history('/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE')
+                            history('/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9')
                           }
 
                           }

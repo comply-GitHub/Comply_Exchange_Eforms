@@ -410,7 +410,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                             style={{
                               border: " 1px solid #d9d9d9 ",
                               padding: " 0 10px",
-                              color: "#7e7e7e",
+                              color: "#121112",
                               fontStyle: "italic",
                               height: "40px",
                               width: "100%",
@@ -470,7 +470,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                                 style={{
                                   border: " 1px solid #d9d9d9 ",
                                   padding: " 0 10px",
-                                  color: "#7e7e7e",
+                                  color: "#121112",
                                   fontStyle: "italic",
                                   height: "40px",
                                   width: "100%",
@@ -498,7 +498,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                                 fullWidth
                                 type="text"
                                 name="usTin"
-                                onKeyDown={(e) => formatTin(e, values)}
+                                onKeyDown={(e: any) => formatTin(e, values)}
                                 value={values.usTin}
                                 onBlur={handleBlur}
                                 onChange={handleChange}
@@ -507,7 +507,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                                 style={{
                                   border: " 1px solid #d9d9d9 ",
                                   padding: " 0 10px",
-                                  color: "#7e7e7e",
+                                  color: "#121112",
                                   fontStyle: "italic",
                                   height: "40px",
                                   width: "100%",
@@ -568,7 +568,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                             style={{
                               border: " 1px solid #d9d9d9 ",
                               padding: " 0 10px",
-                              color: "#7e7e7e",
+                              color: "#121112",
                               fontStyle: "italic",
                               height: "40px",
                               width: "100%",
@@ -814,7 +814,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                                 name="isNotAvailable"
                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                 value={values.isNotAvailable}
-                                onChange={(e) => {
+                                onChange={(e: any) => {
                                   handleChange(e);
                                   setTimeout(() => {
                                     setFieldValue("foreignTIN", "");
@@ -1018,7 +1018,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                           style={{
                             border: " 1px solid #d9d9d9 ",
                             padding: " 0 10px",
-                            color: "#7e7e7e",
+                            color: "#121112",
                             fontStyle: "italic",
                             height: "6rem",
                             width: "100%",
@@ -1069,7 +1069,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                           style={{
                             border: " 1px solid #d9d9d9 ",
                             padding: " 0 10px",
-                            color: "#7e7e7e",
+                            color: "#121112",
                             fontStyle: "italic",
                             height: "7rem",
                             width: "100%",

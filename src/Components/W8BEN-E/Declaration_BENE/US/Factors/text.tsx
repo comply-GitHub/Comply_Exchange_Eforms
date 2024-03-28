@@ -525,7 +525,7 @@ const DynamicForm: React.FC<InputProps> = ({
                     className="col-md-6 col-12"
                     style={{
                       padding: " 0 10px",
-                      color: "#7e7e7e",
+                      color: "#121112",
                       fontStyle: "italic",
                       height: "50px",
                       marginBottom: "20px",
@@ -632,7 +632,7 @@ const DynamicForm: React.FC<InputProps> = ({
                       className="col-md-6 col-12"
                       style={{
                         padding: " 0 10px",
-                        color: "#7e7e7e",
+                        color: "#121112",
                         fontStyle: "italic",
                         height: "50px",
                         marginBottom: "20px",
@@ -711,7 +711,7 @@ const DynamicForm: React.FC<InputProps> = ({
                       className="col-md-6 col-12"
                       style={{
                         padding: " 0 10px",
-                        color: "#7e7e7e",
+                        color: "#121112",
                         fontStyle: "italic",
                         height: "50px",
                         marginBottom: "20px",
@@ -755,7 +755,7 @@ const DynamicForm: React.FC<InputProps> = ({
                       className="col-md-6 col-12"
                       style={{
                         padding: " 0 10px",
-                        color: "#7e7e7e",
+                        color: "#121112",
                         fontStyle: "italic",
                         height: "3rem",
                       }}

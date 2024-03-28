@@ -40,9 +40,9 @@ export default function Certificates(props: any) {
     [key: string]: string;
   };
   const handleCardSelect = (card: any) => {
-    if (card.enabled.includes(diableForm)) {
+    // if (card.enabled.includes(diableForm)) {
       setSelectedCard(card.id);
-    }
+    // }
   };
 
   useEffect(()=>{
@@ -72,7 +72,6 @@ export default function Certificates(props: any) {
         isDisabledFormed = "usIndividual"
       }
       setDisableForm(isDisabledFormed);
-
     }
   }, [authDetails]);
   const redirectToComponent = (cardId: string) => {
@@ -905,7 +904,6 @@ export default function Certificates(props: any) {
                 marginBottom: "20px",
               }}
             >
-
               Back
             </Button>
           </Typography>

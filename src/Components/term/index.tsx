@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Typography, Button } from "@mui/material";
-
-import Paper from "@mui/material/Paper";
+ import Paper from "@mui/material/Paper";
 import DialogEdit from "../reusables/ElectronicSign";
-
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
 import GlobalValues from "../../Utils/constVals";
