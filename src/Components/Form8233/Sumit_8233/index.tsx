@@ -9,12 +9,18 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
-import { W8_state_ECI } from "../../../Redux/Actions";
+import { W8_state_ECI, post8233_EForm } from "../../../Redux/Actions";
 import { useDispatch } from "react-redux";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import useAuth from "../../../customHooks/useAuth";
 
 
 
 const Declaration = (props: any) => {
+  const { authDetails } = useAuth();
+  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+
   const { open, setOpen } = props;
   const handleClose = () => {
     setOpen(false);
@@ -54,14 +60,41 @@ const Declaration = (props: any) => {
               initialValues={initialValue}
               validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
-                console.log("values", values)
                 setSubmitting(true);
-                dispatch(
-                  W8_state_ECI(values, () => {
-                    history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233/ThankYou_8233");
-                  })
-                );
-                history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233/ThankYou_8233");
+                const temp = {
+                  agentId: authDetails.agentId,
+                  accountHolderBasicDetailId: authDetails.accountHolderId,
+                  ...PrevStepData,
+                  ...values,
+                  stepName: null
+                };
+                const returnPromise = new Promise((resolve, reject) => {
+
+                  dispatch(
+                    post8233_EForm(
+                      temp,
+                      (res: any) => {
+                        localStorage.setItem(
+                          "PrevStepData",
+                          JSON.stringify(temp)
+                        );
+                          
+                        resolve(res);
+                        history('/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233/ThankYou_8233')
+                      },
+                      (err: any) => {
+                        reject(err);
+                      }
+                    )
+                  );
+                })
+                return returnPromise;
+                // dispatch(
+                //   W8_state_ECI(values, () => {
+                //     history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233/ThankYou_8233");
+                //   })
+                // );
+                // history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233/ThankYou_8233");
               }}
             >
               {({
@@ -73,7 +106,8 @@ const Declaration = (props: any) => {
                 handleChange,
                 isSubmitting,
                 isValid,
-                setFieldValue
+                setFieldValue,
+                submitForm
               }) => (
                 <form onSubmit={handleSubmit}>
                   {/* <form> */}
@@ -335,6 +369,8 @@ const Declaration = (props: any) => {
 
                         </div>
                         <p className="error">{errors.IsSubmit}</p>
+
+
                         <div style={{ display: "flex", marginTop: "10px" }}>
                           <Checkbox name="IsSubmit_not" value={values.IsSubmit_not} 
                           onChange={(e)=>{
@@ -361,13 +397,21 @@ const Declaration = (props: any) => {
                       marginTop: "40px",
                     }}
                   >
-                    <Button
-
-                      variant="contained"
-                      style={{ color: "white" }}
-                    >
-                      SAVE & EXIT
-                    </Button>
+                    <SaveAndExit Callback={() => {
+                        submitForm().then(() => {
+                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                          const urlValue = window.location.pathname.substring(1);
+                          dispatch(post8233_EForm(
+                            {
+                              ...prevStepData,
+                              stepName: `/${urlValue}`
+                            }
+                            , () => { }))
+                          history(
+                            GlobalValues.basePageRoute
+                          );
+                        })
+                      }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
                     <Button
 
                       variant="contained"

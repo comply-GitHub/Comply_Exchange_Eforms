@@ -17,16 +17,23 @@ import InfoIcon from "@mui/icons-material/Info";
 import { Formik, Form } from "formik";
 import { useDispatch,useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { CREATE_8233,GetHelpVideoDetails } from "../../../Redux/Actions";
+import { CREATE_8233,GetHelpVideoDetails, post8233_EForm } from "../../../Redux/Actions";
 import { partCertiSchema } from "../../../schemas/8233";
 import { ContentCopy } from "@mui/icons-material";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
+import useAuth from "../../../customHooks/useAuth";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 export default function Penalties() {
+  const { authDetails } = useAuth();
+
   const [open2, setOpen2] = useState(false);
   const handleClickOpen2 = () => setOpen2(true);
   const [clickCount, setClickCount] = useState(0);
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
+  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+
   const initialValue = {
     signedBy: "",
     EnterconfirmationCode:"",
@@ -71,15 +78,42 @@ export default function Penalties() {
         
             setClickCount(clickCount+1);
           }else{
-          console.log(values,"valuess")
           setSubmitting(true);
-          dispatch(
-            CREATE_8233(values, () => {
-              history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233");
-            })
-          );
+          const temp = {
+            agentId: authDetails.agentId,
+            accountHolderBasicDetailId: authDetails.accountHolderId,
+            ...PrevStepData,
+            ...values,
+            stepName: null
+          };
+          const returnPromise = new Promise((resolve, reject) => {
+
+            dispatch(
+              post8233_EForm(
+                temp,
+                (res: any) => {
+                  localStorage.setItem(
+                    "PrevStepData",
+                    JSON.stringify(temp)
+                  );
+                    
+                  resolve(res);
+                  history('/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233')
+                },
+                (err: any) => {
+                  reject(err);
+                }
+              )
+            );
+          })
+          return returnPromise;
+          // dispatch(
+          //   CREATE_8233(values, () => {
+          //     history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233");
+          //   })
+          // );
           }
-          history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233");
+          // history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233");
         }}
       >
         {({
@@ -90,7 +124,8 @@ export default function Penalties() {
           handleSubmit,
           handleChange,
           isSubmitting,
-          setFieldValue
+          setFieldValue,
+          submitForm
         }) => (
           <Form onSubmit={handleSubmit}>
             <section
@@ -134,7 +169,7 @@ export default function Penalties() {
       <div className="col-8 mt-3">
               <div style={{ padding: "12px" }}>
                 <Paper style={{ padding: "10px" }}>
-                {obValues.uniqueIdentifier !== values.signedBy && clickCount === 1 ?(
+                {obValues.uniqueIdentifier !== values.signedBy ?(
                   <div  style={{backgroundColor: "#e8e1e1" , padding:"10px"}}>
                   <Typography>
                 SIG101
@@ -665,15 +700,21 @@ export default function Penalties() {
                       marginTop: "40px",
                     }}
                   >
-                    <Button
-                      onClick={() => {
-                        setOpen2(true);
-                      }}
-                      variant="contained"
-                      style={{ color: "white" }}
-                    >
-                      SAVE & EXIT
-                    </Button>
+                    <SaveAndExit Callback={() => {
+                        submitForm().then(() => {
+                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                          const urlValue = window.location.pathname.substring(1);
+                          dispatch(post8233_EForm(
+                            {
+                              ...prevStepData,
+                              stepName: `/${urlValue}`
+                            }
+                            , () => { }))
+                          history(
+                            GlobalValues.basePageRoute
+                          );
+                        })
+                      }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
                     <Button
                       type="submit"
                       variant="contained"

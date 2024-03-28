@@ -50,7 +50,7 @@ export default function Certificates(props: any) {
   },[])
 
   useEffect(() => {
-    dispatch(GetHelpVideoDetails());
+    
     let onboardingStingifiedData = localStorage.getItem("agentDetails");
     let onboardingData;
     let isDisabledFormed;

@@ -17,12 +17,18 @@ import Infoicon from "../../../assets/img/info.png";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
 import { ownerSchema } from "../../../schemas/8233";
-import {GetHelpVideoDetails, CREATE_8233,getAllCountries,GetAgentUSVisaTypeHiddenForEformAction } from "../../../Redux/Actions";
+import {GetHelpVideoDetails, CREATE_8233,getAllCountries,GetAgentUSVisaTypeHiddenForEformAction, post8233_EForm } from "../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
+import useAuth from "../../../customHooks/useAuth";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 export default function Tin(props: any) {
+
+  const { authDetails } = useAuth();
+
   const initialValue = {
     exemptionApplicableForCompensationForCalnderYear: 0,
     otherTaxBeginingYear: "",
@@ -69,6 +75,7 @@ const handleTaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
+
 useEffect(()=>{
   dispatch(GetHelpVideoDetails());
   dispatch(getAllCountries())  
@@ -82,8 +89,10 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
   return (
     <>
       <Formik
-      validateOnChange={false}
-      validateOnBlur={false}
+      validateOnChange={true}
+      validateOnBlur={true}
+      validateOnMount={false}
+    
         initialValues={initialValue}
         enableReinitialize
         validationSchema={ownerSchema}
@@ -93,14 +102,34 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
             setClickCount(clickCount+1);
           } else{
           setSubmitting(true);
-          console.log(values);
-          dispatch(
-            CREATE_8233(values, () => {
-              history("/Form8233/TaxPayer_Identification/Owner/Claim_part");
-            })
-          );
+          const temp = {
+            ...values,
+            agentId: authDetails?.agentId,
+            accountHolderBasicDetailId: authDetails?.accountHolderId,
+            stepName: null,
+          };
+          const returnPromise = new Promise((resolve, reject) => {
+            dispatch(
+              post8233_EForm(temp,
+                (responseData: any) => {
+                  localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                  resolve(responseData);
+                  history("/Form8233/TaxPayer_Identification/Owner/Claim_part");
+                },
+                (err: any) => {
+                  reject(err);
+                }
+              )
+            );
+          })
+          return returnPromise
+          // dispatch(
+          //   CREATE_8233(values, () => {
+          //     history("/Form8233/TaxPayer_Identification/Owner/Claim_part");
+          //   })
+          // );
           }
-          history("/Form8233/TaxPayer_Identification/Owner/Claim_part");
+          //history("/Form8233/TaxPayer_Identification/Owner/Claim_part");
         }}
       >
         {({
@@ -111,6 +140,8 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
           handleSubmit,
           handleChange,
           isSubmitting,
+          submitForm,
+          isValid
         }) => (
           <Form onSubmit={handleSubmit}>
             <section
@@ -416,12 +447,13 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                           width: "100%",
                         }}
                       >
-                        <option value="">---select---</option>
+                        <option value="0">---select---</option>
                         {GetAgentUSVisaTypeHiddenForEform?.map(
                                           (ele: any) => (
                                             <option
-                                              key={ele?.id}
-                                              value={ele?.id}
+                                              key={ele?.usVisaTypeId                                              }
+                                              value={ele?.usVisaTypeId
+                                              }
                                             >
                                               {ele?.name}
                                             </option>
@@ -1035,7 +1067,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                       style={{ fontSize: "15px" }}
                       className="d-flex mt-5 col-12"
                     >
-                      You have selected Line 10 Checkbox. Please provide
+                      If You have selected Line 10 Checkbox. Please provide
                       Statement to Form 8233 <span style={{ color: "red" }}>*</span>
                      
                       <Input
@@ -1101,9 +1133,21 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                       marginTop: "5rem",
                     }}
                   >
-                    <Button variant="contained" style={{ color: "white" }}>
-                      SAVE & EXIT
-                    </Button>
+                    <SaveAndExit Callback={() => {
+                        submitForm().then(() => {
+                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                          const urlValue = window.location.pathname.substring(1);
+                          dispatch(post8233_EForm(
+                            {
+                              ...prevStepData,
+                              stepName: `/${urlValue}`
+                            }
+                            , () => { }))
+                          history(
+                            GlobalValues.basePageRoute
+                          );
+                        })
+                      }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
                     <Button
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}

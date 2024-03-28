@@ -2,27 +2,26 @@ import * as Yup from "yup";
 
 export const SubmitSchema = () => {
   return Yup.object().shape({
-    isAgreeWithDeclaration: Yup.boolean().oneOf(
+    isSubmit: Yup.boolean().test(
+      'is-exclusive',
+      '',
+      function (value) {
+        const { IsSubmit_not } = this.parent;
+        return (value && !IsSubmit_not) || (!value && IsSubmit_not);
+      }
+    ),
+
+    IsSubmit_not: Yup.boolean().test(
+      'is-exclusive',
+      '',
+      function (value) {
+        const { isSubmit } = this.parent;
+        return (value && !isSubmit) || (!value && isSubmit);
+      }
+    ),
+    declaration: Yup.boolean().oneOf(
       [true],
-      ""
-    ),
-
-    isConsentReceipentstatement: Yup.boolean().test(
-      'is-exclusive',
-      '',
-      function (value) {
-        const { isNotConsentReceipentstatement } = this.parent;
-        return (value && !isNotConsentReceipentstatement) || (!value && isNotConsentReceipentstatement);
-      }
-    ),
-
-    isNotConsentReceipentstatement: Yup.boolean().test(
-      'is-exclusive',
-      '',
-      function (value) {
-        const { isConsentReceipentstatement } = this.parent;
-        return (value && !isConsentReceipentstatement) || (!value && isConsentReceipentstatement);
-      }
-    ),
+      "Please mark the checkbox"
+    )
   });
 };
