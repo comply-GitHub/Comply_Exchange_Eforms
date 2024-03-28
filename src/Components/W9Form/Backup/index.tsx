@@ -137,6 +137,7 @@ export default function Backup_witholding(props: any) {
             setSubmitting(true);
             const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
             const result = { ...new_obj, ...values };
+            console.log(result,"values ex2",values)
             // history("/US_Purposes/Back/Exemption")
             const submitPromise=new Promise((resolve,reject)=>{
               dispatch(

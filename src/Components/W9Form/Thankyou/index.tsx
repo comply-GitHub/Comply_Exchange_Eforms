@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from "react";
-import formW9 from "../../../formPDF/formw9";
-// import Form1 from "../../formPDF/form1";
-// import Formw9 from "../../formPDF/formw9";
-// import FormEXP from "../../formPDF/formEXP";
-
 import { Typography, Button } from "@mui/material";
 
 import Paper from "@mui/material/Paper";
