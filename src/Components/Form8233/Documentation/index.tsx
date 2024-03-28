@@ -77,12 +77,36 @@ export default function Tin(props: any) {
   const dispatch = useDispatch();
   const [tax, setTax] = useState<string>("");
 
+  //This code is for action taken on Existing document if any
+  const [actionOnExistingDoc, setActionOnExistingDoc] = useState<string[]>([])
   const [submit, setSubmit] = useState<string>("1");
-
   const handleFile = (event: SelectChangeEvent<string>) => {
     const selectedSubmit = event.target.value;
     setSubmit(selectedSubmit);
+    setActionOnExistingDoc((preValue) => {
+      return {
+        ...preValue,
+        'action':event.target.value
+      }
+    })
   };
+
+  const [image,setImage] = useState("")
+  const handleChangeImg = (event: any) =>{
+    setImage(event.target.files[0].name)
+    setActionOnExistingDoc((preValue) => {
+      return {
+        ...preValue,
+        'image':event.target.files[0].name
+      }
+    })
+  }
+ 
+ console.log("Submit" ,submit);
+ console.log("Image" ,image);
+ console.log("ActionOnExistingDoc", actionOnExistingDoc)
+  //Ends here
+
 
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
@@ -92,6 +116,44 @@ export default function Tin(props: any) {
   };
 
   const [toolInfo, setToolInfo] = useState("");
+
+  
+  //Multiple upload code goes here
+  const [docNam, setDocname] = useState("")
+  const handleChangeDocument = (event:any)=>{
+    setDocname(event.target.value)
+    setImage("")
+    // if (additionalDocs.length < 10) {
+    //   setAdditionalDocs([...additionalDocs, { id: additionalDocs.length + 1, file: null, documentName:event.target.value }]);
+    // }
+  }
+  const [additionalDocs, setAdditionalDocs] = useState<any[]>([]);
+
+  const handleAddDocument = () => {
+    if (additionalDocs.length < 10) {
+      setAdditionalDocs([...additionalDocs, { id: additionalDocs.length + 1, file: null, docName:"" }]);
+    }
+  };
+
+  const handleDeleteDocument = (index: number) => {
+    const updatedDocs = [...additionalDocs];
+    updatedDocs.splice(index, 1);
+    setAdditionalDocs(updatedDocs);
+  };
+
+
+  const handleUpload = (event: any, index: number) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const updatedDocs = [...additionalDocs];
+      updatedDocs[index].file = files[0].name;
+      updatedDocs[index].docName = docNam;
+      setAdditionalDocs(updatedDocs);
+      setDocname("");
+    }
+  };
+
+  console.log("Additional doc", additionalDocs);
   return (
     <>
       <Formik
@@ -310,7 +372,7 @@ export default function Tin(props: any) {
                       </Select>
 
                       {submit === "2" && (
-                        <Input style={{ fontSize: "12px" }} type="file" />
+                        <Input style={{ fontSize: "12px" }} type="file" onChange={ (e) => handleChangeImg(e)}  />
                       )}
                       <span className="my-auto text mx-2">
                         <a>View..</a>
@@ -318,7 +380,7 @@ export default function Tin(props: any) {
                     </div>
                     <div className="col-3"></div>
                   </div>
-                  {incomeArr.map((_, index) => (
+                  {additionalDocs.map((_, index) => (
                     <div
                       key={index}
                       style={{
@@ -332,6 +394,7 @@ export default function Tin(props: any) {
                       <div className="col-4">
                         <select
                           name="usTinTypeId"
+                          onChange={handleChangeDocument}
                           style={{
                             border: " 1px solid #d9d9d9 ",
                             padding: " 0 10px",
@@ -340,18 +403,29 @@ export default function Tin(props: any) {
                             height: "37px",
                             width: "100%",
                           }}
-                        ></select>
+                        >
+                          <option value="">---select---</option>
+                        {GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData?.map(
+                                (ele: any) => (
+                                  <option key={ele?.id} value={ele?.id}>
+                                    {ele?.name}
+                                  </option>
+                                )
+                              )}
+
+                        </select>
                       </div>
 
                       <div className="col-4">
                         <Input
                           style={{ fontSize: "12px", border: "none" }}
                           type="file"
+                          onChange={(e) => handleUpload(e,index)} 
                         />
                       </div>
                       <div className="col-4">
                         <DeleteOutline
-                          onClick={() => handleDelete(index)}
+                          onClick={() => handleDeleteDocument(index)}
                           style={{ color: "red", fontSize: "30px" }}
                         />
                       </div>
@@ -365,7 +439,7 @@ export default function Tin(props: any) {
                     }}
                   >
                     <Button
-                      onClick={addIncomeType}
+                      onClick={handleAddDocument}
                       variant="contained"
                       style={{ backgroundColor: "black" }}
                     >

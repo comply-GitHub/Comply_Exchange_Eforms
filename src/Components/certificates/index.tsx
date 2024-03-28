@@ -59,7 +59,6 @@ export default function Certificates(props: any) {
       onboardingData = JSON.parse(onboardingStingifiedData);
       selectedEntity = onboardingData.businessTypeId === 2;
     }
-    console.log("DATA", onboardingData)
     if (onboardingData !== "" && onboardingData !== null) {
       if (onboardingData?.isUSIndividual == true && selectedEntity == false) {
         isDisabledFormed = "usIndividual"
@@ -72,7 +71,6 @@ export default function Certificates(props: any) {
       } else {
         isDisabledFormed = "usIndividual"
       }
-      console.log(isDisabledFormed, "isDisabledFormed")
       setDisableForm(isDisabledFormed);
 
     }
