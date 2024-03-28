@@ -9,15 +9,19 @@ import {
   Checkbox,
 } from "@mui/material";
 import { amountSchema } from "../../../schemas/8233";
-import {GetHelpVideoDetails, CREATE_8233,getAllCountries,GetIncomeTypes } from "../../../Redux/Actions";
+import {GetHelpVideoDetails, CREATE_8233,getAllCountries,GetIncomeTypes, post8233_EForm } from "../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Info } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import Infoicon from "../../../assets/img/info.png";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import useAuth from "../../../customHooks/useAuth";
 export default function Tin(props: any) {
 
+  const { authDetails } = useAuth();
 
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || '{}')
   const initialValue = {
@@ -65,8 +69,9 @@ export default function Tin(props: any) {
   return (
     <>
       <Formik
-      validateOnChange={false}
-      validateOnBlur={false}
+      validateOnChange={true}
+      validateOnBlur={true}
+      validateOnMount={false}
         initialValues={initialValue}
         enableReinitialize
         validationSchema={amountSchema}
@@ -77,12 +82,33 @@ export default function Tin(props: any) {
           }else{
           
           setSubmitting(true);
-          dispatch(
-            CREATE_8233(values, () => {
-              history("/Form8233/TaxPayer_Identification/Owner/Documentaion");
-            })
-          );
-          history("/Form8233/TaxPayer_Identification/Owner/Documentaion");
+          const temp = {
+            ...values,
+            agentId: authDetails?.agentId,
+            accountHolderBasicDetailId: authDetails?.accountHolderId,
+            stepName: null,
+          };
+          const returnPromise = new Promise((resolve, reject) => {
+            dispatch(
+              post8233_EForm(temp,
+                (responseData: any) => {
+                  localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                  resolve(responseData);
+                  history("/Form8233/TaxPayer_Identification/Owner/Documentaion");
+                },
+                (err: any) => {
+                  reject(err);
+                }
+              )
+            );
+          })
+          return returnPromise
+          // dispatch(
+          //   CREATE_8233(values, () => {
+          //     history("/Form8233/TaxPayer_Identification/Owner/Documentaion");
+          //   })
+          // );
+          // history("/Form8233/TaxPayer_Identification/Owner/Documentaion");
         }}
       }
       >
@@ -94,6 +120,7 @@ export default function Tin(props: any) {
           handleSubmit,
           handleChange,
           isSubmitting,
+          submitForm
         }) => (
           <Form onSubmit={handleSubmit}>
             <section
@@ -1356,9 +1383,21 @@ export default function Tin(props: any) {
                       marginTop: "5rem",
                     }}
                   >
-                    <Button variant="contained" style={{ color: "white" }}>
-                      SAVE & EXIT
-                    </Button>
+                    <SaveAndExit Callback={() => {
+                        submitForm().then(() => {
+                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                          const urlValue = window.location.pathname.substring(1);
+                          dispatch(post8233_EForm(
+                            {
+                              ...prevStepData,
+                              stepName: `/${urlValue}`
+                            }
+                            , () => { }))
+                          history(
+                            GlobalValues.basePageRoute
+                          );
+                        })
+                      }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
                     <Button
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}

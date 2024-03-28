@@ -62,7 +62,11 @@ const Exemption = React.lazy(() => import("../Components/W9Form/Exemption"));
 const tax = React.lazy(() => import("../Components/W9Form/tax"));
 const Certificates_w9 = React.lazy(() => import("../Components/W9Form/Certification"));
 const Penlities_W9 = React.lazy(() => import("../Components/W9Form/penalities"));
+const ThankYou_W9 = React.lazy(() => import("../Components/W9Form/Thankyou"));
+const Submit_w9 = React.lazy(() => import("../Components/W9Form/Submit"));
+
 //
+
 const Eci = React.lazy(() => import("../Components/W-8ECI/Info"));
 const TaxPurpose = React.lazy(() => import("../Components/W-8ECI/TaxPurpose"));
 const TaxPayer = React.lazy(() => import("../Components/W-8ECI/TaxPayer"));
@@ -515,6 +519,20 @@ const ROUTES: Array<RouteType> = [
     path: "w9_pdf",
     id: 7,
     Component: Formw9,
+    isPrivate: true,
+  },
+  {
+    name: "Thankyou_w9",
+    path: "Thankyou_w9",
+    id: 7,
+    Component: ThankYou_W9,
+    isPrivate: true,
+  },
+  {
+    name: "Submit",
+    path: "W9_Submit",
+    id: 7,
+    Component: Submit_w9,
     isPrivate: true,
   },
   {

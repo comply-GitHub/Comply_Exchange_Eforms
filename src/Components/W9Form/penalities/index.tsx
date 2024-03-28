@@ -774,7 +774,7 @@ export default function Penalties() {
                           //type="submit"
                           onClick={() => {
                             submitForm().then((data: any) => {
-                              history("/Submit");
+                              history("/W9_Submit");
                             }).catch(() => {
 
                             })

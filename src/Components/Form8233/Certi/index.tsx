@@ -5,16 +5,21 @@ import { Typography, Button, Paper, Checkbox,Tooltip,Link } from "@mui/material"
 import { useNavigate } from "react-router-dom";
 import { Form, Formik } from "formik";
 import { certificateSchema } from "../../../schemas/8233";
-import { CREATE_8233,GetHelpVideoDetails } from "../../../Redux/Actions";
+import { CREATE_8233,GetHelpVideoDetails, post8233_EForm } from "../../../Redux/Actions";
 import { useDispatch,useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import useAuth from "../../../customHooks/useAuth";
 
 export default function Certifications(props: any) {
+  const { authDetails } = useAuth();
+
   const history = useNavigate();
   const dispatch = useDispatch();
   useEffect(()=>{
     dispatch(GetHelpVideoDetails());
-  });
+  },[]);
   // useEffect(()=>{
   //   document.title = ""
   // },[])
@@ -79,16 +84,38 @@ export default function Certifications(props: any) {
             validationSchema={certificateSchema}
             onSubmit={(values, { setSubmitting }) => {
               setSubmitting(true);
-              dispatch(
-                CREATE_8233(values, () => {
-                  history(
-                    "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission"
-                  );
-                })
-              );
-              history(
-                "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission"
-              );
+              const temp = {
+                ...values,
+                agentId: authDetails?.agentId,
+                accountHolderBasicDetailId: authDetails?.accountHolderId,
+                stepName: null,
+              };
+    
+              const returnPromise = new Promise((resolve, reject) => {
+                dispatch(
+                  post8233_EForm(temp,
+                    (responseData: any) => {
+                      localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                      resolve(responseData);
+                      history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission");
+                    },
+                    (err: any) => {
+                      reject(err);
+                    }
+                  )
+                );
+              })
+              return returnPromise
+              // dispatch(
+              //   CREATE_8233(values, () => {
+              //     history(
+              //       "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission"
+              //     );
+              //   })
+              // );
+              // history(
+              //   "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission"
+              // );
             }}
           >
             {({
@@ -99,6 +126,7 @@ export default function Certifications(props: any) {
               handleSubmit,
               handleChange,
               isSubmitting,
+              submitForm
             }) => (
               <Form onSubmit={handleSubmit}>
                 <Typography
@@ -449,9 +477,21 @@ export default function Certifications(props: any) {
                     marginTop: "40px",
                   }}
                 >
-                  <Button variant="contained" style={{ color: "white" }}>
-                    SAVE & EXIT
-                  </Button>
+                  <SaveAndExit Callback={() => {
+                        submitForm().then(() => {
+                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                          const urlValue = window.location.pathname.substring(1);
+                          dispatch(post8233_EForm(
+                            {
+                              ...prevStepData,
+                              stepName: `/${urlValue}`
+                            }
+                            , () => { }))
+                          history(
+                            GlobalValues.basePageRoute
+                          );
+                        })
+                      }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
                   <Button
                     variant="contained"
                     style={{ color: "white", marginLeft: "15px" }}

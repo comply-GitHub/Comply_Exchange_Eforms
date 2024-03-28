@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { SubmitSchema } from "../../../schemas/submit";
@@ -9,18 +9,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
-import { W8_state_ECI, post8233_EForm } from "../../../Redux/Actions";
+import { W8_state_ECI } from "../../../Redux/Actions";
 import { useDispatch } from "react-redux";
-import SaveAndExit from "../../Reusable/SaveAndExit/Index";
-import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
-import useAuth from "../../../customHooks/useAuth";
-
-
 
 const Declaration = (props: any) => {
-  const { authDetails } = useAuth();
-  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-
   const { open, setOpen } = props;
   const handleClose = () => {
     setOpen(false);
@@ -30,10 +22,6 @@ const Declaration = (props: any) => {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsCheckboxChecked(event.target.checked);
   };
-
-  useEffect(()=>{
-    document.title = "Electronic Signature Confirmation"
-  },[])
 
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -60,41 +48,14 @@ const Declaration = (props: any) => {
               initialValues={initialValue}
               validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
+                console.log("values", values)
                 setSubmitting(true);
-                const temp = {
-                  agentId: authDetails.agentId,
-                  accountHolderBasicDetailId: authDetails.accountHolderId,
-                  ...PrevStepData,
-                  ...values,
-                  stepName: null
-                };
-                const returnPromise = new Promise((resolve, reject) => {
-
-                  dispatch(
-                    post8233_EForm(
-                      temp,
-                      (res: any) => {
-                        localStorage.setItem(
-                          "PrevStepData",
-                          JSON.stringify(temp)
-                        );
-                          
-                        resolve(res);
-                        history('/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233/ThankYou_8233')
-                      },
-                      (err: any) => {
-                        reject(err);
-                      }
-                    )
-                  );
-                })
-                return returnPromise;
-                // dispatch(
-                //   W8_state_ECI(values, () => {
-                //     history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233/ThankYou_8233");
-                //   })
-                // );
-                // history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233/ThankYou_8233");
+                dispatch(
+                  W8_state_ECI(values, () => {
+                    history("/Complete");
+                  })
+                );
+                history("/Complete");
               }}
             >
               {({
@@ -105,9 +66,9 @@ const Declaration = (props: any) => {
                 handleSubmit,
                 handleChange,
                 isSubmitting,
-                isValid,
                 setFieldValue,
-                submitForm
+                submitForm,
+                isValid
               }) => (
                 <form onSubmit={handleSubmit}>
                   {/* <form> */}
@@ -115,15 +76,15 @@ const Declaration = (props: any) => {
                     <Typography
                       align="left"
                       style={{
-                        fontSize: "26px",
-                        color: "#04506e",
+                        fontSize: "27px",
+                        color: "black",
                         fontWeight: "bold",
                       }}
                     >
                       Electronic Signature Confirmation
                     </Typography>
                   }
-                  <Divider style={{ background: "black" }} />
+                  <Divider style={{ background: "black", marginTop: "10px" }} />
 
                   <div>
                     <Accordion
@@ -161,7 +122,7 @@ const Declaration = (props: any) => {
                             style={{
                               color: "black",
                               fontWeight: "bold",
-                              fontSize: "18px",
+                              fontSize: "20px",
                               width: "100%",
                             }}
                           >
@@ -170,7 +131,7 @@ const Declaration = (props: any) => {
 
                           <Typography
                             align="left"
-                            style={{ fontSize: "15px", marginTop: "13px" }}
+                            style={{ fontSize: "17px", marginTop: "13px" }}
                           >
                             <span
                               style={{
@@ -192,7 +153,7 @@ const Declaration = (props: any) => {
 
                           <Typography
                             align="left"
-                            style={{ fontSize: "15px", marginTop: "13px" }}
+                            style={{ fontSize: "17px", marginTop: "13px" }}
                           >
                             Furthermore you acknowledge that you understand
                             your rights and obligations under Title 28 U.S.C.
@@ -201,7 +162,7 @@ const Declaration = (props: any) => {
                           </Typography>
                           <Typography
                             align="left"
-                            style={{ fontSize: "15px", marginTop: "13px" }}
+                            style={{ fontSize: "17px", marginTop: "13px" }}
                           >
                             Additionally, you are certifying that you have
                             read and agreed the certification statement
@@ -210,7 +171,7 @@ const Declaration = (props: any) => {
                           </Typography>
                           <Typography
                             align="left"
-                            style={{ fontSize: "15px", marginTop: "13px" }}
+                            style={{ fontSize: "17px", marginTop: "13px" }}
                           >
                             1. You are the beneficial owner (or an authorized
                             to sign for the beneficial owner) of all the
@@ -218,13 +179,13 @@ const Declaration = (props: any) => {
                           </Typography>
                           <Typography
                             align="left"
-                            style={{ fontSize: "15px", marginTop: "13px" }}
+                            style={{ fontSize: "17px", marginTop: "13px" }}
                           >
                             2. The beneficial owner is not a U.S person.
                           </Typography>
                           <Typography
                             align="left"
-                            style={{ fontSize: "15px", marginTop: "13px" }}
+                            style={{ fontSize: "17px", marginTop: "13px" }}
                           >
                             3. You are a U.S. person submitting a Form type
                             W-9
@@ -242,20 +203,20 @@ const Declaration = (props: any) => {
                           </Typography>
                           <Typography
                             align="left"
-                            style={{ fontSize: "15px" }}
+                            style={{ fontSize: "17px" }}
                           >
                             1. You have entered your name in the box provided
                           </Typography>
                           <Typography
                             align="left"
-                            style={{ fontSize: "15px" }}
+                            style={{ fontSize: "17px" }}
                           >
                             2. Checked the{" "}
                             <span
                               style={{
                                 color: "black",
                                 fontWeight: "bold",
-                                fontSize: "15px",
+                                fontSize: "17px",
                               }}
                             >
                               "I agree with the above declaration"
@@ -264,7 +225,7 @@ const Declaration = (props: any) => {
                           </Typography>
                           <Typography
                             align="left"
-                            style={{ fontSize: "15px" }}
+                            style={{ fontSize: "17px" }}
                           >
                             3. By submitting this form you are providing
                             a legally binding self certified electronic
@@ -273,7 +234,7 @@ const Declaration = (props: any) => {
 
                           <Typography
                             align="left"
-                            style={{ fontSize: "15px", marginTop: "13px" }}
+                            style={{ fontSize: "17px", marginTop: "13px" }}
                           >
                             On submission your details will be transmitted to
                             your previously selected withholding agent previously selected, who
@@ -285,7 +246,7 @@ const Declaration = (props: any) => {
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
                           <Checkbox name="declaration" value={values.declaration} onChange={handleChange} checked={values.declaration} />
-                          <Typography style={{ marginTop: "9px" }}>
+                          <Typography style={{ marginTop: "9px", fontSize: "17px" }}>
                             I agree with the above Declarations
                           </Typography>
                         </div>
@@ -319,15 +280,14 @@ const Declaration = (props: any) => {
                             backgroundColor: "#d4d9d4",
                           }}
                         >
-                          <Divider
-                            style={{ marginTop: "10px", color: "black" }}
-                          />
+
                           <Typography
                             style={{
                               color: "black",
-                              fontWeight: "bold",
-                              fontSize: "16px",
+                              fontWeight: "500",
+                              fontSize: "17px",
                               marginTop: "10px",
+                              textAlign: "justify"
                             }}
                           >
                             We may be required to provide you with a Form
@@ -354,31 +314,32 @@ const Declaration = (props: any) => {
                           <Divider style={{ marginBottom: "10px" }} />
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox name="IsSubmit"
-                            value={values.IsSubmit}
-                            onChange={(e) => {
-                              handleChange(e);
-                              setTimeout(() => { setFieldValue("IsSubmit_not", false) }, 50)
-                            }}
-                            checked={values.IsSubmit} />
+                          <Checkbox 
+                          name="IsSubmit" 
+                          value={values.IsSubmit} 
+                          onChange={(e)=>{
+                            handleChange(e);
+                            setTimeout(()=>{setFieldValue("IsSubmit_not",false)},50)
+                          }} 
+                          checked={values.IsSubmit}                           
+                          />
 
-                          <Typography style={{ marginTop: "9px" }}>
+                          <Typography style={{ marginTop: "9px", fontSize: "17px" }}>
                             I give consent to receiving a recipent statement
                             electronically.
                           </Typography>
 
                         </div>
                         <p className="error">{errors.IsSubmit}</p>
-
-
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox name="IsSubmit_not" value={values.IsSubmit_not} 
+                          <Checkbox name="IsSubmit_not" 
+                          value={values.IsSubmit_not} 
                           onChange={(e)=>{
                             handleChange(e);
                             setTimeout(()=>{setFieldValue("IsSubmit",false)},50)
                           }}
                           checked={values.IsSubmit_not} />
-                          <Typography style={{ marginTop: "9px" }}>
+                          <Typography style={{ marginTop: "9px", fontSize: "17px" }}>
                             {" "}
                             I do not give consent to receiving a recipent
                             statement electronically.
@@ -397,21 +358,12 @@ const Declaration = (props: any) => {
                       marginTop: "40px",
                     }}
                   >
-                    <SaveAndExit Callback={() => {
-                        submitForm().then(() => {
-                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                          const urlValue = window.location.pathname.substring(1);
-                          dispatch(post8233_EForm(
-                            {
-                              ...prevStepData,
-                              stepName: `/${urlValue}`
-                            }
-                            , () => { }))
-                          history(
-                            GlobalValues.basePageRoute
-                          );
-                        })
-                      }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
+                    <Button
+                      variant="contained"
+                      style={{ color: "white" }}
+                    >
+                      SAVE & EXIT
+                    </Button>
                     <Button
 
                       variant="contained"
@@ -420,10 +372,14 @@ const Declaration = (props: any) => {
                       View Form
                     </Button>
 
-                    <Button
-                      // onClick={()=>{
-                      //   history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233")
-                      // }}
+                    <Button               
+                     onClick={() => {
+                      submitForm().then((data: any) => {
+                        history("/Thankyou_w9");
+                      }).catch(() => {
+
+                      })
+                    }}       
                       disabled={!isValid}
                       type="submit"
                       variant="contained"
@@ -454,7 +410,7 @@ const Declaration = (props: any) => {
                       }}
 
                       onClick={() => {
-                        history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission")
+                        history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
                       }}
                     >
                       Back
