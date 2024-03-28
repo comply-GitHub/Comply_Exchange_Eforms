@@ -86,17 +86,13 @@ const Login = () => {
   };
 
   const handleSaveAndExitLogin = () => {
-    dispatch(SignInSaveAndExit(data, (res: any) => {
-      console.log(res);
+    dispatch(SignInSaveAndExit(data, (res: any) => {      
       dispatch(LoadExistingFormData(res?.formTypeId, res.accountHolderDetailsId,
         (resp: any) => {
-          
-          console.log(resp)
-          if (res?.stepName)
-            history(`/${res?.stepName}`);
         }, (err: any) => {
           console.log(err)
         }))
+        history(`/${res?.stepName}`);
     }, (err: any) => {
       console.log(err);
     }

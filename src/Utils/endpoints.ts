@@ -59,6 +59,10 @@ const EndPoint = {
 GetByW8BENEEntityNonUSFormId:"/W8BENEEntity/GetByW8BENEEntityNonUSFormId",
 GetByW8ECIIndividualEntityNonUSFormId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
 GetByW8EXPFormFormEntityNonUs:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
+GetByForm8233IndividualNonUSFormId:"/Form8233Individual/GetByForm8233IndividualNonUSFormId",
+
+
+
 
 //Pdf apis
 GetECIPdf:"/W8ECIIndividualEntity/GetECIPdf",

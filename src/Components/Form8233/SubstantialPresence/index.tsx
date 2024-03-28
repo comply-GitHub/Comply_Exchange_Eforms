@@ -20,10 +20,16 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { SubstantialSchema } from "../../../schemas/8233";
-import { CREATE_8233,GetHelpVideoDetails } from "../../../Redux/Actions";
+import { CREATE_8233,GetHelpVideoDetails, UpsertSubstantialUsPassiveNFE, post8233_EForm, postW8BEN_EForm } from "../../../Redux/Actions";
 import { useDispatch ,useSelector} from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import useAuth from "../../../customHooks/useAuth";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 export default function Presence(props: any) {
+  const { authDetails } = useAuth();
+  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+
   const initialValue = {
     daysAvailableInThisYear: "",
     daysAvailableIn_OneYearbefore: "",
@@ -51,20 +57,42 @@ const GethelpData = useSelector(
   const dispatch = useDispatch();
   return (
     <Formik
+      validateOnChange={true}
+      validateOnBlur={true}
+      validateOnMount={false}
       initialValues={initialValue}
       enableReinitialize
-      validateOnChange={false}
-        validateOnBlur={false}
       validationSchema={SubstantialSchema}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={async (values, { setSubmitting }) => {
         setSubmitting(true);
-        console.log(values);
-        dispatch(
-          CREATE_8233(values, () => {
-            history("/Form8233/TaxPayer_Identification");
-          })
-        );
-        history("/Form8233/TaxPayer_Identification");
+        const temp = {
+          agentId: authDetails.agentId,
+          accountHolderBasicDetailId: authDetails.accountHolderId,
+          ...PrevStepData,
+          ...values,
+          stepName: null
+        };
+        const returnPromise = new Promise((resolve, reject) => {
+
+          dispatch(
+            post8233_EForm(
+              temp,
+              (res: any) => {
+                localStorage.setItem(
+                  "PrevStepData",
+                  JSON.stringify(temp)
+                );
+                  
+                resolve(res);
+                history('/Form8233/TaxPayer_Identification')
+              },
+              (err: any) => {
+                reject(err);
+              }
+            )
+          );
+        })
+        return returnPromise;
       }}
     >
       {({
@@ -75,6 +103,7 @@ const GethelpData = useSelector(
         handleSubmit,
         handleChange,
         isSubmitting,
+        submitForm
       }) => (
         <Form onSubmit={handleSubmit}>
           <section
@@ -449,9 +478,24 @@ const GethelpData = useSelector(
                     marginTop: "80px",
                   }}
                 >
-                  <Button variant="contained" style={{ color: "white" }}>
+                  {/* <Button variant="contained" style={{ color: "white" }}>
                     SAVE & EXIT
-                  </Button>
+                  </Button> */}
+                  <SaveAndExit Callback={() => {
+                            submitForm().then((data) => {
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              dispatch(post8233_EForm(
+                                {
+                                  ...prevStepData,
+                                  stepName: `/${urlValue}`
+                                }
+                                , () => { }))
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          }} formTypeId={FormTypeId.F8233}  />
                   <Button
                     variant="contained"
                     style={{ color: "white", marginLeft: "15px" }}
