@@ -774,7 +774,7 @@ export default function Penalties() {
                           //type="submit"
                           onClick={() => {
                             submitForm().then((data: any) => {
-                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE");
+                              history("/Thankyou_w9");
                             }).catch(() => {
 
                             })
