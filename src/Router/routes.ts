@@ -62,7 +62,7 @@ const Exemption = React.lazy(() => import("../Components/W9Form/Exemption"));
 const tax = React.lazy(() => import("../Components/W9Form/tax"));
 const Certificates_w9 = React.lazy(() => import("../Components/W9Form/Certification"));
 const Penlities_W9 = React.lazy(() => import("../Components/W9Form/penalities"));
-const ThankYou_W9 = React.lazy(() => import("../Components/W9Form/Thankyou"));
+const ThankYou_W9 = React.lazy(() => import("../Components/W9Form/Thankyou/index"));
 const Submit_w9 = React.lazy(() => import("../Components/W9Form/Submit"));
 
 //
