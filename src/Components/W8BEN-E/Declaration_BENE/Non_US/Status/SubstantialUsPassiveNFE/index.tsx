@@ -401,7 +401,7 @@ const SubstantialUsPassiveNFE = ({ formTypeId, submitPassiveNFEData }: any) => {
                         <select
                           style={{
                             padding: " 0 10px",
-                            color: "#7e7e7e",
+                            color: "#121112",
                             fontStyle: "italic",
                             height: "50px",
                             marginBottom: "20px",

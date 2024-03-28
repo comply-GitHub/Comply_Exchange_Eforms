@@ -3,7 +3,7 @@ import { FormControl, Typography, Button, Paper, Tooltip, Link } from "@mui/mate
 import { Info } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Formik, Form } from "formik";
+// import { Formik, Form } from "formik";
 import "./index.scss";
 import {
   getAllCountries,
@@ -61,7 +61,6 @@ export default function Factors() {
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, [])
-
 
   useEffect(() => {
     dispatch(GetAccountHolderIncomeAllocation(authDetails?.accountHolderId, (data: any) => {

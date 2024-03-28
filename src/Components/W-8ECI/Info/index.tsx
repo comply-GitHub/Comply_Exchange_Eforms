@@ -252,7 +252,7 @@ export default function Tin(props: any) {
                               style={{
                                 border: " 1px solid #d9d9d9 ",
                                 padding: " 0 10px",
-                                color: "#7e7e7e",
+                                color: "#121112",
                                 fontStyle: "italic",
                                 height: "50px",
                                 width: "100%",
@@ -303,7 +303,7 @@ export default function Tin(props: any) {
                               style={{
                                 border: " 1px solid #d9d9d9 ",
                                 padding: " 0 10px",
-                                color: "#7e7e7e",
+                                color: "#121112",
                                 fontStyle: "italic",
                                 height: "50px",
                                 width: "100%",
@@ -428,7 +428,7 @@ export default function Tin(props: any) {
                                 style={{
                                   border: " 1px solid #d9d9d9 ",
                                   padding: " 0 10px",
-                                  color: "#7e7e7e",
+                                  color: "#121112",
                                   fontStyle: "italic",
                                   height: "50px",
                                   width: "100%",
