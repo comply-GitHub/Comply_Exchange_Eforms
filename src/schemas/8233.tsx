@@ -37,7 +37,13 @@ export const ownerSchema = () => {
     dateNonImmigrationStatusExpire: Yup.date(),
     declarationOfDurationStayStatus: Yup.boolean(),
     foreignStudent_Teacher_Professor_ResearcherStatus: Yup.boolean(),
-    statementToForm8233_FileUpoad: Yup.mixed().required("File is required"),
+    statementToForm8233_FileUpoad: Yup.mixed().when("foreignStudent_Teacher_Professor_ResearcherStatus", {
+      is: true,
+      then: () => Yup.string().required("File is required")
+    })
+    
+
+
   });
 };
 export const amountSchema = () => {

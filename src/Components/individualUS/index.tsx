@@ -27,8 +27,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
 import { individualSchema } from "../../schemas/individualindex";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
+ import Radio from "@mui/material/Radio";
+ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import "bootstrap/dist/css/bootstrap.css";
 import entity from "../../../src/assets/img/entity.png";
@@ -66,7 +66,6 @@ import Utils from "../../Utils";
 // import { CheckBox } from '@mui/icons-material';
 
 type ValuePiece = Date | null;
-console.log(Date, "date");
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function IndividualUs() {
   //States
@@ -99,7 +98,6 @@ export default function IndividualUs() {
 
 
 
-  console.log("hhh", ustinValue)
   const allCountriesData = useSelector(
     (state: any) => state.getCountriesReducer
   );
@@ -113,7 +111,7 @@ export default function IndividualUs() {
   const Payment = auth?.configurations?.requestBankAccountInformation;
   const PaymentMandatry = auth?.configurations?.requestBankAccountInformationAndWhenYesMakeMandatory;
 
-  console.log(userType, Income, IncomeMandatory, Payment, PaymentMandatry, "99");
+  // console.log(userType, Income, IncomeMandatory, Payment, PaymentMandatry, "99");
 
   const [payload, setPayload] = useState({
     id: 0,
@@ -370,7 +368,7 @@ export default function IndividualUs() {
     );
     dispatch(
       GetAgentPaymentType(3, () => {
-        console.log("Data");
+        // console.log("Data");
       })
     );
 
@@ -464,7 +462,7 @@ export default function IndividualUs() {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
-  console.log(GethelpData, "00")
+  // console.log(GethelpData, "00")
 
   const GetAgentPaymentTypeData = useSelector(
     (state: any) => state.GetAgentPaymentTypeReducer.GetAgentPaymentTypeData
@@ -514,13 +512,13 @@ export default function IndividualUs() {
   };
 
   const addIncomeType = () => {
-    console.log("==", incomeArr);
+    // console.log("==", incomeArr);
     //alert(incomeArr);
     setIncomeArr((incomeArr) => [...incomeArr, 0]);
   };
 
   const handleDelete = (i: any) => {
-    console.log(i, "dhcjd");
+    // console.log(i, "dhcjd");
 
     const updatedIncomeCodes = [...incomeArr];
     updatedIncomeCodes.splice(i, 1);
@@ -595,7 +593,7 @@ export default function IndividualUs() {
               name="sortCode"
               placeholder="Sort Code"
               onChange={handleChange}
-              onKeyDown={(e) => formatSortCode(e, values)}
+              onKeyDown={(e: any) => formatSortCode(e, values)}
               inputProps={{ maxLength: 8 }}
               onBlur={handleBlur}
               error={Boolean(touched.sortCode && errors.sortCode)}
@@ -630,7 +628,7 @@ export default function IndividualUs() {
               id="outlined"
               name="bsb"
               placeholder="Enter Bank Code"
-              onKeyDown={(e) => formatBankCode(e, values)}
+              onKeyDown={(e: any) => formatBankCode(e, values)}
               inputProps={{ maxLength: 9 }}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -664,7 +662,7 @@ export default function IndividualUs() {
               id="outlined"
               name="bankCode"
               placeholder=" Enter Bank Code"
-              onKeyUp={(e) => formatBankCode(e, values)}
+              onKeyUp={(e: any) => formatBankCode(e, values)}
               inputProps={{ maxLength: 8 }}
               onChange={handleChange}
               // onBlur={handleBlur}
@@ -872,7 +870,7 @@ export default function IndividualUs() {
                   return;
 
                 }
-                console.log(values, "AHD values")
+                // console.log(values, "AHD values")
                 const payload = {
                   id: authDetails?.accountHolderId,
                   agentId: authDetails?.agentId,
@@ -1469,8 +1467,8 @@ export default function IndividualUs() {
                               id="outlined"
                               placeholder="Enter Instructor Identifier"
                               onChange={handleChange}
-                              onKeyUp={(e) => onNumberChange(e, values)}
-                              onBlur={(e) => onUidBlur(e, values)}
+                              onKeyUp={(e: any) => onNumberChange(e, values)}
+                              onBlur={(e: any) => onUidBlur(e, values)}
 
                               error={Boolean(errors.uniqueIdentifier && touched.uniqueIdentifier)}
                               value={values.uniqueIdentifier}
@@ -1555,7 +1553,7 @@ export default function IndividualUs() {
                               <select
                                 style={{
                                   padding: " 0 10px",
-                                  color: "#7e7e7e",
+                                  color: "#121112",  
                                   fontStyle: "italic",
                                   height: "36px",
                                 }}
@@ -1620,7 +1618,7 @@ export default function IndividualUs() {
                               <select
                                 style={{
                                   padding: " 0 10px",
-                                  color: "#7e7e7e",
+                                  color: "#121112",
                                   fontStyle: "italic",
                                   height: "36px",
                                 }}
@@ -1812,7 +1810,7 @@ export default function IndividualUs() {
                                 <select
                                   style={{
                                     padding: " 0 10px",
-                                    color: "#7e7e7e",
+                                    color: "#121112",
                                     fontStyle: "italic",
                                     height: "36px",
                                   }}
@@ -1997,8 +1995,8 @@ export default function IndividualUs() {
                               id="outlined"
                               placeholder="Enter Instructor Identifier"
                               onChange={handleChange}
-                              onKeyUp={(e) => onNumberChange(e, values)}
-                              onBlur={(e) => onUidBlur(e, values)}
+                              onKeyUp={(e: any) => onNumberChange(e, values)}
+                              onBlur={(e: any) => onUidBlur(e, values)}
                               error={Boolean(errors.uniqueIdentifier && touched.uniqueIdentifier)}
                               value={values.uniqueIdentifier}
                             // inputProps={{maxLength :agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat.length}}
@@ -2083,7 +2081,7 @@ export default function IndividualUs() {
                               <select
                                 style={{
                                   padding: " 0 10px",
-                                  color: "#7e7e7e",
+                                  color: "#121112",
                                   fontStyle: "italic",
                                   height: "36px",
                                 }}
@@ -2458,7 +2456,7 @@ export default function IndividualUs() {
                                   <select
                                     style={{
                                       padding: " 0 10px",
-                                      color: "#7e7e7e",
+                                      color: "#121112",
                                       fontStyle: "italic",
                                       height: "36px",
                                     }}
@@ -2546,7 +2544,7 @@ export default function IndividualUs() {
                                     id="outlined"
                                     name="usTin"
                                     placeholder="Enter U.S. TIN"
-                                    onKeyDown={(e) => formatTin(e, values)}
+                                    onKeyDown={(e: any) => formatTin(e, values)}
                                     onChange={handleChange}
                                     inputProps={{ maxLength: 11 }}
                                     onBlur={handleBlur}
@@ -2567,7 +2565,7 @@ export default function IndividualUs() {
                                   <select
                                     style={{
                                       padding: " 0 10px",
-                                      color: "#7e7e7e",
+                                      color: "#121112",
                                       fontStyle: "italic",
                                       height: "36px",
                                     }}
@@ -2816,7 +2814,7 @@ export default function IndividualUs() {
                                 <select
                                   style={{
                                     padding: " 0 10px",
-                                    color: "#7e7e7e",
+                                    color: "#121112",
                                     fontStyle: "italic",
                                     height: "36px",
                                   }}
@@ -2893,7 +2891,7 @@ export default function IndividualUs() {
                                   id="outlined"
                                   name="usTin"
                                   placeholder="Enter U.S. TIN"
-                                  onKeyDown={(e) => formatTin(e, values)}
+                                  onKeyDown={(e: any) => formatTin(e, values)}
                                   onChange={handleChange}
                                   inputProps={{ maxLength: 11 }}
                                   onBlur={handleBlur}
@@ -2932,7 +2930,7 @@ export default function IndividualUs() {
                                 <select
                                   style={{
                                     padding: " 0 10px",
-                                    color: "#7e7e7e",
+                                    color: "#121112",
                                     fontStyle: "italic",
                                     height: "36px",
                                   }}
@@ -3019,7 +3017,7 @@ export default function IndividualUs() {
                                   id="outlined"
                                   name="usTin"
                                   placeholder="Enter U.S. TIN"
-                                  onKeyDown={(e) => formatTin(e, values)}
+                                  onKeyDown={(e: any) => formatTin(e, values)}
                                   onChange={handleChange}
                                   inputProps={{ maxLength: 11 }}
                                   onBlur={handleBlur}
@@ -3040,7 +3038,7 @@ export default function IndividualUs() {
                                 <select
                                   style={{
                                     padding: " 0 10px",
-                                    color: "#7e7e7e",
+                                    color: "#121112",
                                     fontStyle: "italic",
                                     height: "36px",
                                   }}
@@ -3284,7 +3282,7 @@ export default function IndividualUs() {
                                     <select
                                       style={{
                                         padding: " 0 10px",
-                                        color: "#7e7e7e",
+                                        color: "#121112",
                                         fontStyle: "italic",
                                         height: "36px",
                                       }}
@@ -3371,7 +3369,7 @@ export default function IndividualUs() {
                                 <select
                                   style={{
                                     padding: " 0 10px",
-                                    color: "#7e7e7e",
+                                    color: "#121112",
                                     fontStyle: "italic",
                                     height: "36px",
                                   }}
@@ -3448,7 +3446,7 @@ export default function IndividualUs() {
                                   id="outlined"
                                   name="usTin"
                                   placeholder="Enter U.S. TIN"
-                                  onKeyDown={(e) => formatTin(e, values)}
+                                  onKeyDown={(e: any) => formatTin(e, values)}
                                   onChange={handleChange}
                                   inputProps={{ maxLength: 11 }}
                                   onBlur={handleBlur}
@@ -3624,7 +3622,7 @@ export default function IndividualUs() {
                             <select
                               style={{
                                 padding: " 0 10px",
-                                color: "#7e7e7e",
+                                color: "#121112",
                                 fontStyle: "italic",
                                 height: "36px",
                               }}
@@ -3809,7 +3807,7 @@ export default function IndividualUs() {
                               <select
                                 style={{
                                   padding: " 0 10px",
-                                  color: "#7e7e7e",
+                                  color: "#121112",
                                   fontStyle: "italic",
                                   height: "36px",
                                 }}
@@ -4593,7 +4591,7 @@ export default function IndividualUs() {
                               <select
                                 style={{
                                   padding: " 0 10px",
-                                  color: "#7e7e7e",
+                                  color: "#121112",
                                   fontStyle: "italic",
                                   height: "36px",
                                 }}
@@ -4739,7 +4737,7 @@ export default function IndividualUs() {
                                   <select
                                     style={{
                                       padding: " 0 10px",
-                                      color: "#7e7e7e",
+                                      color: "#121112",
                                       fontStyle: "italic",
                                       height: "36px",
                                     }}
@@ -5106,7 +5104,7 @@ export default function IndividualUs() {
                             <select
                               style={{
                                 padding: " 0 10px",
-                                color: "#7e7e7e",
+                                color: "#121112",
                                 fontStyle: "italic",
                                 height: "36px",
                               }}
@@ -5155,7 +5153,7 @@ export default function IndividualUs() {
                             <select
                               style={{
                                 padding: " 0 10px",
-                                color: "#7e7e7e",
+                                color: "#121112",
                                 fontStyle: "italic",
                                 height: "36px",
                               }}
@@ -5207,7 +5205,7 @@ export default function IndividualUs() {
                                       className="w-100"
                                       style={{
                                         padding: " 0 10px",
-                                        color: "#7e7e7e",
+                                        color: "#121112",
                                         fontStyle: "italic",
                                         height: "36px",
                                       }}
@@ -5449,7 +5447,7 @@ export default function IndividualUs() {
                                             className="w-100"
                                             style={{
                                               padding: " 0 10px",
-                                              color: "#7e7e7e",
+                                              color: "#121112",
                                               fontStyle: "italic",
                                               height: "36px",
                                             }}
@@ -5665,7 +5663,7 @@ export default function IndividualUs() {
                                             className="w-100"
                                             style={{
                                               padding: " 0 10px",
-                                              color: "#7e7e7e",
+                                              color: "#121112",
                                               fontStyle: "italic",
                                               height: "36px",
                                             }}
@@ -5885,7 +5883,7 @@ export default function IndividualUs() {
                                   className="w-100"
                                   style={{
                                     padding: " 0 10px",
-                                    color: "#7e7e7e",
+                                    color: "#121112",
                                     fontStyle: "italic",
                                     height: "36px",
                                   }}
@@ -6221,7 +6219,7 @@ export default function IndividualUs() {
                                     <select
                                       style={{
                                         padding: "0 10px",
-                                        color: "#7e7e7e",
+                                        color: "#121112",
                                         fontStyle: "italic",
                                         height: "36px",
                                       }}
@@ -6352,7 +6350,7 @@ export default function IndividualUs() {
                                     <select
                                       style={{
                                         padding: " 0 10px",
-                                        color: "#7e7e7e",
+                                        color: "#121112",
                                         fontStyle: "italic",
                                         height: "36px",
                                       }}
@@ -6500,7 +6498,7 @@ export default function IndividualUs() {
                                       <select
                                         style={{
                                           padding: " 0 10px",
-                                          color: "#7e7e7e",
+                                          color: "#121112",
                                           fontStyle: "italic",
                                           height: "36px",
                                         }}
@@ -6714,7 +6712,7 @@ export default function IndividualUs() {
                                     <select
                                       style={{
                                         padding: " 0 10px",
-                                        color: "#7e7e7e",
+                                        color: "#121112",
                                         fontStyle: "italic",
                                         height: "36px",
                                       }}

@@ -40,9 +40,9 @@ export default function Certificates(props: any) {
     [key: string]: string;
   };
   const handleCardSelect = (card: any) => {
-    if (card.enabled.includes(diableForm)) {
+    // if (card.enabled.includes(diableForm)) {
       setSelectedCard(card.id);
-    }
+    // }
   };
 
   useEffect(()=>{
@@ -50,7 +50,7 @@ export default function Certificates(props: any) {
   },[])
 
   useEffect(() => {
-    dispatch(GetHelpVideoDetails());
+    
     let onboardingStingifiedData = localStorage.getItem("agentDetails");
     let onboardingData;
     let isDisabledFormed;
@@ -59,7 +59,6 @@ export default function Certificates(props: any) {
       onboardingData = JSON.parse(onboardingStingifiedData);
       selectedEntity = onboardingData.businessTypeId === 2;
     }
-    console.log("DATA", onboardingData)
     if (onboardingData !== "" && onboardingData !== null) {
       if (onboardingData?.isUSIndividual == true && selectedEntity == false) {
         isDisabledFormed = "usIndividual"
@@ -72,9 +71,7 @@ export default function Certificates(props: any) {
       } else {
         isDisabledFormed = "usIndividual"
       }
-      console.log(isDisabledFormed, "isDisabledFormed")
       setDisableForm(isDisabledFormed);
-
     }
   }, [authDetails]);
   const redirectToComponent = (cardId: string) => {
@@ -907,7 +904,6 @@ export default function Certificates(props: any) {
                 marginBottom: "20px",
               }}
             >
-
               Back
             </Button>
           </Typography>

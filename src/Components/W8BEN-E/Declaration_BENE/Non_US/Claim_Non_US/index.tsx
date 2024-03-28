@@ -632,7 +632,7 @@ The treaty country chosen does not match the country selected earlier as the pri
                                       <select
                                         style={{
                                           padding: " 0 10px",
-                                          color: "#7e7e7e",
+                                          color: "#121112",
                                           fontStyle: "italic",
                                           height: "36px",
                                         }}

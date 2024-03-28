@@ -472,7 +472,7 @@ export default function Fedral_tax(props: any) {
                                     onBlur={handleBlur}
                                     style={{
                                       padding: " 0 10px",
-                                      color: "#7e7e7e",
+                                      color: "#121112",
                                       fontStyle: "italic",
                                       height: "36px",
                                     }}
@@ -1417,7 +1417,7 @@ export default function Fedral_tax(props: any) {
                                         style={{
                                           border: " 1px solid #d9d9d9 ",
                                           padding: " 0 10px",
-                                          color: "#7e7e7e",
+                                          color: "#121112",
                                           fontStyle: "italic",
                                           height: "50px",
                                           width: "40%",
@@ -1439,7 +1439,7 @@ export default function Fedral_tax(props: any) {
                                       <TextField
                                         style={{
                                           backgroundColor: "#fff",
-                                          color: "#7e7e7e",
+                                          color: "#121112",
                                           fontStyle: "italic",
                                           height: "50px",
                                           width: "40%",

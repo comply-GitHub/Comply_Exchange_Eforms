@@ -13,9 +13,11 @@ import {
 import { Info, DeleteOutline } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
-import {GetHelpVideoDetails, CREATE_8233 , GetAgentDocumentationMandatoryForEformAction} from "../../../Redux/Actions";
+import {GetHelpVideoDetails, CREATE_8233 , GetAgentDocumentationMandatoryForEformAction, post8233_EForm} from "../../../Redux/Actions";
 import { useDispatch,useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 
 export default function Tin(props: any) {
   const getFirstDocData = useSelector((state:any) => state.form8233);
@@ -75,12 +77,36 @@ export default function Tin(props: any) {
   const dispatch = useDispatch();
   const [tax, setTax] = useState<string>("");
 
+  //This code is for action taken on Existing document if any
+  const [actionOnExistingDoc, setActionOnExistingDoc] = useState<string[]>([])
   const [submit, setSubmit] = useState<string>("1");
-
   const handleFile = (event: SelectChangeEvent<string>) => {
     const selectedSubmit = event.target.value;
     setSubmit(selectedSubmit);
+    setActionOnExistingDoc((preValue) => {
+      return {
+        ...preValue,
+        'action':event.target.value
+      }
+    })
   };
+
+  const [image,setImage] = useState("")
+  const handleChangeImg = (event: any) =>{
+    setImage(event.target.files[0].name)
+    setActionOnExistingDoc((preValue) => {
+      return {
+        ...preValue,
+        'image':event.target.files[0].name
+      }
+    })
+  }
+ 
+ console.log("Submit" ,submit);
+ console.log("Image" ,image);
+ console.log("ActionOnExistingDoc", actionOnExistingDoc)
+  //Ends here
+
 
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
@@ -90,7 +116,44 @@ export default function Tin(props: any) {
   };
 
   const [toolInfo, setToolInfo] = useState("");
-  console.log(getFirstDocData,"getFirstDocData")
+
+  
+  //Multiple upload code goes here
+  const [docNam, setDocname] = useState("")
+  const handleChangeDocument = (event:any)=>{
+    setDocname(event.target.value)
+    setImage("")
+    // if (additionalDocs.length < 10) {
+    //   setAdditionalDocs([...additionalDocs, { id: additionalDocs.length + 1, file: null, documentName:event.target.value }]);
+    // }
+  }
+  const [additionalDocs, setAdditionalDocs] = useState<any[]>([]);
+
+  const handleAddDocument = () => {
+    if (additionalDocs.length < 10) {
+      setAdditionalDocs([...additionalDocs, { id: additionalDocs.length + 1, file: null, docName:"" }]);
+    }
+  };
+
+  const handleDeleteDocument = (index: number) => {
+    const updatedDocs = [...additionalDocs];
+    updatedDocs.splice(index, 1);
+    setAdditionalDocs(updatedDocs);
+  };
+
+
+  const handleUpload = (event: any, index: number) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const updatedDocs = [...additionalDocs];
+      updatedDocs[index].file = files[0].name;
+      updatedDocs[index].docName = docNam;
+      setAdditionalDocs(updatedDocs);
+      setDocname("");
+    }
+  };
+
+  console.log("Additional doc", additionalDocs);
   return (
     <>
       <Formik
@@ -119,6 +182,7 @@ export default function Tin(props: any) {
           handleSubmit,
           handleChange,
           isSubmitting,
+          submitForm
         }) => (
           <Form onSubmit={handleSubmit}>
             <section
@@ -270,7 +334,7 @@ export default function Tin(props: any) {
                         style={{
                           border: " 1px solid #d9d9d9 ",
                           padding: " 0 10px",
-                          color: "#7e7e7e",
+                          color: "#121112",
                           fontStyle: "italic",
                           height: "38px",
                           width: "100%",
@@ -308,7 +372,7 @@ export default function Tin(props: any) {
                       </Select>
 
                       {submit === "2" && (
-                        <Input style={{ fontSize: "12px" }} type="file" />
+                        <Input style={{ fontSize: "12px" }} type="file" onChange={ (e) => handleChangeImg(e)}  />
                       )}
                       <span className="my-auto text mx-2">
                         <a>View..</a>
@@ -316,7 +380,7 @@ export default function Tin(props: any) {
                     </div>
                     <div className="col-3"></div>
                   </div>
-                  {incomeArr.map((_, index) => (
+                  {additionalDocs.map((_, index) => (
                     <div
                       key={index}
                       style={{
@@ -330,26 +394,38 @@ export default function Tin(props: any) {
                       <div className="col-4">
                         <select
                           name="usTinTypeId"
+                          onChange={handleChangeDocument}
                           style={{
                             border: " 1px solid #d9d9d9 ",
                             padding: " 0 10px",
-                            color: "#7e7e7e",
+                            color: "#121112",
                             fontStyle: "italic",
                             height: "37px",
                             width: "100%",
                           }}
-                        ></select>
+                        >
+                          <option value="">---select---</option>
+                        {GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData?.map(
+                                (ele: any) => (
+                                  <option key={ele?.id} value={ele?.id}>
+                                    {ele?.name}
+                                  </option>
+                                )
+                              )}
+
+                        </select>
                       </div>
 
                       <div className="col-4">
                         <Input
                           style={{ fontSize: "12px", border: "none" }}
                           type="file"
+                          onChange={(e) => handleUpload(e,index)} 
                         />
                       </div>
                       <div className="col-4">
                         <DeleteOutline
-                          onClick={() => handleDelete(index)}
+                          onClick={() => handleDeleteDocument(index)}
                           style={{ color: "red", fontSize: "30px" }}
                         />
                       </div>
@@ -363,7 +439,7 @@ export default function Tin(props: any) {
                     }}
                   >
                     <Button
-                      onClick={addIncomeType}
+                      onClick={handleAddDocument}
                       variant="contained"
                       style={{ backgroundColor: "black" }}
                     >
@@ -378,9 +454,21 @@ export default function Tin(props: any) {
                       marginTop: "5rem",
                     }}
                   >
-                    <Button variant="contained" style={{ color: "white" }}>
-                      SAVE & EXIT
-                    </Button>
+                    <SaveAndExit Callback={() => {
+                        submitForm().then(() => {
+                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                          const urlValue = window.location.pathname.substring(1);
+                          dispatch(post8233_EForm(
+                            {
+                              ...prevStepData,
+                              stepName: `/${urlValue}`
+                            }
+                            , () => { }))
+                          history(
+                            GlobalValues.basePageRoute
+                          );
+                        })
+                      }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
                     <Button
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}

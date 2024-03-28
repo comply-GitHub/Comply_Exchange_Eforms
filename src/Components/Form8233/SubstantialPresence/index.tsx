@@ -31,10 +31,10 @@ export default function Presence(props: any) {
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
 
   const initialValue = {
-    daysAvailableInThisYear: "",
-    daysAvailableIn_OneYearbefore: "",
-    daysAvailableIn_TwoYearbefore: "",
-    totalQualifyingDays: "",
+    daysAvailableInThisYear: PrevStepData?.daysAvailableInThisYear,
+    daysAvailableIn_OneYearbefore: PrevStepData?.daysAvailableIn_OneYearbefore,
+    daysAvailableIn_TwoYearbefore: PrevStepData?.daysAvailableIn_TwoYearbefore,
+    totalQualifyingDays: PrevStepData?.totalQualifyingDays,
   };
   const [expanded, setExpanded] = React.useState<string | false>("");
 useEffect(()=>{
@@ -334,11 +334,10 @@ const GethelpData = useSelector(
                         name="daysAvailableInThisYear"
                         value={values.daysAvailableInThisYear}
                         // onBlur={handleBlur}
-                        onChange={handleChange}
                         error={Boolean(
-                          // touched.daysAvailableInThisYear &&
-                            errors.daysAvailableInThisYear
-                        )}
+                          errors.daysAvailableInThisYear
+                      )}
+                        onChange={handleChange}
                         style={{
                           border: " 1px solid #d9d9d9 ",
                           padding: " 0 10px",
@@ -349,7 +348,7 @@ const GethelpData = useSelector(
                         }}
                       />
                       
-                      <p className="error">{errors.daysAvailableInThisYear}</p>
+                      {/* <p className="error">{errors.daysAvailableInThisYear}</p> */}
                     </FormControl>
                   </div>
                 </div>
@@ -382,9 +381,7 @@ const GethelpData = useSelector(
                           width: "30%",
                         }}
                       />
-                      <p className="error">
-                        {errors.daysAvailableIn_OneYearbefore}
-                      </p>
+                      
                     </FormControl>
                   </div>
                 </div>
@@ -417,9 +414,7 @@ const GethelpData = useSelector(
                           width: "30%",
                         }}
                       />
-                      <p className="error">
-                        {errors.daysAvailableIn_TwoYearbefore}
-                      </p>
+                      
                     </FormControl>
                   </div>
                 </div>
@@ -435,11 +430,10 @@ const GethelpData = useSelector(
                       <Input
                         type="text"
                         name="totalQualifyingDays"
-                        // value={values.totalQualifyingDays}
+                         value={values.totalQualifyingDays}
                         // onBlur={handleBlur}
                         onChange={handleChange}
                         error={Boolean(
-                          // touched.totalQualifyingDays &&
                             errors.totalQualifyingDays
                         )}
                         style={{
@@ -452,7 +446,6 @@ const GethelpData = useSelector(
                           width: "30%",
                         }}
                       />
-                      <p className="error">{errors.totalQualifyingDays}</p>
                     </FormControl>
                   </div>
                 </div>
