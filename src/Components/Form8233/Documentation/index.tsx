@@ -80,9 +80,23 @@ export default function Tin(props: any) {
   //This code is for action taken on Existing document if any
   const [actionOnExistingDoc, setActionOnExistingDoc] = useState<string[]>([])
   const [submit, setSubmit] = useState<string>("1");
+
+  const getSelectedExistingDoc=(e:any)=>{
+    const id = GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData.filter((item:any) => item.name==e.target.value)
+    console.log(id)
+  }
   const handleFile = (event: SelectChangeEvent<string>) => {
     const selectedSubmit = event.target.value;
     setSubmit(selectedSubmit);
+    if(event.target.value !== '1'){
+      setActionOnExistingDoc((preValue) => {
+        return {
+          ...preValue,
+          'image':''
+        }
+      })
+      setImage('')
+    }
     setActionOnExistingDoc((preValue) => {
       return {
         ...preValue,
@@ -123,9 +137,6 @@ export default function Tin(props: any) {
   const handleChangeDocument = (event:any)=>{
     setDocname(event.target.value)
     setImage("")
-    // if (additionalDocs.length < 10) {
-    //   setAdditionalDocs([...additionalDocs, { id: additionalDocs.length + 1, file: null, documentName:event.target.value }]);
-    // }
   }
   const [additionalDocs, setAdditionalDocs] = useState<any[]>([]);
 
@@ -330,6 +341,7 @@ export default function Tin(props: any) {
                   >
                     <div className="col-4">
                       <select
+                        onChange={ (e) =>getSelectedExistingDoc (e)}
                         name="usTinTypeId"
                         style={{
                           border: " 1px solid #d9d9d9 ",
