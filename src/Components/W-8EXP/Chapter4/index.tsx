@@ -530,7 +530,7 @@ export default function Fedral_tax(props: any) {
                                     </Typography>
                                     <Typography>
                                       <Checkbox name="isNoSubstantialUSOwner" checked={values.isNoSubstantialUSOwner} value={values.isNoSubstantialUSOwner}
-                                        onChange={(e) => { handleChange(e); setTimeout(() => { setFieldValue("isNFFE", false) }, 100) }} />
+                                        onChange={(e) => { handleChange(e); setTimeout(() => { setFieldValue("isNoSubstantialUSOwner", false) }, 100) }} />
                                     </Typography>
                                     <Typography className="mt-2">
                                       I further certify that
@@ -548,7 +548,7 @@ export default function Fedral_tax(props: any) {
                                     </Typography>
                                     <Typography>
                                       <Checkbox name="isNFFE" checked={values.isNFFE} value={values.isNFFE}
-                                        onChange={(e) => { handleChange(e); setTimeout(() => { setFieldValue("isNoSubstantialUSOwner", false) }, 100) }} />
+                                        onChange={(e) => { handleChange(e); setTimeout(() => { setFieldValue("isNFFE", false) }, 100) }} />
                                     </Typography>
                                     <Typography className="mt-2">
                                       I certify that the entity identified in Part I
@@ -574,7 +574,7 @@ export default function Fedral_tax(props: any) {
                                     39
                                   </Typography>
                                   <Typography>
-                                    <Checkbox name="isCertify39" checked={values.isCertify39} value={values.isCertify39} onChange={handleChange} />
+                                    <Checkbox name="isCertify39" checked={values.isCertify39} value={values.isCertify39}  onChange={(e) => { handleChange(e); setTimeout(() => { setFieldValue("isCertify39", false) }, 100) }}/>
                                   </Typography>
                                   <Typography className="mt-2">
                                     I certify that :
@@ -611,7 +611,7 @@ export default function Fedral_tax(props: any) {
                                     39
                                   </Typography>
                                   <Typography>
-                                    <Checkbox name="isCertify39" checked={values.isCertify39} value={values.isCertify39} onChange={handleChange} />
+                                    <Checkbox name="isCertify39" checked={values.isCertify39} value={values.isCertify39} onChange={(e) => { handleChange(e); setTimeout(() => { setFieldValue("isCertify39", false) }, 100) }} />
                                   </Typography>
                                   <Typography className="mt-2">
                                     I certify that the entity identified in Part I:

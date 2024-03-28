@@ -106,7 +106,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
-      <div className="row w-100 h-100">
+      <div className="row w-100">
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>
             <BreadCrumbComponent breadCrumbCode={1296} formName={FormTypeId.W8EXP} />
@@ -380,10 +380,11 @@ export default function Certifications(props: any) {
                               style={{
                                 color: "blue",
                                 fontSize: "16px",
+                                cursor:"pointer",
                                 marginLeft: "5px",
                               }}
                             >
-                              (view Electronic Form)
+                              (View Electronic Form)
                             </Link>
                           </Typography>
                         </Typography>
@@ -422,6 +423,9 @@ export default function Certifications(props: any) {
                         })
                       }} formTypeId={FormTypeId.W8EXP} />
                       <Button
+                       onClick={() => {
+                        history("/w8Exp_pdf");
+                      }}
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                       >
