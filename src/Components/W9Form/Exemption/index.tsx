@@ -135,28 +135,28 @@ export default function FCTA_Reporting(props: any) {
           // result = { ...result, isExemptionFATCAReportings:  result.isExemptionFATCAReportings=="true" };
           console.log(result,"values ex",PrevStepData)
           
-          // const submitPromise = new Promise((resolve, reject) => {
-          //   if (clickCount === 0) {
-          //     setClickCount(clickCount + 1);
-          //     setSubmitting(false);
-          //     reject();
-          //   } else {
-          //     dispatch(
-          //       postW9Form(result, () => {
-          //         localStorage.setItem("PrevStepData", JSON.stringify(result));  
-          //         resolve("success");
-          //         setSubmitting(false);
-          //       },
-          //         (error: any) => {
-          //           reject(error);
-          //           setSubmitting(false);
-          //         }
-          //       )
-          //     );              
-          //   }
+          const submitPromise = new Promise((resolve, reject) => {
+            if (clickCount === 0) {
+              setClickCount(clickCount + 1);
+              setSubmitting(false);
+              reject();
+            } else {
+              dispatch(
+                postW9Form(result, () => {
+                  localStorage.setItem("PrevStepData", JSON.stringify(result));  
+                  resolve("success");
+                  setSubmitting(false);
+                },
+                  (error: any) => {
+                    reject(error);
+                    setSubmitting(false);
+                  }
+                )
+              );              
+            }
               
-          // })
-          // return submitPromise;
+          })
+          return submitPromise;
           
         }}
       >
