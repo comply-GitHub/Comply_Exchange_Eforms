@@ -66,7 +66,6 @@ import Utils from "../../Utils";
 // import { CheckBox } from '@mui/icons-material';
 
 type ValuePiece = Date | null;
-console.log(Date, "date");
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function IndividualUs() {
   //States
@@ -99,7 +98,6 @@ export default function IndividualUs() {
 
 
 
-  console.log("hhh", ustinValue)
   const allCountriesData = useSelector(
     (state: any) => state.getCountriesReducer
   );
@@ -113,7 +111,7 @@ export default function IndividualUs() {
   const Payment = auth?.configurations?.requestBankAccountInformation;
   const PaymentMandatry = auth?.configurations?.requestBankAccountInformationAndWhenYesMakeMandatory;
 
-  console.log(userType, Income, IncomeMandatory, Payment, PaymentMandatry, "99");
+  // console.log(userType, Income, IncomeMandatory, Payment, PaymentMandatry, "99");
 
   const [payload, setPayload] = useState({
     id: 0,
@@ -370,7 +368,7 @@ export default function IndividualUs() {
     );
     dispatch(
       GetAgentPaymentType(3, () => {
-        console.log("Data");
+        // console.log("Data");
       })
     );
 
@@ -464,7 +462,7 @@ export default function IndividualUs() {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
-  console.log(GethelpData, "00")
+  // console.log(GethelpData, "00")
 
   const GetAgentPaymentTypeData = useSelector(
     (state: any) => state.GetAgentPaymentTypeReducer.GetAgentPaymentTypeData
@@ -514,13 +512,13 @@ export default function IndividualUs() {
   };
 
   const addIncomeType = () => {
-    console.log("==", incomeArr);
+    // console.log("==", incomeArr);
     //alert(incomeArr);
     setIncomeArr((incomeArr) => [...incomeArr, 0]);
   };
 
   const handleDelete = (i: any) => {
-    console.log(i, "dhcjd");
+    // console.log(i, "dhcjd");
 
     const updatedIncomeCodes = [...incomeArr];
     updatedIncomeCodes.splice(i, 1);
@@ -872,7 +870,7 @@ export default function IndividualUs() {
                   return;
 
                 }
-                console.log(values, "AHD values")
+                // console.log(values, "AHD values")
                 const payload = {
                   id: authDetails?.accountHolderId,
                   agentId: authDetails?.agentId,

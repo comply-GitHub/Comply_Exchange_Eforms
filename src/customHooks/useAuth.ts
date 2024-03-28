@@ -10,13 +10,13 @@ const useAuth = () => {
 
   useEffect(() => {
     if(AuthDetails!==null && AuthDetails!==undefined && AuthDetails.agentId!==0){
-      console.log("auth details main",AuthDetails)
+      //console.log("auth details main",AuthDetails)
       setAuthData(AuthDetails);        
     }else{        
         //check the localstaorage
         let localAuthDetails=JSON.parse(localStorage.getItem("authDetails")||"{}");
         if(localAuthDetails && (localAuthDetails?.agentId!==undefined ||localAuthDetails?.agentId!==0)){
-          console.log("auth details from local storage",localAuthDetails)   
+          //console.log("auth details from local storage",localAuthDetails)   
           dispatch({
             type: Utils.actionName.UpdateAuthDetails,
             payload: { ...localAuthDetails}
@@ -30,7 +30,7 @@ const useAuth = () => {
 
   useEffect(() => {
     if(AuthDetails!==null && AuthDetails!==undefined && AuthDetails.agentId!==0){
-      console.log("auth details main",AuthDetails)
+      //console.log("auth details main",AuthDetails)
       setAuthData(AuthDetails);        
     }    
   }, [AuthDetails]);
