@@ -904,7 +904,6 @@ export default function Certificates(props: any) {
                 marginBottom: "20px",
               }}
             >
-
               Back
             </Button>
           </Typography>

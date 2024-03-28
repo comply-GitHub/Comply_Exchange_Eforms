@@ -543,7 +543,7 @@ useEffect(()=>{
                                     onBlur={handleBlur}
                                     style={{
                                       padding: " 0 10px",
-                                      color: "#7e7e7e",
+                                      color: "#121112",
                                       fontStyle: "italic",
                                       height: "39px",
                                     }}
@@ -794,7 +794,7 @@ useEffect(()=>{
                                           onBlur={handleBlur}
                                           style={{
                                             padding: " 0 10px",
-                                            color: "#7e7e7e",
+                                            color : "#121112",
                                             fontStyle: "italic",
                                             height: "39px",
                                           }}
@@ -847,7 +847,7 @@ useEffect(()=>{
                                             value={values.other}
                                             onChange={handleChange}
                                             style={{
-                                              color: "#7e7e7e",
+                                              color: "#121112",
                                               fontStyle: "italic",
                                               height: "39px",
                                             }}
@@ -1102,7 +1102,7 @@ useEffect(()=>{
                                             onBlur={handleBlur}
                                             style={{
                                               padding: " 0 10px",
-                                              color: "#7e7e7e",
+                                              color: "#121112",
                                               fontStyle: "italic",
                                               height: "36px",
                                             }}

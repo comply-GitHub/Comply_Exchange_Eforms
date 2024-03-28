@@ -5,7 +5,6 @@ import FormW8IMY from "../../../../../formPDF/W8IMY";
 // import FormEXP from "../../formPDF/formEXP";
 
 import { Typography, Button } from "@mui/material";
-
 import Paper from "@mui/material/Paper";
 import DoneIcon from "@mui/icons-material/Done";
 
@@ -119,20 +118,20 @@ export default function Term() {
                   onClick={() => {
                     dispatch(GetBenPdf(authDetails?.accountHolderId))
                   }}
-                  style={{
-                    border: "1px solid #0095dd",
-                    background: "black",
-                    height: "35px",
-                    lineHeight: "normal",
-                    textAlign: "center",
-                    fontSize: "16px",
-                    marginLeft: "12px",
-                    textTransform: "uppercase",
-                    borderRadius: "0px",
-                    color: "#ffff",
-                    padding: "0 35px",
-                    letterSpacing: "1px",
-                  }}
+                  // style={{
+                  //   border: "1px solid #0095dd",
+                  //   background: "black",
+                  //   height: "35px",
+                  //   lineHeight: "normal",
+                  //   textAlign: "center",
+                  //   fontSize: "16px",
+                  //   marginLeft: "12px",
+                  //   textTransform: "uppercase",
+                  //   borderRadius: "0px",
+                  //   color: "#ffff",
+                  //   padding: "0 35px",
+                  //   letterSpacing: "1px",
+                  // }}
                   className="btn btn_submit  btn-primary-agent"
                 >
                   Download PDF
@@ -142,20 +141,9 @@ export default function Term() {
                   onClick={() => {
                     history("/Certificates");
                   }}
-                  style={{
-                    border: "1px solid #0095dd",
-                    background: "black",
-                    height: "35px",
-                    lineHeight: "normal",
-                    textAlign: "center",
-                    fontSize: "16px",
-                    marginLeft: "12px",
-                    textTransform: "uppercase",
-                    borderRadius: "0px",
-                    color: "#ffff",
-                    padding: "0 35px",
-                    letterSpacing: "1px",
-                  }}
+                  // style={{
+               
+                  // }}
                   className="btn btn_submit  btn-primary-agent"
                 >
                   Exit

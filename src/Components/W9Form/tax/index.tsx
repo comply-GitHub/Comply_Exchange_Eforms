@@ -341,7 +341,7 @@ export default function Tin(props: any) {
                                 value={values.taxpayerIdTypeID}
                                 style={{
                                   padding: " 0 10px",
-                                  color: "#7e7e7e",
+                                  color: "#121112",
                                   fontStyle: "italic",
                                   height: "36px",
                                 }}
@@ -379,7 +379,7 @@ export default function Tin(props: any) {
                                 value={values.taxpayerIdTypeID}
                                 style={{
                                   padding: " 0 10px",
-                                  color: "#7e7e7e",
+                                  color: "#121112",
                                   fontStyle: "italic",
                                   height: "36px",
                                 }}
@@ -429,7 +429,7 @@ export default function Tin(props: any) {
                             }
                             className="input-w9-cstm"
                             inputProps={{ maxLength: 11 }}
-                            onKeyDown={(e) => formatTin(e, values)}
+                            onKeyDown={(e: any) => formatTin(e, values)}
                             fullWidth
 
                             style={{
