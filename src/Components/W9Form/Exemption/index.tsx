@@ -132,8 +132,9 @@ export default function FCTA_Reporting(props: any) {
           setSubmitting(true);
           const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
           let result = { ...new_obj, ...values };
-          result = { ...result, isExemptionFATCAReportings:  result.isExemptionFATCAReportings=="true" };
-          console.log("values ex",values)
+          // result = { ...result, isExemptionFATCAReportings:  result.isExemptionFATCAReportings=="true" };
+          console.log(result,"values ex",PrevStepData)
+          
           const submitPromise = new Promise((resolve, reject) => {
             if (clickCount === 0) {
               setClickCount(clickCount + 1);
