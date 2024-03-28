@@ -15,7 +15,7 @@ import {
   RadioGroup,
   Radio,
 } from "@mui/material";
-import { CREATE_8233,GetHelpVideoDetails } from "../../../Redux/Actions";
+import { CREATE_8233,GetHelpVideoDetails, post8233_EForm } from "../../../Redux/Actions";
 import { Info, DeleteOutline,Delete } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import "./index.scss";
@@ -27,19 +27,21 @@ import { useDispatch,useSelector } from "react-redux";
 import { getAllCountries,getAllCountriesCode,getAllCountriesIncomeCode,getAllStateByCountryId  , getTinTypes} from "../../../Redux/Actions";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import CloseIcon from '@mui/icons-material/Close';
+import useAuth from "../../../customHooks/useAuth";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 export default function Tin(props: any) {
 
+  const { authDetails } = useAuth();
 
-  const onBoardingFormValues = JSON.parse(
-    localStorage.getItem("agentDetails") ?? "null"
-  );
+  const onBoardingFormValues = JSON.parse(localStorage.getItem("agentDetails") ?? "null");
  
   const initialValue = {
-    usTinTypeId: onBoardingFormValues?.usTinTypeId
-      ? onBoardingFormValues?.usTinTypeId
+    usTinTypeId: onBoardingFormValues?.taxpayerIdTypeID
+      ? onBoardingFormValues?.taxpayerIdTypeID
       : 0,
 
-    usTin: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin : "",
+    usTin: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin.replace(/-/g, '') : "",
     // usTinTypeId:0,
     // usTin:"",
     notAvailable: false,
@@ -90,7 +92,6 @@ export default function Tin(props: any) {
     );
    }, []);
    const [expanded, setExpanded] = React.useState<string | false>("");
-
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -105,6 +106,7 @@ export default function Tin(props: any) {
   );
   const dispatch = useDispatch();
   const [toolInfo, setToolInfo] = useState("");
+  
   return (
     <>
       <Formik
@@ -115,13 +117,33 @@ export default function Tin(props: any) {
         validationSchema={US_TINSchema}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
-          console.log(values);
-          dispatch(
-            CREATE_8233(values, () => {
-              history("/Form8233/TaxPayer_Identification/Owner");
-            })
-          );
-          history("/Form8233/TaxPayer_Identification/Owner");
+          const temp = {
+            ...values,
+            agentId: authDetails?.agentId,
+            accountHolderBasicDetailId: authDetails?.accountHolderId,
+            stepName: null,
+          };
+          const returnPromise = new Promise((resolve, reject) => {
+            dispatch(
+              post8233_EForm(temp,
+                (responseData: any) => {
+                  localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                  resolve(responseData);
+                  history("/Form8233/TaxPayer_Identification/Owner");
+                },
+                (err: any) => {
+                  reject(err);
+                }
+              )
+            );
+          })
+          return returnPromise
+          // dispatch(
+          //   CREATE_8233(values, () => {
+          //     history("/Form8233/TaxPayer_Identification/Owner");
+          //   })
+          // );
+          // history("/Form8233/TaxPayer_Identification/Owner");
         }}
       >
         {({
@@ -133,7 +155,8 @@ export default function Tin(props: any) {
           handleChange,
           isSubmitting,
           setFieldValue,
-          submitForm
+          submitForm,
+          isValid
         }) => (
           <Form onSubmit={handleSubmit}>
               
@@ -319,12 +342,25 @@ export default function Tin(props: any) {
                             }}
                             name="usTinTypeId"
                             id="Income"
-                            
-                            defaultValue={1}
+                            // defaultValue={getUStinValue()}
                             onBlur={handleBlur}
-                            value={values?.usTinTypeId}
+                            value={values.usTinTypeId}
                             onChange={(e) => {
                               handleChange(e);
+                              if (
+                                e.target.value === "1" ||
+                                e.target.value === "7"
+                              ) {
+                                setTimeout(() => { setFieldValue("usTin", ""); }, 100)
+                                setTimeout(() => { setFieldValue("notAvailable", false); }, 200)
+                              } else if (
+                                e.target.value === "8"
+                              ) {
+                                setTimeout(() => { setFieldValue("usTin", ""); }, 100)
+                                setTimeout(() => { setFieldValue("notAvailable", true); }, 200)
+                              } else {
+                                setTimeout(() => { setFieldValue("notAvailable", false); }, 100)
+                              }
                             }}
                           >
                             <option value={0}>---select---</option>
@@ -631,7 +667,7 @@ export default function Tin(props: any) {
                             <span style={{ color: "red" }}>*</span>
                           </Typography>
                           <select
-                          disabled
+                          
                             style={{
                               border: " 1px solid #d9d9d9 ",
                               padding: " 0 10px",
@@ -1186,9 +1222,21 @@ export default function Tin(props: any) {
                       marginTop: "5rem",
                     }}
                   >
-                    <Button variant="contained" style={{ color: "white" }}>
-                      SAVE & EXIT
-                    </Button>
+                    <SaveAndExit Callback={() => {
+                        submitForm().then(() => {
+                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                          const urlValue = window.location.pathname.substring(1);
+                          dispatch(post8233_EForm(
+                            {
+                              ...prevStepData,
+                              stepName: `/${urlValue}`
+                            }
+                            , () => { }))
+                          history(
+                            GlobalValues.basePageRoute
+                          );
+                        })
+                      }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
                     <Button
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
@@ -1198,6 +1246,7 @@ export default function Tin(props: any) {
                     <Button
                       type="submit"
                       variant="contained"
+                      disabled={!isValid}
                       style={{ color: "white", marginLeft: "15px" }}
                     >
                       Continue

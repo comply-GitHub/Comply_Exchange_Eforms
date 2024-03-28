@@ -13,9 +13,11 @@ import {
 import { Info, DeleteOutline } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
-import {GetHelpVideoDetails, CREATE_8233 , GetAgentDocumentationMandatoryForEformAction} from "../../../Redux/Actions";
+import {GetHelpVideoDetails, CREATE_8233 , GetAgentDocumentationMandatoryForEformAction, post8233_EForm} from "../../../Redux/Actions";
 import { useDispatch,useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 
 export default function Tin(props: any) {
   const getFirstDocData = useSelector((state:any) => state.form8233);
@@ -90,7 +92,6 @@ export default function Tin(props: any) {
   };
 
   const [toolInfo, setToolInfo] = useState("");
-  console.log(getFirstDocData,"getFirstDocData")
   return (
     <>
       <Formik
@@ -119,6 +120,7 @@ export default function Tin(props: any) {
           handleSubmit,
           handleChange,
           isSubmitting,
+          submitForm
         }) => (
           <Form onSubmit={handleSubmit}>
             <section
@@ -378,9 +380,21 @@ export default function Tin(props: any) {
                       marginTop: "5rem",
                     }}
                   >
-                    <Button variant="contained" style={{ color: "white" }}>
-                      SAVE & EXIT
-                    </Button>
+                    <SaveAndExit Callback={() => {
+                        submitForm().then(() => {
+                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                          const urlValue = window.location.pathname.substring(1);
+                          dispatch(post8233_EForm(
+                            {
+                              ...prevStepData,
+                              stepName: `/${urlValue}`
+                            }
+                            , () => { }))
+                          history(
+                            GlobalValues.basePageRoute
+                          );
+                        })
+                      }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
                     <Button
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
