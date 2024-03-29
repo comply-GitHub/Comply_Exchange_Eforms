@@ -111,8 +111,6 @@ export default function IndividualUs() {
   const Payment = auth?.configurations?.requestBankAccountInformation;
   const PaymentMandatry = auth?.configurations?.requestBankAccountInformationAndWhenYesMakeMandatory;
 
-  // console.log(userType, Income, IncomeMandatory, Payment, PaymentMandatry, "99");
-
   const [payload, setPayload] = useState({
     id: 0,
     agentId: authDetails?.agentId,
