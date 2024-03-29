@@ -12,11 +12,36 @@ export const SubstantialSchema = () => {
 export const US_TINSchema = () => {
   return Yup.object().shape({
     usTinTypeId: Yup.number().required("Field Cannot be Empty"),
-    usTin: Yup.string().required("Field Cannot be Empty"),
-    isNotAvailable: Yup.string(),
-    // notAvailable: Yup.string().required("Please select one of the options"),
-    foreignTINCountry: Yup.string(),
-    foreignTIN: Yup.string(),
+    //usTin: Yup.string().required("Field Cannot be Empty"),
+    notAvailable: Yup.boolean(),
+    usTin:Yup.string().when("notAvailable" ,{
+      is:true,
+      then:() => Yup.string().notRequired(),
+      otherwise:() => Yup.string().required(),
+    }),
+    ReasionForForegionTIN_NotAvailable:Yup.string().when("notAvailable",{
+      is:true,
+      then:() => Yup.string().required('required'),
+      otherwise : () => Yup.string().notRequired()
+    }),
+
+    ForeginTIN_CountryId: Yup.string(),
+    ForegionTIN: Yup.string().when("ForeginTIN_CountryId",{
+      is:(value: any) => value !==0,
+      then: () => Yup.string().required(),
+      otherwise: () => Yup.string().notRequired(),
+    }),
+    //foreignTIN: Yup.string(),
+
+    isFTINNotLegallyRequired: Yup.boolean(),
+    
+    isNotLegallyFTIN: Yup.string().when("isFTINNotLegallyRequired", {
+      is: true,
+      then: () => Yup.string().required("required"),
+      otherwise : () => Yup.string().notRequired(),
+    }),
+
+
   });
 };
 
