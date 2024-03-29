@@ -114,7 +114,7 @@ export default function Fedral_tax(props: any) {
     businessName: getReducerData?.businessName ?? "",
     federalTaxClassificationId: getReducerData?.federalTaxClassificationId ?? 0,
     partnershipTrustAuthority:
-      getReducerData?.partnershipTrustAuthority ?? true,
+    getReducerData?.partnershipTrustAuthority ?? true,
     IsAgreeWithDeclaration: getReducerData?.getAgreeWithDeclaration ?? true,
     statusId: 0,
     stepName: `/${urlValue}`,
@@ -294,7 +294,7 @@ export default function Fedral_tax(props: any) {
               partnershipTrustAuthority:
                 JSON.stringify(temp.partnershipTrustAuthority) == "true",
             };
-console.log(newValue,"newValuenewValue")
+            console.log(newValue,"newValuenewValue")
             const submitPromise = new Promise((resolve, reject) => {
               dispatch(
                 postW9Form(
