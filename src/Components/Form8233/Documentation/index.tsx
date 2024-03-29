@@ -18,33 +18,16 @@ import { useDispatch,useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import useAuth from "../../../customHooks/useAuth";
 
 export default function Tin(props: any) {
   const getFirstDocData = useSelector((state:any) => state.form8233);
+  const { authDetails } = useAuth();
 
   const [incomeArr, setIncomeArr] = useState<string[]>([]);
   const initialValue = {
     sufficientFactToJustfyExemptionForClaim12A_13: (getFirstDocData?.statementToForm8233_FileUpoad ? getFirstDocData?.statementToForm8233_FileUpoad : ""),
-    additinalDocument1ID: 0,
-    additinalDocument1Name: "",
-    additinalDocument2ID: 0,
-    additinalDocument2Name: "",
-    additinalDocument3ID: 0,
-    additinalDocument3Name: "",
-    additinalDocument4ID: 0,
-    additinalDocument4Name: "",
-    additinalDocument5ID: 0,
-    additinalDocument5Name: "",
-    additinalDocument6ID: 0,
-    additinalDocument6Name: "",
-    additinalDocument7ID: 0,
-    additinalDocument7Name: "",
-    additinalDocument8ID: 0,
-    additinalDocument8Name: "",
-    additinalDocument9ID: 0,
-    additinalDocument9Name: "",
-    additinalDocument10ID: 0,
-    additinalDocument10Name: "",
+    
   };
   // statementToForm8233_FileUpoad
   const addIncomeType = () => {
@@ -72,7 +55,6 @@ export default function Tin(props: any) {
   const GetAgentDocumentationMandatoryForEformReducer = useSelector(
     (state: any) => state.GetAgentDocumentationMandatoryForEformReducer
   );
-
   const history = useNavigate();
   const dispatch = useDispatch();
   const [tax, setTax] = useState<string>("");
@@ -80,10 +62,16 @@ export default function Tin(props: any) {
   //This code is for action taken on Existing document if any
   const [actionOnExistingDoc, setActionOnExistingDoc] = useState<string[]>([])
   const [submit, setSubmit] = useState<string>("1");
-
+    
   const getSelectedExistingDoc=(e:any)=>{
-    const id = GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData.filter((item:any) => item.name==e.target.value)
-    console.log(id)
+    const id = GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData.filter((item:any) => item.name?.trim==e.target.value?.trim)
+    setActionOnExistingDoc((preValue) => {
+      return {
+        ...preValue,
+        'documentId':id[0]?.documentationId,
+        'action':1
+      }
+    })
   }
   const handleFile = (event: SelectChangeEvent<string>) => {
     const selectedSubmit = event.target.value;
@@ -116,9 +104,9 @@ export default function Tin(props: any) {
     })
   }
  
- console.log("Submit" ,submit);
- console.log("Image" ,image);
- console.log("ActionOnExistingDoc", actionOnExistingDoc)
+//  console.log("Submit" ,submit);
+//  console.log("Image" ,image);
+  
   //Ends here
 
 
@@ -163,26 +151,43 @@ export default function Tin(props: any) {
       setDocname("");
     }
   };
-
-  console.log("Additional doc", additionalDocs);
+  
+  useEffect(() =>{
+    console.log("ActionOnExistingDoc", actionOnExistingDoc)
+    console.log("Additional doc", additionalDocs);
+    
+  },[additionalDocs, actionOnExistingDoc])
+  
   return (
     <>
       <Formik
       validateOnChange={false}
       validateOnBlur={false}
+      validateOnMount={false}
         initialValues={initialValue}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
-          dispatch(
-            CREATE_8233(values, () => {
-              history(
-                "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
-              );
-            })
-          );
-          history(
-            "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
-          );
+          let filteredAdditionalDocs = additionalDocs.filter(item => item.file !== null);
+          const temp = {
+            ...values,
+            agentId: authDetails?.agentId,
+            accountHolderBasicDetailId: authDetails?.accountHolderId,
+            stepName: null,
+            actionOnExistingDoc,
+            additionalDocs
+
+          };
+          console.log("submitted values",temp)
+          // dispatch(
+          //   CREATE_8233(values, () => {
+          //     history(
+          //       "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
+          //     );
+          //   })
+          // );
+          // history(
+          //   "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
+          // );
         }}
       >
         {({
