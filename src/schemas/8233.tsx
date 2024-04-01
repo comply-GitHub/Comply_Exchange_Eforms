@@ -11,7 +11,16 @@ export const SubstantialSchema = () => {
 
 export const US_TINSchema = () => {
   return Yup.object().shape({
-    usTinTypeId: Yup.number().required("Field Cannot be Empty"),
+    // usTinTypeId: Yup.string().notOneOf(['0'], 'Please select a valid option').when('$isRequired', {
+    //   is: true,
+    //   then: Yup.string().required('Selection is required when value is 0'),
+    // }),
+
+    usTinTypeId: Yup.string().notOneOf(['0'], 'please select a valid value').when('$isRequired',{
+      is:true,
+      then: () => Yup.string().required('Selection is required when value is 0')
+    }),
+    //usTinTypeId: Yup.string().required("Field Cannot be Empty"),
     //usTin: Yup.string().required("Field Cannot be Empty"),
     notAvailable: Yup.boolean(),
     usTin:Yup.string().when("notAvailable" ,{
@@ -25,10 +34,15 @@ export const US_TINSchema = () => {
       otherwise : () => Yup.string().notRequired()
     }),
 
-    ForeginTIN_CountryId: Yup.string(),
+    //ForeginTIN_CountryId: Yup.string(),
+    ForeginTIN_CountryId:Yup.string().when("isFTINNotLegallyRequired",{
+      is:true,
+      then:()=> Yup.string().notRequired(),
+      otherwise:() =>Yup.string().required("Foreign Country is required")
+    }),
     ForegionTIN: Yup.string().when("ForeginTIN_CountryId",{
-      is:(value: any) => value !==0,
-      then: () => Yup.string().required(),
+      is:(value: any) => (value !==0),
+      then: () => Yup.string().required("Foreign TIN is required"),
       otherwise: () => Yup.string().notRequired(),
     }),
     //foreignTIN: Yup.string(),
@@ -56,9 +70,12 @@ export const ownerSchema = () => {
     countryIssuingPassportId: Yup.string().required("Field Cannot be Empty"),
     countryIssuingPassportNumber: Yup.string().required("Field Cannot be Empty"),
     dateOfEntryIntoUS: Yup.date().required("Please enter date"),
-    nonImmigrationStatus: Yup.boolean()
-    ,
-    currentNonImmigrationStatus: Yup.string().required(),
+    nonImmigrationStatus: Yup.boolean(),
+    currentNonImmigrationStatus: Yup.string().when("nonImmigrationStatus",{
+      is:false,
+      then : () => Yup.string().required(),
+      otherwise : () => Yup.string().notRequired()
+    }),
     dateNonImmigrationStatusExpire: Yup.date(),
     declarationOfDurationStayStatus: Yup.boolean(),
     foreignStudent_Teacher_Professor_ResearcherStatus: Yup.boolean(),
@@ -76,12 +93,12 @@ export const amountSchema = () => {
     taxTreaty_DescriptionOfPersonalServiceYouProvide: Yup.string(),
     taxTreaty_TotalCompensationYouExpectForThisCalenderYear: Yup.number()
       .min(1)
-      .required(),
+      .required("Number greater than 0 required"),
     taxTreaty_TreatyId: Yup.number(),
     taxTreaty_TreatyArticleId: Yup.number(),
     taxTreaty_TotalCompensationListedon11bExemptFromTax: Yup.number()
       .min(1)
-      .required(),
+      .required("Number greater than 0 required"),
     taxTreaty_CheckAll: Yup.boolean().oneOf([true], "Please mark the checkbox"),
     taxTreaty_CountryOfResidenceId: Yup.number(),
     taxTreaty_NoncompensatoryScholarshiporFellowshipIncome: Yup.number()

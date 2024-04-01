@@ -35,29 +35,20 @@ export default function Tin(props: any) {
   const { authDetails } = useAuth();
 
   const onBoardingFormValues = JSON.parse(localStorage.getItem("agentDetails") ?? "null");
+
+  const onBoardingFormValuesPrevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
  
   const initialValue = {
-    usTinTypeId: onBoardingFormValues?.taxpayerIdTypeID
-      ? onBoardingFormValues?.taxpayerIdTypeID
-      : 0,
-
-    usTin: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin.replace(/-/g, '') : "",
-    // usTinTypeId:0,
-    // usTin:"",
-    notAvailable: false,
-    ForeginTIN_CountryId: onBoardingFormValues?.foreignTINCountryId
-      ? onBoardingFormValues?.foreignTINCountryId
-      : "",
-      ForegionTIN:
-      onBoardingFormValues?.foreignTIN
-      ? onBoardingFormValues?.foreignTIN
-      : 
-      "",
+    usTinTypeId: onBoardingFormValues?.taxpayerIdTypeID ? onBoardingFormValues?.taxpayerIdTypeID : onBoardingFormValuesPrevStepData?.usTINTypeId ? onBoardingFormValuesPrevStepData?.usTINTypeId : 0,
+    usTin: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin.replace(/-/g, '') : onBoardingFormValuesPrevStepData?.usTin ? onBoardingFormValuesPrevStepData?.usTin : "",
+    notAvailable:  false,
+    ForeginTIN_CountryId: onBoardingFormValues?.foreignTINCountryId ? onBoardingFormValues?.foreignTINCountryId : onBoardingFormValuesPrevStepData?.foreginTIN_CountryId ? onBoardingFormValuesPrevStepData?.foreginTIN_CountryId : "",
+    ForegionTIN: onBoardingFormValues?.foreignTIN ? onBoardingFormValues?.foreignTIN : onBoardingFormValuesPrevStepData?.foregionTIN ? onBoardingFormValuesPrevStepData?.foregionTIN :"",
     isFTINNotLegallyRequired: false,
     tinisFTINNotLegallyRequired: "Yes",
     // tinAlternativeFormate: true,
     isNotLegallyFTIN: "",
-    ReasionForForegionTIN_NotAvailable:""
+    ReasionForForegionTIN_NotAvailable: onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable ? onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable : "",
   };
  
   // useEffect(()=>{
@@ -125,22 +116,21 @@ export default function Tin(props: any) {
             accountHolderBasicDetailId: authDetails?.accountHolderId,
             stepName: null,
           };
-          console.log('temp', temp)
-          // const returnPromise = new Promise((resolve, reject) => {
-          //   dispatch(
-          //     post8233_EForm(temp,
-          //       (responseData: any) => {
-          //         localStorage.setItem("PrevStepData", JSON.stringify(temp));
-          //         resolve(responseData);
-          //         //history("/Form8233/TaxPayer_Identification/Owner");
-          //       },
-          //       (err: any) => {
-          //         reject(err);
-          //       }
-          //     )
-          //   );
-          // })
-          // return returnPromise
+          const returnPromise = new Promise((resolve, reject) => {
+            dispatch(
+              post8233_EForm(temp,
+                (responseData: any) => {
+                  localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                  resolve(responseData);
+                  history("/Form8233/TaxPayer_Identification/Owner");
+                },
+                (err: any) => {
+                  reject(err);
+                }
+              )
+            );
+          })
+          return returnPromise
           // dispatch(
           //   CREATE_8233(values, () => {
           //     history("/Form8233/TaxPayer_Identification/Owner");
@@ -387,8 +377,14 @@ export default function Tin(props: any) {
                                    // );
                                  ))}
                           </select>
-                          {/* <p className="error">{errors.usTinTypeId}</p> */}
+                              
+
+                          
+                          
                         </div>
+                        {errors?.usTinTypeId && typeof errors?.usTinTypeId === 'string' && (
+                                <p className="error">{errors?.usTinTypeId}</p>
+                              )}
 
                         <div className="col-lg-5 col-12">
                           <Typography style={{fontSize:"14px"}}>U.S. TIN</Typography>
@@ -700,6 +696,9 @@ export default function Tin(props: any) {
                                   )
                                 )}
                           </select>
+                          {errors?.ForeginTIN_CountryId && typeof errors?.ForeginTIN_CountryId === 'string' && (
+                                <p className="error">{errors?.ForeginTIN_CountryId}</p>
+                              )}
                           {/* <p className="error">{errors?.ForeginTIN_CountryId}</p> */}
 
                           <div style={{ marginTop: "2px" }}>
@@ -900,7 +899,9 @@ export default function Tin(props: any) {
                             />
                             
                           )}
-                          {/* <p className="error">{errors?.ForegionTIN}</p> */}
+                           {/* {errors?.ForegionTIN && errors.ForeginTIN_CountryId && typeof errors?.ForegionTIN === 'string' && (
+                                <p className="error">{errors?.ForegionTIN}</p>
+                            )} */}
 
                         
                           {/* {errors.ForegionTIN &&
@@ -1197,16 +1198,13 @@ export default function Tin(props: any) {
                           width: "100%",
                         }}
                       />
-                      {errors?.ReasionForForegionTIN_NotAvailable &&
-                          touched?.ReasionForForegionTIN_NotAvailable ? (
-                            <div>
-                              <Typography color="error">
-                                {errors?.ReasionForForegionTIN_NotAvailable}
-                              </Typography>
-                            </div>
-                          ) : (
-                            ""
-                          )}
+                      {errors && errors?.ReasionForForegionTIN_NotAvailable  && (
+      <div>
+        <Typography color="error">
+          {/* {errors?.ReasionForForegionTIN_NotAvailable} */}
+        </Typography>
+      </div>
+    )}
                     </div>):""}
 
 
