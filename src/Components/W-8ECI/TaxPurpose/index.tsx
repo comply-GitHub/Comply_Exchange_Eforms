@@ -52,6 +52,7 @@ export default function Fedral_tax(props: any) {
   const { authDetails } = useAuth();
   const W8ECI = useSelector((state: any) => state.W8ECI);
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
+  const [IsIndividual, setIsIndividual] = useState(obValues?.businessTypeId == 1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const [selectedfile, setSelectedFile] = useState<any>(null);
 
@@ -62,8 +63,8 @@ export default function Fedral_tax(props: any) {
     countryOfIncorporation:
       W8ECI?.countryOfIncorporation ?? obValues?.foreignTINCountryId,
     chapter3Status: W8ECI?.chapter3Status ?? 0,
-    firstName: W8ECI?.firstName ?? "",
-    lastName: W8ECI?.lastName ?? "",
+    firstName: W8ECI?.firstName ?? obValues?.firstName ?? "",
+    lastName: W8ECI?.lastName ?? obValues?.lastName ?? "",
     isSubmissionSingleUSOwner: W8ECI?.isSubmissionSingleUSOwner === true ? "yes" : "no" ?? "",
     descriptionHybridStatus: W8ECI?.descriptionHybridStatus ?? "",
     attachSupportingDocument: W8ECI?.attachSupportingDocument ?? "",
@@ -85,9 +86,10 @@ export default function Fedral_tax(props: any) {
     setSelectedFile(e.target.files[0]);
   }
 
-  useEffect(()=>{
+
+  useEffect(() => {
     document.title = "Chapter III"
-  },[])
+  }, [])
 
   useEffect(() => {
     dispatch(getAllCountries());
@@ -132,14 +134,14 @@ export default function Fedral_tax(props: any) {
       setExpandedState(newExpanded ? panel : false);
     };
 
-    const confirmFunction = (value:any,setFieldValue:any) => {
-      setExpandedState(""); setFieldValue("chapter3Status",value);setSelectedTaxClassification(value)
-    }
+  const confirmFunction = (value: any, setFieldValue: any) => {
+    setExpandedState(""); setFieldValue("chapter3Status", value); setSelectedTaxClassification(value)
+  }
   const W9Data = useSelector((state: any) => state.w9Data);
   return (
     <>
       <section
-        
+
         style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
       >
         <div className="overlay-div">
@@ -182,7 +184,9 @@ export default function Fedral_tax(props: any) {
                   initialValues={initialValue}
                   enableReinitialize
                   validateOnMount={true}
-                  validationSchema={TaxPurposeSchema}
+                  validationSchema={
+                    TaxPurposeSchema(IsIndividual)
+                  }
                   onSubmit={(values, { setSubmitting }) => {
                     let temp = {
                       ...PrevStepData,
@@ -424,7 +428,7 @@ export default function Fedral_tax(props: any) {
                                   >
                                     <option value={0}> ---select---</option>
 
-                                    {GetChapter3StatusReducer.GetChapter3StatusData?.map(
+                                    {GetChapter3StatusReducer.GetChapter3StatusData?.filter((x: any) => (x?.name.toLowerCase() == "individual") == IsIndividual).map(
                                       (ele: any) => (
                                         <option key={ele?.id} value={ele?.id}>
                                           {ele?.name}
@@ -438,15 +442,7 @@ export default function Fedral_tax(props: any) {
                                 </FormControl>
                               </div>
                             </div>
-                            {values.chapter3Status == 1 ||
-                              values.chapter3Status == 6 ||
-                              values.chapter3Status == 7 ||
-                              values.chapter3Status == 8 ||
-                              values.chapter3Status == 9 ||
-                              values.chapter3Status == 10 ||
-                              values.chapter3Status == 11 ||
-                              values.chapter3Status == 12 ||
-                              values.chapter3Status == 13 ? (
+                            {values.chapter3Status == 20 ?
                               <>
                                 <div
                                   style={{ alignItems: "center" }}
@@ -458,23 +454,27 @@ export default function Fedral_tax(props: any) {
                                       className="d-flex w-60 "
                                       style={{ fontSize: "13px" }}
                                     >
-                                      Business Name:
+                                      First Name:
                                       <span style={{ color: "red" }}>*</span>
 
                                     </Typography>
 
                                     <FormControl className="w-100">
                                       <TextField
-                                        autoComplete="businessName"
+                                        autoComplete="firstName"
+                                        InputProps={{
+                                          readOnly: true,
+                                        }}
+                                        sx={{ backgroundColor: "#e9ecef" }}
                                         type="text"
                                         onChange={handleChange}
                                         error={Boolean(
-                                          touched.businessName &&
-                                          errors.businessName
+                                          touched.firstName &&
+                                          errors.firstName
                                         )}
-                                        name="businessName"
+                                        name="firstName"
                                         className="inputClassFull"
-                                        value={values.businessName}
+                                        value={values.firstName}
                                       />
                                     </FormControl>
                                   </div>
@@ -487,25 +487,29 @@ export default function Fedral_tax(props: any) {
                                       className="d-flex w-60 "
                                       style={{ fontSize: "13px" }}
                                     >
-                                      Business Name or disregarded entity name if different:
+                                      Last Name:
                                       {/* <span style={{ color: "red" }}>*</span> */}
                                     </Typography>
 
                                     <FormControl className="w-100">
                                       <TextField
-                                        autoComplete="businessDisgradedEntity"
+                                        autoComplete="lastName"
                                         type="text"
+                                        InputProps={{
+                                          readOnly: true,
+                                        }}
+                                        sx={{ backgroundColor: "#e9ecef" }}
                                         onChange={handleChange}
                                         // onBlur={handleBlur}
                                         // helperText={
                                         //   touched.businessDisgradedEntity && errors.businessDisgradedEntity
                                         // }
                                         error={Boolean(
-                                          touched.businessDisgradedEntity &&
-                                          errors.businessDisgradedEntity
+                                          touched.lastName &&
+                                          errors.lastName
                                         )}
-                                        name="businessDisgradedEntity"
-                                        value={values.businessDisgradedEntity}
+                                        name="lastName"
+                                        value={values.lastName}
                                         className="inputClass"
                                       />
                                     </FormControl>
@@ -565,10 +569,139 @@ export default function Fedral_tax(props: any) {
                                     </div>
                                   </div>
                                 </>
-                              </>
-                            ) : (
-                              ""
-                            )}
+                              </> : <></>}
+                            {
+                              values.chapter3Status == 1 ||
+                                values.chapter3Status == 6 ||
+                                values.chapter3Status == 7 ||
+                                values.chapter3Status == 8 ||
+                                values.chapter3Status == 9 ||
+                                values.chapter3Status == 10 ||
+                                values.chapter3Status == 11 ||
+                                values.chapter3Status == 12 ||
+                                values.chapter3Status == 13 ? (
+                                <>
+                                  <div
+                                    style={{ alignItems: "center" }}
+                                    className="row"
+                                  >
+                                    <div className="col-lg-6 col-md-6 col-sm-12">
+                                      <Typography
+                                        align="left"
+                                        className="d-flex w-60 "
+                                        style={{ fontSize: "13px" }}
+                                      >
+                                        Business Name:
+                                        <span style={{ color: "red" }}>*</span>
+
+                                      </Typography>
+
+                                      <FormControl className="w-100">
+                                        <TextField
+                                          autoComplete="businessName"
+                                          type="text"
+                                          onChange={handleChange}
+                                          error={Boolean(
+                                            touched.businessName &&
+                                            errors.businessName
+                                          )}
+                                          name="businessName"
+                                          className="inputClassFull"
+                                          value={values.businessName}
+                                        />
+                                      </FormControl>
+                                    </div>
+                                    <div
+                                      className="col-lg-6 col-md-6 col-sm-12"
+                                    // style={{ marginLeft: "10px" }}
+                                    >
+                                      <Typography
+                                        align="left"
+                                        className="d-flex w-60 "
+                                        style={{ fontSize: "13px" }}
+                                      >
+                                        Business Name or disregarded entity name if different:
+                                        {/* <span style={{ color: "red" }}>*</span> */}
+                                      </Typography>
+
+                                      <FormControl className="w-100">
+                                        <TextField
+                                          autoComplete="businessDisgradedEntity"
+                                          type="text"
+                                          onChange={handleChange}
+                                          // onBlur={handleBlur}
+                                          // helperText={
+                                          //   touched.businessDisgradedEntity && errors.businessDisgradedEntity
+                                          // }
+                                          error={Boolean(
+                                            touched.businessDisgradedEntity &&
+                                            errors.businessDisgradedEntity
+                                          )}
+                                          name="businessDisgradedEntity"
+                                          value={values.businessDisgradedEntity}
+                                          className="inputClass"
+                                        />
+                                      </FormControl>
+                                    </div>
+                                  </div>
+
+                                  <>
+                                    <div className="row">
+                                      <div className=" col-12">
+                                        <Typography
+                                          align="left"
+                                          className="d-flex w-60 "
+                                          style={{
+                                            fontSize: "13px",
+                                            marginTop: "15px",
+                                          }}
+                                        >
+                                          Country of incorporation / organization:
+                                          <span style={{ color: "red" }}>*</span>
+                                        </Typography>
+
+                                        <FormControl className="w-50">
+                                          <select
+                                            name="countryOfIncorporation"
+                                            value={values.countryOfIncorporation}
+                                            onChange={handleChange}
+                                            autoComplete="countryOfIncorporation"
+                                            // placeholder="Business Name"
+                                            // onBlur={handleBlur}
+                                            style={{
+                                              padding: " 0 10px",
+                                              color: "#121112",
+                                              fontStyle: "italic",
+                                              height: "39px",
+                                            }}
+                                          >
+                                            <option value={0}>---select---</option>
+                                            <option value={257}>
+                                              United Kingdom
+                                            </option>
+                                            <option value={258}>
+                                              United States
+                                            </option>
+                                            <option value="">---</option>
+                                            {getCountriesReducer.allCountriesData?.map(
+                                              (ele: any) => (
+                                                <option
+                                                  key={ele?.id}
+                                                  value={ele?.id}
+                                                >
+                                                  {ele?.name}
+                                                </option>
+                                              )
+                                            )}
+                                          </select>
+                                        </FormControl>
+                                      </div>
+                                    </div>
+                                  </>
+                                </>
+                              ) : (
+                                ""
+                              )}
 
                             {values.chapter3Status == 2 ||
                               values.chapter3Status == 3 ||
@@ -878,7 +1011,7 @@ export default function Fedral_tax(props: any) {
                           </Typography>
                         </div>
 
-                        <div style={{ padding: "10px"}}>
+                        <div style={{ padding: "10px" }}>
                           <Accordion
                             expanded={expanded === "groupPanel"}
                             onChange={handleChangeAccodion("groupPanel")}
@@ -1025,7 +1158,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained"onClick={() => {confirmFunction(1,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(1, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1065,7 +1198,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(2,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(2, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1132,7 +1265,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(3,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(3, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1198,7 +1331,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(4,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(4, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1240,7 +1373,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(5,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(5, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1275,7 +1408,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(6,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(6, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1306,7 +1439,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(7,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(7, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1378,7 +1511,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(8,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(8, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1484,7 +1617,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(9,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(9, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1515,7 +1648,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(10,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(10, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1549,7 +1682,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(11,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(11, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1625,7 +1758,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(12,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(12, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1675,7 +1808,7 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(13,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(13, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
