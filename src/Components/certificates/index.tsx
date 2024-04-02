@@ -40,9 +40,9 @@ export default function Certificates(props: any) {
     [key: string]: string;
   };
   const handleCardSelect = (card: any) => {
-    // if (card.enabled.includes(diableForm)) {
+    if (card.enabled.includes(diableForm)) {
       setSelectedCard(card.id);
-    // }
+    }
   };
 
   useEffect(()=>{

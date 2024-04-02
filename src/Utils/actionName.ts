@@ -29,6 +29,7 @@ const ActionName = {
     GetAgentPaymentType:"GetAgentPaymentType",
     //PDFs
     W9PDF:"W9PDF",
+    GetAllLanguage:"GetAllLanguage",
     //
     GetAgentCapacityHiddenForEform: "GetAgentCapacityHiddenForEform",
     GetAgentChapter4EntityTypeHiddenForEform: "GetAgentChapter4EntityTypeHiddenForEform",
