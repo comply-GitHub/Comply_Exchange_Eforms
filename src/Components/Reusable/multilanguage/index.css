@@ -1,0 +1,24 @@
+.goog-te-gadget .goog-te-combo {
+   padding: 0 10px;
+   color: #121112;
+    font-style: italic;
+    height: 36px;
+    margin: 4px 0;
+}
+
+.goog-logo-link {
+    display:none !important;
+} 
+    
+.goog-te-gadget{
+    color: transparent !important;
+    font-size: 0px;
+}
+
+
+#google_translate_element {
+    color: transparent;
+  }
+  #google_translate_element a {
+    display: none;
+  }

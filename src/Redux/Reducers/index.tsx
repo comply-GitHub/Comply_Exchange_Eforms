@@ -27,10 +27,20 @@ const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType
   GetCountriesTreaty,GetCountryArticleByID,
   UpsertSpecialRateAndConditionsIncomeTypes,
   GetByW8EXPIndividualId,
+  GetAllLanguage,
 } = Utils.actionName
 
 
 let initialState: any = [];
+
+export const GetAllLanguageReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case GetAllLanguage:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}
 
 export const getExpFormDataReducer = (state = initialState, action: any) => {
   switch (action.type) {
