@@ -53,6 +53,7 @@ const EndPoint = {
  InsertW8EXPFormEntityNonUs:"/W8EXPEntity/InsertW8EXPFormEntityNonUs",
  InsertW8IMYEntityNonForm:"/W8IMYEntity/InsertW8IMYEntityNonForm",
  InsertForm8233IndividualNonUSForm:"/Form8233Individual/InsertForm8233IndividualNonUSForm",
+ UpsertSupportingDocumentation:"/AccountHolderDetail/UpsertSupportingDocumentation",
 
 
 // Form GetApis:
@@ -60,6 +61,8 @@ GetByW8BENEEntityNonUSFormId:"/W8BENEEntity/GetByW8BENEEntityNonUSFormId",
 GetByW8ECIIndividualEntityNonUSFormId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
 GetByW8EXPFormFormEntityNonUs:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
 GetByForm8233IndividualNonUSFormId:"/Form8233Individual/GetByForm8233IndividualNonUSFormId",
+GetSupportingDocumentation:"/AccountHolderDetail/GetSupportingDocumentation",
+getSupportedFile:"/FileUpload/GetFile",
 
 
 

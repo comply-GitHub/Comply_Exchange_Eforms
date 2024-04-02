@@ -13,7 +13,7 @@ import {
 import { Info, DeleteOutline } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
-import {GetHelpVideoDetails, CREATE_8233 , GetAgentDocumentationMandatoryForEformAction, post8233_EForm} from "../../../Redux/Actions";
+import {GetHelpVideoDetails, CREATE_8233 , GetAgentDocumentationMandatoryForEformAction, post8233_EForm, getSupportingDocument, post8233_EForm_Documentation, getSupportedFile} from "../../../Redux/Actions";
 import { useDispatch,useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
@@ -60,48 +60,31 @@ export default function Tin(props: any) {
   const [tax, setTax] = useState<string>("");
 
   //This code is for action taken on Existing document if any
-  const [actionOnExistingDoc, setActionOnExistingDoc] = useState<string[]>([])
+  const [existingDoc, setExistingDoc] = useState<any[]>([]);
   const [submit, setSubmit] = useState<string>("1");
+  const [selectedId, setSelectedId] = useState<string>();
     
   const getSelectedExistingDoc=(e:any)=>{
     const id = GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData.filter((item:any) => item.name?.trim==e.target.value?.trim)
-    setActionOnExistingDoc((preValue) => {
-      return {
-        ...preValue,
-        'documentId':id[0]?.documentationId,
-        'action':1
-      }
-    })
+    // setActionOnExistingDoc((preValue) => {
+    //   return {
+    //     ...preValue,
+    //     'documentId':id[0]?.documentationId,
+    //     'action':1
+    //   }
+    // })
   }
-  const handleFile = (event: SelectChangeEvent<string>) => {
-    const selectedSubmit = event.target.value;
-    setSubmit(selectedSubmit);
-    if(event.target.value !== '1'){
-      setActionOnExistingDoc((preValue) => {
-        return {
-          ...preValue,
-          'image':''
-        }
-      })
-      setImage('')
-    }
-    setActionOnExistingDoc((preValue) => {
-      return {
-        ...preValue,
-        'action':event.target.value
-      }
-    })
-  };
+  
 
   const [image,setImage] = useState("")
   const handleChangeImg = (event: any) =>{
     setImage(event.target.files[0].name)
-    setActionOnExistingDoc((preValue) => {
-      return {
-        ...preValue,
-        'image':event.target.files[0].name
-      }
-    })
+    // setActionOnExistingDoc((preValue) => {
+    //   return {
+    //     ...preValue,
+    //     'image':event.target.files[0].name
+    //   }
+    // })
   }
  
 //  console.log("Submit" ,submit);
@@ -118,7 +101,11 @@ export default function Tin(props: any) {
   };
 
   const [toolInfo, setToolInfo] = useState("");
-
+//we need to check first if there is any supporting document is available 
+//if so then we need to bind that with additional document array and 
+//then for every document will check if the image available then action dropdown will show 
+//and onchange of that dropdown will show upload, delete and keep existing, 
+//on the other hand will show add more option with document dropdown and upload image option.
   
   //Multiple upload code goes here
   const [docNam, setDocname] = useState("")
@@ -126,11 +113,11 @@ export default function Tin(props: any) {
     setDocname(event.target.value)
     setImage("")
   }
+  
   const [additionalDocs, setAdditionalDocs] = useState<any[]>([]);
-
   const handleAddDocument = () => {
     if (additionalDocs.length < 10) {
-      setAdditionalDocs([...additionalDocs, { id: additionalDocs.length + 1, file: null, docName:"" }]);
+      setAdditionalDocs([...additionalDocs, { id: 0,agentId: null,accountHolderDetailsId: null,formTypeId:null, formEntryId:additionalDocs.length + 1,documentTypeId:null, action:null,file: null, fileStorageName:"" }]);
     }
   };
 
@@ -144,20 +131,99 @@ export default function Tin(props: any) {
   const handleUpload = (event: any, index: number) => {
     const files = event.target.files;
     if (files && files.length > 0) {
+      const documentTypeId = GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData.filter((item:any) => item.documentationId==docNam)
       const updatedDocs = [...additionalDocs];
-      updatedDocs[index].file = files[0].name;
-      updatedDocs[index].docName = docNam;
+      updatedDocs[index].file = files[0];
+      updatedDocs[index].agentId = authDetails?.agentId;
+      updatedDocs[index].accountHolderDetailsId = authDetails?.accountHolderId;
+      updatedDocs[index].formTypeId = FormTypeId.F8233;
+      updatedDocs[index].documentTypeId = documentTypeId[0]?.documentationId;
+      updatedDocs[index].action = 2;
+
+      updatedDocs[index].fileStorageName = docNam;
       setAdditionalDocs(updatedDocs);
+    }
+  };
+  
+
+  const callAPI = () => {
+    const formData = new FormData()
+    let obj ={}
+    const mergedArray = [...additionalDocs, ...existingDoc];
+
+    mergedArray?.forEach((me,i)=>{
+      Object.keys(me).forEach((key) => {
+        const value = me[key];
+        const objectKey = `Data[${i}].${key}`
+        obj ={...obj , [objectKey]:value}
+        
+        
+      });
+      
+    })
+    dispatch(post8233_EForm_Documentation(obj,() => {
+      // history(
+      //         "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
+      //       );
+    }))
+
+
+  }
+
+  const [existingDocNew, setExistingDocNew] = useState<String[]>([]);
+  const handleChangeExistDocument = (event:any , index:number) => {
+    
+    const documentTypeId = GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData.filter((item:any) => item.documentationId ==event.target.value)
+      const updatedDocs = [...existingDoc];
+      updatedDocs[index].documentTypeId = documentTypeId[0]?.documentationId;
+      setExistingDocNew(updatedDocs);
+  }
+  const handleUploadExisting = (event: any, index: number) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const documentTypeId = GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData.filter((item:any) => item.name?.trim==docNam?.trim)
+      const updatedDocs = [...existingDoc];
+      updatedDocs[index].file = files[0];
+      setExistingDocNew(updatedDocs);
       setDocname("");
     }
   };
   
-  useEffect(() =>{
-    console.log("ActionOnExistingDoc", actionOnExistingDoc)
-    console.log("Additional doc", additionalDocs);
+
+  const [selectedOptions, setSelectedOptions] = useState<String[]>([]);
+  const handleFile = (event:any , rowId:any) => {
+    setSubmit(event);
+    const newSelectedOptions = [...selectedOptions];
+    newSelectedOptions[rowId] = event;
+    existingDoc[rowId].action = Number(event);
+    setSelectedOptions(newSelectedOptions);
+  };
+
+  const viewDoc = (strgName:any, folderName:string)=>{
+    console.log("storageName",strgName)
+    console.log("folderName",folderName)
+    dispatch(getSupportedFile(strgName, folderName))
+  }
+
+  useEffect(() => {
+    setSelectedOptions(existingDoc?.map(() => "1"));
+  }, [existingDoc]);
+
+  useEffect(() => {
+    if(authDetails?.accountHolderId!==undefined){
+      dispatch(getSupportingDocument(authDetails?.accountHolderId, FormTypeId.F8233))
+    }
     
-  },[additionalDocs, actionOnExistingDoc])
-  
+  },[authDetails])
+
+  useEffect(() => {
+    if(localStorage?.getItem("supportingDocuments")){
+      const supportingDocumentsString = localStorage.getItem("supportingDocuments");
+      const supportingDocuments = supportingDocumentsString ? JSON.parse(supportingDocumentsString) : [];
+      setExistingDoc(supportingDocuments);
+    }
+    
+  },[localStorage.getItem("supportingDocuments") ])
   return (
     <>
       <Formik
@@ -168,16 +234,9 @@ export default function Tin(props: any) {
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
           let filteredAdditionalDocs = additionalDocs.filter(item => item.file !== null);
-          const temp = {
-            ...values,
-            agentId: authDetails?.agentId,
-            accountHolderBasicDetailId: authDetails?.accountHolderId,
-            stepName: null,
-            actionOnExistingDoc,
-            additionalDocs
-
-          };
-          console.log("submitted values",temp)
+          callAPI()
+          
+          //console.log("submitted values",additionalDocs)
           // dispatch(
           //   CREATE_8233(values, () => {
           //     history(
@@ -335,7 +394,7 @@ export default function Tin(props: any) {
                     Add Additional Documentation
                   </Typography>
 
-                  <div
+                  {/* <div
                     style={{
                       margin: "10px",
                       display: "flex",
@@ -396,8 +455,81 @@ export default function Tin(props: any) {
                       </span>
                     </div>
                     <div className="col-3"></div>
-                  </div>
-                  {additionalDocs.map((_, index) => (
+                  </div> */}
+
+                  {selectedOptions.length > 0 && existingDoc?.map((row, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        margin: "10px",
+                        display: "flex",
+                        marginTop: "25px",
+                        justifyContent: "space-between",
+                      }}
+                      className="row col-12"
+                    >
+                      <div className="col-4">
+                        <select
+                          name="usTinTypeId"
+                          onChange={(e) => handleChangeExistDocument(e,index)}
+                          value={row?.documentTypeId }
+                          style={{
+                            border: " 1px solid #d9d9d9 ",
+                            padding: " 0 10px",
+                            color: "#121112",
+                            fontStyle: "italic",
+                            height: "37px",
+                            width: "100%",
+                          }}
+                        >
+                          <option value="">---select---</option>
+                        {GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData?.map(
+                                (ele: any) => (
+                                  <option key={ele?.documentationId} value={ele?.documentationId} selected={row.documentTypeId === ele.documentationId}>
+                                    {ele?.name}
+                                  </option>
+                                )
+                              )}
+
+                        </select>
+                      </div>
+                      
+                        <div className="col-8">
+                            <Select
+                              value={selectedOptions[index]}
+                              name="taxTreaty_TreatyId"
+                              onBlur={handleBlur}
+                              onChange={(e)=>handleFile(e.target.value, index)}
+                            
+                              style={{
+                                minWidth: "140px",
+                                height: "37px",
+                                marginRight: "10px",
+                                fontSize:"12px"
+                              }}
+                            >
+                              <MenuItem value="1">Keep Existing</MenuItem>
+                              <MenuItem value="2">Upload:</MenuItem>
+                              <MenuItem value="3">Remove</MenuItem>
+                            </Select>
+
+                            {(selectedOptions[index]!==undefined && selectedOptions[index] === '2')  && (
+                              <Input style={{ fontSize: "12px" }} type="file" onChange={(e) => handleUploadExisting(e,index)}  />
+                            )}
+                            <span className="my-auto text mx-2">
+                              <a onClick={() =>viewDoc(row.fileStorageName,'Form8233')}>View..</a>
+                            </span>
+                        </div>
+                      
+                      
+                    </div>
+                  ))}
+
+
+
+
+
+                  {additionalDocs.map((row, index) => (
                     <div
                       key={index}
                       style={{
@@ -412,6 +544,7 @@ export default function Tin(props: any) {
                         <select
                           name="usTinTypeId"
                           onChange={handleChangeDocument}
+                          value={row.documentTypeId }
                           style={{
                             border: " 1px solid #d9d9d9 ",
                             padding: " 0 10px",
@@ -424,7 +557,7 @@ export default function Tin(props: any) {
                           <option value="">---select---</option>
                         {GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData?.map(
                                 (ele: any) => (
-                                  <option key={ele?.id} value={ele?.id}>
+                                  <option key={ele?.documentationId} value={ele?.documentationId} selected={row.documentTypeId === ele.documentationId}>
                                     {ele?.name}
                                   </option>
                                 )
@@ -432,8 +565,8 @@ export default function Tin(props: any) {
 
                         </select>
                       </div>
-
-                      <div className="col-4">
+                      
+                        <div className="col-4">
                         <Input
                           style={{ fontSize: "12px", border: "none" }}
                           type="file"
@@ -446,6 +579,8 @@ export default function Tin(props: any) {
                           style={{ color: "red", fontSize: "30px" }}
                         />
                       </div>
+                      
+                      
                     </div>
                   ))}
                   <div

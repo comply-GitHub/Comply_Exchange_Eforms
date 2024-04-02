@@ -60,6 +60,7 @@ const ActionName = {
     InsertW8EXPFormEntityNonUs:"InsertW8EXPFormEntityNonUs",
     InsertW8IMYEntityNonForm:"InsertW8IMYEntityNonForm",
     InsertForm8233IndividualNonUSForm:"InsertForm8233IndividualNonUSForm",
+    UpsertSupportingDocumentation:"UpsertSupportingDocumentation",
     //Account holder
     UpsertAccountHolderIncomeAllocation:"/AccountHolderDetail/UpsertAccountHolderIncomeAllocation",
     GetAccountHolderIncomeAllocation:"/AccountHolderDetail/GetAccountHolderIncomeAllocation",

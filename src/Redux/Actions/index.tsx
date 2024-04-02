@@ -2006,3 +2006,113 @@ export const post8233_EForm = (value: any, callback: Function, errorCallback: Fu
     );
   };
 };
+
+
+export const getSupportingDocument = (AccountHolderId:number, FormTypeId:number): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetSupportingDocumentation,
+      `?AccountHolderId=${AccountHolderId}&FormTypeId=${FormTypeId}`,
+      async (resData) => {
+        const { data } = resData;
+
+        const newData = data.map((doc:any) => ({
+            ...doc,
+            action: 1, // Update the 'action' key to 1
+          }));
+          // setExistingDoc(newData);
+
+
+        localStorage.setItem("supportingDocuments", JSON.stringify(newData));
+
+        // if (resData.status === 200) {
+        //   dispatch({
+        //     type: Utils.actionName.GetAllHelpVideosDetails,
+        //     payload: {
+        //       GethelpData: resData.data,
+        //     },
+        //   });
+        // }
+        //console.log(data);
+      },
+      (error: any) => {
+        console.log(error)
+      }
+    );
+  };
+};
+
+export const post8233_EForm_Documentation = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.UpsertSupportingDocumentation,
+      convertToFormData(value),
+      (responseData) => {
+        let { data } = responseData;
+        //console.log("Form 8233 Response Data",responseData);
+        dispatch({
+          type: Utils.actionName.UpsertSupportingDocumentation,
+          payload: { ...value, Response: data },
+        });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback({ message: "Internal server error occured", payload: responseData })
+          } else {
+            if (callback) {
+              callback();
+            }
+          }
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(error)
+      },
+      "multi"
+    );
+  };
+};
+
+
+export const getSupportedFile = (storageName:number, FolderName:string): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.getSupportedFile,
+      `?storagename=${storageName}&subFolder=${FolderName}`,
+      async (resData) => {
+        const { data } = resData;
+        console.log(data);
+        //localStorage.setItem("supportingDocuments", JSON.stringify(newData));
+
+        // if (resData.status === 200) {
+        //   dispatch({
+        //     type: Utils.actionName.GetAllHelpVideosDetails,
+        //     payload: {
+        //       GethelpData: resData.data,
+        //     },
+        //   });
+        // }
+        //console.log(data);
+      },
+      (error: any) => {
+        console.log(error)
+      }
+    );
+  };
+};
