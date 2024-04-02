@@ -1,7 +1,7 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { SubmitSchema } from "../../schemas/submit";
+import { SubmitSchema } from "../../../schemas/submit";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -9,7 +9,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
-import { W8_state_ECI } from "../../Redux/Actions";
+import { W8_state_ECI } from "../../../Redux/Actions";
 import { useDispatch } from "react-redux";
 
 const Declaration = (props: any) => {
@@ -26,9 +26,7 @@ const Declaration = (props: any) => {
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
-  useEffect(()=>{
-    document.title = "Electronic Signature Confirmation"
-  },[])
+
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -54,10 +52,10 @@ const Declaration = (props: any) => {
                 setSubmitting(true);
                 dispatch(
                   W8_state_ECI(values, () => {
-                    history("/Thankyou_w9");
+                    history("/Complete");
                   })
                 );
-                history("/Thankyou_w9");
+                history("/Complete");
               }}
             >
               {({
@@ -69,6 +67,7 @@ const Declaration = (props: any) => {
                 handleChange,
                 isSubmitting,
                 setFieldValue,
+                submitForm,
                 isValid
               }) => (
                 <form onSubmit={handleSubmit}>
@@ -373,7 +372,14 @@ const Declaration = (props: any) => {
                       View Form
                     </Button>
 
-                    <Button                      
+                    <Button               
+                     onClick={() => {
+                      submitForm().then((data: any) => {
+                        history("/Thankyou_W9_DC");
+                      }).catch(() => {
+
+                      })
+                    }}       
                       disabled={!isValid}
                       type="submit"
                       variant="contained"
@@ -405,7 +411,6 @@ const Declaration = (props: any) => {
 
                       onClick={() => {
                         history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
-                        // history("/Complete")
                       }}
                     >
                       Back

@@ -19,6 +19,22 @@ const Submit = React.lazy(() => import("../Components/Submit"));
 const PDFViewer = React.lazy(() => import("../Components/reusables/PdfViewer"));
 const Chapter4Guide_Exp = React.lazy(() => import("../Components/Chapter4GuideEXP/index"));
 const Chapter4 = React.lazy(() => import("../Components/Chapter4Guide/index"));
+const Taxpayer_DC = React.lazy(
+  () => import("../Components/W9Form/Tax Identification Dual Cert")
+);
+const Certification_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Certification_DualCert")
+);
+
+const Participation_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Penalities_DC")
+);
+const Submit_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Submit_DC")
+);
+const Thankyou_W9_DC = React.lazy(
+  () => import("../Components/W9Form/ThankYou_DC")
+);
 //
 const Declaration = React.lazy(
   () => import("../Components/W-8BEN/Declaration")
@@ -171,6 +187,43 @@ const ROUTES: Array<RouteType> = [
     Component: Security,
     isPrivate: true,
   },
+  {
+    name: "Taxpayer_DC",
+    path: "/Taxpayer_DC",
+    id: 2,
+    Component: Taxpayer_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Certification_W9_DC",
+    path: "/Certification_W9_DC",
+    id: 2,
+    Component: Certification_W9_DC,
+    isPrivate: true,
+  },
+
+  {
+    name: "Participation_W9_DC",
+    path: "/Participation_W9_DC",
+    id: 2,
+    Component: Participation_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Submit_W9_DC",
+    path: "/Submit_W9_DC",
+    id: 2,
+    Component: Submit_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Thankyou_W9_DC",
+    path: "/Thankyou_W9_DC",
+    id: 2,
+    Component: Thankyou_W9_DC,
+    isPrivate: true,
+  },
+  //Taxpayer_DC Certification_W9_DC Participation_W9_DC Submit_W9_DC Thankyou_W9_DC
   {
     name: "EntityUs",
     path: "EntityUs",
