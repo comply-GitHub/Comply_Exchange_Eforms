@@ -13,9 +13,11 @@ import { useRef } from "react";
 
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../../customHooks/useAuth";
 
 export default function Term() {
   //States
+  const { authDetails } = useAuth();
 
   const history = useNavigate();
   const pdfRef = useRef(null);
@@ -46,9 +48,9 @@ export default function Term() {
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
     
-      <div style={{ paddingBlockStart: "30px" }}>
+      {/* <div style={{ paddingBlockStart: "30px" }}>
         <FormW8IMY/>
-      </div>
+      </div> */}
      
       <div className="container-fluid">
         <div className="col-lg-12 mt-20" style={{ padding: "18px" }}>
@@ -110,7 +112,6 @@ export default function Term() {
             
           <Typography align="center">
             <div className="mt-5" style={{ justifyContent: "center" }}>
-             
 
               <div style={{ marginTop: "25px" }}>
                 <Button

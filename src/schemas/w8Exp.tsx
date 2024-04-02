@@ -187,7 +187,6 @@ export const TaxPayerSchema = () => {
             .oneOf(["Yes", "No"], "please provide an answer")
       })
     ,
-
     // tinisFTINNotLegallyRequired: true,
     // tinAlternativeFormate: true,
     isNotLegallyFTIN: Yup.string().when("isFTINNotLegallyRequired", {

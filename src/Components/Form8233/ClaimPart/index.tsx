@@ -24,20 +24,21 @@ export default function Tin(props: any) {
   const { authDetails } = useAuth();
 
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || '{}')
+  const onBoardingFormValuesPrevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
+
   const initialValue = {
-    taxTreaty_DescriptionOfPersonalServiceYouProvide: "",
-    taxTreaty_TotalCompensationYouExpectForThisCalenderYear: "",
-    taxTreaty_TreatyId: 0,
-    taxTreaty_TreatyArticleId: 0,
-    taxTreaty_TotalCompensationListedon11bExemptFromTax: "",
-    taxTreaty_CheckAll: true,
-    taxTreaty_CountryOfResidenceId: 0,
-    taxTreaty_NoncompensatoryScholarshiporFellowshipIncome: "",
-    taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID: "",
-    taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID:
-      "",
-    totalIncomeListedIncomeonLine13ATaxExemptAmount: "",
-    sufficientFactToJustfyExemptionForClaim12A_13: "",
+    taxTreaty_DescriptionOfPersonalServiceYouProvide: onBoardingFormValuesPrevStepData?.taxTreaty_DescriptionOfPersonalServiceYouProvide ? onBoardingFormValuesPrevStepData?.taxTreaty_DescriptionOfPersonalServiceYouProvide : "",
+    taxTreaty_TotalCompensationYouExpectForThisCalenderYear: onBoardingFormValuesPrevStepData?.taxTreaty_TotalCompensationYouExpectForThisCalenderYear ? onBoardingFormValuesPrevStepData?.taxTreaty_TotalCompensationYouExpectForThisCalenderYear : "",
+    taxTreaty_TreatyId: onBoardingFormValuesPrevStepData?.taxTreaty_TreatyId ? onBoardingFormValuesPrevStepData?.taxTreaty_TreatyId : 0,
+    taxTreaty_TreatyArticleId: onBoardingFormValuesPrevStepData?.taxTreaty_TreatyArticleId ? onBoardingFormValuesPrevStepData?.taxTreaty_TreatyArticleId : 0,
+    taxTreaty_TotalCompensationListedon11bExemptFromTax: onBoardingFormValuesPrevStepData?.taxTreaty_TotalCompensationListedon11bExemptFromTax ? onBoardingFormValuesPrevStepData?.taxTreaty_TotalCompensationListedon11bExemptFromTax : "",
+    taxTreaty_CheckAll: onBoardingFormValuesPrevStepData?.taxTreaty_CheckAll ? onBoardingFormValuesPrevStepData?.taxTreaty_CheckAll : true,
+    taxTreaty_CountryOfResidenceId: onBoardingFormValuesPrevStepData?.taxTreaty_CountryOfResidenceId ? onBoardingFormValuesPrevStepData?.taxTreaty_CountryOfResidenceId : 0,
+    taxTreaty_NoncompensatoryScholarshiporFellowshipIncome: onBoardingFormValuesPrevStepData?.taxTreaty_NoncompensatoryScholarshiporFellowshipIncome ? onBoardingFormValuesPrevStepData?.taxTreaty_NoncompensatoryScholarshiporFellowshipIncome : "",
+    taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID: onBoardingFormValuesPrevStepData?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID ? onBoardingFormValuesPrevStepData?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID : "",
+    taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID:onBoardingFormValuesPrevStepData?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID ? onBoardingFormValuesPrevStepData?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID : "",
+    totalIncomeListedIncomeonLine13ATaxExemptAmount: onBoardingFormValuesPrevStepData?.totalIncomeListedIncomeonLine13ATaxExemptAmount ? onBoardingFormValuesPrevStepData?.totalIncomeListedIncomeonLine13ATaxExemptAmount : "",
+    sufficientFactToJustfyExemptionForClaim12A_13: onBoardingFormValuesPrevStepData?.sufficientFactToJustfyExemptionForClaim12A_13 ? onBoardingFormValuesPrevStepData?.sufficientFactToJustfyExemptionForClaim12A_13 : "",
   };
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -395,11 +396,10 @@ export default function Tin(props: any) {
                           width: "100%",
                         }}
                       />
-                      <p className="error">
-                        {
-                          errors.taxTreaty_DescriptionOfPersonalServiceYouProvide
-                        }
-                      </p>
+                      {errors?.taxTreaty_DescriptionOfPersonalServiceYouProvide && typeof errors?.taxTreaty_DescriptionOfPersonalServiceYouProvide === 'string' && (
+                                <p className="error">{errors?.taxTreaty_DescriptionOfPersonalServiceYouProvide}</p>
+                              )}
+                      
                     </div>
                     <div className="col-6 my-3">
                       <Typography style={{ fontSize: "15px" }}>
@@ -498,11 +498,12 @@ export default function Tin(props: any) {
                           width: "100%",
                         }}
                       />
-                      <p className="error">
-                        {
-                          errors.taxTreaty_TotalCompensationYouExpectForThisCalenderYear
-                        }
-                      </p>
+                      {errors?.taxTreaty_TotalCompensationYouExpectForThisCalenderYear && typeof errors?.taxTreaty_TotalCompensationYouExpectForThisCalenderYear === 'string' && (
+                                <p className="error">{errors?.taxTreaty_TotalCompensationYouExpectForThisCalenderYear}</p>
+                              )}
+                      {/* <p className="error">
+                        {errors.taxTreaty_TotalCompensationYouExpectForThisCalenderYear}
+                      </p> */}
                     </div>
 
                     <Typography style={{ fontSize: "15px" }}>
@@ -614,7 +615,10 @@ export default function Tin(props: any) {
                                   ))}
                          
                         </select>
-                        <p className="error">{errors.taxTreaty_TreatyId}</p>
+                        {errors?.taxTreaty_TreatyId && typeof errors?.taxTreaty_TreatyId === 'string' && (
+                                <p className="error">{errors?.taxTreaty_TreatyId}</p>
+                              )}
+                        {/* <p className="error">{errors.taxTreaty_TreatyId}</p> */}
                       </div>
                       <div className="col-6 my-3">
                         <Typography style={{ fontSize: "15px" }}>
@@ -647,9 +651,12 @@ export default function Tin(props: any) {
                                    )
                                    )}
                         </select>
-                        <p className="error">
+                        {errors?.taxTreaty_TreatyArticleId && typeof errors?.taxTreaty_TreatyArticleId === 'string' && (
+                                <p className="error">{errors?.taxTreaty_TreatyArticleId}</p>
+                              )}
+                        {/* <p className="error">
                           {errors.taxTreaty_TreatyArticleId}
-                        </p>
+                        </p> */}
                       </div>
                     </div>
 
@@ -771,14 +778,31 @@ export default function Tin(props: any) {
                             width: "100%",
                           }}
                         />
-                        <p className="error">
+                        {errors?.taxTreaty_TotalCompensationListedon11bExemptFromTax && typeof errors?.taxTreaty_TotalCompensationListedon11bExemptFromTax === 'string' && (
+                                <p className="error">{errors?.taxTreaty_TotalCompensationListedon11bExemptFromTax}</p>
+                              )}
+                        {/* <p className="error">
                           {
                             errors.taxTreaty_TotalCompensationListedon11bExemptFromTax
                           }
-                        </p>
+                        </p> */}
                       </div>
                       <div className="col-5 my-3 d-flex" >
-                        <Checkbox className="mt-4" name="taxTreaty_CheckAll" />
+                      <Checkbox
+                              value={values.taxTreaty_CheckAll}
+                              checked={values.taxTreaty_CheckAll}
+                             // onChange={handleChange}
+
+                              onChange={(e) => {
+                                handleChange(e); //condition
+                               
+                                
+                              }}
+                              size="medium"
+                              name="taxTreaty_CheckAll" 
+                              className="mt-4"
+
+                          />
                         <Typography
                           style={{ marginTop: "3.7rem", fontSize: "15px" }}
                         >
@@ -913,9 +937,12 @@ export default function Tin(props: any) {
                               <option key={ele?.id} value={ele?.id}>{ele?.name}</option>
                                   ))}
                         </select>
-                      <p className="error">
+                        {errors?.taxTreaty_CountryOfResidenceId && typeof errors?.taxTreaty_CountryOfResidenceId === 'string' && (
+                                <p className="error">{errors?.taxTreaty_CountryOfResidenceId}</p>
+                              )}
+                      {/* <p className="error">
                         {errors.taxTreaty_CountryOfResidenceId}
-                      </p>
+                      </p> */}
                     </div>
                     <Typography style={{ fontSize: "15px" }}>
                       <span style={{ fontWeight: "550" }}>Note:</span> Do not
@@ -1027,11 +1054,14 @@ export default function Tin(props: any) {
                           width: "100%",
                         }}
                       />
-                      <p className="error">
+                      {errors?.taxTreaty_NoncompensatoryScholarshiporFellowshipIncome && typeof errors?.taxTreaty_NoncompensatoryScholarshiporFellowshipIncome === 'string' && (
+                                <p className="error">{errors?.taxTreaty_NoncompensatoryScholarshiporFellowshipIncome}</p>
+                              )}
+                      {/* <p className="error">
                         {
                           errors.taxTreaty_NoncompensatoryScholarshiporFellowshipIncome
                         }
-                      </p>
+                      </p> */}
                     </div>
 
                     <Typography style={{ fontSize: "15px" }}>
@@ -1136,11 +1166,14 @@ export default function Tin(props: any) {
                               <option key={ele?.id} value={ele?.id}>{ele?.name}</option>
                                   ))}
                         </select>
-                        <p className="error">
+                        {errors?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID && typeof errors?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID === 'string' && (
+                                <p className="error">{errors?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID}</p>
+                              )}
+                        {/* <p className="error">
                           {
                             errors.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID
                           }
-                        </p>
+                        </p> */}
                       </div>
 
                       <div className="col-6 ">
@@ -1169,11 +1202,14 @@ export default function Tin(props: any) {
                             width: "100%",
                           }}
                         />
-                        <p className="error">
+                        {errors?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID && typeof errors?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID === 'string' && (
+                                <p className="error">{errors?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID}</p>
+                              )}
+                        {/* <p className="error">
                           {
                             errors.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID
                           }
-                        </p>
+                        </p> */}
                       </div>
                     </div>
 
@@ -1269,9 +1305,12 @@ export default function Tin(props: any) {
                           width: "100%",
                         }}
                       />
-                      <p className="error">
+                      {errors?.totalIncomeListedIncomeonLine13ATaxExemptAmount && typeof errors?.totalIncomeListedIncomeonLine13ATaxExemptAmount === 'string' && (
+                                <p className="error">{errors?.totalIncomeListedIncomeonLine13ATaxExemptAmount}</p>
+                              )}
+                      {/* <p className="error">
                         {errors.totalIncomeListedIncomeonLine13ATaxExemptAmount}
-                      </p>
+                      </p> */}
                     </div>
 
                     <div className="col-12 my-3">
@@ -1370,9 +1409,12 @@ export default function Tin(props: any) {
                           width: "100%",
                         }}
                       />
-                      <p className="error">
+                      {errors?.sufficientFactToJustfyExemptionForClaim12A_13 && typeof errors?.sufficientFactToJustfyExemptionForClaim12A_13 === 'string' && (
+                                <p className="error">{errors?.sufficientFactToJustfyExemptionForClaim12A_13}</p>
+                              )}
+                      {/* <p className="error">
                         {errors.sufficientFactToJustfyExemptionForClaim12A_13}
-                      </p>
+                      </p> */}
                     </div>
                   </div>
 

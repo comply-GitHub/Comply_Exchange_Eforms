@@ -37,7 +37,6 @@ export default function BreadCrumbComponent(props: any): any {
   function groupDataByBreadcrumbPart(data: any) {
     const groupedData: any = {};
     if (userType === "GEN") {
-      console.log(data, "dataaa");
       data = data.filter((x: any) => !x?.title?.toLowerCase()?.includes("self-cert") && !x?.title?.toLowerCase()?.includes("documentation"))
     }
     data.forEach((item: any) => {
@@ -53,7 +52,6 @@ export default function BreadCrumbComponent(props: any): any {
 
     setBreadCrumbDisplay(groupedData);
   }
-  console.log(Object.entries(breadCrumbDisplay));
 
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {

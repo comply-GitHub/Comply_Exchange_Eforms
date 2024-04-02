@@ -149,7 +149,7 @@ const Declaration = (props: any) => {
 
                       <AccordionDetails>
                         <Paper
-                          elevation={3}
+                          elevation={0}
                           style={{
                             padding: "20px",
                             backgroundColor: "#d4d9d4",

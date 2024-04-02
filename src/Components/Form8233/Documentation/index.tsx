@@ -18,33 +18,16 @@ import { useDispatch,useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import useAuth from "../../../customHooks/useAuth";
 
 export default function Tin(props: any) {
   const getFirstDocData = useSelector((state:any) => state.form8233);
+  const { authDetails } = useAuth();
 
   const [incomeArr, setIncomeArr] = useState<string[]>([]);
   const initialValue = {
     sufficientFactToJustfyExemptionForClaim12A_13: (getFirstDocData?.statementToForm8233_FileUpoad ? getFirstDocData?.statementToForm8233_FileUpoad : ""),
-    additinalDocument1ID: 0,
-    additinalDocument1Name: "",
-    additinalDocument2ID: 0,
-    additinalDocument2Name: "",
-    additinalDocument3ID: 0,
-    additinalDocument3Name: "",
-    additinalDocument4ID: 0,
-    additinalDocument4Name: "",
-    additinalDocument5ID: 0,
-    additinalDocument5Name: "",
-    additinalDocument6ID: 0,
-    additinalDocument6Name: "",
-    additinalDocument7ID: 0,
-    additinalDocument7Name: "",
-    additinalDocument8ID: 0,
-    additinalDocument8Name: "",
-    additinalDocument9ID: 0,
-    additinalDocument9Name: "",
-    additinalDocument10ID: 0,
-    additinalDocument10Name: "",
+    
   };
   // statementToForm8233_FileUpoad
   const addIncomeType = () => {
@@ -72,17 +55,60 @@ export default function Tin(props: any) {
   const GetAgentDocumentationMandatoryForEformReducer = useSelector(
     (state: any) => state.GetAgentDocumentationMandatoryForEformReducer
   );
-
   const history = useNavigate();
   const dispatch = useDispatch();
   const [tax, setTax] = useState<string>("");
 
+  //This code is for action taken on Existing document if any
+  const [actionOnExistingDoc, setActionOnExistingDoc] = useState<string[]>([])
   const [submit, setSubmit] = useState<string>("1");
-
+    
+  const getSelectedExistingDoc=(e:any)=>{
+    const id = GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData.filter((item:any) => item.name?.trim==e.target.value?.trim)
+    setActionOnExistingDoc((preValue) => {
+      return {
+        ...preValue,
+        'documentId':id[0]?.documentationId,
+        'action':1
+      }
+    })
+  }
   const handleFile = (event: SelectChangeEvent<string>) => {
     const selectedSubmit = event.target.value;
     setSubmit(selectedSubmit);
+    if(event.target.value !== '1'){
+      setActionOnExistingDoc((preValue) => {
+        return {
+          ...preValue,
+          'image':''
+        }
+      })
+      setImage('')
+    }
+    setActionOnExistingDoc((preValue) => {
+      return {
+        ...preValue,
+        'action':event.target.value
+      }
+    })
   };
+
+  const [image,setImage] = useState("")
+  const handleChangeImg = (event: any) =>{
+    setImage(event.target.files[0].name)
+    setActionOnExistingDoc((preValue) => {
+      return {
+        ...preValue,
+        'image':event.target.files[0].name
+      }
+    })
+  }
+ 
+//  console.log("Submit" ,submit);
+//  console.log("Image" ,image);
+  
+  //Ends here
+
 
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
@@ -92,24 +118,76 @@ export default function Tin(props: any) {
   };
 
   const [toolInfo, setToolInfo] = useState("");
+
+  
+  //Multiple upload code goes here
+  const [docNam, setDocname] = useState("")
+  const handleChangeDocument = (event:any)=>{
+    setDocname(event.target.value)
+    setImage("")
+  }
+  const [additionalDocs, setAdditionalDocs] = useState<any[]>([]);
+
+  const handleAddDocument = () => {
+    if (additionalDocs.length < 10) {
+      setAdditionalDocs([...additionalDocs, { id: additionalDocs.length + 1, file: null, docName:"" }]);
+    }
+  };
+
+  const handleDeleteDocument = (index: number) => {
+    const updatedDocs = [...additionalDocs];
+    updatedDocs.splice(index, 1);
+    setAdditionalDocs(updatedDocs);
+  };
+
+
+  const handleUpload = (event: any, index: number) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const updatedDocs = [...additionalDocs];
+      updatedDocs[index].file = files[0].name;
+      updatedDocs[index].docName = docNam;
+      setAdditionalDocs(updatedDocs);
+      setDocname("");
+    }
+  };
+  
+  useEffect(() =>{
+    console.log("ActionOnExistingDoc", actionOnExistingDoc)
+    console.log("Additional doc", additionalDocs);
+    
+  },[additionalDocs, actionOnExistingDoc])
+  
   return (
     <>
       <Formik
       validateOnChange={false}
       validateOnBlur={false}
+      validateOnMount={false}
         initialValues={initialValue}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
-          dispatch(
-            CREATE_8233(values, () => {
-              history(
-                "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
-              );
-            })
-          );
-          history(
-            "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
-          );
+          let filteredAdditionalDocs = additionalDocs.filter(item => item.file !== null);
+          const temp = {
+            ...values,
+            agentId: authDetails?.agentId,
+            accountHolderBasicDetailId: authDetails?.accountHolderId,
+            stepName: null,
+            actionOnExistingDoc,
+            additionalDocs
+
+          };
+          console.log("submitted values",temp)
+          // dispatch(
+          //   CREATE_8233(values, () => {
+          //     history(
+          //       "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
+          //     );
+          //   })
+          // );
+          // history(
+          //   "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
+          // );
         }}
       >
         {({
@@ -268,6 +346,7 @@ export default function Tin(props: any) {
                   >
                     <div className="col-4">
                       <select
+                        onChange={ (e) =>getSelectedExistingDoc (e)}
                         name="usTinTypeId"
                         style={{
                           border: " 1px solid #d9d9d9 ",
@@ -310,7 +389,7 @@ export default function Tin(props: any) {
                       </Select>
 
                       {submit === "2" && (
-                        <Input style={{ fontSize: "12px" }} type="file" />
+                        <Input style={{ fontSize: "12px" }} type="file" onChange={ (e) => handleChangeImg(e)}  />
                       )}
                       <span className="my-auto text mx-2">
                         <a>View..</a>
@@ -318,7 +397,7 @@ export default function Tin(props: any) {
                     </div>
                     <div className="col-3"></div>
                   </div>
-                  {incomeArr.map((_, index) => (
+                  {additionalDocs.map((_, index) => (
                     <div
                       key={index}
                       style={{
@@ -332,6 +411,7 @@ export default function Tin(props: any) {
                       <div className="col-4">
                         <select
                           name="usTinTypeId"
+                          onChange={handleChangeDocument}
                           style={{
                             border: " 1px solid #d9d9d9 ",
                             padding: " 0 10px",
@@ -340,18 +420,29 @@ export default function Tin(props: any) {
                             height: "37px",
                             width: "100%",
                           }}
-                        ></select>
+                        >
+                          <option value="">---select---</option>
+                        {GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData?.map(
+                                (ele: any) => (
+                                  <option key={ele?.id} value={ele?.id}>
+                                    {ele?.name}
+                                  </option>
+                                )
+                              )}
+
+                        </select>
                       </div>
 
                       <div className="col-4">
                         <Input
                           style={{ fontSize: "12px", border: "none" }}
                           type="file"
+                          onChange={(e) => handleUpload(e,index)} 
                         />
                       </div>
                       <div className="col-4">
                         <DeleteOutline
-                          onClick={() => handleDelete(index)}
+                          onClick={() => handleDeleteDocument(index)}
                           style={{ color: "red", fontSize: "30px" }}
                         />
                       </div>
@@ -365,7 +456,7 @@ export default function Tin(props: any) {
                     }}
                   >
                     <Button
-                      onClick={addIncomeType}
+                      onClick={handleAddDocument}
                       variant="contained"
                       style={{ backgroundColor: "black" }}
                     >

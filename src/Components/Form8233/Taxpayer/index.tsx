@@ -35,28 +35,20 @@ export default function Tin(props: any) {
   const { authDetails } = useAuth();
 
   const onBoardingFormValues = JSON.parse(localStorage.getItem("agentDetails") ?? "null");
+
+  const onBoardingFormValuesPrevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
  
   const initialValue = {
-    usTinTypeId: onBoardingFormValues?.taxpayerIdTypeID
-      ? onBoardingFormValues?.taxpayerIdTypeID
-      : 0,
-
-    usTin: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin.replace(/-/g, '') : "",
-    // usTinTypeId:0,
-    // usTin:"",
-    notAvailable: false,
-    foreignTINCountry: onBoardingFormValues?.foreignTINCountryId
-      ? onBoardingFormValues?.foreignTINCountryId
-      : "",
-      foreignTIN:
-      onBoardingFormValues?.foreignTIN
-      ? onBoardingFormValues?.foreignTIN
-      : 
-      "",
+    usTinTypeId: onBoardingFormValues?.taxpayerIdTypeID ? onBoardingFormValues?.taxpayerIdTypeID : onBoardingFormValuesPrevStepData?.usTINTypeId ? onBoardingFormValuesPrevStepData?.usTINTypeId : 0,
+    usTin: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin.replace(/-/g, '') : onBoardingFormValuesPrevStepData?.usTin ? onBoardingFormValuesPrevStepData?.usTin : "",
+    notAvailable:  false,
+    ForeginTIN_CountryId: onBoardingFormValues?.foreignTINCountryId ? onBoardingFormValues?.foreignTINCountryId : onBoardingFormValuesPrevStepData?.foreginTIN_CountryId ? onBoardingFormValuesPrevStepData?.foreginTIN_CountryId : "",
+    ForegionTIN: onBoardingFormValues?.foreignTIN ? onBoardingFormValues?.foreignTIN : onBoardingFormValuesPrevStepData?.foregionTIN ? onBoardingFormValuesPrevStepData?.foregionTIN :"",
     isFTINNotLegallyRequired: false,
     tinisFTINNotLegallyRequired: "Yes",
     // tinAlternativeFormate: true,
     isNotLegallyFTIN: "",
+    ReasionForForegionTIN_NotAvailable: onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable ? onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable : "",
   };
  
   // useEffect(()=>{
@@ -110,8 +102,9 @@ export default function Tin(props: any) {
   return (
     <>
       <Formik
-        validateOnChange={false}
-        validateOnBlur={false}
+        validateOnChange={true}
+        validateOnBlur={true}
+        validateOnMount={false}
         initialValues={initialValue}
         enableReinitialize
         validationSchema={US_TINSchema}
@@ -201,7 +194,7 @@ export default function Tin(props: any) {
               <div style={{ padding: "13px" }}>
                 
                 <Paper style={{ padding: "10px" }}>
-                {toolInfo === "ForeignTin" ? (
+                {toolInfo === "ForegionTIN" ? (
                     <div className="mt-1">
                       <Paper
                       
@@ -347,6 +340,7 @@ export default function Tin(props: any) {
                             value={values.usTinTypeId}
                             onChange={(e) => {
                               handleChange(e);
+                              setTimeout(() => { setFieldValue("ReasionForForegionTIN_NotAvailable", ""); }, 200)
                               if (
                                 e.target.value === "1" ||
                                 e.target.value === "7"
@@ -383,8 +377,14 @@ export default function Tin(props: any) {
                                    // );
                                  ))}
                           </select>
-                          {/* <p className="error">{errors.usTinTypeId}</p> */}
+                              
+
+                          
+                          
                         </div>
+                        {errors?.usTinTypeId && typeof errors?.usTinTypeId === 'string' && (
+                                <p className="error">{errors?.usTinTypeId}</p>
+                              )}
 
                         <div className="col-lg-5 col-12">
                           <Typography style={{fontSize:"14px"}}>U.S. TIN</Typography>
@@ -398,7 +398,7 @@ export default function Tin(props: any) {
                             // onBlur={handleBlur}
                             onChange={(e: any) => {
                               handleChange(e);
-                                setFieldValue("","");
+                              setTimeout( () => { setFieldValue("ReasionForForegionTIN_NotAvailable","");},200)
                             }}
                            
                             style={{
@@ -676,12 +676,14 @@ export default function Tin(props: any) {
                               height: "40px",
                               width: "100%",
                             }}
-                            name="foreignTINCountry"
+                            name="ForeginTIN_CountryId"
                             id="Income"
                             onBlur={handleBlur}
-                            value={values.foreignTINCountry}
+                            value={values.ForeginTIN_CountryId}
                             onChange={(e) => {
                               handleChange(e);
+                              //setTimeout(() => { setFieldValue("ReasionForForegionTIN_NotAvailable", ""); }, 200)
+                              setTimeout( () => { setFieldValue("tinisFTINNotLegallyRequired","No");},200)
                             }}
                           >
                             <option value={0}>---select---</option>
@@ -694,13 +696,16 @@ export default function Tin(props: any) {
                                   )
                                 )}
                           </select>
-                          {/* <p className="error">{errors.foreignTINCountry}</p> */}
+                          {errors?.ForeginTIN_CountryId && typeof errors?.ForeginTIN_CountryId === 'string' && (
+                                <p className="error">{errors?.ForeginTIN_CountryId}</p>
+                              )}
+                          {/* <p className="error">{errors?.ForeginTIN_CountryId}</p> */}
 
                           <div style={{ marginTop: "2px" }}>
                             <Checkbox
                               value={values.isFTINNotLegallyRequired}
                               checked={values.isFTINNotLegallyRequired}
-                              onChange={(e)=>{handleChange(e);{setFieldValue("tinisFTINNotLegallyRequired", "")}setFieldValue("foreignTIN", "");
+                              onChange={(e)=>{handleChange(e);{setFieldValue("tinisFTINNotLegallyRequired", "")}setFieldValue("ForegionTIN", "");
                             }}
 
                               size="medium"
@@ -802,7 +807,7 @@ export default function Tin(props: any) {
                         <div className="col-lg-5 col-12">
                           <Typography style={{fontSize:"14px"}}>
                             Foreign TIN{" "}
-                            {values.foreignTINCountry == 257 ?(  <span>  <Tooltip
+                            {values.ForeginTIN_CountryId == 257 ?(  <span>  <Tooltip
                               style={{
                                 backgroundColor: "black",
                                 color: "white",
@@ -811,14 +816,14 @@ export default function Tin(props: any) {
                               title={
                                 <>
                                  
-                                  <a onClick={() => setToolInfo("ForeignTin")}>
+                                  <a onClick={() => setToolInfo("ForegionTIN")}>
                                    
                                   </a>
                                 </>
                               }
                             >
                               <Info
-                               onClick={() => setToolInfo("ForeignTin")}
+                               onClick={() => setToolInfo("ForegionTIN")}
                                 style={{
                                   color: "#ffc107",
                                   fontSize: "15px",
@@ -836,13 +841,13 @@ export default function Tin(props: any) {
                               type="text"
                               disabled={
                                 values.isFTINNotLegallyRequired ||
-                                values.foreignTINCountry == "1" 
+                                values.ForeginTIN_CountryId == "1" 
                                
                                 
                                 
                               }
-                              name="foreignTIN"
-                              value={values.foreignTIN}
+                              name="ForegionTIN"
+                              value={values.ForegionTIN}
                               onBlur={handleBlur}
                               onChange={(e)=>{
                                 const re = /^[0-9\b]+$/;
@@ -855,7 +860,7 @@ export default function Tin(props: any) {
 
                              
                               error={Boolean(
-                                touched.foreignTIN && errors.foreignTIN
+                                touched.ForegionTIN && errors.ForegionTIN
                               )}
                               style={{
                                 border: " 1px solid #d9d9d9 ",
@@ -872,16 +877,16 @@ export default function Tin(props: any) {
                               type="text"
                               disabled={
                                 values.isFTINNotLegallyRequired ||
-                                values.foreignTINCountry == "1" ||
+                                values.ForeginTIN_CountryId == "1" ||
                                 values.tinisFTINNotLegallyRequired ==="Yes"
                               }
                               placeholder="ENTER FOREIGN TIN"
-                              name="foreignTIN"
-                              value={values.foreignTIN}
+                              name="ForegionTIN"
+                              value={values.ForegionTIN}
                               onBlur={handleBlur}
                               onChange={handleChange}
                               error={Boolean(
-                                touched.foreignTIN && errors.foreignTIN
+                                touched.ForegionTIN && errors.ForegionTIN
                               )}
                               style={{
                                 border: " 1px solid #d9d9d9 ",
@@ -892,13 +897,27 @@ export default function Tin(props: any) {
                                 width: "100%",
                               }}
                             />
+                            
                           )}
-                          {values.isFTINNotLegallyRequired ? (
-                            ""
-                          ) : 
-                            // <p className="error">{errors.foreignTIN}</p>
-                            " "
-                          }
+                           {/* {errors?.ForegionTIN && errors.ForeginTIN_CountryId && typeof errors?.ForegionTIN === 'string' && (
+                                <p className="error">{errors?.ForegionTIN}</p>
+                            )} */}
+
+                        
+                          {/* {errors.ForegionTIN &&
+                            touched.ForegionTIN ? (
+                              <div>
+                                <Typography color="error">
+                                  {errors.ForegionTIN}
+                                </Typography>
+                              </div>
+                            ) : (
+                              ""
+                            )} */}
+                          
+                            
+                            
+                          
 
                           {/* <FormControl >
                             <RadioGroup
@@ -966,7 +985,10 @@ export default function Tin(props: any) {
                     value={values.tinisFTINNotLegallyRequired}
                     onChange={handleChange}
                     onClick={() => {
-                      setFieldValue("foreignTIN","");
+                      setFieldValue("ForegionTIN","");
+                      setTimeout(() => {
+                        setFieldValue("ForeginTIN_CountryId","");
+                      }, 200);
                     }}
 
                   >
@@ -1158,9 +1180,15 @@ export default function Tin(props: any) {
 
                       <Input
                         fullWidth
+                        value={values.ReasionForForegionTIN_NotAvailable}
+                        name="ReasionForForegionTIN_NotAvailable"
                         type="text"
                         onBlur={handleBlur}
                         onChange={handleChange}
+                        // onChange={(e: any) => {
+                        //   handleChange(e);
+                        //     setFieldValue("","");
+                        // }}
                         style={{
                           border: " 1px solid #d9d9d9 ",
                           padding: " 0 10px",
@@ -1170,6 +1198,13 @@ export default function Tin(props: any) {
                           width: "100%",
                         }}
                       />
+                      {errors && errors?.ReasionForForegionTIN_NotAvailable  && (
+      <div>
+        <Typography color="error">
+          {/* {errors?.ReasionForForegionTIN_NotAvailable} */}
+        </Typography>
+      </div>
+    )}
                     </div>):""}
 
 
@@ -1246,7 +1281,7 @@ export default function Tin(props: any) {
                     <Button
                       type="submit"
                       variant="contained"
-                      disabled={!isValid}
+                      //disabled={!isValid}
                       style={{ color: "white", marginLeft: "15px" }}
                     >
                       Continue
