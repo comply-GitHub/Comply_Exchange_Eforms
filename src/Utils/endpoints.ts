@@ -22,6 +22,7 @@ const EndPoint = {
   GetLimitationBenefits:"/W9Common/GetLimitationBenefits",
   GetIncomeTypes:"/W9Common/GetIncomeTypeDefaults",
   GetAllHelpVideosDetails:"/HelpVideo/GetAllHelpVideos",
+  GetAllLanguage:"/Language/GetAllLanguage",
 
   //
   GetAgentCapacityHiddenForEform: "/WebAppBasic/GetAgentCapacityHiddenForEform",

@@ -17,15 +17,26 @@ export const TinSchema = () => {
   });
 };
 
-export const TaxPurposeSchema = () => {
-  return Yup.object().shape({
-    // firstName: Yup.string().required("Field cannot be empty"),
-    chapter3Status: Yup.number().notOneOf([0], "Field cannot be empty"),
-    countryOfIncorporation: Yup.number()
-      .notOneOf([0], "Field cannot be empty"),
-    // lastName: Yup.string(),
-    businessName: Yup.string().required("Field cannot be empty"),
-  });
+export const TaxPurposeSchema = (IsIndividual: boolean = false) => {
+  return (IsIndividual ?
+    Yup.object().shape({
+      //firstName: Yup.string().required("Field cannot be empty"),
+      chapter3Status: Yup.number().notOneOf([0], "Field cannot be empty"),
+      countryOfIncorporation: Yup.number()
+        .notOneOf([0], "Field cannot be empty"),
+      lastName: Yup.string(),
+      //businessName: Yup.string().required("Field cannot be empty"),
+    })
+    :
+    Yup.object().shape({
+      //firstName: Yup.string().required("Field cannot be empty"),
+      chapter3Status: Yup.number().notOneOf([0], "Field cannot be empty"),
+      countryOfIncorporation: Yup.number()
+        .notOneOf([0], "Field cannot be empty"),
+      //lastName: Yup.string(),
+      businessName: Yup.string().required("Field cannot be empty"),
+    })
+  )
 };
 export const TaxPayerSchema = () => {
   return Yup.object().shape({

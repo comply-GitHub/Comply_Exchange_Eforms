@@ -249,7 +249,7 @@ export const SignInSaveAndExit = (value: any, callback: Function, errorCallback:
   };
 };
 
-export const LoadExistingFormData = (formTypeId: number, AccountHolderId: number, callback: Function, errorCallback: Function) => {
+export const LoadExistingFormData = (formTypeId: any, AccountHolderId: any, callback: Function, errorCallback: Function) => {
   let Endpoint = "";
   switch (formTypeId) {
     case FormTypeId.W9:
@@ -408,6 +408,29 @@ export const postOnboarding = (value: any, callback: Function): any => {
         }
       },
       (error) => {
+      }
+    );
+  };
+};
+
+
+export const GetAllLanguage = (): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetAllLanguage,"",
+      (resData) => {
+        const { data } = resData;
+        if (resData.status === 200) {
+          dispatch({
+            type: Utils.actionName.GetAllLanguage,
+            payload: {
+              GetAllLanguageData: resData.data,
+            },
+          });
+        } else {
+        }
+      },
+      (error: any) => {
       }
     );
   };
