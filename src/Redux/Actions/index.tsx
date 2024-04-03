@@ -2097,7 +2097,17 @@ export const getSupportedFile = (storageName:number, FolderName:string): any => 
       `?storagename=${storageName}&subFolder=${FolderName}`,
       async (resData) => {
         const { data } = resData;
-        console.log(data);
+        const link = document.createElement('a');
+        link.href = data;
+        link.target = "_blank";
+        link.download = new Date().toString();
+
+        // Trigger download
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up
+        document.body.removeChild(link);
         //localStorage.setItem("supportingDocuments", JSON.stringify(newData));
 
         // if (resData.status === 200) {

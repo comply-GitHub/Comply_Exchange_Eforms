@@ -162,9 +162,9 @@ export default function Tin(props: any) {
       
     })
     dispatch(post8233_EForm_Documentation(obj,() => {
-      // history(
-      //         "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
-      //       );
+      history(
+              "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
+            );
     }))
 
 
