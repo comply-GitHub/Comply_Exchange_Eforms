@@ -777,33 +777,7 @@ export default function Tin(props: any) {
                 Continue
               </Button>
             </div>
-            <Typography
-              align="center"
-              style={{
-                color: "#adadac",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: "20px",
-              }}
-            >
-              Do you want to go back?
-            </Typography>
-            <Typography align="center">
-              <Button
-                onClick={() => {
-                  history("/US_Purposes/Back/Exemption")
-                }}
-                variant="contained"
-                style={{
-                  color: "white",
-                  backgroundColor: "black",
-                  marginTop: "10px",
-                  marginBottom: "20px",
-                }}
-              >
-                Back
-              </Button>
-            </Typography>
+           
           </Form>
         )}
       </Formik>

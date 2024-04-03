@@ -83,7 +83,7 @@ export default function Penalties() {
   };
   const dispatch = useDispatch();
   const history = useNavigate();
-  const [clickCount, setClickCount] = useState(1);
+  const [clickCount, setClickCount] = useState(0);
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
@@ -94,8 +94,8 @@ export default function Penalties() {
   return (
     <>
       <Formik
-        validateOnChange={false}
-        validateOnBlur={false}
+        validateOnChange={true}
+        validateOnBlur={true}
         initialValues={initialValue}
         // validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
@@ -786,35 +786,7 @@ export default function Penalties() {
                           Submit Electronically
                         </Button>
                       </div>
-                      <Typography
-                        align="center"
-                        style={{
-                          color: "#adadac",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          marginTop: "20px",
-                        }}
-                      >
-                        Do you want to go back?
-                      </Typography>
-                      <Typography align="center">
-                        <Button
-                          onClick={() => {
-                            history('/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9')
-                          }
-
-                          }
-                          variant="contained"
-                          style={{
-                            color: "white",
-                            backgroundColor: "black",
-                            marginTop: "10px",
-                            marginBottom: "20px",
-                          }}
-                        >
-                          Back
-                        </Button>
-                      </Typography>
+                    
                     </Paper>
                   </div>
                 </div>

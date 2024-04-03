@@ -388,34 +388,7 @@ const Declaration = (props: any) => {
                       Submit Electronically
                     </Button>
                   </div>
-                  <Typography
-                    align="center"
-                    style={{
-                      color: "#adadac",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: "20px",
-                    }}
-                  >
-                    Do you want to go back?
-                  </Typography>
-                  <Typography align="center">
-                    <Button
-                      variant="contained"
-                      style={{
-                        color: "white",
-                        backgroundColor: "black",
-                        marginTop: "10px",
-                        marginBottom: "20px",
-                      }}
-
-                      onClick={() => {
-                        history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
-                      }}
-                    >
-                      Back
-                    </Button>
-                  </Typography>
+                
                 </form>
                 // </Form>
               )}
