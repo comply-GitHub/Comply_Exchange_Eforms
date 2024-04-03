@@ -75,6 +75,36 @@ export const tinSchema = () => {
     }),
   });
 
+}; 
+
+export const TinSchema_W9_DC = () => {
+  return Yup.object().shape({
+    taxpayerIdTypeID: Yup.number().notOneOf([0], "This Field is Required.")
+      .required("This Field is Required.")
+      .notOneOf([0], "Required Field"),
+    Tin: Yup.string().when("taxpayerIdTypeID", {
+      is: (taxpayerIdTypeID: any) =>
+        (taxpayerIdTypeID != 1 && taxpayerIdTypeID != 7 && taxpayerIdTypeID != 8),
+      then: () => Yup.string().required("Please enter TIN ")
+    }),
+    Submission:Yup.string().required("Please Select One of option"),
+    notAvailable: Yup.boolean().when("Submission",{
+      is:(Submission : any )=> Submission == "Yes",then: () =>Yup.boolean().required("Please Select")
+    }),
+    TaxesId: Yup.number() .notOneOf([0]).when("Submission",{
+      is:(Submission : any )=> Submission == "Yes",then: () =>Yup.number() .notOneOf([0]).required("Please Select one option")
+    }),
+    TinNumber:Yup.string().when("Submission",{
+      is:(Submission : any )=> Submission == "Yes",then: () =>Yup.string().required("Please Enter TIN Number")
+    }),
+    notAvailableReason: Yup.string().when("notAvailable", {
+      is: true,
+      then: () =>
+        Yup.string()
+          .required("Please enter why tin is not available"),
+    }),
+  });
+
 };
 
 export const securitySchema = () => {

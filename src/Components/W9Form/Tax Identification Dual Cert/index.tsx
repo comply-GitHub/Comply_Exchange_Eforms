@@ -18,12 +18,13 @@ import {
   Radio,
   Checkbox
 } from "@mui/material";
+import "./index.scss";
 import Infoicon from "../../../assets/img/info.png";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore, Info } from "@mui/icons-material";
 import { Formik, Form } from "formik";
-import { firstStepBusinessSchema, firstStepSchema, tinSchema } from "../../../schemas";
+import { TinSchema_W9_DC} from "../../../schemas";
 import { useNavigate } from "react-router-dom";
 import { getTinTypes, postW9Form, GetHelpVideoDetails, getW9Form, getAllCountries } from "../../../Redux/Actions"
 import { useDispatch, useSelector } from "react-redux";
@@ -62,7 +63,7 @@ export default function Tin(props: any) {
     TaxesId:0,
     TinNumber:"",
     AlterNativeTin:false,
-    isNotLegallyFTIN: ""
+    notAvailableReason: ""
 
   });
   const GethelpData = useSelector(
@@ -104,7 +105,9 @@ export default function Tin(props: any) {
     notAvailable: false,
     TinNumber:"",
     TaxesId:0,
-    Submission:"No"
+    Submission:"",
+    AlterNativeTin:false,
+    notAvailableReason:""
   };
   const [selectedTaxClassification, setSelectedTaxClassification] =
   useState(0);
@@ -185,15 +188,9 @@ export default function Tin(props: any) {
       <Formik
         initialValues={initialValue}
         enableReinitialize      
-        validateOnChange={false}
-        validateOnBlur={false}
-        validationSchema={
-          selectedTaxClassification == 0
-            ? tinSchema
-            : selectedTaxClassification == 1
-              ? firstStepSchema
-              : firstStepBusinessSchema
-        } 
+        validateOnChange={true}
+        validateOnBlur={true}
+        validationSchema={TinSchema_W9_DC} 
         onSubmit={(values, { setSubmitting }) => {
           
           
@@ -210,6 +207,7 @@ export default function Tin(props: any) {
                   if(continueId==1){
                     setcontinueId(0);
                    history("/Certification_W9_DC")
+                 
                   }
                   setSubmitting(false);
                   resolve("success");
@@ -479,6 +477,10 @@ export default function Tin(props: any) {
                               name="Submission"
                               aria-labelledby="demo-row-radio-buttons-group-label"
                               value={values.Submission}
+                              onBlur={handleBlur}
+                              // error={values.Submission &&
+                              // touched.Submission}
+                              
                               onChange={(e) => {
                                 handleChange(e);
                                 // setFieldValue("foreignTIN", "");
@@ -520,16 +522,16 @@ export default function Tin(props: any) {
                               )} */}
                             </RadioGroup>
 
-                            {/* {errors.tinisFTINNotLegallyRequired &&
-                            touched.tinisFTINNotLegallyRequired ? (
+                           {errors.Submission &&
+                            touched.Submission ? (
                               <div>
-                                <Typography color="error">
-                                  {errors.tinisFTINNotLegallyRequired}
-                                </Typography>
+                                <p className="error">
+                                  {errors.Submission}
+                                </p>
                               </div>
                             ) : (
                               ""
-                            )} */}
+                            )} 
                           </FormControl>
                         </div>
                         {values?.Submission === "Yes" ?(<div style={{ marginLeft: "5px",marginTop: "20px",display: "flex" }} className="row">
@@ -571,7 +573,7 @@ export default function Tin(props: any) {
                                 )}
                             
                         </select>
-                        {/* <p className="error">{errors.usTinTypeId}</p> */}
+                       <p className="error">{errors.TaxesId}</p> 
                       </div>
 
                       <div className="col-lg-4 col-6">
@@ -596,12 +598,30 @@ export default function Tin(props: any) {
                             width: "100%",
                           }}
                         />
-                        {values.notAvailable ? (
-                          ""
-                        ) : 
-                          // <p className="error">{errors.usTin}</p>
-                          " "
-                        }
+                       
+                        <p className="error">{errors.TinNumber}</p>
+                        <div className="Alternate">
+                          <Checkbox
+                            value={values.AlterNativeTin}
+                            checked={values.AlterNativeTin}
+                            onChange={handleChange}
+                            size="medium"
+                            name="AlterNativeTin"
+                          />
+                          <span style={{ fontSize: "12px" }}>
+                            Alternative Tin Format 
+                            {errors.notAvailable && touched.notAvailable ? (
+                              <div>
+                                <Typography color="error">
+                                  {errors.notAvailable}
+                                </Typography>
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </span>
+                        </div>
+                       
                       </div>
                       <div className="col-lg-3 col-6">
                         <div className="radio" style={{ marginTop: "17px" }}>
@@ -700,6 +720,8 @@ export default function Tin(props: any) {
 
                       <Input
                         fullWidth
+                        name="notAvailableReason"
+                        value={values?.notAvailableReason}
                         type="text"
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -744,7 +766,7 @@ export default function Tin(props: any) {
                 onClick={() => {
                   setcontinueId(1);
                   submitForm().then((data) => {
-                   history("/Certification_W9_DC")
+                  //  history("/Certification_W9_DC")
                   }).catch((error) => {
                     console.log(error);
                   })
