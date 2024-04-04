@@ -26,7 +26,7 @@ import { ExpandMore, Info } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import { TinSchema_W9_DC} from "../../../schemas";
 import { useNavigate } from "react-router-dom";
-import { getTinTypes, postW9Form, GetHelpVideoDetails, getW9Form, getAllCountries } from "../../../Redux/Actions"
+import { getTinTypes, postDualCertW9Form, GetHelpVideoDetails, getW9Form, getAllCountries, getDualCertW9} from "../../../Redux/Actions"
 import { useDispatch, useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import View_Insructions from "../../viewInstruction";
@@ -34,6 +34,7 @@ import { useLocation } from "react-router-dom";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import Text from "./tesxt"
 
 export default function Tin(props: any) {
   const dispatch = useDispatch();
@@ -42,37 +43,81 @@ export default function Tin(props: any) {
   const [clickCount, setClickCount] = useState(0);
   const [continueId, setcontinueId] = useState(0);
 
-  const {
-    // handleTaxClassificationChange,
-    // selectedTaxClassification,
-    data,
-    handleChange,
-    setselectedContinue,
-  } = props;
-
-  const onBoardingFormValues = JSON.parse(
+ const onBoardingFormValues = JSON.parse(
     localStorage.getItem("agentDetails") ?? "null"
   );
+
+  
+
+  const [yesCount, setYesCount] = useState(0)
+
+  const handleRadioChange = (event:any,index:number) => {
+    //setValues(event.target.value)
+    // Handle your existing form field changes here
+    // For the specific case of entityWithMultipleTaxJurisdictions
+    if (event.target.name === 'entityWithMultipleTaxJurisdictions') {
+      if (event.target.value === 'Yes') {
+        setPayload([...payload,{...defuaultPayload}]);
+      } else if (event.target.value === 'No' && index>=1) {
+        let temp=[...payload];
+        temp?.splice(index,1)
+        setPayload([...temp]); // Reset or handle as needed when "No" is clicked
+      }
+    }
+  };
+
+  const renderMultipleTimes = () => {
+    let elements = [];
+    for (let i = 0; i < payload.length; i++) {
+      elements.push(
+        <div key={i}>
+         <Text data={payload[i]} index={i} handlePayloadUpdate={handlePayloadUpdate} handleRadioChange={handleRadioChange}/>        
+        </div>
+      );
+    }
+    return elements;
+  };
   const urlValue = location.pathname.substring(1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-  const [payload, setPayload] = useState({
+  const defuaultPayload={
     taxpayerIdTypeID: 0,
     Tin: "",
-    notAvailable: false,
-    Submission:"No",
-    TaxesId:0,
-    TinNumber:"",
-    AlterNativeTin:false,
-    notAvailableReason: ""
+    isTinAvailable: false,
+    entityWithMultipleTaxJurisdictions:"No",
+    countryId:0,
+    tinNumber:"",
+    isAlternativeTinFormat:false,
+    notAvailableReason: "",
+    formTypeId: FormTypeId?.W9,
+    accountHolderDetailsId:authDetails?.accountHolderId,
+    agentId: authDetails?.agentId,
+    formEntryId:0,
+    id:0
 
+  }
+  const [payload, setPayload] = useState<any[]>([]);
+  const [payload1, setPayload1] = useState({
+    taxpayerIdTypeID:0,
+    Tin:""
   });
+  useEffect(()=>{
+    console.log(payload,"parentData")
+  },[payload])
+
+
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+  const GetDualCertData = useSelector(
+    (state: any) => state?.GetDualCertW9Reducer?.DualCertData?.length>0?state?.GetDualCertW9Reducer?.DualCertData[0]:{}
+  );
+
+
   var getReducerData = useSelector(
     (state: any) => state?.GetByW9FormReducer?.GetByW9FormData
   );
   const [ustinArray, setUStinArray] = useState([]);
+
   const [ustinValue, setUStinvalue] = useState([]);
   const [notUsIndividual, setNonUsIndividual] = useState([]);
   const [canvaBx, setCanvaBx] = useState(false);
@@ -89,26 +134,15 @@ export default function Tin(props: any) {
   const formatTin = (e: any, values: any): any => {
     if (e.key === "Backspace" || e.key === "Delete") return;
     if (e.target.value.length === 3) {
-      setPayload({ ...payload, Tin: payload.Tin + "-" });
+      setPayload1({ ...payload1, Tin: payload1.Tin + "-" });
       values.Tin = values.Tin + "-";
     }
     if (e.target.value.length === 6) {
-      setPayload({ ...payload, Tin: payload.Tin + "-" });
+      setPayload1({ ...payload1, Tin: payload1.Tin + "-" });
       values.Tin = values.Tin + "-";
     }
   };
-  const initialValue = {
-    taxpayerIdTypeID: onBoardingFormValues?.usTinTypeId
-      ? onBoardingFormValues?.usTinTypeId
-      : getReducerData?.taxpayerIdTypeID,
-    Tin: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin : getReducerData?.tiN_USTIN,
-    notAvailable: false,
-    TinNumber:"",
-    TaxesId:0,
-    Submission:"",
-    AlterNativeTin:false,
-    notAvailableReason:""
-  };
+ 
   const [selectedTaxClassification, setSelectedTaxClassification] =
   useState(0);
   const handleTaxClassificationChange = (
@@ -117,6 +151,18 @@ export default function Tin(props: any) {
     
     setSelectedTaxClassification(event.target.value);
   };
+
+  const handlePayloadUpdate=(data:any,index:number)=>{
+    const temp=[...payload.map((ele:any,ind:number)=>{
+      if(ind==index){
+        return {...data};
+      }else{
+        return {...ele};
+      }
+    })];
+    setPayload([...temp])
+  }
+
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
     dispatch(getAllCountries());
@@ -137,7 +183,50 @@ export default function Tin(props: any) {
       getW9Form(authDetails?.accountHolderId, (data: any) => {
       })
     );
+    dispatch(getDualCertW9(authDetails?.accountHolderId,FormTypeId?.W9))
   }, [authDetails]);
+  useEffect(() => {
+    if (GetDualCertData?.length > 0) {
+      const dataFromApi = GetDualCertData;
+      setValues({
+        ...initialValues,
+        taxpayerIdTypeID: dataFromApi?.taxpayerIdTypeID || initialValues?.taxpayerIdTypeID,
+        Tin: dataFromApi?.Tin || initialValues?.Tin,
+        isTinAvailable: dataFromApi.isTinAvailable || initialValues.isTinAvailable,
+        entityWithMultipleTaxJurisdictions: dataFromApi.entityWithMultipleTaxJurisdictions || "No",
+        countryId: dataFromApi.countryId || initialValues.countryId,
+        otherCountry: dataFromApi.otherCountry || initialValues.otherCountry,
+        tinNumber: dataFromApi.tinNumber || initialValues.tinNumber,
+        isAlternativeTinFormat: dataFromApi.isAlternativeTinFormat || initialValues.isAlternativeTinFormat,
+
+      });
+    }
+  }, [GetDualCertData]);
+
+  const initialValues = {
+    agentId:authDetails?.agentId,
+    accountHolderId:authDetails?.accountHolderId,
+    taxpayerIdTypeID: GetDualCertData?.taxpayerIdTypeID || onBoardingFormValues?.usTinTypeId || getReducerData?.taxpayerIdTypeID || 0,
+    Tin: GetDualCertData?.Tin || onBoardingFormValues?.usTin || getReducerData?.tiN_USTIN || "",
+    isTinAvailable: GetDualCertData?.isTinAvailable || false,
+    entityWithMultipleTaxJurisdictions: GetDualCertData?.entityWithMultipleTaxJurisdictions || "No",
+    countryId: GetDualCertData?.countryId || 0,
+    otherCountry: GetDualCertData?.otherCountry || "",
+    tinNumber: GetDualCertData?.tinNumber || "",
+    isAlternativeTinFormat: GetDualCertData?.isAlternativeTinFormat || false,
+    notAvailableReason: "",
+    formTypeId: FormTypeId?.W9,
+    accountHolderDetailsId: authDetails?.accountHolderId,
+ 
+    formEntryId: "",
+    id: ""
+  };
+
+  const [values, setValues] = useState(initialValues);
+
+  console.log(values,"90")
+
+
   const history = useNavigate()
   const [expanded, setExpanded] = React.useState<string | false>(false);
   const handleChangestatus =
@@ -151,6 +240,31 @@ export default function Tin(props: any) {
   const viewPdf=()=>{
     history("w9_pdf");
   }
+  const handleTextChange = (e:any) => {
+    const { name, value, checked, type } = e.target;
+    const newValue = type === 'checkbox' ? checked : value;
+    setValues({ ...values, [name]: newValue });
+  };
+
+  const handlePayloadSubmit = async (e:any) => {
+    e.preventDefault()
+
+    let updateData = {
+      id: 0,
+      agentId: authDetails?.agentId,
+      accountHolderDetailsId: authDetails?.accountHolderId,
+      formTypeId: 1,
+      formEntryId: 0,
+      entityWithMultipleTaxJurisdictions: values?.entityWithMultipleTaxJurisdictions || GetDualCertData?.entityWithMultipleTaxJurisdictions,
+      countryId: payload[0]?.countryId || GetDualCertData?.countryId,
+      otherCountry: values.otherCountry ||"",
+      isTinAvailable: payload[0]?.isTinAvailable || GetDualCertData.isTinAvailable,
+      tinNumber: payload[0]?.tinNumber || GetDualCertData.tinNumber,
+      isAlternativeTinFormat: payload[0].isAlternativeTinFormat || GetDualCertData?.isAlternativeTinFormat
+    }
+    dispatch(postDualCertW9Form([updateData]));
+    history("/Certification_W9_DC")
+  };
   return (
 
     <section
@@ -186,40 +300,18 @@ export default function Tin(props: any) {
         </div>
       </div>
       <Formik
-        initialValues={initialValue}
+        initialValues={initialValues}
         enableReinitialize      
         validateOnChange={true}
         validateOnBlur={true}
         validationSchema={TinSchema_W9_DC} 
         onSubmit={(values, { setSubmitting }) => {
-          
-          
-          const submitPromise = new Promise((resolve, reject) => {
-            if (clickCount === 0) {
-              setClickCount(clickCount + 1);
-            } else {
-                setSubmitting(true);
-              const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
-              const result = { ...new_obj, ...values };
-              dispatch(
-                postW9Form(result, () => {
-                  localStorage.setItem("PrevStepData", JSON.stringify(result))
-                  if(continueId==1){
-                    setcontinueId(0);
-                   history("/Certification_W9_DC")
-                 
-                  }
-                  setSubmitting(false);
-                  resolve("success");
-                }, (error: any) => { reject(error); setSubmitting(false); })
-              );
-             
+          // handlePayloadSubmit();
               
             }
 
-          });
-          return submitPromise;
-        }
+       
+         
         }
       >
         {({
@@ -438,7 +530,7 @@ export default function Tin(props: any) {
                           <Typography>U.S. TIN</Typography>
                           <Input
                             name="Tin"
-                            value={values.Tin}
+                            value={values?.Tin}
                             id="Tin"
                             disabled={values.taxpayerIdTypeID == 0 || values.taxpayerIdTypeID == 1 || values.taxpayerIdTypeID == 7 || values.taxpayerIdTypeID == 8}
                             onChange={
@@ -446,7 +538,7 @@ export default function Tin(props: any) {
                             }
                             className="input-w9-cstm"
                             inputProps={{ maxLength: 11 }}
-                            onKeyDown={(e: any) => formatTin(e, values)}
+                          onKeyDown={(e: any) => formatTin(e, values)}
                             fullWidth
 
                             style={{
@@ -468,273 +560,44 @@ export default function Tin(props: any) {
                       </div>
                       <div style={{ marginLeft: "18px",marginTop: "20px"}} >
                         <Typography>
-                        Does the submission represent an entity that has multiple tax jurisdictions?
+                        Does the entityWithMultipleTaxJurisdictions represent an entity that has multiple tax jurisdictions?
                         </Typography>
+                        <>{console.log(typeof values.entityWithMultipleTaxJurisdictions,typeof GetDualCertData.entityWithMultipleTaxJurisdictions,"67")}</>
                         <FormControl className="col-12 radio">
                             <RadioGroup
                               row
                               
-                              name="Submission"
+                              name="entityWithMultipleTaxJurisdictions"
                               aria-labelledby="demo-row-radio-buttons-group-label"
-                              value={values.Submission}
-                              onBlur={handleBlur}
-                              // error={values.Submission &&
-                              // touched.Submission}
-                              
-                              onChange={(e) => {
-                                handleChange(e);
-                                // setFieldValue("foreignTIN", "");
-                              }}
-                            >
+                              value={values?.entityWithMultipleTaxJurisdictions}
+                              onBlur={handleBlur}  
+                              onChange={(e)=>{
+                                handleRadioChange(e,1)
+                                handleChange(e)
+                              }}                     
+                                     >
                               <FormControlLabel
                                 value="Yes"
                                
                                 control={<Radio />}
                                 label="Yes"
-                                name="Submission"
+                                
                               />
                               <FormControlLabel
                                 className="label"
                                 value="No"
                                 control={<Radio />}
                                 label="No"
-                                // disabled={values.isFTINNotLegallyRequired}
-                                name="Submission"
+                               
                               />
 
-                              {/* {values.tinisFTINNotLegallyRequired === "Yes" ||
-                              values.tinisFTINNotLegallyRequired === "No" ? (
-                                <Delete
-                                  onClick={() => {
-                                    handleChange("tinisFTINNotLegallyRequired")(
-                                      ""
-                                    );
-                                  }}
-                                  style={{
-                                    color: "red",
-                                    fontSize: "20px",
-                                    marginTop: "8px",
-                                  
-                                  }}
-                                />
-                              ) : (
-                                ""
-                              )} */}
                             </RadioGroup>
-
-                           {errors.Submission &&
-                            touched.Submission ? (
-                              <div>
-                                <p className="error">
-                                  {errors.Submission}
-                                </p>
-                              </div>
-                            ) : (
-                              ""
-                            )} 
-                          </FormControl>
-                        </div>
-                        {values?.Submission === "Yes" ?(<div style={{ marginLeft: "5px",marginTop: "20px",display: "flex" }} className="row">
-                        <div className="col-lg-4 col-6">
-                        <Typography style={{fontSize:"15px"}}>
-                        Select the country where taxes are paid:<span style={{ color: "red" }}>*</span>
+                            {renderMultipleTimes()}
                          
-                        </Typography>
-                       
-                        <select
-                          disabled={values?.notAvailable}
-                          style={{
-                            border: " 1px solid #d9d9d9 ",
-                            padding: " 0 10px",
-                            color: "#121112",
-                            fontStyle: "italic",
-                            height: "40px",
-                            width: "100%",
-                          }}
-                          name="TaxesId"
-                          id="Income"
-                          defaultValue={1}
-                          onBlur={handleBlur}
-                          value={values?.TaxesId}
-                          onChange={(e) => {
-                            handleChange(e);
-                            
-                          }}
-                        >
-                          <option value={1}>---select---</option>
-                          <option value={256}>United States</option>
-                          <option value={257}>United Kingdom</option>
-                                {getCountriesReducer.allCountriesData?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
-                            
-                        </select>
-                       <p className="error">{errors.TaxesId}</p> 
-                      </div>
-
-                      <div className="col-lg-4 col-6">
-                        <Typography style={{fontSize:"14px"}}>Enter TIN</Typography>
-                        <Input
-                          disabled={(values?.notAvailable)}
-                          fullWidth
-                          type="text"
-                          name="TinNumber"
-                          value={values.TinNumber}
-                          inputProps={{ maxLength: 10}}
-                          onKeyDown={(e) => formatTin(e, values)}
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          error={Boolean(touched.TinNumber && errors.TinNumber)}
-                          style={{
-                            border: " 1px solid #d9d9d9 ",
-                            padding: " 0 10px",
-                            color: "#7e7e7e",
-                            fontStyle: "italic",
-                            height: "40px",
-                            width: "100%",
-                          }}
-                        />
-                       
-                        <p className="error">{errors.TinNumber}</p>
-                        <div className="Alternate">
-                          <Checkbox
-                            value={values.AlterNativeTin}
-                            checked={values.AlterNativeTin}
-                            onChange={handleChange}
-                            size="medium"
-                            name="AlterNativeTin"
-                          />
-                          <span style={{ fontSize: "12px" }}>
-                            Alternative Tin Format 
-                            {errors.notAvailable && touched.notAvailable ? (
-                              <div>
-                                <Typography color="error">
-                                  {errors.notAvailable}
-                                </Typography>
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </span>
-                        </div>
-                       
-                      </div>
-                      <div className="col-lg-3 col-6">
-                        <div className="radio" style={{ marginTop: "17px" }}>
-                          <Checkbox
-                            value={values.notAvailable}
-                            checked={values.notAvailable}
-                            onChange={handleChange}
-                            size="medium"
-                            name="notAvailable"
-                          />
-                          <span style={{ fontSize: "12px" }}>
-                            Not Available
-                            {errors.notAvailable && touched.notAvailable ? (
-                              <div>
-                                <Typography color="error">
-                                  {errors.notAvailable}
-                                </Typography>
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </span>
-                        </div>
-                      </div>
-                      <div style={{marginTop: "20px"}} >
-                        <Typography>
-                        Does the submission represent an entity that has multiple tax jurisdictions?
-                        </Typography>
-                        <FormControl className="col-12 radio">
-                            <RadioGroup
-                              row
-                              
-                              name="Submission"
-                              aria-labelledby="demo-row-radio-buttons-group-label"
-                              value={values.Submission}
-                              onChange={(e) => {
-                                handleChange(e);
-                                // setFieldValue("foreignTIN", "");
-                              }}
-                            >
-                              <FormControlLabel
-                                value="Yes"
-                               
-                                control={<Radio />}
-                                label="Yes"
-                                name="Submission"
-                              />
-                              <FormControlLabel
-                                className="label"
-                                value="No"
-                                control={<Radio />}
-                                label="No"
-                                // disabled={values.isFTINNotLegallyRequired}
-                                name="Submission"
-                              />
-
-                              {/* {values.tinisFTINNotLegallyRequired === "Yes" ||
-                              values.tinisFTINNotLegallyRequired === "No" ? (
-                                <Delete
-                                  onClick={() => {
-                                    handleChange("tinisFTINNotLegallyRequired")(
-                                      ""
-                                    );
-                                  }}
-                                  style={{
-                                    color: "red",
-                                    fontSize: "20px",
-                                    marginTop: "8px",
-                                  
-                                  }}
-                                />
-                              ) : (
-                                ""
-                              )} */}
-                            </RadioGroup>
-
-                            {/* {errors.tinisFTINNotLegallyRequired &&
-                            touched.tinisFTINNotLegallyRequired ? (
-                              <div>
-                                <Typography color="error">
-                                  {errors.tinisFTINNotLegallyRequired}
-                                </Typography>
-                              </div>
-                            ) : (
-                              ""
-                            )} */}
                           </FormControl>
                         </div>
-                    
-                        </div>):""}
-                        {values.notAvailable ? (  <div style={{ marginLeft: "2px",marginTop:"20px" }}>
-                      <Typography>
-                        Please specify the reason for non-availability of US TIN{" "}
-                        <span style={{ color: "red" }}>*</span>
-                      </Typography>
-
-                      <Input
-                        fullWidth
-                        name="notAvailableReason"
-                        value={values?.notAvailableReason}
-                        type="text"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        style={{
-                          border: " 1px solid #d9d9d9 ",
-                          padding: " 0 10px",
-                          color: "#121112",
-                          fontStyle: "italic",
-                          height: "6rem",
-                          width: "100%",
-                        }}
-                      />
-                    </div>):""}
+                      
+                       
                     </div>
                   </Paper>
                 </div>
@@ -762,15 +625,11 @@ export default function Tin(props: any) {
                 View Form
               </Button>
               <Button
-              
-                onClick={() => {
-                  setcontinueId(1);
-                  submitForm().then((data) => {
-                  //  history("/Certification_W9_DC")
-                  }).catch((error) => {
-                    console.log(error);
-                  })
-                }}
+              // onChange={handlePayloadSubmit}
+               onClick={(e)=>{
+               handlePayloadSubmit(e)
+             }}
+                   type="submit"
                 variant="contained"
                 style={{ color: "white", marginLeft: "15px" }}
               >
