@@ -55,6 +55,7 @@ const ActionName = {
     GET_AGENT_BY_ID: "GET_AGENT_BY_ID",
     
     InsertW9IndividualEntityUSForm:"InsertW9IndividualEntityUSForm",
+    UpsertDualCertW9:"UpsertDualCertW9",
     InsertW8BENEEntityNonUSForm:"InsertW8BENEEntityNonUSForm",
     InsertW8BENIndividualNonUS:"InsertW8BENIndividualNonUS",
     InsertW8ECIIndividualEntityNonUSForm:"InsertW8ECIIndividualEntityNonUSForm",
@@ -73,6 +74,7 @@ const ActionName = {
     formPDFFieldData:"formPDFFieldData",
     UpsertSpecialRateAndConditionsIncomeTypes:"UpsertSpecialRateAndConditionsIncomeTypes",
     GetByW8BENEEntityNonUSFormId:"GetByW8BENEEntityNonUSFormId",
+    GetDualCertW9:"GetDualCertW9",
     UpsertSaveAndExitCreds:"UpsertSaveAndExitCreds",
     GetByW8BENIndividualId:"GetByW8BENIndividualId",
     GetByW8ECIIndividualId:"GetByW8ECIIndividualId",

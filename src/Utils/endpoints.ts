@@ -55,9 +55,10 @@ const EndPoint = {
  InsertW8IMYEntityNonForm:"/W8IMYEntity/InsertW8IMYEntityNonForm",
  InsertForm8233IndividualNonUSForm:"/Form8233Individual/InsertForm8233IndividualNonUSForm",
  UpsertSupportingDocumentation:"/AccountHolderDetail/UpsertSupportingDocumentation",
-
+ UpsertDualCertW9:"/DualCert/UpsertDualCertDetails",
 
 // Form GetApis:
+GetDualCertW9:"/DualCert/GetDualCertDetails",
 GetByW8BENEEntityNonUSFormId:"/W8BENEEntity/GetByW8BENEEntityNonUSFormId",
 GetByW8ECIIndividualEntityNonUSFormId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
 GetByW8EXPFormFormEntityNonUs:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
