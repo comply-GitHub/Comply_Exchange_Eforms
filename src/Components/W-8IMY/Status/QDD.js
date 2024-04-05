@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import InfoIcon from "@mui/icons-material/Info";
 
 
-const QDD = ({handleChange, values}) => {
+const QDD = ({handleChange, values, setFieldValue}) => {
     const [toolInfo, setToolInfo] = useState("");
 
   return (
@@ -159,6 +159,7 @@ const QDD = ({handleChange, values}) => {
                 value={values.QDD15A}
                 name='QDD15A'
                 onChange={handleChange}
+                checked={values.QDD15A}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -179,7 +180,16 @@ const QDD = ({handleChange, values}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                onChange={handleChange}
+                value={values.QDD15B}
+                name='QDD15B'
+                onChange={(e) => {
+                    handleChange(e);
+                    console.log(e.target.value)
+                    setTimeout(() => { setFieldValue("QDD15G", false); }, 200)
+                    setTimeout(() => { setFieldValue("QDD15H", false); }, 200)
+                    setTimeout(() => { setFieldValue("QDD15I", false); }, 200)
+                }}
+                checked={values.QDD15B}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -200,7 +210,10 @@ const QDD = ({handleChange, values}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
+                value={values.QDD15C}
+                name='QDD15C'
                 onChange={handleChange}
+                checked={values.QDD15C}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -223,7 +236,16 @@ const QDD = ({handleChange, values}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                onChange={handleChange}
+                value={values.QDD15D}
+                name='QDD15D'
+                onChange={(e) => {
+                    handleChange(e);
+                    console.log(e.target.value)
+                    setTimeout(() => { setFieldValue("QDD15G", false); }, 200)
+                    setTimeout(() => { setFieldValue("QDD15H", false); }, 200)
+                    setTimeout(() => { setFieldValue("QDD15I", false); }, 200)
+                }}
+                checked={values.QDD15D}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -246,7 +268,10 @@ const QDD = ({handleChange, values}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
+                value={values.QDD15E}
+                name='QDD15E'
                 onChange={handleChange}
+                checked={values.QDD15E}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -270,7 +295,16 @@ const QDD = ({handleChange, values}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                onChange={handleChange}
+                value={values.QDD15F}
+                name='QDD15F'
+                onChange={(e) => {
+                    handleChange(e);
+                    console.log(e.target.value)
+                    setTimeout(() => { setFieldValue("QDD15G", false); }, 200)
+                    setTimeout(() => { setFieldValue("QDD15H", false); }, 200)
+                    setTimeout(() => { setFieldValue("QDD15I", false); }, 200)
+                }}
+                checked={values.QDD15F}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -298,7 +332,19 @@ const QDD = ({handleChange, values}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                onChange={handleChange}
+                name="QDD15G"
+                value={values.QDD15G}
+                checked={values.QDD15G}
+                onChange={(e) => {
+                    handleChange(e);
+                    console.log(e.target.value)
+                    setTimeout(() => { setFieldValue("QDD15B", false); }, 200)
+                    setTimeout(() => { setFieldValue("QDD15D", false); }, 200)
+                    setTimeout(() => { setFieldValue("QDD15F", false); }, 200)
+                    setTimeout(() => { setFieldValue("QDD15H", false); }, 200)
+                    setTimeout(() => { setFieldValue("QDD15I", false); }, 200)
+                }}
+                
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -321,7 +367,11 @@ const QDD = ({handleChange, values}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
+                name="QDD15H"
+                value={values.QDD15H}
                 onChange={handleChange}
+                checked={values.QDD15H && values.QDD15G}
+                disabled={values.QDD15G ? false:true}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -346,7 +396,11 @@ const QDD = ({handleChange, values}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
+                name="QDD15I"
+                value={values.QDD15I}
                 onChange={handleChange}
+                disabled={values.QDD15G ? false:true}
+                checked={values.QDD15I && values.QDD15G}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -376,9 +430,16 @@ const QDD = ({handleChange, values}) => {
             <Typography style={{ display: "flex" }}>
             <Checkbox
             className="mx-2"
-            onChange={handleChange}
+            onChange={(e) => {
+                handleChange(e);
+                console.log(e.target.value)
+                setTimeout(() => { setFieldValue("QDD16BCorp", false); }, 200)
+                setTimeout(() => { setFieldValue("QDD16BPart", false); }, 200)
+                setTimeout(() => { setFieldValue("QDD16BDisregardEntity", false); }, 200)
+            }}
             name="QDD16A"
             value={values.QDD16A}
+            checked={values.QDD16A}
             size="medium"
             style={{ fontSize: "2rem" }}
             />
@@ -405,6 +466,7 @@ const QDD = ({handleChange, values}) => {
             disabled={values.QDD16A ? false:true}
             name="QDD16BCorp"
             value={values.QDD16BCorp}
+            checked={values.QDD16BCorp && values.QDD16A}
             size="medium"
             style={{ fontSize: "2rem" }}
             />
@@ -425,6 +487,9 @@ const QDD = ({handleChange, values}) => {
             className="mx-2"
             onChange={handleChange}
             disabled={values.QDD16A ? false:true}
+            name="QDD16BPart"
+            value={values.QDD16BPart}
+            checked={values.QDD16BPart && values.QDD16A}
             size="medium"
             style={{ fontSize: "2rem" }}
             />
@@ -446,6 +511,9 @@ const QDD = ({handleChange, values}) => {
             className="mx-2"
             onChange={handleChange}
             disabled={values.QDD16A ? false:true}
+            name="QDD16BDisregardEntity"
+            value={values.QDD16BDisregardEntity}
+            checked={values.QDD16BDisregardEntity && values.QDD16A}
             size="medium"
             style={{ fontSize: "2rem" }}
             />
