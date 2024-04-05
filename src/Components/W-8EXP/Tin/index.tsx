@@ -58,9 +58,9 @@ export default function Tin(props: any) {
     setInitialValues(temp);
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Tax-Payer"
-  },[])
+  }, [])
 
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
@@ -384,7 +384,7 @@ export default function Tin(props: any) {
                             style={{
                               border: " 1px solid #d9d9d9 ",
                               padding: " 0 10px",
-                              color: "#7e7e7e",
+                              color: "#121112",
                               fontStyle: "italic",
                               height: "40px",
                               width: "100%",
@@ -481,7 +481,7 @@ export default function Tin(props: any) {
                                 style={{
                                   border: " 1px solid #d9d9d9 ",
                                   padding: " 0 10px",
-                                  color:    "#7e7e7e",
+                                  color: "#7e7e7e",
                                   fontStyle: "italic",
                                   height: "40px",
                                   width: "100%",
@@ -1101,7 +1101,8 @@ export default function Tin(props: any) {
                       <Typography
                         align="center"
                         style={{
-                          color: "#adadac",
+
+                          color: "#f5f5f5",
                           justifyContent: "center",
                           alignItems: "center",
                           marginTop: "20px",

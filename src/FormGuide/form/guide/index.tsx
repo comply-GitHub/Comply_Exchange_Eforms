@@ -2017,7 +2017,7 @@ You have stated that the Foreign Person you are making this submission on behalf
               <Typography
                 align="center"
                 style={{
-                  color: "#adadac",
+                  color: "#505E50",  
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: "20px",

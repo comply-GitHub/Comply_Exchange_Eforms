@@ -508,7 +508,7 @@ const DynamicForm: React.FC<InputProps> = ({
                       <Link
                         href="#"
                         underline="none"
-                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        style={{ marginTop: "10px", fontSize: "16px", color: "blue" }}
                         onClick={() => {
                           setToolInfo("");
                         }}

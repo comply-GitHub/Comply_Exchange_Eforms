@@ -308,7 +308,7 @@ const GethelpData = useSelector(
                       <Link
                         href="#"
                         underline="none"
-                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
                         onClick={() => {
                           setToolInfo("");
                         }}
@@ -506,7 +506,7 @@ const GethelpData = useSelector(
                 <Typography
                   align="center"
                   style={{
-                    color: "#adadac",
+                    color: "#505E50",  
                     justifyContent: "center",
                     alignItems: "center",
                     marginTop: "20px",

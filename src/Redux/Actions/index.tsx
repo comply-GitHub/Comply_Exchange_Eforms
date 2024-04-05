@@ -270,6 +270,9 @@ export const LoadExistingFormData = (formTypeId: any, AccountHolderId: any, call
     case FormTypeId.F8233:
       Endpoint = Utils.EndPoint.GetByForm8233IndividualNonUSFormId + `?AccountHolderBasicDetailId=${AccountHolderId}`
       break;
+    case FormTypeId.FW81MY:
+        Endpoint = Utils.EndPoint.GetByW8IMYEntityNonForm + `?AccountHolderBasicDetailId=${AccountHolderId}`
+        break;
     default:
       return;
   }
@@ -605,6 +608,32 @@ export const getBENEformData = (_id: Number, callback: any = () => { console.log
             type: Utils.actionName.GetByW8BENEEntityNonUSFormId,
             payload: {
               GetByW8BENEEntityNonUSFormData: resData.data,
+            },
+          });
+
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
+
+export const getDualCertW9 = (_id: Number,FormId:Number, callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetDualCertW9,
+      `?AccountHolderId=${_id}&FormTypeId=${FormId}`,
+      (resData) => {
+        if (resData.status === 200) {
+          if (callback) {
+            callback(resData.data)
+          }
+          dispatch({
+            type: Utils.actionName.GetDualCertW9,
+            payload: {
+              DualCertData: resData.data,
             },
           });
 
@@ -1377,7 +1406,7 @@ export const postW8BENForm = (value: any, callback: Function, errorCallback: Fun
     );
   };
 };
-
+//UpsertDualCertW9
 export const postW8BEN_EForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
   return (dispatch: any) => {
     Utils.api.postApiCall(
@@ -1424,6 +1453,49 @@ export const postW8BEN_EForm = (value: any, callback: Function, errorCallback: F
   };
 };
 
+
+
+export const postDualCertW9Form = (value: any):any=> {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.UpsertDualCertW9,
+     value ,
+      (responseData) => {
+        let { data } = responseData;
+        dispatch({
+          type: Utils.actionName.UpsertDualCertW9,
+          payload: { ...value, Response: data },
+        });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+           
+          } 
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+      
+      },
+      // "multi"
+    );
+  };
+};
 
 // export const postW8ECIForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
 //   return (dispatch: any) => {
@@ -2146,6 +2218,54 @@ export const getSupportedFile = (storageName:number, FolderName:string): any => 
       (error: any) => {
         console.log(error)
       }
+    );
+  };
+};
+
+
+export const postW81MY_EForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.InsertW81MYEntityNonForm,
+      convertToFormData(value),
+      (responseData) => {
+        let { data } = responseData;
+        //console.log("Form 8233 Response Data",responseData);
+        dispatch({
+          type: Utils.actionName.InsertW8IMYEntityNonForm,
+          payload: { ...value, Response: data },
+        });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback({ message: "Internal server error occured", payload: responseData })
+          } else {
+            if (callback) {
+              callback();
+            }
+          }
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(error)
+      },
+      "multi"
     );
   };
 };

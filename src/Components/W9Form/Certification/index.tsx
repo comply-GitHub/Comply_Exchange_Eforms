@@ -283,7 +283,7 @@ export default function Certifications(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" }}
+                              style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -295,17 +295,17 @@ export default function Certifications(props: any) {
                       ) : (
                         ""
                       )}
+              
                       <Typography
                         style={{
                           margin: "10px",
                           fontSize: "18px",
-                          color: "grey",
+                          color: "#666666",
                           marginLeft: "10px",
                         }}
                       >
                         Under penalties of perjury, I certify that:
                       </Typography>
-
                       <Paper
                         style={{ marginLeft: "10px", width: "95%", backgroundColor: "#d2d6d3", marginBottom: "2rem" }}
                       >
@@ -508,7 +508,7 @@ export default function Certifications(props: any) {
                       <Typography
                         align="center"
                         style={{
-                          color: "#adadac",
+                          color: "#505E50",  
                           justifyContent: "center",
                           alignItems: "center",
                           marginTop: "20px",

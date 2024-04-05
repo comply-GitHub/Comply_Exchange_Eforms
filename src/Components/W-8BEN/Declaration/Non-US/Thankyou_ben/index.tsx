@@ -5,6 +5,7 @@ import FormW8IMY from "../../../../../formPDF/W8IMY";
 // import FormEXP from "../../formPDF/formEXP";
 
 import { Typography, Button } from "@mui/material";
+
 import Paper from "@mui/material/Paper";
 import DoneIcon from "@mui/icons-material/Done";
 
@@ -13,14 +14,9 @@ import { useRef } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
 import W8Ben from "../../../../../formPDF/W8BEN";
-import useAuth from "../../../../../customHooks/useAuth";
-import { useDispatch } from "react-redux";
-import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 
 export default function Term() {
-  //States  
-  const { authDetails } = useAuth();
-  const dispatch = useDispatch();
+  //States
   const history = useNavigate();
   const pdfRef = useRef(null);
   const pdfRefnew = useRef(null);
@@ -31,16 +27,18 @@ export default function Term() {
     if (pdfUrl) {
       const link = document.createElement("a");
       link.href = pdfUrl;
-      link.setAttribute("download", "generatedPDF.pdf"); 
+      link.setAttribute("download", "generatedPDF.pdf");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } else {
     }
   };
+
   useEffect(()=>{
     document.title = "Thank You"
   },[])
+
  
 
   return (
@@ -48,9 +46,11 @@ export default function Term() {
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-
-
-
+    
+      <div style={{ paddingBlockStart: "30px" }}>
+        <W8Ben/>
+      </div>
+     
       <div className="container-fluid">
         <div className="col-lg-12 mt-20" style={{ padding: "18px" }}>
           <Paper elevation={6} style={{ padding: "17px", marginTop: "20px" }}>
@@ -110,40 +110,28 @@ export default function Term() {
           </Paper>
           <Typography align="center">
             <div className="mt-5" style={{ justifyContent: "center" }}>
-
+             
 
               <div style={{ marginTop: "25px" }}>
-                <Button
-                  //type="submit"
-                  onClick={() => {
-                    dispatch(GetBenPdf(authDetails?.accountHolderId))
-                  }}
-                  // style={{
-                  //   border: "1px solid #0095dd",
-                  //   background: "black",
-                  //   height: "35px",
-                  //   lineHeight: "normal",
-                  //   textAlign: "center",
-                  //   fontSize: "16px",
-                  //   marginLeft: "12px",
-                  //   textTransform: "uppercase",
-                  //   borderRadius: "0px",
-                  //   color: "#ffff",
-                  //   padding: "0 35px",
-                  //   letterSpacing: "1px",
-                  // }}
-                  className="btn btn_submit  btn-primary-agent"
-                >
-                  Download PDF
-                </Button>
                 <Button
                   type="submit"
                   onClick={() => {
                     history("/Certificates");
                   }}
-                  // style={{
-               
-                  // }}
+                  style={{
+                    border: "1px solid #0095dd",
+                    background: "black",
+                    height: "35px",
+                    lineHeight: "normal",
+                    textAlign: "center",
+                    fontSize: "16px",
+                    marginLeft: "12px",
+                    textTransform: "uppercase",
+                    borderRadius: "0px",
+                    color: "#ffff",
+                    padding: "0 35px",
+                    letterSpacing: "1px",
+                  }}
                   className="btn btn_submit  btn-primary-agent"
                 >
                   Exit

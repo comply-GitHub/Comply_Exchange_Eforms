@@ -67,7 +67,7 @@ export default function FCTA_Reporting(props: any) {
   const urlValue = location.pathname.substring(1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const initialValue = {
-    isExemptionFATCAReportings: getReducerData?.isExemptionFATCAReportings ??  false,
+    isExemptionFATCAReportings: getReducerData?.isExemptionFATCAReportings ??  "No",
     ReportingId: getReducerData?.ReportingId ?? ""
   };
   useEffect(()=>{
@@ -267,13 +267,13 @@ export default function FCTA_Reporting(props: any) {
                         >
                           <FormControlLabel
                             control={<Radio />}
-                            value={true}
+                            value="Yes"
                             name="isExemptionFATCAReportings"
                             label="Yes"
                           />
                           <FormControlLabel
                             control={<Radio />}
-                            value={false}
+                            value="No"
                             name="isExemptionFATCAReportings"
                             label="No"
                           />
@@ -289,7 +289,7 @@ export default function FCTA_Reporting(props: any) {
                       ) : (
                         ""
                       )}
-                      {values?.isExemptionFATCAReportings == true ? (
+                      {values?.isExemptionFATCAReportings ==="Yes" ? (
                         <>
                           <Typography
                             align="left"
@@ -357,7 +357,7 @@ export default function FCTA_Reporting(props: any) {
                               )}
                             </select>
                           </FormControl>
-                         {errors.ReportingId && touched.ReportingId ?( <p className="error">{typeof errors.ReportingId==="boolean" ? errors.ReportingId : ""}</p>):""}
+                         {errors.ReportingId && touched.ReportingId ?( <p className="error">{typeof errors.ReportingId==="string" ? errors.ReportingId : ""}</p>):""}
                           {/* <p className="error">{typeof errors.ReportingId==="string" ? errors.ReportingId : ""}</p> */}
 
                         </>
@@ -406,7 +406,7 @@ export default function FCTA_Reporting(props: any) {
             <Typography
               align="center"
               style={{
-                color: "#adadac",
+                color: "#f5f5f5",
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: "20px",
