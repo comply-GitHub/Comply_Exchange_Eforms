@@ -211,7 +211,7 @@ export default function Penalties() {
                           fontWeight: "550",
                         }}
                       >
-                        W-8ECI Electronic Substitute Form Statement
+                        W-8EXP Electronic Substitute Form Statement
                       </Typography>
                       <Typography
                         align="left"
