@@ -39,6 +39,7 @@ import BreadCrumbComponent from "../../reusables/breadCrumb";
 import useAuth from "../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const {
@@ -147,7 +148,9 @@ export default function Fedral_tax(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform" onClick={viewPdf}>View Form</div>
+            <div className="viewform" onClick={() => {
+              dispatch(GetEciPdf(authDetails?.accountHolderId))
+            }}>View Form</div>
             <div className="helpvideo">
               {GethelpData && GethelpData[5].id === 7 ? (
                 <a
@@ -398,7 +401,7 @@ export default function Fedral_tax(props: any) {
                                         underline="none"
                                         style={{
                                           marginTop: "10px",
-                                          fontSize: "16px",  color: "blue"
+                                          fontSize: "16px", color: "blue"
                                         }}
                                         onClick={() => {
                                           setToolInfo("");
@@ -1886,7 +1889,9 @@ export default function Fedral_tax(props: any) {
                             type="submit"
                             disabled={isSubmitting}
                             variant="contained"
-                            onClick={viewPdf}
+                            onClick={() => {
+                              dispatch(GetEciPdf(authDetails?.accountHolderId))
+                            }}
                             style={{ color: "white", marginLeft: "15px" }}
                           >
                             View Form
@@ -1909,7 +1914,7 @@ export default function Fedral_tax(props: any) {
                         <Typography
                           align="center"
                           style={{
-                            color: "#505E50", 
+                            color: "#505E50",
                             justifyContent: "center",
                             alignItems: "center",
                             marginTop: "20px",
