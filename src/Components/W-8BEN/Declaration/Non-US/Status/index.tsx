@@ -59,7 +59,7 @@ export default function Factors() {
   const initialValue = {
     agentId: 3,
     formTypeSelectionId: 1,
-    accountHolderBasicDetailId:17,
+    accountHolderBasicDetailId: 17,
     isHeldUSCitizenship: false,
     countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "0",
     isTaxationUSCitizenOrResident: false,
@@ -83,9 +83,9 @@ export default function Factors() {
   const history = useNavigate();
   const [expanded, setExpanded] = React.useState<string | false>("");
   const [clickCount, setClickCount] = useState(0);
-  
+
   useEffect(() => {
- document.title="Comply Exchange"
+    document.title = "Comply Exchange"
   }, []);
 
   useEffect(() => {
@@ -151,18 +151,18 @@ export default function Factors() {
         .GetAgentCountriesImportantForEformData
   );
 
-  const viewPdf=()=>{
+  const viewPdf = () => {
     // history("/w8Ben_pdf", { replace: true });
     history("/w8Ben_pdf");
   }
 
-  function getNameById(id:any) {
+  function getNameById(id: any) {
     if (!Array.isArray(allCountriesData)) {
       console.error('Input is not an array.');
       return null;
     }
-  
-    const foundObject = allCountriesData.find((obj:any) => obj.id === id);
+
+    const foundObject = allCountriesData.find((obj: any) => obj.id === id);
     return foundObject ? foundObject.name : null;
   }
 
@@ -179,22 +179,22 @@ export default function Factors() {
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[4].id === 6 ? (
-  <a
-    href={GethelpData[4].fieldValue}
-    target="popup"
-    onClick={() =>
-      window.open(
-        GethelpData[4].fieldValue,
-        'name',
-        `width=${GethelpData[4].width},height=${GethelpData[4].height},top=${GethelpData[4].top},left=${GethelpData[4].left}`
-      )
-    }
-  >
-    Help Video
-  </a>
-) : (
-  ""
-)}
+              <a
+                href={GethelpData[4].fieldValue}
+                target="popup"
+                onClick={() =>
+                  window.open(
+                    GethelpData[4].fieldValue,
+                    'name',
+                    `width=${GethelpData[4].width},height=${GethelpData[4].height},top=${GethelpData[4].top},left=${GethelpData[4].left}`
+                  )
+                }
+              >
+                Help Video
+              </a>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
@@ -217,7 +217,7 @@ export default function Factors() {
                   if (clickCount === 0) {
                     setClickCount(clickCount + 1);
                   } else {
-                    
+
                     const new_obj = { ...PrevStepData, citizenshipCountry: getNameById(PrevStepData.citizenshipCountry) }
                     const result = { ...new_obj, ...values };
                     // console.log(result,"FINAL RESULT")
@@ -230,7 +230,7 @@ export default function Factors() {
                         );
                       })
                     );
-                   
+
                   }
                 }}
               >
@@ -246,11 +246,11 @@ export default function Factors() {
                   submitForm,
                 }) => (
                   <Form onSubmit={handleSubmit}>
-    <>{console.log("VALUESSS",values)}</>
+                    <>{console.log("VALUESSS", values)}</>
 
                     {values.isHeldUSCitizenship === true &&
-                    obValues?.isUSIndividual == false &&
-                    clickCount === 1 ? (
+                      obValues?.isUSIndividual == false &&
+                      clickCount === 1 ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -304,7 +304,7 @@ export default function Factors() {
                     )}
 
                     {values.isHoldDualCitizenshipStatus === true &&
-                    clickCount === 1 ? (
+                      clickCount === 1 ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -352,8 +352,8 @@ export default function Factors() {
                     )}
 
                     {values.isHeldUSCitizenship === true &&
-                    values.isRenouncedCitizenship === true &&
-                    clickCount === 1 ? (
+                      values.isRenouncedCitizenship === true &&
+                      clickCount === 1 ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -389,8 +389,8 @@ export default function Factors() {
                     )}
 
                     {values.isHeldUSCitizenship === true &&
-                    values.isTaxationUSCitizenOrResident === true &&
-                    clickCount === 1 ? (
+                      values.isTaxationUSCitizenOrResident === true &&
+                      clickCount === 1 ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -441,8 +441,8 @@ export default function Factors() {
                     )}
 
                     {values.isHeldUSCitizenship === true &&
-                    values.isPermamnentResidentCardHolder === true &&
-                    clickCount === 1 ? (
+                      values.isPermamnentResidentCardHolder === true &&
+                      clickCount === 1 ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -495,8 +495,8 @@ export default function Factors() {
                     )}
 
                     {values.isHeldUSCitizenship === true &&
-                    values.isHoldDualCitizenshipIncludeUSCitizenship === true &&
-                    clickCount === 1 ? (
+                      values.isHoldDualCitizenshipIncludeUSCitizenship === true &&
+                      clickCount === 1 ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -547,8 +547,8 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isPresentAtleast31Days  &&
-                    clickCount === 1 ? (
+                    {values.isPresentAtleast31Days &&
+                      clickCount === 1 ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -736,7 +736,7 @@ export default function Factors() {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" }}
+                              style={{ marginTop: "10px", fontSize: "16px", color: "blue" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -811,7 +811,7 @@ export default function Factors() {
                               name="countryOfCitizenship"
                               id="countryOfCitizenshipId"
                               onChange={(e) => {
-                                handleChange(e); 
+                                handleChange(e);
                               }}
                               value={values.countryOfCitizenship}
                             >
@@ -1013,7 +1013,7 @@ export default function Factors() {
                           )}
 
                           {values.isHoldDualCitizenshipIncludeUSCitizenship ==
-                          true ? (
+                            true ? (
                             <>
                               <Typography
                                 style={{
@@ -1167,7 +1167,7 @@ export default function Factors() {
                           </FormControl>
                           <Divider className="dividr" />
 
-                          {values.isTaxLiabilityJurisdictions  ? (
+                          {values.isTaxLiabilityJurisdictions ? (
                             <>
                               <Typography>
                                 Please select the country where the individual
@@ -1327,7 +1327,7 @@ export default function Factors() {
                                   <div className="d-flex">
                                     <FormControl className="form">
                                       {values.isTINFormatNotAvailable ==
-                                      false ? (
+                                        false ? (
                                         <Input
                                           name="taxReferenceNumber"
                                           onChange={handleChange}
@@ -1598,7 +1598,7 @@ export default function Factors() {
                           )}
 
                           {values.isHoldDualCitizenshipIncludeUSCitizenship ==
-                          false ? (
+                            false ? (
                             <>
                               <Typography
                                 style={{
@@ -1849,6 +1849,8 @@ export default function Factors() {
                                       style={{
                                         marginTop: "10px",
                                         fontSize: "16px",
+                                        color: "blue"
+
                                       }}
                                       onClick={() => {
                                         setToolInfo("");
@@ -2169,20 +2171,20 @@ export default function Factors() {
                         SAVE & EXIT
                       </Button> */}
                       <SaveAndExit Callback={() => {
-                            submitForm().then((data:any) => {
-                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                              const urlValue = window.location.pathname.substring(1);
-                              dispatch(postW8BENForm(
-                                {
-                                  ...prevStepData,
-                                  stepName: `/${urlValue}`
-                                }
-                                , () => { }))
-                              history(GlobalValues.basePageRoute)
-                            }).catch((err:any) => {
-                              console.log(err);
-                            })
-                          }} formTypeId={FormTypeId.BEN} />
+                        submitForm().then((data: any) => {
+                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                          const urlValue = window.location.pathname.substring(1);
+                          dispatch(postW8BENForm(
+                            {
+                              ...prevStepData,
+                              stepName: `/${urlValue}`
+                            }
+                            , () => { }))
+                          history(GlobalValues.basePageRoute)
+                        }).catch((err: any) => {
+                          console.log(err);
+                        })
+                      }} formTypeId={FormTypeId.BEN} />
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
@@ -2201,7 +2203,8 @@ export default function Factors() {
                     <Typography
                       align="center"
                       style={{
-                        color: "#adadac",
+
+                        color: "#f5f5f5",
                         justifyContent: "center",
                         alignItems: "center",
                         marginTop: "20px",

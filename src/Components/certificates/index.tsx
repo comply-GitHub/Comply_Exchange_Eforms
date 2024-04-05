@@ -31,26 +31,22 @@ export default function Certificates(props: any) {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   const [selectedCard, setSelectedCard] = useState("");
   const [toolInfo, setToolInfo] = useState("");
   const [InfoMore, setInfoMore] = useState("");
+  const [showInfoMore, setShowInfoMore] = useState(false);
   const [diableForm, setDisableForm] = useState("usIndividual");
   type ComponentPaths = {
     [key: string]: string;
   };
   const handleCardSelect = (card: any) => {
-    // if (card.enabled.includes(diableForm)) {
+    if (card.enabled.includes(diableForm)) {
       setSelectedCard(card.id);
-    // }
-  };
-
-  useEffect(()=>{
-    document.title = "Form Selection"
-  },[])
-
+    }
+  }; 
+   
   useEffect(() => {
-    
+    document.title = "Form Selection"
     let onboardingStingifiedData = localStorage.getItem("agentDetails");
     let onboardingData;
     let isDisabledFormed;
@@ -173,6 +169,7 @@ export default function Certificates(props: any) {
       className="inner_content backGround_Image py-4"
       style={{ marginBottom: "10px" }}
     >
+      
 
       <div className="overlay-div">
         <div className="overlay-div-group">
@@ -202,7 +199,7 @@ export default function Certificates(props: any) {
       </div>
 
       <div style={{ padding: "17px" }}>
-        {InfoMore == "W-9" ? (
+        {showInfoMore && InfoMore == "W-9" ? (
           <Paper
             style={{
               backgroundColor: "#cce5ff",
@@ -253,7 +250,7 @@ export default function Certificates(props: any) {
           ""
         )}
 
-        {InfoMore == "W-8BEN" ? (
+        {showInfoMore && InfoMore == "W-8BEN" ? (
           <Paper
             style={{
               backgroundColor: "#cce5ff",
@@ -303,7 +300,7 @@ export default function Certificates(props: any) {
           ""
         )}
 
-        {InfoMore == "W-8BEN-E" ? (
+        {showInfoMore && InfoMore == "W-8BEN-E" ? (
           <Paper
             style={{
               backgroundColor: "#cce5ff",
@@ -353,7 +350,7 @@ export default function Certificates(props: any) {
           ""
         )}
 
-        {InfoMore == "W-8IMY" ? (
+        {showInfoMore && InfoMore == "W-8IMY" ? (
           <Paper
             style={{
               backgroundColor: "#cce5ff",
@@ -402,7 +399,7 @@ export default function Certificates(props: any) {
           ""
         )}
 
-        {InfoMore == "W-8ECI" ? (
+        {showInfoMore && InfoMore == "W-8ECI" ? (
           <Paper
             style={{
               backgroundColor: "#cce5ff",
@@ -454,7 +451,7 @@ export default function Certificates(props: any) {
           ""
         )}
 
-        {InfoMore == "W-8EXP" ? (
+        {showInfoMore && InfoMore == "W-8EXP" ? (
           <Paper
             style={{
               backgroundColor: "#cce5ff",
@@ -504,7 +501,7 @@ export default function Certificates(props: any) {
           ""
         )}
 
-        {InfoMore == "form 8233" ? (
+        {showInfoMore && InfoMore == "form 8233" ? (
           <Paper
             style={{
               backgroundColor: "#cce5ff",
@@ -607,6 +604,7 @@ export default function Certificates(props: any) {
                 // setOpen(true);
               }}
               style={{
+                marginRight : "20px",
                 backgroundColor: "#ffc107",
                 color: "black",
                 fontSize: "10px",
@@ -652,7 +650,7 @@ export default function Certificates(props: any) {
               <Link
                 href="#"
                 underline="none"
-                style={{ marginTop: "10px", fontSize: "16px" }}
+                style={{ marginTop: "10px", fontSize: "16px", color: "blue" }}
                 onClick={() => {
                   setToolInfo("");
                 }}
@@ -696,6 +694,7 @@ export default function Certificates(props: any) {
                   </div>
                   <div className="check-div">
                     {card.enabled.includes(diableForm) ? (<img src={checksolid} />) : ""}
+                    disabled
                   </div>
                   <Typography align="center" variant="h6" component="div">
                     {card?.title}
@@ -712,6 +711,7 @@ export default function Certificates(props: any) {
                     <Button
                       onClick={() => {
                         setInfoMore(card?.id);
+                        setShowInfoMore(!showInfoMore);
                       }}
                       className="mt-4"
                       size="small"
@@ -882,7 +882,7 @@ export default function Certificates(props: any) {
           <Typography
             align="center"
             style={{
-              color: "#adadac",
+              color: "#f5f5f5",
               justifyContent: "center",
               alignItems: "center",
               marginTop: "20px",
@@ -909,12 +909,13 @@ export default function Certificates(props: any) {
           </Typography>
         </div>
       </div>
-
       <Form
         open={open}
         setOpen={setOpen}
         handleClickOpen={handleClickOpen}
         handleClose={handleClose}
+
+
       />
     </section>
   );

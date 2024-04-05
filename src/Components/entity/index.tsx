@@ -625,7 +625,7 @@ export default function Entity() {
               placeholder=" Enter Bank Code"
               onChange={handleChange}
               onBlur={handleBlur}
-              onKeyUp={(e: any) => formatBankCode(e, values)}
+              onKeyUp={(e) => formatBankCode(e, values)}
               inputProps={{ maxLength: 8 }}
               error={Boolean(touched.bankCode && errors.bankCode)}
               value={values.bankCode}
@@ -1351,7 +1351,7 @@ export default function Entity() {
                         </Typography>
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -1486,8 +1486,8 @@ export default function Entity() {
                             name="uniqueIdentifier"
                             placeholder="Enter Instructor Identifier"
                             onChange={handleChange}
-                            onKeyUp={(e: any) => onNumberChange(e, values)}
-                            onBlur={(e: any) => onUidBlur(e, values)}
+                            onKeyUp={(e) => onNumberChange(e, values)}
+                            onBlur={(e) => onUidBlur(e, values)}
                             error={Boolean(
                               touched.uniqueIdentifier &&
                               errors.uniqueIdentifier
@@ -1762,7 +1762,7 @@ export default function Entity() {
 
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer",color: "blue" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -1796,7 +1796,7 @@ export default function Entity() {
                           <FormControl className="w-100">
                             <select
                               style={{
-                                padding: "0 10px",
+                                padding: " 0 10px",
                                 color: "#121112",
                                 fontStyle: "italic",
                                 height: "36px",
@@ -1860,7 +1860,6 @@ export default function Entity() {
                                 background: "#fff ",
                                 fontSize: "13px",
                                 color: " #000 ",
-                                //placeholder color 
                                 fontStyle: "normal",
                                 borderRadius: "1px",
                                 padding: " 0 10px ",
@@ -1868,7 +1867,7 @@ export default function Entity() {
                               id="outlined"
                               name="usTin"
                               placeholder="Enter U.S. TIN"
-                              onKeyDown={(e: any) => formatTin(e, values)}
+                              onKeyDown={(e) => formatTin(e, values)}
                               onChange={handleChange}
                               inputProps={{ maxLength: 10 }}
                               value={values.usTin}
@@ -2235,7 +2234,7 @@ export default function Entity() {
                               id="outlined"
                               name="usTin"
                               placeholder="Enter U.S. TIN"
-                              onKeyDown={(e: any) => formatTin(e, values)}
+                              onKeyDown={(e) => formatTin(e, values)}
                               onChange={handleChange}
                               inputProps={{ maxLength: 11 }}
                               value={values.usTin}
@@ -2371,7 +2370,7 @@ export default function Entity() {
 
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue"}}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -2599,7 +2598,7 @@ export default function Entity() {
                             <select
                               style={{
                                 padding: " 0 10px",
-                                color: "#121112",
+                                color: "#7e7e7e",
                                 fontStyle: "italic",
                                 height: "36px",
                               }}
@@ -2805,7 +2804,7 @@ export default function Entity() {
                                   underline="none"
                                   style={{
                                     marginTop: "10px",
-                                    fontSize: "16px", cursor: "pointer"
+                                    fontSize: "16px", cursor: "pointer", color: "blue"
                                   }}
                                   onClick={() => {
                                     setToolInfo("");
@@ -2959,7 +2958,7 @@ export default function Entity() {
                                         underline="none"
                                         style={{
                                           marginTop: "10px",
-                                          fontSize: "16px", cursor: "pointer"
+                                          fontSize: "16px", cursor: "pointer" , color: "blue"
                                         }}
                                         onClick={() => {
                                           setToolInfo("");
@@ -3108,7 +3107,7 @@ export default function Entity() {
                                       underline="none"
                                       style={{
                                         marginTop: "10px",
-                                        fontSize: "16px", cursor: "pointer"
+                                        fontSize: "16px", cursor: "pointer" , color: "blue"
                                       }}
                                       onClick={() => {
                                         setToolInfo("");
@@ -3254,7 +3253,7 @@ export default function Entity() {
                                       underline="none"
                                       style={{
                                         marginTop: "10px",
-                                        fontSize: "16px", cursor: "pointer"
+                                        fontSize: "16px", cursor: "pointer" , color: "blue"
                                       }}
                                       onClick={() => {
                                         setToolInfo("");
@@ -3730,7 +3729,7 @@ export default function Entity() {
                         </Typography>
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" ,  color: "blue" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -4148,7 +4147,7 @@ export default function Entity() {
 
                             <Link
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -4338,7 +4337,7 @@ export default function Entity() {
 
                             <Link
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -4535,7 +4534,7 @@ export default function Entity() {
 
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -4775,7 +4774,7 @@ export default function Entity() {
 
                             <Link
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" }}
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -5179,7 +5178,7 @@ export default function Entity() {
                                       // disabled ={payload.payResidentalCountryId == 0}
                                       style={{
                                         padding: " 0 10px",
-                                        color: "#121112",
+                                        color: "#7e7e7e",
                                         fontStyle: "italic",
                                         height: "36px",
                                       }}

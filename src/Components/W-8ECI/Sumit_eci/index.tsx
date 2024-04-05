@@ -446,7 +446,7 @@ const Declaration = (props: any) => {
                   <Typography
                     align="center"
                     style={{
-                      color: "#adadac",
+                      color: "#505E50",  
                       justifyContent: "center",
                       alignItems: "center",
                       marginTop: "20px",
