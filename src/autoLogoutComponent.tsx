@@ -9,7 +9,7 @@
 //     const storedLoginTime = localStorage.getItem("loginTime");
 //     if (storedLoginTime && storedLoginTime !== null) {
 //       currentTime = JSON.parse(storedLoginTime);
-    
+
 //      reminderTime = new Date(currentTime.getTime() + t * 60000); // Convert minutes to milliseconds
 //   }
 
@@ -22,7 +22,7 @@
 //   };
 
 //   useEffect(() => {
-//     setReminderAfterMinutes(1); 
+//     setReminderAfterMinutes(1);
 //   }, []);
 
 //   return (
@@ -36,18 +36,36 @@
 // export default ReminderFunction;
 
 import React, { useEffect, useRef } from "react";
+
 // import { browserHistory } from "react-router-dom";
 
-const WithAutoLogout = <P extends object>(ComposedComponent: React.ComponentType<P>) => {
+const WithAutoLogout = <P extends object>(
+  ComposedComponent: React.ComponentType<P>
+) => {
   const AutoLogout: React.FC<P> = (props) => {
-    const events = ["load", "mousemove", "mousedown", "click", "scroll", "keypress"];
+    const events = [
+      "load",
+      "mousemove",
+      "mousedown",
+      "click",
+      "scroll",
+      "keypress",
+    ];
+    var base_url = window.location.origin;
+    var pathArray = window.location.pathname.split( '/' );
+    const storedLoginTime:any = localStorage.getItem("loginTime");
     const warnTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const logoutTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
       const setTimeouts = () => {
-        warnTimeoutRef.current = setTimeout(warn, 1000 * 60 * 0.5); // 0.5 minutes
-        logoutTimeoutRef.current = setTimeout(logout, 1000 * 60 * 1); // 1 minutes
+        let currentTime;
+        console.log(storedLoginTime, "storedLoginTime");
+        if (storedLoginTime && storedLoginTime !== null || pathArray[1] !== ("login" || "") ) {
+          currentTime = JSON.parse(storedLoginTime);
+          warnTimeoutRef.current = setTimeout(warn, 1000 * 60 * (storedLoginTime-(storedLoginTime/2))); 
+          logoutTimeoutRef.current = setTimeout(logout, 1000 * 60 * storedLoginTime); 
+        }
       };
 
       const clearTimeouts = () => {
@@ -71,10 +89,9 @@ const WithAutoLogout = <P extends object>(ComposedComponent: React.ComponentType
       };
 
       const destroy = () => {
-        // Clear the session
-        // browserHistory.push("/");
-        window.location.assign("/");
-        window.location.reload(); 
+       
+        window.location.replace(base_url+"/login");
+        // window.location.reload();
       };
 
       for (let i = 0; i < events.length; i++) {
@@ -97,5 +114,3 @@ const WithAutoLogout = <P extends object>(ComposedComponent: React.ComponentType
 };
 
 export default WithAutoLogout;
-
-
