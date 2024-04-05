@@ -28,21 +28,42 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 export default function Tin(props: any) {
 
   const { authDetails } = useAuth();
+  const onBoardingFormValuesPrevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
+  const [dateOfEntryIntoUSState, setDateOfEntryIntoUSState] = useState("")
+  const [dateNonImmigrationStatusExpireState, setDateNonImmigrationStatusExpireState] = useState("")
+  useEffect(() => {
+    const date = new Date(onBoardingFormValuesPrevStepData?.dateOfEntryIntoUS);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    let formattedDate = `${day}-${month}-${year}`;
+    setDateOfEntryIntoUSState(formattedDate)
 
+
+    const date1 = new Date(onBoardingFormValuesPrevStepData?.dateNonImmigrationStatusExpire);
+    const day1 = date1.getDate().toString().padStart(2, '0');
+    const month1 = (date1.getMonth() + 1).toString().padStart(2, '0');
+    const year1 = date1.getFullYear();
+    let formattedDate1 = `${day1}-${month1}-${year1}`;
+    setDateNonImmigrationStatusExpireState(formattedDate1)
+
+
+  },[onBoardingFormValuesPrevStepData?.dateOfEntryIntoUS])
+  
   const initialValue = {
-    exemptionApplicableForCompensationForCalnderYear: 0,
-    otherTaxBeginingYear: "",
-    otherTaxEndYear: "",
-    usVisaTypeID: "",
-    countryIssuingPassportId: "",
-    countryIssuingPassportNumber: "",
-    dateOfEntryIntoUS: "",
-    nonImmigrationStatus: false,
-    currentNonImmigrationStatus: "",
-    dateNonImmigrationStatusExpire: "",
-    declarationOfDurationStayStatus: false,
-    foreignStudent_Teacher_Professor_ResearcherStatus: false,
-    statementToForm8233_FileUpoad: "",
+    exemptionApplicableForCompensationForCalnderYear: onBoardingFormValuesPrevStepData?.exemptionApplicableForCompensationForCalnderYear ? onBoardingFormValuesPrevStepData?.exemptionApplicableForCompensationForCalnderYear:0,
+    otherTaxBeginingYear: onBoardingFormValuesPrevStepData?.otherTaxBeginingYear ? onBoardingFormValuesPrevStepData?.otherTaxBeginingYear:0,
+    otherTaxEndYear: onBoardingFormValuesPrevStepData?.otherTaxEndYear ? onBoardingFormValuesPrevStepData?.otherTaxEndYear:0,
+    usVisaTypeID: onBoardingFormValuesPrevStepData?.usVisaTypeID ? onBoardingFormValuesPrevStepData?.usVisaTypeID:0,
+    countryIssuingPassportId: onBoardingFormValuesPrevStepData?.countryIssuingPassportId ? onBoardingFormValuesPrevStepData?.countryIssuingPassportId:"",
+    countryIssuingPassportNumber: onBoardingFormValuesPrevStepData?.countryIssuingPassportNumber ? onBoardingFormValuesPrevStepData?.countryIssuingPassportNumber:"",
+    dateOfEntryIntoUS: dateOfEntryIntoUSState,
+    nonImmigrationStatus: onBoardingFormValuesPrevStepData?.nonImmigrationStatus ? onBoardingFormValuesPrevStepData?.nonImmigrationStatus:false,
+    currentNonImmigrationStatus: onBoardingFormValuesPrevStepData?.currentNonImmigrationStatus ? onBoardingFormValuesPrevStepData?.currentNonImmigrationStatus:"",
+    dateNonImmigrationStatusExpire: dateNonImmigrationStatusExpireState,
+    declarationOfDurationStayStatus:  onBoardingFormValuesPrevStepData?.declarationOfDurationStayStatus ? onBoardingFormValuesPrevStepData?.declarationOfDurationStayStatus:false,
+    foreignStudent_Teacher_Professor_ResearcherStatus: onBoardingFormValuesPrevStepData?.foreignStudent_Teacher_Professor_ResearcherStatus ? onBoardingFormValuesPrevStepData?.foreignStudent_Teacher_Professor_ResearcherStatus:false,
+    statementToForm8233_FileUpoad: onBoardingFormValuesPrevStepData?.statementToForm8233_FileUpoad ? onBoardingFormValuesPrevStepData?.statementToForm8233_FileUpoad:"",
   };
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -50,11 +71,16 @@ export default function Tin(props: any) {
   const [tax, setTax] = useState<string>("");
 
 
+  const formatDate = (dateStr:any) => {
+    if (!dateStr) return ""; // Return empty string if dateStr is empty or undefined
 
+    const [day, month, year] = dateStr.split('-'); // Split date string into day, month, and year
+    return `${year}/${month.padStart(2, '0')}/${day.padStart(2, '0')}`; // Format the date as "yyyy-mm-dd"
+};
 const currentYear = (new Date()).getFullYear();
 const range = (start:number, stop:number, step:number) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
 
- 
+
 const GetAgentUSVisaTypeHiddenForEform = useSelector(
   (state: any) =>
     state.GetAgentUSVisaTypeHiddenForEformReducer
@@ -250,11 +276,14 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                               <option key={ele} value={ele}>{ele}</option>
                                   ))}
                         </select>
-                        <p className="error">
+                        {errors?.exemptionApplicableForCompensationForCalnderYear && typeof errors?.exemptionApplicableForCompensationForCalnderYear === 'string' && (
+                                <p className="error">{errors?.exemptionApplicableForCompensationForCalnderYear}</p>
+                              )}
+                        {/* <p className="error">
                           {
                             errors.exemptionApplicableForCompensationForCalnderYear
                           }
-                        </p>
+                        </p> */}
                       </FormControl>
                     </div>
                   </div>
@@ -460,7 +489,10 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                                           )
                                         )}
                       </select>
-                      <p className="error">{errors.usVisaTypeID}</p>
+                      {errors?.usVisaTypeID && typeof errors?.usVisaTypeID === 'string' && (
+                                <p className="error">{errors?.usVisaTypeID}</p>
+                              )}
+                      {/* <p className="error">{errors.usVisaTypeID}</p> */}
                     </div>
                     <div className="col-6 my-3">
                       <Typography style={{ fontSize: "15px" }}>
@@ -558,7 +590,11 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                               <option key={ele?.id} value={ele?.id}>{ele?.name}</option>
                                   ))}
                       </select>
-                      <p className="error">{errors.countryIssuingPassportId}</p>
+                      
+                      {errors?.countryIssuingPassportId && typeof errors?.countryIssuingPassportId === 'string' && (
+                                <p className="error">{errors?.countryIssuingPassportId}</p>
+                      )}
+                      {/* <p className="error">{errors.countryIssuingPassportId}</p> */}
                     </div>
                     <div className="col-6 my-3">
                       <Typography style={{ fontSize: "15px" }}>
@@ -647,9 +683,12 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                         }}
                         onChange={handleChange} 
                       />
-                      <p className="error">
+                      {errors?.countryIssuingPassportNumber && typeof errors?.countryIssuingPassportNumber === 'string' && (
+                                <p className="error">{errors?.countryIssuingPassportNumber}</p>
+                      )}
+                      {/* <p className="error">
                         {errors.countryIssuingPassportNumber}
-                      </p>
+                      </p> */}
                     </div>
                     <div className="col-6 my-3">
                       <Typography style={{ fontSize: "15px" }}>
@@ -747,7 +786,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                       <Input
                         type="date"
                         name="dateOfEntryIntoUS"
-                        value={values.dateOfEntryIntoUS}
+                        defaultValue={values.dateOfEntryIntoUS}
                         onBlur={handleBlur}
                         onChange={handleChange}
                         style={{
@@ -759,7 +798,11 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                           width: "100%",
                         }}
                       />
-                      <p className="error">{errors.dateOfEntryIntoUS}</p>
+                      {'Selected Date ' + values.dateOfEntryIntoUS}
+                      {errors?.dateOfEntryIntoUS && typeof errors?.dateOfEntryIntoUS === 'string' && (
+                                <p className="error">{errors?.dateOfEntryIntoUS}</p>
+                      )}
+                      {/* <p className="error">{errors.dateOfEntryIntoUS}</p> */}
                     </div>
                     <div>
                       <Checkbox name="nonImmigrationStatus" size="medium" onChange={handleChange}
@@ -868,9 +911,12 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                         
                         
                         />
-                        <p className="error">
+                        {errors?.currentNonImmigrationStatus && typeof errors?.currentNonImmigrationStatus === 'string' && (
+                                <p className="error">{errors?.currentNonImmigrationStatus}</p>
+                      )}
+                        {/* <p className="error">
                           {errors.currentNonImmigrationStatus}
-                        </p>
+                        </p> */}
                       </div>
 
                       <div className="col-6">
@@ -975,9 +1021,13 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                             width: "100%",
                           }}
                         />
-                        <p className="error">
+                        {'Selected Date ' + values.dateNonImmigrationStatusExpire}
+                        {errors?.dateNonImmigrationStatusExpire && typeof errors?.dateNonImmigrationStatusExpire === 'string' && (
+                                <p className="error">{errors?.dateNonImmigrationStatusExpire}</p>
+                      )}
+                        {/* <p className="error">
                           {errors.dateNonImmigrationStatusExpire}
-                        </p>
+                        </p> */}
                         <div className="mt-2">
                           <Checkbox
                             size="small"
@@ -998,9 +1048,12 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                             Duration of Stay (DS)
                           </span>
                         </div>
-                        <p className="error">
+                        {errors?.declarationOfDurationStayStatus && typeof errors?.declarationOfDurationStayStatus === 'string' && (
+                                <p className="error">{errors?.declarationOfDurationStayStatus}</p>
+                      )}
+                        {/* <p className="error">
                           {errors.declarationOfDurationStayStatus}
-                        </p>
+                        </p> */}
                       </div>
                     </div>
 
@@ -1059,10 +1112,12 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                             />
                           </Tooltip>
                         </span>
-
-                        <p className="error">
+                        {errors?.foreignStudent_Teacher_Professor_ResearcherStatus && typeof errors?.foreignStudent_Teacher_Professor_ResearcherStatus === 'string' && (
+                                <p className="error">{errors?.foreignStudent_Teacher_Professor_ResearcherStatus}</p>
+                      )}
+                        {/* <p className="error">
                       {errors.foreignStudent_Teacher_Professor_ResearcherStatus}
-                    </p>
+                    </p> */}
                     <div
                       style={{ fontSize: "15px" }}
                       className="d-flex mt-5 col-12"
@@ -1076,13 +1131,15 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                         id="statementToForm8233_FileUpoad"
                         className="mx-2"
                         type="file"
+                        
                         onChange={handleChange}
                       />
-                    
+                    {values.statementToForm8233_FileUpoad}
                     </div>
-                    <p className="error">
-                        {errors.statementToForm8233_FileUpoad}
-                      </p>
+                    {errors?.statementToForm8233_FileUpoad && typeof errors?.statementToForm8233_FileUpoad === 'string' && (
+                                <p className="error">{errors?.statementToForm8233_FileUpoad}</p>
+                      )}
+                    
                       </div>
                       {toolInfo === "student" ? (
                         <div>

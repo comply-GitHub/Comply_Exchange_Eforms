@@ -34,14 +34,29 @@ export default function Penalties() {
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
 
+
+  const date = new Date();
+
+const day = date.getDate();
+const month = date.getMonth() + 1; // Month is zero-based, so add 1
+const year = date.getFullYear();
+
+// Pad day and month with leading zeros if needed
+const formattedDay = String(day).padStart(2, '0');
+const formattedMonth = String(month).padStart(2, '0');
+
+const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
+
+
+
   const initialValue = {
-    signedBy: "",
-    EnterconfirmationCode:"",
-    confirmationCode: "",
-    date: "",
-    isAgreeWithDeclaration: false,
-    question:"",
-    word :""
+    signedBy: PrevStepData?.signedBy ? PrevStepData.signedBy : "",
+    EnterconfirmationCode:PrevStepData?.confirmationCode ? PrevStepData.confirmationCode : "",
+    confirmationCode: PrevStepData?.confirmationCode ? PrevStepData.confirmationCode : "",
+    date: formattedDate,
+    isAgreeWithDeclaration: PrevStepData?.isDeclaration ? PrevStepData.isDeclaration : false,
+    question:PrevStepData?.question ? PrevStepData.question : "",
+    word :PrevStepData?.word ? PrevStepData.word : "",
   };
   
   // useEffect(()=>{
@@ -331,7 +346,10 @@ export default function Penalties() {
                         onChange={handleChange}
                         error={Boolean(touched.signedBy && errors.signedBy)}
                       />
-                      <p className="error">{errors.signedBy}</p>
+                      {errors?.signedBy && typeof errors?.signedBy === 'string' && (
+                          <p className="error">{errors?.signedBy}</p>
+                      )}
+                      {/* <p className="error">{errors.signedBy}</p> */}
                     </div>
 
                     <div className="col-md-6 col-12">
@@ -439,7 +457,10 @@ export default function Penalties() {
                         >
                           Recover Password
                         </span>
-                        <p className="error">{errors.EnterconfirmationCode}</p>
+                        {errors?.EnterconfirmationCode && typeof errors?.EnterconfirmationCode === 'string' && (
+                          <p className="error">{errors?.EnterconfirmationCode}</p>
+                      )}
+                        {/* <p className="error">{errors.EnterconfirmationCode}</p> */}
                       </div>
                     </div>
                   </div>
@@ -560,13 +581,7 @@ export default function Penalties() {
                           name="dob"
                           
                          
-                          value={
-                            new Date().toLocaleDateString('en-US', {
-                              month: '2-digit',
-                              day: '2-digit',
-                              year: 'numeric',
-                            })
-                          }
+                          value={values.date}
                           onBlur={handleBlur}
                           
                           
@@ -628,7 +643,10 @@ export default function Penalties() {
                           />
                         </Tooltip>
                       </span>
-                      {errors.isAgreeWithDeclaration &&
+                      {errors?.isAgreeWithDeclaration && typeof errors?.isAgreeWithDeclaration === 'string' && (
+                          <p className="error">{errors?.isAgreeWithDeclaration}</p>
+                      )}
+                      {/* {errors.isAgreeWithDeclaration &&
                       touched.isAgreeWithDeclaration ? (
                         <div>
                           <Typography color="error">
@@ -637,7 +655,7 @@ export default function Penalties() {
                         </div>
                       ) : (
                         ""
-                      )}
+                      )} */}
                     </Typography>
                   </Typography>
                   {toolInfo === "check" ? (

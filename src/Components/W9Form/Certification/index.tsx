@@ -316,7 +316,7 @@ export default function Certifications(props: any) {
                               checked={values.isBeneficialOwnerIncome}
                               onChange={handleChange}
                               size="medium"
-                              style={{ fontSize: "2rem" }} />
+                              style={{ fontSize: "2rem",marginTop: "6px" }} />
                             <Typography className="mx-2"
                               style={{ fontSize: "14px", color: "black", marginTop: "15px", textAlign: "justify" }}
                             >
@@ -437,9 +437,9 @@ export default function Certifications(props: any) {
                             >
                               Check to confirm you have reviewed the Electronic Form
                               <span
-                                style={{ color: "blue", fontSize: "14px", marginLeft: "5px" }}
+                                style={{ color: "blue", fontSize: "14px", marginLeft: "5px",cursor:"pointer" }}
                               >
-                                (view Electronic Form)
+                                (View Electronic Form)
                               </span>
                             </Typography>
                           </Typography>

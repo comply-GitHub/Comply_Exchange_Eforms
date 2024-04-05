@@ -52,10 +52,10 @@ const Declaration = (props: any) => {
                 setSubmitting(true);
                 dispatch(
                   W8_state_ECI(values, () => {
-                    history("/Complete");
+                    history("/Thankyou_w9");
                   })
                 );
-                history("/Complete");
+                history("/Thankyou_w9");
               }}
             >
               {({

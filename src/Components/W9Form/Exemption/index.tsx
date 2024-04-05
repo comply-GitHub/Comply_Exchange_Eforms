@@ -67,7 +67,7 @@ export default function FCTA_Reporting(props: any) {
   const urlValue = location.pathname.substring(1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const initialValue = {
-    isExemptionFATCAReportings: getReducerData?.isExemptionFATCAReportings ??  false,
+    isExemptionFATCAReportings: getReducerData?.isExemptionFATCAReportings ??  "No",
     ReportingId: getReducerData?.ReportingId ?? ""
   };
   useEffect(()=>{
@@ -123,8 +123,8 @@ export default function FCTA_Reporting(props: any) {
         </div>
       </div>
       <Formik
-        validateOnChange={false}
-        validateOnBlur={false}
+        validateOnChange={true}
+        validateOnBlur={true}
         initialValues={initialValue}
         enableReinitialize
         validationSchema={fctaSchema} // Uncomment after testing ,this is validation Schema
@@ -144,8 +144,9 @@ export default function FCTA_Reporting(props: any) {
               dispatch(
                 postW9Form(result, () => {
                   localStorage.setItem("PrevStepData", JSON.stringify(result));  
+                  history("/US_Purposes/Back/Exemption/Tax")
                   resolve("success");
-                  setSubmitting(false);
+                  setSubmitting(true);
                 },
                   (error: any) => {
                     reject(error);
@@ -171,7 +172,7 @@ export default function FCTA_Reporting(props: any) {
           submitForm
         }) => (
           <Form onSubmit={handleSubmit}>
-            <div className="row w-100 h-100">
+            <div className="row w-100">
               <div className="col-4">
                 <div style={{ padding: "20px 0px", height: "100%" }}>
                   <BreadCrumbComponent breadCrumbCode={1239} formName={1} />
@@ -266,13 +267,13 @@ export default function FCTA_Reporting(props: any) {
                         >
                           <FormControlLabel
                             control={<Radio />}
-                            value={true}
+                            value="Yes"
                             name="isExemptionFATCAReportings"
                             label="Yes"
                           />
                           <FormControlLabel
                             control={<Radio />}
-                            value={false}
+                            value="No"
                             name="isExemptionFATCAReportings"
                             label="No"
                           />
@@ -288,7 +289,7 @@ export default function FCTA_Reporting(props: any) {
                       ) : (
                         ""
                       )}
-                      {values?.isExemptionFATCAReportings === true ? (
+                      {values?.isExemptionFATCAReportings ==="Yes" ? (
                         <>
                           <Typography
                             align="left"
@@ -341,6 +342,7 @@ export default function FCTA_Reporting(props: any) {
                                 height: "36px",
                               }}
                               name="ReportingId"
+                              value={values?.ReportingId}
                               id="Income"
                               // defaultValue={data.interestDividendPaymentId}
                               onChange={handleChange}
@@ -355,7 +357,8 @@ export default function FCTA_Reporting(props: any) {
                               )}
                             </select>
                           </FormControl>
-                          <p className="error">{typeof errors.ReportingId==="string" ? errors.ReportingId : ""}</p>
+                         {errors.ReportingId && touched.ReportingId ?( <p className="error">{typeof errors.ReportingId==="string" ? errors.ReportingId : ""}</p>):""}
+                          {/* <p className="error">{typeof errors.ReportingId==="string" ? errors.ReportingId : ""}</p> */}
 
                         </>
                       ) : ""}
@@ -388,7 +391,7 @@ export default function FCTA_Reporting(props: any) {
                 // type="submit"
                 onClick={() => {
                   submitForm().then((data) => {
-                    history("/US_Purposes/Back/Exemption/Tax")
+                    // history("/US_Purposes/Back/Exemption/Tax")
                   }).catch((error) => {
                     console.log(error);
                   })

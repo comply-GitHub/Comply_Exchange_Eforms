@@ -5,15 +5,28 @@ import logo from "../../assets/img/logo.png";
 import bg2 from "../../Utils/originals/citydark.jpg";
 import bg3 from "../../Utils/originals/citynights.jpg";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
-import { LoadExistingFormData, SignInSaveAndExit, eFormSignIn1, loginAction } from "../../Redux/Actions";
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  GetAllLanguage,
+  LoadExistingFormData,
+  SignInSaveAndExit,
+  eFormSignIn1,
+  loginAction,
+} from "../../Redux/Actions";
+import GoogleTranslate from "../Reusable/multilanguage";
+// import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { Button, FormGroup, Input } from "@mui/material";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../Redux/store";
 import ErrorComponet from "../Reusable/ErrorComponent";
 
+// declare global {
+//   interface Window {
+//     google: any;
+//     googleTranslateElementInit: any;
+//   }
+// }
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const history = useNavigate();
@@ -24,6 +37,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+   
   let settings = {
     dots: true,
     infinite: true,
@@ -36,15 +50,15 @@ const Login = () => {
     autoplay: true,
     adaptiveHeight: true,
   };
-  
+
   useEffect(() => {
-    document.title="Login | Comply Exchange"
+    document.title = "Login | Comply Exchange";
     localStorage.clear();
+    dispatch(GetAllLanguage());
   }, []);
 
   const redirectFunc = () => {
     history("/IndividualUs");
-  
   };
   const handleChange = (e: any) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -56,25 +70,26 @@ const Login = () => {
       handleSaveAndExitLogin();
     } else {
       if (data.email.trim() !== "" && data.password.trim() !== "") {
-        dispatch(eFormSignIn1(data,
-          (resp: any) => {
-            localStorage.setItem("userType", resp.userType);
-            // if (resp.userType === "GEN") {
-            //   alert("Generic");
-            // } else if (resp.userType === "SC") {
-            //   alert("Self Cert");
-            // } else if (resp.userType === "DC") {
-            //   alert("Dual Cert");
-            // }
+        dispatch(
+          eFormSignIn1(
+            data,
+            (resp: any) => {
+              localStorage.setItem("userType", resp.userType);
+              // if (resp.userType === "GEN") {
+              //   alert("Generic");
+              // } else if (resp.userType === "SC") {
+              //   alert("Self Cert");
+              // } else if (resp.userType === "DC") {
+              //   alert("Dual Cert");
+              // }
 
-            redirectFunc();
-          },
-          (err: any) => {
-            console.log(err);
-          }
-        ));
-         
-
+              redirectFunc();
+            },
+            (err: any) => {
+              console.log(err);
+            }
+          )
+        );
       } else {
         if (data.email.trim() === "") {
           setError({ ...isError, email: true });
@@ -86,31 +101,37 @@ const Login = () => {
   };
 
   const handleSaveAndExitLogin = () => {
-    dispatch(SignInSaveAndExit(data, (res: any) => {      
-      dispatch(LoadExistingFormData(res?.formTypeId, res.accountHolderDetailsId,
-        (resp: any) => {
-        }, (err: any) => {
-          console.log(err)
-        }))
-        history(`/${res?.stepName}`);
-    }, (err: any) => {
-      console.log(err);
-    }
-    ));
-  }
+    dispatch(
+      SignInSaveAndExit(
+        data,
+        (res: any) => {
+          dispatch(
+            LoadExistingFormData(
+              res?.formTypeId,
+              res.accountHolderDetailsId,
+              (resp: any) => {},
+              (err: any) => {
+                console.log(err);
+              }
+            )
+          );
+          history(`/${res?.stepName}`);
+        },
+        (err: any) => {
+          console.log(err);
+        }
+      )
+    );
+  };
 
   const handleClearData = () => {
-    localStorage.clear()
-  }
+    localStorage.clear();
+  };
 
   return (
     <div className="login-wrap">
       <div className="language">
-        <select name="" id="">
-          <option value="">English</option>
-          <option value="">Japanese</option>
-          <option value="">Chinese</option>
-        </select>
+        <GoogleTranslate/>
       </div>
 
       <div className="container">
@@ -145,19 +166,20 @@ const Login = () => {
               <div className="form-top-info">
                 <div className="logo">
                   <img src={logo} />
-                  {!isIncompleteClickHere ?
+                  {!isIncompleteClickHere ? (
                     <h1>Onboarding</h1>
-                    :
+                  ) : (
                     <h1>Welcome Back</h1>
-                  }
-
+                  )}
                 </div>
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-md-12">
                     <FormGroup>
-                      <label className="textClasslabel">{!isIncompleteClickHere ? "Username" : "Email"}</label>
+                      <label className="textClasslabel">
+                        {!isIncompleteClickHere ? "Username" : "Email"}
+                      </label>
                       <Input
                         required
                         autoComplete="off"
@@ -221,19 +243,20 @@ const Login = () => {
                   </Button>
                   {!isIncompleteClickHere ? (
                     <>
-                      {
-                        data?.email?.length > 0 ? "" :
-                          <>
-                            <div className="button-seperator">OR</div>
-                            <Button
-                              type="submit"
-                              variant="contained"
-                              className="full-w"
-                            >
-                              Click here to start submission
-                            </Button>
-                          </>
-                      }
+                      {data?.email?.length > 0 ? (
+                        ""
+                      ) : (
+                        <>
+                          <div className="button-seperator">OR</div>
+                          <Button
+                            type="submit"
+                            variant="contained"
+                            className="full-w"
+                          >
+                            Click here to start submission
+                          </Button>
+                        </>
+                      )}
                     </>
                   ) : (
                     <div style={{ display: "grid", justifyContent: "center" }}>

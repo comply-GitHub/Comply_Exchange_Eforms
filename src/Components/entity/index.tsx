@@ -276,7 +276,6 @@ export default function Entity() {
         isalternativebusinessaddress: ahdData.isalternativebusinessaddress === true ? "yes" : "no",
         accountHolderName: ahdData.accountHolderName === "" ? "" : ahdData.accountHolderName,
       };
-      console.log(temp, "tempppppp")
       setInitialValues(temp);
     }
   }
@@ -293,7 +292,6 @@ export default function Entity() {
     dispatch(getAllStateByCountryId(0));
     dispatch(
       GetAgentPaymentType(3, () => {
-        console.log("Data");
       })
     );
     dispatch(
@@ -489,7 +487,6 @@ export default function Entity() {
     setIncomeData(incomeData);
   };
   const handleSubmit = (e: any, values: any) => {
-    console.log("entity form", values);
     e.preventDefault();
     dispatch(postOnboarding(values, redirectFunc));
     redirectFunc();

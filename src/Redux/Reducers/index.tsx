@@ -27,10 +27,29 @@ const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType
   GetCountriesTreaty,GetCountryArticleByID,
   UpsertSpecialRateAndConditionsIncomeTypes,
   GetByW8EXPIndividualId,
+  GetAllLanguage,
+  GetDualCertW9,
 } = Utils.actionName
 
 
 let initialState: any = [];
+
+export const GetAllLanguageReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case GetAllLanguage:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}
+export const GetDualCertW9Reducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case GetDualCertW9:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}
 
 export const getExpFormDataReducer = (state = initialState, action: any) => {
   switch (action.type) {
@@ -267,7 +286,6 @@ export const GetAgentIncomeCodeHiddenForEformReducer = (state = initialState, ac
 //   }
 // };
 export const GetAgentUSVisaTypeHiddenForEformReducer = (state = initialState, action: any): any => {
-  console.log("Subham",action)
   switch (action.type) {
     case GetAgentUSVisaTypeHiddenForEform:
       return { ...state, ...action.payload };

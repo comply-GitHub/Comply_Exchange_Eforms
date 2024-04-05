@@ -187,7 +187,6 @@ export const TaxPayerSchema = () => {
             .oneOf(["Yes", "No"], "please provide an answer")
       })
     ,
-
     // tinisFTINNotLegallyRequired: true,
     // tinAlternativeFormate: true,
     isNotLegallyFTIN: Yup.string().when("isFTINNotLegallyRequired", {
@@ -212,6 +211,13 @@ export const certificateSchema = () => {
     ),
     // isCapacityForm: Yup.boolean().oneOf([true], ""),
     // isElectronicForm: Yup.boolean().oneOf([true], ""),
+  });
+};
+
+export const certificateSchema_w9_DC = () => {
+  return Yup.object().shape({
+    isCapacityForm: Yup.boolean().oneOf([true], "Please mark the checkbox"),
+    isElectronicForm: Yup.boolean().oneOf([true], "Please mark the checkbox"),
   });
 };
 

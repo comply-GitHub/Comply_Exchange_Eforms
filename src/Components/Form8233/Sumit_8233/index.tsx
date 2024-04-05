@@ -44,9 +44,9 @@ const Declaration = (props: any) => {
       setExpanded(isExpanded ? panel : false);
     };
   const initialValue = {
-    declaration: false,
-    IsSubmit: false,
-    IsSubmit_not: false
+    declaration: PrevStepData?.isDeclaration ? PrevStepData?.isDeclaration : false,
+    IsSubmit: PrevStepData?.isConsentRecipent ? PrevStepData?.isConsentRecipent : false,
+    IsSubmit_not: PrevStepData?.isNotConsentRecipent ? PrevStepData?.isNotConsentRecipent : false,
   };
   return (
     <Fragment>
@@ -289,7 +289,10 @@ const Declaration = (props: any) => {
                             I agree with the above Declarations
                           </Typography>
                         </div>
-                        <p className="error">{errors.declaration}</p>
+                        {errors?.declaration && typeof errors?.declaration === 'string' && (
+                          <p className="error">{errors?.declaration}</p>
+                        )}
+                        {/* <p className="error">{errors.declaration}</p> */}
                       </AccordionDetails>
                     </Accordion>
                     <Accordion
@@ -368,7 +371,10 @@ const Declaration = (props: any) => {
                           </Typography>
 
                         </div>
-                        <p className="error">{errors.IsSubmit}</p>
+                        {errors?.IsSubmit && typeof errors?.IsSubmit === 'string' && (
+                          <p className="error">{errors?.IsSubmit}</p>
+                        )}
+                        {/* <p className="error">{errors.IsSubmit}</p> */}
 
 
                         <div style={{ display: "flex", marginTop: "10px" }}>
@@ -384,7 +390,10 @@ const Declaration = (props: any) => {
                             statement electronically.
                           </Typography>
                         </div>
-                        <p className="error">{errors.IsSubmit_not}</p>
+                        {errors?.IsSubmit_not && typeof errors?.IsSubmit_not === 'string' && (
+                          <p className="error">{errors?.IsSubmit_not}</p>
+                        )}
+                        {/* <p className="error">{errors.IsSubmit_not}</p> */}
                       </AccordionDetails>
                     </Accordion>
                   </div>

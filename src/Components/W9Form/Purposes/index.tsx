@@ -114,7 +114,7 @@ export default function Fedral_tax(props: any) {
     businessName: getReducerData?.businessName ?? "",
     federalTaxClassificationId: getReducerData?.federalTaxClassificationId ?? 0,
     partnershipTrustAuthority:
-      getReducerData?.partnershipTrustAuthority ?? true,
+    getReducerData?.partnershipTrustAuthority ?? true,
     IsAgreeWithDeclaration: getReducerData?.getAgreeWithDeclaration ?? true,
     statusId: 0,
     stepName: `/${urlValue}`,
@@ -294,7 +294,7 @@ export default function Fedral_tax(props: any) {
               partnershipTrustAuthority:
                 JSON.stringify(temp.partnershipTrustAuthority) == "true",
             };
-console.log(newValue,"newValuenewValue")
+            console.log(newValue,"newValuenewValue")
             const submitPromise = new Promise((resolve, reject) => {
               dispatch(
                 postW9Form(
@@ -304,11 +304,13 @@ console.log(newValue,"newValuenewValue")
                       "PrevStepData",
                       JSON.stringify(newValue)
                     );
+                    history("/US_Purposes/Back");
                     resolve("success");
-                    setSubmitting(false);
+                    setSubmitting(true);
                   },
                   (error: any) => {
                     reject(error);
+                    setSubmitting(false);
                   }
                 )
               );
@@ -680,7 +682,7 @@ console.log(newValue,"newValuenewValue")
                               </FormControl>
                             </div>
                           </div>
-                          {selectedTaxClassification != 0 ? (
+                          {values?.federalTaxClassificationId != 0 ? (
                             <div
                               style={{ marginTop: "20px", display: "flex" }}
                               className="col-10"
@@ -857,7 +859,7 @@ console.log(newValue,"newValuenewValue")
                             </div>
                           ) : null}
 
-                          {selectedTaxClassification > 1 ? (
+                          {values?.federalTaxClassificationId > 1 ? (
                             <>
                               <div className="row">
                                 <div className="col-12">
@@ -1362,7 +1364,7 @@ console.log(newValue,"newValuenewValue")
                             onClick={(e) => {
                               submitForm()
                                 .then(() => {
-                                  history("/US_Purposes/Back");
+                                  // history("/US_Purposes/Back");
                                 })
                                 .catch((error) => {
                                   console.log("rejected", error);

@@ -53,7 +53,6 @@ document.title="Thank You"
       const imgWidth = 210;
 
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      console.log(imgHeight, canvas.height, imgWidth, canvas.width);
       let heightLeft = imgHeight;
       let position = 0;
 

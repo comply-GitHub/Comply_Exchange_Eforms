@@ -27,12 +27,15 @@ export default function Certifications(props: any) {
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
   const [toolInfo, setToolInfo] = useState("");
+  const onBoardingFormValuesPrevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
+
+
   const initialValue = {
-    i_Certify_BeneficialOwnerOrAuthorisedToSignForAllMentionIncome: false,
-    i_Certify_BeneficialOwnerIsNotUSPerson: false,
-    i_Certify_BeneficialOwnerResidentOfTreatyCountryOf12A_13B: false,
-    i_Certify_FurthermoreIAuthorise: false,
-    i_Certify_ConfirmYouHaveReviewedTheElectronicForm: false,
+    i_Certify_BeneficialOwnerOrAuthorisedToSignForAllMentionIncome: onBoardingFormValuesPrevStepData?.i_Certify_BeneficialOwnerOrAuthorisedToSignForAllMentionIncome ? onBoardingFormValuesPrevStepData?.i_Certify_BeneficialOwnerOrAuthorisedToSignForAllMentionIncome:false,
+    i_Certify_BeneficialOwnerIsNotUSPerson:  onBoardingFormValuesPrevStepData?.i_Certify_BeneficialOwnerIsNotUSPerson ? onBoardingFormValuesPrevStepData?.i_Certify_BeneficialOwnerIsNotUSPerson:false,
+    i_Certify_BeneficialOwnerResidentOfTreatyCountryOf12A_13B:  onBoardingFormValuesPrevStepData?.i_Certify_BeneficialOwnerResidentOfTreatyCountryOf12A_13B ? onBoardingFormValuesPrevStepData?.i_Certify_BeneficialOwnerResidentOfTreatyCountryOf12A_13B:false,
+    i_Certify_FurthermoreIAuthorise:  onBoardingFormValuesPrevStepData?.i_Certify_FurthermoreIAuthorise ? onBoardingFormValuesPrevStepData?.i_Certify_FurthermoreIAuthorise:false,
+    i_Certify_ConfirmYouHaveReviewedTheElectronicForm:  onBoardingFormValuesPrevStepData?.i_Certify_ConfirmYouHaveReviewedTheElectronicForm ? onBoardingFormValuesPrevStepData?.i_Certify_ConfirmYouHaveReviewedTheElectronicForm:false,
   };
   return (
     <section
@@ -278,9 +281,8 @@ export default function Certifications(props: any) {
                       <Checkbox
                         className="mx-2"
                         name="i_Certify_BeneficialOwnerOrAuthorisedToSignForAllMentionIncome"
-                        value={
-                          values.i_Certify_BeneficialOwnerOrAuthorisedToSignForAllMentionIncome
-                        }
+                        value={values.i_Certify_BeneficialOwnerOrAuthorisedToSignForAllMentionIncome}
+                        checked={values.i_Certify_BeneficialOwnerOrAuthorisedToSignForAllMentionIncome}
                         onChange={handleChange}
                         size="medium"
                         style={{ fontSize: "2rem" }}
@@ -297,11 +299,17 @@ export default function Certifications(props: any) {
                         1. I am the beneficial owner (or am authorized to sign
                         for the beneficial owner) of all the income to which
                         this form relates.
-                        <p className="error">
+
+                        {errors?.i_Certify_BeneficialOwnerOrAuthorisedToSignForAllMentionIncome && typeof errors?.i_Certify_BeneficialOwnerOrAuthorisedToSignForAllMentionIncome === 'string' && (
+                                <p className="error">{errors?.i_Certify_BeneficialOwnerOrAuthorisedToSignForAllMentionIncome}</p>
+                              )}
+
+
+                        {/* <p className="error">
                           {
                             errors.i_Certify_BeneficialOwnerOrAuthorisedToSignForAllMentionIncome
                           }
-                        </p>
+                        </p> */}
                       </Typography>
                     </Typography>
                     <Divider
@@ -316,6 +324,7 @@ export default function Certifications(props: any) {
                         className="mx-2"
                         name="i_Certify_BeneficialOwnerIsNotUSPerson"
                         value={values.i_Certify_BeneficialOwnerIsNotUSPerson}
+                        checked={values.i_Certify_BeneficialOwnerIsNotUSPerson}
                         onChange={handleChange}
                         size="medium"
                         style={{ fontSize: "2rem" }}
@@ -328,9 +337,12 @@ export default function Certifications(props: any) {
                         }}
                       >
                         2.The beneficial owner is not a U.S. person.
-                        <p className="error">
+                        {errors?.i_Certify_BeneficialOwnerIsNotUSPerson && typeof errors?.i_Certify_BeneficialOwnerIsNotUSPerson === 'string' && (
+                                <p className="error">{errors?.i_Certify_BeneficialOwnerIsNotUSPerson}</p>
+                              )}
+                        {/* <p className="error">
                           {errors.i_Certify_BeneficialOwnerIsNotUSPerson}
-                        </p>
+                        </p> */}
                       </Typography>
                     </Typography>
                     <Divider
@@ -344,9 +356,8 @@ export default function Certifications(props: any) {
                       <Checkbox
                         className="mx-2"
                         name="i_Certify_BeneficialOwnerResidentOfTreatyCountryOf12A_13B"
-                        value={
-                          values.i_Certify_BeneficialOwnerResidentOfTreatyCountryOf12A_13B
-                        }
+                        value={values.i_Certify_BeneficialOwnerResidentOfTreatyCountryOf12A_13B}
+                        checked={values.i_Certify_BeneficialOwnerResidentOfTreatyCountryOf12A_13B}
                         onChange={handleChange}
                         size="medium"
                         style={{ fontSize: "2rem" }}
@@ -366,11 +377,14 @@ export default function Certifications(props: any) {
                         country listed on line 12a and/or 13b above at the time
                         of, or immediately prior to, entry into the United
                         States, as required by the treaty.
-                        <p className="error">
+                        {errors?.i_Certify_BeneficialOwnerResidentOfTreatyCountryOf12A_13B && typeof errors?.i_Certify_BeneficialOwnerResidentOfTreatyCountryOf12A_13B === 'string' && (
+                                <p className="error">{errors?.i_Certify_BeneficialOwnerResidentOfTreatyCountryOf12A_13B}</p>
+                              )}
+                        {/* <p className="error">
                           {
                             errors.i_Certify_BeneficialOwnerResidentOfTreatyCountryOf12A_13B
                           }
-                        </p>
+                        </p> */}
                       </Typography>
                     </Typography>
                     <Divider
@@ -385,6 +399,7 @@ export default function Certifications(props: any) {
                         className="mx-2"
                         name="i_Certify_FurthermoreIAuthorise"
                         value={values.i_Certify_FurthermoreIAuthorise}
+                        checked={values.i_Certify_FurthermoreIAuthorise}
                         onChange={handleChange}
                         size="medium"
                         style={{ fontSize: "2rem" }}
@@ -403,9 +418,12 @@ export default function Certifications(props: any) {
                         or any withholding agent that can disburse or make
                         payments of the income of which I am the beneficial
                         owner.
-                        <p className="error">
+                        {errors?.i_Certify_FurthermoreIAuthorise && typeof errors?.i_Certify_FurthermoreIAuthorise === 'string' && (
+                                <p className="error">{errors?.i_Certify_FurthermoreIAuthorise}</p>
+                              )}
+                        {/* <p className="error">
                           {errors.i_Certify_FurthermoreIAuthorise}
-                        </p>
+                        </p> */}
                       </Typography>
                     </Typography>
                     <Divider
@@ -429,9 +447,8 @@ export default function Certifications(props: any) {
                       <Checkbox
                         className="mx-2"
                         name="i_Certify_ConfirmYouHaveReviewedTheElectronicForm"
-                        value={
-                          values.i_Certify_ConfirmYouHaveReviewedTheElectronicForm
-                        }
+                        value={values.i_Certify_ConfirmYouHaveReviewedTheElectronicForm}
+                        checked={values.i_Certify_ConfirmYouHaveReviewedTheElectronicForm}
                         onChange={handleChange}
                         size="medium"
                         style={{ fontSize: "2rem" }}
@@ -453,11 +470,14 @@ export default function Certifications(props: any) {
                         >
                           (view Electronic Form)
                         </span>
-                        <p className="error">
+                        {errors?.i_Certify_ConfirmYouHaveReviewedTheElectronicForm && typeof errors?.i_Certify_ConfirmYouHaveReviewedTheElectronicForm === 'string' && (
+                                <p className="error">{errors?.i_Certify_ConfirmYouHaveReviewedTheElectronicForm}</p>
+                              )}
+                        {/* <p className="error">
                           {
                             errors.i_Certify_ConfirmYouHaveReviewedTheElectronicForm
                           }
-                        </p>
+                        </p> */}
                       </Typography>
                     </Typography>
                     <Divider

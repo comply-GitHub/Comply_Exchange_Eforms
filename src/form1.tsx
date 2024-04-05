@@ -97,7 +97,6 @@ const Form1: React.FC = () => {
           doc.addImage(canvas, 'PNG', 10, position, imgWidth, doc.internal.pageSize.height, '', 'FAST');
           heightLeft -= pageHeight;
         }
-        console.log(doc,")))))DOC")
         doc.save('Downld.pdf');
       });
     }

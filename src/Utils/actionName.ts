@@ -29,6 +29,7 @@ const ActionName = {
     GetAgentPaymentType:"GetAgentPaymentType",
     //PDFs
     W9PDF:"W9PDF",
+    GetAllLanguage:"GetAllLanguage",
     //
     GetAgentCapacityHiddenForEform: "GetAgentCapacityHiddenForEform",
     GetAgentChapter4EntityTypeHiddenForEform: "GetAgentChapter4EntityTypeHiddenForEform",
@@ -54,12 +55,14 @@ const ActionName = {
     GET_AGENT_BY_ID: "GET_AGENT_BY_ID",
     
     InsertW9IndividualEntityUSForm:"InsertW9IndividualEntityUSForm",
+    UpsertDualCertW9:"UpsertDualCertW9",
     InsertW8BENEEntityNonUSForm:"InsertW8BENEEntityNonUSForm",
     InsertW8BENIndividualNonUS:"InsertW8BENIndividualNonUS",
     InsertW8ECIIndividualEntityNonUSForm:"InsertW8ECIIndividualEntityNonUSForm",
     InsertW8EXPFormEntityNonUs:"InsertW8EXPFormEntityNonUs",
     InsertW8IMYEntityNonForm:"InsertW8IMYEntityNonForm",
     InsertForm8233IndividualNonUSForm:"InsertForm8233IndividualNonUSForm",
+    UpsertSupportingDocumentation:"UpsertSupportingDocumentation",
     //Account holder
     UpsertAccountHolderIncomeAllocation:"/AccountHolderDetail/UpsertAccountHolderIncomeAllocation",
     GetAccountHolderIncomeAllocation:"/AccountHolderDetail/GetAccountHolderIncomeAllocation",
@@ -71,6 +74,7 @@ const ActionName = {
     formPDFFieldData:"formPDFFieldData",
     UpsertSpecialRateAndConditionsIncomeTypes:"UpsertSpecialRateAndConditionsIncomeTypes",
     GetByW8BENEEntityNonUSFormId:"GetByW8BENEEntityNonUSFormId",
+    GetDualCertW9:"GetDualCertW9",
     UpsertSaveAndExitCreds:"UpsertSaveAndExitCreds",
     GetByW8BENIndividualId:"GetByW8BENIndividualId",
     GetByW8ECIIndividualId:"GetByW8ECIIndividualId",

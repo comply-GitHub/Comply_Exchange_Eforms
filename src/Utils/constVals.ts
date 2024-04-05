@@ -19,7 +19,9 @@ export const FormTypeId={
     BENE:3,
     W8ECI:4,
     W8EXP:6,
-    F8233:7
+    FW81MY:7,
+    F8233:8,
+    
 };
 
 export const FormTypeSelection={
