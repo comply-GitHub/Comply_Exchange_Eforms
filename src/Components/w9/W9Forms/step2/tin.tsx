@@ -131,7 +131,7 @@ export default function Tin(props: any) {
                             elevation={3}
                             style={{
                               padding: "20px",
-                              backgroundColor: "#f0f0f0",
+                              backgroundColor: "#616161",
                               overflow: "auto",
                             }}
                           >
@@ -171,7 +171,7 @@ export default function Tin(props: any) {
                             elevation={3}
                             style={{
                               padding: "20px",
-                              backgroundColor: "#f0f0f0",
+                              backgroundColor: "#616161",
                               overflow: "auto",
                             }}
                           >
@@ -211,7 +211,7 @@ export default function Tin(props: any) {
                             elevation={3}
                             style={{
                               padding: "20px",
-                              backgroundColor: "#f0f0f0",
+                              backgroundColor: "#616161",
                               overflow: "auto",
                             }}
                           >
@@ -275,7 +275,7 @@ export default function Tin(props: any) {
                             </Typography>
 
 
-                            <Link href="#" underline="none" style={{ marginTop: "10px", fontSize: "16px" }} onClick={() => { setToolInfo("") }}>--Show Less--</Link>
+                            <Link href="#" underline="none" style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}} onClick={() => { setToolInfo("") }}>--Show Less--</Link>
                           </Paper>
 
                         </div>) : ""}
@@ -378,7 +378,8 @@ export default function Tin(props: any) {
   <Typography
     align="center"
     style={{
-      color: "#adadac",
+     
+ color: "#f5f5f5", 
       justifyContent: "center",
       alignItems: "center",
       marginTop: "20px",

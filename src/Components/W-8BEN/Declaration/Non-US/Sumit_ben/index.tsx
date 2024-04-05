@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SubmitSchema } from "../../../../../schemas/submit";
 import Accordion from "@mui/material/Accordion";
@@ -43,6 +43,10 @@ const Declaration = (props: any) => {
     IsSubmit: false,
     IsSubmit_not: false,
   };
+  useEffect(()=>{
+    document.title = "Electronic Signature Confirmation"
+  },[])
+
   const viewPdf=()=>{
     history("w8Ben_pdf");
   }
@@ -398,7 +402,7 @@ const Declaration = (props: any) => {
                   <Typography
                     align="center"
                     style={{
-                      color: "#adadac",
+                      color: "#505E50",  
                       justifyContent: "center",
                       alignItems: "center",
                       marginTop: "20px",
