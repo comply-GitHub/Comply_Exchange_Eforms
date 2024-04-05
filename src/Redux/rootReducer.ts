@@ -29,6 +29,7 @@ import {
   SpecialRateAndConditionIncomeTypesReducer,
   formPDFFieldDataReducer,
   GetAllLanguageReducer,
+  GetDualCertW9Reducer,
   
 } from "./Reducers";
 import w9Reducer from "./Reducers/w9Reducer";
@@ -45,6 +46,7 @@ import W8EXPReducer from "./Reducers/W8EXPReducer";
 let reducers = {
   getCountriesReducer,
   getCountriesCodeReducer,
+  GetDualCertW9Reducer,
   GetAllIncomeCodesReducer,
   GetStateByCountryIdReducer,
   W9PDFReducer,

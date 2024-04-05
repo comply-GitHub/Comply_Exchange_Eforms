@@ -304,11 +304,13 @@ export default function Fedral_tax(props: any) {
                       "PrevStepData",
                       JSON.stringify(newValue)
                     );
+                    history("/US_Purposes/Back");
                     resolve("success");
-                    setSubmitting(false);
+                    setSubmitting(true);
                   },
                   (error: any) => {
                     reject(error);
+                    setSubmitting(false);
                   }
                 )
               );
@@ -680,7 +682,7 @@ export default function Fedral_tax(props: any) {
                               </FormControl>
                             </div>
                           </div>
-                          {selectedTaxClassification != 0 ? (
+                          {values?.federalTaxClassificationId != 0 ? (
                             <div
                               style={{ marginTop: "20px", display: "flex" }}
                               className="col-10"
@@ -857,7 +859,7 @@ export default function Fedral_tax(props: any) {
                             </div>
                           ) : null}
 
-                          {selectedTaxClassification > 1 ? (
+                          {values?.federalTaxClassificationId > 1 ? (
                             <>
                               <div className="row">
                                 <div className="col-12">
@@ -1362,7 +1364,7 @@ export default function Fedral_tax(props: any) {
                             onClick={(e) => {
                               submitForm()
                                 .then(() => {
-                                  history("/US_Purposes/Back");
+                                  // history("/US_Purposes/Back");
                                 })
                                 .catch((error) => {
                                   console.log("rejected", error);

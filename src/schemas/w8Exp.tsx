@@ -214,6 +214,13 @@ export const certificateSchema = () => {
   });
 };
 
+export const certificateSchema_w9_DC = () => {
+  return Yup.object().shape({
+    isCapacityForm: Yup.boolean().oneOf([true], "Please mark the checkbox"),
+    isElectronicForm: Yup.boolean().oneOf([true], "Please mark the checkbox"),
+  });
+};
+
 export const certificateSchema_w9 = () => {
   return Yup.object().shape({
     isBeneficialOwnerIncome: Yup.boolean().oneOf(
