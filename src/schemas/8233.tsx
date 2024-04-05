@@ -113,30 +113,39 @@ export const amountSchema = () => {
   });
 };
 
-export const documentSchema = () => {
-  return Yup.object().shape({
-    additinalDocument1ID: Yup.number().min(1).required(),
-    additinalDocument1Name: Yup.string().required(),
-    additinalDocument2ID: Yup.number().min(1).required(),
-    additinalDocument2Name: Yup.string().required(),
-    additinalDocument3ID: Yup.number().min(1).required(),
-    additinalDocument3Name: Yup.string().required(),
-    additinalDocument4ID: Yup.number().min(1).required(),
-    additinalDocument4Name: Yup.string().required(),
-    additinalDocument5ID: Yup.number().min(1).required(),
-    additinalDocument5Name: Yup.string().required(),
-    additinalDocument6ID: Yup.number().min(1).required(),
-    additinalDocument6Name: Yup.string().required(),
-    additinalDocument7ID: Yup.number().min(1).required(),
-    additinalDocument7Name: Yup.string().required(),
-    additinalDocument8ID: Yup.number().min(1).required(),
-    additinalDocument8Name: Yup.string().required(),
-    additinalDocument9ID: Yup.number().min(1).required(),
-    additinalDocument9Name: Yup.string().required(),
-    additinalDocument10ID: Yup.number().min(1).required(),
-    additinalDocument10Name: Yup.string().required(),
-  });
-};
+export const documentSchema = Yup.object().shape({
+  additionalDocs: Yup.array().of(
+    Yup.object().shape({
+      documentType: Yup.string().required('Document type is required'),
+      file: Yup.mixed().required('File is required'),
+    })
+  ),
+});
+
+// export const documentSchema = () => {
+//   return Yup.object().shape({
+//     additinalDocument1ID: Yup.number().min(1).required(),
+//     additinalDocument1Name: Yup.string().required(),
+//     additinalDocument2ID: Yup.number().min(1).required(),
+//     additinalDocument2Name: Yup.string().required(),
+//     additinalDocument3ID: Yup.number().min(1).required(),
+//     additinalDocument3Name: Yup.string().required(),
+//     additinalDocument4ID: Yup.number().min(1).required(),
+//     additinalDocument4Name: Yup.string().required(),
+//     additinalDocument5ID: Yup.number().min(1).required(),
+//     additinalDocument5Name: Yup.string().required(),
+//     additinalDocument6ID: Yup.number().min(1).required(),
+//     additinalDocument6Name: Yup.string().required(),
+//     additinalDocument7ID: Yup.number().min(1).required(),
+//     additinalDocument7Name: Yup.string().required(),
+//     additinalDocument8ID: Yup.number().min(1).required(),
+//     additinalDocument8Name: Yup.string().required(),
+//     additinalDocument9ID: Yup.number().min(1).required(),
+//     additinalDocument9Name: Yup.string().required(),
+//     additinalDocument10ID: Yup.number().min(1).required(),
+//     additinalDocument10Name: Yup.string().required(),
+//   });
+// };
 
 export const certificateSchema = () => {
   return Yup.object().shape({

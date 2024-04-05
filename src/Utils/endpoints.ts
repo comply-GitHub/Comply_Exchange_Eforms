@@ -52,7 +52,7 @@ const EndPoint = {
  InsertW8BENIndividualNonUS:"/W8BENIndividual/InsertW8BENIndividualNonUS",
  InsertW8ECIIndividualEntityNonUSForm:"/W8ECIIndividualEntity/InsertW8ECIIndividualEntityNonUSForm",
  InsertW8EXPFormEntityNonUs:"/W8EXPEntity/InsertW8EXPFormEntityNonUs",
- InsertW8IMYEntityNonForm:"/W8IMYEntity/InsertW8IMYEntityNonForm",
+ InsertW81MYEntityNonForm:"/W8IMYEntity/InsertW8IMYEntityNonForm",
  InsertForm8233IndividualNonUSForm:"/Form8233Individual/InsertForm8233IndividualNonUSForm",
  UpsertSupportingDocumentation:"/AccountHolderDetail/UpsertSupportingDocumentation",
 
@@ -62,6 +62,7 @@ GetByW8BENEEntityNonUSFormId:"/W8BENEEntity/GetByW8BENEEntityNonUSFormId",
 GetByW8ECIIndividualEntityNonUSFormId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
 GetByW8EXPFormFormEntityNonUs:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
 GetByForm8233IndividualNonUSFormId:"/Form8233Individual/GetByForm8233IndividualNonUSFormId",
+GetByW8IMYEntityNonForm :"/W8IMYEntity/GetByW8IMYEntityNonForm",
 GetSupportingDocumentation:"/AccountHolderDetail/GetSupportingDocumentation",
 getSupportedFile:"/FileUpload/GetFileBase64",
 
