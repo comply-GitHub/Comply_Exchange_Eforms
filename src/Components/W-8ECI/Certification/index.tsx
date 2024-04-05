@@ -24,6 +24,7 @@ import BreadCrumbComponent from "../../reusables/breadCrumb";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../customHooks/useAuth";
+import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 
 export default function Certifications(props: any) {
 
@@ -47,9 +48,9 @@ export default function Certifications(props: any) {
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
 
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Certfication I"
-  },[])
+  }, [])
 
   useEffect(() => {
     setInitialValue((prev: any) => {
@@ -94,7 +95,9 @@ export default function Certifications(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+            dispatch(GetEciPdf(authDetails?.accountHolderId))
+          }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[5].id === 7 ? (
@@ -529,7 +532,7 @@ export default function Certifications(props: any) {
                               }}
                               style={{
                                 color: "blue",
-                                cursor:"pointer",
+                                cursor: "pointer",
                                 fontSize: "16px",
                                 marginLeft: "5px",
                               }}
@@ -576,7 +579,9 @@ export default function Certifications(props: any) {
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
-                        onClick={viewPdf}
+                        onClick={() => {
+                          dispatch(GetEciPdf(authDetails?.accountHolderId))
+                        }}
                       >
                         View form
                       </Button>
@@ -602,7 +607,7 @@ export default function Certifications(props: any) {
                     <Typography
                       align="center"
                       style={{
-                        color: "#505E50",  
+                        color: "#505E50",
                         justifyContent: "center",
                         alignItems: "center",
                         marginTop: "20px",

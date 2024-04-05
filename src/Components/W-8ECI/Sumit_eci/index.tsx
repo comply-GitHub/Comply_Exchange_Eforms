@@ -15,6 +15,7 @@ import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { SubmitSchemaECI } from "../../../schemas/w8ECI";
+import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 
 
 
@@ -26,9 +27,9 @@ const Declaration = (props: any) => {
     setOpen(false);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Electronic Signature Confirmation"
-  },[])
+  }, [])
 
   const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
 
@@ -52,8 +53,8 @@ const Declaration = (props: any) => {
     isNotConsentRecipent: W8ECIData.isNotConsentRecipent ?? false
   };
 
- 
-  
+
+
   const viewPdf = () => {
     history("/w8Eci_pdf", { replace: true });
   }
@@ -422,7 +423,9 @@ const Declaration = (props: any) => {
                       })
                     }} formTypeId={FormTypeId.W8ECI} />
                     <Button
-                      onClick={viewPdf}
+                      onClick={() => {
+                        dispatch(GetEciPdf(authDetails?.accountHolderId))
+                      }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >
@@ -446,7 +449,7 @@ const Declaration = (props: any) => {
                   <Typography
                     align="center"
                     style={{
-                      color: "#505E50",  
+                      color: "#505E50",
                       justifyContent: "center",
                       alignItems: "center",
                       marginTop: "20px",

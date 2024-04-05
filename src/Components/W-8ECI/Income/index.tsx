@@ -31,6 +31,7 @@ import IncomeReportType from "./Subcomponent/IncomeReportType";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 
 export default function Factors() {
   const [initialValue, setInitialValue] = useState({
@@ -50,9 +51,9 @@ export default function Factors() {
   const history = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Income-Report"
-  },[])
+  }, [])
 
   useEffect(() => {
     setInitialValue({ isAppplicationCheck: W8ECIData?.isAppplicationCheck ?? false })
@@ -165,7 +166,9 @@ export default function Factors() {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
-                  <div className="viewform">View Form</div>
+                  <div className="viewform" onClick={() => {
+                    dispatch(GetEciPdf(authDetails?.accountHolderId))
+                  }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                     {GethelpData && GethelpData[5].id === 7 ? (
@@ -292,7 +295,7 @@ export default function Factors() {
                               <Link
                                 href="#"
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
+                                style={{ marginTop: "10px", fontSize: "16px", color: "blue" }}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -397,7 +400,7 @@ export default function Factors() {
                               <Link
                                 href="#"
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
+                                style={{ marginTop: "10px", fontSize: "16px", color: "blue" }}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -505,6 +508,9 @@ export default function Factors() {
                         <Button
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
+                          onClick={() => {
+                            dispatch(GetEciPdf(authDetails?.accountHolderId))
+                          }}
                         >
                           View form
                         </Button>
@@ -525,7 +531,7 @@ export default function Factors() {
                       <Typography
                         align="center"
                         style={{
-                          color: "#505E50",  
+                          color: "#505E50",
                           justifyContent: "center",
                           alignItems: "center",
                           marginTop: "20px",
