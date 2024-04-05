@@ -8,9 +8,6 @@ declare global {
     }
   }
 
-  
-  
- 
   const GoogleTranslate = () => {
       const [translate, setTranslate] = useState(false);
       function getIsoCodes(array: any): string {
