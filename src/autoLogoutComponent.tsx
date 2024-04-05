@@ -60,8 +60,8 @@ const WithAutoLogout = <P extends object>(
     useEffect(() => {
       const setTimeouts = () => {
         let currentTime;
-        console.log(storedLoginTime, "storedLoginTime");
-        if (storedLoginTime && storedLoginTime !== null || pathArray[1] !== ("login" || "") ) {
+        // console.log(storedLoginTime, "storedLoginTime");
+        if (storedLoginTime && storedLoginTime !== null || pathArray[1] !== "login") {
           currentTime = JSON.parse(storedLoginTime);
           warnTimeoutRef.current = setTimeout(warn, 1000 * 60 * (storedLoginTime-(storedLoginTime/2))); 
           logoutTimeoutRef.current = setTimeout(logout, 1000 * 60 * storedLoginTime); 
@@ -79,19 +79,18 @@ const WithAutoLogout = <P extends object>(
       };
 
       const warn = () => {
-        window.alert("You will be logged out automatically in 1 minute");
-        console.log("You will be logged out automatically in 1 minute.");
+        window.alert("You will be logged out automatically in " + (storedLoginTime/2) + " minute");
+        // console.log("You will be logged out automatically in "+storedLoginTime+" minute.");
       };
 
       const logout = () => {
-        console.log("Sending a logout request to the API...");
+        // console.log("Sending a logout request to the API...");
         destroy();
       };
 
       const destroy = () => {
-       
         window.location.replace(base_url+"/login");
-        // window.location.reload();
+        localStorage.clear();
       };
 
       for (let i = 0; i < events.length; i++) {

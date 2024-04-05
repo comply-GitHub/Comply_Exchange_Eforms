@@ -11,9 +11,7 @@ const AutoLogoutMain = WithAutoLogout(Main);
 function App() {
   return (
     <Provider store={store}>
-      {/* <ToastContainer />   */}
       <AutoLogoutMain/>
-      {/* <Main/> */}
     </Provider>
   );
 }
