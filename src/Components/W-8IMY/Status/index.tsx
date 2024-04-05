@@ -101,6 +101,7 @@ export default function Fedral_tax(props: any) {
     dispatch(GetChapter3Status(FormTypeId.FW81MY));
   }, []);
 
+ 
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
@@ -135,6 +136,9 @@ export default function Fedral_tax(props: any) {
     };
   const W9Data = useSelector((state: any) => state.w9Data);
 
+  const resetIntialValues = ()=>{
+    initialValue.QDD14 = '';
+  }
   return (
     <>
       <section
@@ -366,7 +370,28 @@ export default function Fedral_tax(props: any) {
                                   <select
                                     name="chapter3StatusId"
                                     value={values.chapter3StatusId}
-                                    onChange={handleChange}
+                                    onChange={(e) => {
+                                      handleChange(e);
+                                      console.log(e.target.value)
+                                      setTimeout(() => { 
+                                        setFieldValue("QDD14","")
+                                        setFieldValue("QDD15A","")
+                                        setFieldValue("QDD15B","")
+                                        setFieldValue("QDD15C","")
+                                        setFieldValue("QDD15D","")
+                                        setFieldValue("QDD15E","")
+                                        setFieldValue("QDD15F","")
+                                        setFieldValue("QDD15G","")
+                                        setFieldValue("QDD15H","")
+                                        setFieldValue("QDD15I","")
+                                        setFieldValue("QDD16A","")
+                                        setFieldValue("QDD16BCorp","")
+                                        setFieldValue("QDD16BDisregardEntity","")
+                                        setFieldValue("QDD16BPart","")
+                                        
+                                      
+                                      }, 200)
+                                  }}
                                     onBlur={handleBlur}
                                     style={{
                                       padding: " 0 10px",
