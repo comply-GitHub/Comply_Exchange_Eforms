@@ -106,7 +106,7 @@ export default function Tin(props: any) {
       getTinTypes(authDetails?.agentId, (data: any) => {
         setUStinArray(data);
         let datas = data.filter((ele: any) => {
-          return ele.usEntity === false || ele.usIndividual === true;
+          return ele.nonUSEntity == true;
         });
         setUStinvalue(datas);
       })
