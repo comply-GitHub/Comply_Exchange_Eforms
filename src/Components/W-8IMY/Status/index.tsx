@@ -68,8 +68,19 @@ export default function Fedral_tax(props: any) {
     chapter3StatusId: PrevStepData?.chapter3StatusId ? PrevStepData?.chapter3StatusId :0,
     federal: "",
     QDD14:'',
-    QDD16A:'',
-    QDD16BCorp:'',
+    QDD15A:'',
+    QDD15B:'',
+    QDD15C:'',
+    QDD15D:'',
+    QDD15E:'',
+    QDD15F:'',
+    QDD15G:'',
+    QDD15H:'',
+    QDD15I:'',
+    QDD16A: false,
+    QDD16BCorp:false,
+    QDD16BPart:false,
+    QDD16BDisregardEntity:false,
   };
   const [toolInfo, setToolInfo] = useState("");
   const history = useNavigate();
@@ -201,7 +212,8 @@ export default function Fedral_tax(props: any) {
                     handleSubmit,
                     handleChange,
                     isSubmitting,
-                    submitForm
+                    submitForm,
+                    setFieldValue
                   }) => (
                     <Form onSubmit={handleSubmit}>
                       <div style={{ width: "100%" }}>
@@ -1184,7 +1196,7 @@ export default function Fedral_tax(props: any) {
 
                         </div>
                         {values.chapter3StatusId==21 && (                 
-                        <QDD handleChange={handleChange} values={values}/>)}
+                        <QDD handleChange={handleChange} values={values} setFieldValue={setFieldValue}/>)}
                         {values.chapter3StatusId==22 && (                 
                         <NQI handleChange={handleChange} values={values}/>)}
                         {values.chapter3StatusId==23 && (                 
