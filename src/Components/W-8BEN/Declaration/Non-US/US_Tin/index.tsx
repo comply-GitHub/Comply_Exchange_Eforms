@@ -63,7 +63,7 @@ export default function Tin(props: any) {
     const temp = {
       ...PrevStepData,
       ...W8BENData,
-      usTinTypeId: obValues?.taxpayerIdTypeID?.toString() ?? (W8BENData?.usTinTypeId ? W8BENData?.usTinTypeId : "1" ),
+      usTinTypeId: obValues?.taxpayerIdTypeID?.toString() ?? (W8BENData?.usTinTypeId ? W8BENData?.usTinTypeId : "1"),
       usTin: W8BENData?.usTin == "" ? obValues?.usTin : W8BENData?.usTin,
       notAvailable: W8BENData?.notAvailable ? W8BENData?.notAvailable : false,
       notAvailableReason: W8BENData?.notAvailableReason || "",
@@ -100,9 +100,9 @@ export default function Tin(props: any) {
       setExpanded(isExpanded ? panel : false);
     };
 
-    useEffect(()=>{
-      document.title = "Tax-Payer"
-    },[])
+  useEffect(() => {
+    document.title = "Tax-Payer"
+  }, [])
 
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
@@ -139,11 +139,11 @@ export default function Tin(props: any) {
   );
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
-console.log(obValues.taxpayerIdTypeID,"pp")
+  console.log(obValues.taxpayerIdTypeID, "pp")
   const dispatch = useDispatch();
   const [initialValue, setInitialValues] = useState({
     usTinTypeId: obValues.taxpayerIdTypeID?.toString(),
-    
+
     usTin: obValues.usTin,
     tinValue: "",
     notAvailable: false,
@@ -225,7 +225,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
 
                     stepName: null,
                   };
-                
+
                   const returnPromise = new Promise((resolve, reject) => {
                     dispatch(
                       postW8BENForm(temp,
@@ -252,7 +252,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                   handleBlur,
                   values,
                   handleSubmit,
-                
+
                   handleChange,
                   setFieldValue,
                   submitForm,
@@ -392,7 +392,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                                   underline="none"
                                   style={{
                                     marginTop: "10px",
-                                    fontSize: "16px",
+                                    fontSize: "16px", color: "blue"
                                   }}
                                   onClick={() => {
                                     setToolInfo("");
@@ -578,9 +578,9 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                             onBlur={handleBlur}
                             value={values.foreignTINCountry}
                             onChange={(e) => {
-                             
+
                               handleChange(e);
-                              
+
                             }}
                           >
                             <option value={0}>---select---</option>
@@ -702,7 +702,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                               <Link
                                 href="#"
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px" }}
+                                style={{ marginTop: "10px", fontSize: "16px", color: "blue" }}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -1147,7 +1147,9 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                     <Typography
                       align="center"
                       style={{
-                        color: "#adadac",
+
+
+                        color: "#f5f5f5",
                         justifyContent: "center",
                         alignItems: "center",
                         marginTop: "20px",
@@ -1160,7 +1162,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                         onClick={() => {
                           history(
                             "/W-8BEN/Declaration/Non_US_Sorced/Status"
-                            
+
                           );
                         }}
                         variant="contained"

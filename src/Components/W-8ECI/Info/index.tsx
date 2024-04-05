@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import useAuth from "../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 
 
 export default function Tin(props: any) {
@@ -90,9 +91,9 @@ export default function Tin(props: any) {
     history("/w8Eci_pdf", { replace: true });
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Steps | ECI Mandatory Information"
-  },[])
+  }, [])
 
   useEffect(() => {
     dispatch(
@@ -184,7 +185,9 @@ export default function Tin(props: any) {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
-                  <div className="viewform" onClick={viewPdf}>View Form</div>
+                  <div className="viewform" onClick={() => {
+                    dispatch(GetEciPdf(authDetails?.accountHolderId))
+                  }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                     {GethelpData && GethelpData[5].id === 7 ? (
@@ -550,7 +553,9 @@ export default function Tin(props: any) {
                         <Button
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
-                          onClick={viewPdf}
+                          onClick={() => {
+                            dispatch(GetEciPdf(authDetails?.accountHolderId))
+                          }}
                         >
                           View Form
                         </Button>
@@ -573,7 +578,7 @@ export default function Tin(props: any) {
                       <Typography
                         align="center"
                         style={{
-                          color: "#adadac",
+                          color: "#505E50",
                           justifyContent: "center",
                           alignItems: "center",
                           marginTop: "20px",
