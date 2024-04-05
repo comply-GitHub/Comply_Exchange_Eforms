@@ -95,9 +95,11 @@ export default function Certifications(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform" onClick={() => {
-            dispatch(GetEciPdf(authDetails?.accountHolderId))
-          }}>View Form</div>
+          <div className="viewform"
+            onClick={() => {
+              dispatch(GetEciPdf(authDetails?.accountHolderId))
+            }}
+          >View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[5].id === 7 ? (

@@ -35,6 +35,8 @@ export default function Tin(props: any) {
 
   const { authDetails } = useAuth();
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || '{}')
+  const isIndividual = obValues?.businessTypeId == 1;
+  const isEntity = obValues?.businessTypeId == 2;
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const W8ECIData = useSelector((state: any) => state.W8ECI);
   const LoadData = () => {
@@ -71,7 +73,7 @@ export default function Tin(props: any) {
     dispatch(
       getTinTypes(authDetails?.agentId, (data: any) => {
         setUStinArray(data)
-        let datas = data.filter((ele: any) => { return ele.usIndividual === false && ele.usEntity === false })
+        let datas = data.filter((ele: any) => { return isIndividual ? ele.nonUSIndividual === true : isEntity ? ele.nonUSEntity == true : false })
         setUStinvalue(datas);
         LoadData();
       })
