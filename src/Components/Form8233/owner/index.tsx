@@ -186,7 +186,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
           isValid
         }) => (
           <Form onSubmit={handleSubmit}>
-            <>{console.log(values,errors, "errorsssss")}</>
+            
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
