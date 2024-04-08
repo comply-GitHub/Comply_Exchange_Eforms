@@ -694,7 +694,7 @@ and Number To Give the Requester for guidelines on whose number to enter.
                         </thead>
                         <tbody>
                           <tr>
-                            <td colSpan={2} style={{ padding: "5px 0" }}>
+                            <td colSpan={2} style={{ padding: "5px 0" ,  color: "#666666", }}>
                               Under penalties of perjury, I certify that:
                              
                             </td>

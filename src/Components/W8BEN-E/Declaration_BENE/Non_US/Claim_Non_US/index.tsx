@@ -407,7 +407,7 @@ The treaty country chosen does not match the country selected earlier as the pri
                               <Link
                                 href="#"
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px" }}
+                                style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -551,7 +551,7 @@ The treaty country chosen does not match the country selected earlier as the pri
                                     underline="none"
                                     style={{
                                       marginTop: "10px",
-                                      fontSize: "16px",
+                                      fontSize: "16px", color: "blue"
                                     }}
                                     onClick={() => {
                                       setToolInfo("");
@@ -804,7 +804,7 @@ The treaty country chosen does not match the country selected earlier as the pri
                     <Typography
                       align="center"
                       style={{
-                        color: "#adadac",
+                        color: "#f5f5f5",
                         justifyContent: "center",
                         alignItems: "center",
                         marginTop: "20px",

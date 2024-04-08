@@ -38,11 +38,8 @@ export default function Tin(props: any) {
     }
   };
 
-  // useEffect(()=>{
-  //   document.title = ""
-  // },[])
-
   useEffect(() => {
+    document.title = "Attatch Supporting Documentation"
     dispatch(GetAgentDocumentationMandatoryForEformAction());
     dispatch(GetHelpVideoDetails());
   }, []);
@@ -363,7 +360,7 @@ export default function Tin(props: any) {
                         <Link
                           href="#"
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px" }}
+                          style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -427,7 +424,7 @@ export default function Tin(props: any) {
                       </select>
                     </div>
 
-                    <div className="col-8">
+                    <div className="col-8"> 
                       <Select
                         value={submit}
                         name="taxTreaty_TreatyId"
@@ -638,7 +635,7 @@ export default function Tin(props: any) {
                   <Typography
                     align="center"
                     style={{
-                      color: "#adadac",
+                      color: "#f5f5f5",
                       justifyContent: "center",
                       alignItems: "center",
                       marginTop: "20px",

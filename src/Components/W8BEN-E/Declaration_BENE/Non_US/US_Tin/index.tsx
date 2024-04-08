@@ -106,7 +106,7 @@ export default function Tin(props: any) {
       getTinTypes(authDetails?.agentId, (data: any) => {
         setUStinArray(data);
         let datas = data.filter((ele: any) => {
-          return ele.usEntity === false || ele.usIndividual === true;
+          return ele.nonUSEntity == true;
         });
         setUStinvalue(datas);
       })
@@ -367,7 +367,7 @@ export default function Tin(props: any) {
                                   underline="none"
                                   style={{
                                     marginTop: "10px",
-                                    fontSize: "16px",
+                                    fontSize: "16px", color: "blue"
                                   }}
                                   onClick={() => {
                                     setToolInfo("");
@@ -675,7 +675,7 @@ export default function Tin(props: any) {
                               <Link
                                 href="#"
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px" }}
+                                style={{ marginTop: "10px", fontSize: "16px", color: "blue" }}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -1123,7 +1123,8 @@ export default function Tin(props: any) {
                     <Typography
                       align="center"
                       style={{
-                        color: "#adadac",
+
+                        color: "#f5f5f5",
                         justifyContent: "center",
                         alignItems: "center",
                         marginTop: "20px",

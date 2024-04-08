@@ -123,7 +123,7 @@ export default function Backup_witholding(props: any) {
                             elevation={3}
                             style={{
                               padding: "20px",
-                              backgroundColor: "#f0f0f0",
+                              backgroundColor: "#616161",
                               overflow: "auto",
                             }}
                           >
@@ -163,7 +163,7 @@ export default function Backup_witholding(props: any) {
                             elevation={3}
                             style={{
                               padding: "20px",
-                              backgroundColor: "#f0f0f0",
+                              backgroundColor: "#616161",
                               overflow: "auto",
                             }}
                           >
@@ -203,7 +203,7 @@ export default function Backup_witholding(props: any) {
                             elevation={3}
                             style={{
                               padding: "20px",
-                              backgroundColor: "#f0f0f0",
+                              backgroundColor: "#616161",
                               overflow: "auto",
                             }}
                           >
@@ -307,7 +307,7 @@ export default function Backup_witholding(props: any) {
                       <Link
                         href="#"
                         underline="none"
-                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        style={{ marginTop: "10px", fontSize: "16px", color: "blue" }}
                         onClick={() => {
                           setToolInfo("");
                         }}
@@ -509,7 +509,7 @@ export default function Backup_witholding(props: any) {
                       <Link
                         href="#"
                         underline="none"
-                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
                         onClick={() => {
                           setToolInfo("");
                         }}
@@ -990,7 +990,7 @@ If you are not able to make a selection from the income types and exemption code
               <Typography
                 align="center"
                 style={{
-                  color: "#adadac",
+                  color: "#505E50",  
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: "20px",

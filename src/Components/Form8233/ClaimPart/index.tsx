@@ -43,11 +43,9 @@ export default function Tin(props: any) {
   const dispatch = useDispatch();
   const history = useNavigate();
 
-  // useEffect(()=>{
-  //   document.title = ""
-  // },[])
   
   useEffect(()=>{
+    document.title = "Steps | Forms | Form 8233 Sep 2018 | Part I"
     dispatch(GetHelpVideoDetails());
     dispatch(GetIncomeTypes())
     },[])
@@ -364,7 +362,7 @@ export default function Tin(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "13px" }}
+                              style={{ marginTop: "10px", fontSize: "13px" , color: "blue"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -394,7 +392,9 @@ export default function Tin(props: any) {
                           fontStyle: "italic",
                           height: "9rem",
                           width: "100%",
+                          wordWrap:"break-word"
                         }}
+                        type="text"
                       />
                       {errors?.taxTreaty_DescriptionOfPersonalServiceYouProvide && typeof errors?.taxTreaty_DescriptionOfPersonalServiceYouProvide === 'string' && (
                                 <p className="error">{errors?.taxTreaty_DescriptionOfPersonalServiceYouProvide}</p>
@@ -465,7 +465,7 @@ export default function Tin(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "13px" }}
+                              style={{ marginTop: "10px", fontSize: "13px", color: "blue" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -571,7 +571,7 @@ export default function Tin(props: any) {
                           <Link
                             href="#"
                             underline="none"
-                            style={{ marginTop: "10px", fontSize: "13px" }}
+                            style={{ marginTop: "10px", fontSize: "13px", color: "blue" }}
                             onClick={() => {
                               setToolInfo("");
                             }}
@@ -633,6 +633,7 @@ export default function Tin(props: any) {
                           onBlur={handleBlur}
                           onChange={handleChange}
                           name="taxTreaty_TreatyArticleId"
+                          disabled={values.taxTreaty_TreatyId ? false:true}
                           style={{
                             border: " 1px solid #d9d9d9 ",
                             padding: " 0 10px",
@@ -745,7 +746,7 @@ export default function Tin(props: any) {
                               <Link
                                 href="#"
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "13px" }}
+                                style={{ marginTop: "10px", fontSize: "13px" , color: "blue"}}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -769,6 +770,7 @@ export default function Tin(props: any) {
                             touched.taxTreaty_TotalCompensationListedon11bExemptFromTax &&
                               errors.taxTreaty_TotalCompensationListedon11bExemptFromTax
                           )}
+                          disabled={values.taxTreaty_CheckAll}
                           style={{
                             border: " 1px solid #d9d9d9 ",
                             padding: " 0 10px",
@@ -885,7 +887,7 @@ export default function Tin(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "13px" }}
+                              style={{ marginTop: "10px", fontSize: "13px" , color: "blue"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -1022,7 +1024,7 @@ export default function Tin(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "13px" }}
+                              style={{ marginTop: "10px", fontSize: "13px", color: "blue" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -1123,7 +1125,7 @@ export default function Tin(props: any) {
                           <Link
                             href="#"
                             underline="none"
-                            style={{ marginTop: "10px", fontSize: "13px" }}
+                            style={{ marginTop: "10px", fontSize: "13px" , color: "blue"}}
                             onClick={() => {
                               setToolInfo("");
                             }}
@@ -1273,7 +1275,7 @@ export default function Tin(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "13px" }}
+                              style={{ marginTop: "10px", fontSize: "13px" , color: "blue"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -1377,7 +1379,7 @@ export default function Tin(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "13px" }}
+                              style={{ marginTop: "10px", fontSize: "13px" , color: "blue"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -1457,7 +1459,7 @@ export default function Tin(props: any) {
                   <Typography
                     align="center"
                     style={{
-                      color: "#adadac",
+                      color: "#f5f5f5",
                       justifyContent: "center",
                       alignItems: "center",
                       marginTop: "20px",

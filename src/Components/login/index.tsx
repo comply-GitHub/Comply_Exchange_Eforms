@@ -37,7 +37,7 @@ const Login = () => {
     email: "",
     password: "",
   });
-   
+
   let settings = {
     dots: true,
     infinite: true,
@@ -64,17 +64,20 @@ const Login = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: any, isDefaultAgent: boolean = false) => {
     e.preventDefault();
     if (isIncompleteClickHere) {
       handleSaveAndExitLogin();
     } else {
-      if (data.email.trim() !== "" && data.password.trim() !== "") {
+      if ((data.email.trim() !== "" && data.password.trim() !== "") || isDefaultAgent) {
         dispatch(
           eFormSignIn1(
-            data,
+            { ...data, isDefaultAgent },
             (resp: any) => {
               localStorage.setItem("userType", resp.userType);
+              localStorage.setItem("loginTime", JSON.stringify(15));
+              // localStorage.setItem("loginTime", JSON.stringify(new Date()));
+
               // if (resp.userType === "GEN") {
               //   alert("Generic");
               // } else if (resp.userType === "SC") {
@@ -109,12 +112,13 @@ const Login = () => {
             LoadExistingFormData(
               res?.formTypeId,
               res.accountHolderDetailsId,
-              (resp: any) => {},
+              (resp: any) => { },
               (err: any) => {
                 console.log(err);
               }
             )
           );
+          localStorage.setItem("loginTime", JSON.stringify(15));
           history(`/${res?.stepName}`);
         },
         (err: any) => {
@@ -131,7 +135,7 @@ const Login = () => {
   return (
     <div className="login-wrap">
       <div className="language">
-        <GoogleTranslate/>
+        <GoogleTranslate />
       </div>
 
       <div className="container">
@@ -173,7 +177,7 @@ const Login = () => {
                   )}
                 </div>
               </div>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={(e) => { handleSubmit(e) }}>
                 <div className="row">
                   <div className="col-md-12">
                     <FormGroup>
@@ -249,7 +253,8 @@ const Login = () => {
                         <>
                           <div className="button-seperator">OR</div>
                           <Button
-                            type="submit"
+                            // type="submit"
+                            onClick={(e) => { handleSubmit(e, true) }}
                             variant="contained"
                             className="full-w"
                           >

@@ -53,6 +53,7 @@ const DialogEdit = (props: any) => {
     securityAnswer: "",
   };
 
+ 
   useEffect(()=>{
     document.title = "Comply Exchange"
   },[])
@@ -70,9 +71,9 @@ const DialogEdit = (props: any) => {
     navigator.clipboard.writeText(payload.confirmationCode);
     document.execCommand('copy');
     e.target.focus();
-    // toast.success("Code copied to clipboard!",{
-    //   autoClose: 2000
-    // })
+    toast.success("Code copied to clipboard!",{
+     autoClose: 2000
+     })
 
   };
 
@@ -215,7 +216,8 @@ const DialogEdit = (props: any) => {
                         className="blackText"
                         value={values.confirmationCode}
                         ref={textAreaRef}
-                        disabled
+                        // disabled
+                        // type = "hidden"
                       />
                     </Typography>
                     <Typography className="col-1">

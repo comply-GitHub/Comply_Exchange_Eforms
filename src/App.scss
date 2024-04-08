@@ -75,7 +75,7 @@ input:-webkit-autofill:active{
 }
 
 .tabview li:nth-child(1) {
-  background-color: #f3f4f7;
+  background-color: #FFFFFF;
   width: 8rem;
   height: 7rem;
 }
@@ -87,7 +87,7 @@ input:-webkit-autofill:active{
 }
 
 .tabview li:nth-child(3) {
-  background-color: #f3f4f7;
+  background-color: #FFFFFF;
   width: 8rem;
   height: 7rem;
 }
@@ -172,10 +172,14 @@ input:-webkit-autofill:active{
   top: 15%;
 }
 
+// size of icon comes here 
 .overlay-div .overlay-div-group {
   display: flex;
   font-weight: 500;
   font-size: 12px;
+  @media screen and (max-width:1024px) {
+    font-size: 6.5px;
+  }
 }
 
 .overlay-div .overlay-div-group div {
@@ -248,7 +252,7 @@ input:-webkit-autofill:active{
   margin-top: auto !important;
   height: 30px;
   position: relative;
-  background: #ffae00;
+  background: #8A5E00;
   cursor: pointer;
   width: auto;
   transition: all 0.5s ease;
@@ -261,7 +265,7 @@ input:-webkit-autofill:active{
 
 .viewform:before {
   border-left: 20px solid transparent;
-  border-right: 20px solid #ffae00;
+  border-right: 20px solid #8A5E00;
   border-top: 30px solid transparent;
   position: absolute;
   top: 0px;
@@ -272,7 +276,7 @@ input:-webkit-autofill:active{
 }
 
 .viewform:after {
-  border-left: 20px solid #ffae00;
+  border-left: 20px solid #8A5E00;
   border-right: 20px solid transparent;
   border-top: 30px solid transparent;
   position: absolute;
@@ -377,7 +381,7 @@ input:-webkit-autofill:active{
   margin-top: auto !important;
   height: 30px;
   position: relative;
-  background: #0095dd;
+  background: #006394;
   cursor: pointer;
   width: auto;
   transition: all 0.5s ease;
@@ -390,7 +394,7 @@ input:-webkit-autofill:active{
 
 .helpvideo:before {
   border-left: 20px solid transparent;
-  border-right: 20px solid #0095dd;
+  border-right: 20px solid #006394;
   border-top: 30px solid transparent;
   position: absolute;
   top: 0px;
@@ -401,7 +405,7 @@ input:-webkit-autofill:active{
 }
 
 .helpvideo:after {
-  border-left: 20px solid #0095dd;
+  border-left: 20px solid #006394;
   border-right: 20px solid transparent;
   border-top: 30px solid transparent;
   position: absolute;
@@ -568,7 +572,7 @@ input:-webkit-autofill:active{
 }
 
 .iconWhite{
-  background-color: #f3f4f7 !important;
+  background-color: #FFFFFF !important;
 }
 
 

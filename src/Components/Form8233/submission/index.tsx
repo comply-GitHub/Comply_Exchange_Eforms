@@ -46,9 +46,6 @@ const formattedDay = String(day).padStart(2, '0');
 const formattedMonth = String(month).padStart(2, '0');
 
 const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
-
-
-
   const initialValue = {
     signedBy: PrevStepData?.signedBy ? PrevStepData.signedBy : "",
     EnterconfirmationCode:PrevStepData?.confirmationCode ? PrevStepData.confirmationCode : "",
@@ -59,11 +56,9 @@ const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
     word :PrevStepData?.word ? PrevStepData.word : "",
   };
   
-  // useEffect(()=>{
-  //   document.title = ""
-  // },[])
 
   useEffect(()=>{
+    document.title = "Comply Exchange"
     dispatch(GetHelpVideoDetails());
   },[])
 
@@ -322,7 +317,7 @@ const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" }}
+                              style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -418,7 +413,7 @@ const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" }}
+                              style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -698,7 +693,7 @@ const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
                         <Link
                           href="#"
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px" }}
+                          style={{ marginTop: "10px", fontSize: "16px", color: "blue" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -744,7 +739,7 @@ const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
                   <Typography
                     align="center"
                     style={{
-                      color: "#adadac",
+                      color: "#505E50",  
                       justifyContent: "center",
                       alignItems: "center",
                       marginTop: "20px",
