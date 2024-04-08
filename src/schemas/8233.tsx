@@ -116,10 +116,16 @@ export const amountSchema = () => {
       .required("Number greater than 0 required"),
     taxTreaty_TreatyId: Yup.number(),
     taxTreaty_TreatyArticleId: Yup.number(),
-    taxTreaty_TotalCompensationListedon11bExemptFromTax: Yup.number()
-      .min(1)
-      .required("Number greater than 0 required"),
+    
     taxTreaty_CheckAll: Yup.boolean().oneOf([true], "Please mark the checkbox"),
+
+    taxTreaty_TotalCompensationListedon11bExemptFromTax: Yup.number().when("taxTreaty_CheckAll",{
+      is:false,
+      then:()=> Yup.number().min(1).required("Number greater than 0 required"),
+      otherwise:() => Yup.number().notRequired()
+    }),
+
+
     taxTreaty_CountryOfResidenceId: Yup.number(),
     taxTreaty_NoncompensatoryScholarshiporFellowshipIncome: Yup.number()
       ,

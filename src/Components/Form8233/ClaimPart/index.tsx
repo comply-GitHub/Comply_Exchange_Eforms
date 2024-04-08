@@ -633,7 +633,7 @@ export default function Tin(props: any) {
                           onBlur={handleBlur}
                           onChange={handleChange}
                           name="taxTreaty_TreatyArticleId"
-                          disabled={values.taxTreaty_TreatyId}
+                          disabled={values.taxTreaty_TreatyId ? false:true}
                           style={{
                             border: " 1px solid #d9d9d9 ",
                             padding: " 0 10px",
@@ -770,6 +770,7 @@ export default function Tin(props: any) {
                             touched.taxTreaty_TotalCompensationListedon11bExemptFromTax &&
                               errors.taxTreaty_TotalCompensationListedon11bExemptFromTax
                           )}
+                          disabled={values.taxTreaty_CheckAll}
                           style={{
                             border: " 1px solid #d9d9d9 ",
                             padding: " 0 10px",
