@@ -1,7 +1,6 @@
 import { apiConfig, apiKeys } from "./apiConfig";
 import axios, { AxiosResponse, AxiosRequestConfig }  from "axios";
 
-
 export const getUrlByKey = (key: keyof typeof apiKeys): string => {
   return apiConfig + apiKeys[key];
 };

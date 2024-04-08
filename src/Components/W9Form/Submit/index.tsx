@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { SubmitSchema } from "../../../schemas/submit";
@@ -26,6 +26,10 @@ const Declaration = (props: any) => {
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
+
+  useEffect(() => {
+    document.title = "Electronic Signature Confirmation"
+  })
 
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -314,14 +318,14 @@ const Declaration = (props: any) => {
                           <Divider style={{ marginBottom: "10px" }} />
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox 
-                          name="IsSubmit" 
-                          value={values.IsSubmit} 
-                          onChange={(e)=>{
-                            handleChange(e);
-                            setTimeout(()=>{setFieldValue("IsSubmit_not",false)},50)
-                          }} 
-                          checked={values.IsSubmit}                           
+                          <Checkbox
+                            name="IsSubmit"
+                            value={values.IsSubmit}
+                            onChange={(e) => {
+                              handleChange(e);
+                              setTimeout(() => { setFieldValue("IsSubmit_not", false) }, 50)
+                            }}
+                            checked={values.IsSubmit}
                           />
 
                           <Typography style={{ marginTop: "9px", fontSize: "17px" }}>
@@ -332,13 +336,13 @@ const Declaration = (props: any) => {
                         </div>
                         <p className="error">{errors.IsSubmit}</p>
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox name="IsSubmit_not" 
-                          value={values.IsSubmit_not} 
-                          onChange={(e)=>{
-                            handleChange(e);
-                            setTimeout(()=>{setFieldValue("IsSubmit",false)},50)
-                          }}
-                          checked={values.IsSubmit_not} />
+                          <Checkbox name="IsSubmit_not"
+                            value={values.IsSubmit_not}
+                            onChange={(e) => {
+                              handleChange(e);
+                              setTimeout(() => { setFieldValue("IsSubmit", false) }, 50)
+                            }}
+                            checked={values.IsSubmit_not} />
                           <Typography style={{ marginTop: "9px", fontSize: "17px" }}>
                             {" "}
                             I do not give consent to receiving a recipent
@@ -372,14 +376,14 @@ const Declaration = (props: any) => {
                       View Form
                     </Button>
 
-                    <Button               
-                     onClick={() => {
-                      submitForm().then((data: any) => {
-                        history("/Thankyou_w9");
-                      }).catch(() => {
+                    <Button
+                      onClick={() => {
+                        submitForm().then((data: any) => {
+                          history("/Thankyou_w9");
+                        }).catch(() => {
 
-                      })
-                    }}       
+                        })
+                      }}
                       disabled={!isValid}
                       type="submit"
                       variant="contained"
@@ -391,7 +395,7 @@ const Declaration = (props: any) => {
                   <Typography
                     align="center"
                     style={{
-                      color: "#505E50",  
+                      color: "#505E50",
                       justifyContent: "center",
                       alignItems: "center",
                       marginTop: "20px",
