@@ -118,7 +118,7 @@ const Login = () => {
               }
             )
           );
-          localStorage.setItem("loginTime", JSON.stringify(new Date()));
+          localStorage.setItem("loginTime", JSON.stringify(15));
           history(`/${res?.stepName}`);
         },
         (err: any) => {
