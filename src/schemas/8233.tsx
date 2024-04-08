@@ -92,8 +92,8 @@ export const ownerSchema = () => {
       otherwise : () => Yup.string().notRequired()
     }),
     dateNonImmigrationStatusExpire: Yup.date().typeError('Please enter a valid date') // Change error message for invalid date format
-    .required('Please enter a valid date') .when("declarationOfDurationStayStatus",{
-      is:false,
+    .required('Please enter a valid date') .when(["declarationOfDurationStayStatus","nonImmigrationStatus"],{
+      is:(declarationOfDurationStayStatus: boolean, nonImmigrationStatus: any) => !declarationOfDurationStayStatus && !nonImmigrationStatus,
       then:()=>Yup.date().required('Please enter date of Immigration status expires'),
       otherwise:()=>Yup.date().notRequired()
     }),
