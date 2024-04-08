@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { SubmitSchema } from "../../../../../schemas/submit";
+import { SubmitSchema } from "../../../../../schemas/w8BenE";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -451,7 +451,7 @@ const Declaration = (props: any) => {
                   <Typography
                     align="center"
                     style={{
-                      color: "#505E50",  
+                      color: "#505E50",
                       justifyContent: "center",
                       alignItems: "center",
                       marginTop: "20px",
