@@ -25,6 +25,13 @@ import BreadCrumbComponent from "../../reusables/breadCrumb";
 import useAuth from "../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import moment from "moment";
+import DatePicker from "react-date-picker";
+import "react-date-picker/dist/DatePicker.css";
+import "react-calendar/dist/Calendar.css";
+
+
+
 export default function Tin(props: any) {
 
   const { authDetails } = useAuth();
@@ -37,7 +44,7 @@ export default function Tin(props: any) {
       const day = date.getDate().toString().padStart(2, '0');
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const year = date.getFullYear();
-      let formattedDate = `${day}-${month}-${year}`;
+      let formattedDate = `${year}-${month}-${day}`;//yyyy-MM-dd
       setDateOfEntryIntoUSState(formattedDate)
     }
     
@@ -46,7 +53,7 @@ export default function Tin(props: any) {
       const day1 = date1.getDate().toString().padStart(2, '0');
       const month1 = (date1.getMonth() + 1).toString().padStart(2, '0');
       const year1 = date1.getFullYear();
-      let formattedDate1 = `${day1}-${month1}-${year1}`;
+      let formattedDate1 = `${year1}-${month1}-${day1}`;
       setDateNonImmigrationStatusExpireState(formattedDate1)
     }
 
@@ -148,7 +155,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                 (responseData: any) => {
                   localStorage.setItem("PrevStepData", JSON.stringify(temp));
                   resolve(responseData);
-                  //history("/Form8233/TaxPayer_Identification/Owner/Claim_part");
+                  history("/Form8233/TaxPayer_Identification/Owner/Claim_part");
                 },
                 (err: any) => {
                   reject(err);
@@ -793,7 +800,37 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                       ) : (
                         ""
                       )}
-                      <Input
+                      <DatePicker
+                    
+                               className="dateclass"
+                                onBlur={handleBlur}
+                                name="dateOfEntryIntoUS"
+                                onChange={(date:any) => { 
+                                  setTimeout(() => { 
+                                    const inputDate = new Date(date);
+
+                                  // Get the year, month, and day from the input date
+                                  const year = inputDate.getFullYear();
+                                  // Month is zero-based, so add 1 to get the correct month
+                                  const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+                                  const day = String(inputDate.getDate()).padStart(2, '0');
+
+                                  // Format the date as "YYYY-mm-dd"
+                                  const formattedDate = `${year}-${month}-${day}`;
+                                    
+                                    setFieldValue("dateOfEntryIntoUS", formattedDate); }, 200)
+                                }
+                              }
+                                
+                                //maxDate={moment().toDate()}
+                                value={values.dateOfEntryIntoUS}
+                                clearIcon={null}
+                                format="yyyy-MM-dd"
+                                dayPlaceholder="dd"
+                                monthPlaceholder="mm"
+                                yearPlaceholder="yy"
+                              />
+                      {/* <Input
                         type="date"
                         name="dateOfEntryIntoUS"
                         value={values.dateOfEntryIntoUS}
@@ -808,7 +845,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                           height: "50px",
                           width: "100%",
                         }}
-                      />
+                      /> */}
                       {/* {values?.dateOfEntryIntoUS !== 'NaN-NaN-NaN' ? 'Selected Date ' + values?.dateOfEntryIntoUS : ""} */}
                       {errors?.dateOfEntryIntoUS && typeof errors?.dateOfEntryIntoUS === 'string' && (
                                 <p className="error">{errors?.dateOfEntryIntoUS}</p>
@@ -816,11 +853,21 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                       {/* <p className="error">{errors.dateOfEntryIntoUS}</p> */}
                     </div>
                     <div>
-                      <Checkbox name="nonImmigrationStatus" size="medium" onChange={handleChange}
-                            id="nonImmigrationStatus"
-                           
-                            value={values.nonImmigrationStatus}
-                            checked={values.nonImmigrationStatus} />
+                      <Checkbox 
+                        name="nonImmigrationStatus"
+                        size="medium"
+                        onChange={(e) =>{
+                          handleChange(e);
+                          setTimeout(() => { 
+                            setFieldValue("currentNonImmigrationStatus", "");
+                            setFieldValue("dateNonImmigrationStatusExpire","");
+                          }, 200)
+                          
+                        }
+                      }
+                        id="nonImmigrationStatus"
+                        value={values.nonImmigrationStatus}
+                        checked={values.nonImmigrationStatus} />
                       <span style={{ fontSize: "12px", marginTop: "5px" }}>
                         Check if Nonimmigrant status Not Applicable:
                       </span>
@@ -909,6 +956,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                         <Input
                           name="currentNonImmigrationStatus"
                           value={values.currentNonImmigrationStatus}
+                          disabled={values.nonImmigrationStatus}
                           onBlur={handleBlur}
                           onChange={handleChange}
                           style={{
@@ -1013,7 +1061,39 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                           ""
                         )}
 
-                        <Input
+<DatePicker
+                    
+                    className="dateclass"
+                     onBlur={handleBlur}
+                     disabled={values.nonImmigrationStatus}
+                     name="dateNonImmigrationStatusExpire"
+                     onChange={(date:any) => { 
+                       setTimeout(() => { 
+                         const inputDate = new Date(date);
+
+                       // Get the year, month, and day from the input date
+                       const year = inputDate.getFullYear();
+                       // Month is zero-based, so add 1 to get the correct month
+                       const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+                       const day = String(inputDate.getDate()).padStart(2, '0');
+
+                       // Format the date as "YYYY-mm-dd"
+                       const formattedDate = `${year}-${month}-${day}`;
+                         
+                         setFieldValue("dateNonImmigrationStatusExpire", formattedDate); }, 200)
+                     }
+                   }
+                     
+                     //maxDate={moment().toDate()}
+                     value={values.dateNonImmigrationStatusExpire}
+                     clearIcon={null}
+                     format="yyyy-MM-dd"
+                     dayPlaceholder="dd"
+                     monthPlaceholder="mm"
+                     yearPlaceholder="yy"
+                   
+                   />
+                        {/* <Input
                           type="date"
                           name="dateNonImmigrationStatusExpire"
                           value={values.dateNonImmigrationStatusExpire}
@@ -1033,7 +1113,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                             height: "50px",
                             width: "100%",
                           }}
-                        />
+                        /> */}
                         {/* {values?.dateNonImmigrationStatusExpire !== 'NaN-NaN-NaN' ? 'Selected Date ' + values?.dateNonImmigrationStatusExpire : ""} */}
                         {/* {'Selected Date ' + values.dateNonImmigrationStatusExpire} */}
                         {errors?.dateNonImmigrationStatusExpire && typeof errors?.dateNonImmigrationStatusExpire === 'string' && (
@@ -1046,13 +1126,16 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                           <Checkbox
                             size="small"
                             onChange={(e) => { handleChange(e)
-                                setTimeout(() => { setFieldValue("dateNonImmigrationStatusExpire", ""); }, 200)
+                                setTimeout(() => {
+                                   setFieldValue("dateNonImmigrationStatusExpire", "")
+                                  }, 200)
                               }
                             }
                             id="declarationOfDurationStayStatus"
                             name="declarationOfDurationStayStatus"
                             value={values.declarationOfDurationStayStatus}
                             checked={values.declarationOfDurationStayStatus}
+                            disabled={values.nonImmigrationStatus}
                           />
                           <span
                             style={{
