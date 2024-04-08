@@ -35,6 +35,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import { GetAgentCountriesImportantForEform } from "../../../../../Redux/Actions";
 import moment from "moment";
+import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 import Infoicon from "../../../../../assets/img/info.png";
 import { useLocation } from "react-router-dom";
 import useAuth from "../../../../../customHooks/useAuth";
@@ -178,7 +179,9 @@ export default function Factors() {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId))
+            }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[4].id === 6 ? (
@@ -2191,7 +2194,9 @@ export default function Factors() {
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
-                        onClick={viewPdf}
+                        onClick={() => {
+                          dispatch(GetBenPdf(authDetails?.accountHolderId))
+                        }}
                       >
                         View form
                       </Button>

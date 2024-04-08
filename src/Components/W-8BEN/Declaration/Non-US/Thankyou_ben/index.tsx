@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import useAuth from "../../../../../customHooks/useAuth";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
-import W8Ben from "../../../../../formPDF/W8BEN";
+// import W8Ben from "../../../../../formPDF/W8BEN";
 
 export default function Term() {
   //States
@@ -54,7 +54,7 @@ export default function Term() {
     >
     
       <div style={{ paddingBlockStart: "30px" }}>
-        <W8Ben/>
+        {/* <W8Ben/> */}
       </div>
      
       <div className="container-fluid">

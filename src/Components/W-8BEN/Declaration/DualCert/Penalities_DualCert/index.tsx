@@ -29,7 +29,7 @@ import Infoicon from "../../../../../assets/img/info.png";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { partCertiSchema } from "../../../../../schemas/w8Ben";
+import { partCertiSchema_DC_BEN } from "../../../../../schemas/w8Ben";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import { useLocation } from "react-router-dom";
 import SecurityCodeRecover from "../../../../Reusable/SecurityCodeRecover";
@@ -116,7 +116,7 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
       validateOnChange={true}
       validateOnBlur={true}
         initialValues={initialValue}
-        validationSchema={partCertiSchema}
+        validationSchema={partCertiSchema_DC_BEN}
         onSubmit={(values, { setSubmitting }) => {
           history("/Submit_DC_BEN");
          
@@ -226,7 +226,7 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                       fontWeight: "550",
                     }}
                   >
-                   Part III Certification<span style={{ color: "red" }}>*</span>
+                   Certification<span style={{ color: "red" }}>*</span>
                   </Typography>
                   <Typography
                     align="left"
@@ -236,7 +236,7 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                       fontWeight: "550",
                     }}
                   >
-                    W-8BEN Electronic Substitute Form Statement
+                    Self Cert Individual Electronic Substitute Form Statement
                   </Typography>
                   <Typography
                     align="left"
@@ -796,7 +796,7 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                   <Typography align="center">
                     <Button
                     onClick={()=>{
-                      history('/W-8BEN/Declaration/US_Tin/Certificates')
+                      history('/Certification_DC_BEN')
                     }}
                       variant="contained"
                       style={{

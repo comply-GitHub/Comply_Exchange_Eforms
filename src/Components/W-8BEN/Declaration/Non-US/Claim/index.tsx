@@ -31,6 +31,7 @@ import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import check from "../../../../../assets/img/check.png";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import { useLocation } from "react-router-dom";
+import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 import {
   getAllCountriesWithTreaty,
   GetAgentCountriesImportantForEform,
@@ -124,7 +125,9 @@ export default function FCTA_Reporting(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>
+          <div className="viewform" onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId))
+            }}>
             View Form
           </div>
           <div className="helpvideo">
@@ -784,7 +787,9 @@ export default function FCTA_Reporting(props: any) {
                       <Button
                         style={{ color: "white", marginLeft: "15px" }}
                         variant="contained"
-                        onClick={viewPdf}
+                        onClick={() => {
+                          dispatch(GetBenPdf(authDetails?.accountHolderId))
+                        }}
                       >
                         VIEW FORM
                       </Button>

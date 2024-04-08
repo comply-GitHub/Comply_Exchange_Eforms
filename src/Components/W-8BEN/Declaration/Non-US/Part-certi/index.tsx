@@ -37,10 +37,12 @@ import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import moment from "moment";
+import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 type ValuePiece = Date | null;
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function Penalties() {
   const location = useLocation();
+  const { authDetails } = useAuth();
   const [open2, setOpen2] = useState(false);
   const handleClickOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
@@ -156,7 +158,9 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
 <div className="overlay-div">
             <div className="overlay-div-group">
                 <div className="viewInstructions">View Instructions</div>
-                <div className="viewform" onClick={viewPdf}>View Form</div>
+                <div className="viewform" onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId))
+            }}>View Form</div>
                 <div className="helpvideo"> 
                 {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                 {GethelpData && GethelpData[4].id === 6 ? (
@@ -735,7 +739,9 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                     }}
                   >
                      <Button
-                     onClick={viewPdf}
+                     onClick={() => {
+                      dispatch(GetBenPdf(authDetails?.accountHolderId))
+                    }}
                       variant="contained"
                       style={{ color: "white" }}
                     >

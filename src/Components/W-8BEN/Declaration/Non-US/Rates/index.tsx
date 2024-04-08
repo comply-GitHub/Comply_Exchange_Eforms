@@ -12,6 +12,7 @@ import {
   Input,
   TextField,
 } from "@mui/material";
+import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "./index.scss";
 import Infoicon from "../../../assets/img/info.png";
@@ -205,7 +206,9 @@ const GetAllIncomeCodesReducer = useSelector(
        <div className="overlay-div">
             <div className="overlay-div-group">
                 <div className="viewInstructions">View Instructions</div>
-                <div className="viewform" onClick={viewPdf}>View Form</div>
+                <div className="viewform" onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId))
+            }}>View Form</div>
                 <div className="helpvideo"> 
                 {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                 {GethelpData && GethelpData[4].id === 6 ? (
@@ -612,7 +615,9 @@ const GetAllIncomeCodesReducer = useSelector(
                   <Button
                     variant="contained"
                     style={{ color: "white", marginLeft: "15px" }}
-                    onClick={viewPdf}
+                    onClick={() => {
+                      dispatch(GetBenPdf(authDetails?.accountHolderId))
+                    }}
                   >
                     View form
                   </Button>

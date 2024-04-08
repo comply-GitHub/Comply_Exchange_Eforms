@@ -312,7 +312,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                           fontWeight: "550",
                         }}
                       >
-                        Taxpayer Identification Number
+                        Taxpayer Identification Number SelfCert
                       </Typography>
                     </div>
 
@@ -1159,7 +1159,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                       <Button
                         onClick={() => {
                           history(
-                            "/W-8BEN/Declaration/Non_US_Sorced/Status"
+                            "/W-8BEN/Declaration/US_Tin/Certificates/Submit_Ben/ThankYou_Ben"
                             
                           );
                         }}
