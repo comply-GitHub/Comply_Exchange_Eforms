@@ -6,6 +6,7 @@ import { Divider, Paper } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./index.scss";
+import { GetBenPdf } from "../../../Redux/Actions/PfdActions";
 import {GetHelpVideoDetails,postW8BENForm} from "../../../Redux/Actions"
 import "bootstrap/dist/css/bootstrap.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -72,7 +73,7 @@ const handleNonUSButtonClick = () => {
   };
 
   dispatch(postW8BENForm(formValues, successCallback, errorCallback));
-  history("/W-8BEN/Declaration/US_Sourced");
+  history("/W-8BEN/Declaration/Non_US_Sorced/Status");
 };
   return (
     <section
@@ -82,7 +83,9 @@ const handleNonUSButtonClick = () => {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform">View Form</div>
+          <div className="viewform"  onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId))
+            }}>View Form</div>
           <div className="helpvideo">
           {GethelpData && GethelpData[4].id === 6 ? (
   <a

@@ -14,6 +14,7 @@ import {
   GetAccountHolderIncomeAllocation
 } from "../../../../Redux/Actions";
 import DynamicForm from "./text";
+import { GetBenPdf } from "../../../../Redux/Actions/PfdActions";
 import { validationUS } from "../../../../schemas/w8BenE"
 import { useDispatch, useSelector } from "react-redux";
 import checksolid from "../../../../../assets/img/check-solid.png";
@@ -173,7 +174,9 @@ export default function Factors() {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId))
+            }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[3].id === 5 ? (
@@ -342,7 +345,9 @@ export default function Factors() {
                 <Button
                   variant="contained"
                   style={{ color: "white", marginLeft: "15px" }}
-                  onClick={viewPdf}
+                  onClick={() => {
+                    dispatch(GetBenPdf(authDetails?.accountHolderId))
+                  }}
                 >
                   View form
                 </Button>
