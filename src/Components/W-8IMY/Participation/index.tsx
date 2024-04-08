@@ -280,7 +280,7 @@ export default function Penalties() {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
+                              style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -373,7 +373,7 @@ export default function Penalties() {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
+                              style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -661,7 +661,7 @@ export default function Penalties() {
                         <Link
                           href="#"
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
+                          style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
                           onClick={() => {
                             setToolInfo("");
                           }}

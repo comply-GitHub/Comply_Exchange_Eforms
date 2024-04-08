@@ -450,7 +450,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "15px", color: "blue" }}
+                              style={{ marginTop: "10px", fontSize: "15px", color: "#0000C7" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -556,7 +556,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "15px" , color: "blue"}}
+                              style={{ marginTop: "10px", fontSize: "15px" , color: "#0000C7"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -658,7 +658,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "15px" , color: "blue"}}
+                              style={{ marginTop: "10px", fontSize: "15px" , color: "#0000C7"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -771,7 +771,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "15px" , color: "blue"}}
+                              style={{ marginTop: "10px", fontSize: "15px" , color: "#0000C7"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -883,7 +883,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                               <Link
                                 href="#"
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "15px" , color: "blue"}}
+                                style={{ marginTop: "10px", fontSize: "15px" , color: "#0000C7"}}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -988,7 +988,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                               <Link
                                 href="#"
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "15px", color: "blue" }}
+                                style={{ marginTop: "10px", fontSize: "15px", color: "#0000C7" }}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -1165,7 +1165,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "15px" , color: "blue"}}
+                              style={{ marginTop: "10px", fontSize: "15px" , color: "#0000C7"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}

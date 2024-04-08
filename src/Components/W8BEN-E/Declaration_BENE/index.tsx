@@ -199,7 +199,8 @@ export default function Term() {
             <Typography
               align="center"
               style={{
-                color: "#f5f5f5",
+                //color: "#f5f5f5",
+                color: "#505E50",  
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: "20px",
