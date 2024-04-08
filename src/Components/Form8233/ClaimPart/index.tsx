@@ -43,11 +43,9 @@ export default function Tin(props: any) {
   const dispatch = useDispatch();
   const history = useNavigate();
 
-  // useEffect(()=>{
-  //   document.title = ""
-  // },[])
   
   useEffect(()=>{
+    document.title = "Steps | Forms | Form 8233 Sep 2018 | Part I"
     dispatch(GetHelpVideoDetails());
     dispatch(GetIncomeTypes())
     },[])

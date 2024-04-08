@@ -46,9 +46,6 @@ const formattedDay = String(day).padStart(2, '0');
 const formattedMonth = String(month).padStart(2, '0');
 
 const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
-
-
-
   const initialValue = {
     signedBy: PrevStepData?.signedBy ? PrevStepData.signedBy : "",
     EnterconfirmationCode:PrevStepData?.confirmationCode ? PrevStepData.confirmationCode : "",
@@ -59,11 +56,9 @@ const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
     word :PrevStepData?.word ? PrevStepData.word : "",
   };
   
-  // useEffect(()=>{
-  //   document.title = ""
-  // },[])
 
   useEffect(()=>{
+    document.title = "Comply Exchange"
     dispatch(GetHelpVideoDetails());
   },[])
 
