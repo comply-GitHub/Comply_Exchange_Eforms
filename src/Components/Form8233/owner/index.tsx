@@ -95,9 +95,9 @@ const GetAgentUSVisaTypeHiddenForEform = useSelector(
       .GetAgentUSVisaTypeHiddenForEform
 );
 
-// useEffect(()=>{
-//   document.title = ""
-// },[])
+ useEffect(()=>{
+  document.title = "Steps | Forms | Form 8233 Sep 2018 | Part I"
+},[])
 
 
 const handleTaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {

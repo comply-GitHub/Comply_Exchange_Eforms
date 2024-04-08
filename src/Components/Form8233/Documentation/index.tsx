@@ -38,11 +38,8 @@ export default function Tin(props: any) {
     }
   };
 
-  // useEffect(()=>{
-  //   document.title = ""
-  // },[])
-
   useEffect(() => {
+    document.title = "Attatch Supporting Documentation"
     dispatch(GetAgentDocumentationMandatoryForEformAction());
     dispatch(GetHelpVideoDetails());
   }, []);
@@ -427,7 +424,7 @@ export default function Tin(props: any) {
                       </select>
                     </div>
 
-                    <div className="col-8">
+                    <div className="col-8"> 
                       <Select
                         value={submit}
                         name="taxTreaty_TreatyId"

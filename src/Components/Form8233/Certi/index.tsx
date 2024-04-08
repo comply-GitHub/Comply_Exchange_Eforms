@@ -17,12 +17,12 @@ export default function Certifications(props: any) {
 
   const history = useNavigate();
   const dispatch = useDispatch();
+
   useEffect(()=>{
+    document.title = "Comply Exchange"
     dispatch(GetHelpVideoDetails());
   },[]);
-  // useEffect(()=>{
-  //   document.title = ""
-  // },[])
+
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );

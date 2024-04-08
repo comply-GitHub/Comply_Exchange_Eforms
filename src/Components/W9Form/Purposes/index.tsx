@@ -73,7 +73,6 @@ export default function Fedral_tax(props: any) {
   },[getReducerData])
 
   useEffect(() => {
-    // GetByW9FormReducer
     setIsFormFilling(localStorage.getItem("isFormFilling") || "");
     dispatch(GetHelpVideoDetails());
     dispatch(

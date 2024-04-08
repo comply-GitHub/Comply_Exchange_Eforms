@@ -37,6 +37,8 @@ export default function Tin(props: any) {
   const { authDetails } = useAuth();
   const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || "{}");
   const W8ECI = useSelector((state: any) => state.W8ECI);
+  const isIndividual = obValues?.businessTypeId == 1;
+  const isEntity = obValues?.businessTypeId == 2;
 
   const [initialValue, setInitialValue] = useState({
     formTypeSelectionId: obValues?.businessTypeId,
@@ -101,7 +103,7 @@ export default function Tin(props: any) {
         console.log(data)
         setUStinArray(data);
         let datas = data.filter((ele: any) => {
-          return (ele.usEntity === false || ele.usIndividual === true);
+          return (isIndividual ? ele.nonUSIndividual === true : isEntity ? ele.nonUSEntity == true : false);
         });
         setUStinvalue(datas);
         LoadData()

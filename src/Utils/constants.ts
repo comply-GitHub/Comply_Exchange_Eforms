@@ -3,7 +3,7 @@ import { getToken } from '.';
 
 const API_URL = 'http://122.176.139.248:8088/api/';
 //const API_URL = 'https://localhost:44319/api/';
-
+// export const BASE_URL ='http://122.176.139.248:8088/';
 
 export const apiErrorCode = {
   unauthorized: 401,
