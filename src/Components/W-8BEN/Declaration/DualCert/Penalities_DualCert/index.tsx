@@ -118,7 +118,7 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
         initialValues={initialValue}
         validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
-          history("/W-8BEN/Declaration/US_Tin/Certificates/Submit_Ben");
+          history("/Submit_DC_BEN");
          
           if (clickCount === 0) {
         
@@ -130,7 +130,7 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                         dispatch(
                           postW8BENForm(result, () => {
                             localStorage.setItem("PrevStepData",JSON.stringify(result))
-                             history("/W-8BEN/Declaration/US_Tin/Certificates/Submit_Ben")
+                             history("/Submit_DC_BEN")
                           })
                         );
           }

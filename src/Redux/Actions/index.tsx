@@ -1361,8 +1361,8 @@ export const postW8BENForm = (value: any, callback: Function, errorCallback: Fun
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.InsertW8BENIndividualNonUS,
-      // convertToFormData(value),
-      value,
+    convertToFormData(value),
+      // value,
       (responseData) => {
         let { data } = responseData;
         dispatch({
@@ -1399,7 +1399,7 @@ export const postW8BENForm = (value: any, callback: Function, errorCallback: Fun
         });
         errorCallback(error)
       },
-      // "multi"
+      "multi"
     );
   };
 };

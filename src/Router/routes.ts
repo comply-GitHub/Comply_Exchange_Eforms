@@ -71,6 +71,21 @@ const ThankYou_Ben = React.lazy(
 );
 
 
+const TaxPayer_DC_BEN = React.lazy(
+  () => import("../Components/W-8BEN/Declaration/DualCert/TaxPayerDualCert")
+);
+const Certification_DC_BEN = React.lazy(
+  () => import("../Components/W-8BEN/Declaration/DualCert/Certification_DualCert")
+);
+const penalities_DC_BEN = React.lazy(
+  () => import("../Components/W-8BEN/Declaration/DualCert/Penalities_DualCert")
+);
+const Submit_DC_BEN = React.lazy(
+  () => import("../Components/W-8BEN/Declaration/DualCert/Submit_DualCert")
+);
+const ThankYou_DC_BEN = React.lazy(
+  () => import("../Components/W-8BEN/Declaration/DualCert/ThankYou_DualCert")
+);
 //
 const Fedral_tax = React.lazy(() => import("../Components/W9Form/Purposes/index"));
 const Back = React.lazy(() => import("../Components/W9Form/Backup"));
@@ -194,11 +209,47 @@ const ROUTES: Array<RouteType> = [
     Component: Taxpayer_DC,
     isPrivate: true,
   },
+
   {
     name: "Certification_W9_DC",
     path: "/Certification_W9_DC",
     id: 2,
     Component: Certification_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "TaxPayer_DC_BEN",
+    path: "/TaxPayer_DC_BEN",
+    id: 2,
+    Component: TaxPayer_DC_BEN,
+    isPrivate: true,
+  },
+  {
+    name: "Certification_DC_BEN",
+    path: "/Certification_DC_BEN",
+    id: 2,
+    Component: Certification_DC_BEN,
+    isPrivate: true,
+  },
+  {
+    name: "penalities_DC_BEN",
+    path: "/penalities_DC_BEN",
+    id: 2,
+    Component: penalities_DC_BEN,
+    isPrivate: true,
+  },
+  {
+    name: "ThankYou_DC_BEN",
+    path: "/ThankYou_DC_BEN",
+    id: 2,
+    Component: ThankYou_DC_BEN,
+    isPrivate: true,
+  },
+  {
+    name: "Submit_DC_BEN",
+    path: "/Submit_DC_BEN",
+    id: 2,
+    Component: Submit_DC_BEN,
     isPrivate: true,
   },
 
@@ -223,7 +274,7 @@ const ROUTES: Array<RouteType> = [
     Component: Thankyou_W9_DC,
     isPrivate: true,
   },
-  //Taxpayer_DC Certification_W9_DC Participation_W9_DC Submit_W9_DC Thankyou_W9_DC
+  
   {
     name: "EntityUs",
     path: "EntityUs",
@@ -344,7 +395,7 @@ const ROUTES: Array<RouteType> = [
 
   {
     name: "Part",
-    path: "W-8BEN/Declaration/US_Tin/Certification_Substitute",
+    path: "/W-8BEN/Declaration/US_Tin/Certification_Substitute/participation",
     id: 6,
     Component: Part,
     isPrivate: true,
@@ -379,7 +430,7 @@ const ROUTES: Array<RouteType> = [
   },
   {
     name: "Certi_Eci",
-    path: "W-8ECI/Certification",
+    path: "/W-8ECI/Certification",
     id: 6,
     Component: Certi_Eci,
     isPrivate: true,

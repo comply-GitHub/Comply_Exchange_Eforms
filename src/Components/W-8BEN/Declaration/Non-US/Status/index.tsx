@@ -37,9 +37,11 @@ import { GetAgentCountriesImportantForEform } from "../../../../../Redux/Actions
 import moment from "moment";
 import Infoicon from "../../../../../assets/img/info.png";
 import { useLocation } from "react-router-dom";
+import useAuth from "../../../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 export default function Factors() {
+  const { authDetails } = useAuth();
   const location = useLocation();
   const urlValue = location.pathname.substring(1);
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
@@ -57,9 +59,10 @@ export default function Factors() {
 
   // const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const initialValue = {
-    agentId: 3,
-    formTypeSelectionId: 1,
-    accountHolderBasicDetailId:17,
+    agentId: authDetails?.agentId,
+    formTypeSelectionId: obValues.businessTypeId,
+    formTypeId: FormTypeId.BEN,
+    accountHolderBasicDetailId:authDetails?.accountHolderId,
     isHeldUSCitizenship: false,
     countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "0",
     isTaxationUSCitizenOrResident: false,
@@ -208,8 +211,8 @@ export default function Factors() {
           <div style={{ padding: "10px" }}>
             <Paper style={{ padding: "18px" }}>
               <Formik
-                validateOnChange={false}
-                validateOnBlur={false}
+                validateOnChange={true}
+                validateOnBlur={true}
                 initialValues={initialValue}
                 enableReinitialize
                 validationSchema={StatusSchema}

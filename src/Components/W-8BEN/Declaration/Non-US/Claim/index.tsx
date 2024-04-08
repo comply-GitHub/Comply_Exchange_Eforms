@@ -791,28 +791,25 @@ export default function FCTA_Reporting(props: any) {
                         disabled={!isValid}
                         onClick={async () => {
                           validateForm().then(() => {
-                            if (values?.isClaimTreaty == "no") {
-                              history(
-                                "/W-8BEN/Declaration/US_Tin/Certificates"
-                              );
-                            } else {
-                              history("/W-8BEN/Declaration/US_Tin/Rates");
-                            }
-                            submitForm()
-                              .then((data) => {
-                                if (values?.isClaimTreaty == "no") {
-                                  history(
-                                    "/W-8BEN/Declaration/US_Tin/Certificates"
-                                  );
-                                } else {
-                                  history("/W-8BEN/Declaration/US_Tin/Rates");
-                                }
-                              })
-                              .catch((err) => {
-                                console.log(err);
-                              });
-                          });
+                            submitForm().then((data) => {
+                              if (values?.isClaimTreaty == "no") {
+                                history('/W-8BEN/Declaration/US_Tin/Certificates')
+                              } else {
+                                history(
+                                  "/W-8BEN/Declaration/US_Tin/Rates"
+                                );
+                              }
+
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          })
+
+                          // history(
+                          //   "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE"
+                          // );
                         }}
+                       
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                       >

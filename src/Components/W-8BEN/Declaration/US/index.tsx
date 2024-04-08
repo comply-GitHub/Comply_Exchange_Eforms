@@ -114,7 +114,7 @@ export default function Factors() {
           incomeType: IncomeTypes[element.option1],
           explaination: element.text,
           allocation: element.number,
-          countryId: element.option2 !== "" && element.option2 !== null ? Number.parseInt(element.option2) : null
+          countryId: element.option2 !== "" && element.option2 !== null && element.option2 !== "0" ? Number.parseInt(element.option2) : null
         }
         return temp;
       })
