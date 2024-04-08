@@ -32,35 +32,43 @@ export default function Tin(props: any) {
   const [dateOfEntryIntoUSState, setDateOfEntryIntoUSState] = useState("")
   const [dateNonImmigrationStatusExpireState, setDateNonImmigrationStatusExpireState] = useState("")
   useEffect(() => {
-    const date = new Date(onBoardingFormValuesPrevStepData?.dateOfEntryIntoUS);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    let formattedDate = `${day}-${month}-${year}`;
-    setDateOfEntryIntoUSState(formattedDate)
+    if(onBoardingFormValuesPrevStepData?.dateOfEntryIntoUS!=='undefined'){
+      const date = new Date(onBoardingFormValuesPrevStepData?.dateOfEntryIntoUS);
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      let formattedDate = `${day}-${month}-${year}`;
+      setDateOfEntryIntoUSState(formattedDate)
+    }
+    
+    if(onBoardingFormValuesPrevStepData?.dateNonImmigrationStatusExpire!=='undefined'){
+      const date1 = new Date(onBoardingFormValuesPrevStepData?.dateNonImmigrationStatusExpire);
+      const day1 = date1.getDate().toString().padStart(2, '0');
+      const month1 = (date1.getMonth() + 1).toString().padStart(2, '0');
+      const year1 = date1.getFullYear();
+      let formattedDate1 = `${day1}-${month1}-${year1}`;
+      setDateNonImmigrationStatusExpireState(formattedDate1)
+    }
 
 
-    const date1 = new Date(onBoardingFormValuesPrevStepData?.dateNonImmigrationStatusExpire);
-    const day1 = date1.getDate().toString().padStart(2, '0');
-    const month1 = (date1.getMonth() + 1).toString().padStart(2, '0');
-    const year1 = date1.getFullYear();
-    let formattedDate1 = `${day1}-${month1}-${year1}`;
-    setDateNonImmigrationStatusExpireState(formattedDate1)
+    
 
 
   },[onBoardingFormValuesPrevStepData?.dateOfEntryIntoUS])
-  
+  // console.log(dateNonImmigrationStatusExpireState)
+  const d = new Date();
+let year = d.getFullYear();
   const initialValue = {
-    exemptionApplicableForCompensationForCalnderYear: onBoardingFormValuesPrevStepData?.exemptionApplicableForCompensationForCalnderYear ? onBoardingFormValuesPrevStepData?.exemptionApplicableForCompensationForCalnderYear:0,
-    otherTaxBeginingYear: onBoardingFormValuesPrevStepData?.otherTaxBeginingYear ? onBoardingFormValuesPrevStepData?.otherTaxBeginingYear:0,
-    otherTaxEndYear: onBoardingFormValuesPrevStepData?.otherTaxEndYear ? onBoardingFormValuesPrevStepData?.otherTaxEndYear:0,
-    usVisaTypeID: onBoardingFormValuesPrevStepData?.usVisaTypeID ? onBoardingFormValuesPrevStepData?.usVisaTypeID:0,
+    exemptionApplicableForCompensationForCalnderYear: onBoardingFormValuesPrevStepData?.exemptionApplicableForCompensationForCalnderYear ? onBoardingFormValuesPrevStepData?.exemptionApplicableForCompensationForCalnderYear:year,
+    otherTaxBeginingYear: onBoardingFormValuesPrevStepData?.otherTaxBeginingYear ? onBoardingFormValuesPrevStepData?.otherTaxBeginingYear:"",
+    otherTaxEndYear: onBoardingFormValuesPrevStepData?.otherTaxEndYear ? onBoardingFormValuesPrevStepData?.otherTaxEndYear:"",
+    usVisaTypeID: onBoardingFormValuesPrevStepData?.usVisaTypeID ? onBoardingFormValuesPrevStepData?.usVisaTypeID: "",
     countryIssuingPassportId: onBoardingFormValuesPrevStepData?.countryIssuingPassportId ? onBoardingFormValuesPrevStepData?.countryIssuingPassportId:"",
     countryIssuingPassportNumber: onBoardingFormValuesPrevStepData?.countryIssuingPassportNumber ? onBoardingFormValuesPrevStepData?.countryIssuingPassportNumber:"",
-    dateOfEntryIntoUS: dateOfEntryIntoUSState,
+    dateOfEntryIntoUS: dateOfEntryIntoUSState != 'NaN-NaN-NaN' ? dateOfEntryIntoUSState :"" ,
     nonImmigrationStatus: onBoardingFormValuesPrevStepData?.nonImmigrationStatus ? onBoardingFormValuesPrevStepData?.nonImmigrationStatus:false,
     currentNonImmigrationStatus: onBoardingFormValuesPrevStepData?.currentNonImmigrationStatus ? onBoardingFormValuesPrevStepData?.currentNonImmigrationStatus:"",
-    dateNonImmigrationStatusExpire: dateNonImmigrationStatusExpireState,
+    dateNonImmigrationStatusExpire: dateNonImmigrationStatusExpireState != 'NaN-NaN-NaN' ? dateNonImmigrationStatusExpireState :"" ,
     declarationOfDurationStayStatus:  onBoardingFormValuesPrevStepData?.declarationOfDurationStayStatus ? onBoardingFormValuesPrevStepData?.declarationOfDurationStayStatus:false,
     foreignStudent_Teacher_Professor_ResearcherStatus: onBoardingFormValuesPrevStepData?.foreignStudent_Teacher_Professor_ResearcherStatus ? onBoardingFormValuesPrevStepData?.foreignStudent_Teacher_Professor_ResearcherStatus:false,
     statementToForm8233_FileUpoad: onBoardingFormValuesPrevStepData?.statementToForm8233_FileUpoad ? onBoardingFormValuesPrevStepData?.statementToForm8233_FileUpoad:"",
@@ -140,7 +148,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                 (responseData: any) => {
                   localStorage.setItem("PrevStepData", JSON.stringify(temp));
                   resolve(responseData);
-                  history("/Form8233/TaxPayer_Identification/Owner/Claim_part");
+                  //history("/Form8233/TaxPayer_Identification/Owner/Claim_part");
                 },
                 (err: any) => {
                   reject(err);
@@ -166,10 +174,12 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
           handleSubmit,
           handleChange,
           isSubmitting,
+          setFieldValue,
           submitForm,
           isValid
         }) => (
           <Form onSubmit={handleSubmit}>
+            <>{console.log(values,errors, "errorsssss")}</>
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
@@ -786,6 +796,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                       <Input
                         type="date"
                         name="dateOfEntryIntoUS"
+                        value={values.dateOfEntryIntoUS}
                         defaultValue={values.dateOfEntryIntoUS}
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -798,7 +809,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                           width: "100%",
                         }}
                       />
-                      {'Selected Date ' + values.dateOfEntryIntoUS}
+                      {/* {values?.dateOfEntryIntoUS !== 'NaN-NaN-NaN' ? 'Selected Date ' + values?.dateOfEntryIntoUS : ""} */}
                       {errors?.dateOfEntryIntoUS && typeof errors?.dateOfEntryIntoUS === 'string' && (
                                 <p className="error">{errors?.dateOfEntryIntoUS}</p>
                       )}
@@ -924,6 +935,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                           <span style={{ fontWeight: "550" }}>9b</span> Date
                           your current nonimmigrant status expires
                           <span>
+                          <span style={{ color: "red" }}>*</span>
                             <Tooltip
                               style={{
                                 backgroundColor: "black",
@@ -1005,6 +1017,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                           type="date"
                           name="dateNonImmigrationStatusExpire"
                           value={values.dateNonImmigrationStatusExpire}
+                          defaultValue={values.dateNonImmigrationStatusExpire}
                           onBlur={handleBlur}
                           onChange={handleChange}
                           error={Boolean(
@@ -1021,7 +1034,8 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                             width: "100%",
                           }}
                         />
-                        {'Selected Date ' + values.dateNonImmigrationStatusExpire}
+                        {/* {values?.dateNonImmigrationStatusExpire !== 'NaN-NaN-NaN' ? 'Selected Date ' + values?.dateNonImmigrationStatusExpire : ""} */}
+                        {/* {'Selected Date ' + values.dateNonImmigrationStatusExpire} */}
                         {errors?.dateNonImmigrationStatusExpire && typeof errors?.dateNonImmigrationStatusExpire === 'string' && (
                                 <p className="error">{errors?.dateNonImmigrationStatusExpire}</p>
                       )}
@@ -1031,7 +1045,10 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                         <div className="mt-2">
                           <Checkbox
                             size="small"
-                            onChange={handleChange}
+                            onChange={(e) => { handleChange(e)
+                                setTimeout(() => { setFieldValue("dateNonImmigrationStatusExpire", ""); }, 200)
+                              }
+                            }
                             id="declarationOfDurationStayStatus"
                             name="declarationOfDurationStayStatus"
                             value={values.declarationOfDurationStayStatus}
@@ -1118,7 +1135,8 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                         {/* <p className="error">
                       {errors.foreignStudent_Teacher_Professor_ResearcherStatus}
                     </p> */}
-                    <div
+                    {values.foreignStudent_Teacher_Professor_ResearcherStatus && ( <>
+                      <div
                       style={{ fontSize: "15px" }}
                       className="d-flex mt-5 col-12"
                     >
@@ -1139,6 +1157,8 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                     {errors?.statementToForm8233_FileUpoad && typeof errors?.statementToForm8233_FileUpoad === 'string' && (
                                 <p className="error">{errors?.statementToForm8233_FileUpoad}</p>
                       )}
+                    </>)}
+                    
                     
                       </div>
                       {toolInfo === "student" ? (

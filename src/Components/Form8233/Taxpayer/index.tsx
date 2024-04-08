@@ -45,7 +45,7 @@ export default function Tin(props: any) {
     ForeginTIN_CountryId: onBoardingFormValues?.foreignTINCountryId ? onBoardingFormValues?.foreignTINCountryId : onBoardingFormValuesPrevStepData?.foreginTIN_CountryId ? onBoardingFormValuesPrevStepData?.foreginTIN_CountryId : "",
     ForegionTIN: onBoardingFormValues?.foreignTIN ? onBoardingFormValues?.foreignTIN : onBoardingFormValuesPrevStepData?.foregionTIN ? onBoardingFormValuesPrevStepData?.foregionTIN :"",
     isFTINNotLegallyRequired: false,
-    tinisFTINNotLegallyRequired: "Yes",
+    tinisFTINNotLegallyRequired: "",
     // tinAlternativeFormate: true,
     isNotLegallyFTIN: "",
     ReasionForForegionTIN_NotAvailable: onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable ? onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable : "",
@@ -153,7 +153,7 @@ export default function Tin(props: any) {
         }) => (
           <Form onSubmit={handleSubmit}>
 
-            <>{console.log(errors, values, "errorsssss")}</>
+            {/* <>{console.log(errors, values, "errorsssss")}</> */}
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
@@ -879,7 +879,7 @@ export default function Tin(props: any) {
                               disabled={
                                 values.isFTINNotLegallyRequired ||
                                 values.ForeginTIN_CountryId == "1" ||
-                                values.tinisFTINNotLegallyRequired ==="Yes"
+                                values.tinisFTINNotLegallyRequired ==="NO"
                               }
                               placeholder="ENTER FOREIGN TIN"
                               name="ForegionTIN"
@@ -1199,17 +1199,11 @@ export default function Tin(props: any) {
                           width: "100%",
                         }}
                       />
-                      {errors && errors?.ReasionForForegionTIN_NotAvailable  && (
-      <div>
-        <Typography color="error">
-          {/* {errors?.ReasionForForegionTIN_NotAvailable} */}
-        </Typography>
-      </div>
-    )}
+                                     
                     </div>):""}
 
 
-                      {values.tinisFTINNotLegallyRequired === "Yes" ? (
+                      {values.tinisFTINNotLegallyRequired === "NO" ? (
                         <div style={{ marginLeft: "20px", marginRight: "20px" }} className="my-3">
                           <Typography align="left" style={{ fontWeight: "bold" }}>
                             Please specify the reason for non-availability of
@@ -1235,8 +1229,11 @@ export default function Tin(props: any) {
                           <Input
                             fullWidth
                             type="text"
+                            name="ReasionForForegionTIN_NotAvailable"
+                            value={values.ReasionForForegionTIN_NotAvailable}
                             onBlur={handleBlur}
                             onChange={handleChange}
+                            error={Boolean(touched.ReasionForForegionTIN_NotAvailable && errors.ReasionForForegionTIN_NotAvailable)}
                             style={{
                               border: " 1px solid #d9d9d9 ",
                               padding: " 0 10px",
@@ -1246,6 +1243,13 @@ export default function Tin(props: any) {
                               width: "100%",
                             }}
                           />
+                          {/* {errors && errors?.ReasionForForegionTIN_NotAvailable  && (
+                            <div>
+                              <Typography color="error">
+                                {errors?.ReasionForForegionTIN_NotAvailable}
+                              </Typography>
+                            </div>
+                          )} */}
                         </div>
                       ) : (
                         ""

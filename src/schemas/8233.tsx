@@ -28,26 +28,41 @@ export const US_TINSchema = () => {
       then:() => Yup.string().notRequired(),
       otherwise:() => Yup.string().required(),
     }),
-    ReasionForForegionTIN_NotAvailable:Yup.string().when("notAvailable",{
-      is:true,
+    ReasionForForegionTIN_NotAvailable:Yup.string().when("tinisFTINNotLegallyRequired",{
+      is:(tinisFTINNotLegallyRequired: any) => tinisFTINNotLegallyRequired == "NO",
       then:() => Yup.string().required('required'),
       otherwise : () => Yup.string().notRequired()
     }),
-
-    //ForeginTIN_CountryId: Yup.string(),
-    ForeginTIN_CountryId:Yup.string().when("isFTINNotLegallyRequired",{
-      is:true,
-      then:()=> Yup.string().notRequired(),
-      otherwise:() =>Yup.string().required("Foreign Country is required")
+    tinisFTINNotLegallyRequired: Yup.string(),
+    isFTINNotLegallyRequired: Yup.boolean(),
+    ForeginTIN_CountryId:Yup.string().when(['isFTINNotLegallyRequired','tinisFTINNotLegallyRequired'], {
+      is:(isFTINNotLegallyRequired: boolean, tinisFTINNotLegallyRequired: any) => !isFTINNotLegallyRequired && tinisFTINNotLegallyRequired !== "NO",
+      then: ()=> Yup.string().required("Foreign TIN is required"),
+      otherwise: ()=>Yup.string().notRequired()
     }),
-    ForegionTIN: Yup.string().when("ForeginTIN_CountryId",{
-      is:(value: any) => (value !==0),
-      then: () => Yup.string().required("Foreign TIN is required"),
-      otherwise: () => Yup.string().notRequired(),
+    // ForeginTIN_CountryId:Yup.string().when("isFTINNotLegallyRequired",{
+    //   is:true,
+    //   then:()=> Yup.string().notRequired(),
+    //   otherwise:() =>Yup.string().required("Foreign Country is required")
+    // }),
+    ForegionTIN:Yup.string().when(['isFTINNotLegallyRequired','ForeginTIN_CountryId','tinisFTINNotLegallyRequired'], {
+      is:(isFTINNotLegallyRequired: boolean, ForeginTIN_CountryId: any, tinisFTINNotLegallyRequired:any) => !isFTINNotLegallyRequired && ForeginTIN_CountryId !== "0" && tinisFTINNotLegallyRequired !== "NO",
+      then: ()=> Yup.string().required("Foreign TIN is required"),
+      otherwise: ()=>Yup.string().notRequired()
     }),
+    // ForegionTIN: Yup.string().when(["isFTINNotLegallyRequired", "ForeginTIN_CountryId"], {
+    //   is: (isFTINNotLegallyRequired, ForeginTIN_CountryId) => !isFTINNotLegallyRequired && ForeginTIN_CountryId !== "0",
+    //   then: Yup.string().required("Foreign TIN is required"),
+    //   otherwise: Yup.string().notRequired()
+    // }),
+    // ForegionTIN: Yup.string().when("ForeginTIN_CountryId",{
+    //   is:(value: any) => (value !==0),
+    //   then: () => Yup.string().required("Foreign TIN is required"),
+    //   otherwise: () => Yup.string().notRequired(),
+    // }),
     //foreignTIN: Yup.string(),
 
-    isFTINNotLegallyRequired: Yup.boolean(),
+    
     
     isNotLegallyFTIN: Yup.string().when("isFTINNotLegallyRequired", {
       is: true,
@@ -69,14 +84,19 @@ export const ownerSchema = () => {
     usVisaTypeID: Yup.string().required("Field Cannot be Empty"),
     countryIssuingPassportId: Yup.string().required("Field Cannot be Empty"),
     countryIssuingPassportNumber: Yup.string().required("Field Cannot be Empty"),
-    dateOfEntryIntoUS: Yup.date().required("Please enter date"),
+    dateOfEntryIntoUS: Yup.date().typeError('Please enter a valid date').required('Please enter date of entry into US'),
     nonImmigrationStatus: Yup.boolean(),
     currentNonImmigrationStatus: Yup.string().when("nonImmigrationStatus",{
       is:false,
-      then : () => Yup.string().required(),
+      then : () => Yup.string().required("Please enter Current Immigration status"),
       otherwise : () => Yup.string().notRequired()
     }),
-    dateNonImmigrationStatusExpire: Yup.date(),
+    dateNonImmigrationStatusExpire: Yup.date().typeError('Please enter a valid date') // Change error message for invalid date format
+    .required('Please enter a valid date') .when("declarationOfDurationStayStatus",{
+      is:false,
+      then:()=>Yup.date().required('Please enter date of Immigration status expires'),
+      otherwise:()=>Yup.date().notRequired()
+    }),
     declarationOfDurationStayStatus: Yup.boolean(),
     foreignStudent_Teacher_Professor_ResearcherStatus: Yup.boolean(),
     statementToForm8233_FileUpoad: Yup.mixed().when("foreignStudent_Teacher_Professor_ResearcherStatus", {
