@@ -30,10 +30,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 export default function Tin(props: any) {
 
   const { authDetails } = useAuth();
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || '{}')
+  const isIndividual = obValues?.businessTypeId == 1;
+  const isEntity = obValues?.businessTypeId == 2;
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const W8ECIData = useSelector((state: any) => state.W8ECI);
   const LoadData = () => {
@@ -70,7 +73,7 @@ export default function Tin(props: any) {
     dispatch(
       getTinTypes(authDetails?.agentId, (data: any) => {
         setUStinArray(data)
-        let datas = data.filter((ele: any) => { return ele.usIndividual === false && ele.usEntity === false })
+        let datas = data.filter((ele: any) => { return isIndividual ? ele.nonUSIndividual === true : isEntity ? ele.nonUSEntity == true : false })
         setUStinvalue(datas);
         LoadData();
       })
@@ -156,7 +159,9 @@ export default function Tin(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform" onClick={viewPdf}>View Form</div>
+            <div className="viewform" onClick={() => {
+              dispatch(GetEciPdf(authDetails?.accountHolderId))
+            }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[5].id === 7 ? (
@@ -1172,7 +1177,9 @@ export default function Tin(props: any) {
 
                         <Button
                           variant="contained"
-                          onClick={viewPdf}
+                          onClick={() => {
+                            dispatch(GetEciPdf(authDetails?.accountHolderId))
+                          }}
                           style={{ color: "white", marginLeft: "15px" }}
                         >
                           View Form
