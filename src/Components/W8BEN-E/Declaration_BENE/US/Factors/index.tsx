@@ -48,18 +48,18 @@ export default function Factors() {
       mirroredText.innerText = inputValue;
     }
   };
-  const viewPdf=()=>{
+  const viewPdf = () => {
     history("/w8BenE_pdf", { replace: true });
   }
 
   useEffect(() => {
-    
+
     dispatch(GetHelpVideoDetails());
   }, [])
 
 
   useEffect(() => {
-    dispatch(GetAccountHolderIncomeAllocation(authDetails?.accountHolderId, (data: any) => {
+    dispatch(GetAccountHolderIncomeAllocation(authDetails?.accountHolderId, FormTypeId.BENE, (data: any) => {
       let temp = data?.map((ele: any, index: number) => {
         return {
           option1: JSON.stringify(IncomeTypes.indexOf(ele?.incomeType)),
@@ -110,7 +110,7 @@ export default function Factors() {
           incomeType: IncomeTypes[element.option1],
           explaination: element.text,
           allocation: element.number,
-          countryId: element.option2 !== "" && element.option2 !== null ? Number.parseInt(element.option2) : null
+          countryId: element.option2 !== "" && element.option2 !== "0" && element.option2 !== null ? Number.parseInt(element.option2) : null
         }
         return temp;
       })

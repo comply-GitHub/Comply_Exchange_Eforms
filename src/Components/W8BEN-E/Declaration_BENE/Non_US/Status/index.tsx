@@ -2342,7 +2342,7 @@ export default function Fedral_tax(props: any) {
                         <Typography
                           align="center"
                           style={{
-                            color: "#505E50",  
+                            color: "#505E50",
                             justifyContent: "center",
                             alignItems: "center",
                             marginTop: "20px",
@@ -2353,7 +2353,12 @@ export default function Fedral_tax(props: any) {
                         <Typography align="center">
                           <Button
                             onClick={() => {
-                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE");
+                              if (PrevStepData?.isUsSourcedIncome == true) {
+                                history("/BenE/Tax_Purpose_BenE/Declaration_BenE/US/Factors_BenE");
+                              }
+                              else {
+                                history("/BenE/Tax_Purpose_BenE/Declaration_BenE");
+                              }
                             }}
                             variant="contained"
                             style={{

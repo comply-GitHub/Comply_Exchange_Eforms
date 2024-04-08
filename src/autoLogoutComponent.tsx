@@ -60,7 +60,6 @@ const WithAutoLogout = <P extends object>(
     useEffect(() => {
       const setTimeouts = () => {
         let currentTime;
-        // console.log(storedLoginTime, "storedLoginTime");
         if (storedLoginTime && storedLoginTime !== null || pathArray[1] !== "login") {
           currentTime = JSON.parse(storedLoginTime);
           warnTimeoutRef.current = setTimeout(warn, 1000 * 60 * (storedLoginTime-(storedLoginTime/2))); 

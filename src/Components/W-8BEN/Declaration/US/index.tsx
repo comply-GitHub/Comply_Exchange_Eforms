@@ -48,22 +48,22 @@ export default function Factors() {
       mirroredText.innerText = inputValue;
     }
   };
-  const viewPdf=()=>{
+  const viewPdf = () => {
     history("/w8Ben_pdf");
     // history("/w8Ben_pdf", { replace: true });
   }
 
- 
-  useEffect(()=>{
+
+  useEffect(() => {
     document.title = "Income-Report"
-  },[])
+  }, [])
 
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, [])
 
   useEffect(() => {
-    dispatch(GetAccountHolderIncomeAllocation(authDetails?.accountHolderId, (data: any) => {
+    dispatch(GetAccountHolderIncomeAllocation(authDetails?.accountHolderId, FormTypeId.BEN, (data: any) => {
       let temp = data?.map((ele: any, index: number) => {
         return {
           option1: JSON.stringify(IncomeTypes.indexOf(ele?.incomeType)),
