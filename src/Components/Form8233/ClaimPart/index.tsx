@@ -361,7 +361,7 @@ export default function Tin(props: any) {
                                 A nonresident alien business/vocational trainee
                                 may enter 'neurosurgical residency at ABC
                                 Hospital' or 'one-year internship in hydraulic
-                                engineering at XYZ Corporation.'
+                                engineering at XYZ corporation.'
                               </li>
                             </ul>
 

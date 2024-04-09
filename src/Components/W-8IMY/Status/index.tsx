@@ -66,22 +66,22 @@ export default function Fedral_tax(props: any) {
     businessNameOrDisgradedEntityName: PrevStepData?.businessNameOrDisgradedEntityName ? PrevStepData?.businessNameOrDisgradedEntityName : "",
     countryOfIncorporationId: PrevStepData?.countryOfIncorporationId ? PrevStepData?.countryOfIncorporationId :"",
     chapter3StatusId: PrevStepData?.chapter3StatusId ? PrevStepData?.chapter3StatusId :0,
-    federal: "",
-    QDD14:'',
-    QDD15A:'',
-    QDD15B:'',
-    QDD15C:'',
-    QDD15D:'',
-    QDD15E:'',
-    QDD15F:'',
-    QDD15G:'',
-    QDD15H:'',
-    QDD15I:'',
-    QDD16A: false,
-    QDD16BCorp:false,
-    QDD16BPart:false,
-    QDD16BDisregardEntity:false,
+    isPart1Integral:PrevStepData?.isPart1Integral ? PrevStepData?.isPart1Integral :"",
+    isPart1FFI:PrevStepData?.isPart1FFI ? PrevStepData?.isPart1FFI :"",
+    isPart1chap3and4:PrevStepData?.isPart1chap3and4 ? PrevStepData?.isPart1chap3and4 :"",
+    isPart1Section1446f:PrevStepData?.isPart1Section1446f ? PrevStepData?.isPart1Section1446f :"",
+    isPart1Section14464b:PrevStepData?.isPart1Section14464b ? PrevStepData?.isPart1Section14464b :"",
+    isPart1QIacting:PrevStepData?.isPart1QIacting ? PrevStepData?.isPart1QIacting :"",
+    isPart1ofchap3and41099repo:PrevStepData?.isPart1ofchap3and41099repo ? PrevStepData?.isPart1ofchap3and41099repo :"",
+    isPart1regusection16049C:PrevStepData?.isPart1regusection16049C ? PrevStepData?.isPart1regusection16049C :"",
+    isPart1andbackupwithholdingresp:PrevStepData?.isPart1andbackupwithholdingresp ? PrevStepData?.isPart1andbackupwithholdingresp :"",
+    isPart1AllocatePorofchap4:PrevStepData?.isPart1AllocatePorofchap4 ? PrevStepData?.isPart1AllocatePorofchap4 :"",
+    isPart1QDDidentified: PrevStepData?.isPart1QDDidentified ? PrevStepData?.isPart1QDDidentified :false,
+    corporation:PrevStepData?.corporation ? PrevStepData?.corporation :false,
+    partnership:PrevStepData?.partnership ? PrevStepData?.partnership :false,
+    disregardedEntity:PrevStepData?.disregardedEntity ? PrevStepData?.disregardedEntity :false,
   };
+  console.log(initialValue,"intial")
   const [toolInfo, setToolInfo] = useState("");
   const history = useNavigate();
   const [expanded, setExpanded] = React.useState<string | false>("");
@@ -135,10 +135,6 @@ export default function Fedral_tax(props: any) {
       setExpandedState(newExpanded ? panel : false);
     };
   const W9Data = useSelector((state: any) => state.w9Data);
-
-  const resetIntialValues = ()=>{
-    initialValue.QDD14 = '';
-  }
   return (
     <>
       <section
@@ -198,11 +194,11 @@ export default function Fedral_tax(props: any) {
                     };
                     console.log(temp);
 
-                    // dispatch(postW81MY_EForm(temp,() => {
-                    //   // history(
-                    //   //         "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
-                    //   //       );
-                    // }))
+                    dispatch(postW81MY_EForm(temp,() => {
+                      // history(
+                      //         "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
+                      //       );
+                    }))
 
                     //  setSubmitting(true);
                     //history("/IMY/Tax_Purpose_Exp/Chapter4_IMY");
@@ -220,6 +216,7 @@ export default function Fedral_tax(props: any) {
                     setFieldValue
                   }) => (
                     <Form onSubmit={handleSubmit}>
+                      <>{console.log(values,errors, "errorsssss")}</>
                       <div style={{ width: "100%" }}>
                         <div>
                           <Typography align="left" style={{ margin: "10px" }}>
@@ -341,7 +338,7 @@ export default function Fedral_tax(props: any) {
                                         disregarded entity receiving a payment
                                         for which treaty benefits are being
                                         claimed, you must select the
-                                        'Partnership' or 'Disregarded entity'
+                                        'partnership' or 'Disregarded entity'
                                         option. If you are a sole proprietor
                                         select the 'Individual' option, not
                                         'Disregarded entity'.
@@ -374,20 +371,20 @@ export default function Fedral_tax(props: any) {
                                       handleChange(e);
                                       console.log(e.target.value)
                                       setTimeout(() => { 
-                                        setFieldValue("QDD14","")
-                                        setFieldValue("QDD15A","")
-                                        setFieldValue("QDD15B","")
-                                        setFieldValue("QDD15C","")
-                                        setFieldValue("QDD15D","")
-                                        setFieldValue("QDD15E","")
-                                        setFieldValue("QDD15F","")
-                                        setFieldValue("QDD15G","")
-                                        setFieldValue("QDD15H","")
-                                        setFieldValue("QDD15I","")
-                                        setFieldValue("QDD16A","")
-                                        setFieldValue("QDD16BCorp","")
-                                        setFieldValue("QDD16BDisregardEntity","")
-                                        setFieldValue("QDD16BPart","")
+                                        setFieldValue("isPart1Integral","")
+                                        setFieldValue("isPart1FFI","")
+                                        setFieldValue("isPart1chap3and4","")
+                                        setFieldValue("isPart1Section1446f","")
+                                        setFieldValue("isPart1Section14464b","")
+                                        setFieldValue("isPart1QIacting","")
+                                        setFieldValue("isPart1ofchap3and41099repo","")
+                                        setFieldValue("isPart1regusection16049C","")
+                                        setFieldValue("isPart1andbackupwithholdingresp","")
+                                        setFieldValue("isPart1AllocatePorofchap4","")
+                                        setFieldValue("isPart1QDDidentified","")
+                                        setFieldValue("corporation","")
+                                        setFieldValue("disregardedEntity","")
+                                        setFieldValue("partnership","")
                                         
                                       
                                       }, 200)
@@ -990,7 +987,7 @@ export default function Fedral_tax(props: any) {
                                   <Typography
                                     style={{ fontSize: "18px", color: "blue" }}
                                   >
-                                    Withholding Foreign Partnership{" "}
+                                    Withholding Foreign partnership{" "}
                                   </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
@@ -1000,7 +997,7 @@ export default function Fedral_tax(props: any) {
                                         fontSize:"12px",
                                         fontWeight: "bold",
                                       }}>
-                                    Withholding Foreign Partnership
+                                    Withholding Foreign partnership
                                     </Typography>
                                     <Typography align="left"
                                     style={{
@@ -1072,7 +1069,7 @@ export default function Fedral_tax(props: any) {
                                   <Typography
                                     style={{ fontSize: "18px", color: "blue" }}
                                   >
-                                    Non-withholding Foreign Partnership{" "}
+                                    Non-withholding Foreign partnership{" "}
                                   </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
@@ -1082,7 +1079,7 @@ export default function Fedral_tax(props: any) {
                                       fontSize:"12px",
                                       fontWeight: "bold",
                                     }}>
-                                  Chapter 3 Classification - Nonwithholding Partnership
+                                  Chapter 3 Classification - Nonwithholding partnership
 
                                   </Typography>
                                   <Typography align="left"
@@ -1217,7 +1214,7 @@ export default function Fedral_tax(props: any) {
                           </Accordion>
                         </div>
                         <div>
-                        {/* <input type="checkbox" name="QDD16A" onChange={handleChange} value={values.QDD16A}/> */}
+                        {/* <input type="checkbox" name="isPart1QDDidentified" onChange={handleChange} value={values.isPart1QDDidentified}/> */}
 
                         </div>
                         {values.chapter3StatusId==21 && (                 
