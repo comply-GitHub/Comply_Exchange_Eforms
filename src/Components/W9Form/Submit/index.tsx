@@ -9,8 +9,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
-import { W8_state_ECI } from "../../../Redux/Actions";
+import { W8_state_ECI, postW8BEN_EForm, postW9Form } from "../../../Redux/Actions";
 import { useDispatch } from "react-redux";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 
 const Declaration = (props: any) => {
   const { open, setOpen } = props;
@@ -362,12 +364,21 @@ const Declaration = (props: any) => {
                       marginTop: "40px",
                     }}
                   >
-                    <Button
-                      variant="contained"
-                      style={{ color: "white" }}
-                    >
-                      SAVE & EXIT
-                    </Button>
+                     <SaveAndExit Callback={() => {
+                            submitForm().then((data) => {
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              dispatch(postW9Form(
+                                {
+                                  ...prevStepData,
+                                  stepName: `/${urlValue}`
+                                }
+                                , () => { }))
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          }} formTypeId={FormTypeId.W9} />
                     <Button
 
                       variant="contained"

@@ -374,7 +374,7 @@ export default function FCTA_Reporting(props: any) {
                 marginTop: "80px",
               }}
             >
-              <Button
+              {/* <Button
                 variant="contained"
                 style={{ color: "white" }}
                 onClick={() => {
@@ -386,7 +386,22 @@ export default function FCTA_Reporting(props: any) {
                 }}
               >
                 SAVE & EXIT
-              </Button>
+              </Button> */}
+                 <SaveAndExit Callback={() => {
+                            submitForm().then((data) => {
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              dispatch(postW9Form(
+                                {
+                                  ...prevStepData,
+                                  stepName: `/${urlValue}`
+                                }
+                                , () => { }))
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          }} formTypeId={FormTypeId.W9} />
               <Button
                 // type="submit"
                 onClick={() => {

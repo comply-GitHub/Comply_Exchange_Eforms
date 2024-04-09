@@ -462,7 +462,7 @@ export default function Tin(props: any) {
                 marginTop: "80px",
               }}
             >
-              <Button variant="contained" style={{ color: "white" }}
+              {/* <Button variant="contained" style={{ color: "white" }}
                 onClick={() => {
                   submitForm().then((data) => {
                     history(GlobalValues.basePageRoute)
@@ -471,7 +471,23 @@ export default function Tin(props: any) {
                   })
                 }}>
                 SAVE & EXIT
-              </Button>
+              </Button> */}
+              
+              <SaveAndExit Callback={() => {
+                            submitForm().then((data) => {
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              dispatch(postW9Form(
+                                {
+                                  ...prevStepData,
+                                  stepName: `/${urlValue}`
+                                }
+                                , () => { }))
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          }} formTypeId={FormTypeId.W9} />
               <Button variant="contained" onClick={viewPdf} style={{ color: "white", marginLeft: "15px" }}>
                 View Form
               </Button>
