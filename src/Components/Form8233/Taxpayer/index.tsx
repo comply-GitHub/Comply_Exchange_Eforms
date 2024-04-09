@@ -184,7 +184,7 @@ export default function Tin(props: any) {
                 </div>
             </div>
         </div>
-        <div className="row w-100 h-100">
+        <div className="row w-100">
        <div className="col-4">
           <div style={{ padding: "20px 0px",height:"100%" }}>
           <BreadCrumbComponent breadCrumbCode={1360} formName={2}/>
