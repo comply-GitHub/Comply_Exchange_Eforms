@@ -2,9 +2,9 @@ import * as Yup from "yup";
 const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
 export const SubstantialSchema = () => {
   return Yup.object().shape({
-    daysAvailableInThisYear: Yup.number().min(1).required("Field Cannot be Empty"),
-    daysAvailableIn_OneYearbefore: Yup.number().min(1).required("Field Cannot be Empty"),
-    daysAvailableIn_TwoYearbefore: Yup.number().min(1).required("Field Cannot be Empty"),
+    daysAvailableInThisYear: Yup.number().max(366).required("Field Cannot be Empty"),
+    daysAvailableIn_OneYearbefore: Yup.number().max(366).required("Field Cannot be Empty"),
+    daysAvailableIn_TwoYearbefore: Yup.number().max(366).required("Field Cannot be Empty"),
     totalQualifyingDays: Yup.number(),
   });
 };

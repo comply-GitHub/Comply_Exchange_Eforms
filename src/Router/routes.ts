@@ -86,6 +86,9 @@ const Submit_DC_BEN = React.lazy(
 const ThankYou_DC_BEN = React.lazy(
   () => import("../Components/W-8BEN/Declaration/DualCert/ThankYou_DualCert")
 );
+const Susbtantial_BEN= React.lazy(
+  () => import("../Components/W-8BEN/Declaration/Non-US/SustantialPresence")
+);
 //
 const Fedral_tax = React.lazy(() => import("../Components/W9Form/Purposes/index"));
 const Back = React.lazy(() => import("../Components/W9Form/Backup"));
@@ -231,6 +234,14 @@ const ROUTES: Array<RouteType> = [
     Component: Certification_DC_BEN,
     isPrivate: true,
   },
+  {
+    name: "Susbtantial_BEN",
+    path: "/Susbtantial_BEN",
+    id: 2,
+    Component: Susbtantial_BEN,
+    isPrivate: true,
+  },
+  //Susbtantial_BEN
   {
     name: "penalities_DC_BEN",
     path: "/penalities_DC_BEN",
