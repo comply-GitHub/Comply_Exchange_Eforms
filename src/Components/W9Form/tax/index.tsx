@@ -321,7 +321,7 @@ export default function Tin(props: any) {
                               </Typography>
 
 
-                              <Link href="#" underline="none" style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}} onClick={() => { setToolInfo("") }}>--Show Less--</Link>
+                              <Link href="#" underline="none" style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}} onClick={() => { setToolInfo("") }}>--Show Less--</Link>
                             </Paper>
 
                           </div>) : ""}

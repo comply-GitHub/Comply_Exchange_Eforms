@@ -5,6 +5,7 @@ import InfoIcon from "@mui/icons-material/Info";
 
 
 const QDD = ({handleChange, values, setFieldValue}) => {
+    console.log("QDD form",values);
     const [toolInfo, setToolInfo] = useState("");
 
   return (
@@ -108,9 +109,9 @@ const QDD = ({handleChange, values, setFieldValue}) => {
             <Checkbox
             className="mx-2"
             onChange={handleChange}
-            value={values.QDD14}
-            checked={values.QDD14}
-            name="QDD14"
+            value={values.isPart1Integral}
+            checked={values.isPart1Integral}
+            name="isPart1Integral"
             size="medium"
             style={{ fontSize: "2rem" }}
             />
@@ -156,10 +157,10 @@ const QDD = ({handleChange, values, setFieldValue}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                value={values.QDD15A}
-                name='QDD15A'
+                value={values.isPart1FFI}
+                name='isPart1FFI'
                 onChange={handleChange}
-                checked={values.QDD15A}
+                checked={values.isPart1FFI}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -180,16 +181,16 @@ const QDD = ({handleChange, values, setFieldValue}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                value={values.QDD15B}
-                name='QDD15B'
+                value={values.isPart1chap3and4}
+                name='isPart1chap3and4'
                 onChange={(e) => {
                     handleChange(e);
                     console.log(e.target.value)
-                    setTimeout(() => { setFieldValue("QDD15G", false); }, 200)
-                    setTimeout(() => { setFieldValue("QDD15H", false); }, 200)
-                    setTimeout(() => { setFieldValue("QDD15I", false); }, 200)
+                    setTimeout(() => { setFieldValue("isPart1regusection16049C", false); }, 200)
+                    setTimeout(() => { setFieldValue("isPart1andbackupwithholdingresp", false); }, 200)
+                    setTimeout(() => { setFieldValue("isPart1AllocatePorofchap4", false); }, 200)
                 }}
-                checked={values.QDD15B}
+                checked={values.isPart1chap3and4}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -210,10 +211,10 @@ const QDD = ({handleChange, values, setFieldValue}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                value={values.QDD15C}
-                name='QDD15C'
+                value={values.isPart1Section1446f}
+                name='isPart1Section1446f'
                 onChange={handleChange}
-                checked={values.QDD15C}
+                checked={values.isPart1Section1446f}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -236,16 +237,16 @@ const QDD = ({handleChange, values, setFieldValue}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                value={values.QDD15D}
-                name='QDD15D'
+                value={values.isPart1Section14464b}
+                name='isPart1Section14464b'
                 onChange={(e) => {
                     handleChange(e);
                     console.log(e.target.value)
-                    setTimeout(() => { setFieldValue("QDD15G", false); }, 200)
-                    setTimeout(() => { setFieldValue("QDD15H", false); }, 200)
-                    setTimeout(() => { setFieldValue("QDD15I", false); }, 200)
+                    setTimeout(() => { setFieldValue("isPart1regusection16049C", false); }, 200)//15G
+                    setTimeout(() => { setFieldValue("isPart1andbackupwithholdingresp", false); }, 200)//15H
+                    setTimeout(() => { setFieldValue("isPart1AllocatePorofchap4", false); }, 200)//15I
                 }}
-                checked={values.QDD15D}
+                checked={values.isPart1Section14464b}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -268,10 +269,10 @@ const QDD = ({handleChange, values, setFieldValue}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                value={values.QDD15E}
-                name='QDD15E'
+                value={values.isPart1QIacting}
+                name='isPart1QIacting'
                 onChange={handleChange}
-                checked={values.QDD15E}
+                checked={values.isPart1QIacting}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -295,16 +296,16 @@ const QDD = ({handleChange, values, setFieldValue}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                value={values.QDD15F}
-                name='QDD15F'
+                value={values.isPart1ofchap3and41099repo}
+                name='isPart1ofchap3and41099repo'
                 onChange={(e) => {
                     handleChange(e);
                     console.log(e.target.value)
-                    setTimeout(() => { setFieldValue("QDD15G", false); }, 200)
-                    setTimeout(() => { setFieldValue("QDD15H", false); }, 200)
-                    setTimeout(() => { setFieldValue("QDD15I", false); }, 200)
+                    setTimeout(() => { setFieldValue("isPart1regusection16049C", false); }, 200)//15G
+                    setTimeout(() => { setFieldValue("isPart1andbackupwithholdingresp", false); }, 200)//15H
+                    setTimeout(() => { setFieldValue("isPart1AllocatePorofchap4", false); }, 200)//15I
                 }}
-                checked={values.QDD15F}
+                checked={values.isPart1ofchap3and41099repo}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -332,17 +333,17 @@ const QDD = ({handleChange, values, setFieldValue}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                name="QDD15G"
-                value={values.QDD15G}
-                checked={values.QDD15G}
+                name="isPart1regusection16049C"
+                value={values.isPart1regusection16049C}
+                checked={values.isPart1regusection16049C}
                 onChange={(e) => {
                     handleChange(e);
                     console.log(e.target.value)
-                    setTimeout(() => { setFieldValue("QDD15B", false); }, 200)
-                    setTimeout(() => { setFieldValue("QDD15D", false); }, 200)
-                    setTimeout(() => { setFieldValue("QDD15F", false); }, 200)
-                    setTimeout(() => { setFieldValue("QDD15H", false); }, 200)
-                    setTimeout(() => { setFieldValue("QDD15I", false); }, 200)
+                    setTimeout(() => { setFieldValue("isPart1chap3and4", false); }, 200) //isPart1chap3and4
+                    setTimeout(() => { setFieldValue("isPart1Section14464b", false); }, 200) //isPart1Section14464b
+                    setTimeout(() => { setFieldValue("isPart1ofchap3and41099repo", false); }, 200) //isPart1ofchap3and41099repo
+                    setTimeout(() => { setFieldValue("isPart1andbackupwithholdingresp", false); }, 200) //isPart1andbackupwithholdingresp
+                    setTimeout(() => { setFieldValue("isPart1AllocatePorofchap4", false); }, 200) //isPart1AllocatePorofchap4
                 }}
                 
                 size="medium"
@@ -367,11 +368,11 @@ const QDD = ({handleChange, values, setFieldValue}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                name="QDD15H"
-                value={values.QDD15H}
+                name="isPart1andbackupwithholdingresp"
+                value={values.isPart1andbackupwithholdingresp}
                 onChange={handleChange}
-                checked={values.QDD15H && values.QDD15G}
-                disabled={values.QDD15G ? false:true}
+                checked={values.isPart1andbackupwithholdingresp && values.isPart1regusection16049C}
+                disabled={values.isPart1regusection16049C ? false:true}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -396,11 +397,11 @@ const QDD = ({handleChange, values, setFieldValue}) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                name="QDD15I"
-                value={values.QDD15I}
+                name="isPart1AllocatePorofchap4"
+                value={values.isPart1AllocatePorofchap4}
                 onChange={handleChange}
-                disabled={values.QDD15G ? false:true}
-                checked={values.QDD15I && values.QDD15G}
+                disabled={values.isPart1regusection16049C ? false:true}
+                checked={values.isPart1AllocatePorofchap4 && values.isPart1regusection16049C}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -433,13 +434,13 @@ const QDD = ({handleChange, values, setFieldValue}) => {
             onChange={(e) => {
                 handleChange(e);
                 console.log(e.target.value)
-                setTimeout(() => { setFieldValue("QDD16BCorp", false); }, 200)
-                setTimeout(() => { setFieldValue("QDD16BPart", false); }, 200)
-                setTimeout(() => { setFieldValue("QDD16BDisregardEntity", false); }, 200)
+                setTimeout(() => { setFieldValue("corporation", false); }, 200) //QDD16BCorp
+                setTimeout(() => { setFieldValue("partnership", false); }, 200) //QDD16BPart
+                setTimeout(() => { setFieldValue("disregardedEntity", false); }, 200) //QDD16BDisregard
             }}
-            name="QDD16A"
-            value={values.QDD16A}
-            checked={values.QDD16A}
+            name="isPart1QDDidentified"
+            value={values.isPart1QDDidentified}
+            checked={values.isPart1QDDidentified}
             size="medium"
             style={{ fontSize: "2rem" }}
             />
@@ -463,10 +464,10 @@ const QDD = ({handleChange, values, setFieldValue}) => {
             <Checkbox
             className="mx-2"
             onChange={handleChange}
-            disabled={values.QDD16A ? false:true}
-            name="QDD16BCorp"
-            value={values.QDD16BCorp}
-            checked={values.QDD16BCorp && values.QDD16A}
+            disabled={values.isPart1QDDidentified ? false:true}
+            name="corporation"
+            value={values.corporation}
+            checked={values.corporation && values.isPart1QDDidentified}
             size="medium"
             style={{ fontSize: "2rem" }}
             />
@@ -479,17 +480,17 @@ const QDD = ({handleChange, values, setFieldValue}) => {
                 textAlign:"justify" 
                 }}
                 >
-                Corporation
+                corporation
 
                 </Typography>
 
             <Checkbox
             className="mx-2"
             onChange={handleChange}
-            disabled={values.QDD16A ? false:true}
-            name="QDD16BPart"
-            value={values.QDD16BPart}
-            checked={values.QDD16BPart && values.QDD16A}
+            disabled={values.isPart1QDDidentified ? false:true}
+            name="partnership"
+            value={values.partnership}
+            checked={values.partnership && values.isPart1QDDidentified}
             size="medium"
             style={{ fontSize: "2rem" }}
             />
@@ -502,7 +503,7 @@ const QDD = ({handleChange, values, setFieldValue}) => {
                 textAlign:"justify" 
                 }}
                 >
-                Partnership
+                partnership
 
                 </Typography>
 
@@ -510,10 +511,10 @@ const QDD = ({handleChange, values, setFieldValue}) => {
             <Checkbox
             className="mx-2"
             onChange={handleChange}
-            disabled={values.QDD16A ? false:true}
-            name="QDD16BDisregardEntity"
-            value={values.QDD16BDisregardEntity}
-            checked={values.QDD16BDisregardEntity && values.QDD16A}
+            disabled={values.isPart1QDDidentified ? false:true}
+            name="disregardedEntity"
+            value={values.disregardedEntity}
+            checked={values.disregardedEntity && values.isPart1QDDidentified}
             size="medium"
             style={{ fontSize: "2rem" }}
             />

@@ -367,6 +367,7 @@ export default function Tin(props: any) {
                                     style={{
                                       marginTop: "10px",
                                       fontSize: "16px",
+                                      color: "#0000C7"
                                     }}
                                     onClick={() => {
                                       setToolInfo("");
@@ -674,7 +675,7 @@ export default function Tin(props: any) {
                                 <Link
                                   href="#"
                                   underline="none"
-                                  style={{ marginTop: "10px", fontSize: "16px" }}
+                                  style={{ marginTop: "10px", fontSize: "16px" ,color: "#0000C7"}}
                                   onClick={() => {
                                     setToolInfo("");
                                   }}

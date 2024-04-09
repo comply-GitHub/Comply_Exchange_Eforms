@@ -1329,7 +1329,7 @@ export default function IndividualUs() {
                         <Link
 
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "blue" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -2414,7 +2414,7 @@ export default function IndividualUs() {
                           <Link
 
                             underline="none"
-                            style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue"}}
+                            style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" ,color: "#0000C7"}}
                             onClick={() => {
                               setToolInfo("");
                             }}
@@ -3591,7 +3591,7 @@ export default function IndividualUs() {
 
                           <Link
                             underline="none"
-                            style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue"}}
+                            style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7"}}
                             onClick={() => {
                               setToolInfo("");
                             }}
@@ -4190,7 +4190,7 @@ export default function IndividualUs() {
                                             marginTop: "10px",
                                             fontSize: "16px",
                                             cursor: "pointer",
-                                             color: "blue"
+                                            color: "#0000C7"
                                           }}
                                           onClick={() => {
                                             setToolInfo("");
@@ -4341,7 +4341,7 @@ export default function IndividualUs() {
                                         underline="none"
                                         style={{
                                           marginTop: "10px",
-                                          fontSize: "16px", cursor: "pointer", color: "blue"
+                                          fontSize: "16px", cursor: "pointer", color: "#0000C7"
                                         }}
                                         onClick={() => {
                                           setToolInfo("");
@@ -4489,7 +4489,7 @@ export default function IndividualUs() {
                                         underline="none"
                                         style={{
                                           marginTop: "10px",
-                                          fontSize: "16px", cursor: "pointer" , color: "blue"
+                                          fontSize: "16px", cursor: "pointer" , color: "#0000C7"
                                         }}
                                         onClick={() => {
                                           setToolInfo("");
@@ -4976,7 +4976,7 @@ export default function IndividualUs() {
                           </Typography>
                           <Link
                             underline="none"
-                            style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue"}}
+                            style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" ,color: "#0000C7"}}
                             onClick={() => {
                               setToolInfo("");
                             }}
@@ -5412,7 +5412,7 @@ export default function IndividualUs() {
 
                                   <Link
                                     underline="none"
-                                    style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue"}}
+                                    style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" ,color: "#0000C7"}}
                                     onClick={() => {
                                       setToolInfo("");
                                     }}
@@ -5630,7 +5630,7 @@ export default function IndividualUs() {
 
                                   <Link
                                     underline="none"
-                                    style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue"}}
+                                    style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7"}}
                                     onClick={() => {
                                       setToolInfo("");
                                     }}
@@ -5852,7 +5852,7 @@ export default function IndividualUs() {
 
                               <Link
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "blue" }}
+                                style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -6104,7 +6104,7 @@ export default function IndividualUs() {
 
                               <Link
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue"}}
+                                style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7"}}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}

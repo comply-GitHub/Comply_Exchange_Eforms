@@ -521,7 +521,7 @@ useEffect(()=>{
                                         underline="none"
                                         style={{
                                           marginTop: "10px",
-                                          fontSize: "16px", color: "blue"
+                                          fontSize: "16px", color: "#0000C7"
                                         }}
                                         onClick={() => {
                                           setToolInfo("");
@@ -702,7 +702,7 @@ useEffect(()=>{
                                             underline="none"
                                             style={{
                                               marginTop: "10px",
-                                              fontSize: "16px", color: "blue"
+                                              fontSize: "16px", color: "#0000C7"
                                             }}
                                             onClick={() => {
                                               setToolInfo("");
@@ -1008,7 +1008,7 @@ useEffect(()=>{
                                               underline="none"
                                               style={{
                                                 marginTop: "10px",
-                                                fontSize: "16px", color: "blue"
+                                                fontSize: "16px", color: "#0000C7"
                                               }}
                                               onClick={() => {
                                                 setToolInfo("");

@@ -312,7 +312,7 @@ treaty between the United States and that country.
                   </thead>
                   <tbody>
                     <tr>
-                      <td colSpan={2} style={{ padding:"5px 0"}}>Under penalties of perjury, I declare that I have examined the information on this form and to the best of my knowledge and belief it is true, correct, and complete. I further certify under penalties of perjury that:</td>
+                      <td colSpan={2} style={{ padding:"5px 0" }}>Under penalties of perjury, I declare that I have examined the information on this form and to the best of my knowledge and belief it is true, correct, and complete. I further certify under penalties of perjury that:</td>
                     </tr>
                     <tr>
                       <td colSpan={2} style={{ padding:"10px 0"}}>
