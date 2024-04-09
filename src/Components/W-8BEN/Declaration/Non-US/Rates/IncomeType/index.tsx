@@ -292,7 +292,7 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                       <option value="0">---select---</option>
                       {
 
-                        GetAllIncomeCodesReducer.allCountriesIncomeCodeData?.filter((ele: any) => articleBeneficialOwner?.articlesIncomeCodes?.split(",").includes(ele?.name.split("-")[0].trim())).map(
+                        GetAllIncomeCodesReducer.allCountriesIncomeCodeData?.filter((ele: any) => articleBeneficialOwner?.articlesIncomeCodes?.split(",")).map(
                           (ele: any) => (
                             <option
                               key={ele?.id}

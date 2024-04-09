@@ -221,6 +221,13 @@ export const certificateSchema_w9_DC = () => {
   });
 };
 
+
+export const certificateSchema_BEN_DC = () => {
+  return Yup.object().shape({
+    IsAgreeWithDeclaration: Yup.boolean().oneOf([true], "Please mark the checkbox"),
+    isElectronicForm: Yup.boolean().oneOf([true], "Please mark the checkbox"),
+  });
+};
 export const certificateSchema_w9 = () => {
   return Yup.object().shape({
     isBeneficialOwnerIncome: Yup.boolean().oneOf(

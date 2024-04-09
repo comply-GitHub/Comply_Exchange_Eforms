@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { useDispatch,useSelector } from "react-redux";
 import { Form, Formik } from "formik";
+import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 import { postW8BENForm,GetHelpVideoDetails } from "../../../../../Redux/Actions";
 import { certificateSchema_w8Ben } from "../../../../../schemas/w8Exp";
 import checksolid from "../../../../../assets/img/check-solid.png";
@@ -86,7 +87,9 @@ export default function Certifications(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId))
+            }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[4].id === 6 ? (
@@ -142,7 +145,7 @@ export default function Certifications(props: any) {
               //   );
               // }}
               onSubmit={(values, { setSubmitting }) => {
-                history("/W-8BEN/Declaration/US_Tin/Certificates/Submit_Ben")
+                history("/W-8BEN/Declaration/US_Tin/Certification_Substitute/participation")
                 setSubmitting(true);
                 let temp = {
                   ...PrevStepData,
@@ -625,6 +628,9 @@ export default function Certifications(props: any) {
                             Check to confirm you have reviewed the Electronic
                             Form
                             <span
+                            onClick={() => {
+                              dispatch(GetBenPdf(authDetails?.accountHolderId))
+                            }}
                               style={{
                                 color: "blue",
                                 fontSize: "14px",
@@ -684,7 +690,9 @@ export default function Certifications(props: any) {
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
-                        onClick={viewPdf}
+                        onClick={() => {
+                          dispatch(GetBenPdf(authDetails?.accountHolderId))
+                        }}
                       >
                         {" "}
                         View form{" "}
