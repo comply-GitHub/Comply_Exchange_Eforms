@@ -19,8 +19,9 @@ const WFP = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                value={props.values.TFI18A}
-                name='TFI18A'
+                value={props.values.isPart1WPorWTagreement}
+                checked={props.values.isPart1WPorWTagreement}
+                name="isPart1WPorWTagreement"
                 onChange={props.handleChange}
                 size="medium"
                 style={{ fontSize: "2rem" }}
