@@ -110,8 +110,9 @@ const NQI = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                value={props.values.NQI15A}
-                name='NQI15A'
+                value={props.values.isPart1QIeachamount}
+                checked={props.values.isPart1QIeachamount}
+                name='isPart1QIeachamount'
                 onChange={props.handleChange}
                 size="medium"
                 style={{ fontSize: "2rem" }}
@@ -136,6 +137,9 @@ const NQI = (props:any) => {
                 <Checkbox
                 className="mx-2"
                 onChange={props.handleChange}
+                value={props.values.isPart1transmitwithholdingCer}
+                checked={props.values.isPart1transmitwithholdingCer}
+                name='isPart1transmitwithholdingCer'
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -158,6 +162,9 @@ const NQI = (props:any) => {
                 <Checkbox
                 className="mx-2"
                 onChange={props.handleChange}
+                value={props.values.isPart1meetsReguSection160494C}
+                checked={props.values.isPart1meetsReguSection160494C}
+                name='isPart1meetsReguSection160494C'
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -181,6 +188,9 @@ const NQI = (props:any) => {
                 <Checkbox
                 className="mx-2"
                 onChange={props.handleChange}
+                name="isPart1OtherthanQI"
+                value={props.values.isPart1OtherthanQI}
+                checked={props.values.isPart1OtherthanQI}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -202,6 +212,9 @@ const NQI = (props:any) => {
                 <Checkbox
                 className="mx-2"
                 onChange={props.handleChange}
+                name="isPart1Section1441and1471"
+                value={props.values.isPart1Section1441and1471}
+                checked={props.values.isPart1Section1441and1471}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />

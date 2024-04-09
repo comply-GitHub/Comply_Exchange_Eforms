@@ -19,8 +19,9 @@ const USBranch = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                value={props.values.TFI18A}
-                name='TFI18A'
+                value={props.values.isPart1PublictradedPartnership}
+                checked={props.values.isPart1PublictradedPartnership}
+                name="isPart1PublictradedPartnership"
                 onChange={props.handleChange}
                 size="medium"
                 style={{ fontSize: "2rem" }}
@@ -51,6 +52,9 @@ const USBranch = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
+                value={props.values.isPart119bRegulationSec11411b}
+                checked={props.values.isPart119bRegulationSec11411b}
+                name="isPart119bRegulationSec11411b"
                 onChange={props.handleChange}
                 size="medium"
                 style={{ fontSize: "2rem" }}
@@ -75,6 +79,9 @@ const USBranch = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
+                value={props.values.isPart119cRegulationSec11414d}
+                checked={props.values.isPart119cRegulationSec11414d}
+                name="isPart119cRegulationSec11414d"
                 onChange={props.handleChange}
                 size="medium"
                 style={{ fontSize: "2rem" }}
@@ -116,6 +123,9 @@ const USBranch = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
+                value={props.values.isPart119dRegulationSec11414a}
+                checked={props.values.isPart119dRegulationSec11414a}
+                name="isPart119dRegulationSec11414a"
                 onChange={props.handleChange}
                 size="medium"
                 style={{ fontSize: "2rem" }}
@@ -147,6 +157,9 @@ const USBranch = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
+                value={props.values.isPart119eRegulationSec11411b}
+                checked={props.values.isPart119eRegulationSec11411b}
+                name="isPart119eRegulationSec11411b"
                 onChange={props.handleChange}
                 size="medium"
                 style={{ fontSize: "2rem" }}
@@ -183,6 +196,9 @@ const USBranch = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
+                value={props.values.partVINomineeforDistribution}
+                checked={props.values.partVINomineeforDistribution}
+                name="partVINomineeforDistribution"
                 onChange={props.handleChange}
                 size="medium"
                 style={{ fontSize: "2rem" }}
