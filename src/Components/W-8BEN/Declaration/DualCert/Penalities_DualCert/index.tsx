@@ -244,7 +244,7 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                   >
                     The Internal Revenue Service does not require your consent
                     to any provisions of this document other than the
-                    certifications required to avoid backup withholding.
+                    certifications required to avoid backup withholding. 
                   </Typography>
 
                   <div
