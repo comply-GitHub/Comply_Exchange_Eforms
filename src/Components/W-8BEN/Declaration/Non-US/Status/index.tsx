@@ -35,11 +35,14 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import { GetAgentCountriesImportantForEform } from "../../../../../Redux/Actions";
 import moment from "moment";
+import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 import Infoicon from "../../../../../assets/img/info.png";
 import { useLocation } from "react-router-dom";
+import useAuth from "../../../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 export default function Factors() {
+  const { authDetails } = useAuth();
   const location = useLocation();
   const urlValue = location.pathname.substring(1);
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
@@ -57,9 +60,10 @@ export default function Factors() {
 
   // const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const initialValue = {
-    agentId: 3,
-    formTypeSelectionId: 1,
-    accountHolderBasicDetailId: 17,
+    agentId: authDetails?.agentId,
+    formTypeSelectionId: obValues.businessTypeId,
+    formTypeId: FormTypeId.BEN,
+    accountHolderBasicDetailId:authDetails?.accountHolderId,
     isHeldUSCitizenship: false,
     countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "0",
     isTaxationUSCitizenOrResident: false,
@@ -175,7 +179,9 @@ export default function Factors() {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId))
+            }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[4].id === 6 ? (
@@ -208,8 +214,8 @@ export default function Factors() {
           <div style={{ padding: "10px" }}>
             <Paper style={{ padding: "18px" }}>
               <Formik
-                validateOnChange={false}
-                validateOnBlur={false}
+                validateOnChange={true}
+                validateOnBlur={true}
                 initialValues={initialValue}
                 enableReinitialize
                 validationSchema={StatusSchema}
@@ -2188,7 +2194,9 @@ export default function Factors() {
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
-                        onClick={viewPdf}
+                        onClick={() => {
+                          dispatch(GetBenPdf(authDetails?.accountHolderId))
+                        }}
                       >
                         View form
                       </Button>

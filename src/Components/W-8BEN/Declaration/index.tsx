@@ -6,26 +6,75 @@ import { Divider, Paper } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./index.scss";
-import {GetHelpVideoDetails} from "../../../Redux/Actions"
+import { GetBenPdf } from "../../../Redux/Actions/PfdActions";
+import {GetHelpVideoDetails,postW8BENForm} from "../../../Redux/Actions"
 import "bootstrap/dist/css/bootstrap.css";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../Redux/store";
+import useAuth from "../../../customHooks/useAuth";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 export default function Term() {
-
+  const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const history = useNavigate();
   const dispatch = useDispatch();
-
-  useEffect(()=>{
-    document.title = "Comply Exchange"
-  },[])
+  const { authDetails } = useAuth();
+ 
 
   useEffect(() => {
+    document.title = "Comply Exchange"
     dispatch(GetHelpVideoDetails());
   }, []);
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+
+  // const handleUSButtonClick = () => {
+  
+  //   dispatch(postW8BENForm({AccountHolderBasicDetailId:authDetails?.accountHolderId,AgentId:authDetails?.agentId,FormTypeSelectionId:obValues.businessTypeId, IsUsSourcedIncome: true }));
+  //   history("/W-8BEN/Declaration/US_Sourced");
+  // };
+
+  const handleUSButtonClick = () => {
+    const successCallback = () => {
+        // Optional: Handle success actions after form submission
+    };
+
+    const errorCallback = (error:any) => {
+        // Optional: Handle error actions after form submission
+        console.error("Error submitting form:", error);
+    };
+
+    const formValues = {
+        AccountHolderBasicDetailId: authDetails?.accountHolderId,
+        AgentId: authDetails?.agentId,
+        FormTypeSelectionId: obValues.businessTypeId,
+        IsUsSourcedIncome: true
+    };
+
+    dispatch(postW8BENForm(formValues, successCallback, errorCallback));
+    history("/W-8BEN/Declaration/US_Sourced");
+};
+
+const handleNonUSButtonClick = () => {
+  const successCallback = () => {
+      // Optional: Handle success actions after form submission
+  };
+
+  const errorCallback = (error:any) => {
+      // Optional: Handle error actions after form submission
+      console.error("Error submitting form:", error);
+  };
+
+  const formValues = {
+      AccountHolderBasicDetailId: authDetails?.accountHolderId,
+      AgentId: authDetails?.agentId,
+      FormTypeSelectionId: obValues.businessTypeId,
+      IsUsSourcedIncome: false
+  };
+
+  dispatch(postW8BENForm(formValues, successCallback, errorCallback));
+  history("/W-8BEN/Declaration/Non_US_Sorced/Status");
+};
   return (
     <section
       className="inner_content"
@@ -34,7 +83,9 @@ export default function Term() {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform">View Form</div>
+          <div className="viewform"  onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId))
+            }}>View Form</div>
           <div className="helpvideo">
           {GethelpData && GethelpData[4].id === 6 ? (
   <a
@@ -172,16 +223,12 @@ export default function Term() {
                 size="large"
                 variant="contained"
                 style={{ color: "white" }}
-                onClick={() => {
-                  history("/W-8BEN/Declaration/US_Sourced");
-                }}
+                onClick={handleUSButtonClick}
               >
                 U.S. Sourced Income
               </Button>
               <Button
-                onClick={() => {
-                  history("/W-8BEN/Declaration/Non_US_Sorced/Status");
-                }}
+               onClick={handleNonUSButtonClick}
                 size="large"
                 variant="contained"
                 style={{ color: "white", marginLeft: "15px" }}

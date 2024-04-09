@@ -27,7 +27,6 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import CloseIcon from "@mui/icons-material/Close";
-import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 import { US_TINSchemaW8BenE } from "../../../../../schemas/w8Ben";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import useAuth from "../../../../../customHooks/useAuth";
@@ -64,7 +63,7 @@ export default function Tin(props: any) {
     const temp = {
       ...PrevStepData,
       ...W8BENData,
-      usTinTypeId: obValues?.taxpayerIdTypeID?.toString() ?? (W8BENData?.usTinTypeId ? W8BENData?.usTinTypeId : "1"),
+      usTinTypeId: obValues?.taxpayerIdTypeID?.toString() ?? (W8BENData?.usTinTypeId ? W8BENData?.usTinTypeId : "1" ),
       usTin: W8BENData?.usTin == "" ? obValues?.usTin : W8BENData?.usTin,
       notAvailable: W8BENData?.notAvailable ? W8BENData?.notAvailable : false,
       notAvailableReason: W8BENData?.notAvailableReason || "",
@@ -101,9 +100,9 @@ export default function Tin(props: any) {
       setExpanded(isExpanded ? panel : false);
     };
 
-  useEffect(() => {
-    document.title = "Tax-Payer"
-  }, [])
+    useEffect(()=>{
+      document.title = "Tax-Payer"
+    },[])
 
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
@@ -140,11 +139,11 @@ export default function Tin(props: any) {
   );
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
-  console.log(obValues.taxpayerIdTypeID, "pp")
+console.log(obValues.taxpayerIdTypeID,"pp")
   const dispatch = useDispatch();
   const [initialValue, setInitialValues] = useState({
     usTinTypeId: obValues.taxpayerIdTypeID?.toString(),
-
+    
     usTin: obValues.usTin,
     tinValue: "",
     notAvailable: false,
@@ -175,9 +174,7 @@ export default function Tin(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform" onClick={() => {
-              dispatch(GetBenPdf(authDetails?.accountHolderId))
-            }}>View Form</div>
+          <div className="viewform" onClick={viewPdf}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[3].id === 5 ? (
@@ -228,7 +225,7 @@ export default function Tin(props: any) {
 
                     stepName: null,
                   };
-
+                
                   const returnPromise = new Promise((resolve, reject) => {
                     dispatch(
                       postW8BENForm(temp,
@@ -255,7 +252,7 @@ export default function Tin(props: any) {
                   handleBlur,
                   values,
                   handleSubmit,
-
+                
                   handleChange,
                   setFieldValue,
                   submitForm,
@@ -315,7 +312,7 @@ export default function Tin(props: any) {
                           fontWeight: "550",
                         }}
                       >
-                        Taxpayer Identification Number
+                        Taxpayer Identification Number SelfCert
                       </Typography>
                     </div>
 
@@ -395,7 +392,7 @@ export default function Tin(props: any) {
                                   underline="none"
                                   style={{
                                     marginTop: "10px",
-                                    fontSize: "16px", color: "#0000C7"
+                                    fontSize: "16px",
                                   }}
                                   onClick={() => {
                                     setToolInfo("");
@@ -581,9 +578,9 @@ export default function Tin(props: any) {
                             onBlur={handleBlur}
                             value={values.foreignTINCountry}
                             onChange={(e) => {
-
+                             
                               handleChange(e);
-
+                              
                             }}
                           >
                             <option value={0}>---select---</option>
@@ -705,7 +702,7 @@ export default function Tin(props: any) {
                               <Link
                                 href="#"
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
+                                style={{ marginTop: "10px", fontSize: "16px" }}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -1127,9 +1124,7 @@ export default function Tin(props: any) {
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
-                        onClick={() => {
-                          dispatch(GetBenPdf(authDetails?.accountHolderId))
-                        }}
+                        onClick={viewPdf}
                       >
                         View Form
                       </Button>
@@ -1141,7 +1136,7 @@ export default function Tin(props: any) {
                         onClick={() => {
                           submitForm().then(() => {
                             history(
-                              "/W-8BEN/Declaration/US_Tin/Claim"
+                              "/Certification_DC_BEN"
                             );
                           })
                         }}
@@ -1152,9 +1147,7 @@ export default function Tin(props: any) {
                     <Typography
                       align="center"
                       style={{
-
-
-                        color: "#f5f5f5",
+                        color: "#adadac",
                         justifyContent: "center",
                         alignItems: "center",
                         marginTop: "20px",
@@ -1166,8 +1159,8 @@ export default function Tin(props: any) {
                       <Button
                         onClick={() => {
                           history(
-                            "/W-8BEN/Declaration/Non_US_Sorced/Status"
-
+                            "/W-8BEN/Declaration/US_Tin/Certificates/Submit_Ben/ThankYou_Ben"
+                            
                           );
                         }}
                         variant="contained"

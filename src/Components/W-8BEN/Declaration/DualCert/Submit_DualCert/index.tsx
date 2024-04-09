@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SubmitSchema } from "../../../../../schemas/submit";
 import Accordion from "@mui/material/Accordion";
@@ -8,10 +8,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
-import useAuth from "../../../../../customHooks/useAuth";
 import { W8_state_ECI, postW8BENForm } from "../../../../../Redux/Actions";
 import { useDispatch } from "react-redux";
-import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
+
 const Declaration = (props: any) => {
   const location = useLocation();
   const { open, setOpen } = props;
@@ -19,7 +18,6 @@ const Declaration = (props: any) => {
     setOpen(false);
   };
   const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
-  const { authDetails } = useAuth();
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsCheckboxChecked(event.target.checked);
@@ -45,10 +43,6 @@ const Declaration = (props: any) => {
     IsSubmit: false,
     IsSubmit_not: false,
   };
-  useEffect(()=>{
-    document.title = "Electronic Signature Confirmation"
-  },[])
-
   const viewPdf=()=>{
     history("w8Ben_pdf");
   }
@@ -79,7 +73,7 @@ const Declaration = (props: any) => {
                       JSON.stringify(result)
                     );
                     history(
-                      "/W-8BEN/Declaration/US_Tin/Certificates/Submit_Ben/ThankYou_Ben"
+                      "/ThankYou_DC_BEN"
                     );
                   })
                 );
@@ -384,9 +378,7 @@ const Declaration = (props: any) => {
                     <Button
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
-                      onClick={() => {
-                        dispatch(GetBenPdf(authDetails?.accountHolderId))
-                      }}
+                      onClick={viewPdf}
                     >
                       View Form
                     </Button>
@@ -406,7 +398,7 @@ const Declaration = (props: any) => {
                   <Typography
                     align="center"
                     style={{
-                      color: "#505E50",  
+                      color: "#adadac",
                       justifyContent: "center",
                       alignItems: "center",
                       marginTop: "20px",
@@ -425,7 +417,7 @@ const Declaration = (props: any) => {
                       }}
                       onClick={() => {
                         history(
-                          "/W-8BEN/Declaration/US_Tin/Certification_Substitute"
+                          "/penalities_DC_BEN"
                         );
                       }}
                     >
