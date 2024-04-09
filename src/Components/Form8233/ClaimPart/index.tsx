@@ -9,7 +9,7 @@ import {
   Checkbox,
 } from "@mui/material";
 import { amountSchema } from "../../../schemas/8233";
-import {GetHelpVideoDetails, CREATE_8233,getAllCountries,GetIncomeTypes, post8233_EForm } from "../../../Redux/Actions";
+import {GetHelpVideoDetails, CREATE_8233,getAllCountries,GetIncomeTypes, post8233_EForm, GetCountryArticleByID } from "../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Info } from "@mui/icons-material";
 import { Formik, Form } from "formik";
@@ -63,8 +63,13 @@ export default function Tin(props: any) {
   useEffect(()=>{
     dispatch(getAllCountries())  
   },[])
+  // useEffect(() => {
+  //   dispatch(GetCountryArticleByID(1, (data: any) => {
+  // }))
+  // }, [])
   const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer);
   const [toolInfo, setToolInfo] = useState("");
+  console.log(GetIncomeTypesData)
   return (
     <>
       <Formik
@@ -122,6 +127,7 @@ export default function Tin(props: any) {
           submitForm
         }) => (
           <Form onSubmit={handleSubmit}>
+            <>{console.log(values,errors, "errorsssss")}</>
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
@@ -355,7 +361,7 @@ export default function Tin(props: any) {
                                 A nonresident alien business/vocational trainee
                                 may enter 'neurosurgical residency at ABC
                                 Hospital' or 'one-year internship in hydraulic
-                                engineering at XYZ Corporation.'
+                                engineering at XYZ corporation.'
                               </li>
                             </ul>
 
