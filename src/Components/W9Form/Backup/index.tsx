@@ -940,7 +940,7 @@ export default function Backup_witholding(props: any) {
                   marginTop: "80px",
                 }}
               >
-                <Button 
+                {/* <Button 
                 disabled={isSubmitting}
                 variant="contained" 
                 style={{ color: "white", marginTop: "20px" }}
@@ -953,7 +953,22 @@ export default function Backup_witholding(props: any) {
                 }}
                 >
                   SAVE & EXIT
-                </Button>
+                </Button> */}
+                 <SaveAndExit Callback={() => {
+                            submitForm().then((data) => {
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              dispatch(postW9Form(
+                                {
+                                  ...prevStepData,
+                                  stepName: `/${urlValue}`
+                                }
+                                , () => { }))
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          }} formTypeId={FormTypeId.W9} />
                 <Button
                   variant="contained"
                   style={{ color: "white", marginLeft: "10px", marginTop: "20px" }}

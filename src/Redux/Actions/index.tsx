@@ -140,7 +140,7 @@ export const eFormSignIn1 = (value: any, callback: Function, errorCallback: Func
       `${Utils.EndPoint.eFormSignIn1}`,
       { ...value, username: value?.email },
       (responseData) => {
-        console.log(responseData);
+        console.log(responseData, "responseeee");
 
         if (responseData.status == 200) {
           let authDetails: any =

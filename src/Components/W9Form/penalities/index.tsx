@@ -800,7 +800,7 @@ export default function Penalties() {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history('/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9')
+                            history('/US_Purposes/Back/Exemption/Tax/Certificates')
                           }
 
                           }
