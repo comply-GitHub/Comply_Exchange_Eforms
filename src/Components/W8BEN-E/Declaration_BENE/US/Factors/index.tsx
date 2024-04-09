@@ -388,7 +388,7 @@ export default function Factors() {
           </div>
         </div>
       </div>
-
+      
     </section>
   );
 }

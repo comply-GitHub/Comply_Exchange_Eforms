@@ -1315,7 +1315,7 @@ export default function Fedral_tax(props: any) {
                           style={{
                             display: "flex",
                             justifyContent: "center",
-                            marginTop: "80px",
+                            marginTop: "40px",
                           }}
                         >
                           {/* <Button
@@ -1350,7 +1350,7 @@ export default function Fedral_tax(props: any) {
                             })
                           }} formTypeId={FormTypeId.W9} />
                           <Button
-                            // type="submit"
+                            type="submit"
                             // disabled={isSubmitting}
                             onClick={viewPdf}
                             variant="contained"
@@ -1359,7 +1359,7 @@ export default function Fedral_tax(props: any) {
                             View Form
                           </Button>
                           <Button
-                            //type="submit"
+                            type="submit"
                             onClick={(e) => {
                               submitForm()
                                 .then(() => {

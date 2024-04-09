@@ -403,7 +403,7 @@ export default function FCTA_Reporting(props: any) {
                             })
                           }} formTypeId={FormTypeId.W9} />
               <Button
-                // type="submit"
+                type="submit"
                 onClick={() => {
                   submitForm().then((data) => {
                     // history("/US_Purposes/Back/Exemption/Tax")
