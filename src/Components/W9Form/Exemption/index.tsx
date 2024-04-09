@@ -68,7 +68,7 @@ export default function FCTA_Reporting(props: any) {
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const initialValue = {
     isExemptionFATCAReportings: getReducerData?.isExemptionFATCAReportings ??  "No",
-    ReportingId: getReducerData?.ReportingId ?? 0
+    fatcaReportingId: getReducerData?.fatcaReportingId ?? 0
   };
   useEffect(()=>{
     document.title = "Exemptions Fatca"
@@ -342,8 +342,8 @@ export default function FCTA_Reporting(props: any) {
                                 fontStyle: "italic",
                                 height: "36px",
                               }}
-                              name="ReportingId"
-                              value={values?.ReportingId}
+                              name="fatcaReportingId"
+                              value={values?.fatcaReportingId}
                               id="Income"
                               // defaultValue={data.interestDividendPaymentId}
                               onChange={handleChange}
@@ -358,8 +358,8 @@ export default function FCTA_Reporting(props: any) {
                               )}
                             </select>
                           </FormControl>
-                         {errors.ReportingId && touched.ReportingId ?( <p className="error">{typeof errors.ReportingId==="string" ? errors.ReportingId : ""}</p>):""}
-                          {/* <p className="error">{typeof errors.ReportingId==="string" ? errors.ReportingId : ""}</p> */}
+                         {errors.fatcaReportingId && touched.fatcaReportingId ?( <p className="error">{typeof errors.fatcaReportingId==="string" ? errors.fatcaReportingId : ""}</p>):""}
+                          {/* <p className="error">{typeof errors.fatcaReportingId==="string" ? errors.fatcaReportingId : ""}</p> */}
 
                         </>
                       ) : ""}
