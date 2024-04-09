@@ -19,9 +19,10 @@ const TFI = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                value={props.values.TFI18A}
-                name='TFI18A'
                 onChange={props.handleChange}
+                value={props.values.isPart1lawsofterritoryofUS}
+                checked={props.values.isPart1lawsofterritoryofUS}
+                name="isPart1lawsofterritoryofUS"
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -52,6 +53,9 @@ const TFI = (props:any) => {
                 <Checkbox
                 className="mx-2"
                 onChange={props.handleChange}
+                value={props.values.isPart1EvidenceofChap3and4}
+                checked={props.values.isPart1EvidenceofChap3and4}
+                name="isPart1EvidenceofChap3and4"
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -73,6 +77,9 @@ const TFI = (props:any) => {
                 <Checkbox
                 className="mx-2"
                 onChange={props.handleChange}
+                value={props.values.isPart1withholdablepayment}
+                checked={props.values.isPart1withholdablepayment}
+                name="isPart1withholdablepayment"
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -112,6 +119,9 @@ const TFI = (props:any) => {
                 <Checkbox
                 className="mx-2"
                 onChange={props.handleChange}
+                value={props.values.isPart1regulationSec11446f4aiB}
+                checked={props.values.isPart1regulationSec11446f4aiB}
+                name="isPart1regulationSec11446f4aiB"
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -137,6 +147,9 @@ const TFI = (props:any) => {
                 <Checkbox
                 className="mx-2"
                 onChange={props.handleChange}
+                value={props.values.isPart1regulationSec11446f41vA}
+                checked={props.values.isPart1regulationSec11446f41vA}
+                name="isPart1regulationSec11446f41vA"
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -164,6 +177,9 @@ const TFI = (props:any) => {
                 <Checkbox
                 className="mx-2"
                 onChange={props.handleChange}
+                value={props.values.partVNomineeforDistribution}
+                checked={props.values.partVNomineeforDistribution}
+                name="partVNomineeforDistribution"
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />

@@ -32,7 +32,7 @@ export default function Tin(props: any) {
     taxTreaty_TreatyId: onBoardingFormValuesPrevStepData?.taxTreaty_TreatyId ? onBoardingFormValuesPrevStepData?.taxTreaty_TreatyId : 0,
     taxTreaty_TreatyArticleId: onBoardingFormValuesPrevStepData?.taxTreaty_TreatyArticleId ? onBoardingFormValuesPrevStepData?.taxTreaty_TreatyArticleId : 0,
     taxTreaty_TotalCompensationListedon11bExemptFromTax: onBoardingFormValuesPrevStepData?.taxTreaty_TotalCompensationListedon11bExemptFromTax ? onBoardingFormValuesPrevStepData?.taxTreaty_TotalCompensationListedon11bExemptFromTax : "",
-    taxTreaty_CheckAll: onBoardingFormValuesPrevStepData?.taxTreaty_CheckAll ? onBoardingFormValuesPrevStepData?.taxTreaty_CheckAll : true,
+    taxTreaty_CheckAll: onBoardingFormValuesPrevStepData?.taxTreaty_CheckAll ? onBoardingFormValuesPrevStepData?.taxTreaty_CheckAll : false,
     taxTreaty_CountryOfResidenceId: onBoardingFormValuesPrevStepData?.taxTreaty_CountryOfResidenceId ? onBoardingFormValuesPrevStepData?.taxTreaty_CountryOfResidenceId : 0,
     taxTreaty_NoncompensatoryScholarshiporFellowshipIncome: onBoardingFormValuesPrevStepData?.taxTreaty_NoncompensatoryScholarshiporFellowshipIncome ? onBoardingFormValuesPrevStepData?.taxTreaty_NoncompensatoryScholarshiporFellowshipIncome : "",
     taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID: onBoardingFormValuesPrevStepData?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID ? onBoardingFormValuesPrevStepData?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID : "",
@@ -55,7 +55,7 @@ export default function Tin(props: any) {
     const [clickCount, setClickCount] = useState(0);
   const [tax, setTax] = useState<string>("");
   const GetIncomeTypesData = useSelector(
-    (state:any)=>state.GetIncomeTypesReducer.GetIncomeTypesData
+    (state:any)=>state.CountryArticle.CountryArticleData
   )
   const handleTaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTax(event.target.value);
@@ -63,10 +63,22 @@ export default function Tin(props: any) {
   useEffect(()=>{
     dispatch(getAllCountries())  
   },[])
-  // useEffect(() => {
-  //   dispatch(GetCountryArticleByID(1, (data: any) => {
-  // }))
-  // }, [])
+
+  const [treatyId, setTreatyId] = useState('');
+  const [treatyIdOnWhichBasicExemption, setTreatyIdOnWhichBasicExemption] = useState("")
+
+  useEffect(() => {
+    dispatch(GetCountryArticleByID(treatyId, (data: any) => {
+      // console.log("Article get:",data);
+    }))
+  }, [treatyId])
+
+  useEffect(() => {
+    dispatch(GetCountryArticleByID(treatyIdOnWhichBasicExemption, (data: any) => {
+      // console.log("Article get:",data);
+    }))
+  }, [treatyIdOnWhichBasicExemption])
+
   const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer);
   const [toolInfo, setToolInfo] = useState("");
   console.log(GetIncomeTypesData)
@@ -124,6 +136,7 @@ export default function Tin(props: any) {
           handleSubmit,
           handleChange,
           isSubmitting,
+          setFieldValue,
           submitForm
         }) => (
           <Form onSubmit={handleSubmit}>
@@ -602,7 +615,10 @@ export default function Tin(props: any) {
                           name="taxTreaty_TreatyId"
                           value={values.taxTreaty_TreatyId}
                           onBlur={handleBlur}
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            handleChange(e);
+                            setTreatyId(e.target.value); // Set state here
+                          }}
                           style={{
                             border: " 1px solid #d9d9d9 ",
                             padding: " 0 10px",
@@ -651,9 +667,9 @@ export default function Tin(props: any) {
                         >
                            <option value={0}>--Please Select the income types--</option>
                             {GetIncomeTypesData?.map(
-                              (ele: any) => (
+                              (ele: any,index:any) => (
                                 <option key={ele?.id} value={ele?.id}>
-                                  {ele?.name}
+                                  {index+1} - {ele?.description}
                                 </option>
                                    )
                                    )}
@@ -803,7 +819,7 @@ export default function Tin(props: any) {
 
                               onChange={(e) => {
                                 handleChange(e); //condition
-                               
+                               setTimeout(() => { setFieldValue("taxTreaty_TotalCompensationListedon11bExemptFromTax","")})
                                 
                               }}
                               size="medium"
@@ -957,7 +973,7 @@ export default function Tin(props: any) {
                       complete lines 13a through 13c unless you also received
                       compensation for personal services
                       <span style={{ fontWeight: "550" }}>
-                        from the same withholding agent
+                        &nbsp; from the same withholding agent
                       </span>
                     </Typography>
 
@@ -1024,7 +1040,7 @@ export default function Tin(props: any) {
                               <span style={{ fontWeight: "550" }}>Note:</span>
                               Do not complete lines 13a through 13c unless you
                               also received compensation for personal services
-                              from the same withholding agent.
+                              &nbsp; from the same withholding agent.
                             </Typography>
 
                             <Link
@@ -1073,9 +1089,9 @@ export default function Tin(props: any) {
                     </div>
 
                     <Typography style={{ fontSize: "15px" }}>
-                      Tax treaty
+                      Tax treaty &nbsp;
                       <span style={{ fontWeight: "550" }}>
-                        and treaty article
+                        and treaty article &nbsp;
                       </span>
                       on which you are basing exemption from withholding
                       <span>
@@ -1156,7 +1172,10 @@ export default function Tin(props: any) {
                             values.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID
                           }
                           onBlur={handleBlur}
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            handleChange(e);
+                            setTreatyIdOnWhichBasicExemption(e.target.value); // Set state here
+                          }}
                           style={{
                             border: " 1px solid #d9d9d9 ",
                             padding: " 0 10px",
@@ -1189,7 +1208,35 @@ export default function Tin(props: any) {
                           <span style={{ fontWeight: "550" }}>c </span> Article:
                         </Typography>
 
-                        <Input
+                        <select
+                          value={values.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          name="taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID"
+                          disabled={values.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID ? false:true}
+                          style={{
+                            border: " 1px solid #d9d9d9 ",
+                            padding: " 0 10px",
+                            color: "#7e7e7e",
+                            fontStyle: "italic",
+                            height: "50px",
+                            width: "100%",
+                          }}
+                        >
+                           <option value={0}>--Please Select the income types--</option>
+                            {GetIncomeTypesData?.map(
+                              (ele: any,index:any) => (
+                                <option key={ele?.id} value={ele?.id}>
+                                  {index+1} - {ele?.description}
+                                </option>
+                                   )
+                                   )}
+                        </select>
+                        {errors?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID && typeof errors?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID === 'string' && (
+                                <p className="error">{errors?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID}</p>
+                              )}
+
+                        {/* <Input
                           value={
                             values.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID
                           }
@@ -1212,7 +1259,7 @@ export default function Tin(props: any) {
                         />
                         {errors?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID && typeof errors?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID === 'string' && (
                                 <p className="error">{errors?.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID}</p>
-                              )}
+                              )} */}
                         {/* <p className="error">
                           {
                             errors.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingArticleID
@@ -1437,9 +1484,19 @@ export default function Tin(props: any) {
                         submitForm().then(() => {
                           const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                           const urlValue = window.location.pathname.substring(1);
+                          // const temp = {
+                          //   ...values,
+                          //   ...prevStepData,
+                          //   agentId: authDetails?.agentId,
+                          //   accountHolderBasicDetailId: authDetails?.accountHolderId,
+                          //   stepName: `/${urlValue}`
+                          // };
                           dispatch(post8233_EForm(
                             {
+                              ...values,
                               ...prevStepData,
+                              agentId: authDetails?.agentId,
+                              accountHolderBasicDetailId: authDetails?.accountHolderId,
                               stepName: `/${urlValue}`
                             }
                             , () => { }))
