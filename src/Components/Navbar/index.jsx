@@ -1,6 +1,8 @@
 import React from "react";
 import { Button, Tooltip, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
+import GoogleTranslate from "../Reusable/multilanguage";
+import { display } from "@mui/system";
 
 export default function Nav( ) {
   const hiddenRoutes=["login",""]
@@ -33,7 +35,9 @@ export default function Nav( ) {
           className="navbar"
           src={require("../../assets/img/logo.png")}
         />
-        <div className="my-auto" style={{ height: "40px" }}>
+        <div className="my-auto" style={{ height: "40px", display: "flex" }}>
+        <GoogleTranslate />
+
           <Tooltip
             style={{ backgroundColor: "black", color: "white" }}
             title={
