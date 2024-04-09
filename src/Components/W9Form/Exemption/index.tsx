@@ -68,12 +68,13 @@ export default function FCTA_Reporting(props: any) {
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const initialValue = {
     isExemptionFATCAReportings: getReducerData?.isExemptionFATCAReportings ??  "No",
-    ReportingId: getReducerData?.ReportingId ?? ""
+    ReportingId: getReducerData?.ReportingId ?? 0
   };
   useEffect(()=>{
     document.title = "Exemptions Fatca"
   },[])
   useEffect(() => {
+    console.log(getReducerData,"getReducerData")
     dispatch(GetAgentFATCAEntityGIINChallengeDisabledForEformAction());
     dispatch(GetHelpVideoDetails());
     dispatch(
@@ -350,7 +351,7 @@ export default function FCTA_Reporting(props: any) {
                               <option value={0}>---select---</option>
                               {GetAgentFATCAEntityGIINChallengeDisabledForEformReducer.GetAgentFATCAEntityGIINChallengeDisabledForEformData?.map(
                                 (ele: any) => (
-                                  <option key={ele?.id} value={ele?.id}>
+                                  <option key={ele?.fatcaEntityTypeId} value={ele?.fatcaEntityTypeId}>
                                     {ele?.name}
                                   </option>
                                 )
