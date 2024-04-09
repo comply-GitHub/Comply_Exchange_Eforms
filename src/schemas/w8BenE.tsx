@@ -149,7 +149,7 @@ export const claimSchemaW8BenE = () => {
     }),
     limitationBenefitsId: Yup.string().when(["ownerResidentId"], ([ownerResidentId], schema) => {
       if (ownerResidentId && ownerResidentId != "" && ownerResidentId !== "0") {
-        return schema.required("Please select an option.").notOneOf(["0"],"Please select an option.");
+        return schema.required("Please select an option.").notOneOf(["0"], "Please select an option.");
       } else {
         return schema;
       }
@@ -237,5 +237,31 @@ export const certificateSchema = () => {
     isAgree30DaysCertififcation: Yup.boolean().oneOf([true], ""),
     isCertifyCapacitySign: Yup.boolean().oneOf([true], ""),
     isConfirmElectronicForm: Yup.boolean().oneOf([true], ""),
+  });
+};
+
+export const SubmitSchema = () => {
+  return Yup.object().shape({
+    isConsentReceipentstatement: Yup.boolean().test(
+      'is-exclusive',
+      '',
+      function (value) {
+        const { isNotConsentReceipentstatement } = this.parent;
+        return (value && !isNotConsentReceipentstatement) || (!value && isNotConsentReceipentstatement);
+      }
+    ),
+
+    isNotConsentReceipentstatement: Yup.boolean().test(
+      'is-exclusive',
+      '',
+      function (value) {
+        const { isConsentReceipentstatement } = this.parent;
+        return (value && !isConsentReceipentstatement) || (!value && isConsentReceipentstatement);
+      }
+    ),
+    isAgreeWithDeclaration: Yup.boolean().oneOf(
+      [true],
+      ""
+    )
   });
 };

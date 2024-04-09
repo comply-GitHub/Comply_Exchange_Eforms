@@ -368,7 +368,7 @@ export default function Tin(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "13px" , color: "blue"}}
+                              style={{ marginTop: "10px", fontSize: "13px" , color: "#0000C7"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -471,7 +471,7 @@ export default function Tin(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "13px", color: "blue" }}
+                              style={{ marginTop: "10px", fontSize: "13px", color: "#0000C7" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -577,7 +577,7 @@ export default function Tin(props: any) {
                           <Link
                             href="#"
                             underline="none"
-                            style={{ marginTop: "10px", fontSize: "13px", color: "blue" }}
+                            style={{ marginTop: "10px", fontSize: "13px", color: "#0000C7" }}
                             onClick={() => {
                               setToolInfo("");
                             }}
@@ -752,7 +752,7 @@ export default function Tin(props: any) {
                               <Link
                                 href="#"
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "13px" , color: "blue"}}
+                                style={{ marginTop: "10px", fontSize: "13px" , color: "#0000C7"}}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -893,7 +893,7 @@ export default function Tin(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "13px" , color: "blue"}}
+                              style={{ marginTop: "10px", fontSize: "13px" , color: "#0000C7"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -1030,7 +1030,7 @@ export default function Tin(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "13px", color: "blue" }}
+                              style={{ marginTop: "10px", fontSize: "13px", color: "#0000C7" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -1131,7 +1131,7 @@ export default function Tin(props: any) {
                           <Link
                             href="#"
                             underline="none"
-                            style={{ marginTop: "10px", fontSize: "13px" , color: "blue"}}
+                            style={{ marginTop: "10px", fontSize: "13px" , color: "#0000C7"}}
                             onClick={() => {
                               setToolInfo("");
                             }}
@@ -1281,7 +1281,7 @@ export default function Tin(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "13px" , color: "blue"}}
+                              style={{ marginTop: "10px", fontSize: "13px" , color: "#0000C7"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -1385,7 +1385,7 @@ export default function Tin(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "13px" , color: "blue"}}
+                              style={{ marginTop: "10px", fontSize: "13px" , color: "#0000C7"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}

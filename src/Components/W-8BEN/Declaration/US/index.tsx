@@ -48,22 +48,22 @@ export default function Factors() {
       mirroredText.innerText = inputValue;
     }
   };
-  const viewPdf=()=>{
+  const viewPdf = () => {
     history("/w8Ben_pdf");
     // history("/w8Ben_pdf", { replace: true });
   }
 
- 
-  useEffect(()=>{
+
+  useEffect(() => {
     document.title = "Income-Report"
-  },[])
+  }, [])
 
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, [])
 
   useEffect(() => {
-    dispatch(GetAccountHolderIncomeAllocation(authDetails?.accountHolderId, (data: any) => {
+    dispatch(GetAccountHolderIncomeAllocation(authDetails?.accountHolderId, FormTypeId.BEN, (data: any) => {
       let temp = data?.map((ele: any, index: number) => {
         return {
           option1: JSON.stringify(IncomeTypes.indexOf(ele?.incomeType)),
@@ -303,7 +303,7 @@ export default function Factors() {
                       <Link
                         href="#"
                         underline="none"
-                        style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
+                        style={{ marginTop: "10px", fontSize: "16px" ,color: "#0000C7"}}
                         onClick={() => {
                           setToolInfo("");
                         }}
@@ -358,7 +358,8 @@ export default function Factors() {
               <Typography
                 align="center"
                 style={{
-                  color: "#f5f5f5",
+                  //color: "#f5f5f5",
+                  color: "#505E50",  
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: "20px",

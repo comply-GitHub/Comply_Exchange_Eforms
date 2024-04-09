@@ -1348,7 +1348,7 @@ export default function Entity() {
                         </Typography>
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -1759,7 +1759,7 @@ export default function Entity() {
 
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer",color: "blue" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer",color: "#0000C7" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -2367,7 +2367,7 @@ export default function Entity() {
 
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue"}}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7"}}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -2801,7 +2801,7 @@ export default function Entity() {
                                   underline="none"
                                   style={{
                                     marginTop: "10px",
-                                    fontSize: "16px", cursor: "pointer", color: "blue"
+                                    fontSize: "16px", cursor: "pointer", color: "#0000C7"
                                   }}
                                   onClick={() => {
                                     setToolInfo("");
@@ -2955,7 +2955,7 @@ export default function Entity() {
                                         underline="none"
                                         style={{
                                           marginTop: "10px",
-                                          fontSize: "16px", cursor: "pointer" , color: "blue"
+                                          fontSize: "16px", cursor: "pointer" , color: "#0000C7"
                                         }}
                                         onClick={() => {
                                           setToolInfo("");
@@ -3104,7 +3104,7 @@ export default function Entity() {
                                       underline="none"
                                       style={{
                                         marginTop: "10px",
-                                        fontSize: "16px", cursor: "pointer" , color: "blue"
+                                        fontSize: "16px", cursor: "pointer" , color: "#0000C7"
                                       }}
                                       onClick={() => {
                                         setToolInfo("");
@@ -3250,7 +3250,7 @@ export default function Entity() {
                                       underline="none"
                                       style={{
                                         marginTop: "10px",
-                                        fontSize: "16px", cursor: "pointer" , color: "blue"
+                                        fontSize: "16px", cursor: "pointer" , color: "#0000C7"
                                       }}
                                       onClick={() => {
                                         setToolInfo("");
@@ -3726,7 +3726,7 @@ export default function Entity() {
                         </Typography>
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" ,  color: "blue" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" ,  color: "#0000C7" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -4144,7 +4144,7 @@ export default function Entity() {
 
                             <Link
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue"}}
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7"}}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -4334,7 +4334,7 @@ export default function Entity() {
 
                             <Link
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue" }}
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -4531,7 +4531,7 @@ export default function Entity() {
 
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -4771,7 +4771,7 @@ export default function Entity() {
 
                             <Link
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "blue" }}
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
