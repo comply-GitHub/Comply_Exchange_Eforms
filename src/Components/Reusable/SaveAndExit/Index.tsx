@@ -33,7 +33,7 @@ const style = {
   // margin: "2%",
   // fontSize: "1.2rem",
   // overflow: "auto",
-  // boxSizing: "border-box",
+  // boxSizing: "border-box",  
 };
 
 const InternalBoxStyle = {
