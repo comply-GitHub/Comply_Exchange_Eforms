@@ -78,7 +78,7 @@ export default function Factors() {
     countryTaxLiability: "",
     taxReferenceNumber: "",
     isTINFormatNotAvailable: false,
-    isPresentAtleast31Days: false,
+    IsPresentAtleast31Days: "Yes",
     statusId: 1,
     stepName: `/${urlValue}`,
   };
@@ -229,7 +229,14 @@ export default function Factors() {
                     // console.log(result,"FINAL RESULT")
                     dispatch(
                       postW8BENForm(values, () => {
-                        history("/W-8BEN/Declaration/US_Tin");
+                        // history("/W-8BEN/Declaration/US_Tin");
+                        if (values?.IsPresentAtleast31Days=== "Yes") {
+                          history('/Susbtantial_BEN')
+                        } else {
+                          history(
+                            "/W-8BEN/Declaration/US_Tin"
+                          );
+                        }
                         localStorage.setItem(
                           "PrevStepData",
                           JSON.stringify(result)
@@ -553,7 +560,7 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isPresentAtleast31Days &&
+                    {values.IsPresentAtleast31Days ==="Yes" &&
                       clickCount === 1 ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -1381,34 +1388,35 @@ export default function Factors() {
                           >
                             Has the individual been physically present in the
                             United States on at least 31 days during the current
-                            calendar year?
+                            calendar year?1
                           </Typography>
 
                           <FormControl>
                             <RadioGroup
                               row
-                              id="isPresentAtleast31Days"
+                              id="IsPresentAtleast31Days"
                               aria-labelledby="demo-row-radio-buttons-group-label"
-                              name="isPresentAtleast31Days"
-                              value={values.isPresentAtleast31Days}
+                              name="IsPresentAtleast31Days"
+                              value={values.IsPresentAtleast31Days}
                               onChange={handleChange}
                             >
                               <FormControlLabel
-                                value={true}
+                                value="Yes"
+                                label="Yes"
                                 control={<Radio />}
-                                label={true}
-                                name="isPresentAtleast31Days"
+                                
+                                name="IsPresentAtleast31Days"
                               />
                               <FormControlLabel
                                 className="label"
-                                value={false}
+                                value="No"
                                 control={<Radio />}
                                 label="No"
-                                name="isPresentAtleast31Days"
+                                name="IsPresentAtleast31Days"
                               />
                             </RadioGroup>
                             <p className="error">
-                              {errors.isPresentAtleast31Days}
+                              {errors.IsPresentAtleast31Days}
                             </p>
                           </FormControl>
 
@@ -1966,28 +1974,28 @@ export default function Factors() {
                           <FormControl>
                             <RadioGroup
                               row
-                              id="isPresentAtleast31Days"
+                              id="IsPresentAtleast31Days"
                               aria-labelledby="demo-row-radio-buttons-group-label"
-                              name="isPresentAtleast31Days"
-                              value={values.isPresentAtleast31Days}
+                              name="IsPresentAtleast31Days"
+                              value={values.IsPresentAtleast31Days}
                               onChange={handleChange}
                             >
                               <FormControlLabel
-                                value={true}
+                                value="Yes"
                                 control={<Radio />}
-                                label={true}
-                                name="isPresentAtleast31Days"
+                                label="Yes"
+                                name="IsPresentAtleast31Days"
                               />
                               <FormControlLabel
                                 className="label"
-                                value={false}
+                                value="No"
                                 control={<Radio />}
                                 label="No"
-                                name="isPresentAtleast31Days"
+                                name="IsPresentAtleast31Days"
                               />
                             </RadioGroup>
                             <p className="error">
-                              {errors.isPresentAtleast31Days}
+                              {errors.IsPresentAtleast31Days}
                             </p>
                           </FormControl>
 

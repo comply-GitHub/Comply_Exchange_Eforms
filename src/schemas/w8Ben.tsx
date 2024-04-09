@@ -52,7 +52,7 @@ export const StatusSchema = () => {
       is: "yes",
       then: () => Yup.boolean().oneOf([true], "Message"),
     }),
-    // isPresentAtleast31Days: Yup.boolean().required(
+    // IsPresentAtleast31Days: Yup.boolean().required(
     //   "Please select one of the options"
     // ),
   });
@@ -182,6 +182,15 @@ export const claimSchemaaa = () => {
         return schema;
       }
     }),
+  });
+};
+
+export const SubstantialSchema = () => {
+  return Yup.object().shape({
+    DaysInCurrentYear: Yup.number().max(366).required("Field Cannot be Empty"),
+    DaysInFirstYearBefore: Yup.number().max(366).required("Field Cannot be Empty"),
+    DaysInSecondYearBefore: Yup.number().max(366).required("Field Cannot be Empty"),
+    totalQualifyingDays: Yup.number(),
   });
 };
 
