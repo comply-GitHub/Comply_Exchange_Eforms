@@ -401,7 +401,7 @@ export default function Fedral_tax(props: any) {
                                         underline="none"
                                         style={{
                                           marginTop: "10px",
-                                          fontSize: "16px", color: "blue"
+                                          fontSize: "16px", color: "#0000C7"
                                         }}
                                         onClick={() => {
                                           setToolInfo("");

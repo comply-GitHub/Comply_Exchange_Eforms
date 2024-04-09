@@ -8,9 +8,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
+import useAuth from "../../../../../customHooks/useAuth";
 import { W8_state_ECI, postW8BENForm } from "../../../../../Redux/Actions";
 import { useDispatch } from "react-redux";
-
+import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 const Declaration = (props: any) => {
   const location = useLocation();
   const { open, setOpen } = props;
@@ -18,6 +19,7 @@ const Declaration = (props: any) => {
     setOpen(false);
   };
   const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
+  const { authDetails } = useAuth();
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsCheckboxChecked(event.target.checked);
@@ -382,7 +384,9 @@ const Declaration = (props: any) => {
                     <Button
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
-                      onClick={viewPdf}
+                      onClick={() => {
+                        dispatch(GetBenPdf(authDetails?.accountHolderId))
+                      }}
                     >
                       View Form
                     </Button>

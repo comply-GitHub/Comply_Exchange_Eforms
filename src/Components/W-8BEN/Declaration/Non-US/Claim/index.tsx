@@ -31,6 +31,7 @@ import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import check from "../../../../../assets/img/check.png";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import { useLocation } from "react-router-dom";
+import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 import {
   getAllCountriesWithTreaty,
   GetAgentCountriesImportantForEform,
@@ -124,7 +125,9 @@ export default function FCTA_Reporting(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>
+          <div className="viewform" onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId))
+            }}>
             View Form
           </div>
           <div className="helpvideo">
@@ -419,7 +422,7 @@ export default function FCTA_Reporting(props: any) {
                               <Link
                                 href="#"
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
+                                style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -564,7 +567,7 @@ export default function FCTA_Reporting(props: any) {
                                     style={{
                                       marginTop: "10px",
                                       fontSize: "16px", 
-                                      color: "blue"
+                                      color: "#0000C7"
                                     }}
                                     onClick={() => {
                                       setToolInfo("");
@@ -784,7 +787,9 @@ export default function FCTA_Reporting(props: any) {
                       <Button
                         style={{ color: "white", marginLeft: "15px" }}
                         variant="contained"
-                        onClick={viewPdf}
+                        onClick={() => {
+                          dispatch(GetBenPdf(authDetails?.accountHolderId))
+                        }}
                       >
                         VIEW FORM
                       </Button>
@@ -792,28 +797,25 @@ export default function FCTA_Reporting(props: any) {
                         disabled={!isValid}
                         onClick={async () => {
                           validateForm().then(() => {
-                            if (values?.isClaimTreaty == "no") {
-                              history(
-                                "/W-8BEN/Declaration/US_Tin/Certificates"
-                              );
-                            } else {
-                              history("/W-8BEN/Declaration/US_Tin/Rates");
-                            }
-                            submitForm()
-                              .then((data) => {
-                                if (values?.isClaimTreaty == "no") {
-                                  history(
-                                    "/W-8BEN/Declaration/US_Tin/Certificates"
-                                  );
-                                } else {
-                                  history("/W-8BEN/Declaration/US_Tin/Rates");
-                                }
-                              })
-                              .catch((err) => {
-                                console.log(err);
-                              });
-                          });
+                            submitForm().then((data) => {
+                              if (values?.isClaimTreaty == "no") {
+                                history('/W-8BEN/Declaration/US_Tin/Certificates')
+                              } else {
+                                history(
+                                  "/W-8BEN/Declaration/US_Tin/Rates"
+                                );
+                              }
+
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          })
+
+                          // history(
+                          //   "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE"
+                          // );
                         }}
+                       
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                       >

@@ -6,11 +6,12 @@ import { Divider, Paper } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./index.scss";
-import { GetHelpVideoDetails } from "../../../Redux/Actions"
+import { GetHelpVideoDetails, postW8BEN_EForm } from "../../../Redux/Actions"
 import "bootstrap/dist/css/bootstrap.css";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../Redux/store";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
+import { ErrorModel } from "../../../Redux/Actions/errormodel";
 export default function Term() {
   //States
   useEffect(() => {
@@ -21,12 +22,33 @@ export default function Term() {
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
 
-  const viewPdf=()=>{
+  const viewPdf = () => {
     history("/w8BenE_pdf", { replace: true });
   }
 
   const history = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  const handleSubmit = (isUsSourcedIncome: boolean): Promise<any> => {
+    const returnPromise = new Promise((resolve, reject) => {
+      const payload = {
+        ...prevStepData,
+        isUsSourcedIncome
+      };
+      dispatch(postW8BEN_EForm(
+        payload
+        ,
+        (data: any) => {
+          localStorage.setItem("PrevStepData", JSON.stringify(payload));
+          resolve(data);
+        },
+        (err: ErrorModel) => {
+          reject(err)
+        }
+      ))
+    });
+    return returnPromise;
+  }
 
   return (
     <section
@@ -180,14 +202,18 @@ export default function Term() {
                 variant="contained"
                 style={{ color: "white" }}
                 onClick={() => {
-                  history("/BenE/Tax_Purpose_BenE/Declaration_BenE/US/Factors_BenE");
+                  handleSubmit(true).then(() => {
+                    history("/BenE/Tax_Purpose_BenE/Declaration_BenE/US/Factors_BenE");
+                  })
                 }}
               >
                 U.S. Sourced Income
               </Button>
               <Button
                 onClick={() => {
-                  history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Status_BenE");
+                  handleSubmit(false).then(() => {
+                    history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Status_BenE");
+                  })
                 }}
                 size="large"
                 variant="contained"
@@ -199,7 +225,8 @@ export default function Term() {
             <Typography
               align="center"
               style={{
-                color: "#f5f5f5",
+                //color: "#f5f5f5",
+                color: "#505E50",  
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: "20px",

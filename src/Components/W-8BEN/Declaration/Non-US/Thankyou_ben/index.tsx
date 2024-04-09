@@ -8,21 +8,27 @@ import { Typography, Button } from "@mui/material";
 
 import Paper from "@mui/material/Paper";
 import DoneIcon from "@mui/icons-material/Done";
-
+import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 import { useRef } from "react";
-
+import { useDispatch } from "react-redux";
+import useAuth from "../../../../../customHooks/useAuth";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
-import W8Ben from "../../../../../formPDF/W8BEN";
+// import W8Ben from "../../../../../formPDF/W8BEN";
 
 export default function Term() {
   //States
   const history = useNavigate();
   const pdfRef = useRef(null);
   const pdfRefnew = useRef(null);
+  const { authDetails } = useAuth();
+  const dispatch = useDispatch();
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
-
+  const authDetailsString = localStorage.getItem("authDetails") || "{}";
+  
+  const auth = JSON.parse(authDetailsString);
+  const userType = auth?.configurations?.userType;
   const handleDownload = () => {
     if (pdfUrl) {
       const link = document.createElement("a");
@@ -48,7 +54,7 @@ export default function Term() {
     >
     
       <div style={{ paddingBlockStart: "30px" }}>
-        <W8Ben/>
+        {/* <W8Ben/> */}
       </div>
      
       <div className="container-fluid">
@@ -107,16 +113,39 @@ export default function Term() {
             >
               If you are using a public computer, please clear your cookies.
             </Typography>
-          </Paper>
+        
           <Typography align="center">
             <div className="mt-5" style={{ justifyContent: "center" }}>
              
 
               <div style={{ marginTop: "25px" }}>
                 <Button
+                  //type="submit"
+                  onClick={() => {
+                    dispatch(GetBenPdf(authDetails?.accountHolderId))
+                  }}
+                  style={{
+                    border: "1px solid #0095dd",
+                    background: "black",
+                    height: "35px",
+                    lineHeight: "normal",
+                    textAlign: "center",
+                    fontSize: "16px",
+                    marginLeft: "12px",
+                    textTransform: "uppercase",
+                    borderRadius: "0px",
+                    color: "#ffff",
+                    padding: "0 35px",
+                    letterSpacing: "1px",
+                  }}
+                  className="btn btn_submit  btn-primary-agent"
+                >
+                  Download PDF
+                </Button>
+                <Button
                   type="submit"
                   onClick={() => {
-                    history("/Certificates");
+                    history("/login");
                   }}
                   style={{
                     border: "1px solid #0095dd",
@@ -137,8 +166,36 @@ export default function Term() {
                   Exit
                 </Button>
               </div>
+              {userType === "DC" ? (
+              <div style={{ marginTop: "25px" }}>
+              <Button
+                  type="submit"
+                  onClick={() => {
+                    history("/TaxPayer_DC_BEN");
+                  }}
+                  style={{
+                    border: "1px solid #0095dd",
+                    background: "black",
+                    height: "45px",
+                    lineHeight: "normal",
+                    textAlign: "center",
+                    fontSize: "16px",
+                    marginLeft: "12px",
+                    textTransform: "uppercase",
+                    borderRadius: "0px",
+                    color: "#ffff",
+                    padding: "0 35px",
+                    letterSpacing: "1px",
+                  }}
+                  className="btn btn_submit  btn-primary-agent"
+                >
+                 Continue To Self Certification Submission
+                </Button>
+              </div>
+              ):""}
             </div>
           </Typography>
+          </Paper>
         </div>
       </div>
       <div className="container-fluid">

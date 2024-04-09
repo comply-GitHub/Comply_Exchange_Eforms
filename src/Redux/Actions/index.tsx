@@ -271,8 +271,8 @@ export const LoadExistingFormData = (formTypeId: any, AccountHolderId: any, call
       Endpoint = Utils.EndPoint.GetByForm8233IndividualNonUSFormId + `?AccountHolderBasicDetailId=${AccountHolderId}`
       break;
     case FormTypeId.FW81MY:
-        Endpoint = Utils.EndPoint.GetByW8IMYEntityNonForm + `?AccountHolderBasicDetailId=${AccountHolderId}`
-        break;
+      Endpoint = Utils.EndPoint.GetByW8IMYEntityNonForm + `?AccountHolderBasicDetailId=${AccountHolderId}`
+      break;
     default:
       return;
   }
@@ -420,7 +420,7 @@ export const postOnboarding = (value: any, callback: Function): any => {
 export const GetAllLanguage = (): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
-      Utils.EndPoint.GetAllLanguage,"",
+      Utils.EndPoint.GetAllLanguage, "",
       (resData) => {
         const { data } = resData;
         if (resData.status === 200) {
@@ -620,7 +620,7 @@ export const getBENEformData = (_id: Number, callback: any = () => { console.log
   };
 };
 
-export const getDualCertW9 = (_id: Number,FormId:Number, callback: any = () => { console.log("") }): any => {
+export const getDualCertW9 = (_id: Number, FormId: Number, callback: any = () => { console.log("") }): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
       Utils.EndPoint.GetDualCertW9,
@@ -1364,13 +1364,13 @@ export const postW8BENForm = (value: any, callback: Function, errorCallback: Fun
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.InsertW8BENIndividualNonUS,
-      // convertToFormData(value),
-      value,
+    convertToFormData(value),
+      // value,
       (responseData) => {
         let { data } = responseData;
         dispatch({
           type: Utils.actionName.InsertW8BENIndividualNonUS,
-          payload: {...value, Response: data },
+          payload: { ...value, Response: data },
         });
         if (responseData) {
           if (responseData.status == 500) {
@@ -1402,7 +1402,7 @@ export const postW8BENForm = (value: any, callback: Function, errorCallback: Fun
         });
         errorCallback(error)
       },
-      // "multi"
+      "multi"
     );
   };
 };
@@ -1455,11 +1455,11 @@ export const postW8BEN_EForm = (value: any, callback: Function, errorCallback: F
 
 
 
-export const postDualCertW9Form = (value: any):any=> {
+export const postDualCertW9Form = (value: any): any => {
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.UpsertDualCertW9,
-     value ,
+      value,
       (responseData) => {
         let { data } = responseData;
         dispatch({
@@ -1477,8 +1477,8 @@ export const postDualCertW9Form = (value: any):any=> {
               type: Utils.actionName.UpdateError,
               payload: { ...err },
             });
-           
-          } 
+
+          }
         }
       },
       (error: ErrorModel) => {
@@ -1490,7 +1490,7 @@ export const postDualCertW9Form = (value: any):any=> {
           type: Utils.actionName.UpdateError,
           payload: { ...err },
         });
-      
+
       },
       // "multi"
     );
@@ -1673,11 +1673,11 @@ export const UpsertAccountHolderIncomeAllocation = (payload: any, callback: Func
   };
 }
 
-export const GetAccountHolderIncomeAllocation = (_id: Number, callback: Function): any => {
+export const GetAccountHolderIncomeAllocation = (_id: Number, FormTypeId: number, callback: Function): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
       Utils.EndPoint.GetAccountHolderIncomeAllocation,
-      `?AccountHolderDetailId=${_id}`,
+      `?AccountHolderDetailId=${_id}&FormTypeId=${FormTypeId}`,
       (resData) => {
         const { data } = resData;
         if (resData.status === 200) {
@@ -2103,7 +2103,7 @@ export const post8233_EForm = (value: any, callback: Function, errorCallback: Fu
 };
 
 
-export const getSupportingDocument = (AccountHolderId:number, FormTypeId:number): any => {
+export const getSupportingDocument = (AccountHolderId: number, FormTypeId: number): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
       Utils.EndPoint.GetSupportingDocumentation,
@@ -2111,11 +2111,11 @@ export const getSupportingDocument = (AccountHolderId:number, FormTypeId:number)
       async (resData) => {
         const { data } = resData;
 
-        const newData = data.map((doc:any) => ({
-            ...doc,
-            action: 1, // Update the 'action' key to 1
-          }));
-          // setExistingDoc(newData);
+        const newData = data.map((doc: any) => ({
+          ...doc,
+          action: 1, // Update the 'action' key to 1
+        }));
+        // setExistingDoc(newData);
 
 
         localStorage.setItem("supportingDocuments", JSON.stringify(newData));
@@ -2185,7 +2185,7 @@ export const post8233_EForm_Documentation = (value: any, callback: Function, err
 };
 
 
-export const getSupportedFile = (storageName:number, FolderName:string): any => {
+export const getSupportedFile = (storageName: number, FolderName: string): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
       Utils.EndPoint.getSupportedFile,

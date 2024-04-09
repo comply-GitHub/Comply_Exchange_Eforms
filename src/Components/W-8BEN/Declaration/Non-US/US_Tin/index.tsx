@@ -27,6 +27,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import CloseIcon from "@mui/icons-material/Close";
+import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 import { US_TINSchemaW8BenE } from "../../../../../schemas/w8Ben";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import useAuth from "../../../../../customHooks/useAuth";
@@ -174,7 +175,9 @@ export default function Tin(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId))
+            }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[3].id === 5 ? (
@@ -392,7 +395,7 @@ export default function Tin(props: any) {
                                   underline="none"
                                   style={{
                                     marginTop: "10px",
-                                    fontSize: "16px", color: "blue"
+                                    fontSize: "16px", color: "#0000C7"
                                   }}
                                   onClick={() => {
                                     setToolInfo("");
@@ -702,7 +705,7 @@ export default function Tin(props: any) {
                               <Link
                                 href="#"
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px", color: "blue" }}
+                                style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -1124,7 +1127,9 @@ export default function Tin(props: any) {
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
-                        onClick={viewPdf}
+                        onClick={() => {
+                          dispatch(GetBenPdf(authDetails?.accountHolderId))
+                        }}
                       >
                         View Form
                       </Button>

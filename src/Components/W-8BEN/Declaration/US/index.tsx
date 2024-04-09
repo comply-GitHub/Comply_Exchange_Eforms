@@ -14,6 +14,7 @@ import {
   GetAccountHolderIncomeAllocation
 } from "../../../../Redux/Actions";
 import DynamicForm from "./text";
+import { GetBenPdf } from "../../../../Redux/Actions/PfdActions";
 import { validationUS } from "../../../../schemas/w8BenE"
 import { useDispatch, useSelector } from "react-redux";
 import checksolid from "../../../../../assets/img/check-solid.png";
@@ -48,22 +49,22 @@ export default function Factors() {
       mirroredText.innerText = inputValue;
     }
   };
-  const viewPdf=()=>{
+  const viewPdf = () => {
     history("/w8Ben_pdf");
     // history("/w8Ben_pdf", { replace: true });
   }
 
- 
-  useEffect(()=>{
+
+  useEffect(() => {
     document.title = "Income-Report"
-  },[])
+  }, [])
 
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, [])
 
   useEffect(() => {
-    dispatch(GetAccountHolderIncomeAllocation(authDetails?.accountHolderId, (data: any) => {
+    dispatch(GetAccountHolderIncomeAllocation(authDetails?.accountHolderId, FormTypeId.BEN, (data: any) => {
       let temp = data?.map((ele: any, index: number) => {
         return {
           option1: JSON.stringify(IncomeTypes.indexOf(ele?.incomeType)),
@@ -114,7 +115,7 @@ export default function Factors() {
           incomeType: IncomeTypes[element.option1],
           explaination: element.text,
           allocation: element.number,
-          countryId: element.option2 !== "" && element.option2 !== null ? Number.parseInt(element.option2) : null
+          countryId: element.option2 !== "" && element.option2 !== null && element.option2 !== "0" ? Number.parseInt(element.option2) : null
         }
         return temp;
       })
@@ -173,7 +174,9 @@ export default function Factors() {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId))
+            }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[3].id === 5 ? (
@@ -303,7 +306,7 @@ export default function Factors() {
                       <Link
                         href="#"
                         underline="none"
-                        style={{ marginTop: "10px", fontSize: "16px" , color: "blue"}}
+                        style={{ marginTop: "10px", fontSize: "16px" ,color: "#0000C7"}}
                         onClick={() => {
                           setToolInfo("");
                         }}
@@ -342,7 +345,9 @@ export default function Factors() {
                 <Button
                   variant="contained"
                   style={{ color: "white", marginLeft: "15px" }}
-                  onClick={viewPdf}
+                  onClick={() => {
+                    dispatch(GetBenPdf(authDetails?.accountHolderId))
+                  }}
                 >
                   View form
                 </Button>
@@ -358,7 +363,8 @@ export default function Factors() {
               <Typography
                 align="center"
                 style={{
-                  color: "#f5f5f5",
+                  //color: "#f5f5f5",
+                  color: "#505E50",  
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: "20px",
