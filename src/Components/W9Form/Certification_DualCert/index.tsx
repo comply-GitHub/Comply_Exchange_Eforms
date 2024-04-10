@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik } from "formik";
-import { W8_state_ECI, postW9Form, GetHelpVideoDetails } from "../../../Redux/Actions";
+import { W8_state_ECI, PostDualCert, GetHelpVideoDetails } from "../../../Redux/Actions";
 import { certificateSchema_w9_DC } from "../../../schemas/w8Exp";
 import InfoIcon from "@mui/icons-material/Info";
 import checksolid from "../../../assets/img/check-solid.png";
@@ -29,12 +29,13 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 
 export default function Certifications(props: any) {
   const location = useLocation();
-  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+  console.log(PrevStepData,"prevv")
   const urlValue = location.pathname.substring(1);
   const initialValue = {
 
-    isCapacityForm: false,
-    isElectronicForm:false,
+    confirmThisisaTrueAndAccurate: false,
+    confirmYouhaveRewiedElectronicForm:false,
 
   };
 
@@ -136,13 +137,13 @@ export default function Certifications(props: any) {
                 onSubmit={(values, { setSubmitting }) => {
                   const submitPromise = new Promise((resolve, reject) => {
                     setSubmitting(true);
-                    const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
-                    const result = { ...new_obj, ...values };
+                     
+                    const result = [{ ...PrevStepData[0], ...values,stepName: `/${urlValue}` }];
                     dispatch(
-                      postW9Form(result, () => {
-                        localStorage.setItem("PrevStepData", JSON.stringify(result))
+                      PostDualCert(result, () => {
+                        localStorage.setItem("DualCertData", JSON.stringify(result))
                         history("/Participation_W9_DC")
-                        setSubmitting(true);
+                      
                         resolve("");
                       },
                       (err:any)=>{
@@ -217,9 +218,9 @@ Section 4: Declaration and Undertaking
                       >
                         <div style={{ margin: "10px" }}>
                           <Typography style={{ display: "flex" }}>
-                            <Checkbox name="isCapacityForm"
-                              value={values.isCapacityForm}
-                              checked={values.isCapacityForm}
+                            <Checkbox name="confirmThisisaTrueAndAccurate"
+                              value={values.confirmThisisaTrueAndAccurate}
+                              checked={values.confirmThisisaTrueAndAccurate}
                               onChange={handleChange}
                               size="medium"
                               style={{ fontSize: "2rem",marginTop: "6px" }} />
@@ -229,12 +230,12 @@ Section 4: Declaration and Undertaking
                             Check to confirm this is a true and accurate statement
                             </Typography>
                           </Typography>
-                          <p className="error">{errors.isCapacityForm}</p>
+                          <p className="error">{errors.confirmThisisaTrueAndAccurate}</p>
                           <Typography style={{ display: "flex" }}>
 
-                            <Checkbox name="isElectronicForm"
-                              value={values.isElectronicForm}
-                              checked={values.isElectronicForm}
+                            <Checkbox name="confirmYouhaveRewiedElectronicForm"
+                              value={values.confirmYouhaveRewiedElectronicForm}
+                              checked={values.confirmYouhaveRewiedElectronicForm}
                               onChange={(e) => {
                                 handleChange(e);
                                 
@@ -251,7 +252,7 @@ Section 4: Declaration and Undertaking
                               </span>
                             </Typography>
                           </Typography>
-                          <p className="error">{errors.isElectronicForm}</p>
+                          <p className="error">{errors.confirmYouhaveRewiedElectronicForm}</p>
                          
                         
                         </div>
@@ -279,12 +280,13 @@ Section 4: Declaration and Undertaking
                             submitForm().then((data) => {
                               const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                               const urlValue = window.location.pathname.substring(1);
-                              dispatch(postW9Form(
-                                {
-                                  ...prevStepData,
-                                  stepName: `/${urlValue}`
-                                }
-                                , () => { }))
+                              // dispatch(PostDualCert(
+                              //   {
+                              //     ...prevStepData,
+                              //     ...values,
+                              //     stepName: `/${urlValue}`
+                              //   }
+                              //   , () => { }))
                               history(GlobalValues.basePageRoute)
                             }).catch((err) => {
                               console.log(err);

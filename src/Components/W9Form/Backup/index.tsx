@@ -942,20 +942,7 @@ export default function Backup_witholding(props: any) {
                   marginTop: "80px",
                 }}
               >
-                {/* <Button 
-                disabled={isSubmitting}
-                variant="contained" 
-                style={{ color: "white", marginTop: "20px" }}
-                onClick={()=>{
-                  submitForm().then((data)=>{
-                    history(GlobalValues.basePageRoute)
-                  }).catch((error)=>{
-                    console.log(error);
-                  })
-                }}
-                >
-                  SAVE & EXIT
-                </Button> */}
+               
                  <SaveAndExit Callback={() => {
                             submitForm().then((data) => {
                               const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
@@ -973,7 +960,7 @@ export default function Backup_witholding(props: any) {
                           }} formTypeId={FormTypeId.W9} />
                 <Button
                   variant="contained"
-                  style={{ color: "white", marginLeft: "10px"}}
+                  style={{ color: "white", marginLeft: "10px" }}
                   onClick={viewPdf}
                 >
                   View Form
