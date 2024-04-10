@@ -109,9 +109,9 @@ export default function Fedral_tax(props: any) {
       setInitialValue(tempData);
     }
   }
-useEffect(()=>{
-  document.title = "Chapter III"
-},[])
+  useEffect(() => {
+    document.title = "Chapter III"
+  }, [])
 
   useEffect(() => {
     dispatch(getAllCountries());
@@ -156,15 +156,15 @@ useEffect(()=>{
       setExpandedState(newExpanded ? panel : false);
     };
 
-    const confirmFunction = (value:any,setFieldValue:any) => {
-      setExpandedState(""); setFieldValue("chapter3Status",value);setSelectedTaxClassification(value)
-    }
+  const confirmFunction = (value: any, setFieldValue: any) => {
+    setExpandedState(""); setFieldValue("chapter3Status", value); setSelectedTaxClassification(value)
+  }
   const W9Data = useSelector((state: any) => state.w9Data);
 
   const handleFileChange = (e: any) => {
     setSelectedFile(e.target.files[0]);
   }
- 
+
   const viewPdf = () => {
     history("/w8BenE_pdf");
   }
@@ -271,8 +271,8 @@ useEffect(()=>{
                       <div style={{ width: "100%" }}>
                         {values.countryOfIncorporation !==
                           obValues?.permanentResidentialCountryId &&
-                          values.countryOfIncorporation !== 186 &&
-                          clickCount === 1 ? (
+                          // values.countryOfIncorporation !== 186 &&
+                          obValues?.permanentResidentialCountryId != values?.countryOfIncorporation ? (
                           <div
                             style={{
                               backgroundColor: "#e8e1e1",
@@ -794,7 +794,7 @@ useEffect(()=>{
                                           onBlur={handleBlur}
                                           style={{
                                             padding: " 0 10px",
-                                            color : "#121112",
+                                            color: "#121112",
                                             fontStyle: "italic",
                                             height: "39px",
                                           }}
@@ -1299,7 +1299,7 @@ useEffect(()=>{
                             )}
                           </Typography>
                         </div>
-                        <div style={{ padding: "10px"}}>
+                        <div style={{ padding: "10px" }}>
                           <Accordion
                             expanded={expanded === "groupPanel"}
                             onChange={handleChangeAccodion("groupPanel")}
@@ -1446,7 +1446,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained"onClick={() => {confirmFunction(1,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(1, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1486,7 +1486,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(2,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(2, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1553,7 +1553,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(3,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(3, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1619,7 +1619,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(4,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(4, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1661,7 +1661,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(5,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(5, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1696,7 +1696,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(6,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(6, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1727,7 +1727,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(7,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(7, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1799,7 +1799,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(8,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(8, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1905,7 +1905,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(9,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(9, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1936,7 +1936,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(10,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(10, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1970,7 +1970,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(11,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(11, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -2046,7 +2046,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(12,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(12, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -2096,7 +2096,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(13,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(13, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -2134,7 +2134,7 @@ useEffect(()=>{
                             </AccordionDetails>
                           </Accordion>
                         </div>
-                      
+
                         <div
                           style={{
                             display: "flex",
@@ -2160,8 +2160,8 @@ useEffect(()=>{
                           >
                             SAVE & EXIT
                           </Button> */}
-                          <SaveAndExit Callback={()=>{
-                             submitForm().then(() => {
+                          <SaveAndExit Callback={() => {
+                            submitForm().then(() => {
                               const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                               const urlValue = window.location.pathname.substring(1);
                               dispatch(postW8BEN_EForm(
@@ -2174,7 +2174,7 @@ useEffect(()=>{
                                 GlobalValues.basePageRoute
                               );
                             })
-                            }} formTypeId={FormTypeId.BENE} />
+                          }} formTypeId={FormTypeId.BENE} />
 
                           <Button
                             //type="submit"
@@ -2210,7 +2210,7 @@ useEffect(()=>{
                         <Typography
                           align="center"
                           style={{
-                            color: "#505E50", 
+                            color: "#505E50",
                             justifyContent: "center",
                             alignItems: "center",
                             marginTop: "20px",

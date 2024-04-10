@@ -242,36 +242,37 @@ export default function Fedral_tax(props: any) {
                           <Typography align="left" style={{ margin: "10px" }}>
                             {values.chapter3Status !==
                               obValues?.permanentResidentialCountryId &&
-                              clickCount === 1 ? (
-                              <div
-                                style={{
-                                  backgroundColor: "#e8e1e1",
-                                  padding: "10px",
-                                }}
-                              >
-                                <Typography>
-                                  ICOR114
-                                  <span>
-                                    <img
-                                      src={Infoicon}
-                                      style={{
-                                        color: "#ffc107",
-                                        height: "22px",
-                                        width: "20px",
-                                        boxShadow: "inherit",
+                              obValues?.permanentResidentialCountryId !== values?.countryOfIncorporation
+                              ? (
+                                <div
+                                  style={{
+                                    backgroundColor: "#e8e1e1",
+                                    padding: "10px",
+                                  }}
+                                >
+                                  <Typography>
+                                    ICOR114
+                                    <span>
+                                      <img
+                                        src={Infoicon}
+                                        style={{
+                                          color: "#ffc107",
+                                          height: "22px",
+                                          width: "20px",
+                                          boxShadow: "inherit",
 
-                                        cursor: "pointer",
-                                        marginBottom: "3px",
-                                      }}
-                                    />
-                                    Country of incorporation is different from
-                                    the PRA country.
-                                  </span>
-                                </Typography>
-                              </div>
-                            ) : (
-                              ""
-                            )}
+                                          cursor: "pointer",
+                                          marginBottom: "3px",
+                                        }}
+                                      />
+                                      Country of incorporation is different from
+                                      the PRA country.
+                                    </span>
+                                  </Typography>
+                                </div>
+                              ) : (
+                                ""
+                              )}
                             {values.isHybridStatus == "Not" &&
                               clickCount === 1 ? (
                               <div
