@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 // import { getMovieDataReducer, getSearchDataReducer } from "./reducer";
 import {
   getCountriesReducer,
+  getSettingsReducer,
   getCountriesCodeReducer,
   GetAllIncomeCodesReducer,
   GetStateByCountryIdReducer,
@@ -64,6 +65,7 @@ let reducers = {
   GetChapter4StatusesReducer,
   GetLimitationBenefitsReducer,
   GetIncomeTypesReducer,
+  getSettingsReducer,
   GetHelpVideoDetailsReducer,
   GetAgentFATCAEntityGIINChallengeDisabledForEformReducer,
   GetAgentDocumentationMandatoryForEformReducer,

@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik } from "formik";
-import { W8_state_ECI, postW8BENForm, GetHelpVideoDetails } from "../../../../../Redux/Actions";
+import { W8_state_ECI, PostDualCert, GetHelpVideoDetails } from "../../../../../Redux/Actions";
 import { certificateSchema_BEN_DC } from "../../../../../schemas/w8Exp";
 import InfoIcon from "@mui/icons-material/Info";
 import checksolid from "../../../assets/img/check-solid.png";
@@ -31,13 +31,13 @@ export default function Certifications(props: any) {
   const location = useLocation();
   const { authDetails } = useAuth();
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
-  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
   const urlValue = location.pathname.substring(1);
   const initialValue = {
     agentId: authDetails?.agentId,
     accountHolderBasicDetailId: authDetails?.accountHolderId,
-    IsAgreeWithDeclaration: false,
-    isElectronicForm:false,
+    confirmThisisaTrueAndAccurate: false,
+    confirmYouhaveRewiedElectronicForm:false,
 
   };
 
@@ -142,8 +142,8 @@ export default function Certifications(props: any) {
                     const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
                     const result = { ...new_obj, ...values };
                     dispatch(
-                      postW8BENForm(result, () => {
-                        localStorage.setItem("PrevStepData", JSON.stringify(result))
+                      PostDualCert([result], () => {
+                        localStorage.setItem("DualCertData", JSON.stringify(result))
                         history("/penalities_DC_BEN")
                         setSubmitting(true);
                         resolve("");
@@ -220,9 +220,9 @@ Section 4: Declaration and Undertaking
                       >
                         <div style={{ margin: "10px" }}>
                           <Typography style={{ display: "flex" }}>
-                            <Checkbox name="IsAgreeWithDeclaration"
-                              value={values.IsAgreeWithDeclaration}
-                              checked={values.IsAgreeWithDeclaration}
+                            <Checkbox name="confirmThisisaTrueAndAccurate"
+                              value={values.confirmThisisaTrueAndAccurate}
+                              checked={values.confirmThisisaTrueAndAccurate}
                               onChange={handleChange}
                               size="medium"
                               style={{ fontSize: "2rem",marginTop: "6px" }} />
@@ -232,12 +232,12 @@ Section 4: Declaration and Undertaking
                             Check to confirm this is a true and accurate statement
                             </Typography>
                           </Typography>
-                          <p className="error">{errors.IsAgreeWithDeclaration}</p>
+                          <p className="error">{errors.confirmThisisaTrueAndAccurate}</p>
                           <Typography style={{ display: "flex" }}>
 
-                            <Checkbox name="isElectronicForm"
-                              value={values.isElectronicForm}
-                              checked={values.isElectronicForm}
+                            <Checkbox name="confirmYouhaveRewiedElectronicForm"
+                              value={values.confirmYouhaveRewiedElectronicForm}
+                              checked={values.confirmYouhaveRewiedElectronicForm}
                               onChange={(e) => {
                                 handleChange(e);
                                 
@@ -254,7 +254,7 @@ Section 4: Declaration and Undertaking
                               </span>
                             </Typography>
                           </Typography>
-                          <p className="error">{errors.isElectronicForm}</p>
+                          <p className="error">{errors.confirmYouhaveRewiedElectronicForm}</p>
                          
                         
                         </div>
@@ -278,11 +278,11 @@ Section 4: Declaration and Undertaking
                         >
                           SAVE & EXIT
                         </Button> */}
-                          <SaveAndExit Callback={() => {
+                          {/* <SaveAndExit Callback={() => {
                             submitForm().then((data) => {
                               const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                               const urlValue = window.location.pathname.substring(1);
-                              dispatch(postW8BENForm(
+                              dispatch(PostDualCert(
                                 {
                                   ...prevStepData,
                                   stepName: `/${urlValue}`
@@ -292,7 +292,7 @@ Section 4: Declaration and Undertaking
                             }).catch((err) => {
                               console.log(err);
                             })
-                          }} formTypeId={FormTypeId.W9} />
+                          }} formTypeId={FormTypeId.W9} /> */}
                         <Button
 
                           variant="contained"

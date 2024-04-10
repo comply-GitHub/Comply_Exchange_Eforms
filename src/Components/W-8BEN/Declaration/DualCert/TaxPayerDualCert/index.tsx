@@ -18,7 +18,7 @@ import "./index.scss";
 import checksolid from "../../../../../assets/img/check-solid.png";
 import { useNavigate } from "react-router-dom";
 import {
-  W8_state, getTinTypes, getAllCountries, GetHelpVideoDetails, postW8BENForm, LoadExistingFormData,
+  W8_state, getTinTypes, getAllCountries, GetHelpVideoDetails, PostDualCert, LoadExistingFormData,
 } from "../../../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import Accordion from "@mui/material/Accordion";
@@ -61,8 +61,8 @@ export default function Tin(props: any) {
 
   const LoadData = () => {
     const temp = {
-      ...PrevStepData,
-      ...W8BENData,
+      // ...PrevStepData,
+      // ...W8BENData,
       usTinTypeId: obValues?.taxpayerIdTypeID?.toString() ?? (W8BENData?.usTinTypeId ? W8BENData?.usTinTypeId : "1" ),
       usTin: W8BENData?.usTin == "" ? obValues?.usTin : W8BENData?.usTin,
       notAvailable: W8BENData?.notAvailable ? W8BENData?.notAvailable : false,
@@ -142,7 +142,7 @@ export default function Tin(props: any) {
 console.log(obValues.taxpayerIdTypeID,"pp")
   const dispatch = useDispatch();
   const [initialValue, setInitialValues] = useState({
-    usTinTypeId: obValues.taxpayerIdTypeID?.toString(),
+    usTinTypeId: obValues.taxpayerIdTypeID,
     
     usTin: obValues.usTin,
     tinValue: "",
@@ -217,8 +217,10 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                   setSubmitting(true);
                   const temp = {
                     ...values,
+                    id:0,
                     agentId: authDetails?.agentId,
-                    accountHolderBasicDetailId: authDetails?.accountHolderId,
+                    FormTypeID:FormTypeId.BEN,
+                    AccountHolderDetailsId: authDetails?.accountHolderId,
                     isNotAvailable: values?.isNotAvailable === "Yes",
                     alternativeTINFormat: values?.alternativeTINFormat === "No",
                     isExplanationNotLegallyFTIN: values?.isExplanationNotLegallyFTIN == "Yes",
@@ -228,9 +230,9 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                 
                   const returnPromise = new Promise((resolve, reject) => {
                     dispatch(
-                      postW8BENForm(temp,
+                      PostDualCert([temp],
                         (responseData: any) => {
-                          localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                          localStorage.setItem("DualCertData", JSON.stringify(temp));
                           resolve(responseData);
                         },
                         (err: any) => {
@@ -527,7 +529,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                               checked={values.notAvailable}
                               onChange={(e) => {
                                 setTimeout(() => {
-                                  setFieldValue("usTinTypeId", "8")
+                                  setFieldValue("usTinTypeId", 0)
                                 }, 100);
                                 handleChange(e);
                               }}
@@ -1092,7 +1094,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                           submitForm().then(() => {
                             const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                             const urlValue = window.location.pathname.substring(1);
-                            dispatch(postW8BENForm(
+                            dispatch(PostDualCert(
                               {
                                 ...prevStepData,
                                 stepName: `/${urlValue}`
@@ -1106,12 +1108,14 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                       >
                         SAVE & EXIT
                       </Button> */}
-                      <SaveAndExit Callback={() => {
+
+                      {/* <SaveAndExit Callback={() => {
                         submitForm().then(() => {
                           const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                           const urlValue = window.location.pathname.substring(1);
-                          dispatch(postW8BENForm(
+                          dispatch(PostDualCert(
                             {
+                              ...values,
                               ...prevStepData,
                               stepName: `/${urlValue}`
                             }
@@ -1120,7 +1124,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                             GlobalValues.basePageRoute
                           );
                         })
-                      }} formTypeId={FormTypeId.BEN} ></SaveAndExit>
+                      }} formTypeId={FormTypeId.BEN} ></SaveAndExit> */}
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}

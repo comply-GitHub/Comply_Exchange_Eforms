@@ -678,6 +678,34 @@ export const getDualCertData = (_id: Number, FormId: Number, callback: any = () 
     );
   };
 };
+//GetSettings
+
+export const getSettings = (callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetSettings,
+      "",
+      (resData) => {
+        if (resData.status === 200) {
+          if (callback) {
+            callback(resData.data)
+          }
+          dispatch({
+            type: Utils.actionName.GetSettings,
+            payload: {
+              GetSettingsData: resData.data,
+            },
+          });
+
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
+
 export const getAllCountries = (callback: any = () => { console.log("") }): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(

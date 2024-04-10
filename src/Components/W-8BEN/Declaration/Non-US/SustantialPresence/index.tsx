@@ -40,7 +40,7 @@ useEffect(()=>{
   document.title = "Steps | Substantial Presence Test"
 },[])
 
-const [totalQualifyingDays, setTotalQualifyingDays] = useState(0);
+const [totalQualifyingDays, setTotalQualifyingDays] = useState(0 || PrevStepData.totalQualifyingDays);
 const calculateTotalQualifyingDays = (values:any) => {
     const total =
       parseFloat(values.DaysInCurrentYear) +
@@ -51,6 +51,14 @@ const calculateTotalQualifyingDays = (values:any) => {
 const GethelpData = useSelector(
   (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
 );
+useEffect(() => {
+ 
+  if (isNaN(totalQualifyingDays) || totalQualifyingDays === undefined) {
+  
+    setTotalQualifyingDays(0);
+  }
+ 
+}, [totalQualifyingDays]);
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -64,9 +72,9 @@ const GethelpData = useSelector(
       validateOnBlur={true}
       validateOnMount={true}
       initialValues={{
-        DaysInCurrentYear: "",
-        DaysInFirstYearBefore: "",
-        DaysInSecondYearBefore: "",
+        DaysInCurrentYear: PrevStepData.DaysInCurrentYear || "",
+        DaysInFirstYearBefore: PrevStepData.DaysInFirstYearBefore || "",
+        DaysInSecondYearBefore: PrevStepData.DaysInSecondYearBefore || "",
       }}
       enableReinitialize
       validationSchema={SubstantialSchema}
@@ -79,7 +87,7 @@ const GethelpData = useSelector(
           ...PrevStepData,
           ...W8BENData,
           ...values,
-     
+          totalQualifyingDays,
           stepName: null
         };
 
@@ -333,15 +341,15 @@ const GethelpData = useSelector(
                 ) : (
                   ""
                 )}
-                <div  style={{ margin: "20px" }}>
-                  <div
+                <div  style={{ margin: "20px" }} className="col-12">
+                  <div className="col-12"
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Typography style={{ fontSize: "17px",marginTop:"10px" }}>
+                    <Typography className="col-10"style={{ fontSize: "17px",marginTop:"10px" }}>
                       How many days has the Individual been in the U.S. in the
                       current year ? <span style={{ color: "red" }}>*</span>
                     </Typography>
-                    <FormControl className="col-lg-4">
+                    <FormControl className="col-4">
                       <Input
                         type="number"
                         name="DaysInCurrentYear"
@@ -367,20 +375,24 @@ const GethelpData = useSelector(
                         }}
                       />
                       
-                      <p className="error">{errors.DaysInCurrentYear}</p>
+                      {/* <p className="error">{errors.DaysInCurrentYear}</p> */}
+                      {errors?.DaysInCurrentYear && typeof errors?.DaysInCurrentYear === 'string' && (
+                                <p className="error">{errors?.DaysInCurrentYear}</p>
+                              )}
+
                     </FormControl>
                   </div>
                 </div>
-                <div style={{ margin: "20px" }}>
-                  <div
+                <div style={{ margin: "20px" }} className="col-12">
+                  <div className="col-12"
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Typography style={{ fontSize: "17px" ,marginTop:"10px"}}>
+                    <Typography className="col-10"style={{ fontSize: "17px" ,marginTop:"10px"}}>
                       How many days has the Individual been in the first year
                       before the current year ?
                       <span style={{ color: "red" }}>*</span>
                     </Typography>
-                    <FormControl className="col-lg-4">
+                    <FormControl className="col-4">
                       <Input
                         type="text"
                         name="DaysInFirstYearBefore"
@@ -405,22 +417,24 @@ const GethelpData = useSelector(
                           width: "30%",
                         }}
                       />
-                       <p className="error">{errors.DaysInFirstYearBefore}</p>
+                       {errors?.DaysInFirstYearBefore && typeof errors?.DaysInFirstYearBefore === 'string' && (
+                                <p className="error">{errors?.DaysInFirstYearBefore}</p>
+                              )}
                     </FormControl>
                   </div>
                 </div>
-                <div style={{ margin: "20px" }}>
-                  <div
+                <div style={{ margin: "20px" }} className="col-12">
+                  <div className="col-12"
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Typography style={{ fontSize: "17px" ,marginTop:"10px"}}>
+                    <Typography className="col-10"style={{ fontSize: "17px" ,marginTop:"10px"}}>
                       How many days has the Individual been in the second year
                       before the current year ?{" "}
                       <span style={{ color: "red" }}>*</span>
                     </Typography>
-                    <FormControl className="col-lg-4">
+                    <FormControl className="col-4">
                       <Input
-                        type="number"
+                        type="text"
                         name="DaysInSecondYearBefore"
                         value={values.DaysInSecondYearBefore}
                         // onBlur={handleBlur}
@@ -443,25 +457,25 @@ const GethelpData = useSelector(
                           width: "30%",
                         }}
                       />
-                      <p className="error">{errors.DaysInSecondYearBefore}</p> 
+                      {errors?.DaysInSecondYearBefore && typeof errors?.DaysInSecondYearBefore === 'string' && (
+                                <p className="error">{errors?.DaysInSecondYearBefore}</p>
+                              )}
                     </FormControl>
                   </div>
                 </div>
-                <div style={{ margin: "20px" }}>
-                  <div
+                <div style={{ margin: "20px" }} className="col-12">
+                  <div className="col-12"
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Typography style={{ fontSize: "17px" ,marginTop:"10px"}}>
+                    <Typography className="col-10"style={{ fontSize: "17px" ,marginTop:"10px"}}>
                       Substantial Presence Test for U.S. tax purposes total
                       qualifying days:
                     </Typography>
-                    <FormControl className="col-lg-4">
+                    <FormControl className="col-4">
                       <Input
                         type="text"
                         name="TotalQualifyingDays"
                         value={totalQualifyingDays}
-                      
-                       
                         style={{
                           backgroundColor: "#F3F3F0",
                           border: " 1px solid #d9d9d9 ",

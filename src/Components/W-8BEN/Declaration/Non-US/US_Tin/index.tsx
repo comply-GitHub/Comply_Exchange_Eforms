@@ -1165,10 +1165,15 @@ export default function Tin(props: any) {
                     <Typography align="center">
                       <Button
                         onClick={() => {
-                          history(
-                            "/W-8BEN/Declaration/Non_US_Sorced/Status"
-
-                          );
+                          if(PrevStepData.IsPresentAtleast31Days ==="Yes"){
+                            history("/Susbtantial_BEN")
+                          }else{
+                            history(
+                              "/W-8BEN/Declaration/Non_US_Sorced/Status"
+  
+                            );
+                          }
+                         
                         }}
                         variant="contained"
                         style={{

@@ -12,6 +12,7 @@ const ActionName = {
     CREATE_W8_ECI:"CREATE_W8_ECI",
     individualAccountHolder: "individualAccountHolder",
     GetCountries: "GetCountries",
+    GetSettings:"GetSettings",
     GetCountriesTreaty: "GetCountriesTreaty",
     GetCountriesCode: "GetCountriesCode",
     GetAllIncomeCodes :"GetAllIncomeCodes",
