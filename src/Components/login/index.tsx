@@ -12,6 +12,7 @@ import {
   SignInSaveAndExit,
   eFormSignIn1,
   loginAction,
+  getSettings,
 } from "../../Redux/Actions";
 import GoogleTranslate from "../Reusable/multilanguage";
 // import { CSSTransition, TransitionGroup } from "react-transition-group";
@@ -29,6 +30,10 @@ import ErrorComponet from "../Reusable/ErrorComponent";
 // }
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+
+  const settingsData = useSelector((state:any) => state?.getSettingsReducer?.GetSettingsData);
+  console.log(settingsData,"oo")
   const history = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const [isError, setError] = useState({ email: false, password: false });
@@ -55,6 +60,7 @@ const Login = () => {
     document.title = "Login | Comply Exchange";
     localStorage.clear();
     dispatch(GetAllLanguage());
+    dispatch(getSettings());
   }, []);
 
   const redirectFunc = () => {
@@ -245,6 +251,8 @@ const Login = () => {
                   <Button type="submit" variant="contained" className="full-w">
                     Sign In
                   </Button>
+
+                {settingsData?.enableClickToStartSubmission == true ?(  <>
                   {!isIncompleteClickHere ? (
                     <>
                       {data?.email?.length > 0 ? (
@@ -276,6 +284,7 @@ const Login = () => {
                       </a>
                     </div>
                   )}
+                  </>):""}
                 </div>
               </form>
               {!isIncompleteClickHere ? (

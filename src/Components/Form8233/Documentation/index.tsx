@@ -29,6 +29,8 @@ export default function Tin(props: any) {
     sufficientFactToJustfyExemptionForClaim12A_13: (getFirstDocData?.statementToForm8233_FileUpoad ? getFirstDocData?.statementToForm8233_FileUpoad : ""),
     
   };
+  const onBoardingFormValuesPrevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
+
   // statementToForm8233_FileUpoad
   const addIncomeType = () => {
     if (incomeArr.length < 10) {
@@ -158,6 +160,15 @@ export default function Tin(props: any) {
       });
       
     })
+
+    const temp = {
+      obj,
+      ...onBoardingFormValuesPrevStepData,
+      agentId: authDetails?.agentId,
+      accountHolderBasicDetailId: authDetails?.accountHolderId,
+      stepName: null,
+    };
+
     dispatch(post8233_EForm_Documentation(obj,() => {
       history(
               "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
@@ -292,7 +303,7 @@ export default function Tin(props: any) {
 <div className="row w-100">
         <div className="col-4">
           <div style={{ padding: "15px 0px",height:"100%" }}>
-          <BreadCrumbComponent breadCrumbCode={1362} formName={2}/>
+          <BreadCrumbComponent breadCrumbCode={1362} formName={FormTypeId.F8233}/>
       </div>
       </div>
       <div className="col-8 mt-3">

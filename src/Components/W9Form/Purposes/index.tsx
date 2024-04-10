@@ -1318,22 +1318,7 @@ export default function Fedral_tax(props: any) {
                             marginTop: "40px",
                           }}
                         >
-                          {/* <Button
-                            variant="contained"
-                            style={{ color: "white" }}
-                            disabled={isSubmitting}
-                            onClick={(e) => {
-                              submitForm()
-                                .then(() => {
-                                  history(GlobalValues.basePageRoute);
-                                })
-                                .catch((error) => {
-                                  console.log("rejected", error);
-                                });
-                            }}
-                          >
-                            SAVE & EXIT
-                          </Button> */}
+                          
                            <SaveAndExit Callback={() => {
                             submitForm().then((data) => {
                               const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");

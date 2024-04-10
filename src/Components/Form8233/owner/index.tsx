@@ -130,8 +130,8 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
   return (
     <>
       <Formik
-      validateOnChange={true}
-      validateOnBlur={true}
+      validateOnChange={false}
+      validateOnBlur={false}
       validateOnMount={false}
     
         initialValues={initialValue}
@@ -145,6 +145,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
           setSubmitting(true);
           const temp = {
             ...values,
+            ...onBoardingFormValuesPrevStepData,
             agentId: authDetails?.agentId,
             accountHolderBasicDetailId: authDetails?.accountHolderId,
             stepName: null,
@@ -220,7 +221,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
         <div className="row w-100">
         <div className="col-4">
           <div style={{ padding: "10px 0px",height:"100%" }}>
-          <BreadCrumbComponent breadCrumbCode={1358} formName={2}/>
+          <BreadCrumbComponent breadCrumbCode={1358} formName={FormTypeId.F8233}/>
       </div>
       </div>
       <div className="col-8 mt-3">

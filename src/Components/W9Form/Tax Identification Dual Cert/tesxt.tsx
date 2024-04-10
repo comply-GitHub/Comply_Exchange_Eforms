@@ -26,7 +26,6 @@ import { ExpandMore, Info } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import { TinSchema_W9_DC} from "../../../schemas";
 import { useNavigate } from "react-router-dom";
-import { getTinTypes, postDualCertW9Form, GetHelpVideoDetails, getW9Form, getAllCountries, getDualCertW9} from "../../../Redux/Actions"
 import { useDispatch, useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import View_Insructions from "../../viewInstruction";
@@ -69,12 +68,12 @@ export default function Tin({data,index,handlePayloadUpdate,handleRadioChange}: 
   const formatTin = (e: any, values: any): any => {
     if (e.key === "Backspace" || e.key === "Delete") return;
     if (e.target.value.length === 3) {
-      setPayload({ ...payload, Tin: payload.Tin + "-" });
-      values.Tin = values.Tin + "-";
+      setPayload({ ...payload, tinNumber: payload.tinNumber + "-" });
+      values.tinNumber = values.tinNumber + "-";
     }
     if (e.target.value.length === 6) {
-      setPayload({ ...payload, Tin: payload.Tin + "-" });
-      values.Tin = values.Tin + "-";
+      setPayload({ ...payload, tinNumber: payload.tinNumber + "-" });
+      values.tinNumber = values.tinNumber + "-";
     }
   };
   
@@ -85,8 +84,10 @@ export default function Tin({data,index,handlePayloadUpdate,handleRadioChange}: 
   }
 
   useEffect(()=>{
-    handlePayloadUpdate(payload,index);
+    console.log(payload,"payloadd")
+    handlePayloadUpdate({...payload},index);
   },[payload])
+
 
   const history = useNavigate()
   const [expanded, setExpanded] = React.useState<string | false>(false);
@@ -182,7 +183,7 @@ export default function Tin({data,index,handlePayloadUpdate,handleRadioChange}: 
                           name="tinNumber"
                           value={values.tinNumber}
                           inputProps={{ maxLength: 10}}
-                          onKeyDown={(e) => formatTin(e, values)}
+                          onKeyDown={(e) =>{ if(values.isAlternativeTinFormat === false) formatTin(e, values)} }
                          onChange={(e)=>{
                             handleChange(e)
                                 handleFormChange(e)
@@ -274,15 +275,15 @@ export default function Tin({data,index,handlePayloadUpdate,handleRadioChange}: 
                       </div>
                       <div style={{marginTop: "20px"}} >
                         <Typography>
-                        Does the entityWithMultipleTaxJurisdictions represent an entity that has multiple tax jurisdictions?
+                        Does the additionalTaxJurisdictions represent an entity that has multiple tax jurisdictions?
                         </Typography>
                         <FormControl className="col-12 radio">
                             <RadioGroup
                               row
                               
-                              name="entityWithMultipleTaxJurisdictions"
+                              name="additionalTaxJurisdictions"
                               aria-labelledby="demo-row-radio-buttons-group-label"
-                              value={values.entityWithMultipleTaxJurisdictions}
+                              value={values.additionalTaxJurisdictions}
                             onChange={(e)=>{
                                 handleRadioChange(e,index+1)
                                 handleChange(e)
@@ -294,15 +295,15 @@ export default function Tin({data,index,handlePayloadUpdate,handleRadioChange}: 
                                
                                 control={<Radio />}
                                 label="Yes"
-                                name="entityWithMultipleTaxJurisdictions"
+                                name="additionalTaxJurisdictions"
                               />
                               <FormControlLabel
                                 className="label"
                                 value="No"
                                 control={<Radio />}
                                 label="No"
-                                // disabled={values.isFTINNotLegallyRequired}
-                                name="entityWithMultipleTaxJurisdictions"
+                                // disabled={values.isFTINNotLegallyRequired}additionalTaxJurisdictions
+                                name="additionalTaxJurisdictions"
                               />
 
                               {/* {values.tinisFTINNotLegallyRequired === "Yes" ||

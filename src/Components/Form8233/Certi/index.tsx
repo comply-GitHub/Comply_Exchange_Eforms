@@ -73,7 +73,7 @@ export default function Certifications(props: any) {
      <div className="row w-100">
     <div className="col-4">
       <div style={{ padding: "20px 0px",height:"100%" }}>
-      <BreadCrumbComponent breadCrumbCode={1500} formName={2}/>
+      <BreadCrumbComponent breadCrumbCode={1500} formName={FormTypeId.F8233}/>
   </div>
   </div>
   <div className="col-8 mt-3">
@@ -89,6 +89,7 @@ export default function Certifications(props: any) {
               setSubmitting(true);
               const temp = {
                 ...values,
+                ...onBoardingFormValuesPrevStepData,
                 agentId: authDetails?.agentId,
                 accountHolderBasicDetailId: authDetails?.accountHolderId,
                 stepName: null,
