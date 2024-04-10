@@ -42,12 +42,9 @@ export default function Backup_witholding(props: any) {
     handleChange,
     setselectedContinue,
   } = props;
- 
   const urlValue = location.pathname.substring(1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-  const initialValue = {
-    isExemptionfromBackup: getReducerData?.isExemptionfromBackup ?? 2,
-  };
+
   const [selectedValue, setSelectedValue] = useState("");
 
   const handleRadioChange = (value: string) => {
@@ -61,6 +58,10 @@ export default function Backup_witholding(props: any) {
   var getReducerData = useSelector(
     (state: any) => state?.GetByW9FormReducer?.GetByW9FormData
   );
+
+  const initialValue = {
+    isExemptionfromBackup: getReducerData?.isExemptionfromBackup ?? 2,
+  };
   const isRadioSelected = selectedValue !== "";
   const handleCanvaOpen = () => {
     setCanvaBx(true);
@@ -79,7 +80,7 @@ export default function Backup_witholding(props: any) {
   const [toolInfo, setToolInfo] = useState("");
 
   useEffect(()=>{
-    document.title = "Comply Exchange"
+    document.title = "Comply Exchange";
   },[])
 
   useEffect(() => {
@@ -88,6 +89,7 @@ export default function Backup_witholding(props: any) {
       getW9Form(authDetails?.accountHolderId, (data: any) => {
       })
     );
+    
   }, [authDetails])
 
   const viewPdf=()=>{
@@ -971,7 +973,7 @@ export default function Backup_witholding(props: any) {
                           }} formTypeId={FormTypeId.W9} />
                 <Button
                   variant="contained"
-                  style={{ color: "white", marginLeft: "10px", marginTop: "20px" }}
+                  style={{ color: "white", marginLeft: "10px"}}
                   onClick={viewPdf}
                 >
                   View Form
@@ -980,7 +982,7 @@ export default function Backup_witholding(props: any) {
                   disabled={isSubmitting}
                   //type="submit"
                   variant="contained"
-                  style={{ color: "white", marginLeft: "15px", marginTop: "20px" }}
+                  style={{ color: "white", marginLeft: "15px"}}
                   onClick={()=>{
                     submitForm().then(()=>{
                       history("/US_Purposes/Back/Exemption")
@@ -995,7 +997,7 @@ export default function Backup_witholding(props: any) {
                   //type="submit"
                   disabled={isSubmitting}
                   variant="contained"
-                  style={{ color: "white", marginLeft: "15px", marginTop: "20px" }}
+                  style={{ color: "white", marginLeft: "15px"}}
                   onClick={()=>{
                     submitForm().then(()=>{
                       history("/US_Purposes/Back/Exemption")

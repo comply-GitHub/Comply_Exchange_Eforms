@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik } from "formik";
-import { W8_state_ECI, postW9Form, GetHelpVideoDetails } from "../../../Redux/Actions";
+import { W8_state_ECI, postW9Form, GetHelpVideoDetails, getW9Form } from "../../../Redux/Actions";
 import { certificateSchema_w9 } from "../../../schemas/w8Exp";
 import InfoIcon from "@mui/icons-material/Info";
 import checksolid from "../../../assets/img/check-solid.png";
@@ -25,26 +25,22 @@ import View_Insructions from "../../viewInstruction";
 import { useLocation } from "react-router-dom";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import useAuth from "../../../customHooks/useAuth";
 
 export default function Certifications(props: any) {
   const location = useLocation();
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const urlValue = location.pathname.substring(1);
-  const initialValue = {
-    isBeneficialOwnerIncome: false,
-    isAmountCertificationUS: false,
-    isBeneficialOwnerGrossIncome: false,
-    isBeneficialOwnerNotUSPerson: false,
-    isAuthorizeWithHoldingAgent: false,
-    isCapacityForm: false,
 
-  };
-
+  const { authDetails } = useAuth();
   const dispatch = useDispatch();
   const [checkbox2, setCheckbox2] = useState(false);
   const [checkbox5, setCheckbox5] = useState(false);
   const [isSaveButtonEnabled, setIsSaveButtonEnabled] = useState(false);
   const [canvaBx, setCanvaBx] = useState(false);
+  var getReducerData = useSelector(
+    (state: any) => state?.GetByW9FormReducer?.GetByW9FormData
+  );
   const handleCanvaOpen = () => {
     setCanvaBx(true);
   }
@@ -55,20 +51,15 @@ export default function Certifications(props: any) {
     document.title = "Certification I"
   },[])
   useEffect(() => {
-    dispatch(GetHelpVideoDetails());
-  }, [])
-  const history = useNavigate()
-  // const handleCheckbox2Change = () => {
-  //   setCheckbox2(!checkbox2);
-  //   setCheckbox5(false);
-  //   setIsSaveButtonEnabled(!isSaveButtonEnabled);
-  // }
+    dispatch(
+      getW9Form(authDetails?.accountHolderId, (data: any) => {
+      })
+    );
 
-  // const handleCheckbox5Change = () => {
-  //   setCheckbox5(!checkbox5);
-  //   setCheckbox2(false);
-  //   setIsSaveButtonEnabled(!isSaveButtonEnabled);
-  // }
+  }, [authDetails])
+
+
+  const history = useNavigate()
   const [expanded, setExpanded] = React.useState<string | false>(false);
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -81,7 +72,15 @@ export default function Certifications(props: any) {
   const handleClickOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
   const [toolInfo, setToolInfo] = useState("");
-
+  
+  var initialValue = {
+    certification_CorrectTaxpayerIdentification:getReducerData?.certification_CorrectTaxpayerIdentification ?? false,
+    certification_IRSBackupWithHolding:getReducerData?.certification_IRSBackupWithHolding ?? false,
+    certification_FATCACode:getReducerData?.certification_FATCACode ?? false,
+    certification_IRS: getReducerData?.certification_IRS ??false,
+    certification_ElectronicForm:getReducerData?.certification_ElectronicForm ?? false,
+    certification_USCitizenPerson:getReducerData?.certification_USCitizenPerson ?? false,
+  };
   const viewPdf=()=>{
     history("w9_pdf");
   }
@@ -311,9 +310,9 @@ export default function Certifications(props: any) {
                       >
                         <div style={{ margin: "10px" }}>
                           <Typography style={{ display: "flex" }}>
-                            <Checkbox name="isBeneficialOwnerIncome"
-                              value={values.isBeneficialOwnerIncome}
-                              checked={values.isBeneficialOwnerIncome}
+                            <Checkbox name="certification_CorrectTaxpayerIdentification"
+                              value={values.certification_CorrectTaxpayerIdentification}
+                              checked={values.certification_CorrectTaxpayerIdentification}
                               onChange={handleChange}
                               size="medium"
                               style={{ fontSize: "2rem",marginTop: "6px" }} />
@@ -325,16 +324,26 @@ export default function Certifications(props: any) {
                               to me), and
                             </Typography>
                           </Typography>
-                          <p className="error">{errors.isBeneficialOwnerIncome}</p>
+                          {errors.certification_CorrectTaxpayerIdentification && touched.certification_CorrectTaxpayerIdentification ? (
+                            <div>
+                              <Typography color="error">
+                                
+                                {typeof errors.certification_CorrectTaxpayerIdentification  ==="string" ? errors.certification_CorrectTaxpayerIdentification:""}
+                              </Typography>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          {/* <p className="error">{errors.certification_CorrectTaxpayerIdentification}</p> */}
                           <Typography style={{ display: "flex" }}>
 
-                            <Checkbox name="isAmountCertificationUS"
-                              value={values.isAmountCertificationUS}
-                              checked={values.isAmountCertificationUS}
+                            <Checkbox name="certification_IRSBackupWithHolding"
+                              value={values.certification_IRSBackupWithHolding}
+                              checked={values.certification_IRSBackupWithHolding}
                               onChange={(e) => {
                                 handleChange(e);
                                 setTimeout(() => {
-                                  setFieldValue("isBeneficialOwnerNotUSPerson", false);
+                                  setFieldValue("certification_IRS", false);
                                 }, 50)
                               }}
                               size="medium"
@@ -350,11 +359,21 @@ export default function Certifications(props: any) {
                               subject to backup withholding
                             </Typography>
                           </Typography>
-                          <p className="error">{errors.isAmountCertificationUS}</p>
+                          {errors.certification_IRSBackupWithHolding && touched.certification_IRSBackupWithHolding ? (
+                            <div>
+                              <Typography color="error">
+                                
+                                {typeof errors.certification_IRSBackupWithHolding  ==="string" ? errors.certification_IRSBackupWithHolding:""}
+                              </Typography>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          {/* <p className="error">{errors.certification_IRSBackupWithHolding}</p> */}
                           <Typography style={{ display: "flex" }}>
-                            <Checkbox name="isCapacityForm"
-                              value={values.isCapacityForm}
-                              checked={values.isCapacityForm}
+                            <Checkbox name="certification_USCitizenPerson"
+                              value={values.certification_USCitizenPerson}
+                              checked={values.certification_USCitizenPerson}
                               onChange={handleChange}
                               size="medium"
                               style={{ fontSize: "2rem" }} />
@@ -365,11 +384,21 @@ export default function Certifications(props: any) {
                               for a definition of a U.S. person), and
                             </Typography>
                           </Typography>
-                          <p className="error">{errors.isCapacityForm}</p>
+                          {/* <p className="error">{errors.certification_USCitizenPerson}</p> */}
+                          {errors.certification_USCitizenPerson && touched.certification_USCitizenPerson ? (
+                            <div>
+                              <Typography color="error">
+                                
+                                {typeof errors.certification_USCitizenPerson  ==="string" ? errors.certification_USCitizenPerson:""}
+                              </Typography>
+                            </div>
+                          ) : (
+                            ""
+                          )}
                           <Typography style={{ display: "flex" }}>
-                            <Checkbox name="isBeneficialOwnerGrossIncome"
-                              value={values.isBeneficialOwnerGrossIncome}
-                              checked={values.isBeneficialOwnerGrossIncome}
+                            <Checkbox name="certification_FATCACode"
+                              value={values.certification_FATCACode}
+                              checked={values.certification_FATCACode}
                               onChange={handleChange}
                               size="medium"
                               style={{ fontSize: "2rem" }} />
@@ -380,7 +409,17 @@ export default function Certifications(props: any) {
                               am exempt from FATCA reporting is correct.
                             </Typography>
                           </Typography>
-                          <p className="error">{errors.isBeneficialOwnerGrossIncome}</p>
+                          {errors.certification_FATCACode && touched.certification_FATCACode ? (
+                            <div>
+                              <Typography color="error">
+                                
+                                {typeof errors.certification_FATCACode  ==="string" ? errors.certification_FATCACode:""}
+                              </Typography>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          {/* <p className="error">{errors.certification_FATCACode}</p> */}
                           <Typography
                             style={{
                               fontSize: "14px",
@@ -406,13 +445,13 @@ export default function Certifications(props: any) {
                             </span>
                           </Typography>
                           <Typography style={{ display: "flex" }}>
-                            <Checkbox name="isBeneficialOwnerNotUSPerson"
-                              value={values.isBeneficialOwnerNotUSPerson}
-                              checked={values.isBeneficialOwnerNotUSPerson}
+                            <Checkbox name="certification_IRS"
+                              value={values.certification_IRS}
+                              checked={values.certification_IRS}
                               onChange={(e) => {
                                 handleChange(e);
                                 setTimeout(() => {
-                                  setFieldValue("isAmountCertificationUS", false);
+                                  setFieldValue("certification_IRSBackupWithHolding", false);
                                 }, 50);
                               }}
                               size="medium"
@@ -424,11 +463,21 @@ export default function Certifications(props: any) {
                               withholding.
                             </Typography>
                           </Typography>
-                          <p className="error">{errors.isBeneficialOwnerNotUSPerson}</p>
+                          {errors.certification_IRS && touched.certification_IRS ? (
+                            <div>
+                              <Typography color="error">
+                                
+                                {typeof errors.certification_IRS  ==="string" ? errors.certification_IRS:""}
+                              </Typography>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          {/* <p className="error">{errors.certification_IRS}</p> */}
                           <Typography style={{ display: "flex" }}>
-                            <Checkbox name="isAuthorizeWithHoldingAgent"
-                              value={values.isAuthorizeWithHoldingAgent}
-                              checked={values.isAuthorizeWithHoldingAgent}
+                            <Checkbox name="certification_ElectronicForm"
+                              value={values.certification_ElectronicForm}
+                              checked={values.certification_ElectronicForm}
                               onChange={handleChange}
                               size="medium"
                               style={{ fontSize: "2rem" }} />
@@ -443,7 +492,17 @@ export default function Certifications(props: any) {
                               </span>
                             </Typography>
                           </Typography>
-                          <p className="error">{errors.isAuthorizeWithHoldingAgent}</p>
+                          {errors.certification_ElectronicForm && touched.certification_ElectronicForm ? (
+                            <div>
+                              <Typography color="error">
+                                
+                                {typeof errors.certification_ElectronicForm  ==="string" ? errors.certification_ElectronicForm:""}
+                              </Typography>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          {/* <p className="error">{errors.certification_ElectronicForm}</p> */}
                         </div>
                       </Paper>
 
