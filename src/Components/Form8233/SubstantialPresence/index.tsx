@@ -40,13 +40,13 @@ export default function Presence(props: any) {
 useEffect(()=>{
   dispatch(GetHelpVideoDetails());
 },[])
-const [totalQualifyingDays, setTotalQualifyingDays] = useState(0);
+const [totalQualifyingDays, setTotalQualifyingDays] = useState(PrevStepData?.totalQualifyingDays || 0);
 const calculateTotalQualifyingDays = (values:any) => {
   const total =
     parseFloat(values.daysAvailableInThisYear) +
-    Math.floor(parseFloat(values.daysAvailableIn_OneYearbefore) * 0.34) +
-    Math.floor(parseFloat(values.daysAvailableIn_TwoYearbefore) * 0.17);
-  setTotalQualifyingDays(total);
+    (parseFloat(values.daysAvailableIn_OneYearbefore) * 0.34) +
+    (parseFloat(values.daysAvailableIn_TwoYearbefore) * 0.17);
+  setTotalQualifyingDays(Math.ceil(total));
 };
 
 useEffect(()=>{
@@ -63,15 +63,23 @@ const GethelpData = useSelector(
   const [toolInfo, setToolInfo] = useState("");
   const history = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isNaN(totalQualifyingDays) || totalQualifyingDays === undefined) {
+    
+      setTotalQualifyingDays(0);
+    }
+   
+  }, [totalQualifyingDays]);
   return (
     <Formik
       validateOnChange={true}
       validateOnBlur={true}
       validateOnMount={true}
       initialValues={{
-        daysAvailableInThisYear: "",
-        daysAvailableIn_OneYearbefore: "",
-        daysAvailableIn_TwoYearbefore: "",
+        daysAvailableInThisYear: PrevStepData?.daysAvailableInThisYear,
+        daysAvailableIn_OneYearbefore: PrevStepData?.daysAvailableIn_OneYearbefore,
+        daysAvailableIn_TwoYearbefore: PrevStepData?.daysAvailableIn_TwoYearbefore,
       }}
       enableReinitialize
       validationSchema={SubstantialSchema}
@@ -366,8 +374,9 @@ const GethelpData = useSelector(
                           width: "30%",
                         }}
                       />
-                      
-                      <p className="error">{errors.daysAvailableInThisYear}</p>
+                      {errors?.daysAvailableInThisYear && typeof errors?.daysAvailableInThisYear === 'string' && (
+                                <p className="error">{errors?.daysAvailableInThisYear}</p>
+                              )}
                     </FormControl>
                   </div>
                 </div>
@@ -405,7 +414,10 @@ const GethelpData = useSelector(
                           width: "30%",
                         }}
                       />
-                       <p className="error">{errors.daysAvailableIn_OneYearbefore}</p>
+                      {errors?.daysAvailableIn_OneYearbefore && typeof errors?.daysAvailableIn_OneYearbefore === 'string' && (
+                                <p className="error">{errors?.daysAvailableIn_OneYearbefore}</p>
+                              )}
+                       
                     </FormControl>
                   </div>
                 </div>
@@ -443,7 +455,9 @@ const GethelpData = useSelector(
                           width: "30%",
                         }}
                       />
-                       <p className="error">{errors.daysAvailableIn_TwoYearbefore}</p>
+                      {errors?.daysAvailableIn_TwoYearbefore && typeof errors?.daysAvailableIn_TwoYearbefore === 'string' && (
+                                <p className="error">{errors?.daysAvailableIn_TwoYearbefore}</p>
+                              )}
                     </FormControl>
                   </div>
                 </div>

@@ -42,8 +42,8 @@ export default function Tin(props: any) {
     usTinTypeId: onBoardingFormValues?.taxpayerIdTypeID ? onBoardingFormValues?.taxpayerIdTypeID : onBoardingFormValuesPrevStepData?.usTINTypeId ? onBoardingFormValuesPrevStepData?.usTINTypeId : 0,
     usTin: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin.replace(/-/g, '') : onBoardingFormValuesPrevStepData?.usTin ? onBoardingFormValuesPrevStepData?.usTin : "",
     notAvailable:  false,
-    ForeginTIN_CountryId: onBoardingFormValues?.foreignTINCountryId ? onBoardingFormValues?.foreignTINCountryId : onBoardingFormValuesPrevStepData?.foreginTIN_CountryId ? onBoardingFormValuesPrevStepData?.foreginTIN_CountryId : "",
-    ForegionTIN: onBoardingFormValues?.foreignTIN ? onBoardingFormValues?.foreignTIN : onBoardingFormValuesPrevStepData?.foregionTIN ? onBoardingFormValuesPrevStepData?.foregionTIN :"",
+    ForeginTIN_CountryId: onBoardingFormValues?.foreignTINCountryId!=0 ? onBoardingFormValues?.foreignTINCountryId : onBoardingFormValuesPrevStepData?.ForeginTIN_CountryId,
+    ForegionTIN: onBoardingFormValues?.foreignTIN ? onBoardingFormValues?.foreignTIN : onBoardingFormValuesPrevStepData?.ForegionTIN ? onBoardingFormValuesPrevStepData?.ForegionTIN :"",
     isFTINNotLegallyRequired: false,
     tinisFTINNotLegallyRequired: "",
     // tinAlternativeFormate: true,
@@ -112,6 +112,7 @@ export default function Tin(props: any) {
           setSubmitting(true);
           const temp = {
             ...values,
+            ...onBoardingFormValuesPrevStepData,
             agentId: authDetails?.agentId,
             accountHolderBasicDetailId: authDetails?.accountHolderId,
             stepName: null,
@@ -187,7 +188,7 @@ export default function Tin(props: any) {
         <div className="row w-100">
        <div className="col-4">
           <div style={{ padding: "20px 0px",height:"100%" }}>
-          <BreadCrumbComponent breadCrumbCode={1360} formName={2}/>
+          <BreadCrumbComponent breadCrumbCode={1358} formName={FormTypeId.F8233}/>
       </div>
       </div>
       <div className="col-8 mt-3">
