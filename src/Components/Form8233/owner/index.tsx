@@ -138,10 +138,10 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
         enableReinitialize
         validationSchema={ownerSchema}
         onSubmit={(values, { setSubmitting }) => {
-          if (clickCount === 0) {
+          // if (clickCount === 0) {
       
-            setClickCount(clickCount+1);
-          } else{
+          //   setClickCount(clickCount+1);
+          // } else{
           setSubmitting(true);
           const temp = {
             ...values,
@@ -169,7 +169,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
           //     history("/Form8233/TaxPayer_Identification/Owner/Claim_part");
           //   })
           // );
-          }
+          // }
           //history("/Form8233/TaxPayer_Identification/Owner/Claim_part");
         }}
       >
