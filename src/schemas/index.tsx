@@ -61,7 +61,7 @@ export const fctaSchema = () => {
     isExemptionFATCAReportings: Yup.string().required(
       "Please select one of the options"
     ),
-    ReportingId: Yup.boolean().when('isExemptionFATCAReportings', {
+    fatcaReportingId: Yup.boolean().when('isExemptionFATCAReportings', {
       is: "Yes",
       then: () =>
         Yup.string()

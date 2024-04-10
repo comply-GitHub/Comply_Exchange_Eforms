@@ -230,28 +230,28 @@ export const certificateSchema_BEN_DC = () => {
 };
 export const certificateSchema_w9 = () => {
   return Yup.object().shape({
-    isBeneficialOwnerIncome: Yup.boolean().oneOf(
+    certification_CorrectTaxpayerIdentification: Yup.boolean().oneOf(
       [true],
       "" //was used for displaying error message 
     ),
-    isAmountCertificationUS: Yup.boolean(),
+    certification_IRSBackupWithHolding: Yup.boolean(),
 
 
-    isBeneficialOwnerGrossIncome: Yup.boolean().oneOf(
+    certification_FATCACode: Yup.boolean().oneOf(
       [true],
       ""
     ),
-    isBeneficialOwnerNotUSPerson: Yup.boolean()
+    certification_IRS: Yup.boolean()
       .when('isAmountCertificationUS', (isAmountCertificationUS, schema) => {
         return isAmountCertificationUS[0] ? schema.isFalse("") : schema.isTrue("");
       })
     ,
-    isAuthorizeWithHoldingAgent: Yup.boolean().oneOf(
+    certification_ElectronicForm: Yup.boolean().oneOf(
       [true],
       ""
     ),
     isBackup: Yup.boolean().oneOf([true], ""),
-    isCapacityForm: Yup.boolean().oneOf([true], ""),
+    certification_USCitizenPerson: Yup.boolean().oneOf([true], ""),
     isElectronicForm: Yup.boolean().oneOf([true], ""),
   });
 };

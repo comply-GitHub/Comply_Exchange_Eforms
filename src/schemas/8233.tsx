@@ -117,7 +117,7 @@ export const amountSchema = () => {
     taxTreaty_TreatyId: Yup.number(),
     taxTreaty_TreatyArticleId: Yup.number(),
     
-    taxTreaty_CheckAll: Yup.boolean().oneOf([true], "Please mark the checkbox"),
+    taxTreaty_CheckAll: Yup.boolean(),
 
     taxTreaty_TotalCompensationListedon11bExemptFromTax: Yup.number().when("taxTreaty_CheckAll",{
       is:false,

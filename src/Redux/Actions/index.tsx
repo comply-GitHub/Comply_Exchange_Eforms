@@ -287,6 +287,12 @@ export const LoadExistingFormData = (formTypeId: any, AccountHolderId: any, call
           JSON.stringify(responseData.data)
         );
         switch (formTypeId) {
+          case FormTypeId.W9:
+            dispatch({
+              type: Utils.actionName.InsertW9IndividualEntityUSForm,
+              payload: { ...responseData?.data },
+            });
+            break;
           case FormTypeId.BEN:
             dispatch({
               type: Utils.actionName.InsertW8BENIndividualNonUS,

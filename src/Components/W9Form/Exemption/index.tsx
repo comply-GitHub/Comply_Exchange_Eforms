@@ -68,12 +68,13 @@ export default function FCTA_Reporting(props: any) {
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const initialValue = {
     isExemptionFATCAReportings: getReducerData?.isExemptionFATCAReportings ??  "No",
-    ReportingId: getReducerData?.ReportingId ?? ""
+    fatcaReportingId: getReducerData?.fatcaReportingId ?? 0
   };
   useEffect(()=>{
     document.title = "Exemptions Fatca"
   },[])
   useEffect(() => {
+    console.log(getReducerData,"getReducerData")
     dispatch(GetAgentFATCAEntityGIINChallengeDisabledForEformAction());
     dispatch(GetHelpVideoDetails());
     dispatch(
@@ -341,8 +342,8 @@ export default function FCTA_Reporting(props: any) {
                                 fontStyle: "italic",
                                 height: "36px",
                               }}
-                              name="ReportingId"
-                              value={values?.ReportingId}
+                              name="fatcaReportingId"
+                              value={values?.fatcaReportingId}
                               id="Income"
                               // defaultValue={data.interestDividendPaymentId}
                               onChange={handleChange}
@@ -350,15 +351,15 @@ export default function FCTA_Reporting(props: any) {
                               <option value={0}>---select---</option>
                               {GetAgentFATCAEntityGIINChallengeDisabledForEformReducer.GetAgentFATCAEntityGIINChallengeDisabledForEformData?.map(
                                 (ele: any) => (
-                                  <option key={ele?.id} value={ele?.id}>
+                                  <option key={ele?.fatcaEntityTypeId} value={ele?.fatcaEntityTypeId}>
                                     {ele?.name}
                                   </option>
                                 )
                               )}
                             </select>
                           </FormControl>
-                         {errors.ReportingId && touched.ReportingId ?( <p className="error">{typeof errors.ReportingId==="string" ? errors.ReportingId : ""}</p>):""}
-                          {/* <p className="error">{typeof errors.ReportingId==="string" ? errors.ReportingId : ""}</p> */}
+                         {errors.fatcaReportingId && touched.fatcaReportingId ?( <p className="error">{typeof errors.fatcaReportingId==="string" ? errors.fatcaReportingId : ""}</p>):""}
+                          {/* <p className="error">{typeof errors.fatcaReportingId==="string" ? errors.fatcaReportingId : ""}</p> */}
 
                         </>
                       ) : ""}

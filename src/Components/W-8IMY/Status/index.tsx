@@ -35,9 +35,8 @@ import {
   GetHelpVideoDetails,
   postW81MY_EForm
 } from "../../../Redux/Actions";
-import { TaxPurposeSchema } from "../../../schemas/w8BenE";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
-import { TaxPurposeSchemaW81 } from "../../../schemas/w81my";
+import { TaxPurposeSchemaW81Chapter3 } from "../../../schemas/w81my";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
@@ -290,7 +289,7 @@ export default function Fedral_tax(props: any) {
                   validateOnBlur={true}
                   validateOnMount={false}
                   initialValues={initialValue}
-                  validationSchema={TaxPurposeSchemaW81}
+                  validationSchema={TaxPurposeSchemaW81Chapter3}
                   onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
                     const temp = {
@@ -322,7 +321,6 @@ export default function Fedral_tax(props: any) {
                     setFieldValue
                   }) => (
                     <Form onSubmit={handleSubmit}>
-                      <>{console.log(values,errors, "errorsssss")}</>
                       <div style={{ width: "100%" }}>
                         <div>
                           <Typography align="left" style={{ margin: "10px" }}>
