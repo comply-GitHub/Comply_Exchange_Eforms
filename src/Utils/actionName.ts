@@ -20,6 +20,7 @@ const ActionName = {
     GetSecurityQuestion:"GetSecurityQuestion",
     GetConfirmationCode:"GetConfirmationCode",
     InsertAccountHolderDetail:"InsertAccountHolderDetail",
+    InserDualCert:"InserDualCert",
     CREATE_8233:"CREATE_8233",
     postSecurutyCode:"postSecurityCode",
     GetSecurityQuestions:"GetSecurityQuestions",
@@ -53,7 +54,7 @@ const ActionName = {
     SendOTPMail:"SendOTPMail",
     GetAllHelpVideosDetails:"GetAllHelpVideosDetails",
     GET_AGENT_BY_ID: "GET_AGENT_BY_ID",
-    
+    GetDual:"GetDual",
     InsertW9IndividualEntityUSForm:"InsertW9IndividualEntityUSForm",
     UpsertDualCertW9:"UpsertDualCertW9",
     InsertW8BENEEntityNonUSForm:"InsertW8BENEEntityNonUSForm",

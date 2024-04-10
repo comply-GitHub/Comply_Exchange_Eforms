@@ -44,9 +44,9 @@ const [totalQualifyingDays, setTotalQualifyingDays] = useState(0);
 const calculateTotalQualifyingDays = (values:any) => {
   const total =
     parseFloat(values.daysAvailableInThisYear) +
-    Math.floor(parseFloat(values.daysAvailableIn_OneYearbefore) * 0.34) +
-    Math.floor(parseFloat(values.daysAvailableIn_TwoYearbefore) * 0.17);
-  setTotalQualifyingDays(total);
+    (parseFloat(values.daysAvailableIn_OneYearbefore) * 0.34) +
+    (parseFloat(values.daysAvailableIn_TwoYearbefore) * 0.17);
+  setTotalQualifyingDays(Math.ceil(total));
 };
 
 useEffect(()=>{

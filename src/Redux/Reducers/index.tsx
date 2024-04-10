@@ -29,6 +29,7 @@ const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType
   GetByW8EXPIndividualId,
   GetAllLanguage,
   GetDualCertW9,
+  GetDual
 } = Utils.actionName
 
 
@@ -45,6 +46,14 @@ export const GetAllLanguageReducer = (state = initialState, action: any) => {
 export const GetDualCertW9Reducer = (state = initialState, action: any) => {
   switch (action.type) {
     case GetDualCertW9:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}
+export const GetDualCertReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case GetDual:
       return { ...state, ...action.payload };
     default:
       return state;

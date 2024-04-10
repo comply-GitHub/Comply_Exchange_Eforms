@@ -645,6 +645,33 @@ export const getDualCertW9 = (_id: Number, FormId: Number, callback: any = () =>
     );
   };
 };
+
+
+export const getDualCertData = (_id: Number, FormId: Number, callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetDual,
+      `?AccountHolderId=${_id}&FormTypeId=${FormId}`,
+      (resData) => {
+        if (resData.status === 200) {
+          if (callback) {
+            callback(resData.data)
+          }
+          dispatch({
+            type: Utils.actionName.GetDual,
+            payload: {
+              DualData: resData.data,
+            },
+          });
+
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
 export const getAllCountries = (callback: any = () => { console.log("") }): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
@@ -1455,7 +1482,7 @@ export const postW8BEN_EForm = (value: any, callback: Function, errorCallback: F
 
 
 
-export const postDualCertW9Form = (value: any): any => {
+export const PostDualCertDetails = (value: any,successCallback:Function,errorCallback:Function): any => {
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.UpsertDualCertW9,
@@ -1477,7 +1504,9 @@ export const postDualCertW9Form = (value: any): any => {
               type: Utils.actionName.UpdateError,
               payload: { ...err },
             });
-
+            errorCallback(err);
+          }else if(responseData.status == 200){
+            successCallback(responseData)
           }
         }
       },
@@ -1490,6 +1519,7 @@ export const postDualCertW9Form = (value: any): any => {
           type: Utils.actionName.UpdateError,
           payload: { ...err },
         });
+        errorCallback(err);
 
       },
       // "multi"
@@ -1497,6 +1527,51 @@ export const postDualCertW9Form = (value: any): any => {
   };
 };
 
+
+export const PostDualCert = (value: any,successCallback:Function,errorCallback:Function): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.InserDualCert,
+      value,
+      (responseData) => {
+        let { data } = responseData;
+        dispatch({
+          type: Utils.actionName.InserDualCert,
+          payload: { ...value, Response: data },
+        });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback(err);
+          }else if(responseData.status == 200){
+            successCallback(responseData)
+          }
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(err);
+
+      },
+      // "multi"
+    );
+  };
+};
 // export const postW8ECIForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
 //   return (dispatch: any) => {
 //     Utils.api.postApiCall(

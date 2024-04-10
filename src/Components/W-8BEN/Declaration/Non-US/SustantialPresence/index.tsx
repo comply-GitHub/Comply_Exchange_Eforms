@@ -44,9 +44,9 @@ const [totalQualifyingDays, setTotalQualifyingDays] = useState(0);
 const calculateTotalQualifyingDays = (values:any) => {
     const total =
       parseFloat(values.DaysInCurrentYear) +
-      Math.floor(parseFloat(values.DaysInFirstYearBefore) * 0.34) +
-      Math.floor(parseFloat(values.DaysInSecondYearBefore) * 0.17);
-    setTotalQualifyingDays(total);
+      (parseFloat(values.DaysInFirstYearBefore) * 0.34) +
+      (parseFloat(values.DaysInSecondYearBefore) * 0.17);
+          setTotalQualifyingDays(Math.ceil(total));
   };
 const GethelpData = useSelector(
   (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
@@ -153,7 +153,7 @@ const GethelpData = useSelector(
         <div className="row w-100">
         <div className="col-4">
           <div style={{ padding: "20px 0px",height:"100%" }}>
-          <BreadCrumbComponent breadCrumbCode={1355} formName={2}/>
+          <BreadCrumbComponent breadCrumbCode={1207} formName={2}/>
       </div>
       </div>
       <div className="col-8 mt-3">
@@ -577,7 +577,7 @@ const GethelpData = useSelector(
                 <Typography align="center">
                   <Button
                   onClick={()=>{
-                    history("/Certificates")
+                    history("/W-8BEN/Declaration/Non_US_Sorced/Status")
                   }}
                     variant="contained"
                     style={{
