@@ -53,7 +53,10 @@ export default function TaxPayer(props: any) {
 
   const handleRadioChange = (event:any,index:number) => {
     console.log(event.target.value,"99")
-    setValues(event.target.value)
+    let Temp:any = values;
+    Temp[event.target.name]=event.target.value
+     setValues(Temp)
+
     // Handle your existing form field changes here
     // For the specific case of entityWithMultipleTaxJurisdictions
     if (event.target.name === 'additionalTaxJurisdictions' || event.target.name === "entityWithMultipleTaxJurisdictions") {
@@ -691,6 +694,7 @@ const TaxJurisdictions = values.entityWithMultipleTaxJurisdictions
                                
                                 control={<Radio />}
                                 label="Yes"
+                                name="entityWithMultipleTaxJurisdictions"
                                 
                               />
                               <FormControlLabel
@@ -698,6 +702,7 @@ const TaxJurisdictions = values.entityWithMultipleTaxJurisdictions
                                 value="No"
                                 control={<Radio />}
                                 label="No"
+                                name="entityWithMultipleTaxJurisdictions"
                                
                               />
 

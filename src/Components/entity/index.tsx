@@ -291,11 +291,11 @@ export default function Entity() {
     dispatch(getAllCountriesIncomeCode());
     dispatch(getAllStateByCountryId(0));
     dispatch(
-      GetAgentPaymentType(3, () => {
+      GetAgentPaymentType(authDetails?.agentId, () => {
       })
     );
     dispatch(
-      getTinTypes(3, (data: any) => {
+      getTinTypes(authDetails?.agentId, (data: any) => {
         setUStinArray(data);
         let datas = data.filter((ele: any) => {
           return ele.nonUSEntity === true;
@@ -309,7 +309,7 @@ export default function Entity() {
     );
 
     dispatch(
-      GET_AGENT_BY_ID(3, (data: any) => {
+      GET_AGENT_BY_ID(authDetails?.agentId, (data: any) => {
         // alert(data.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat)
         setAgentData(data);
       }));

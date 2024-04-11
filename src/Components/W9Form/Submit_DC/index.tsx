@@ -9,7 +9,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
-import { W8_state_ECI } from "../../../Redux/Actions";
+import { W8_state_ECI,PostDualCert } from "../../../Redux/Actions";
 import { useDispatch } from "react-redux";
 
 const Declaration = (props: any) => {
@@ -22,6 +22,7 @@ const Declaration = (props: any) => {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsCheckboxChecked(event.target.checked);
   };
+  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
 
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -32,9 +33,9 @@ const Declaration = (props: any) => {
       setExpanded(isExpanded ? panel : false);
     };
   const initialValue = {
-    declaration: false,
-    IsSubmit: false,
-    IsSubmit_not: false
+    isAgreeWithDeclaration: false,
+    isConsentReceipentstatement: false,
+    isNotConsentReceipentstatement: false
   };
   return (
     <Fragment>
@@ -50,13 +51,27 @@ const Declaration = (props: any) => {
               onSubmit={(values, { setSubmitting }) => {
                 console.log("values", values)
                 setSubmitting(true);
+                const result = {
+                  ...PrevStepData, 
+                  ...values,
+                 
+                  statusId: 1,
+                };
+                const returnPromise = new Promise((resolve, reject) => {
                 dispatch(
-                  W8_state_ECI(values, () => {
-                    history("/Complete");
-                  })
+                  PostDualCert(result, (data: any) => {
+                    localStorage.setItem("DualCertData", JSON.stringify(result))
+                    resolve(data);
+                  }
+                    , (err: any) => {
+                      reject(err);
+                    }
+                  )
                 );
-                history("/Complete");
-              }}
+              })
+
+
+            }}
             >
               {({
                 errors,
@@ -245,12 +260,12 @@ const Declaration = (props: any) => {
                           </Typography>
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox name="declaration" value={values.declaration} onChange={handleChange} checked={values.declaration} />
+                          <Checkbox name="isAgreeWithDeclaration" value={values.isAgreeWithDeclaration} onChange={handleChange} checked={values.isAgreeWithDeclaration} />
                           <Typography style={{ marginTop: "9px", fontSize: "17px" }}>
                             I agree with the above Declarations
                           </Typography>
                         </div>
-                        <p className="error">{errors.declaration}</p>
+                        <p className="error">{errors.isAgreeWithDeclaration}</p>
                       </AccordionDetails>
                     </Accordion>
                     <Accordion
@@ -315,13 +330,13 @@ const Declaration = (props: any) => {
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
                           <Checkbox 
-                          name="IsSubmit" 
-                          value={values.IsSubmit} 
+                          name="isConsentReceipentstatement" 
+                          value={values.isConsentReceipentstatement} 
                           onChange={(e)=>{
                             handleChange(e);
-                            setTimeout(()=>{setFieldValue("IsSubmit_not",false)},50)
+                            setTimeout(()=>{setFieldValue("isConsentReceipentstatement_not",false)},50)
                           }} 
-                          checked={values.IsSubmit}                           
+                          checked={values.isConsentReceipentstatement}                           
                           />
 
                           <Typography style={{ marginTop: "9px", fontSize: "17px" }}>
@@ -330,22 +345,22 @@ const Declaration = (props: any) => {
                           </Typography>
 
                         </div>
-                        <p className="error">{errors.IsSubmit}</p>
+                        <p className="error">{errors.isConsentReceipentstatement}</p>
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox name="IsSubmit_not" 
-                          value={values.IsSubmit_not} 
+                          <Checkbox name="isNotConsentReceipentstatement" 
+                          value={values.isNotConsentReceipentstatement} 
                           onChange={(e)=>{
                             handleChange(e);
-                            setTimeout(()=>{setFieldValue("IsSubmit",false)},50)
+                            setTimeout(()=>{setFieldValue("isConsentReceipentstatement",false)},50)
                           }}
-                          checked={values.IsSubmit_not} />
+                          checked={values.isNotConsentReceipentstatement} />
                           <Typography style={{ marginTop: "9px", fontSize: "17px" }}>
                             {" "}
                             I do not give consent to receiving a recipent
                             statement electronically.
                           </Typography>
                         </div>
-                        <p className="error">{errors.IsSubmit_not}</p>
+                        <p className="error">{errors.isNotConsentReceipentstatement}</p>
                       </AccordionDetails>
                     </Accordion>
                   </div>
@@ -381,7 +396,7 @@ const Declaration = (props: any) => {
                       })
                     }}       
                       disabled={!isValid}
-                      type="submit"
+                      // type="submit"
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >
