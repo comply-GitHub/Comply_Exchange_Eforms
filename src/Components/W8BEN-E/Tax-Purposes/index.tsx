@@ -269,127 +269,127 @@ export default function Fedral_tax(props: any) {
                   }) => (
                     <Form onSubmit={handleSubmit}>
                       <div style={{ width: "100%" }}>
-                        {values.countryOfIncorporation !==
-                          obValues?.permanentResidentialCountryId &&
-                          // values.countryOfIncorporation !== 186 &&
-                          obValues?.permanentResidentialCountryId != values?.countryOfIncorporation ? (
-                          <div
-                            style={{
-                              backgroundColor: "#e8e1e1",
-                              padding: "10px",
-                            }}
-                          >
-                            <Typography>
-                              ICOR114
-                              <span className="mx-2">
-                                <img
-                                  src={Infoicon}
-                                  style={{
-                                    color: "#ffc107",
-                                    height: "22px",
-                                    width: "20px",
-                                    boxShadow: "inherit",
+                        {
+                          //touched.countryOfIncorporation &&
+                          values?.countryOfIncorporation && values?.countryOfIncorporation?.toString() !== "0" &&
+                            values?.countryOfIncorporation !== obValues?.permanentResidentialCountryId ? (
+                            <div
+                              style={{
+                                backgroundColor: "#e8e1e1",
+                                padding: "10px",
+                              }}
+                            >
+                              <Typography>
+                                ICOR114
+                                <span className="mx-2">
+                                  <img
+                                    src={Infoicon}
+                                    style={{
+                                      color: "#ffc107",
+                                      height: "22px",
+                                      width: "20px",
+                                      boxShadow: "inherit",
 
-                                    cursor: "pointer",
-                                    marginBottom: "3px",
-                                  }}
-                                />
-                                Country of incorporation is different from the
-                                PRA country.
-                              </span>
-                            </Typography>
-                          </div>
-                        ) : values.countryOfIncorporation === 186 && clickCount === 1 ? (
-                          <div
-                            style={{
-                              backgroundColor: "#e8e1e1",
-                              padding: "10px",
-                            }}
-                          >
-                            <Typography>
-                              ICOR104
-                              <span className="mx-2">
-                                <img
-                                  src={Infoicon}
-                                  style={{
-                                    color: "#ffc107",
-                                    height: "22px",
-                                    width: "20px",
-                                    boxShadow: "inherit",
+                                      cursor: "pointer",
+                                      marginBottom: "3px",
+                                    }}
+                                  />
+                                  Country of incorporation is different from the
+                                  PRA country.
+                                </span>
+                              </Typography>
+                            </div>
+                          ) : values.countryOfIncorporation === 186 && clickCount === 1 ? (
+                            <div
+                              style={{
+                                backgroundColor: "#e8e1e1",
+                                padding: "10px",
+                              }}
+                            >
+                              <Typography>
+                                ICOR104
+                                <span className="mx-2">
+                                  <img
+                                    src={Infoicon}
+                                    style={{
+                                      color: "#ffc107",
+                                      height: "22px",
+                                      width: "20px",
+                                      boxShadow: "inherit",
 
-                                    cursor: "pointer",
-                                    marginBottom: "3px",
-                                  }}
-                                />
-                                You have selected 'other' for Country of
-                                incorporation or organization. Your agent may
-                                need to contact you for further information.
-                              </span>
-                            </Typography>
-                          </div>
-                        ) : values.countryOfIncorporation === 186 &&
-                          values.other === "" ? (
-                          <div
-                            style={{
-                              backgroundColor: "#e8e1e1",
-                              padding: "10px",
-                            }}
-                          >
-                            <Typography>
-                              ICOR105
-                              <span className="mx-2">
-                                <img
-                                  src={Infoicon}
-                                  style={{
-                                    color: "#ffc107",
-                                    height: "22px",
-                                    width: "20px",
-                                    boxShadow: "inherit",
+                                      cursor: "pointer",
+                                      marginBottom: "3px",
+                                    }}
+                                  />
+                                  You have selected 'other' for Country of
+                                  incorporation or organization. Your agent may
+                                  need to contact you for further information.
+                                </span>
+                              </Typography>
+                            </div>
+                          ) : values.countryOfIncorporation === 186 &&
+                            values.other === "" ? (
+                            <div
+                              style={{
+                                backgroundColor: "#e8e1e1",
+                                padding: "10px",
+                              }}
+                            >
+                              <Typography>
+                                ICOR105
+                                <span className="mx-2">
+                                  <img
+                                    src={Infoicon}
+                                    style={{
+                                      color: "#ffc107",
+                                      height: "22px",
+                                      width: "20px",
+                                      boxShadow: "inherit",
 
-                                    cursor: "pointer",
-                                    marginBottom: "3px",
-                                  }}
-                                />
-                                You have selected "other" for Country of
-                                incorporation or organization, but have not
-                                entered the country.
-                              </span>
-                            </Typography>
-                          </div>
-                        ) : obValues.isUSEntity === false &&
-                          obValues.isUSIndividual === false &&
-                          values.countryOfIncorporation && values.countryOfIncorporation === 258 ? (
-                          <div
-                            style={{
-                              backgroundColor: "#e8e1e1",
-                              padding: "10px",
-                            }}
-                          >
-                            <Typography>
-                              ICOR110
-                              <span className="mx-2">
-                                <img
-                                  src={Infoicon}
-                                  style={{
-                                    color: "#ffc107",
-                                    height: "22px",
-                                    width: "20px",
-                                    boxShadow: "inherit",
+                                      cursor: "pointer",
+                                      marginBottom: "3px",
+                                    }}
+                                  />
+                                  You have selected "other" for Country of
+                                  incorporation or organization, but have not
+                                  entered the country.
+                                </span>
+                              </Typography>
+                            </div>
+                          ) : obValues.isUSEntity === false &&
+                            obValues.isUSIndividual === false &&
+                            values.countryOfIncorporation && values.countryOfIncorporation === 258 ? (
+                            <div
+                              style={{
+                                backgroundColor: "#e8e1e1",
+                                padding: "10px",
+                              }}
+                            >
+                              <Typography>
+                                ICOR110
+                                <span className="mx-2">
+                                  <img
+                                    src={Infoicon}
+                                    style={{
+                                      color: "#ffc107",
+                                      height: "22px",
+                                      width: "20px",
+                                      boxShadow: "inherit",
 
-                                    cursor: "pointer",
-                                    marginBottom: "3px",
-                                  }}
-                                />
-                                You have identified that you are submitting a
-                                form on behalf of a NON U.S. Entity and
-                                indicated that the Country of Incorporation was
-                                in the United States. The Entity may be classed
-                                as a U.S person for U.S tax purposes. Your agent
-                                may need to contact you for further information
-                              </span>
-                            </Typography>
-                          </div>
-                        ) : null}
+                                      cursor: "pointer",
+                                      marginBottom: "3px",
+                                    }}
+                                  />
+                                  You have identified that you are submitting a
+                                  form on behalf of a NON U.S. Entity and
+                                  indicated that the Country of Incorporation was
+                                  in the United States. The Entity may be classed
+                                  as a U.S person for U.S tax purposes. Your agent
+                                  may need to contact you for further information
+                                </span>
+                              </Typography>
+                            </div>
+                          ) : null}
 
                         <div>
                           <Typography align="left" style={{ margin: "10px" }}>
