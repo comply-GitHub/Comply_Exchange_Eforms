@@ -74,6 +74,7 @@ getSupportedFile:"/FileUpload/GetFileBase64",
 
 
 //Pdf apis
+GetW9Pdf:"/W9IndividualEntity/GetW9Pdf",
 GetECIPdf:"/W8ECIIndividualEntity/GetECIPdf",
 GetBENPdf:"/W8BENIndividual/GetBENPdf",
 GetBENEPdf:"/W8BENEEntity/GetBENEPdf",

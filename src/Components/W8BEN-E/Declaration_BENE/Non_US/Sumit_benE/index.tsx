@@ -15,6 +15,7 @@ import { useLocation } from "react-router-dom";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import useAuth from "../../../../../customHooks/useAuth";
+import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
 
 const Declaration = (props: any) => {
   const { open, setOpen } = props;
@@ -423,7 +424,9 @@ const Declaration = (props: any) => {
                     }} formTypeId={FormTypeId.BENE} />
 
                     <Button
-                      onClick={viewPdf}
+                      onClick={() => {
+                        dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                      }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >
