@@ -36,6 +36,7 @@ import { claimSchemaW8BenE } from "../../../../../schemas/w8BenE";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../../../customHooks/useAuth";
+import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
 export default function FCTA_Reporting(props: any) {
   const history = useNavigate();
   const { authDetails } = useAuth()
@@ -114,7 +115,9 @@ export default function FCTA_Reporting(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+            dispatch(GetBenEPdf(authDetails?.accountHolderId))
+          }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[8].id === 10 ? (
@@ -155,13 +158,13 @@ export default function FCTA_Reporting(props: any) {
             <Paper style={{ padding: "10px" }}>
               <Formik
                 validateOnChange={true}
-                 validateOnBlur={true}
+                validateOnBlur={true}
                 validateOnMount={true}
-                
+
                 initialValues={initialValues}
                 enableReinitialize
-              
-             
+
+
                 validationSchema={claimSchemaW8BenE}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
@@ -214,7 +217,7 @@ export default function FCTA_Reporting(props: any) {
                   submitForm
                 }) => (
                   <Form onSubmit={handleSubmit}>
-                     {/* {values.isSubmissionClaimTreaty && clickCount === 1 ? (<div  style={{backgroundColor: "#e8e1e1" , padding:"10px"}}>
+                    {/* {values.isSubmissionClaimTreaty && clickCount === 1 ? (<div  style={{backgroundColor: "#e8e1e1" , padding:"10px"}}>
                   <Typography>
                   Treaty107
                   <span className="mx-1">
@@ -407,7 +410,7 @@ The treaty country chosen does not match the country selected earlier as the pri
                               <Link
                                 href="#"
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
+                                style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -612,7 +615,7 @@ The treaty country chosen does not match the country selected earlier as the pri
                                     </div>
                                   </div>
                                   <p className="error">
-                                    {touched.ownerResidentId && errors.ownerResidentId? (<p>{errors.ownerResidentId}</p>): ""}
+                                    {touched.ownerResidentId && errors.ownerResidentId ? (<p>{errors.ownerResidentId}</p>) : ""}
                                   </p>
                                 </FormControl>
                               </div>
@@ -656,9 +659,9 @@ The treaty country chosen does not match the country selected earlier as the pri
                                     </div>
                                   </div>
                                   <p className="error">
-                                    {touched.limitationBenefitsId && errors.limitationBenefitsId? (<p>{errors.limitationBenefitsId}</p>): ""}
+                                    {touched.limitationBenefitsId && errors.limitationBenefitsId ? (<p>{errors.limitationBenefitsId}</p>) : ""}
                                   </p>
-                                 
+
                                 </FormControl>
                               </div>
                                 <div>
@@ -768,7 +771,9 @@ The treaty country chosen does not match the country selected earlier as the pri
                       <Button
                         style={{ color: "white", marginLeft: "15px" }}
                         variant="contained"
-                        onClick={viewPdf}
+                        onClick={() => {
+                          dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                        }}
                       >
                         VIEW FORM
                       </Button>
@@ -805,7 +810,7 @@ The treaty country chosen does not match the country selected earlier as the pri
                       align="center"
                       style={{
                         //color: "#f5f5f5",
-                        color: "#505E50",  
+                        color: "#505E50",
                         justifyContent: "center",
                         alignItems: "center",
                         marginTop: "20px",

@@ -42,6 +42,7 @@ import Chapter3StatusGuide from "../SubComponents/Chapter3Guide";
 import { convertToFormData } from "../../../Helpers/convertToFormData";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import { GetBenEPdf } from "../../../Redux/Actions/PfdActions";
 export default function Fedral_tax(props: any) {
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
@@ -178,7 +179,10 @@ export default function Fedral_tax(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform" onClick={viewPdf}>View Form</div>
+            <div className="viewform"
+              onClick={() => {
+                dispatch(GetBenEPdf(authDetails?.accountHolderId))
+              }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[3].id === 5 ? (
@@ -2181,7 +2185,9 @@ export default function Fedral_tax(props: any) {
                             disabled={isSubmitting}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
-                            onClick={viewPdf}
+                            onClick={() => {
+                              dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                            }}
                           >
                             View Form
                           </Button>
