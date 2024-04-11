@@ -21,7 +21,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import Declaration from "../../../../reusables/Declaration";
 import { Formik, Form } from "formik";
 import { useDispatch ,useSelector} from "react-redux";
-import { postW8BENForm ,GetHelpVideoDetails} from "../../../../../Redux/Actions";
+import { PostDualCert ,GetHelpVideoDetails} from "../../../../../Redux/Actions";
 import { useNavigate } from "react-router";
 import checksolid from "../../../../../assets/img/check-solid.png";
 import Accordion from "@mui/material/Accordion";
@@ -58,10 +58,11 @@ export default function Penalties() {
   );
   const W8BENData = useSelector((state: any) => state.W8BEN);
   // const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
-const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
     // const toggleRecoverSection = () => {
     //   setShowRecoverSection(true);
     // };
+    console.log(PrevStepData,";;")
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -118,23 +119,34 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
         initialValues={initialValue}
         validationSchema={partCertiSchema_DC_BEN}
         onSubmit={(values, { setSubmitting }) => {
-          history("/Submit_DC_BEN");
+          // history("/Submit_DC_BEN");
          
-          if (clickCount === 0) {
-        
-            setClickCount(clickCount+1);
-          }else{
-            setSubmitting(true)
-            const new_obj = { ...PrevStepData, stepName: `/${urlValue}`,date:moment(values.date).format() }
-            const result = { ...new_obj, ...values };
-                        dispatch(
-                          postW8BENForm(result, () => {
-                            localStorage.setItem("PrevStepData",JSON.stringify(result))
-                             history("/Submit_DC_BEN")
-                          })
-                        );
-          }
-        }}
+          const returnPromise = new Promise((resolve, reject) => {
+
+            const temp = [{
+              ...PrevStepData, 
+              ...values,
+              date: new Date().toISOString(),
+              stepName: `/${urlValue}`
+            }]
+            dispatch(
+              PostDualCert(temp, () => {
+                setSubmitting(true);
+                localStorage.setItem("DualCertData", JSON.stringify(temp))
+              
+                
+                resolve("success")
+              }, (err: any) => {
+                reject(err);
+              })
+            );
+
+
+          })
+
+          return returnPromise;
+        }
+        }
       >
         {({
          errors,
@@ -749,18 +761,18 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                               );
                               const urlValue =
                                 window.location.pathname.substring(1);
-                              dispatch(
-                                postW8BENForm(
-                                  {
-                                    ...prevStepData,
-                                    ...values,
-                                    stepName: `/${urlValue}`,
-                                  },
-                                  () => {
-                                    history(GlobalValues.basePageRoute);
-                                  }
-                                )
-                              );
+                              // dispatch(
+                              //   PostDualCert(
+                              //     {
+                              //       ...prevStepData,
+                              //       ...values,
+                              //       stepName: `/${urlValue}`,
+                              //     },
+                              //     () => {
+                              //       history(GlobalValues.basePageRoute);
+                              //     }
+                              //   )
+                              // );
                             })
                               .catch((err) => {
                                 console.log(err);
@@ -769,13 +781,14 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                         </div>
                     <Button
                       type="submit"
-                      // onClick={() => {
-                      //   history("/Submit");
-                      //   //  setOpen2(true)
-                      // }}
-                      // onClick={() => {
-                      //   setOpen2(true);
-                      // }}
+                      onClick={() => {
+                        submitForm().then((data: any) => {
+                          history("/Submit_DC_BEN");
+                        }).catch(() => {
+
+                        })
+                      }}
+                      disabled={!isValid || !values.isCheckAcceptance}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >

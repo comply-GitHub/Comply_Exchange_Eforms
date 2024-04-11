@@ -71,17 +71,18 @@ export default function Penalties() {
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
   console.log(PrevStepData,";;")
-  const W8BENEData = useSelector((state: any) => state.W8BENE);
+  const W9Data = useSelector((state: any) => state.W9Data);
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
   const initialValue = {
-    signedBy: W8BENEData?.signedBy ?? "",
-    confirmationCode: W8BENEData?.confirmationCode ?? "",
-    date: W8BENEData?.date ?? new Date().toLocaleDateString('en-US', {
+    signedBy: W9Data?.signedBy ?? "",
+    confirmationCode: W9Data?.confirmationCode ?? "",
+    securityCode: W9Data?.confirmationCode ?? "",
+    date: W9Data?.date ?? new Date().toLocaleDateString('en-US', {
       month: '2-digit',
       day: '2-digit',
       year: 'numeric',
     }),
-    isCheckAcceptance: W8BENEData?.isCheckAcceptance ? true : false
+    isCheckAcceptance: W9Data?.isCheckAcceptance ? true : false
   };
   const location = useLocation();
   const dispatch = useDispatch();
@@ -100,26 +101,21 @@ export default function Penalties() {
         validateOnChange={true}
         validateOnBlur={true}
         initialValues={initialValue}
-        // validationSchema={partCertiSchema}
+        validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
           const returnPromise = new Promise((resolve, reject) => {
 
-            const temp = {
-              ...PrevStepData,
+            const temp = [{
+              ...PrevStepData[0], 
               ...values,
-              date: new Date().toLocaleDateString('en-US', {
-                month: '2-digit',
-                day: '2-digit',
-                year: 'numeric',
-              }),
-              agentId: authDetails?.agentId,
-              // accountHolderBasicDetailId: authDetails?.accountHolderId,
-              stepName: `/${urlValue}` 
-            }
+              date: new Date().toISOString(),
+              stepName: `/${urlValue}`
+            }]
             dispatch(
-              PostDualCert([temp], () => {
+              PostDualCert(temp, () => {
+                setSubmitting(true);
                 localStorage.setItem("DualCertData", JSON.stringify(temp))
-                history("/Submit_W9_DC");
+              
                 
                 resolve("success")
               }, (err: any) => {
@@ -776,7 +772,7 @@ export default function Penalties() {
                           //type="submit"
                           onClick={() => {
                             submitForm().then((data: any) => {
-                              
+                              history("/Submit_W9_DC");
                             }).catch(() => {
 
                             })

@@ -36,6 +36,8 @@ export default function Tin(props: any) {
 
   const { authDetails } = useAuth();
   const onBoardingFormValuesPrevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
+
+  const AgentId = JSON.parse(localStorage.getItem("authDetails") ?? "null");
   const [dateOfEntryIntoUSState, setDateOfEntryIntoUSState] = useState("")
   const [dateNonImmigrationStatusExpireState, setDateNonImmigrationStatusExpireState] = useState("")
   useEffect(() => {
@@ -120,8 +122,9 @@ const handleTaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 useEffect(()=>{
   dispatch(GetHelpVideoDetails());
   dispatch(getAllCountries())  
-  dispatch(GetAgentUSVisaTypeHiddenForEformAction())
+  dispatch(GetAgentUSVisaTypeHiddenForEformAction(authDetails?.agentId))
 },[])
+console.log(authDetails?.agentId,"22")
 const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer);
   const [toolInfo, setToolInfo] = useState("");
   const GethelpData = useSelector(

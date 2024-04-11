@@ -27,7 +27,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import CloseIcon from "@mui/icons-material/Close";
-import { US_TINSchemaW8BenE } from "../../../../../schemas/w8Ben";
+import { US_TINSchemaW8Ben_Dc } from "../../../../../schemas/w8Ben";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
@@ -142,7 +142,7 @@ export default function Tin(props: any) {
 console.log(obValues.taxpayerIdTypeID,"pp")
   const dispatch = useDispatch();
   const [initialValue, setInitialValues] = useState({
-    usTinTypeId: obValues.taxpayerIdTypeID,
+    usTinTypeId: parseInt(obValues.taxpayerIdTypeID),
     
     usTin: obValues.usTin,
     tinValue: "",
@@ -212,7 +212,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                 initialValues={initialValue}
                 validateOnMount={true}
                 enableReinitialize
-                validationSchema={US_TINSchemaW8BenE}
+                validationSchema={US_TINSchemaW8Ben_Dc()}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
                   const temp = {
@@ -493,9 +493,9 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                               <Input
                                 disabled={
                                   values.notAvailable ||
-                                  values.usTinTypeId === "0" ||
-                                  values.usTinTypeId === "7" ||
-                                  values.usTinTypeId === "8"
+                                  values.usTinTypeId === 0 ||
+                                  values.usTinTypeId === 7 ||
+                                  values.usTinTypeId === 8
                                 }
                                 fullWidth
                                 type="text"

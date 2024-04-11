@@ -233,7 +233,7 @@ export default function Tin(props: any) {
                     <div style={{ backgroundColor: "#ffff", }}>
                       {values.Tin && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                         <Typography>
-                          TIN
+                          TIN 100
                           <span className="mx-1">
                             <img src={Infoicon} style={{
                               color: "#ffc107", height: "22px",
@@ -249,7 +249,7 @@ export default function Tin(props: any) {
 
 
                           </span>
-                          You have selected an entity type that would normally expect to supply an EIN
+                          You have selected an entity type that would normally expect to supply an SSN/ITIN
 
                         </Typography>
 

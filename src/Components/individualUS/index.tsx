@@ -316,7 +316,7 @@ export default function IndividualUs() {
     const formattedDate = `${month.toString().padStart(2, "0")}-${day
       .toString()
       .padStart(2, "0")}-${year}`;
-    // return formattedDate;
+  
   };
 
   const isLoginAndContinue = () => {
@@ -340,19 +340,12 @@ export default function IndividualUs() {
       setInitialValues(temp);
     }
   }
-
-  //const [agentDetailArray, setAgenttinArray] = useState([]);
-
-  useEffect(() => {
-    dispatch(getAllCountries());
-    dispatch(GetAgentUSVisaTypeHiddenForEformAction());
-    dispatch(GetAgentIncomeTypeHiddenAllowAnoymo());
-    dispatch(getAllCountriesCode());
-    dispatch(GetHelpVideoDetails());
-    dispatch(getAllCountriesIncomeCode());
-    dispatch(getAllStateByCountryId(0));
+console.log(authDetails?.agentId,"90")
+useEffect(()=>{
+  if(authDetails?.agentId){
+    dispatch(GetAgentUSVisaTypeHiddenForEformAction(authDetails?.agentId));
     dispatch(
-      getTinTypes(3, (data: any) => {
+      getTinTypes(authDetails?.agentId, (data: any) => {
         setUStinArray(data);
         let datas = data.filter((ele: any) => {
           return ele.usIndividual === true;
@@ -365,16 +358,30 @@ export default function IndividualUs() {
       })
     );
     dispatch(
-      GetAgentPaymentType(3, () => {
+      GetAgentPaymentType(authDetails?.agentId, () => {
         // console.log("Data");
       })
     );
 
     dispatch(
-      GET_AGENT_BY_ID(3, (data: any) => {
+      GET_AGENT_BY_ID(authDetails?.agentId, (data: any) => {
         // alert(data.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat)
         setAgentData(data);
       }));
+  }
+},[authDetails])
+
+  useEffect(() => {
+    dispatch(getAllCountries());
+   
+     
+   
+    dispatch(GetAgentIncomeTypeHiddenAllowAnoymo());
+    dispatch(getAllCountriesCode());
+    dispatch(GetHelpVideoDetails());
+    dispatch(getAllCountriesIncomeCode());
+    dispatch(getAllStateByCountryId(0));
+   
 
     LoadPageData();
   }, []);

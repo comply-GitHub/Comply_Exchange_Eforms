@@ -1093,11 +1093,11 @@ export const GetAgentIncomeCodeHiddenForEformAction = (): any => {
 // };
 
 
-export const GetAgentUSVisaTypeHiddenForEformAction = (): any => {
+export const GetAgentUSVisaTypeHiddenForEformAction = (id:number): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
       Utils.EndPoint.GetAgentUSVisaTypeHiddenForEform,
-      `?agentId=3`,
+      `?agentId=${id}`,
       (resData) => {
         const { data } = resData;
         if (resData.status === 200) {
