@@ -29,6 +29,7 @@ import { AccountHolderIncomeAllocationType } from "../../../../../Interfaces/Acc
 import { convertToFormData } from "../../../../../Helpers/convertToFormData";
 import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
+import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
 export default function Factors() {
   const { authDetails } = useAuth();
   const history = useNavigate();
@@ -169,7 +170,9 @@ export default function Factors() {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+            dispatch(GetBenEPdf(authDetails?.accountHolderId))
+          }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[3].id === 5 ? (
@@ -299,7 +302,7 @@ export default function Factors() {
                       <Link
                         href="#"
                         underline="none"
-                        style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
+                        style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                         onClick={() => {
                           setToolInfo("");
                         }}
@@ -338,7 +341,9 @@ export default function Factors() {
                 <Button
                   variant="contained"
                   style={{ color: "white", marginLeft: "15px" }}
-                  onClick={viewPdf}
+                  onClick={() => {
+                    dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                  }}
                 >
                   View form
                 </Button>
@@ -355,7 +360,7 @@ export default function Factors() {
                 align="center"
                 style={{
                   //color: "#f5f5f5",
-                  color: "#505E50",  
+                  color: "#505E50",
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: "20px",
@@ -388,7 +393,7 @@ export default function Factors() {
           </div>
         </div>
       </div>
-      
+
     </section>
   );
 }

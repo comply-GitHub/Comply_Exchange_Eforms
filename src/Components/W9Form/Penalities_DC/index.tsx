@@ -12,18 +12,19 @@ import {
   Input,
 } from "@mui/material";
 import "./index.scss"
+import { useLocation } from "react-router-dom";
 import Infoicon from "../../../assets/img/info.png";
 import { Info } from "@mui/icons-material";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import InfoIcon from "@mui/icons-material/Info";
-import { GetHelpVideoDetails, postW8BEN_EForm } from "../../../Redux/Actions"
+import { GetHelpVideoDetails, PostDualCert } from "../../../Redux/Actions"
 import Declaration from "../../reusables/Declaration";
 import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { W8_state } from "../../../Redux/Actions";
-import { useNavigate } from "react-router";
+import {  useNavigate } from "react-router";
 import { ContentCopy } from "@mui/icons-material";
 import checksolid from "../../../assets/img/check-solid.png";
 import Accordion from "@mui/material/Accordion";
@@ -68,26 +69,29 @@ export default function Penalties() {
     };
   const [toolInfo, setToolInfo] = useState("");
 
-  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-  const W8BENEData = useSelector((state: any) => state.W8BENE);
+  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+  console.log(PrevStepData,";;")
+  const W9Data = useSelector((state: any) => state.W9Data);
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
   const initialValue = {
-    signedBy: W8BENEData?.signedBy ?? "",
-    confirmationCode: W8BENEData?.confirmationCode ?? "",
-    date: W8BENEData?.date ?? new Date().toLocaleDateString('en-US', {
+    signedBy: W9Data?.signedBy ?? "",
+    confirmationCode: W9Data?.confirmationCode ?? "",
+    securityCode: W9Data?.confirmationCode ?? "",
+    date: W9Data?.date ?? new Date().toLocaleDateString('en-US', {
       month: '2-digit',
       day: '2-digit',
       year: 'numeric',
     }),
-    isCheckAcceptance: W8BENEData?.isCheckAcceptance ? true : false
+    isCheckAcceptance: W9Data?.isCheckAcceptance ? true : false
   };
+  const location = useLocation();
   const dispatch = useDispatch();
   const history = useNavigate();
   const [clickCount, setClickCount] = useState(0);
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
-
+  const urlValue = location.pathname.substring(1);
   const viewPdf = () => {
     history("/w8BenE_pdf", { replace: true });
   }
@@ -97,28 +101,22 @@ export default function Penalties() {
         validateOnChange={true}
         validateOnBlur={true}
         initialValues={initialValue}
-        // validationSchema={partCertiSchema}
+        validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
           const returnPromise = new Promise((resolve, reject) => {
 
-            let temp = {
-              ...PrevStepData,
+            const temp = [{
+              ...PrevStepData[0], 
               ...values,
-              date: new Date().toLocaleDateString('en-US', {
-                month: '2-digit',
-                day: '2-digit',
-                year: 'numeric',
-              }),
-              agentId: authDetails?.agentId,
-              accountHolderBasicDetailId: authDetails?.accountHolderId,
-            }
+              date: new Date().toISOString(),
+              stepName: `/${urlValue}`
+            }]
             dispatch(
-              postW8BEN_EForm(temp, (data: any) => {
+              PostDualCert(temp, () => {
                 setSubmitting(true);
-                localStorage.setItem(
-                  "PrevStepData",
-                  JSON.stringify(temp)
-                );
+                localStorage.setItem("DualCertData", JSON.stringify(temp))
+              
+                
                 resolve("success")
               }, (err: any) => {
                 reject(err);
@@ -750,18 +748,18 @@ export default function Penalties() {
                               );
                               const urlValue =
                                 window.location.pathname.substring(1);
-                              dispatch(
-                                postW8BEN_EForm(
-                                  {
-                                    ...prevStepData,
-                                    ...values,
-                                    stepName: `/${urlValue}`,
-                                  },
-                                  () => {
-                                    history(GlobalValues.basePageRoute);
-                                  }
-                                )
-                              );
+                              // dispatch(
+                              //   PostDualCert(
+                              //     {
+                              //       ...prevStepData,
+                              //       ...values,
+                              //       stepName: `/${urlValue}`,
+                              //     },
+                              //     () => {
+                              //       history(GlobalValues.basePageRoute);
+                              //     }
+                              //   )
+                              // );
                             })
                               .catch((err) => {
                                 console.log(err);

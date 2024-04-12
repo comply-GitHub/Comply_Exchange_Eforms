@@ -12,7 +12,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../Redux/store";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import { ErrorModel } from "../../../Redux/Actions/errormodel";
+import { GetBenEPdf } from "../../../Redux/Actions/PfdActions";
+import useAuth from "../../../customHooks/useAuth";
 export default function Term() {
+  const { authDetails } = useAuth();
   //States
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
@@ -58,7 +61,9 @@ export default function Term() {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+            dispatch(GetBenEPdf(authDetails?.accountHolderId))
+          }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[3].id === 5 ? (
               <a
@@ -226,7 +231,7 @@ export default function Term() {
               align="center"
               style={{
                 //color: "#f5f5f5",
-                color: "#505E50",  
+                color: "#505E50",
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: "20px",

@@ -8,7 +8,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
-import { W8_state_ECI, postW8BENForm } from "../../../../../Redux/Actions";
+import { W8_state_ECI, PostDualCert } from "../../../../../Redux/Actions";
 import { useDispatch } from "react-redux";
 
 const Declaration = (props: any) => {
@@ -37,11 +37,12 @@ const Declaration = (props: any) => {
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
 
-  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+  console.log(PrevStepData,"op")
   const initialValue = {
-    declaration: false,
-    IsSubmit: false,
-    IsSubmit_not: false,
+    isAgreeWithDeclaration: false,
+    isConsentReceipentstatement: false,
+    isNotConsentReceipentstatement: false,
   };
   const viewPdf=()=>{
     history("w8Ben_pdf");
@@ -60,24 +61,27 @@ const Declaration = (props: any) => {
               onSubmit={(values, { setSubmitting }) => {
                 console.log("values", values);
                 setSubmitting(true);
-                const new_obj = {
-                  ...PrevStepData,
-                  statusId: 2,
-                  stepName: `/${urlValue}`,
+                const result = {
+                  ...PrevStepData, 
+                  ...values,
+                 
+                  statusId: 1,
                 };
-                const result = { ...PrevStepData, ...values };
+                const returnPromise = new Promise((resolve, reject) => {
                 dispatch(
-                  postW8BENForm(result, () => {
-                    localStorage.setItem(
-                      "PrevStepData",
-                      JSON.stringify(result)
-                    );
-                    history(
-                      "/ThankYou_DC_BEN"
-                    );
-                  })
+                  PostDualCert(result, (data: any) => {
+                    localStorage.setItem("DualCertData", JSON.stringify(result))
+                    resolve(data);
+                  }
+                    , (err: any) => {
+                      reject(err);
+                    }
+                  )
                 );
-              }}
+              })
+
+
+            }}
             >
               {({
                 errors,
@@ -88,7 +92,8 @@ const Declaration = (props: any) => {
                 handleChange,
                 isSubmitting,
                 isValid,
-                setFieldValue
+                setFieldValue,
+                submitForm
               }) => (
                 <form onSubmit={handleSubmit}>
                   {/* <form> */}
@@ -255,16 +260,16 @@ const Declaration = (props: any) => {
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
                           <Checkbox
-                            name="declaration"
-                            value={values.declaration}
+                            name="isAgreeWithDeclaration"
+                            value={values.isAgreeWithDeclaration}
                             onChange={handleChange}
-                            checked={values.declaration}
+                            checked={values.isAgreeWithDeclaration}
                           />
                           <Typography style={{ marginTop: "9px" }}>
                             I agree with the above Declarations
                           </Typography>
                         </div>
-                        <p className="error">{errors.declaration}</p>
+                        <p className="error">{errors.isAgreeWithDeclaration}</p>
                       </AccordionDetails>
                     </Accordion>
                     <Accordion
@@ -329,13 +334,13 @@ const Declaration = (props: any) => {
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
                           <Checkbox
-                            name="IsSubmit"
-                            value={values.IsSubmit}
+                            name="isConsentReceipentstatement"
+                            value={values.isConsentReceipentstatement}
                             onChange={(e)=>{
                               handleChange(e);
                               setTimeout(()=>{setFieldValue("IsSubmit_not",false)},50)
                             }}
-                            checked={values.IsSubmit}
+                            checked={values.isConsentReceipentstatement}
                           />
 
                           <Typography style={{ marginTop: "9px" }}>
@@ -343,16 +348,16 @@ const Declaration = (props: any) => {
                             electronically.
                           </Typography>
                         </div>
-                        <p className="error">{errors.IsSubmit}</p>
+                        <p className="error">{errors.isConsentReceipentstatement}</p>
                         <div style={{ display: "flex", marginTop: "10px" }}>
                           <Checkbox
-                            name="IsSubmit_not"
-                            value={values.IsSubmit_not}
+                            name="isNotConsentReceipentstatement"
+                            value={values.isNotConsentReceipentstatement}
                             onChange={(e)=>{
                               handleChange(e);
-                              setTimeout(()=>{setFieldValue("IsSubmit",false)},50)
+                              setTimeout(()=>{setFieldValue("isConsentReceipentstatement",false)},50)
                             }}
-                            checked={values.IsSubmit_not}
+                            checked={values.isNotConsentReceipentstatement}
                           />
                           <Typography style={{ marginTop: "9px" }}>
                             {" "}
@@ -360,7 +365,7 @@ const Declaration = (props: any) => {
                             statement electronically.
                           </Typography>
                         </div>
-                        <p className="error">{errors.IsSubmit_not}</p>
+                        <p className="error">{errors.isNotConsentReceipentstatement}</p>
                       </AccordionDetails>
                     </Accordion>
                   </div>
@@ -388,7 +393,13 @@ const Declaration = (props: any) => {
                       //   history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233")
                       // }}
                       disabled={!isValid}
-                      type="submit"
+                      onClick={() => {
+                        submitForm().then((data: any) => {
+                          history("/ThankYou_DC_BEN");
+                        }).catch(() => {
+  
+                        })
+                      }}       
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >

@@ -86,7 +86,7 @@ export default function Factors() {
   const dispatch = useDispatch();
   const history = useNavigate();
   const [expanded, setExpanded] = React.useState<string | false>("");
-  const [clickCount, setClickCount] = useState(0);
+  
 
   useEffect(() => {
     document.title = "Comply Exchange"
@@ -220,9 +220,9 @@ export default function Factors() {
                 enableReinitialize
                 validationSchema={StatusSchema}
                 onSubmit={(values, { setSubmitting }) => {
-                  if (clickCount === 0) {
-                    setClickCount(clickCount + 1);
-                  } else {
+                  // if (clickCount === 0) {
+                  //   setClickCount(clickCount + 1);
+                  // } else {
 
                     const new_obj = { ...PrevStepData, citizenshipCountry: getNameById(PrevStepData.citizenshipCountry) }
                     const result = { ...new_obj, ...values };
@@ -245,7 +245,7 @@ export default function Factors() {
                     );
 
                   }
-                }}
+                }
               >
                 {({
                   errors,
@@ -262,8 +262,7 @@ export default function Factors() {
                     <>{console.log("VALUESSS", values)}</>
 
                     {values.isHeldUSCitizenship === true &&
-                      obValues?.isUSIndividual == false &&
-                      clickCount === 1 ? (
+                      obValues?.isUSIndividual == false ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -316,8 +315,8 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHoldDualCitizenshipStatus === true &&
-                      clickCount === 1 ? (
+                    {values.isHoldDualCitizenshipStatus === true
+                     ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -365,8 +364,7 @@ export default function Factors() {
                     )}
 
                     {values.isHeldUSCitizenship === true &&
-                      values.isRenouncedCitizenship === true &&
-                      clickCount === 1 ? (
+                      values.isRenouncedCitizenship === true ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -402,8 +400,7 @@ export default function Factors() {
                     )}
 
                     {values.isHeldUSCitizenship === true &&
-                      values.isTaxationUSCitizenOrResident === true &&
-                      clickCount === 1 ? (
+                      values.isTaxationUSCitizenOrResident === true ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -454,8 +451,7 @@ export default function Factors() {
                     )}
 
                     {values.isHeldUSCitizenship === true &&
-                      values.isPermamnentResidentCardHolder === true &&
-                      clickCount === 1 ? (
+                      values.isPermamnentResidentCardHolder === true? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -508,8 +504,7 @@ export default function Factors() {
                     )}
 
                     {values.isHeldUSCitizenship === true &&
-                      values.isHoldDualCitizenshipIncludeUSCitizenship === true &&
-                      clickCount === 1 ? (
+                      values.isHoldDualCitizenshipIncludeUSCitizenship === true ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -560,8 +555,8 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.IsPresentAtleast31Days ==="Yes" &&
-                      clickCount === 1 ? (
+                    {values.IsPresentAtleast31Days ==="Yes" ?
+                      (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
