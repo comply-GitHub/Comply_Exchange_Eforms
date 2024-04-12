@@ -36,6 +36,7 @@
 // export default ReminderFunction;
 
 import React, { useEffect, useRef } from "react";
+import useAuth from "./customHooks/useAuth";
 
 // import { browserHistory } from "react-router-dom";
 
@@ -43,6 +44,7 @@ const WithAutoLogout = <P extends object>(
   ComposedComponent: React.ComponentType<P>
 ) => {
   const AutoLogout: React.FC<P> = (props) => {
+    const { authDetails } = useAuth();
     const events = [
       "load",
       "mousemove",
@@ -60,7 +62,7 @@ const WithAutoLogout = <P extends object>(
     useEffect(() => {
       const setTimeouts = () => {
         let currentTime;
-        if (storedLoginTime && storedLoginTime !== null || pathArray[1] !== "login") {
+        if (storedLoginTime && storedLoginTime !== null || pathArray[1] !== "login" && pathArray[1] !== "") {
           currentTime = JSON.parse(storedLoginTime);
           warnTimeoutRef.current = setTimeout(warn, 1000 * 60 * (storedLoginTime-(storedLoginTime/2))); 
           logoutTimeoutRef.current = setTimeout(logout, 1000 * 60 * storedLoginTime); 
