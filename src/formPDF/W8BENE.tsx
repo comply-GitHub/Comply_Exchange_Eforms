@@ -217,7 +217,9 @@ const W8BenE = () => {
     usTinTypeId: 0,
     permanentresidentialzippostalcode: ""
   })
-
+// useEffect(()=>{
+//   document.title="Chapter"
+// })
   const getCountriesReducer = useSelector(
     (state: any) => state.getCountriesReducer
   );
