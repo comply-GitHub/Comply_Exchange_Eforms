@@ -29,8 +29,8 @@ export default function Tin(props: any) {
   const initialValue = {
     taxTreaty_DescriptionOfPersonalServiceYouProvide: onBoardingFormValuesPrevStepData?.taxTreaty_DescriptionOfPersonalServiceYouProvide ? onBoardingFormValuesPrevStepData?.taxTreaty_DescriptionOfPersonalServiceYouProvide : "",
     taxTreaty_TotalCompensationYouExpectForThisCalenderYear: onBoardingFormValuesPrevStepData?.taxTreaty_TotalCompensationYouExpectForThisCalenderYear ? onBoardingFormValuesPrevStepData?.taxTreaty_TotalCompensationYouExpectForThisCalenderYear : "",
-    taxTreaty_TreatyId: onBoardingFormValuesPrevStepData?.taxTreaty_TreatyId ? onBoardingFormValuesPrevStepData?.taxTreaty_TreatyId : 0,
-    taxTreaty_TreatyArticleId: onBoardingFormValuesPrevStepData?.taxTreaty_TreatyArticleId ? onBoardingFormValuesPrevStepData?.taxTreaty_TreatyArticleId : 0,
+    taxTreaty_TreatyId: onBoardingFormValuesPrevStepData?.taxTreaty_TreatyId ? onBoardingFormValuesPrevStepData?.taxTreaty_TreatyId : "",
+    taxTreaty_TreatyArticleId: onBoardingFormValuesPrevStepData?.taxTreaty_TreatyArticleId ? onBoardingFormValuesPrevStepData?.taxTreaty_TreatyArticleId : "",
     taxTreaty_TotalCompensationListedon11bExemptFromTax: onBoardingFormValuesPrevStepData?.taxTreaty_TotalCompensationListedon11bExemptFromTax ? onBoardingFormValuesPrevStepData?.taxTreaty_TotalCompensationListedon11bExemptFromTax : "",
     taxTreaty_CheckAll: onBoardingFormValuesPrevStepData?.taxTreaty_CheckAll ? onBoardingFormValuesPrevStepData?.taxTreaty_CheckAll : false,
     taxTreaty_CountryOfResidenceId: onBoardingFormValuesPrevStepData?.taxTreaty_CountryOfResidenceId ? onBoardingFormValuesPrevStepData?.taxTreaty_CountryOfResidenceId : 0,
@@ -64,8 +64,8 @@ export default function Tin(props: any) {
     dispatch(getAllCountries())  
   },[])
 
-  const [treatyId, setTreatyId] = useState('');
-  const [treatyIdOnWhichBasicExemption, setTreatyIdOnWhichBasicExemption] = useState("")
+  const [treatyId, setTreatyId] = useState(initialValue.taxTreaty_TreatyId);
+  const [treatyIdOnWhichBasicExemption, setTreatyIdOnWhichBasicExemption] = useState(initialValue.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID)
 
   useEffect(() => {
     dispatch(GetCountryArticleByID(treatyId, (data: any) => {
@@ -81,12 +81,12 @@ export default function Tin(props: any) {
 
   const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer);
   const [toolInfo, setToolInfo] = useState("");
-  console.log(GetIncomeTypesData)
+  console.log(getCountriesReducer)
   return (
     <>
       <Formik
       validateOnChange={false}
-      validateOnBlur={false}
+      validateOnBlur={true}
       validateOnMount={false}
         initialValues={initialValue}
         enableReinitialize
@@ -99,12 +99,19 @@ export default function Tin(props: any) {
           
           setSubmitting(true);
           const temp = {
-            ...values,
+            agentId: authDetails.agentId,
+            accountHolderBasicDetailId: authDetails.accountHolderId,
             ...onBoardingFormValuesPrevStepData,
-            agentId: authDetails?.agentId,
-            accountHolderBasicDetailId: authDetails?.accountHolderId,
-            stepName: null,
+            ...values,
+            stepName: null
           };
+          // const temp = {
+          //   ...values,
+          //   agentId: authDetails?.agentId,
+          //   accountHolderBasicDetailId: authDetails?.accountHolderId,
+          //   stepName: null,
+          // };
+          console.log("temo data",temp);
           const returnPromise = new Promise((resolve, reject) => {
             dispatch(
               post8233_EForm(temp,
@@ -142,7 +149,7 @@ export default function Tin(props: any) {
           submitForm
         }) => (
           <Form onSubmit={handleSubmit}>
-            {/* <>{console.log(values,errors, "errorsssss")}</> */}
+            <>{console.log(values,errors, "errorsssss")}</>
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}

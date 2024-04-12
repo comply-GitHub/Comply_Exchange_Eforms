@@ -79,7 +79,8 @@ const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
     <>
       <Formik
       validateOnChange={false}
-      validateOnBlur={false}
+      validateOnBlur={true}
+      validateOnMount={false}
         initialValues={initialValue}
         validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
