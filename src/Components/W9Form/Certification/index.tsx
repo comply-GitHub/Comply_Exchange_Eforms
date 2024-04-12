@@ -135,23 +135,25 @@ export default function Certifications(props: any) {
                 enableReinitialize
                 validationSchema={certificateSchema_w9}
                 onSubmit={(values, { setSubmitting }) => {
-                  const submitPromise = new Promise((resolve, reject) => {
+               
+                  // const submitPromise = new Promise((resolve, reject) => {
                     setSubmitting(true);
                     const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
                     const result = { ...new_obj, ...values };
                     dispatch(
                       postW9Form(result, () => {
                         localStorage.setItem("PrevStepData", JSON.stringify(result))
-                        //history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
+                        history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
                         setSubmitting(false);
-                        resolve("");
+                        // resolve("");
                       },
                       (err:any)=>{
-                        reject(err);
+                        // reject(err);
                         setSubmitting(false);
                       })
                     );
-                  });
+
+                  // });
 
                 }}
               >
@@ -506,7 +508,7 @@ export default function Certifications(props: any) {
                         </div>
                       </Paper>
 
-
+<>{console.log(errors,"ERRORS")}</>
                       <div
                         style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}
                       >
@@ -548,18 +550,17 @@ export default function Certifications(props: any) {
                           View form
                         </Button>
                         <Button
-                          //type="submit"
+                          type="submit"
                           disabled={!isValid}
-
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
-                          onClick={() => {
-                            submitForm().then((data) => {
-                              history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
-                            }).catch((error) => {
-                              console.log(error);
-                            })
-                          }}
+                          // onClick={() => {
+                          //   submitForm().then((data) => {
+                          //     history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
+                          //   }).catch((error) => {
+                          //     console.log(error);
+                          //   })
+                          // }}
                         >
                           Continue
                         </Button>

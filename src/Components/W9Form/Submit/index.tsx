@@ -57,7 +57,7 @@ const Declaration = (props: any) => {
                 console.log("values", values)
                 setSubmitting(true);
                 dispatch(
-                  W8_state_ECI(values, () => {
+                  postW9Form(values, () => {
                     history("/Thankyou_w9");
                   })
                 );

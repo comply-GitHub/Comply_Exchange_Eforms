@@ -1,48 +1,19 @@
-// import React, { useState, useEffect } from 'react';
-
-// const ReminderFunction: React.FC = () => {
-//   const [reminder, setReminder] = useState<string | null>(null);
-//   var currentTime:any;
-// var reminderTime:any;
-//   const setReminderAfterMinutes = (t: number) => {
-//     // Calculate the current time
-//     const storedLoginTime = localStorage.getItem("loginTime");
-//     if (storedLoginTime && storedLoginTime !== null) {
-//       currentTime = JSON.parse(storedLoginTime);
-
-//      reminderTime = new Date(currentTime.getTime() + t * 60000); // Convert minutes to milliseconds
-//   }
-
-//     const timerId = setTimeout(() => {
-//       console.log("Reminder: " + t + " minutes have passed.");
-//       setReminder(`Reminder: ${t} minutes have passed.`);
-//     }, t * 60000); // Set timeout for t minutes
-
-//     return () => clearTimeout(timerId);
-//   };
-
-//   useEffect(() => {
-//     setReminderAfterMinutes(1);
-//   }, []);
-
-//   return (
-//     <div>
-//       {/* <h1>Set Reminder</h1> */}
-//       <p>{reminder}</p>
-//     </div>
-//   );
-// };
-
-// export default ReminderFunction;
-
-import React, { useEffect, useRef } from "react";
-
-// import { browserHistory } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import useAuth from "./customHooks/useAuth";
+import { Paper, Typography, Alert } from "@mui/material";
 
 const WithAutoLogout = <P extends object>(
   ComposedComponent: React.ComponentType<P>
 ) => {
   const AutoLogout: React.FC<P> = (props) => {
+    const { authDetails } = useAuth();
+    const [countdown, setCountdown] = useState<number>(
+      authDetails?.configurations?.sessionTimeinMin * 60
+    );
+    const [counter, ShowCounter] = useState(false);
+    useEffect(() => {
+      setCountdown(authDetails?.configurations?.sessionTimeinMin-authDetails?.configurations?.sessionTimeReminderBeforeinMin)
+    }, [useAuth]);
     const events = [
       "load",
       "mousemove",
@@ -52,20 +23,47 @@ const WithAutoLogout = <P extends object>(
       "keypress",
     ];
     var base_url = window.location.origin;
-    var pathArray = window.location.pathname.split( '/' );
-    const storedLoginTime:any = localStorage.getItem("loginTime");
+    var pathArray = window.location.pathname.split("/");
+    const storedLoginTime: any = localStorage.getItem("loginTime");
     const warnTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const logoutTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    useEffect(() => {
+      sessionConfig();
+      // console.log(authDetails?.configurations,"authDetails from session")
+    }, [authDetails]);
 
     useEffect(() => {
+      sessionConfig();
+      if (countdown <= 0) return;
+      const timer = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }, []);
+
+    useEffect(() => {
+      // if (countdown <= 0) return;
+      // const timer = setInterval(() => {
+      //   setCountdown((prevCountdown) => prevCountdown - 1);
+      // }, 1000);
+      // return () => clearInterval(timer);
+    }, [countdown]);
+    const sessionConfig = () => {
       const setTimeouts = () => {
         let currentTime;
-        if (storedLoginTime && storedLoginTime !== null || pathArray[1] !== "login") {
+        if (
+          (authDetails && authDetails?.configurations !== null) ||
+          (pathArray[1] !== "login" && pathArray[1] !== "")
+        ) {
           currentTime = JSON.parse(storedLoginTime);
-          warnTimeoutRef.current = setTimeout(warn, 1000 * 60 * (storedLoginTime-(storedLoginTime/2))); 
-          logoutTimeoutRef.current = setTimeout(logout, 1000 * 60 * storedLoginTime); 
+          warnTimeoutRef.current = setTimeout(warn, 1000 * 60 * 1);
+          logoutTimeoutRef.current = setTimeout(
+            logout,
+            1000 * 60 * authDetails?.configurations?.sessionTimeinMin
+          );
         }
       };
+      // configurations,sessionTimeinMin,sessionTimeReminderBeforeinMin
 
       const clearTimeouts = () => {
         if (warnTimeoutRef.current) clearTimeout(warnTimeoutRef.current);
@@ -78,17 +76,16 @@ const WithAutoLogout = <P extends object>(
       };
 
       const warn = () => {
-        window.alert("You will be logged out automatically in " + (storedLoginTime/2) + " minute");
-        // console.log("You will be logged out automatically in "+storedLoginTime+" minute.");
+        ShowCounter(true);
+        // console.log(formatTime(authDetails?.configurations?.sessionTimeinMin-authDetails?.configurations?.sessionTimeReminderBeforeinMin))
       };
 
       const logout = () => {
-        // console.log("Sending a logout request to the API...");
         destroy();
       };
 
       const destroy = () => {
-        window.location.replace(base_url+"/login");
+        window.location.replace(base_url + "/login");
         localStorage.clear();
       };
 
@@ -100,12 +97,68 @@ const WithAutoLogout = <P extends object>(
       return () => {
         clearTimeouts();
         for (let i = 0; i < events.length; i++) {
+          console.log(
+            formatTime(
+              authDetails?.configurations?.sessionTimeinMin -
+                authDetails?.configurations?.sessionTimeReminderBeforeinMin
+            )
+          );
           window.removeEventListener(events[i], resetTimeout);
         }
       };
-    }, []);
+    };
+    const formatTime = (time: number): string => {
+      const minutes = Math.floor(time / 60);
+      const seconds = time % 60;
+      console.log(minutes, seconds);
+      return `${Math.max(0, minutes).toString().padStart(2, "0")}:${Math.max(
+        0,
+        seconds
+      )
+        .toString()
+        .padStart(2, "0")}`;
+    };
 
-    return <ComposedComponent {...props} />;
+    return (
+      <>
+        <ComposedComponent {...props} />
+        {counter &&
+        authDetails &&
+        authDetails?.configurations !== null &&
+        pathArray[1] !== "login" &&
+        pathArray[1] !== "" ? (
+          <div className="sessionAlertClass">
+            <div className={counter ? "sessionAlertTextClass" : ""}>
+              {/* You will be logout in {formatTime(countdown)} minutes. */}
+              <div>
+                <Alert
+                  severity="error"
+                  sx={{
+                    height: "5vh",
+                    display: "grid",
+                    gridTemplateColumns: "2% 95%",
+                  }}
+                >
+                  <div
+                    style={{ display: "grid", gridTemplateColumns: "95% 5%" }}
+                  ><>{console.log(countdown,"COUNTDOWN")}</>
+                    <Typography>{formatTime(countdown)} </Typography>
+                    <Typography
+                      sx={{ color: "black", justifySelf: "end" }}
+                      onClick={() => ShowCounter(false)}
+                    >
+                      X
+                    </Typography>
+                  </div>
+                </Alert>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+      </>
+    );
   };
 
   return AutoLogout;

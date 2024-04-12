@@ -232,27 +232,27 @@ export const certificateSchema_w9 = () => {
   return Yup.object().shape({
     certification_CorrectTaxpayerIdentification: Yup.boolean().oneOf(
       [true],
-      "" //was used for displaying error message 
+      "Please mark the checkbox" 
     ),
     certification_IRSBackupWithHolding: Yup.boolean(),
 
 
     certification_FATCACode: Yup.boolean().oneOf(
       [true],
-      ""
+      "Please mark the checkbox"
     ),
     certification_IRS: Yup.boolean()
-      .when('isAmountCertificationUS', (isAmountCertificationUS, schema) => {
-        return isAmountCertificationUS[0] ? schema.isFalse("") : schema.isTrue("");
+      .when('isAmountCertificationUS', (certification_IRSBackupWithHolding, schema) => {
+        return certification_IRSBackupWithHolding[0] ? schema.isFalse("") : schema.isTrue("");
       })
     ,
     certification_ElectronicForm: Yup.boolean().oneOf(
       [true],
-      ""
+      "Please mark the checkbox"
     ),
-    isBackup: Yup.boolean().oneOf([true], ""),
-    certification_USCitizenPerson: Yup.boolean().oneOf([true], ""),
-    isElectronicForm: Yup.boolean().oneOf([true], ""),
+    isBackup: Yup.boolean().oneOf([true], "Please mark the checkbox"),
+    certification_USCitizenPerson: Yup.boolean().oneOf([true], "Please mark the checkbox"),
+    isElectronicForm: Yup.boolean().oneOf([true], "Please mark the checkbox"),
   });
 };
 export const certificateSchema_w8Ben = () => {
