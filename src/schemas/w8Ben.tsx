@@ -52,9 +52,60 @@ export const StatusSchema = () => {
       is: "yes",
       then: () => Yup.boolean().oneOf([true], "Message"),
     }),
-    // isPresentAtleast31Days: Yup.boolean().required(
+    // IsPresentAtleast31Days: Yup.boolean().required(
     //   "Please select one of the options"
     // ),
+  });
+};
+
+export const US_TINSchemaW8Ben_Dc = () => {
+  return Yup.object().shape({
+    usTinTypeId: Yup.number().required("Please select"),
+    usTin: Yup.string().when(["notAvailable", "usTinTypeId"], {
+      is: (notAvailable: any, usTinTypeId: any) => JSON.stringify(notAvailable) === "false" && JSON.stringify(usTinTypeId) !== "8" && JSON.stringify(usTinTypeId) !== "7" && JSON.stringify(usTinTypeId) !== "1",
+      then: () =>
+        Yup.string()
+          .required("Please enter US Tin"),
+    }),
+    notAvailable: Yup.boolean(),
+    notAvailableReason: Yup.string().when("notAvailable", {
+      is: true,
+      then: () =>
+        Yup.string()
+          .required("Please enter why tin is not available"),
+    }),
+    fTinNotAvailableReason: Yup.string().when("isNotAvailable", {
+      is: (isNotAvailable: any) => isNotAvailable == "Yes",
+      then: () =>
+        Yup.string()
+          .required("Please Specify Reason"),
+    }),
+    foreignTINCountry: Yup.string().when("tinisFTINNotLegallyRequired", {
+      is: (value: any) => value === "No" || value === "",
+      then: () =>
+        Yup.string()
+          .required("Please select Foreign Tin Country"),
+
+    }),
+
+    // .required("Please enter Foreign Tin "),
+    isExplanationNotLegallyFTIN: Yup.string()
+      .when(["isFTINLegally"], {
+        is: (isFTINLegally: any) => isFTINLegally === true,
+        then: () =>
+          Yup.string()
+            .required("please provide an answer")
+            .oneOf(["Yes", "No"], "please provide an answer")
+      })
+    ,
+    // tinisFTINNotLegallyRequired: true,
+    // tinAlternativeFormate: true,
+    isNotLegallyFTIN: Yup.string().when("isFTINNotLegallyRequired", {
+      is: true,
+      then: () =>
+        Yup.string()
+          .required("Please Select"),
+    }),
   });
 };
 
@@ -108,7 +159,6 @@ export const US_TINSchemaW8BenE = () => {
     }),
   });
 };
-
 export const US_TINSchema = () => {
   return Yup.object().shape({
     usTinTypeId: Yup.number().required("Please select"),
@@ -182,6 +232,15 @@ export const claimSchemaaa = () => {
         return schema;
       }
     }),
+  });
+};
+
+export const SubstantialSchema = () => {
+  return Yup.object().shape({
+    DaysInCurrentYear: Yup.number().max(366).required("Field Cannot be Empty"),
+    DaysInFirstYearBefore: Yup.number().max(366).required("Field Cannot be Empty"),
+    DaysInSecondYearBefore: Yup.number().max(366).required("Field Cannot be Empty"),
+    totalQualifyingDays: Yup.number(),
   });
 };
 

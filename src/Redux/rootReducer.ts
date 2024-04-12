@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 // import { getMovieDataReducer, getSearchDataReducer } from "./reducer";
 import {
   getCountriesReducer,
+  getSettingsReducer,
   getCountriesCodeReducer,
   GetAllIncomeCodesReducer,
   GetStateByCountryIdReducer,
@@ -30,6 +31,7 @@ import {
   formPDFFieldDataReducer,
   GetAllLanguageReducer,
   GetDualCertW9Reducer,
+  GetDualCertReducer,
   
 } from "./Reducers";
 import w9Reducer from "./Reducers/w9Reducer";
@@ -42,6 +44,7 @@ import { substantialUsPassiveNFEReducer } from "./Reducers/SubstantialUsPassiveN
 import { AuthDetailsReducer } from "./Reducers/AuthDetailReducer";
 import { ErrorsReducer } from "./Reducers/ErrorReducer";
 import W8EXPReducer from "./Reducers/W8EXPReducer";
+import DualCertReducer from "./Reducers/DualCertReducer";
 
 let reducers = {
   getCountriesReducer,
@@ -62,6 +65,7 @@ let reducers = {
   GetChapter4StatusesReducer,
   GetLimitationBenefitsReducer,
   GetIncomeTypesReducer,
+  getSettingsReducer,
   GetHelpVideoDetailsReducer,
   GetAgentFATCAEntityGIINChallengeDisabledForEformReducer,
   GetAgentDocumentationMandatoryForEformReducer,
@@ -73,6 +77,7 @@ let reducers = {
   SpecialRateAndConditionIncomeTypes:SpecialRateAndConditionIncomeTypesReducer,
   formPDFFieldDataReducer,
   GetAllLanguageReducer,
+  GetDualCertReducer,
 
 
 };
@@ -87,7 +92,8 @@ const rootReducer = combineReducers({
   W8EXP:W8EXPReducer,
   SubstantialUsPassiveNFE:substantialUsPassiveNFEReducer,
   AuthDetails:AuthDetailsReducer,
-  Error:ErrorsReducer
+  Error:ErrorsReducer,
+  DualCert:DualCertReducer
 });
 
 export default rootReducer;

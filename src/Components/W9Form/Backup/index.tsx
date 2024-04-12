@@ -30,6 +30,7 @@ import { useLocation } from "react-router-dom";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 export default function Backup_witholding(props: any) {
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
@@ -42,12 +43,9 @@ export default function Backup_witholding(props: any) {
     handleChange,
     setselectedContinue,
   } = props;
- 
   const urlValue = location.pathname.substring(1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-  const initialValue = {
-    isExemptionfromBackup: getReducerData?.isExemptionfromBackup ?? 2,
-  };
+
   const [selectedValue, setSelectedValue] = useState("");
 
   const handleRadioChange = (value: string) => {
@@ -61,6 +59,10 @@ export default function Backup_witholding(props: any) {
   var getReducerData = useSelector(
     (state: any) => state?.GetByW9FormReducer?.GetByW9FormData
   );
+
+  const initialValue = {
+    isExemptionfromBackup: getReducerData?.isExemptionfromBackup ?? 2,
+  };
   const isRadioSelected = selectedValue !== "";
   const handleCanvaOpen = () => {
     setCanvaBx(true);
@@ -78,9 +80,9 @@ export default function Backup_witholding(props: any) {
     };
   const [toolInfo, setToolInfo] = useState("");
 
-  useEffect(()=>{
-    document.title = "Comply Exchange"
-  },[])
+  useEffect(() => {
+    document.title = "Comply Exchange";
+  }, [])
 
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
@@ -88,9 +90,10 @@ export default function Backup_witholding(props: any) {
       getW9Form(authDetails?.accountHolderId, (data: any) => {
       })
     );
+
   }, [authDetails])
 
-  const viewPdf=()=>{
+  const viewPdf = () => {
     history("w9_pdf");
   }
   return (
@@ -105,7 +108,9 @@ export default function Backup_witholding(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-            <div className="viewform" onClick={viewPdf} >View Form</div>
+            <div className="viewform" onClick={() => {
+              dispatch(GetW9Pdf(authDetails?.accountHolderId))
+            }} >View Form</div>
             <div className="helpvideo">
               {GethelpData && GethelpData[8].id === 10 ? (
                 <a
@@ -138,17 +143,17 @@ export default function Backup_witholding(props: any) {
             const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
             const result = { ...new_obj, ...values };
             // history("/US_Purposes/Back/Exemption")
-            const submitPromise=new Promise((resolve,reject)=>{
+            const submitPromise = new Promise((resolve, reject) => {
               dispatch(
                 postW9Form(result, () => {
                   localStorage.setItem("PrevStepData", JSON.stringify(result))
                   //history("/US_Purposes/Back/Exemption")
                   resolve("success");
                   setSubmitting(false);
-                },(error:any)=>{reject(error)})                
+                }, (error: any) => { reject(error) })
               );
-            });            
-            return submitPromise;            
+            });
+            return submitPromise;
           }}
         >
           {({
@@ -254,7 +259,7 @@ export default function Backup_witholding(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
+                              style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -505,8 +510,8 @@ export default function Backup_witholding(props: any) {
                           {errors.isExemptionfromBackup && touched.isExemptionfromBackup ? (
                             <div>
                               <Typography color="error">
-                                
-                                {typeof errors.isExemptionfromBackup  ==="string" ? errors.isExemptionfromBackup:""}
+
+                                {typeof errors.isExemptionfromBackup === "string" ? errors.isExemptionfromBackup : ""}
                               </Typography>
                             </div>
                           ) : (
@@ -940,39 +945,28 @@ export default function Backup_witholding(props: any) {
                   marginTop: "80px",
                 }}
               >
-                {/* <Button 
-                disabled={isSubmitting}
-                variant="contained" 
-                style={{ color: "white", marginTop: "20px" }}
-                onClick={()=>{
-                  submitForm().then((data)=>{
+
+                <SaveAndExit Callback={() => {
+                  submitForm().then((data) => {
+                    const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                    const urlValue = window.location.pathname.substring(1);
+                    dispatch(postW9Form(
+                      {
+                        ...prevStepData,
+                        stepName: `/${urlValue}`
+                      }
+                      , () => { }))
                     history(GlobalValues.basePageRoute)
-                  }).catch((error)=>{
-                    console.log(error);
+                  }).catch((err) => {
+                    console.log(err);
                   })
-                }}
-                >
-                  SAVE & EXIT
-                </Button> */}
-                 <SaveAndExit Callback={() => {
-                            submitForm().then((data) => {
-                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                              const urlValue = window.location.pathname.substring(1);
-                              dispatch(postW9Form(
-                                {
-                                  ...prevStepData,
-                                  stepName: `/${urlValue}`
-                                }
-                                , () => { }))
-                              history(GlobalValues.basePageRoute)
-                            }).catch((err) => {
-                              console.log(err);
-                            })
-                          }} formTypeId={FormTypeId.W9} />
+                }} formTypeId={FormTypeId.W9} />
                 <Button
                   variant="contained"
-                  style={{ color: "white", marginLeft: "10px", marginTop: "20px" }}
-                  onClick={viewPdf}
+                  style={{ color: "white", marginLeft: "10px" }}
+                  onClick={() => {
+                    dispatch(GetW9Pdf(authDetails?.accountHolderId))
+                  }}
                 >
                   View Form
                 </Button>
@@ -980,11 +974,11 @@ export default function Backup_witholding(props: any) {
                   disabled={isSubmitting}
                   //type="submit"
                   variant="contained"
-                  style={{ color: "white", marginLeft: "15px", marginTop: "20px" }}
-                  onClick={()=>{
-                    submitForm().then(()=>{
+                  style={{ color: "white", marginLeft: "15px" }}
+                  onClick={() => {
+                    submitForm().then(() => {
                       history("/US_Purposes/Back/Exemption")
-                    }).catch((errors)=>{
+                    }).catch((errors) => {
                       console.log(errors);
                     })
                   }}
@@ -995,11 +989,11 @@ export default function Backup_witholding(props: any) {
                   //type="submit"
                   disabled={isSubmitting}
                   variant="contained"
-                  style={{ color: "white", marginLeft: "15px", marginTop: "20px" }}
-                  onClick={()=>{
-                    submitForm().then(()=>{
+                  style={{ color: "white", marginLeft: "15px" }}
+                  onClick={() => {
+                    submitForm().then(() => {
                       history("/US_Purposes/Back/Exemption")
-                    }).catch((errors)=>{
+                    }).catch((errors) => {
                       console.log(errors);
                     })
                   }}
@@ -1010,7 +1004,7 @@ export default function Backup_witholding(props: any) {
               <Typography
                 align="center"
                 style={{
-                  color: "#f5f5f5",  
+                  color: "#f5f5f5",
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: "20px",

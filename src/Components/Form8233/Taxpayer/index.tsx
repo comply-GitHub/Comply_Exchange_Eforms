@@ -42,8 +42,8 @@ export default function Tin(props: any) {
     usTinTypeId: onBoardingFormValues?.taxpayerIdTypeID ? onBoardingFormValues?.taxpayerIdTypeID : onBoardingFormValuesPrevStepData?.usTINTypeId ? onBoardingFormValuesPrevStepData?.usTINTypeId : 0,
     usTin: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin.replace(/-/g, '') : onBoardingFormValuesPrevStepData?.usTin ? onBoardingFormValuesPrevStepData?.usTin : "",
     notAvailable:  false,
-    ForeginTIN_CountryId: onBoardingFormValues?.foreignTINCountryId ? onBoardingFormValues?.foreignTINCountryId : onBoardingFormValuesPrevStepData?.foreginTIN_CountryId ? onBoardingFormValuesPrevStepData?.foreginTIN_CountryId : "",
-    ForegionTIN: onBoardingFormValues?.foreignTIN ? onBoardingFormValues?.foreignTIN : onBoardingFormValuesPrevStepData?.foregionTIN ? onBoardingFormValuesPrevStepData?.foregionTIN :"",
+    ForeginTIN_CountryId: onBoardingFormValues?.foreignTINCountryId!=0 ? onBoardingFormValues?.foreignTINCountryId : onBoardingFormValuesPrevStepData?.ForeginTIN_CountryId,
+    ForegionTIN: onBoardingFormValues?.foreignTIN ? onBoardingFormValues?.foreignTIN : onBoardingFormValuesPrevStepData?.ForegionTIN ? onBoardingFormValuesPrevStepData?.ForegionTIN :"",
     isFTINNotLegallyRequired: false,
     tinisFTINNotLegallyRequired: "",
     // tinAlternativeFormate: true,
@@ -102,20 +102,28 @@ export default function Tin(props: any) {
   return (
     <>
       <Formik
-        validateOnChange={true}
-        validateOnBlur={true}
-        validateOnMount={false}
+       validateOnChange={false}
+       validateOnBlur={true}
+       validateOnMount={false}
         initialValues={initialValue}
         enableReinitialize
         validationSchema={US_TINSchema}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
           const temp = {
+            agentId: authDetails.agentId,
+            accountHolderBasicDetailId: authDetails.accountHolderId,
+            ...onBoardingFormValuesPrevStepData,
             ...values,
-            agentId: authDetails?.agentId,
-            accountHolderBasicDetailId: authDetails?.accountHolderId,
-            stepName: null,
+            stepName: null
           };
+          // const temp = {
+          //   ...values,
+          //   ...onBoardingFormValuesPrevStepData,
+          //   agentId: authDetails?.agentId,
+          //   accountHolderBasicDetailId: authDetails?.accountHolderId,
+          //   stepName: null,
+          // };
           const returnPromise = new Promise((resolve, reject) => {
             dispatch(
               post8233_EForm(temp,
@@ -184,10 +192,10 @@ export default function Tin(props: any) {
                 </div>
             </div>
         </div>
-        <div className="row w-100 h-100">
+        <div className="row w-100">
        <div className="col-4">
           <div style={{ padding: "20px 0px",height:"100%" }}>
-          <BreadCrumbComponent breadCrumbCode={1360} formName={2}/>
+          <BreadCrumbComponent breadCrumbCode={1358} formName={FormTypeId.F8233}/>
       </div>
       </div>
       <div className="col-8 mt-3">

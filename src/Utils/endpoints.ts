@@ -4,6 +4,7 @@ const EndPoint = {
   eFormSignIn1: "/eFormSignIn/eFormSignIn1",
   individualAccountHolder: "/AccountHolderDetail/InsertAccountHolderDetail",
   GetCountries: "/Country/GetAllCountries",
+  GetSettings:"/Setting/GetSetting",
   GetCountriesTreaty: "/Countries/GetAllCountries",
   GetCountriesCode: "/Country/GetCountriesCode",
   GetAllIncomeCodes: "/Countries/GetAllIncomeCodes",
@@ -56,8 +57,10 @@ const EndPoint = {
  InsertForm8233IndividualNonUSForm:"/Form8233Individual/InsertForm8233IndividualNonUSForm",
  UpsertSupportingDocumentation:"/AccountHolderDetail/UpsertSupportingDocumentation",
  UpsertDualCertW9:"/DualCert/UpsertDualCertDetails",
+ InserDualCert:"/DualCert/UpsertDualCert",
 
 // Form GetApis:
+GetDual:"/DualCert/GetDualCert",
 GetDualCertW9:"/DualCert/GetDualCertDetails",
 GetByW8BENEEntityNonUSFormId:"/W8BENEEntity/GetByW8BENEEntityNonUSFormId",
 GetByW8ECIIndividualEntityNonUSFormId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
@@ -71,6 +74,7 @@ getSupportedFile:"/FileUpload/GetFileBase64",
 
 
 //Pdf apis
+GetW9Pdf:"/W9IndividualEntity/GetW9Pdf",
 GetECIPdf:"/W8ECIIndividualEntity/GetECIPdf",
 GetBENPdf:"/W8BENIndividual/GetBENPdf",
 GetBENEPdf:"/W8BENEEntity/GetBENEPdf",

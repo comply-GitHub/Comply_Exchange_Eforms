@@ -47,6 +47,7 @@ import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import SubstantialUsPassiveNFE from "./SubstantialUsPassiveNFE";
 import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
+import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const { authDetails } = useAuth();
@@ -219,7 +220,9 @@ export default function Fedral_tax(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform" onClick={viewPdf}>View Form</div>
+            <div className="viewform" onClick={() => {
+              dispatch(GetBenEPdf(authDetails?.accountHolderId))
+            }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[3].id === 5 ? (
@@ -2442,7 +2445,9 @@ export default function Fedral_tax(props: any) {
                             //type="submit"
                             disabled={isSubmitting}
                             variant="contained"
-                            onClick={viewPdf}
+                            onClick={() => {
+                              dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                            }}
                             style={{ color: "white", marginLeft: "15px" }}
                           >
                             View Form

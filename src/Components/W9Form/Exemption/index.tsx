@@ -34,6 +34,7 @@ import { useLocation } from "react-router-dom";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 export default function FCTA_Reporting(props: any) {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -67,13 +68,14 @@ export default function FCTA_Reporting(props: any) {
   const urlValue = location.pathname.substring(1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const initialValue = {
-    isExemptionFATCAReportings: getReducerData?.isExemptionFATCAReportings ??  "No",
-    ReportingId: getReducerData?.ReportingId ?? ""
+    isExemptionFATCAReportings: getReducerData?.isExemptionFATCAReportings ?? "No",
+    fatcaReportingId: getReducerData?.fatcaReportingId ?? 0
   };
-  useEffect(()=>{
-    document.title = "Exemptions Fatca"
-  },[])
   useEffect(() => {
+    document.title = "Exemptions Fatca"
+  }, [])
+  useEffect(() => {
+    console.log(getReducerData, "getReducerData")
     dispatch(GetAgentFATCAEntityGIINChallengeDisabledForEformAction());
     dispatch(GetHelpVideoDetails());
     dispatch(
@@ -86,7 +88,7 @@ export default function FCTA_Reporting(props: any) {
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
 
-  const viewPdf=()=>{
+  const viewPdf = () => {
     history("w9_pdf");
   }
   return (
@@ -100,7 +102,9 @@ export default function FCTA_Reporting(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+            dispatch(GetW9Pdf(authDetails?.accountHolderId))
+          }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
@@ -133,8 +137,8 @@ export default function FCTA_Reporting(props: any) {
           const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
           let result = { ...new_obj, ...values };
           // result = { ...result, isExemptionFATCAReportings:  result.isExemptionFATCAReportings=="true" };
-          console.log(result,"values ex",PrevStepData)
-          
+          console.log(result, "values ex", PrevStepData)
+
           const submitPromise = new Promise((resolve, reject) => {
             if (clickCount === 0) {
               setClickCount(clickCount + 1);
@@ -143,7 +147,7 @@ export default function FCTA_Reporting(props: any) {
             } else {
               dispatch(
                 postW9Form(result, () => {
-                  localStorage.setItem("PrevStepData", JSON.stringify(result));  
+                  localStorage.setItem("PrevStepData", JSON.stringify(result));
                   history("/US_Purposes/Back/Exemption/Tax")
                   resolve("success");
                   setSubmitting(true);
@@ -153,12 +157,12 @@ export default function FCTA_Reporting(props: any) {
                     setSubmitting(false);
                   }
                 )
-              );              
+              );
             }
-              
+
           })
           return submitPromise;
-          
+
         }}
       >
         {({
@@ -283,13 +287,13 @@ export default function FCTA_Reporting(props: any) {
                       {errors.isExemptionFATCAReportings && touched.isExemptionFATCAReportings ? (
                         <div>
                           <Typography color="error">
-                            {typeof errors.isExemptionFATCAReportings==="string" ? errors.isExemptionFATCAReportings : "" }
+                            {typeof errors.isExemptionFATCAReportings === "string" ? errors.isExemptionFATCAReportings : ""}
                           </Typography>
                         </div>
                       ) : (
                         ""
                       )}
-                      {values?.isExemptionFATCAReportings ==="Yes" ? (
+                      {values?.isExemptionFATCAReportings === "Yes" ? (
                         <>
                           <Typography
                             align="left"
@@ -341,8 +345,8 @@ export default function FCTA_Reporting(props: any) {
                                 fontStyle: "italic",
                                 height: "36px",
                               }}
-                              name="ReportingId"
-                              value={values?.ReportingId}
+                              name="fatcaReportingId"
+                              value={values?.fatcaReportingId}
                               id="Income"
                               // defaultValue={data.interestDividendPaymentId}
                               onChange={handleChange}
@@ -350,15 +354,15 @@ export default function FCTA_Reporting(props: any) {
                               <option value={0}>---select---</option>
                               {GetAgentFATCAEntityGIINChallengeDisabledForEformReducer.GetAgentFATCAEntityGIINChallengeDisabledForEformData?.map(
                                 (ele: any) => (
-                                  <option key={ele?.id} value={ele?.id}>
+                                  <option key={ele?.fatcaEntityTypeId} value={ele?.fatcaEntityTypeId}>
                                     {ele?.name}
                                   </option>
                                 )
                               )}
                             </select>
                           </FormControl>
-                         {errors.ReportingId && touched.ReportingId ?( <p className="error">{typeof errors.ReportingId==="string" ? errors.ReportingId : ""}</p>):""}
-                          {/* <p className="error">{typeof errors.ReportingId==="string" ? errors.ReportingId : ""}</p> */}
+                          {errors.fatcaReportingId && touched.fatcaReportingId ? (<p className="error">{typeof errors.fatcaReportingId === "string" ? errors.fatcaReportingId : ""}</p>) : ""}
+                          {/* <p className="error">{typeof errors.fatcaReportingId==="string" ? errors.fatcaReportingId : ""}</p> */}
 
                         </>
                       ) : ""}
@@ -387,21 +391,21 @@ export default function FCTA_Reporting(props: any) {
               >
                 SAVE & EXIT
               </Button> */}
-                 <SaveAndExit Callback={() => {
-                            submitForm().then((data) => {
-                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                              const urlValue = window.location.pathname.substring(1);
-                              dispatch(postW9Form(
-                                {
-                                  ...prevStepData,
-                                  stepName: `/${urlValue}`
-                                }
-                                , () => { }))
-                              history(GlobalValues.basePageRoute)
-                            }).catch((err) => {
-                              console.log(err);
-                            })
-                          }} formTypeId={FormTypeId.W9} />
+              <SaveAndExit Callback={() => {
+                submitForm().then((data) => {
+                  const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                  const urlValue = window.location.pathname.substring(1);
+                  dispatch(postW9Form(
+                    {
+                      ...prevStepData,
+                      stepName: `/${urlValue}`
+                    }
+                    , () => { }))
+                  history(GlobalValues.basePageRoute)
+                }).catch((err) => {
+                  console.log(err);
+                })
+              }} formTypeId={FormTypeId.W9} />
               <Button
                 type="submit"
                 onClick={() => {

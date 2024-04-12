@@ -9,6 +9,7 @@ import checksolid from "../../assets/img/check-solid.png";
 import { Divider, Paper, Typography, Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../Redux/store";
+import { FormTypeId } from "../../Utils/constVals";
 
 
 export default function BreadCrumbComponent(props: any): any {
@@ -37,8 +38,11 @@ export default function BreadCrumbComponent(props: any): any {
   function groupDataByBreadcrumbPart(data: any) {
     const groupedData: any = {};
     if (userType === "GEN") {
-      data = data.filter((x: any) => !x?.title?.toLowerCase()?.includes("self-cert") && !x?.title?.toLowerCase()?.includes("documentation"))
+      data = data.filter((x: any) => !x?.title?.toLowerCase()?.includes("self-cert") && (!x?.title?.toLowerCase()?.includes("documentation")) || formName == FormTypeId.F8233)
     }
+    // if (userType === "GEN") {
+    //   data = data.filter((x: any) => !x?.title?.toLowerCase()?.includes("self-cert") && !x?.title?.toLowerCase()?.includes("documentation"))
+    // }
     data.forEach((item: any) => {
       const breadcrumbpart = item.breadcrumbpart.trim();
 
@@ -53,10 +57,14 @@ export default function BreadCrumbComponent(props: any): any {
     setBreadCrumbDisplay(groupedData);
   }
 
+
   const handleChangestatus =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    (panel: any) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+      console.log(panel)
       setExpanded(isExpanded ? panel : false);
     };
+  
+
   return (<div
     style={{ padding: "8px 0px", height: "100%" }}
   >

@@ -35,9 +35,8 @@ import {
   GetHelpVideoDetails,
   postW81MY_EForm
 } from "../../../Redux/Actions";
-import { TaxPurposeSchema } from "../../../schemas/w8BenE";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
-import { TaxPurposeSchemaW81 } from "../../../schemas/w81my";
+import { TaxPurposeSchemaW81Chapter3 } from "../../../schemas/w81my";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
@@ -60,12 +59,14 @@ export default function Fedral_tax(props: any) {
     handleChange,
     setselectedContinue,
   } = props;
-  const initialValue = {
+  
+  const [initialValue, setInitialValue]=useState({
     formTypeSelectionId : agentDetails?.businessTypeId ? agentDetails?.businessTypeId : 0,
-    businessName:  PrevStepData?.businessName ? PrevStepData?.businessName : "",
+    businessName:  PrevStepData?.businessName ? PrevStepData?.businessName : agentDetails?.entityName,
     businessNameOrDisgradedEntityName: PrevStepData?.businessNameOrDisgradedEntityName ? PrevStepData?.businessNameOrDisgradedEntityName : "",
     countryOfIncorporationId: PrevStepData?.countryOfIncorporationId ? PrevStepData?.countryOfIncorporationId :"",
     chapter3StatusId: PrevStepData?.chapter3StatusId ? PrevStepData?.chapter3StatusId :0,
+    //QDD starts here
     isPart1Integral:PrevStepData?.isPart1Integral ? PrevStepData?.isPart1Integral :"",
     isPart1FFI:PrevStepData?.isPart1FFI ? PrevStepData?.isPart1FFI :"",
     isPart1chap3and4:PrevStepData?.isPart1chap3and4 ? PrevStepData?.isPart1chap3and4 :"",
@@ -80,8 +81,114 @@ export default function Fedral_tax(props: any) {
     corporation:PrevStepData?.corporation ? PrevStepData?.corporation :false,
     partnership:PrevStepData?.partnership ? PrevStepData?.partnership :false,
     disregardedEntity:PrevStepData?.disregardedEntity ? PrevStepData?.disregardedEntity :false,
-  };
-  console.log(initialValue,"intial")
+    //QDD Ends Here
+
+    //NQI Starts Here
+    isPart1QIeachamount:PrevStepData?.isPart1QIeachamount ? PrevStepData?.isPart1QIeachamount :false,
+    isPart1transmitwithholdingCer:PrevStepData?.isPart1transmitwithholdingCer ? PrevStepData?.isPart1transmitwithholdingCer :false,
+    isPart1meetsReguSection160494C:PrevStepData?.isPart1meetsReguSection160494C ? PrevStepData?.isPart1meetsReguSection160494C :false,
+    isPart1OtherthanQI:PrevStepData?.isPart1OtherthanQI ? PrevStepData?.isPart1OtherthanQI :false,
+    isPart1Section1441and1471:PrevStepData?.isPart1Section1441and1471 ? PrevStepData?.isPart1Section1441and1471 :false,
+    //NQI Ends Here
+
+    //TFI Starts here
+    isPart1lawsofterritoryofUS:PrevStepData?.isPart1lawsofterritoryofUS ? PrevStepData?.isPart1lawsofterritoryofUS :false,
+    isPart1EvidenceofChap3and4:PrevStepData?.isPart1EvidenceofChap3and4 ? PrevStepData?.isPart1EvidenceofChap3and4 :false,
+    isPart1withholdablepayment:PrevStepData?.isPart1withholdablepayment ? PrevStepData?.isPart1withholdablepayment :false,
+    isPart1regulationSec11446f4aiB:PrevStepData?.isPart1regulationSec11446f4aiB ? PrevStepData?.isPart1regulationSec11446f4aiB :false,
+    isPart1regulationSec11446f41vA:PrevStepData?.isPart1regulationSec11446f41vA ? PrevStepData?.isPart1regulationSec11446f41vA :false,
+    partVNomineeforDistribution:PrevStepData?.partVNomineeforDistribution ? PrevStepData?.partVNomineeforDistribution :false,
+    //TFI Ends Here
+
+    //USBrand Starts here
+    isPart1PublictradedPartnership:PrevStepData?.isPart1PublictradedPartnership ? PrevStepData?.isPart1PublictradedPartnership :false,
+    isPart119bRegulationSec11411b:PrevStepData?.isPart119bRegulationSec11411b ? PrevStepData?.isPart119bRegulationSec11411b :false,
+    isPart119cRegulationSec11414d:PrevStepData?.isPart119cRegulationSec11414d ? PrevStepData?.isPart119cRegulationSec11414d :false,
+    isPart119dRegulationSec11414a:PrevStepData?.isPart119dRegulationSec11414a ? PrevStepData?.isPart119dRegulationSec11414a :false,
+    isPart119eRegulationSec11411b:PrevStepData?.isPart119eRegulationSec11411b ? PrevStepData?.isPart119eRegulationSec11411b :false,
+    partVINomineeforDistribution:PrevStepData?.partVINomineeforDistribution ? PrevStepData?.partVINomineeforDistribution :false,
+    //USBrand Ends Here
+
+     //WEF Starts here
+     isPart1WPorWTagreement:PrevStepData?.isPart1WPorWTagreement ? PrevStepData?.isPart1WPorWTagreement :false,
+    //WFP Ends Here
+
+    //WEF Starts here
+    isPart1nonwithholdingpartnership:PrevStepData?.isPart1nonwithholdingpartnership ? PrevStepData?.isPart1nonwithholdingpartnership :false,
+    isPart1partnerinlowertierpartnership:PrevStepData?.isPart1partnerinlowertierpartnership ? PrevStepData?.isPart1partnerinlowertierpartnership :false,
+    isPart1forerignpartnershipsec1446f:PrevStepData?.isPart1forerignpartnershipsec1446f ? PrevStepData?.isPart1forerignpartnershipsec1446f :false,
+    isPart1partnershipformodifiedamount:PrevStepData?.isPart1partnershipformodifiedamount ? PrevStepData?.isPart1partnershipformodifiedamount :false,
+    isPart1foreigngrantortrustSec11446f:PrevStepData?.isPart1foreigngrantortrustSec11446f ? PrevStepData?.isPart1foreigngrantortrustSec11446f :false,
+    isPart1knowledgeundersection1441and1471:PrevStepData?.isPart1knowledgeundersection1441and1471 ? PrevStepData?.isPart1knowledgeundersection1441and1471 :false,
+    //WFP Ends Here
+
+
+  })
+  // const initialValue = {
+  //   formTypeSelectionId : agentDetails?.businessTypeId ? agentDetails?.businessTypeId : 0,
+  //   businessName:  PrevStepData?.businessName ? PrevStepData?.businessName : agentDetails?.entityName,
+  //   businessNameOrDisgradedEntityName: PrevStepData?.businessNameOrDisgradedEntityName ? PrevStepData?.businessNameOrDisgradedEntityName : "",
+  //   countryOfIncorporationId: PrevStepData?.countryOfIncorporationId ? PrevStepData?.countryOfIncorporationId :"",
+  //   chapter3StatusId: PrevStepData?.chapter3StatusId ? PrevStepData?.chapter3StatusId :0,
+  //   //QDD starts here
+  //   isPart1Integral:PrevStepData?.isPart1Integral ? PrevStepData?.isPart1Integral :"",
+  //   isPart1FFI:PrevStepData?.isPart1FFI ? PrevStepData?.isPart1FFI :"",
+  //   isPart1chap3and4:PrevStepData?.isPart1chap3and4 ? PrevStepData?.isPart1chap3and4 :"",
+  //   isPart1Section1446f:PrevStepData?.isPart1Section1446f ? PrevStepData?.isPart1Section1446f :"",
+  //   isPart1Section14464b:PrevStepData?.isPart1Section14464b ? PrevStepData?.isPart1Section14464b :"",
+  //   isPart1QIacting:PrevStepData?.isPart1QIacting ? PrevStepData?.isPart1QIacting :"",
+  //   isPart1ofchap3and41099repo:PrevStepData?.isPart1ofchap3and41099repo ? PrevStepData?.isPart1ofchap3and41099repo :"",
+  //   isPart1regusection16049C:PrevStepData?.isPart1regusection16049C ? PrevStepData?.isPart1regusection16049C :"",
+  //   isPart1andbackupwithholdingresp:PrevStepData?.isPart1andbackupwithholdingresp ? PrevStepData?.isPart1andbackupwithholdingresp :"",
+  //   isPart1AllocatePorofchap4:PrevStepData?.isPart1AllocatePorofchap4 ? PrevStepData?.isPart1AllocatePorofchap4 :"",
+  //   isPart1QDDidentified: PrevStepData?.isPart1QDDidentified ? PrevStepData?.isPart1QDDidentified :false,
+  //   corporation:PrevStepData?.corporation ? PrevStepData?.corporation :false,
+  //   partnership:PrevStepData?.partnership ? PrevStepData?.partnership :false,
+  //   disregardedEntity:PrevStepData?.disregardedEntity ? PrevStepData?.disregardedEntity :false,
+  //   //QDD Ends Here
+
+  //   //NQI Starts Here
+  //   isPart1QIeachamount:PrevStepData?.isPart1QIeachamount ? PrevStepData?.isPart1QIeachamount :false,
+  //   isPart1transmitwithholdingCer:PrevStepData?.isPart1transmitwithholdingCer ? PrevStepData?.isPart1transmitwithholdingCer :false,
+  //   isPart1meetsReguSection160494C:PrevStepData?.isPart1meetsReguSection160494C ? PrevStepData?.isPart1meetsReguSection160494C :false,
+  //   isPart1OtherthanQI:PrevStepData?.isPart1OtherthanQI ? PrevStepData?.isPart1OtherthanQI :false,
+  //   isPart1Section1441and1471:PrevStepData?.isPart1Section1441and1471 ? PrevStepData?.isPart1Section1441and1471 :false,
+  //   //NQI Ends Here
+
+  //   //TFI Starts here
+  //   isPart1lawsofterritoryofUS:PrevStepData?.isPart1lawsofterritoryofUS ? PrevStepData?.isPart1lawsofterritoryofUS :false,
+  //   isPart1EvidenceofChap3and4:PrevStepData?.isPart1EvidenceofChap3and4 ? PrevStepData?.isPart1EvidenceofChap3and4 :false,
+  //   isPart1withholdablepayment:PrevStepData?.isPart1withholdablepayment ? PrevStepData?.isPart1withholdablepayment :false,
+  //   isPart1regulationSec11446f4aiB:PrevStepData?.isPart1regulationSec11446f4aiB ? PrevStepData?.isPart1regulationSec11446f4aiB :false,
+  //   isPart1regulationSec11446f41vA:PrevStepData?.isPart1regulationSec11446f41vA ? PrevStepData?.isPart1regulationSec11446f41vA :false,
+  //   partVNomineeforDistribution:PrevStepData?.partVNomineeforDistribution ? PrevStepData?.partVNomineeforDistribution :false,
+  //   //TFI Ends Here
+
+  //   //USBrand Starts here
+  //   isPart1PublictradedPartnership:PrevStepData?.isPart1PublictradedPartnership ? PrevStepData?.isPart1PublictradedPartnership :false,
+  //   isPart119bRegulationSec11411b:PrevStepData?.isPart119bRegulationSec11411b ? PrevStepData?.isPart119bRegulationSec11411b :false,
+  //   isPart119cRegulationSec11414d:PrevStepData?.isPart119cRegulationSec11414d ? PrevStepData?.isPart119cRegulationSec11414d :false,
+  //   isPart119dRegulationSec11414a:PrevStepData?.isPart119dRegulationSec11414a ? PrevStepData?.isPart119dRegulationSec11414a :false,
+  //   isPart119eRegulationSec11411b:PrevStepData?.isPart119eRegulationSec11411b ? PrevStepData?.isPart119eRegulationSec11411b :false,
+  //   partVINomineeforDistribution:PrevStepData?.partVINomineeforDistribution ? PrevStepData?.partVINomineeforDistribution :false,
+  //   //USBrand Ends Here
+
+  //    //WEF Starts here
+  //    isPart1WPorWTagreement:PrevStepData?.isPart1WPorWTagreement ? PrevStepData?.isPart1WPorWTagreement :false,
+  //   //WFP Ends Here
+
+  //   //WEF Starts here
+  //   isPart1nonwithholdingpartnership:PrevStepData?.isPart1nonwithholdingpartnership ? PrevStepData?.isPart1nonwithholdingpartnership :false,
+  //   isPart1partnerinlowertierpartnership:PrevStepData?.isPart1partnerinlowertierpartnership ? PrevStepData?.isPart1partnerinlowertierpartnership :false,
+  //   isPart1forerignpartnershipsec1446f:PrevStepData?.isPart1forerignpartnershipsec1446f ? PrevStepData?.isPart1forerignpartnershipsec1446f :false,
+  //   isPart1partnershipformodifiedamount:PrevStepData?.isPart1partnershipformodifiedamount ? PrevStepData?.isPart1partnershipformodifiedamount :false,
+  //   isPart1foreigngrantortrustSec11446f:PrevStepData?.isPart1foreigngrantortrustSec11446f ? PrevStepData?.isPart1foreigngrantortrustSec11446f :false,
+  //   isPart1knowledgeundersection1441and1471:PrevStepData?.isPart1knowledgeundersection1441and1471 ? PrevStepData?.isPart1knowledgeundersection1441and1471 :false,
+  //   //WFP Ends Here
+
+
+  // };
+
   const [toolInfo, setToolInfo] = useState("");
   const history = useNavigate();
   const [expanded, setExpanded] = React.useState<string | false>("");
@@ -182,7 +289,7 @@ export default function Fedral_tax(props: any) {
                   validateOnBlur={true}
                   validateOnMount={false}
                   initialValues={initialValue}
-                  validationSchema={TaxPurposeSchemaW81}
+                  validationSchema={TaxPurposeSchemaW81Chapter3}
                   onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
                     const temp = {
@@ -192,12 +299,10 @@ export default function Fedral_tax(props: any) {
                       ...values,
                       stepName: null
                     };
-                    console.log(temp);
+                    //console.log(temp);
 
                     dispatch(postW81MY_EForm(temp,() => {
-                      // history(
-                      //         "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
-                      //       );
+                      history("/IMY/Tax_Purpose_Exp/Chapter4_IMY");
                     }))
 
                     //  setSubmitting(true);
@@ -216,7 +321,6 @@ export default function Fedral_tax(props: any) {
                     setFieldValue
                   }) => (
                     <Form onSubmit={handleSubmit}>
-                      <>{console.log(values,errors, "errorsssss")}</>
                       <div style={{ width: "100%" }}>
                         <div>
                           <Typography align="left" style={{ margin: "10px" }}>
@@ -371,22 +475,63 @@ export default function Fedral_tax(props: any) {
                                       handleChange(e);
                                       console.log(e.target.value)
                                       setTimeout(() => { 
-                                        setFieldValue("isPart1Integral","")
-                                        setFieldValue("isPart1FFI","")
-                                        setFieldValue("isPart1chap3and4","")
-                                        setFieldValue("isPart1Section1446f","")
-                                        setFieldValue("isPart1Section14464b","")
-                                        setFieldValue("isPart1QIacting","")
-                                        setFieldValue("isPart1ofchap3and41099repo","")
-                                        setFieldValue("isPart1regusection16049C","")
-                                        setFieldValue("isPart1andbackupwithholdingresp","")
-                                        setFieldValue("isPart1AllocatePorofchap4","")
-                                        setFieldValue("isPart1QDDidentified","")
-                                        setFieldValue("corporation","")
-                                        setFieldValue("disregardedEntity","")
-                                        setFieldValue("partnership","")
+                                        //QDD form
+                                        setFieldValue("isPart1Integral",false)
+                                        setFieldValue("isPart1FFI",false)
+                                        setFieldValue("isPart1chap3and4",false)
+                                        setFieldValue("isPart1Section1446f",false)
+                                        setFieldValue("isPart1Section14464b",false)
+                                        setFieldValue("isPart1QIacting",false)
+                                        setFieldValue("isPart1ofchap3and41099repo",false)
+                                        setFieldValue("isPart1regusection16049C",false)
+                                        setFieldValue("isPart1andbackupwithholdingresp",false)
+                                        setFieldValue("isPart1AllocatePorofchap4",false)
+                                        setFieldValue("isPart1QDDidentified",false)
+                                        setFieldValue("corporation",false)
+                                        setFieldValue("disregardedEntity",false)
+                                        setFieldValue("partnership",false)
+                                        setFieldValue("disregardedEntity",false)
+
+                                        //NQI
+                                        setFieldValue("isPart1QIeachamount",false)
+                                        setFieldValue("isPart1transmitwithholdingCer",false)
+                                        setFieldValue("isPart1meetsReguSection160494C",false)
+                                        setFieldValue("isPart1OtherthanQI",false)
+                                        setFieldValue("isPart1Section1441and1471",false)
+
+                                        //TFI
+                                        setFieldValue("isPart1lawsofterritoryofUS",false)
+                                        setFieldValue("isPart1EvidenceofChap3and4",false)
+                                        setFieldValue("isPart1withholdablepayment",false)
+                                        setFieldValue("isPart1regulationSec11446f4aiB",false)
+                                        setFieldValue("isPart1regulationSec11446f41vA",false)
+                                        setFieldValue("partVNomineeforDistribution",false)
+
+                                        //USBranch
+                                        setFieldValue("isPart1PublictradedPartnership",false)
+                                        setFieldValue("isPart119bRegulationSec11411b",false)
+                                        setFieldValue("isPart119cRegulationSec11414d",false)
+                                        setFieldValue("isPart119dRegulationSec11414a",false)
+                                        setFieldValue("isPart119eRegulationSec11411b",false)
+                                        setFieldValue("partVINomineeforDistribution",false)
+
+                                        //WFP
+                                        setFieldValue("isPart1WPorWTagreement",false)
                                         
-                                      
+                                        //NWFP
+                                        setFieldValue("isPart1nonwithholdingpartnership",false)
+                                        setFieldValue("isPart1partnerinlowertierpartnership",false)
+                                        setFieldValue("isPart1forerignpartnershipsec1446f",false)
+                                        setFieldValue("isPart1partnershipformodifiedamount",false)
+                                        setFieldValue("isPart1foreigngrantortrustSec11446f",false)
+                                        setFieldValue("isPart1knowledgeundersection1441and1471",false)
+                                        // setFieldValue("isPart1nonwithholdingpartnership","")
+                                        // setFieldValue("isPart1partnerinlowertierpartnership","")
+                                        // setFieldValue("isPart1forerignpartnershipsec1446f","")
+                                        // setFieldValue("isPart1partnershipformodifiedamount","")
+                                        // setFieldValue("isPart1foreigngrantortrustSec11446f","")
+                                        // setFieldValue("isPart1knowledgeundersection1441and1471","")
+                                        
                                       }, 200)
                                   }}
                                     onBlur={handleBlur}
@@ -845,7 +990,69 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {
+                                      setFieldValue("chapter3StatusId",21);
+                                      setExpanded("panel1")
+                                      setTimeout(() => { 
+                                        //QDD form
+                                        setFieldValue("isPart1Integral",false)
+                                        setFieldValue("isPart1FFI",false)
+                                        setFieldValue("isPart1chap3and4",false)
+                                        setFieldValue("isPart1Section1446f",false)
+                                        setFieldValue("isPart1Section14464b",false)
+                                        setFieldValue("isPart1QIacting",false)
+                                        setFieldValue("isPart1ofchap3and41099repo",false)
+                                        setFieldValue("isPart1regusection16049C",false)
+                                        setFieldValue("isPart1andbackupwithholdingresp",false)
+                                        setFieldValue("isPart1AllocatePorofchap4",false)
+                                        setFieldValue("isPart1QDDidentified",false)
+                                        setFieldValue("corporation",false)
+                                        setFieldValue("disregardedEntity",false)
+                                        setFieldValue("partnership",false)
+                                        setFieldValue("disregardedEntity",false)
+
+                                        //NQI
+                                        setFieldValue("isPart1QIeachamount",false)
+                                        setFieldValue("isPart1transmitwithholdingCer",false)
+                                        setFieldValue("isPart1meetsReguSection160494C",false)
+                                        setFieldValue("isPart1OtherthanQI",false)
+                                        setFieldValue("isPart1Section1441and1471",false)
+
+                                        //TFI
+                                        setFieldValue("isPart1lawsofterritoryofUS",false)
+                                        setFieldValue("isPart1EvidenceofChap3and4",false)
+                                        setFieldValue("isPart1withholdablepayment",false)
+                                        setFieldValue("isPart1regulationSec11446f4aiB",false)
+                                        setFieldValue("isPart1regulationSec11446f41vA",false)
+                                        setFieldValue("partVNomineeforDistribution",false)
+
+                                        //USBranch
+                                        setFieldValue("isPart1PublictradedPartnership",false)
+                                        setFieldValue("isPart119bRegulationSec11411b",false)
+                                        setFieldValue("isPart119cRegulationSec11414d",false)
+                                        setFieldValue("isPart119dRegulationSec11414a",false)
+                                        setFieldValue("isPart119eRegulationSec11411b",false)
+                                        setFieldValue("partVINomineeforDistribution",false)
+
+                                        //WFP
+                                        setFieldValue("isPart1WPorWTagreement",false)
+                                        
+                                        //NWFP
+                                        setFieldValue("isPart1nonwithholdingpartnership",false)
+                                        setFieldValue("isPart1partnerinlowertierpartnership",false)
+                                        setFieldValue("isPart1forerignpartnershipsec1446f",false)
+                                        setFieldValue("isPart1partnershipformodifiedamount",false)
+                                        setFieldValue("isPart1foreigngrantortrustSec11446f",false)
+                                        setFieldValue("isPart1knowledgeundersection1441and1471",false)
+                                        // setFieldValue("isPart1nonwithholdingpartnership","")
+                                        // setFieldValue("isPart1partnerinlowertierpartnership","")
+                                        // setFieldValue("isPart1forerignpartnershipsec1446f","")
+                                        // setFieldValue("isPart1partnershipformodifiedamount","")
+                                        // setFieldValue("isPart1foreigngrantortrustSec11446f","")
+                                        // setFieldValue("isPart1knowledgeundersection1441and1471","")
+                                        
+                                      }, 200)
+                                    }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -886,7 +1093,69 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {
+                                      setFieldValue("chapter3StatusId",22);
+                                      setExpanded("panel1")
+                                      setTimeout(() => { 
+                                        //QDD form
+                                        setFieldValue("isPart1Integral",false)
+                                        setFieldValue("isPart1FFI",false)
+                                        setFieldValue("isPart1chap3and4",false)
+                                        setFieldValue("isPart1Section1446f",false)
+                                        setFieldValue("isPart1Section14464b",false)
+                                        setFieldValue("isPart1QIacting",false)
+                                        setFieldValue("isPart1ofchap3and41099repo",false)
+                                        setFieldValue("isPart1regusection16049C",false)
+                                        setFieldValue("isPart1andbackupwithholdingresp",false)
+                                        setFieldValue("isPart1AllocatePorofchap4",false)
+                                        setFieldValue("isPart1QDDidentified",false)
+                                        setFieldValue("corporation",false)
+                                        setFieldValue("disregardedEntity",false)
+                                        setFieldValue("partnership",false)
+                                        setFieldValue("disregardedEntity",false)
+
+                                        //NQI
+                                        setFieldValue("isPart1QIeachamount",false)
+                                        setFieldValue("isPart1transmitwithholdingCer",false)
+                                        setFieldValue("isPart1meetsReguSection160494C",false)
+                                        setFieldValue("isPart1OtherthanQI",false)
+                                        setFieldValue("isPart1Section1441and1471",false)
+
+                                        //TFI
+                                        setFieldValue("isPart1lawsofterritoryofUS",false)
+                                        setFieldValue("isPart1EvidenceofChap3and4",false)
+                                        setFieldValue("isPart1withholdablepayment",false)
+                                        setFieldValue("isPart1regulationSec11446f4aiB",false)
+                                        setFieldValue("isPart1regulationSec11446f41vA",false)
+                                        setFieldValue("partVNomineeforDistribution",false)
+
+                                        //USBranch
+                                        setFieldValue("isPart1PublictradedPartnership",false)
+                                        setFieldValue("isPart119bRegulationSec11411b",false)
+                                        setFieldValue("isPart119cRegulationSec11414d",false)
+                                        setFieldValue("isPart119dRegulationSec11414a",false)
+                                        setFieldValue("isPart119eRegulationSec11411b",false)
+                                        setFieldValue("partVINomineeforDistribution",false)
+
+                                        //WFP
+                                        setFieldValue("isPart1WPorWTagreement",false)
+                                        
+                                        //NWFP
+                                        setFieldValue("isPart1nonwithholdingpartnership",false)
+                                        setFieldValue("isPart1partnerinlowertierpartnership",false)
+                                        setFieldValue("isPart1forerignpartnershipsec1446f",false)
+                                        setFieldValue("isPart1partnershipformodifiedamount",false)
+                                        setFieldValue("isPart1foreigngrantortrustSec11446f",false)
+                                        setFieldValue("isPart1knowledgeundersection1441and1471",false)
+                                        // setFieldValue("isPart1nonwithholdingpartnership","")
+                                        // setFieldValue("isPart1partnerinlowertierpartnership","")
+                                        // setFieldValue("isPart1forerignpartnershipsec1446f","")
+                                        // setFieldValue("isPart1partnershipformodifiedamount","")
+                                        // setFieldValue("isPart1foreigngrantortrustSec11446f","")
+                                        // setFieldValue("isPart1knowledgeundersection1441and1471","")
+                                        
+                                      }, 200)
+                                    }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -927,7 +1196,69 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {
+                                      setFieldValue("chapter3StatusId",23);
+                                      setExpanded("panel1")
+                                      setTimeout(() => { 
+                                        //QDD form
+                                        setFieldValue("isPart1Integral",false)
+                                        setFieldValue("isPart1FFI",false)
+                                        setFieldValue("isPart1chap3and4",false)
+                                        setFieldValue("isPart1Section1446f",false)
+                                        setFieldValue("isPart1Section14464b",false)
+                                        setFieldValue("isPart1QIacting",false)
+                                        setFieldValue("isPart1ofchap3and41099repo",false)
+                                        setFieldValue("isPart1regusection16049C",false)
+                                        setFieldValue("isPart1andbackupwithholdingresp",false)
+                                        setFieldValue("isPart1AllocatePorofchap4",false)
+                                        setFieldValue("isPart1QDDidentified",false)
+                                        setFieldValue("corporation",false)
+                                        setFieldValue("disregardedEntity",false)
+                                        setFieldValue("partnership",false)
+                                        setFieldValue("disregardedEntity",false)
+
+                                        //NQI
+                                        setFieldValue("isPart1QIeachamount",false)
+                                        setFieldValue("isPart1transmitwithholdingCer",false)
+                                        setFieldValue("isPart1meetsReguSection160494C",false)
+                                        setFieldValue("isPart1OtherthanQI",false)
+                                        setFieldValue("isPart1Section1441and1471",false)
+
+                                        //TFI
+                                        setFieldValue("isPart1lawsofterritoryofUS",false)
+                                        setFieldValue("isPart1EvidenceofChap3and4",false)
+                                        setFieldValue("isPart1withholdablepayment",false)
+                                        setFieldValue("isPart1regulationSec11446f4aiB",false)
+                                        setFieldValue("isPart1regulationSec11446f41vA",false)
+                                        setFieldValue("partVNomineeforDistribution",false)
+
+                                        //USBranch
+                                        setFieldValue("isPart1PublictradedPartnership",false)
+                                        setFieldValue("isPart119bRegulationSec11411b",false)
+                                        setFieldValue("isPart119cRegulationSec11414d",false)
+                                        setFieldValue("isPart119dRegulationSec11414a",false)
+                                        setFieldValue("isPart119eRegulationSec11411b",false)
+                                        setFieldValue("partVINomineeforDistribution",false)
+
+                                        //WFP
+                                        setFieldValue("isPart1WPorWTagreement",false)
+                                        
+                                        //NWFP
+                                        setFieldValue("isPart1nonwithholdingpartnership",false)
+                                        setFieldValue("isPart1partnerinlowertierpartnership",false)
+                                        setFieldValue("isPart1forerignpartnershipsec1446f",false)
+                                        setFieldValue("isPart1partnershipformodifiedamount",false)
+                                        setFieldValue("isPart1foreigngrantortrustSec11446f",false)
+                                        setFieldValue("isPart1knowledgeundersection1441and1471",false)
+                                        // setFieldValue("isPart1nonwithholdingpartnership","")
+                                        // setFieldValue("isPart1partnerinlowertierpartnership","")
+                                        // setFieldValue("isPart1forerignpartnershipsec1446f","")
+                                        // setFieldValue("isPart1partnershipformodifiedamount","")
+                                        // setFieldValue("isPart1foreigngrantortrustSec11446f","")
+                                        // setFieldValue("isPart1knowledgeundersection1441and1471","")
+                                        
+                                      }, 200)
+                                    }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -970,7 +1301,69 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                   <Button variant="contained" onClick={() => {
+                                      setFieldValue("chapter3StatusId",24);
+                                      setExpanded("panel1")
+                                      setTimeout(() => { 
+                                        //QDD form
+                                        setFieldValue("isPart1Integral",false)
+                                        setFieldValue("isPart1FFI",false)
+                                        setFieldValue("isPart1chap3and4",false)
+                                        setFieldValue("isPart1Section1446f",false)
+                                        setFieldValue("isPart1Section14464b",false)
+                                        setFieldValue("isPart1QIacting",false)
+                                        setFieldValue("isPart1ofchap3and41099repo",false)
+                                        setFieldValue("isPart1regusection16049C",false)
+                                        setFieldValue("isPart1andbackupwithholdingresp",false)
+                                        setFieldValue("isPart1AllocatePorofchap4",false)
+                                        setFieldValue("isPart1QDDidentified",false)
+                                        setFieldValue("corporation",false)
+                                        setFieldValue("disregardedEntity",false)
+                                        setFieldValue("partnership",false)
+                                        setFieldValue("disregardedEntity",false)
+
+                                        //NQI
+                                        setFieldValue("isPart1QIeachamount",false)
+                                        setFieldValue("isPart1transmitwithholdingCer",false)
+                                        setFieldValue("isPart1meetsReguSection160494C",false)
+                                        setFieldValue("isPart1OtherthanQI",false)
+                                        setFieldValue("isPart1Section1441and1471",false)
+
+                                        //TFI
+                                        setFieldValue("isPart1lawsofterritoryofUS",false)
+                                        setFieldValue("isPart1EvidenceofChap3and4",false)
+                                        setFieldValue("isPart1withholdablepayment",false)
+                                        setFieldValue("isPart1regulationSec11446f4aiB",false)
+                                        setFieldValue("isPart1regulationSec11446f41vA",false)
+                                        setFieldValue("partVNomineeforDistribution",false)
+
+                                        //USBranch
+                                        setFieldValue("isPart1PublictradedPartnership",false)
+                                        setFieldValue("isPart119bRegulationSec11411b",false)
+                                        setFieldValue("isPart119cRegulationSec11414d",false)
+                                        setFieldValue("isPart119dRegulationSec11414a",false)
+                                        setFieldValue("isPart119eRegulationSec11411b",false)
+                                        setFieldValue("partVINomineeforDistribution",false)
+
+                                        //WFP
+                                        setFieldValue("isPart1WPorWTagreement",false)
+                                        
+                                        //NWFP
+                                        setFieldValue("isPart1nonwithholdingpartnership",false)
+                                        setFieldValue("isPart1partnerinlowertierpartnership",false)
+                                        setFieldValue("isPart1forerignpartnershipsec1446f",false)
+                                        setFieldValue("isPart1partnershipformodifiedamount",false)
+                                        setFieldValue("isPart1foreigngrantortrustSec11446f",false)
+                                        setFieldValue("isPart1knowledgeundersection1441and1471",false)
+                                        // setFieldValue("isPart1nonwithholdingpartnership","")
+                                        // setFieldValue("isPart1partnerinlowertierpartnership","")
+                                        // setFieldValue("isPart1forerignpartnershipsec1446f","")
+                                        // setFieldValue("isPart1partnershipformodifiedamount","")
+                                        // setFieldValue("isPart1foreigngrantortrustSec11446f","")
+                                        // setFieldValue("isPart1knowledgeundersection1441and1471","")
+                                        
+                                      }, 200)
+                                    }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1011,7 +1404,69 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {
+                                      setFieldValue("chapter3StatusId",25);
+                                      setExpanded("panel1")
+                                      setTimeout(() => { 
+                                        //QDD form
+                                        setFieldValue("isPart1Integral",false)
+                                        setFieldValue("isPart1FFI",false)
+                                        setFieldValue("isPart1chap3and4",false)
+                                        setFieldValue("isPart1Section1446f",false)
+                                        setFieldValue("isPart1Section14464b",false)
+                                        setFieldValue("isPart1QIacting",false)
+                                        setFieldValue("isPart1ofchap3and41099repo",false)
+                                        setFieldValue("isPart1regusection16049C",false)
+                                        setFieldValue("isPart1andbackupwithholdingresp",false)
+                                        setFieldValue("isPart1AllocatePorofchap4",false)
+                                        setFieldValue("isPart1QDDidentified",false)
+                                        setFieldValue("corporation",false)
+                                        setFieldValue("disregardedEntity",false)
+                                        setFieldValue("partnership",false)
+                                        setFieldValue("disregardedEntity",false)
+
+                                        //NQI
+                                        setFieldValue("isPart1QIeachamount",false)
+                                        setFieldValue("isPart1transmitwithholdingCer",false)
+                                        setFieldValue("isPart1meetsReguSection160494C",false)
+                                        setFieldValue("isPart1OtherthanQI",false)
+                                        setFieldValue("isPart1Section1441and1471",false)
+
+                                        //TFI
+                                        setFieldValue("isPart1lawsofterritoryofUS",false)
+                                        setFieldValue("isPart1EvidenceofChap3and4",false)
+                                        setFieldValue("isPart1withholdablepayment",false)
+                                        setFieldValue("isPart1regulationSec11446f4aiB",false)
+                                        setFieldValue("isPart1regulationSec11446f41vA",false)
+                                        setFieldValue("partVNomineeforDistribution",false)
+
+                                        //USBranch
+                                        setFieldValue("isPart1PublictradedPartnership",false)
+                                        setFieldValue("isPart119bRegulationSec11411b",false)
+                                        setFieldValue("isPart119cRegulationSec11414d",false)
+                                        setFieldValue("isPart119dRegulationSec11414a",false)
+                                        setFieldValue("isPart119eRegulationSec11411b",false)
+                                        setFieldValue("partVINomineeforDistribution",false)
+
+                                        //WFP
+                                        setFieldValue("isPart1WPorWTagreement",false)
+                                        
+                                        //NWFP
+                                        setFieldValue("isPart1nonwithholdingpartnership",false)
+                                        setFieldValue("isPart1partnerinlowertierpartnership",false)
+                                        setFieldValue("isPart1forerignpartnershipsec1446f",false)
+                                        setFieldValue("isPart1partnershipformodifiedamount",false)
+                                        setFieldValue("isPart1foreigngrantortrustSec11446f",false)
+                                        setFieldValue("isPart1knowledgeundersection1441and1471",false)
+                                        // setFieldValue("isPart1nonwithholdingpartnership","")
+                                        // setFieldValue("isPart1partnerinlowertierpartnership","")
+                                        // setFieldValue("isPart1forerignpartnershipsec1446f","")
+                                        // setFieldValue("isPart1partnershipformodifiedamount","")
+                                        // setFieldValue("isPart1foreigngrantortrustSec11446f","")
+                                        // setFieldValue("isPart1knowledgeundersection1441and1471","")
+                                        
+                                      }, 200)
+                                    }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1053,7 +1508,69 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {
+                                      setFieldValue("chapter3StatusId",26);
+                                      setExpanded("panel1")
+                                      setTimeout(() => { 
+                                        //QDD form
+                                        setFieldValue("isPart1Integral",false)
+                                        setFieldValue("isPart1FFI",false)
+                                        setFieldValue("isPart1chap3and4",false)
+                                        setFieldValue("isPart1Section1446f",false)
+                                        setFieldValue("isPart1Section14464b",false)
+                                        setFieldValue("isPart1QIacting",false)
+                                        setFieldValue("isPart1ofchap3and41099repo",false)
+                                        setFieldValue("isPart1regusection16049C",false)
+                                        setFieldValue("isPart1andbackupwithholdingresp",false)
+                                        setFieldValue("isPart1AllocatePorofchap4",false)
+                                        setFieldValue("isPart1QDDidentified",false)
+                                        setFieldValue("corporation",false)
+                                        setFieldValue("disregardedEntity",false)
+                                        setFieldValue("partnership",false)
+                                        setFieldValue("disregardedEntity",false)
+
+                                        //NQI
+                                        setFieldValue("isPart1QIeachamount",false)
+                                        setFieldValue("isPart1transmitwithholdingCer",false)
+                                        setFieldValue("isPart1meetsReguSection160494C",false)
+                                        setFieldValue("isPart1OtherthanQI",false)
+                                        setFieldValue("isPart1Section1441and1471",false)
+
+                                        //TFI
+                                        setFieldValue("isPart1lawsofterritoryofUS",false)
+                                        setFieldValue("isPart1EvidenceofChap3and4",false)
+                                        setFieldValue("isPart1withholdablepayment",false)
+                                        setFieldValue("isPart1regulationSec11446f4aiB",false)
+                                        setFieldValue("isPart1regulationSec11446f41vA",false)
+                                        setFieldValue("partVNomineeforDistribution",false)
+
+                                        //USBranch
+                                        setFieldValue("isPart1PublictradedPartnership",false)
+                                        setFieldValue("isPart119bRegulationSec11411b",false)
+                                        setFieldValue("isPart119cRegulationSec11414d",false)
+                                        setFieldValue("isPart119dRegulationSec11414a",false)
+                                        setFieldValue("isPart119eRegulationSec11411b",false)
+                                        setFieldValue("partVINomineeforDistribution",false)
+
+                                        //WFP
+                                        setFieldValue("isPart1WPorWTagreement",false)
+                                        
+                                        //NWFP
+                                        setFieldValue("isPart1nonwithholdingpartnership",false)
+                                        setFieldValue("isPart1partnerinlowertierpartnership",false)
+                                        setFieldValue("isPart1forerignpartnershipsec1446f",false)
+                                        setFieldValue("isPart1partnershipformodifiedamount",false)
+                                        setFieldValue("isPart1foreigngrantortrustSec11446f",false)
+                                        setFieldValue("isPart1knowledgeundersection1441and1471",false)
+                                        // setFieldValue("isPart1nonwithholdingpartnership","")
+                                        // setFieldValue("isPart1partnerinlowertierpartnership","")
+                                        // setFieldValue("isPart1forerignpartnershipsec1446f","")
+                                        // setFieldValue("isPart1partnershipformodifiedamount","")
+                                        // setFieldValue("isPart1foreigngrantortrustSec11446f","")
+                                        // setFieldValue("isPart1knowledgeundersection1441and1471","")
+                                        
+                                      }, 200)
+                                    }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1094,7 +1611,69 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {
+                                      setFieldValue("chapter3StatusId",27);
+                                      setExpanded("panel1")
+                                      setTimeout(() => { 
+                                        //QDD form
+                                        setFieldValue("isPart1Integral",false)
+                                        setFieldValue("isPart1FFI",false)
+                                        setFieldValue("isPart1chap3and4",false)
+                                        setFieldValue("isPart1Section1446f",false)
+                                        setFieldValue("isPart1Section14464b",false)
+                                        setFieldValue("isPart1QIacting",false)
+                                        setFieldValue("isPart1ofchap3and41099repo",false)
+                                        setFieldValue("isPart1regusection16049C",false)
+                                        setFieldValue("isPart1andbackupwithholdingresp",false)
+                                        setFieldValue("isPart1AllocatePorofchap4",false)
+                                        setFieldValue("isPart1QDDidentified",false)
+                                        setFieldValue("corporation",false)
+                                        setFieldValue("disregardedEntity",false)
+                                        setFieldValue("partnership",false)
+                                        setFieldValue("disregardedEntity",false)
+
+                                        //NQI
+                                        setFieldValue("isPart1QIeachamount",false)
+                                        setFieldValue("isPart1transmitwithholdingCer",false)
+                                        setFieldValue("isPart1meetsReguSection160494C",false)
+                                        setFieldValue("isPart1OtherthanQI",false)
+                                        setFieldValue("isPart1Section1441and1471",false)
+
+                                        //TFI
+                                        setFieldValue("isPart1lawsofterritoryofUS",false)
+                                        setFieldValue("isPart1EvidenceofChap3and4",false)
+                                        setFieldValue("isPart1withholdablepayment",false)
+                                        setFieldValue("isPart1regulationSec11446f4aiB",false)
+                                        setFieldValue("isPart1regulationSec11446f41vA",false)
+                                        setFieldValue("partVNomineeforDistribution",false)
+
+                                        //USBranch
+                                        setFieldValue("isPart1PublictradedPartnership",false)
+                                        setFieldValue("isPart119bRegulationSec11411b",false)
+                                        setFieldValue("isPart119cRegulationSec11414d",false)
+                                        setFieldValue("isPart119dRegulationSec11414a",false)
+                                        setFieldValue("isPart119eRegulationSec11411b",false)
+                                        setFieldValue("partVINomineeforDistribution",false)
+
+                                        //WFP
+                                        setFieldValue("isPart1WPorWTagreement",false)
+                                        
+                                        //NWFP
+                                        setFieldValue("isPart1nonwithholdingpartnership",false)
+                                        setFieldValue("isPart1partnerinlowertierpartnership",false)
+                                        setFieldValue("isPart1forerignpartnershipsec1446f",false)
+                                        setFieldValue("isPart1partnershipformodifiedamount",false)
+                                        setFieldValue("isPart1foreigngrantortrustSec11446f",false)
+                                        setFieldValue("isPart1knowledgeundersection1441and1471",false)
+                                        // setFieldValue("isPart1nonwithholdingpartnership","")
+                                        // setFieldValue("isPart1partnerinlowertierpartnership","")
+                                        // setFieldValue("isPart1forerignpartnershipsec1446f","")
+                                        // setFieldValue("isPart1partnershipformodifiedamount","")
+                                        // setFieldValue("isPart1foreigngrantortrustSec11446f","")
+                                        // setFieldValue("isPart1knowledgeundersection1441and1471","")
+                                        
+                                      }, 200)
+                                    }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1135,7 +1714,69 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {
+                                      setFieldValue("chapter3StatusId",28);
+                                      setExpanded("panel1")
+                                      setTimeout(() => { 
+                                        //QDD form
+                                        setFieldValue("isPart1Integral",false)
+                                        setFieldValue("isPart1FFI",false)
+                                        setFieldValue("isPart1chap3and4",false)
+                                        setFieldValue("isPart1Section1446f",false)
+                                        setFieldValue("isPart1Section14464b",false)
+                                        setFieldValue("isPart1QIacting",false)
+                                        setFieldValue("isPart1ofchap3and41099repo",false)
+                                        setFieldValue("isPart1regusection16049C",false)
+                                        setFieldValue("isPart1andbackupwithholdingresp",false)
+                                        setFieldValue("isPart1AllocatePorofchap4",false)
+                                        setFieldValue("isPart1QDDidentified",false)
+                                        setFieldValue("corporation",false)
+                                        setFieldValue("disregardedEntity",false)
+                                        setFieldValue("partnership",false)
+                                        setFieldValue("disregardedEntity",false)
+
+                                        //NQI
+                                        setFieldValue("isPart1QIeachamount",false)
+                                        setFieldValue("isPart1transmitwithholdingCer",false)
+                                        setFieldValue("isPart1meetsReguSection160494C",false)
+                                        setFieldValue("isPart1OtherthanQI",false)
+                                        setFieldValue("isPart1Section1441and1471",false)
+
+                                        //TFI
+                                        setFieldValue("isPart1lawsofterritoryofUS",false)
+                                        setFieldValue("isPart1EvidenceofChap3and4",false)
+                                        setFieldValue("isPart1withholdablepayment",false)
+                                        setFieldValue("isPart1regulationSec11446f4aiB",false)
+                                        setFieldValue("isPart1regulationSec11446f41vA",false)
+                                        setFieldValue("partVNomineeforDistribution",false)
+
+                                        //USBranch
+                                        setFieldValue("isPart1PublictradedPartnership",false)
+                                        setFieldValue("isPart119bRegulationSec11411b",false)
+                                        setFieldValue("isPart119cRegulationSec11414d",false)
+                                        setFieldValue("isPart119dRegulationSec11414a",false)
+                                        setFieldValue("isPart119eRegulationSec11411b",false)
+                                        setFieldValue("partVINomineeforDistribution",false)
+
+                                        //WFP
+                                        setFieldValue("isPart1WPorWTagreement",false)
+                                        
+                                        //NWFP
+                                        setFieldValue("isPart1nonwithholdingpartnership",false)
+                                        setFieldValue("isPart1partnerinlowertierpartnership",false)
+                                        setFieldValue("isPart1forerignpartnershipsec1446f",false)
+                                        setFieldValue("isPart1partnershipformodifiedamount",false)
+                                        setFieldValue("isPart1foreigngrantortrustSec11446f",false)
+                                        setFieldValue("isPart1knowledgeundersection1441and1471",false)
+                                        // setFieldValue("isPart1nonwithholdingpartnership","")
+                                        // setFieldValue("isPart1partnerinlowertierpartnership","")
+                                        // setFieldValue("isPart1forerignpartnershipsec1446f","")
+                                        // setFieldValue("isPart1partnershipformodifiedamount","")
+                                        // setFieldValue("isPart1foreigngrantortrustSec11446f","")
+                                        // setFieldValue("isPart1knowledgeundersection1441and1471","")
+                                        
+                                      }, 200)
+                                    }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1176,7 +1817,69 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained">Confirm</Button>
+                                    <Button variant="contained" onClick={() => {
+                                      setFieldValue("chapter3StatusId",29);
+                                      setExpanded("panel1")
+                                      setTimeout(() => { 
+                                        //QDD form
+                                        setFieldValue("isPart1Integral",false)
+                                        setFieldValue("isPart1FFI",false)
+                                        setFieldValue("isPart1chap3and4",false)
+                                        setFieldValue("isPart1Section1446f",false)
+                                        setFieldValue("isPart1Section14464b",false)
+                                        setFieldValue("isPart1QIacting",false)
+                                        setFieldValue("isPart1ofchap3and41099repo",false)
+                                        setFieldValue("isPart1regusection16049C",false)
+                                        setFieldValue("isPart1andbackupwithholdingresp",false)
+                                        setFieldValue("isPart1AllocatePorofchap4",false)
+                                        setFieldValue("isPart1QDDidentified",false)
+                                        setFieldValue("corporation",false)
+                                        setFieldValue("disregardedEntity",false)
+                                        setFieldValue("partnership",false)
+                                        setFieldValue("disregardedEntity",false)
+
+                                        //NQI
+                                        setFieldValue("isPart1QIeachamount",false)
+                                        setFieldValue("isPart1transmitwithholdingCer",false)
+                                        setFieldValue("isPart1meetsReguSection160494C",false)
+                                        setFieldValue("isPart1OtherthanQI",false)
+                                        setFieldValue("isPart1Section1441and1471",false)
+
+                                        //TFI
+                                        setFieldValue("isPart1lawsofterritoryofUS",false)
+                                        setFieldValue("isPart1EvidenceofChap3and4",false)
+                                        setFieldValue("isPart1withholdablepayment",false)
+                                        setFieldValue("isPart1regulationSec11446f4aiB",false)
+                                        setFieldValue("isPart1regulationSec11446f41vA",false)
+                                        setFieldValue("partVNomineeforDistribution",false)
+
+                                        //USBranch
+                                        setFieldValue("isPart1PublictradedPartnership",false)
+                                        setFieldValue("isPart119bRegulationSec11411b",false)
+                                        setFieldValue("isPart119cRegulationSec11414d",false)
+                                        setFieldValue("isPart119dRegulationSec11414a",false)
+                                        setFieldValue("isPart119eRegulationSec11411b",false)
+                                        setFieldValue("partVINomineeforDistribution",false)
+
+                                        //WFP
+                                        setFieldValue("isPart1WPorWTagreement",false)
+                                        
+                                        //NWFP
+                                        setFieldValue("isPart1nonwithholdingpartnership",false)
+                                        setFieldValue("isPart1partnerinlowertierpartnership",false)
+                                        setFieldValue("isPart1forerignpartnershipsec1446f",false)
+                                        setFieldValue("isPart1partnershipformodifiedamount",false)
+                                        setFieldValue("isPart1foreigngrantortrustSec11446f",false)
+                                        setFieldValue("isPart1knowledgeundersection1441and1471",false)
+                                        // setFieldValue("isPart1nonwithholdingpartnership","")
+                                        // setFieldValue("isPart1partnerinlowertierpartnership","")
+                                        // setFieldValue("isPart1forerignpartnershipsec1446f","")
+                                        // setFieldValue("isPart1partnershipformodifiedamount","")
+                                        // setFieldValue("isPart1foreigngrantortrustSec11446f","")
+                                        // setFieldValue("isPart1knowledgeundersection1441and1471","")
+                                        
+                                      }, 200)
+                                    }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1220,15 +1923,15 @@ export default function Fedral_tax(props: any) {
                         {values.chapter3StatusId==21 && (                 
                         <QDD handleChange={handleChange} values={values} setFieldValue={setFieldValue}/>)}
                         {values.chapter3StatusId==22 && (                 
-                        <NQI handleChange={handleChange} values={values}/>)}
+                        <NQI handleChange={handleChange} values={values} setFieldValue={setFieldValue}/>)}
                         {values.chapter3StatusId==23 && (                 
-                        <TFI handleChange={handleChange} values={values}/>)}
+                        <TFI handleChange={handleChange} values={values} setFieldValue={setFieldValue}/>)}
                         {values.chapter3StatusId==24 && (                 
-                        <USBranch handleChange={handleChange} values={values}/>)}
-                        {values.chapter3StatusId==25 || values.chapter3StatusId==26 && (                 
-                        <WFP handleChange={handleChange} values={values}/>)}
+                        <USBranch handleChange={handleChange} values={values} setFieldValue={setFieldValue}/>)}
+                        {(values.chapter3StatusId==25 || values.chapter3StatusId==26) && (                 
+                        <WFP handleChange={handleChange} values={values} setFieldValue={setFieldValue}/>)}
                         {(values.chapter3StatusId==27 || values.chapter3StatusId==28 || values.chapter3StatusId==29) && (                 
-                        <NWFP handleChange={handleChange} values={values}/>)}
+                        <NWFP handleChange={handleChange} values={values} setFieldValue={setFieldValue}/>)}
                         <div
                           style={{
                             display: "flex",
@@ -1241,7 +1944,8 @@ export default function Fedral_tax(props: any) {
                           const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                           const urlValue = window.location.pathname.substring(1);
                           const temp = {
-                            
+                            agentId: authDetails.agentId,
+                            accountHolderBasicDetailId: authDetails.accountHolderId,
                             ...PrevStepData,
                             ...values,
                             stepName: `/${urlValue}`
@@ -1266,6 +1970,39 @@ export default function Fedral_tax(props: any) {
                             type="submit"
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
+                            disabled={
+                              (
+                                values.chapter3StatusId == 21 && values.isPart1Integral && (values.isPart1QDDidentified && (values.corporation || values.partnership || values.disregardedEntity))
+                              )
+                               ||
+                              (
+                                values.chapter3StatusId == 22 && values.isPart1QIeachamount && (values.isPart1transmitwithholdingCer || values.isPart1meetsReguSection160494C || values.isPart1OtherthanQI || values.isPart1Section1441and1471)
+                              )
+
+                              ||
+                              (
+                                values.chapter3StatusId == 23 && values.isPart1lawsofterritoryofUS && (values.isPart1EvidenceofChap3and4 || values.isPart1withholdablepayment)
+                              )
+
+                              ||
+                              (
+                                values.chapter3StatusId == 24 && values.isPart1PublictradedPartnership && (values.isPart119bRegulationSec11411b || values.isPart119cRegulationSec11414d)
+                              )
+
+                              ||
+                              (
+                                (values.chapter3StatusId == 25 || values.chapter3StatusId == 26) && values.isPart1WPorWTagreement
+                              )
+
+                              ||
+                              (
+                                (values.chapter3StatusId == 27 || values.chapter3StatusId == 28 || values.chapter3StatusId == 29) && values.isPart1nonwithholdingpartnership
+                              )
+                              
+                              
+                              ? false : true
+                              // values.chapter3StatusId == 21 && values.isPart1Integral && (values.isPart1QDDidentified && (values.corporation || values.partnership || values.disregardedEntity) ? false : true)
+                            }
                           >
                             Continue
                           </Button>
