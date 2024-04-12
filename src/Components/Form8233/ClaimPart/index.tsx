@@ -111,7 +111,6 @@ export default function Tin(props: any) {
           //   accountHolderBasicDetailId: authDetails?.accountHolderId,
           //   stepName: null,
           // };
-          console.log("temo data",temp);
           const returnPromise = new Promise((resolve, reject) => {
             dispatch(
               post8233_EForm(temp,

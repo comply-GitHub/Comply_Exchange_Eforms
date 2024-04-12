@@ -208,8 +208,6 @@ export default function Tin(props: any) {
   };
 
   const viewDoc = (strgName:any, folderName:string)=>{
-    console.log("storageName",strgName)
-    console.log("folderName",folderName)
     dispatch(getSupportedFile(strgName, folderName))
   }
 

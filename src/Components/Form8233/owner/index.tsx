@@ -124,7 +124,6 @@ useEffect(()=>{
   dispatch(getAllCountries())  
   dispatch(GetAgentUSVisaTypeHiddenForEformAction(authDetails?.agentId))
 },[])
-console.log(authDetails?.agentId,"22")
 const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer);
   const [toolInfo, setToolInfo] = useState("");
   const GethelpData = useSelector(
