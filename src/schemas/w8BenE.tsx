@@ -45,8 +45,335 @@ export const chapter4Schema = () => {
         return schema;
       }
 
-    })
+    }),
+    isCertify39: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 6 || chapter4Status == 7 || chapter4Status == 35 || chapter4Status == 8) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isCertify35: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 36) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    //Sponsored Direct Reporting NFFE
+    nameSponsoringEntity: Yup.string().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 33) {
+        return schema.notOneOf([undefined, ""], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isCertify43: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 33) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
 
+
+    isCertify22Entity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 9) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isCertify18FFI: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 10) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isCertify30Entity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 13) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isCertify41Entity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 14) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isCertify32Entity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 16) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isCertify38Entity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 18) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+
+    isCertify27Entity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 20) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isCertify36Entity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 23) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isCertify34Entity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 15) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    planReorganization: Yup.string().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 15) {
+        return schema.notOneOf([undefined, ""], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isCertify33Entity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 17) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    priorDate: Yup.string().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 17) {
+        return schema.notOneOf([undefined, ""], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    // International organization
+    isCertify28aEntity: Yup.boolean()
+    // .when(["chapter4Status"], ([chapter4Status], schema) => {
+    //   if (chapter4Status == 21) {
+    //     return schema.oneOf([true], "Please check this checkbox");
+    //   } else {
+    //     return schema;
+    //   }
+    // }),
+    ,
+    isCertify28bEntity: Yup.boolean().when(["chapter4Status", "isCertify28aEntity"], ([chapter4Status, isCertify28aEntity], schema) => {
+      if (chapter4Status == 21 && isCertify28aEntity == false) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else
+      if(chapter4Status == 21) 
+      {
+        if (isCertify28aEntity == true) { return schema; }
+        else {
+          return schema.oneOf([true], "Please check this checkbox a or b");
+        }
+      }
+      else {
+        return schema;
+      }
+    }),
+
+
+    // NON Reporting FFI
+
+    // iGAbetweenUnitedStates:Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+    //   if (chapter4Status == 24) {
+    //     return schema.oneOf([true], "Please check this checkbox");
+    //   } else {
+    //     return schema;
+    //   }
+    // }),
+    // iGA:Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+    //   if (chapter4Status == 24) {
+    //     return schema.oneOf([true], "Please check this checkbox");
+    //   } else {
+    //     return schema;
+    //   }
+    // }),
+    // istreated:Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+    //   if (chapter4Status == 24) {
+    //     return schema.oneOf([true], "Please check this checkbox");
+    //   } else {
+    //     return schema;
+    //   }
+    // }),
+    // otherTreated:Yup.string().when(["chapter4Status"], ([chapter4Status], schema) => {
+    //   if (chapter4Status == 24) {
+    //     return schema.notOneOf([undefined,""], "Please check this checkbox");
+    //   } else {
+    //     return schema;
+    //   }
+    // }),
+    // isCertify26Entity:Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+    //   if (chapter4Status == 24) {
+    //     return schema.oneOf([true], "Please check this checkbox");
+    //   } else {
+    //     return schema;
+    //   }
+    // }),
+    isCertify24aFFIPart1: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 25) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isCertify24bFFIPart1: Yup.boolean(),
+    isCertify24cFFIPart1: Yup.boolean().when(["chapter4Status", "isCertify24bFFIPart1"], ([chapter4Status, isCertify24bFFIPart1], schema) => {
+      console.log(isCertify24bFFIPart1)
+      if (chapter4Status == 25) {
+        if (isCertify24bFFIPart1 !== true) {
+          return schema.isTrue("please check b or c checkbox");
+        } else {
+          return schema.isFalse("please check b or c checkbox")
+        }
+      } else {
+        return schema;
+      }
+
+    }),
+    //Sponsored FFI
+    nameSponsoringEntity16: Yup.string().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 34) {
+        return schema.notOneOf([undefined, ""], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isCertify17a: Yup.boolean(),
+    isCertify17b: Yup.boolean().when(["chapter4Status", "isCertify17a"], ([chapter4Status, isCertify17a], schema) => {
+      console.log(isCertify17a)
+      if (chapter4Status == 34) {
+        if (isCertify17a !== true) {
+          return schema.isTrue("please check b or c checkbox");
+        } else {
+          return schema.isFalse("please check b or c checkbox")
+        }
+      } else {
+        return schema;
+      }
+    }),
+    // Restricted Distributor
+    isCertify25aEntityPart1: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 32) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    hasBeenBoundBy: Yup.boolean(),
+    currentBoundBy: Yup.boolean().when(["chapter4Status", "hasBeenBoundBy"], ([chapter4Status, hasBeenBoundBy], schema) => {
+      console.log(hasBeenBoundBy)
+      if (chapter4Status == 32) {
+        if (hasBeenBoundBy !== true) {
+          return schema.isTrue("please check b or c checkbox");
+        } else {
+          return schema.isFalse("please check b or c checkbox")
+        }
+      } else {
+        return schema;
+      }
+    }),
+
+    //Publicly Traded NFFE or NFFE Affiliate of a Publicly Traded Corporation
+    isCertify37a: Yup.boolean(),
+    aEntityStockMarket: Yup.string().when(["chapter4Status", "isCertify37a"], ([chapter4Status, isCertify37a], schema) => {
+      if (chapter4Status == 28 && isCertify37a == true) {
+        return schema.notOneOf([undefined, ""], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isCertify37b: Yup.boolean().when(["chapter4Status", "isCertify37a"], ([chapter4Status, isCertify37a], schema) => {
+      if (chapter4Status == 28 && isCertify37a == false) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else
+        if (chapter4Status == 28) {
+          if (isCertify37a == true) {
+            return schema;
+
+          }
+          else {
+            return schema.oneOf([true], "Please check this checkbox a or b");
+          }
+        }
+        else { return schema; }
+    }),
+    bEntityStockMarket: Yup.string().when(["chapter4Status", "isCertify37b"], ([chapter4Status, isCertify37b], schema) => {
+      if (chapter4Status == 28 && isCertify37b == true) {
+        return schema.notOneOf([undefined, ""], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    namesecuritiesmarket: Yup.string().when(["chapter4Status", "isCertify37b"], ([chapter4Status, isCertify37b], schema) => {
+      if (chapter4Status == 28 && isCertify37b == true) {
+        return schema.notOneOf([undefined, ""], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    nameSponsoringEntity1: Yup.string().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 11) {
+        return schema.notOneOf([undefined, ""], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isCertify21Entity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 11) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+
+    // Non reporting IGA FFI
+    isCertify26Entity:Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 24) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    iGAbetweenUnitedStates:Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 24) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    iGA:Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 24) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    istreated:Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+      if (chapter4Status == 24) {
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+
+    
   });
 };
 
@@ -176,7 +503,7 @@ export const partCertiSchema = () => {
     //   'Confirmation code does not match',
     //   function (value) {
     //     const storedConfirmationCode = obValues?.confirmationCode;
-    //     return !storedConfirmationCode || value === storedConfirmationCode;
+    //     return !storedConfirmationCode || value === storedConfirmationCode; 
     //   }
     // ), 
     ,

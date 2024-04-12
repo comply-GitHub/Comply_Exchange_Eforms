@@ -53,7 +53,7 @@ export default function Factors() {
   }
 
   useEffect(() => {
-
+     document.title="Income-Report"
     dispatch(GetHelpVideoDetails());
   }, [])
 

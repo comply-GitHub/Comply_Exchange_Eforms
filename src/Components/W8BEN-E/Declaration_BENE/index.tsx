@@ -15,6 +15,7 @@ import { ErrorModel } from "../../../Redux/Actions/errormodel";
 export default function Term() {
   //States
   useEffect(() => {
+    document.title="Comply Exchange"
     dispatch(GetHelpVideoDetails());
   }, [])
 
@@ -225,8 +226,8 @@ export default function Term() {
             <Typography
               align="center"
               style={{
-                //color: "#f5f5f5",
-                color: "#505E50",  
+                color: "#f5f5f5",
+                //color: "#505E50",  
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: "20px",
