@@ -134,7 +134,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
     <>
       <Formik
       validateOnChange={false}
-      validateOnBlur={false}
+      validateOnBlur={true}
       validateOnMount={false}
     
         initialValues={initialValue}
@@ -147,12 +147,18 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
           // } else{
           setSubmitting(true);
           const temp = {
-            ...values,
+            agentId: authDetails.agentId,
+            accountHolderBasicDetailId: authDetails.accountHolderId,
             ...onBoardingFormValuesPrevStepData,
-            agentId: authDetails?.agentId,
-            accountHolderBasicDetailId: authDetails?.accountHolderId,
-            stepName: null,
+            ...values,
+            stepName: null
           };
+          // const temp = {
+          //   ...values,
+          //   agentId: authDetails?.agentId,
+          //   accountHolderBasicDetailId: authDetails?.accountHolderId,
+          //   stepName: null,
+          // };
           const returnPromise = new Promise((resolve, reject) => {
             dispatch(
               post8233_EForm(temp,
@@ -702,7 +708,8 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                           height: "50px",
                           width: "100%",
                         }}
-                        onChange={handleChange} 
+                        onChange={handleChange}
+                        onBlur={handleBlur}
                       />
                       {errors?.countryIssuingPassportNumber && typeof errors?.countryIssuingPassportNumber === 'string' && (
                                 <p className="error">{errors?.countryIssuingPassportNumber}</p>
