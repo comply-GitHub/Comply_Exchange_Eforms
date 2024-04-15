@@ -21,8 +21,9 @@ const NWFP = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
-                value={props.values.TFI18A}
-                name='TFI18A'
+                value={props.values.isPart1nonwithholdingpartnership}
+                checked={props.values.isPart1nonwithholdingpartnership}
+                name="isPart1nonwithholdingpartnership"
                 onChange={props.handleChange}
                 size="medium"
                 style={{ fontSize: "2rem" }}
@@ -54,7 +55,11 @@ const NWFP = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
+                value={props.values.isPart1partnerinlowertierpartnership}
+                checked={props.values.isPart1partnerinlowertierpartnership}
+                name="isPart1partnerinlowertierpartnership"
                 onChange={props.handleChange}
+                disabled={props.values.chapter3StatusId == 28 ? true : false}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -82,7 +87,11 @@ const NWFP = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
+                value={props.values.isPart1forerignpartnershipsec1446f}
+                checked={props.values.isPart1forerignpartnershipsec1446f}
+                name="isPart1forerignpartnershipsec1446f"
                 onChange={props.handleChange}
+                disabled={(props.values.chapter3StatusId == 28 || props.values.chapter3StatusId == 29) ? true : false}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -111,7 +120,11 @@ const NWFP = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
+                value={props.values.isPart1partnershipformodifiedamount}
+                checked={props.values.isPart1partnershipformodifiedamount}
+                name="isPart1partnershipformodifiedamount"
                 onChange={props.handleChange}
+                disabled={(props.values.isPart1forerignpartnershipsec1446f === true && (props.values.chapter3StatusId!=28)) ? false : true}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -139,7 +152,11 @@ const NWFP = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
+                value={props.values.isPart1foreigngrantortrustSec11446f}
+                checked={props.values.isPart1foreigngrantortrustSec11446f}
+                name="isPart1foreigngrantortrustSec11446f"
                 onChange={props.handleChange}
+                disabled={(props.values.chapter3StatusId==27 || props.values.chapter3StatusId==28) ? true:false}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -170,6 +187,9 @@ const NWFP = (props:any) => {
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
+                value={props.values.isPart1knowledgeundersection1441and1471}
+                checked={props.values.isPart1knowledgeundersection1441and1471}
+                name="isPart1knowledgeundersection1441and1471"
                 onChange={props.handleChange}
                 size="medium"
                 style={{ fontSize: "2rem" }}

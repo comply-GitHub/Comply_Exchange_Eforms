@@ -29,6 +29,7 @@ import { useLocation } from "react-router-dom";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 
 export default function Tin(props: any) {
   const dispatch = useDispatch();
@@ -70,9 +71,9 @@ export default function Tin(props: any) {
   const handleCanvaClose = () => {
     setCanvaBx(false);
   }
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Tax-Payer"
-  },[])
+  }, [])
 
   const formatTin = (e: any, values: any): any => {
     if (e.key === "Backspace" || e.key === "Delete") return;
@@ -92,11 +93,11 @@ export default function Tin(props: any) {
     Tin: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin : getReducerData?.tiN_USTIN,
   };
   const [selectedTaxClassification, setSelectedTaxClassification] =
-  useState(0);
+    useState(0);
   const handleTaxClassificationChange = (
     event: any
-    ) => {
-    
+  ) => {
+
     setSelectedTaxClassification(event.target.value);
   };
   useEffect(() => {
@@ -127,7 +128,7 @@ export default function Tin(props: any) {
     };
   const [toolInfo, setToolInfo] = useState("");
 
-  const viewPdf=()=>{
+  const viewPdf = () => {
     history("w9_pdf");
   }
   return (
@@ -142,7 +143,9 @@ export default function Tin(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+            dispatch(GetW9Pdf(authDetails?.accountHolderId))
+          }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
@@ -166,7 +169,7 @@ export default function Tin(props: any) {
       </div>
       <Formik
         initialValues={initialValue}
-        enableReinitialize      
+        enableReinitialize
         validateOnChange={false}
         validateOnBlur={false}
         validationSchema={
@@ -177,28 +180,28 @@ export default function Tin(props: any) {
               : firstStepBusinessSchema
         } // Uncomment after testing ,this is validation Schema
         onSubmit={(values, { setSubmitting }) => {
-          
-          
+
+
           const submitPromise = new Promise((resolve, reject) => {
             if (clickCount === 0) {
               setClickCount(clickCount + 1);
             } else {
-                setSubmitting(true);
+              setSubmitting(true);
               const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
               const result = { ...new_obj, ...values };
               dispatch(
                 postW9Form(result, () => {
                   localStorage.setItem("PrevStepData", JSON.stringify(result))
-                  if(continueId==1){
+                  if (continueId == 1) {
                     setcontinueId(0);
-                   history("/US_Purposes/Back/Exemption/Tax/Certificates")
+                    history("/US_Purposes/Back/Exemption/Tax/Certificates")
                   }
                   setSubmitting(false);
                   resolve("success");
                 }, (error: any) => { reject(error); setSubmitting(false); })
               );
-             
-              
+
+
             }
 
           });
@@ -233,7 +236,7 @@ export default function Tin(props: any) {
                     <div style={{ backgroundColor: "#ffff", }}>
                       {values.Tin && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                         <Typography>
-                          TIN
+                          TIN 100
                           <span className="mx-1">
                             <img src={Infoicon} style={{
                               color: "#ffc107", height: "22px",
@@ -249,7 +252,7 @@ export default function Tin(props: any) {
 
 
                           </span>
-                          You have selected an entity type that would normally expect to supply an EIN
+                          You have selected an entity type that would normally expect to supply an SSN/ITIN
 
                         </Typography>
 
@@ -321,7 +324,7 @@ export default function Tin(props: any) {
                               </Typography>
 
 
-                              <Link href="#" underline="none" style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}} onClick={() => { setToolInfo("") }}>--Show Less--</Link>
+                              <Link href="#" underline="none" style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }} onClick={() => { setToolInfo("") }}>--Show Less--</Link>
                             </Paper>
 
                           </div>) : ""}
@@ -472,32 +475,37 @@ export default function Tin(props: any) {
                 }}>
                 SAVE & EXIT
               </Button> */}
-              
+
               <SaveAndExit Callback={() => {
-                            submitForm().then((data) => {
-                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                              const urlValue = window.location.pathname.substring(1);
-                              dispatch(postW9Form(
-                                {
-                                  ...prevStepData,
-                                  stepName: `/${urlValue}`
-                                }
-                                , () => { }))
-                              history(GlobalValues.basePageRoute)
-                            }).catch((err) => {
-                              console.log(err);
-                            })
-                          }} formTypeId={FormTypeId.W9} />
-              <Button variant="contained" onClick={viewPdf} style={{ color: "white", marginLeft: "15px" }}>
+                submitForm().then((data) => {
+                  const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                  const urlValue = window.location.pathname.substring(1);
+                  dispatch(postW9Form(
+                    {
+                      ...prevStepData,
+                      stepName: `/${urlValue}`
+                    }
+                    , () => { }))
+                  history(GlobalValues.basePageRoute)
+                }).catch((err) => {
+                  console.log(err);
+                })
+              }} formTypeId={FormTypeId.W9} />
+              <Button variant="contained"
+                onClick={() => {
+                  dispatch(GetW9Pdf(authDetails?.accountHolderId))
+                }}
+                style={{ color: "white", marginLeft: "15px" }}
+              >
                 View Form
               </Button>
               <Button
-               // type="submit" 
-                              
+                // type="submit" 
+
                 onClick={() => {
                   setcontinueId(1);
                   submitForm().then((data) => {
-                   // history("/US_Purposes/Back/Exemption/Tax/Certificates")
+                    // history("/US_Purposes/Back/Exemption/Tax/Certificates")
                   }).catch((error) => {
                     console.log(error);
                   })
@@ -511,8 +519,8 @@ export default function Tin(props: any) {
             <Typography
               align="center"
               style={{
-               
- color: "#f5f5f5",
+
+                color: "#f5f5f5",
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: "20px",

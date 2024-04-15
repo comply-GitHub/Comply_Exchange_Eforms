@@ -26,7 +26,7 @@ import { ExpandMore, Info } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import { TinSchema_W9_DC} from "../../../schemas";
 import { useNavigate } from "react-router-dom";
-import { getTinTypes, postDualCertW9Form, GetHelpVideoDetails, getW9Form, getAllCountries, getDualCertW9} from "../../../Redux/Actions"
+import { getTinTypes, PostDualCertDetails, GetHelpVideoDetails, getW9Form, getAllCountries, getDualCertW9,PostDualCert} from "../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import View_Insructions from "../../viewInstruction";
@@ -34,9 +34,9 @@ import { useLocation } from "react-router-dom";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
-import Text from "./tesxt"
+import Text from "./tesxt";
 
-export default function Tin(props: any) {
+export default function TaxPayer(props: any) {
   const dispatch = useDispatch();
   const location = useLocation();
   const { authDetails } = useAuth();
@@ -52,10 +52,14 @@ export default function Tin(props: any) {
   const [yesCount, setYesCount] = useState(0)
 
   const handleRadioChange = (event:any,index:number) => {
-    //setValues(event.target.value)
+    console.log(event.target.value,"99")
+    let Temp:any = values;
+    Temp[event.target.name]=event.target.value
+     setValues(Temp)
+
     // Handle your existing form field changes here
     // For the specific case of entityWithMultipleTaxJurisdictions
-    if (event.target.name === 'entityWithMultipleTaxJurisdictions') {
+    if (event.target.name === 'additionalTaxJurisdictions' || event.target.name === "entityWithMultipleTaxJurisdictions") {
       if (event.target.value === 'Yes') {
         setPayload([...payload,{...defuaultPayload}]);
       } else if (event.target.value === 'No' && index>=1) {
@@ -80,10 +84,10 @@ export default function Tin(props: any) {
   const urlValue = location.pathname.substring(1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const defuaultPayload={
-    taxpayerIdTypeID: 0,
-    Tin: "",
+    usTinTypeId:  0,
+    usTin: "",
     isTinAvailable: false,
-    entityWithMultipleTaxJurisdictions:"No",
+    entityWithMultipleTaxJurisdictions:"",
     countryId:0,
     tinNumber:"",
     isAlternativeTinFormat:false,
@@ -97,8 +101,8 @@ export default function Tin(props: any) {
   }
   const [payload, setPayload] = useState<any[]>([]);
   const [payload1, setPayload1] = useState({
-    taxpayerIdTypeID:0,
-    Tin:""
+    usTinTypeId:0,
+    usTin:""
   });
   useEffect(()=>{
     console.log(payload,"parentData")
@@ -134,17 +138,16 @@ export default function Tin(props: any) {
   const formatTin = (e: any, values: any): any => {
     if (e.key === "Backspace" || e.key === "Delete") return;
     if (e.target.value.length === 3) {
-      setPayload1({ ...payload1, Tin: payload1.Tin + "-" });
-      values.Tin = values.Tin + "-";
+      setPayload1({ ...payload1, usTin: payload1.usTin + "-" });
+      values.usTin = values.usTin + "-";
     }
     if (e.target.value.length === 6) {
-      setPayload1({ ...payload1, Tin: payload1.Tin + "-" });
-      values.Tin = values.Tin + "-";
+      setPayload1({ ...payload1, usTin: payload1.usTin + "-" });
+      values.usTin = values.usTin + "-";
     }
   };
  
-  const [selectedTaxClassification, setSelectedTaxClassification] =
-  useState(0);
+  const [selectedTaxClassification, setSelectedTaxClassification] =useState(0);
   const handleTaxClassificationChange = (
     event: any
     ) => {
@@ -153,6 +156,7 @@ export default function Tin(props: any) {
   };
 
   const handlePayloadUpdate=(data:any,index:number)=>{
+    console.log(data,index,"parent method");
     const temp=[...payload.map((ele:any,ind:number)=>{
       if(ind==index){
         return {...data};
@@ -185,48 +189,47 @@ export default function Tin(props: any) {
     );
     dispatch(getDualCertW9(authDetails?.accountHolderId,FormTypeId?.W9))
   }, [authDetails]);
+
+
+
   useEffect(() => {
     if (GetDualCertData?.length > 0) {
       const dataFromApi = GetDualCertData;
-      setValues({
-        ...initialValues,
-        taxpayerIdTypeID: dataFromApi?.taxpayerIdTypeID || initialValues?.taxpayerIdTypeID,
-        Tin: dataFromApi?.Tin || initialValues?.Tin,
-        isTinAvailable: dataFromApi.isTinAvailable || initialValues.isTinAvailable,
-        entityWithMultipleTaxJurisdictions: dataFromApi.entityWithMultipleTaxJurisdictions || "No",
-        countryId: dataFromApi.countryId || initialValues.countryId,
-        otherCountry: dataFromApi.otherCountry || initialValues.otherCountry,
-        tinNumber: dataFromApi.tinNumber || initialValues.tinNumber,
-        isAlternativeTinFormat: dataFromApi.isAlternativeTinFormat || initialValues.isAlternativeTinFormat,
-
-      });
+      setPayload(dataFromApi?.map((ele:any, index:number)=>{
+        return {
+          id: 0,
+          agentId: authDetails?.agentId,
+          accountHolderDetailsId: authDetails?.accountHolderId,
+          formTypeId: FormTypeId.W9,
+          formEntryId: index,
+          additionalTaxJurisdictions: ele?.additionalTaxJurisdictions ,
+          countryId: parseInt(ele?.countryId),
+          otherCountry: ele.otherCountry ||"",
+          isTinAvailable: ele?.isTinAvailable ,
+          tinNumber: ele?.tinNumber ,
+          isAlternativeTinFormat:ele.isAlternativeTinFormat 
+          
+        }
+      }));
     }
   }, [GetDualCertData]);
 
   const initialValues = {
     agentId:authDetails?.agentId,
     accountHolderId:authDetails?.accountHolderId,
-    taxpayerIdTypeID: GetDualCertData?.taxpayerIdTypeID || onBoardingFormValues?.usTinTypeId || getReducerData?.taxpayerIdTypeID || 0,
-    Tin: GetDualCertData?.Tin || onBoardingFormValues?.usTin || getReducerData?.tiN_USTIN || "",
-    isTinAvailable: GetDualCertData?.isTinAvailable || false,
-    entityWithMultipleTaxJurisdictions: GetDualCertData?.entityWithMultipleTaxJurisdictions || "No",
-    countryId: GetDualCertData?.countryId || 0,
-    otherCountry: GetDualCertData?.otherCountry || "",
-    tinNumber: GetDualCertData?.tinNumber || "",
-    isAlternativeTinFormat: GetDualCertData?.isAlternativeTinFormat || false,
-    notAvailableReason: "",
-    formTypeId: FormTypeId?.W9,
-    accountHolderDetailsId: authDetails?.accountHolderId,
- 
+    entityWithMultipleTaxJurisdictions:"",
+    usTinTypeId: onBoardingFormValues?.taxpayerIdTypeID
+    ? onBoardingFormValues?.taxpayerIdTypeID: getReducerData?.taxpayerIdTypeID || 0,
+    usTin:onBoardingFormValues?.usTin || "",
     formEntryId: "",
     id: ""
   };
 
   const [values, setValues] = useState(initialValues);
-
+  console.log(values.entityWithMultipleTaxJurisdictions,"90")
   console.log(values,"90")
 
-
+const TaxJurisdictions = values.entityWithMultipleTaxJurisdictions
   const history = useNavigate()
   const [expanded, setExpanded] = React.useState<string | false>(false);
   const handleChangestatus =
@@ -244,27 +247,98 @@ export default function Tin(props: any) {
     const { name, value, checked, type } = e.target;
     const newValue = type === 'checkbox' ? checked : value;
     setValues({ ...values, [name]: newValue });
+  }
+
+
+  const handlePayloadSubmit = async (e: any): Promise<any> => {
+    e.preventDefault();
+    const payloadSubmitPromise = new Promise((resolve, reject) => {
+      let updateData = payload.map((ele, index) => {
+        return {
+          id: 0,
+          agentId: authDetails?.agentId,
+          accountHolderDetailsId: authDetails?.accountHolderId,
+          formTypeId: FormTypeId.W9,
+          formEntryId: 1,
+          additionalTaxJurisdictions: ele?.additionalTaxJurisdictions,
+          countryId: parseInt(ele?.countryId),
+          otherCountry: ele?.otherCountry || "",
+          isTinAvailable: ele?.isTinAvailable,
+          tinNumber: ele?.tinNumber,
+          isAlternativeTinFormat: ele?.isAlternativeTinFormat,
+        };
+      });
+      console.log(updateData, "090");
+  
+      dispatch(
+        PostDualCertDetails(
+          [...updateData],
+          (data: any) => {
+            localStorage.setItem('DualCertChild', JSON.stringify(updateData));
+            resolve(data)},
+          (err: any) => reject(err)
+        )
+      );
+   
+    });
+    return payloadSubmitPromise;
   };
 
-  const handlePayloadSubmit = async (e:any) => {
-    e.preventDefault()
-
-    let updateData = {
-      id: 0,
-      agentId: authDetails?.agentId,
-      accountHolderDetailsId: authDetails?.accountHolderId,
-      formTypeId: 1,
-      formEntryId: 0,
-      entityWithMultipleTaxJurisdictions: values?.entityWithMultipleTaxJurisdictions || GetDualCertData?.entityWithMultipleTaxJurisdictions,
-      countryId: payload[0]?.countryId || GetDualCertData?.countryId,
-      otherCountry: values.otherCountry ||"",
-      isTinAvailable: payload[0]?.isTinAvailable || GetDualCertData.isTinAvailable,
-      tinNumber: payload[0]?.tinNumber || GetDualCertData.tinNumber,
-      isAlternativeTinFormat: payload[0].isAlternativeTinFormat || GetDualCertData?.isAlternativeTinFormat
-    }
-    dispatch(postDualCertW9Form([updateData]));
-    history("/Certification_W9_DC")
+  
+  const handleSecondPayloadSubmit = async (values: any): Promise<any> => {
+    const secondPayloadSubmitPromise = new Promise((resolve, reject) => {
+      let secondPayload = [
+        {
+          id: 0,
+          accountHolderDetailsId: authDetails?.accountHolderId,
+          agentId: authDetails?.agentId,
+          formTypeID: FormTypeId.W9,
+          entityWithMultipleTaxJurisdictions:TaxJurisdictions,
+          usTinTypeId: onBoardingFormValues?.taxpayerIdTypeID
+          ? onBoardingFormValues?.taxpayerIdTypeID: getReducerData?.taxpayerIdTypeID ,
+          usTin:onBoardingFormValues?.usTin|| values.usTin,
+        },
+      ];
+      console.log(secondPayload, "Second Payload");
+      dispatch(PostDualCert(secondPayload,
+        (data: any) => {
+          localStorage.setItem('DualCertData', JSON.stringify(secondPayload));
+          resolve(data)},
+        (err: any) => reject(err)
+      ));
+  
+      // Dispatch action or perform any other necessary operation here
+    });
+    return secondPayloadSubmitPromise;
   };
+  
+  // const handlePayloadSubmit = async (e:any) :Promise<any>=> {
+  //   e.preventDefault()
+  //   const payloadSubmitPromise=new Promise((resolve,reject)=>{
+  //     let updateData = payload.map((ele, index)=>{
+  //       return {
+  //         id: 0,
+  //         agentId: authDetails?.agentId,
+  //         accountHolderDetailsId: authDetails?.accountHolderId,
+  //         formTypeId: FormTypeId.W9,
+  //         formEntryId: index,
+  //         additionalTaxJurisdictions: ele?.additionalTaxJurisdictions ,
+  //         countryId: ele?.countryId ,
+  //         otherCountry: ele?.otherCountry ||"",
+  //         isTinAvailable: ele?.isTinAvailable ,
+  //         tinNumber: ele?.tinNumber ,
+  //         isAlternativeTinFormat:ele?.isAlternativeTinFormat 
+          
+  //       }
+  //     })
+  //     console.log(updateData,"090")
+   
+  //     dispatch(PostDualCertDetails([...updateData],(data:any)=>resolve(data),(err:any)=>reject(err)));
+  //     // history("/Certification_W9_DC")
+
+  //   })  
+  //   return payloadSubmitPromise;  
+  // };
   return (
 
     <section
@@ -306,13 +380,52 @@ export default function Tin(props: any) {
         validateOnBlur={true}
         validationSchema={TinSchema_W9_DC} 
         onSubmit={(values, { setSubmitting }) => {
-          // handlePayloadSubmit();
-              
-            }
+          const returnPromise=new Promise((resolve, reject)=>{
+            let temp={...values,
+              accountHolderId:authDetails?.accountHolderId,
+              agentId:authDetails?.agentId
+            };  
+            
+            localStorage.setItem("DualCertData",JSON.stringify(temp));
+            //crate a action and reducer for parent -- call action here 
+            //when it is success - call the child submissin method
+            //
 
-       
-         
+          })
+          return returnPromise;
         }
+      }
+        // onSubmit={(values, { setSubmitting }) => {
+        //   const returnPromise = new Promise((resolve, reject) => {
+        //     let temp = {
+        //       ...values,
+        //       accountHolderId: authDetails?.accountHolderId,
+        //       agentId: authDetails?.agentId
+        //     };
+        //     localStorage.setItem("DualCertData", JSON.stringify(temp));
+        //     // Call the second payload submission function
+        //     handleSecondPayloadSubmit(values)
+        //       .then((data) => {
+        //         // Handle success
+        //         console.log("Second payload submitted successfully:", data);
+        //         // Call handlePayloadSubmit function
+        //         return handlePayloadSubmit(values);
+        //       })
+        //       .then((data) => {
+        //         // Handle success of handlePayloadSubmit
+        //         console.log("First payload submitted successfully:", data);
+        //         resolve(data); // Resolve the main promise
+        //       })
+        //       .catch((error) => {
+        //         // Handle errors
+        //         console.error("Error:", error);
+        //         reject(error); // Reject the main promise
+        //       });
+        //   });
+        //   return returnPromise;
+        // }}
+        
+      
       >
         {({
           errors,
@@ -340,7 +453,7 @@ export default function Tin(props: any) {
 
 
                     <div style={{ backgroundColor: "#ffff", }}>
-                      {values.Tin && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                      {values.usTin && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                         <Typography>
                           TIN
                           <span className="mx-1">
@@ -366,7 +479,7 @@ export default function Tin(props: any) {
 
                       </div>) : ""}
 
-                      {values.Tin == "" && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                      {values.usTin == "" && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                         <Typography>
                           TIN
                           <span className="mx-1">
@@ -443,11 +556,11 @@ export default function Tin(props: any) {
                                 }
                                 onBlur={handleBlur}
                                 // error={Boolean(
-                                //   touched.taxpayerIdTypeID &&
-                                //     errors.taxpayerIdTypeID
+                                //   touched.usTinTypeId &&
+                                //     errors.usTinTypeId
                                 // )}
-                                name="taxpayerIdTypeID"
-                                value={values.taxpayerIdTypeID}
+                                name="usTinTypeId"
+                                value={values.usTinTypeId}
                                 style={{
                                   padding: " 0 10px",
                                   color: "#121112",
@@ -481,11 +594,11 @@ export default function Tin(props: any) {
                                 }
                                 onBlur={handleBlur}
                                 // error={Boolean(
-                                //   touched.taxpayerIdTypeID &&
-                                //     errors.taxpayerIdTypeID
+                                //   touched.usTinTypeId &&
+                                //     errors.usTinTypeId
                                 // )}
-                                name="taxpayerIdTypeID"
-                                value={values.taxpayerIdTypeID}
+                                name="usTinTypeId"
+                                value={values.usTinTypeId}
                                 style={{
                                   padding: " 0 10px",
                                   color: "#121112",
@@ -512,11 +625,11 @@ export default function Tin(props: any) {
                                   // );
                                 ))}
                               </select>}
-                            {errors.taxpayerIdTypeID &&
-                              touched.taxpayerIdTypeID ? (
+                            {errors.usTinTypeId &&
+                              touched.usTinTypeId ? (
                               <div>
                                 <p className="error">
-                                  {errors.taxpayerIdTypeID.toString()}
+                                  {errors.usTinTypeId.toString()}
                                 </p>
                               </div>
                             ) : (
@@ -529,10 +642,10 @@ export default function Tin(props: any) {
 
                           <Typography>U.S. TIN</Typography>
                           <Input
-                            name="Tin"
-                            value={values?.Tin}
-                            id="Tin"
-                            disabled={values.taxpayerIdTypeID == 0 || values.taxpayerIdTypeID == 1 || values.taxpayerIdTypeID == 7 || values.taxpayerIdTypeID == 8}
+                            name="usTin"
+                            value={values?.usTin}
+                            id="usTin"
+                            disabled={values.usTinTypeId == 0 || values.usTinTypeId == 1 || values.usTinTypeId == 7 || values.usTinTypeId == 8}
                             onChange={
                               handleChange
                             }
@@ -554,7 +667,7 @@ export default function Tin(props: any) {
                               padding: " 0 10px ",
                             }}
                           />
-                          <p className="error">{errors.Tin?.toString()}</p>
+                          <p className="error">{errors.usTin?.toString()}</p>
                         </div>
 
                       </div>
@@ -581,6 +694,7 @@ export default function Tin(props: any) {
                                
                                 control={<Radio />}
                                 label="Yes"
+                                name="entityWithMultipleTaxJurisdictions"
                                 
                               />
                               <FormControlLabel
@@ -588,6 +702,7 @@ export default function Tin(props: any) {
                                 value="No"
                                 control={<Radio />}
                                 label="No"
+                                name="entityWithMultipleTaxJurisdictions"
                                
                               />
 
@@ -627,7 +742,9 @@ export default function Tin(props: any) {
               <Button
               // onChange={handlePayloadSubmit}
                onClick={(e)=>{
+              handleSecondPayloadSubmit(e)
                handlePayloadSubmit(e)
+               history("/Certification_W9_DC")
              }}
                    type="submit"
                 variant="contained"

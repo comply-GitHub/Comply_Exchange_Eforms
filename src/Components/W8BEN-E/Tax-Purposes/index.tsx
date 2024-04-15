@@ -42,6 +42,7 @@ import Chapter3StatusGuide from "../SubComponents/Chapter3Guide";
 import { convertToFormData } from "../../../Helpers/convertToFormData";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import { GetBenEPdf } from "../../../Redux/Actions/PfdActions";
 export default function Fedral_tax(props: any) {
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
@@ -109,9 +110,9 @@ export default function Fedral_tax(props: any) {
       setInitialValue(tempData);
     }
   }
-useEffect(()=>{
-  document.title = "Chapter III"
-},[])
+  useEffect(() => {
+    document.title = "Chapter III"
+  }, [])
 
   useEffect(() => {
     dispatch(getAllCountries());
@@ -156,15 +157,15 @@ useEffect(()=>{
       setExpandedState(newExpanded ? panel : false);
     };
 
-    const confirmFunction = (value:any,setFieldValue:any) => {
-      setExpandedState(""); setFieldValue("chapter3Status",value);setSelectedTaxClassification(value)
-    }
+  const confirmFunction = (value: any, setFieldValue: any) => {
+    setExpandedState(""); setFieldValue("chapter3Status", value); setSelectedTaxClassification(value)
+  }
   const W9Data = useSelector((state: any) => state.w9Data);
 
   const handleFileChange = (e: any) => {
     setSelectedFile(e.target.files[0]);
   }
- 
+
   const viewPdf = () => {
     history("/w8BenE_pdf");
   }
@@ -178,7 +179,10 @@ useEffect(()=>{
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform" onClick={viewPdf}>View Form</div>
+            <div className="viewform"
+              onClick={() => {
+                dispatch(GetBenEPdf(authDetails?.accountHolderId))
+              }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[3].id === 5 ? (
@@ -269,127 +273,127 @@ useEffect(()=>{
                   }) => (
                     <Form onSubmit={handleSubmit}>
                       <div style={{ width: "100%" }}>
-                        {values.countryOfIncorporation !==
-                          obValues?.permanentResidentialCountryId &&
-                          values.countryOfIncorporation !== 186 &&
-                          clickCount === 1 ? (
-                          <div
-                            style={{
-                              backgroundColor: "#e8e1e1",
-                              padding: "10px",
-                            }}
-                          >
-                            <Typography>
-                              ICOR114
-                              <span className="mx-2">
-                                <img
-                                  src={Infoicon}
-                                  style={{
-                                    color: "#ffc107",
-                                    height: "22px",
-                                    width: "20px",
-                                    boxShadow: "inherit",
+                        {
+                          //touched.countryOfIncorporation &&
+                          values?.countryOfIncorporation && values?.countryOfIncorporation?.toString() !== "0" &&
+                            values?.countryOfIncorporation !== obValues?.permanentResidentialCountryId ? (
+                            <div
+                              style={{
+                                backgroundColor: "#e8e1e1",
+                                padding: "10px",
+                              }}
+                            >
+                              <Typography>
+                                ICOR114
+                                <span className="mx-2">
+                                  <img
+                                    src={Infoicon}
+                                    style={{
+                                      color: "#ffc107",
+                                      height: "22px",
+                                      width: "20px",
+                                      boxShadow: "inherit",
 
-                                    cursor: "pointer",
-                                    marginBottom: "3px",
-                                  }}
-                                />
-                                Country of incorporation is different from the
-                                PRA country.
-                              </span>
-                            </Typography>
-                          </div>
-                        ) : values.countryOfIncorporation === 186 && clickCount === 1 ? (
-                          <div
-                            style={{
-                              backgroundColor: "#e8e1e1",
-                              padding: "10px",
-                            }}
-                          >
-                            <Typography>
-                              ICOR104
-                              <span className="mx-2">
-                                <img
-                                  src={Infoicon}
-                                  style={{
-                                    color: "#ffc107",
-                                    height: "22px",
-                                    width: "20px",
-                                    boxShadow: "inherit",
+                                      cursor: "pointer",
+                                      marginBottom: "3px",
+                                    }}
+                                  />
+                                  Country of incorporation is different from the
+                                  PRA country.
+                                </span>
+                              </Typography>
+                            </div>
+                          ) : values.countryOfIncorporation === 186 && clickCount === 1 ? (
+                            <div
+                              style={{
+                                backgroundColor: "#e8e1e1",
+                                padding: "10px",
+                              }}
+                            >
+                              <Typography>
+                                ICOR104
+                                <span className="mx-2">
+                                  <img
+                                    src={Infoicon}
+                                    style={{
+                                      color: "#ffc107",
+                                      height: "22px",
+                                      width: "20px",
+                                      boxShadow: "inherit",
 
-                                    cursor: "pointer",
-                                    marginBottom: "3px",
-                                  }}
-                                />
-                                You have selected 'other' for Country of
-                                incorporation or organization. Your agent may
-                                need to contact you for further information.
-                              </span>
-                            </Typography>
-                          </div>
-                        ) : values.countryOfIncorporation === 186 &&
-                          values.other === "" ? (
-                          <div
-                            style={{
-                              backgroundColor: "#e8e1e1",
-                              padding: "10px",
-                            }}
-                          >
-                            <Typography>
-                              ICOR105
-                              <span className="mx-2">
-                                <img
-                                  src={Infoicon}
-                                  style={{
-                                    color: "#ffc107",
-                                    height: "22px",
-                                    width: "20px",
-                                    boxShadow: "inherit",
+                                      cursor: "pointer",
+                                      marginBottom: "3px",
+                                    }}
+                                  />
+                                  You have selected 'other' for Country of
+                                  incorporation or organization. Your agent may
+                                  need to contact you for further information.
+                                </span>
+                              </Typography>
+                            </div>
+                          ) : values.countryOfIncorporation === 186 &&
+                            values.other === "" ? (
+                            <div
+                              style={{
+                                backgroundColor: "#e8e1e1",
+                                padding: "10px",
+                              }}
+                            >
+                              <Typography>
+                                ICOR105
+                                <span className="mx-2">
+                                  <img
+                                    src={Infoicon}
+                                    style={{
+                                      color: "#ffc107",
+                                      height: "22px",
+                                      width: "20px",
+                                      boxShadow: "inherit",
 
-                                    cursor: "pointer",
-                                    marginBottom: "3px",
-                                  }}
-                                />
-                                You have selected "other" for Country of
-                                incorporation or organization, but have not
-                                entered the country.
-                              </span>
-                            </Typography>
-                          </div>
-                        ) : obValues.isUSEntity === false &&
-                          obValues.isUSIndividual === false &&
-                          values.countryOfIncorporation && values.countryOfIncorporation === 258 ? (
-                          <div
-                            style={{
-                              backgroundColor: "#e8e1e1",
-                              padding: "10px",
-                            }}
-                          >
-                            <Typography>
-                              ICOR110
-                              <span className="mx-2">
-                                <img
-                                  src={Infoicon}
-                                  style={{
-                                    color: "#ffc107",
-                                    height: "22px",
-                                    width: "20px",
-                                    boxShadow: "inherit",
+                                      cursor: "pointer",
+                                      marginBottom: "3px",
+                                    }}
+                                  />
+                                  You have selected "other" for Country of
+                                  incorporation or organization, but have not
+                                  entered the country.
+                                </span>
+                              </Typography>
+                            </div>
+                          ) : obValues.isUSEntity === false &&
+                            obValues.isUSIndividual === false &&
+                            values.countryOfIncorporation && values.countryOfIncorporation === 258 ? (
+                            <div
+                              style={{
+                                backgroundColor: "#e8e1e1",
+                                padding: "10px",
+                              }}
+                            >
+                              <Typography>
+                                ICOR110
+                                <span className="mx-2">
+                                  <img
+                                    src={Infoicon}
+                                    style={{
+                                      color: "#ffc107",
+                                      height: "22px",
+                                      width: "20px",
+                                      boxShadow: "inherit",
 
-                                    cursor: "pointer",
-                                    marginBottom: "3px",
-                                  }}
-                                />
-                                You have identified that you are submitting a
-                                form on behalf of a NON U.S. Entity and
-                                indicated that the Country of Incorporation was
-                                in the United States. The Entity may be classed
-                                as a U.S person for U.S tax purposes. Your agent
-                                may need to contact you for further information
-                              </span>
-                            </Typography>
-                          </div>
-                        ) : null}
+                                      cursor: "pointer",
+                                      marginBottom: "3px",
+                                    }}
+                                  />
+                                  You have identified that you are submitting a
+                                  form on behalf of a NON U.S. Entity and
+                                  indicated that the Country of Incorporation was
+                                  in the United States. The Entity may be classed
+                                  as a U.S person for U.S tax purposes. Your agent
+                                  may need to contact you for further information
+                                </span>
+                              </Typography>
+                            </div>
+                          ) : null}
 
                         <div>
                           <Typography align="left" style={{ margin: "10px" }}>
@@ -794,7 +798,7 @@ useEffect(()=>{
                                           onBlur={handleBlur}
                                           style={{
                                             padding: " 0 10px",
-                                            color : "#121112",
+                                            color: "#121112",
                                             fontStyle: "italic",
                                             height: "39px",
                                           }}
@@ -1299,7 +1303,7 @@ useEffect(()=>{
                             )}
                           </Typography>
                         </div>
-                        <div style={{ padding: "10px"}}>
+                        <div style={{ padding: "10px" }}>
                           <Accordion
                             expanded={expanded === "groupPanel"}
                             onChange={handleChangeAccodion("groupPanel")}
@@ -1446,7 +1450,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained"onClick={() => {confirmFunction(1,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(1, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1486,7 +1490,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(2,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(2, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1553,7 +1557,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(3,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(3, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1619,7 +1623,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(4,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(4, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1661,7 +1665,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(5,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(5, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1696,7 +1700,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(6,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(6, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1727,7 +1731,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(7,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(7, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1799,7 +1803,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(8,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(8, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1905,7 +1909,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(9,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(9, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1936,7 +1940,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(10,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(10, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1970,7 +1974,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(11,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(11, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -2046,7 +2050,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(12,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(12, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -2096,7 +2100,7 @@ useEffect(()=>{
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => {confirmFunction(13,setFieldValue)}}>Confirm</Button>
+                                    <Button variant="contained" onClick={() => { confirmFunction(13, setFieldValue) }}>Confirm</Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -2134,7 +2138,7 @@ useEffect(()=>{
                             </AccordionDetails>
                           </Accordion>
                         </div>
-                      
+
                         <div
                           style={{
                             display: "flex",
@@ -2160,8 +2164,8 @@ useEffect(()=>{
                           >
                             SAVE & EXIT
                           </Button> */}
-                          <SaveAndExit Callback={()=>{
-                             submitForm().then(() => {
+                          <SaveAndExit Callback={() => {
+                            submitForm().then(() => {
                               const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                               const urlValue = window.location.pathname.substring(1);
                               dispatch(postW8BEN_EForm(
@@ -2174,14 +2178,16 @@ useEffect(()=>{
                                 GlobalValues.basePageRoute
                               );
                             })
-                            }} formTypeId={FormTypeId.BENE} />
+                          }} formTypeId={FormTypeId.BENE} />
 
                           <Button
                             //type="submit"
                             disabled={isSubmitting}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
-                            onClick={viewPdf}
+                            onClick={() => {
+                              dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                            }}
                           >
                             View Form
                           </Button>
@@ -2210,7 +2216,7 @@ useEffect(()=>{
                         <Typography
                           align="center"
                           style={{
-                            color: "#505E50", 
+                            color: "#505E50",
                             justifyContent: "center",
                             alignItems: "center",
                             marginTop: "20px",

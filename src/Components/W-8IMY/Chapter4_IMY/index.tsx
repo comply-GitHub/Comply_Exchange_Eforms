@@ -36,8 +36,8 @@ import {
   GetChapter4Statuses,
   GetHelpVideoDetails
 } from "../../../Redux/Actions";
-import { TaxPurposeSchema } from "../../../schemas/w8Exp";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
+import {  TaxPurposeSchemaW81Chapter4 } from "../../../schemas/w81my";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const {
@@ -48,7 +48,7 @@ export default function Fedral_tax(props: any) {
     setselectedContinue,
   } = props;
   const initialValue = {
-    federalTaxClassificationId: 0,
+    chapter4StatusId: 0,
     foreginTIN_CountryId: 0,
     Wholly: false,
 
@@ -125,6 +125,9 @@ export default function Fedral_tax(props: any) {
       setExpandedState(newExpanded ? panel : false);
     };
   const W9Data = useSelector((state: any) => state.w9Data);
+  useEffect(()=>{
+    document.title = "Chapter IV"
+  },[])
   return (
     <>
       <section
@@ -170,16 +173,16 @@ export default function Fedral_tax(props: any) {
                   validateOnChange={false}
                   validateOnBlur={false}
                   initialValues={initialValue}
-                  validationSchema={TaxPurposeSchema}
+                  validationSchema={TaxPurposeSchemaW81Chapter4}
                   onSubmit={(values, { setSubmitting }) => {
                     if (clickCount === 0) {
 
                       setClickCount(clickCount + 1);
                     } else {
                       setSubmitting(true);
-                      history(
-                        "/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY"
-                      );
+                      // history(
+                      //   "/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY"
+                      // );
                     }
                   }}
                 >
@@ -193,6 +196,7 @@ export default function Fedral_tax(props: any) {
                     isSubmitting,
                   }) => (
                     <Form onSubmit={handleSubmit}>
+                      <>{console.log(values,errors, "errorsssss")}</>
                       <div style={{ width: "100%" }}>
                         <div>
                           {values.Wholly === true && clickCount === 1 ?
@@ -380,8 +384,8 @@ export default function Fedral_tax(props: any) {
 
                                 <FormControl className="w-50">
                                   <select
-                                    name="federalTaxClassificationId"
-                                    value={values.federalTaxClassificationId}
+                                    name="chapter4StatusId"
+                                    value={values.chapter4StatusId}
                                     onChange={handleChange}
                                     autoComplete="businessName"
                                     // placeholder="Business Name"
@@ -404,13 +408,13 @@ export default function Fedral_tax(props: any) {
                                   </select>
 
                                   <p className="error">
-                                    {errors.federalTaxClassificationId}
+                                    {errors.chapter4StatusId}
                                   </p>
                                 </FormControl>
                               </div>
 
                             </div>
-                            {values.federalTaxClassificationId == 2 || values.federalTaxClassificationId == 27
+                            {values.chapter4StatusId == 2 || values.chapter4StatusId == 27
                               ? (
                                 <>
                                   <div>
@@ -841,7 +845,7 @@ export default function Fedral_tax(props: any) {
                                 </>) : ""}
 
 
-                            {values.federalTaxClassificationId == 6 ? (
+                            {values.chapter4StatusId == 6 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XXV <span style={{ fontWeight: "bold", marginLeft: "10px" }}> Active NFFE </span>
@@ -878,7 +882,7 @@ export default function Fedral_tax(props: any) {
                             ) : ""}
 
 
-                            {values.federalTaxClassificationId == 7 ? (
+                            {values.chapter4StatusId == 7 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part IX  <span style={{ fontWeight: "bold", marginLeft: "10px" }}> Certain Investment Entities that Do Not Maintain Financial Accounts </span>
@@ -914,7 +918,7 @@ export default function Fedral_tax(props: any) {
                             ) : ""}
 
 
-                            {values.federalTaxClassificationId == 8 ? (
+                            {values.chapter4StatusId == 8 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part VI <span style={{ fontWeight: "bold", marginLeft: "10px" }}> Certified Deemed-Compliant FFI with Only Low-Value Accounts</span>
@@ -950,7 +954,7 @@ export default function Fedral_tax(props: any) {
 
                             ) : ""}
 
-                            {values.federalTaxClassificationId == 9 ? (
+                            {values.chapter4StatusId == 9 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part VIII  <span style={{ fontWeight: "bold", marginLeft: "10px" }}> Certified Deemed-Compliant Limited Life Debt Investment Entity</span>
@@ -987,7 +991,7 @@ export default function Fedral_tax(props: any) {
 
                             ) : ""}
 
-                            {values.federalTaxClassificationId == 10 ? (
+                            {values.chapter4StatusId == 10 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part V<span style={{ fontWeight: "bold", marginLeft: "10px" }}>Certified Deemed-Compliant Nonregistering Local Bank</span>
@@ -1035,7 +1039,7 @@ export default function Fedral_tax(props: any) {
 
                             ) : ""}
 
-                            {values.federalTaxClassificationId == 11 ? (
+                            {values.chapter4StatusId == 11 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part VII <span style={{ fontWeight: "bold", marginLeft: "10px" }}>Certified Deemed-Compliant Sponsored, Closely Held Investment Vehicle</span>
@@ -1077,7 +1081,7 @@ export default function Fedral_tax(props: any) {
                               </>
 
                             ) : ""}
-                            {values.federalTaxClassificationId == 13 ? (
+                            {values.chapter4StatusId == 13 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XVI <span style={{ fontWeight: "bold", marginLeft: "10px" }}>Entity Wholly Owned by Exempt Beneficial Owners</span>
@@ -1157,7 +1161,7 @@ export default function Fedral_tax(props: any) {
                               </>
 
                             ) : ""}
-                            {values.federalTaxClassificationId == 14 ? (
+                            {values.chapter4StatusId == 14 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XXVII <span style={{ fontWeight: "bold", marginLeft: "10px" }}>Excepted Inter-Affiliate FFI</span>
@@ -1214,7 +1218,7 @@ export default function Fedral_tax(props: any) {
                               </>
 
                             ) : ""}
-                            {values.federalTaxClassificationId == 15 ? (
+                            {values.chapter4StatusId == 15 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XX <span style={{ fontWeight: "bold", marginLeft: "10px" }}>Excepted Nonfinancial Entity in Liquidation or Bankruptcy</span>
@@ -1256,7 +1260,7 @@ export default function Fedral_tax(props: any) {
                               </>
 
                             ) : ""}
-                            {values.federalTaxClassificationId == 16 ? (
+                            {values.chapter4StatusId == 16 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XVIII <span style={{ fontWeight: "bold", marginLeft: "10px" }}> Excepted Nonfinancial Group Entity</span>
@@ -1312,7 +1316,7 @@ export default function Fedral_tax(props: any) {
 
                             ) : ""}
 
-                            {values.federalTaxClassificationId == 17 ? (
+                            {values.chapter4StatusId == 17 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XIX <span style={{ fontWeight: "bold", marginLeft: "10px" }}> Excepted Nonfinancial Start-Up Company</span>
@@ -1366,7 +1370,7 @@ export default function Fedral_tax(props: any) {
                               </>
 
                             ) : ""}
-                            {values.federalTaxClassificationId == 18 ? (
+                            {values.chapter4StatusId == 18 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XXIV <span style={{ fontWeight: "bold", marginLeft: "10px" }}>  Excepted Territory NFFE</span>
@@ -1423,7 +1427,7 @@ export default function Fedral_tax(props: any) {
                               </>
 
                             ) : ""}
-                            {values.federalTaxClassificationId == 20 ? (
+                            {values.chapter4StatusId == 20 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XIII <span style={{ fontWeight: "bold", marginLeft: "10px" }}>  Foreign Government, Government of a U.S. Possession, or Foreign Central Bank of Issue</span>
@@ -1471,7 +1475,7 @@ export default function Fedral_tax(props: any) {
                               </>
 
                             ) : ""}
-                            {values.federalTaxClassificationId == 21 ? (
+                            {values.chapter4StatusId == 21 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XIII <span style={{ fontWeight: "bold", marginLeft: "10px" }}>  Foreign Government, Government of a U.S. Possession, or Foreign Central Bank of Issue</span>
@@ -1540,7 +1544,7 @@ export default function Fedral_tax(props: any) {
                               </>
 
                             ) : ""}
-                            {values.federalTaxClassificationId == 23 ? (
+                            {values.chapter4StatusId == 23 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XXII <span style={{ fontWeight: "bold", marginLeft: "10px" }}>  Non-profit Organization</span>
@@ -1611,7 +1615,7 @@ export default function Fedral_tax(props: any) {
 
                             ) : ""}
 
-                            {values.federalTaxClassificationId == 24 ? (
+                            {values.chapter4StatusId == 24 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XII <span style={{ fontWeight: "bold", marginLeft: "10px" }}>  Nonreporting IGA FFI</span>
@@ -1777,7 +1781,7 @@ export default function Fedral_tax(props: any) {
                             ) : ""}
 
 
-                            {values.federalTaxClassificationId == 32 ? (
+                            {values.chapter4StatusId == 32 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XI <span style={{ fontWeight: "bold", marginLeft: "10px" }}> Restricted Distributor</span>
@@ -1905,7 +1909,7 @@ export default function Fedral_tax(props: any) {
 
 
                             ) : ""}
-                            {values.federalTaxClassificationId == 33 ? (
+                            {values.chapter4StatusId == 33 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XXVIII <span style={{ fontWeight: "bold", marginLeft: "10px" }}>  Sponsored Direct Reporting NFFE</span>
@@ -1982,7 +1986,7 @@ export default function Fedral_tax(props: any) {
 
 
                             ) : ""}
-                            {values.federalTaxClassificationId == 34 ? (
+                            {values.chapter4StatusId == 34 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part IV <span style={{ fontWeight: "bold", marginLeft: "10px" }}>  Sponsored FFI</span>
@@ -2097,7 +2101,7 @@ export default function Fedral_tax(props: any) {
 
 
                             ) : ""}
-                            {values.federalTaxClassificationId == 35 ? (
+                            {values.chapter4StatusId == 35 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XVII <span style={{ fontWeight: "bold", marginLeft: "10px" }}> Territory Financial Institution</span>
@@ -2139,7 +2143,7 @@ export default function Fedral_tax(props: any) {
 
 
                             ) : ""}
-                            {values.federalTaxClassificationId == 36 ? (
+                            {values.chapter4StatusId == 36 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XXI <span style={{ fontWeight: "bold", marginLeft: "10px" }}>  501(c) Organization</span>
@@ -2194,7 +2198,7 @@ export default function Fedral_tax(props: any) {
 
 
                             ) : ""}
-                            {values.federalTaxClassificationId == 25 ? (
+                            {values.chapter4StatusId == 25 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part X <span style={{ fontWeight: "bold", marginLeft: "10px" }}>  Owner-Documented FFI</span>
@@ -2473,7 +2477,7 @@ export default function Fedral_tax(props: any) {
 
 
                             ) : ""}
-                            {values.federalTaxClassificationId == 28 ? (
+                            {values.chapter4StatusId == 28 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
                                   Part XXIII <span style={{ fontWeight: "bold", marginLeft: "10px" }}>   Publicly Traded NFFE or NFFE Affiliate of a Publicly Traded Corporation</span>
@@ -2627,7 +2631,8 @@ export default function Fedral_tax(props: any) {
 
                         </div>
 
-                        <div
+                        {values.chapter4StatusId!==0 && (<>
+                          <div
                           style={{
                             display: "flex",
                             justifyContent: "center",
@@ -2648,7 +2653,7 @@ export default function Fedral_tax(props: any) {
                           >
                             View Form
                           </Button>
-                          {checkbox1Checked || checkbox2Checked || values.federalTaxClassificationId ? (<Button
+                          {checkbox1Checked || checkbox2Checked || values.chapter4StatusId ? (<Button
                             // type="submit"
                             // onClick={()=>{
                             //   history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/US_Tin_BenE")
@@ -2670,7 +2675,8 @@ export default function Fedral_tax(props: any) {
                               Continue
                             </Button>
                           }
-                        </div>
+                        </div> 
+                        </>)}
                         <Typography
                           align="center"
                           style={{

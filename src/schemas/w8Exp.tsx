@@ -216,16 +216,16 @@ export const certificateSchema = () => {
 
 export const certificateSchema_w9_DC = () => {
   return Yup.object().shape({
-    isCapacityForm: Yup.boolean().oneOf([true], "Please mark the checkbox"),
-    isElectronicForm: Yup.boolean().oneOf([true], "Please mark the checkbox"),
+    confirmThisisaTrueAndAccurate: Yup.boolean().oneOf([true], "Please mark the checkbox"),
+    confirmYouhaveRewiedElectronicForm: Yup.boolean().oneOf([true], "Please mark the checkbox"),
   });
 };
 
 
 export const certificateSchema_BEN_DC = () => {
   return Yup.object().shape({
-    IsAgreeWithDeclaration: Yup.boolean().oneOf([true], "Please mark the checkbox"),
-    isElectronicForm: Yup.boolean().oneOf([true], "Please mark the checkbox"),
+    confirmThisisaTrueAndAccurate: Yup.boolean().oneOf([true], "Please mark the checkbox"),
+    confirmYouhaveRewiedElectronicForm: Yup.boolean().oneOf([true], "Please mark the checkbox"),
   });
 };
 export const certificateSchema_w9 = () => {

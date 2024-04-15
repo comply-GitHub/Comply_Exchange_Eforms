@@ -29,8 +29,8 @@ export default function Tin(props: any) {
   const initialValue = {
     taxTreaty_DescriptionOfPersonalServiceYouProvide: onBoardingFormValuesPrevStepData?.taxTreaty_DescriptionOfPersonalServiceYouProvide ? onBoardingFormValuesPrevStepData?.taxTreaty_DescriptionOfPersonalServiceYouProvide : "",
     taxTreaty_TotalCompensationYouExpectForThisCalenderYear: onBoardingFormValuesPrevStepData?.taxTreaty_TotalCompensationYouExpectForThisCalenderYear ? onBoardingFormValuesPrevStepData?.taxTreaty_TotalCompensationYouExpectForThisCalenderYear : "",
-    taxTreaty_TreatyId: onBoardingFormValuesPrevStepData?.taxTreaty_TreatyId ? onBoardingFormValuesPrevStepData?.taxTreaty_TreatyId : 0,
-    taxTreaty_TreatyArticleId: onBoardingFormValuesPrevStepData?.taxTreaty_TreatyArticleId ? onBoardingFormValuesPrevStepData?.taxTreaty_TreatyArticleId : 0,
+    taxTreaty_TreatyId: onBoardingFormValuesPrevStepData?.taxTreaty_TreatyId ? onBoardingFormValuesPrevStepData?.taxTreaty_TreatyId : "",
+    taxTreaty_TreatyArticleId: onBoardingFormValuesPrevStepData?.taxTreaty_TreatyArticleId ? onBoardingFormValuesPrevStepData?.taxTreaty_TreatyArticleId : "",
     taxTreaty_TotalCompensationListedon11bExemptFromTax: onBoardingFormValuesPrevStepData?.taxTreaty_TotalCompensationListedon11bExemptFromTax ? onBoardingFormValuesPrevStepData?.taxTreaty_TotalCompensationListedon11bExemptFromTax : "",
     taxTreaty_CheckAll: onBoardingFormValuesPrevStepData?.taxTreaty_CheckAll ? onBoardingFormValuesPrevStepData?.taxTreaty_CheckAll : false,
     taxTreaty_CountryOfResidenceId: onBoardingFormValuesPrevStepData?.taxTreaty_CountryOfResidenceId ? onBoardingFormValuesPrevStepData?.taxTreaty_CountryOfResidenceId : 0,
@@ -64,8 +64,8 @@ export default function Tin(props: any) {
     dispatch(getAllCountries())  
   },[])
 
-  const [treatyId, setTreatyId] = useState('');
-  const [treatyIdOnWhichBasicExemption, setTreatyIdOnWhichBasicExemption] = useState("")
+  const [treatyId, setTreatyId] = useState(initialValue.taxTreaty_TreatyId);
+  const [treatyIdOnWhichBasicExemption, setTreatyIdOnWhichBasicExemption] = useState(initialValue.taxTreatyAndTreatyArticleOnWhich_BasingExemptionFromWithholdingTreatyID)
 
   useEffect(() => {
     dispatch(GetCountryArticleByID(treatyId, (data: any) => {
@@ -81,29 +81,36 @@ export default function Tin(props: any) {
 
   const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer);
   const [toolInfo, setToolInfo] = useState("");
-  console.log(GetIncomeTypesData)
+  console.log(getCountriesReducer)
   return (
     <>
       <Formik
-      validateOnChange={true}
+      validateOnChange={false}
       validateOnBlur={true}
       validateOnMount={false}
         initialValues={initialValue}
         enableReinitialize
         validationSchema={amountSchema}
         onSubmit={(values, { setSubmitting }) => {
-          if (clickCount === 0) {
+          // if (clickCount === 0) {
         
-            setClickCount(clickCount+1);
-          }else{
+          //   setClickCount(clickCount+1);
+          // }else{
           
           setSubmitting(true);
           const temp = {
+            agentId: authDetails.agentId,
+            accountHolderBasicDetailId: authDetails.accountHolderId,
+            ...onBoardingFormValuesPrevStepData,
             ...values,
-            agentId: authDetails?.agentId,
-            accountHolderBasicDetailId: authDetails?.accountHolderId,
-            stepName: null,
+            stepName: null
           };
+          // const temp = {
+          //   ...values,
+          //   agentId: authDetails?.agentId,
+          //   accountHolderBasicDetailId: authDetails?.accountHolderId,
+          //   stepName: null,
+          // };
           const returnPromise = new Promise((resolve, reject) => {
             dispatch(
               post8233_EForm(temp,
@@ -125,7 +132,8 @@ export default function Tin(props: any) {
           //   })
           // );
           // history("/Form8233/TaxPayer_Identification/Owner/Documentaion");
-        }}
+        // }
+      }
       }
       >
         {({
@@ -173,10 +181,10 @@ export default function Tin(props: any) {
             </div>
         </div>
 
-               <div className="row w-100 h-100">
+               <div className="row w-100">
         <div className="col-4">
           <div style={{ padding: "20px 0px",height:"100%" }}>
-          <BreadCrumbComponent breadCrumbCode={1359} formName={2}/>
+          <BreadCrumbComponent breadCrumbCode={1359} formName={FormTypeId.F8233}/>
       </div>
       </div>
       <div className="col-8 mt-3">
@@ -393,7 +401,23 @@ export default function Tin(props: any) {
                       ) : (
                         ""
                       )}
-                      <Input
+                      <textarea 
+                      name="taxTreaty_DescriptionOfPersonalServiceYouProvide"
+                      value={
+                        values.taxTreaty_DescriptionOfPersonalServiceYouProvide
+                      }
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      style={{
+                          border: " 1px solid #d9d9d9 ",
+                          padding: " 0 10px",
+                          color: "#121112",
+                          fontStyle: "italic",
+                          //height: "8rem",
+                          width: "100%",
+                        }}/>
+                      {/* <Input
+                      multiline
                         name="taxTreaty_DescriptionOfPersonalServiceYouProvide"
                         value={
                           values.taxTreaty_DescriptionOfPersonalServiceYouProvide
@@ -409,12 +433,12 @@ export default function Tin(props: any) {
                           padding: " 0 10px",
                           color: "#121112",
                           fontStyle: "italic",
-                          height: "9rem",
+                          //height: "3rem",
                           width: "100%",
                           wordWrap:"break-word"
                         }}
                         type="text"
-                      />
+                      /> */}
                       {errors?.taxTreaty_DescriptionOfPersonalServiceYouProvide && typeof errors?.taxTreaty_DescriptionOfPersonalServiceYouProvide === 'string' && (
                                 <p className="error">{errors?.taxTreaty_DescriptionOfPersonalServiceYouProvide}</p>
                               )}
@@ -1444,7 +1468,28 @@ export default function Tin(props: any) {
                       ) : (
                         ""
                       )}
-                      <Input
+                      <textarea 
+                      value={
+                        values.sufficientFactToJustfyExemptionForClaim12A_13
+                      }
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      // error={Boolean(
+                      //   touched.sufficientFactToJustfyExemptionForClaim12A_13 &&
+                      //     errors.sufficientFactToJustfyExemptionForClaim12A_13
+                      // )}
+                      name="sufficientFactToJustfyExemptionForClaim12A_13"
+                      style={{
+                          border: " 1px solid #d9d9d9 ",
+                          padding: " 0 10px",
+                          color: "#121112",
+                          fontStyle: "italic",
+                          //height: "8rem",
+                          width: "100%",
+                        }}/>
+
+                      {/* <Input
+                      multiline
                         value={
                           values.sufficientFactToJustfyExemptionForClaim12A_13
                         }
@@ -1460,10 +1505,10 @@ export default function Tin(props: any) {
                           padding: " 0 10px",
                           color: "#121112",
                           fontStyle: "italic",
-                          height: "8rem",
+                          //height: "8rem",
                           width: "100%",
                         }}
-                      />
+                      /> */}
                       {errors?.sufficientFactToJustfyExemptionForClaim12A_13 && typeof errors?.sufficientFactToJustfyExemptionForClaim12A_13 === 'string' && (
                                 <p className="error">{errors?.sufficientFactToJustfyExemptionForClaim12A_13}</p>
                               )}

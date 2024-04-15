@@ -162,7 +162,8 @@ export default function Tin(props: any) {
             <Paper style={{ padding: "10px" }}>
               <Formik
                 validateOnChange={false}
-                validateOnBlur={false}
+                validateOnBlur={true}
+                validateOnMount={false}
                 initialValues={initialValue}
                 enableReinitialize
                 validationSchema={US_TINSchema}

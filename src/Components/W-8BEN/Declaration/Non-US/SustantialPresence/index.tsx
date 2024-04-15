@@ -19,43 +19,46 @@ import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
-import { SubstantialSchema } from "../../../schemas/8233";
-import { CREATE_8233,GetHelpVideoDetails, UpsertSubstantialUsPassiveNFE, post8233_EForm, postW8BEN_EForm } from "../../../Redux/Actions";
+import { SubstantialSchema } from "../../../../../schemas/w8Ben";
+import { CREATE_8233,GetHelpVideoDetails, UpsertSubstantialUsPassiveNFE, postW8BENForm, postW8BEN_EForm } from "../../../../../Redux/Actions";
 import { useDispatch ,useSelector} from "react-redux";
-import BreadCrumbComponent from "../../reusables/breadCrumb";
-import SaveAndExit from "../../Reusable/SaveAndExit/Index";
-import useAuth from "../../../customHooks/useAuth";
-import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import BreadCrumbComponent from "../../../../reusables/breadCrumb";
+import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
+import useAuth from "../../../../../customHooks/useAuth";
+import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 export default function Presence(props: any) {
   const { authDetails } = useAuth();
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  const W8BENData = useSelector((state: any) => state.w8Ben);
 
-  // const initialValue = {
-  //   daysAvailableInThisYear: PrevStepData?.daysAvailableInThisYear,
-  //   daysAvailableIn_OneYearbefore: PrevStepData?.daysAvailableIn_OneYearbefore,
-  //   daysAvailableIn_TwoYearbefore: PrevStepData?.daysAvailableIn_TwoYearbefore,
-  //   totalQualifyingDays: PrevStepData?.totalQualifyingDays,
-  // };
   const [expanded, setExpanded] = React.useState<string | false>("");
 useEffect(()=>{
   dispatch(GetHelpVideoDetails());
 },[])
-const [totalQualifyingDays, setTotalQualifyingDays] = useState(PrevStepData?.totalQualifyingDays || 0);
-const calculateTotalQualifyingDays = (values:any) => {
-  const total =
-    parseFloat(values.daysAvailableInThisYear) +
-    (parseFloat(values.daysAvailableIn_OneYearbefore) * 0.34) +
-    (parseFloat(values.daysAvailableIn_TwoYearbefore) * 0.17);
-  setTotalQualifyingDays(Math.ceil(total));
-};
 
 useEffect(()=>{
   document.title = "Steps | Substantial Presence Test"
 },[])
 
+const [totalQualifyingDays, setTotalQualifyingDays] = useState(0 || PrevStepData.totalQualifyingDays);
+const calculateTotalQualifyingDays = (values:any) => {
+    const total =
+      parseFloat(values.DaysInCurrentYear) +
+      (parseFloat(values.DaysInFirstYearBefore) * 0.34) +
+      (parseFloat(values.DaysInSecondYearBefore) * 0.17);
+          setTotalQualifyingDays(Math.ceil(total));
+  };
 const GethelpData = useSelector(
   (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
 );
+useEffect(() => {
+ 
+  if (isNaN(totalQualifyingDays) || totalQualifyingDays === undefined) {
+  
+    setTotalQualifyingDays(0);
+  }
+ 
+}, [totalQualifyingDays]);
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -63,40 +66,35 @@ const GethelpData = useSelector(
   const [toolInfo, setToolInfo] = useState("");
   const history = useNavigate();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (isNaN(totalQualifyingDays) || totalQualifyingDays === undefined) {
-    
-      setTotalQualifyingDays(0);
-    }
-   
-  }, [totalQualifyingDays]);
   return (
     <Formik
-      validateOnChange={false}
+      validateOnChange={true}
       validateOnBlur={true}
-      validateOnMount={false}
+      validateOnMount={true}
       initialValues={{
-        daysAvailableInThisYear: PrevStepData?.daysAvailableInThisYear,
-        daysAvailableIn_OneYearbefore: PrevStepData?.daysAvailableIn_OneYearbefore,
-        daysAvailableIn_TwoYearbefore: PrevStepData?.daysAvailableIn_TwoYearbefore,
+        DaysInCurrentYear: PrevStepData.DaysInCurrentYear || "",
+        DaysInFirstYearBefore: PrevStepData.DaysInFirstYearBefore || "",
+        DaysInSecondYearBefore: PrevStepData.DaysInSecondYearBefore || "",
       }}
       enableReinitialize
       validationSchema={SubstantialSchema}
       onSubmit={async (values, { setSubmitting }) => {
         setSubmitting(true);
+        
         const temp = {
           agentId: authDetails.agentId,
           accountHolderBasicDetailId: authDetails.accountHolderId,
           ...PrevStepData,
-          totalQualifyingDays,
+          ...W8BENData,
           ...values,
+          totalQualifyingDays,
           stepName: null
         };
+
         const returnPromise = new Promise((resolve, reject) => {
 
           dispatch(
-            post8233_EForm(
+            postW8BENForm(
               temp,
               (res: any) => {
                 localStorage.setItem(
@@ -105,7 +103,7 @@ const GethelpData = useSelector(
                 );
                   
                 resolve(res);
-                history('/Form8233/TaxPayer_Identification')
+                
               },
               (err: any) => {
                 reject(err);
@@ -124,7 +122,9 @@ const GethelpData = useSelector(
         handleSubmit,
         handleChange,
         isSubmitting,
-        submitForm
+        submitForm,
+        validateForm,
+        isValid
       }) => (
         <Form onSubmit={handleSubmit}>
           <section
@@ -132,12 +132,12 @@ const GethelpData = useSelector(
             style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
           >
 
-<div className="overlay-div">
+           <div className="overlay-div">
             <div className="overlay-div-group">
                 <div className="viewInstructions">View Instructions</div>
                 <div className="viewform">View Form</div>
                 <div className="helpvideo"> 
-                {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
+              
                 {GethelpData && GethelpData[9].id === 12 ? (
   <a
     href={GethelpData[9].fieldValue}
@@ -161,7 +161,7 @@ const GethelpData = useSelector(
         <div className="row w-100">
         <div className="col-4">
           <div style={{ padding: "20px 0px",height:"100%" }}>
-          <BreadCrumbComponent breadCrumbCode={1355} formName={2}/>
+          <BreadCrumbComponent breadCrumbCode={1207} formName={2}/>
       </div>
       </div>
       <div className="col-8 mt-3">
@@ -341,145 +341,146 @@ const GethelpData = useSelector(
                 ) : (
                   ""
                 )}
-                <div  style={{ margin: "20px" }}>
-                  <div
+                <div  style={{ margin: "20px" }} className="col-12">
+                  <div className="col-12"
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Typography style={{ fontSize: "17px",marginTop:"10px" }}>
+                    <Typography className="col-10"style={{ fontSize: "17px",marginTop:"10px" }}>
                       How many days has the Individual been in the U.S. in the
                       current year ? <span style={{ color: "red" }}>*</span>
                     </Typography>
-                    <FormControl className="col-lg-4">
+                    <FormControl className="col-4">
                       <Input
                         type="number"
-                        name="daysAvailableInThisYear"
-                        value={values.daysAvailableInThisYear}
-                        onBlur={handleBlur}
+                        name="DaysInCurrentYear"
+                        value={values.DaysInCurrentYear}
+                        // onBlur={handleBlur}
                         error={Boolean(
-                          errors.daysAvailableInThisYear
+                          errors.DaysInCurrentYear
                       )}
                       onChange={(e) => {
                         handleChange(e);
                         calculateTotalQualifyingDays({
                           ...values,
-                          daysAvailableInThisYear: e.target.value,
+                          DaysInCurrentYear: e.target.value,
                         });
                       }}
-                        
                         style={{
                           border: " 1px solid #d9d9d9 ",
                           padding: " 0 10px",
-                          color:"black",
+                          color: "black",
+                         
                           height: "50px",
                           width: "30%",
                         }}
                       />
-                      {errors?.daysAvailableInThisYear && typeof errors?.daysAvailableInThisYear === 'string' && (
-                                <p className="error">{errors?.daysAvailableInThisYear}</p>
+                      
+                      {/* <p className="error">{errors.DaysInCurrentYear}</p> */}
+                      {errors?.DaysInCurrentYear && typeof errors?.DaysInCurrentYear === 'string' && (
+                                <p className="error">{errors?.DaysInCurrentYear}</p>
                               )}
+
                     </FormControl>
                   </div>
                 </div>
-                <div style={{ margin: "20px" }}>
-                  <div
+                <div style={{ margin: "20px" }} className="col-12">
+                  <div className="col-12"
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Typography style={{ fontSize: "17px" ,marginTop:"10px"}}>
+                    <Typography className="col-10"style={{ fontSize: "17px" ,marginTop:"10px"}}>
                       How many days has the Individual been in the first year
                       before the current year ?
                       <span style={{ color: "red" }}>*</span>
                     </Typography>
-                    <FormControl className="col-lg-4">
+                    <FormControl className="col-4">
                       <Input
                         type="text"
-                        name="daysAvailableIn_OneYearbefore"
-                        value={values.daysAvailableIn_OneYearbefore}
-                        onBlur={handleBlur}
+                        name="DaysInFirstYearBefore"
+                        value={values.DaysInFirstYearBefore}
+                        // onBlur={handleBlur}
                         onChange={(e) => {
-                          handleChange(e);
-                          calculateTotalQualifyingDays({
-                            ...values,
-                            daysAvailableIn_OneYearbefore: e.target.value,
-                          });
-                        }}
+                            handleChange(e);
+                            calculateTotalQualifyingDays({
+                              ...values,
+                              DaysInFirstYearBefore: e.target.value,
+                            });
+                          }}
                         error={Boolean(
-                          touched.daysAvailableIn_OneYearbefore &&
-                            errors.daysAvailableIn_OneYearbefore
+                        //  touched.DaysInFirstYearBefore &&
+                            errors.DaysInFirstYearBefore
                         )}
                         style={{
                           border: " 1px solid #d9d9d9 ",
                           padding: " 0 10px",
-                          color:"black",
+                          color: "black",
                           height: "50px",
                           width: "30%",
                         }}
                       />
-                      {errors?.daysAvailableIn_OneYearbefore && typeof errors?.daysAvailableIn_OneYearbefore === 'string' && (
-                                <p className="error">{errors?.daysAvailableIn_OneYearbefore}</p>
+                       {errors?.DaysInFirstYearBefore && typeof errors?.DaysInFirstYearBefore === 'string' && (
+                                <p className="error">{errors?.DaysInFirstYearBefore}</p>
                               )}
-                       
                     </FormControl>
                   </div>
                 </div>
-                <div style={{ margin: "20px" }}>
-                  <div
+                <div style={{ margin: "20px" }} className="col-12">
+                  <div className="col-12"
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Typography style={{ fontSize: "17px" ,marginTop:"10px"}}>
+                    <Typography className="col-10"style={{ fontSize: "17px" ,marginTop:"10px"}}>
                       How many days has the Individual been in the second year
                       before the current year ?{" "}
                       <span style={{ color: "red" }}>*</span>
                     </Typography>
-                    <FormControl className="col-lg-4">
+                    <FormControl className="col-4">
                       <Input
-                        type="number"
-                        name="daysAvailableIn_TwoYearbefore"
-                        value={values.daysAvailableIn_TwoYearbefore}
-                        onBlur={handleBlur}
+                        type="text"
+                        name="DaysInSecondYearBefore"
+                        value={values.DaysInSecondYearBefore}
+                        // onBlur={handleBlur}
                         onChange={(e) => {
-                          handleChange(e);
-                          calculateTotalQualifyingDays({
-                            ...values,
-                            daysAvailableIn_TwoYearbefore: e.target.value,
-                          });
-                        }}
+                            handleChange(e);
+                            calculateTotalQualifyingDays({
+                              ...values,
+                              DaysInSecondYearBefore: e.target.value,
+                            });
+                          }}
                         error={Boolean(
-                          touched.daysAvailableIn_TwoYearbefore &&
-                            errors.daysAvailableIn_TwoYearbefore
+                          // touched.DaysInSecondYearBefore &&
+                            errors.DaysInSecondYearBefore
                         )}
                         style={{
                           border: " 1px solid #d9d9d9 ",
                           padding: " 0 10px",
-                          color:"black",
+                          color: "black",
                           height: "50px",
                           width: "30%",
                         }}
                       />
-                      {errors?.daysAvailableIn_TwoYearbefore && typeof errors?.daysAvailableIn_TwoYearbefore === 'string' && (
-                                <p className="error">{errors?.daysAvailableIn_TwoYearbefore}</p>
+                      {errors?.DaysInSecondYearBefore && typeof errors?.DaysInSecondYearBefore === 'string' && (
+                                <p className="error">{errors?.DaysInSecondYearBefore}</p>
                               )}
                     </FormControl>
                   </div>
                 </div>
-                <div style={{ margin: "20px" }}>
-                  <div
+                <div style={{ margin: "20px" }} className="col-12">
+                  <div className="col-12"
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Typography style={{ fontSize: "17px" ,marginTop:"10px"}}>
+                    <Typography className="col-10"style={{ fontSize: "17px" ,marginTop:"10px"}}>
                       Substantial Presence Test for U.S. tax purposes total
                       qualifying days:
                     </Typography>
-                    <FormControl className="col-lg-4">
+                    <FormControl className="col-4">
                       <Input
                         type="text"
-                        name="totalQualifyingDays"
-                         value={totalQualifyingDays}
-                       
+                        name="TotalQualifyingDays"
+                        value={totalQualifyingDays}
                         style={{
-                          backgroundColor: "#d6d6d6",
+                          backgroundColor: "#F3F3F0",
                           border: " 1px solid #d9d9d9 ",
                           padding: " 0 10px",
-                        color:"black",
+                          color: "black",
                           height: "50px",
                           width: "30%",
                         }}
@@ -520,6 +521,7 @@ const GethelpData = useSelector(
     </Paper>
   </div>
 )}
+
                 <div
                   style={{
                     display: "flex",
@@ -534,8 +536,9 @@ const GethelpData = useSelector(
                             submitForm().then((data) => {
                               const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                               const urlValue = window.location.pathname.substring(1);
-                              dispatch(post8233_EForm(
+                              dispatch(postW8BENForm(
                                 {
+                                    ...W8BENData,
                                   ...prevStepData,
                                   stepName: `/${urlValue}`
                                 }
@@ -544,7 +547,7 @@ const GethelpData = useSelector(
                             }).catch((err) => {
                               console.log(err);
                             })
-                          }} formTypeId={FormTypeId.F8233}  />
+                          }} formTypeId={FormTypeId.BEN}  />
                   <Button
                     variant="contained"
                     style={{ color: "white", marginLeft: "15px" }}
@@ -552,9 +555,23 @@ const GethelpData = useSelector(
                     View Form
                   </Button>
                   <Button
+                   disabled={!isValid}
+                    onClick={async () => {
+                        validateForm().then(() => {
+                          submitForm().then((data) => {
+                            history('/W-8BEN/Declaration/US_Tin')
+
+                          }).catch((err) => {
+                            console.log(err);
+                          })
+                        })
+
+                       
+                      }}
+                     
                     variant="contained"
                     style={{ color: "white", marginLeft: "15px" }}
-                    type="submit"
+                    // type="submit"
                   >
                     Continue
                   </Button>
@@ -574,7 +591,7 @@ const GethelpData = useSelector(
                 <Typography align="center">
                   <Button
                   onClick={()=>{
-                    history("/Certificates")
+                    history("/W-8BEN/Declaration/Non_US_Sorced/Status")
                   }}
                     variant="contained"
                     style={{

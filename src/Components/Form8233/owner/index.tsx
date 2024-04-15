@@ -36,6 +36,8 @@ export default function Tin(props: any) {
 
   const { authDetails } = useAuth();
   const onBoardingFormValuesPrevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
+
+  const AgentId = JSON.parse(localStorage.getItem("authDetails") ?? "null");
   const [dateOfEntryIntoUSState, setDateOfEntryIntoUSState] = useState("")
   const [dateNonImmigrationStatusExpireState, setDateNonImmigrationStatusExpireState] = useState("")
   useEffect(() => {
@@ -120,7 +122,7 @@ const handleTaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 useEffect(()=>{
   dispatch(GetHelpVideoDetails());
   dispatch(getAllCountries())  
-  dispatch(GetAgentUSVisaTypeHiddenForEformAction())
+  dispatch(GetAgentUSVisaTypeHiddenForEformAction(authDetails?.agentId))
 },[])
 const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer);
   const [toolInfo, setToolInfo] = useState("");
@@ -130,7 +132,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
   return (
     <>
       <Formik
-      validateOnChange={true}
+      validateOnChange={false}
       validateOnBlur={true}
       validateOnMount={false}
     
@@ -138,17 +140,24 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
         enableReinitialize
         validationSchema={ownerSchema}
         onSubmit={(values, { setSubmitting }) => {
-          if (clickCount === 0) {
+          // if (clickCount === 0) {
       
-            setClickCount(clickCount+1);
-          } else{
+          //   setClickCount(clickCount+1);
+          // } else{
           setSubmitting(true);
           const temp = {
+            agentId: authDetails.agentId,
+            accountHolderBasicDetailId: authDetails.accountHolderId,
+            ...onBoardingFormValuesPrevStepData,
             ...values,
-            agentId: authDetails?.agentId,
-            accountHolderBasicDetailId: authDetails?.accountHolderId,
-            stepName: null,
+            stepName: null
           };
+          // const temp = {
+          //   ...values,
+          //   agentId: authDetails?.agentId,
+          //   accountHolderBasicDetailId: authDetails?.accountHolderId,
+          //   stepName: null,
+          // };
           const returnPromise = new Promise((resolve, reject) => {
             dispatch(
               post8233_EForm(temp,
@@ -169,7 +178,7 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
           //     history("/Form8233/TaxPayer_Identification/Owner/Claim_part");
           //   })
           // );
-          }
+          // }
           //history("/Form8233/TaxPayer_Identification/Owner/Claim_part");
         }}
       >
@@ -217,10 +226,10 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                 </div>
             </div>
         </div>
-        <div className="row w-100 h-100">
+        <div className="row w-100">
         <div className="col-4">
           <div style={{ padding: "10px 0px",height:"100%" }}>
-          <BreadCrumbComponent breadCrumbCode={1358} formName={2}/>
+          <BreadCrumbComponent breadCrumbCode={1358} formName={FormTypeId.F8233}/>
       </div>
       </div>
       <div className="col-8 mt-3">
@@ -698,7 +707,8 @@ const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer
                           height: "50px",
                           width: "100%",
                         }}
-                        onChange={handleChange} 
+                        onChange={handleChange}
+                        onBlur={handleBlur}
                       />
                       {errors?.countryIssuingPassportNumber && typeof errors?.countryIssuingPassportNumber === 'string' && (
                                 <p className="error">{errors?.countryIssuingPassportNumber}</p>
