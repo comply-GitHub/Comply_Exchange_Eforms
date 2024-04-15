@@ -11,9 +11,6 @@ const WithAutoLogout = <P extends object>(
       authDetails?.configurations?.sessionTimeinMin * 60
     );
     const [counter, ShowCounter] = useState(false);
-    useEffect(() => {
-      setCountdown(authDetails?.configurations?.sessionTimeinMin-authDetails?.configurations?.sessionTimeReminderBeforeinMin)
-    }, [useAuth]);
     const events = [
       "load",
       "mousemove",
@@ -27,26 +24,15 @@ const WithAutoLogout = <P extends object>(
     const storedLoginTime: any = localStorage.getItem("loginTime");
     const warnTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const logoutTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
     useEffect(() => {
+     setCountdown(
+       ( authDetails?.configurations?.sessionTimeinMin -authDetails?.configurations?.sessionTimeReminderBeforeinMin)*60
+      );
       sessionConfig();
-      // console.log(authDetails?.configurations,"authDetails from session")
     }, [authDetails]);
 
     useEffect(() => {
-      sessionConfig();
-      if (countdown <= 0) return;
-      const timer = setInterval(() => {
-        setCountdown((prevCountdown) => prevCountdown - 1);
-      }, 1000);
-      return () => clearInterval(timer);
-    }, []);
-
-    useEffect(() => {
-      // if (countdown <= 0) return;
-      // const timer = setInterval(() => {
-      //   setCountdown((prevCountdown) => prevCountdown - 1);
-      // }, 1000);
-      // return () => clearInterval(timer);
     }, [countdown]);
     const sessionConfig = () => {
       const setTimeouts = () => {
@@ -56,14 +42,15 @@ const WithAutoLogout = <P extends object>(
           (pathArray[1] !== "login" && pathArray[1] !== "")
         ) {
           currentTime = JSON.parse(storedLoginTime);
-          warnTimeoutRef.current = setTimeout(warn, 1000 * 60 * 1);
-          logoutTimeoutRef.current = setTimeout(
-            logout,
-            1000 * 60 * authDetails?.configurations?.sessionTimeinMin
-          );
+          warnTimeoutRef.current = setTimeout(warn, 60000*authDetails?.configurations?.sessionTimeReminderBeforeinMin  );
+          // logoutTimeoutRef.current = setTimeout(
+          //   logout,
+          //   120000 
+          // );
         }
       };
       // configurations,sessionTimeinMin,sessionTimeReminderBeforeinMin
+      // *authDetails?.configurations?.sessionTimeReminderBeforeinMin
 
       const clearTimeouts = () => {
         if (warnTimeoutRef.current) clearTimeout(warnTimeoutRef.current);
@@ -77,7 +64,18 @@ const WithAutoLogout = <P extends object>(
 
       const warn = () => {
         ShowCounter(true);
-        // console.log(formatTime(authDetails?.configurations?.sessionTimeinMin-authDetails?.configurations?.sessionTimeReminderBeforeinMin))
+        const timer = setInterval(() => {
+          setCountdown((prevCountdown) =>{
+            if(
+              prevCountdown > 0
+            ) return prevCountdown - 1
+            else{
+              clearInterval(timer)
+              logout();
+              return 0
+            }
+           });
+        }, 1000);
       };
 
       const logout = () => {
@@ -97,12 +95,12 @@ const WithAutoLogout = <P extends object>(
       return () => {
         clearTimeouts();
         for (let i = 0; i < events.length; i++) {
-          console.log(
-            formatTime(
-              authDetails?.configurations?.sessionTimeinMin -
-                authDetails?.configurations?.sessionTimeReminderBeforeinMin
-            )
-          );
+          // console.log(
+          //   formatTime(
+          //     (authDetails?.configurations?.sessionTimeinMin -
+          //       authDetails?.configurations?.sessionTimeReminderBeforeinMin)*1000
+          //   )
+          // );
           window.removeEventListener(events[i], resetTimeout);
         }
       };
@@ -110,7 +108,6 @@ const WithAutoLogout = <P extends object>(
     const formatTime = (time: number): string => {
       const minutes = Math.floor(time / 60);
       const seconds = time % 60;
-      console.log(minutes, seconds);
       return `${Math.max(0, minutes).toString().padStart(2, "0")}:${Math.max(
         0,
         seconds
@@ -141,7 +138,7 @@ const WithAutoLogout = <P extends object>(
                 >
                   <div
                     style={{ display: "grid", gridTemplateColumns: "95% 5%" }}
-                  ><>{console.log(countdown,"COUNTDOWN")}</>
+                  >
                     <Typography>{formatTime(countdown)} </Typography>
                     <Typography
                       sx={{ color: "black", justifySelf: "end" }}
