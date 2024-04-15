@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Link from "@mui/material/Link";
 
 import Tooltip from "@mui/material/Tooltip";
-import { CheckBox, ExpandMore, Info } from "@mui/icons-material";
+import { CheckBox, ExpandMore, FlareSharp, Info } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import "./index.scss";
 import checksolid from "../../../assets/img/check-solid.png";
@@ -61,6 +61,9 @@ export default function Fedral_tax(props: any) {
 
   const [initialValue, setInitialValues] = useState({
     chapter4Status: 0,
+    isCertify24a: false,
+    isCertify24b: false,
+    isCertify24c: false,
     isPassiveNFFE40A: false,
     isPassiveNFFE40B: false,
     isPassiveNFFE40C: false,
@@ -74,6 +77,8 @@ export default function Fedral_tax(props: any) {
     isCertify32Entity: false,
     isCertify33Entity: false,
     priorDate: "",
+
+    isCertify21Entity: false,
     isCertify38Entity: false,
     isCertify27Entity: false,
     isCertify28aEntity: false,
@@ -83,6 +88,7 @@ export default function Fedral_tax(props: any) {
     iGAbetweenUnitedStates: 0,
     iGA: "",
     istreated: 0,
+    istreated24:"",
     otherTreated: "",
     isCertify24aFFIPart1: false,
     isCertify24bFFIPart1: false,
@@ -97,13 +103,16 @@ export default function Fedral_tax(props: any) {
     hasBeenBoundBy: false,
     currentBoundBy: false,
     nameSponsoringEntity: "",
+    nameSponsoringEntity1: "",
     isCertify43: false,
     nameSponsoringEntity16: "",
+    nameSponsoringEntity24: "",
     isCertify17a: false,
     isCertify17b: false,
     isCertify35: false,
     payeesection501: "",
     foreginTIN_CountryId: 0
+
   });
 
 
@@ -122,6 +131,7 @@ export default function Fedral_tax(props: any) {
   }
 
   useEffect(() => {
+    document.title = "Chapter IV"
     dispatch(GetSubstantialUsPassiveNFE(authDetails?.accountHolderId,
       (data: any[]) => {
         console.log(data);
@@ -763,12 +773,45 @@ export default function Fedral_tax(props: any) {
 
                                 </Typography>
                                 <div className="d-flex mt-3">
+                                  <Typography className="mt-2" style={{ marginTop: "10px", marginRight: "10px" }}>
+                                    20
+                                  </Typography>
+                                  <Typography className="mt-2">
+                                    Name of sponsoring entity:
+                                    <span className="mx-2">
+                                      <FormControl>
+                                        <TextField
+                                          style={{
+                                            backgroundColor: "#fff",
+                                            fontStyle: "italic",
+                                          }}
+                                          name="nameSponsoringEntity1"
+                                          value={values.nameSponsoringEntity1}
+                                          onBlur={handleBlur}
+                                          onChange={handleChange}
+                                        // error={Boolean(
+                                        //   touched.subParagraphArticle &&
+                                        //     errors.subParagraphArticle
+                                        // )}
+                                        />
+                                        {/* <p className="error">
+                                {errors.subParagraphArticle}
+                              </p> */}
+                                      </FormControl>
+                                    </span>
+                                  </Typography>
+                                </div>
+
+                                <div className="d-flex mt-3">
+
+
                                   <Typography className="mt-2" style={{ marginTop: "10px" }}>
                                     21
                                   </Typography>
                                   <Typography>
-                                    <Checkbox />
+                                    <Checkbox name="isCertify21Entity" value={values.isCertify21Entity} checked={values.isCertify21Entity} onChange={handleChange} />
                                   </Typography>
+
                                   <Typography className="mt-2">
                                     I certify that the entity identified in Part I:
                                   </Typography>
@@ -1203,7 +1246,13 @@ export default function Fedral_tax(props: any) {
                                     28 a
                                   </Typography>
                                   <Typography>
-                                    <Checkbox name="isCertify28aEntity" value={values.isCertify28aEntity} checked={values.isCertify28aEntity} onChange={handleChange} />
+                                    <Checkbox disabled={values.isCertify28bEntity} name="isCertify28aEntity" value={values.isCertify28aEntity} checked={values.isCertify28aEntity}
+                                      onChange={(e) => {
+                                        handleChange(e)
+                                        setTimeout(() => {
+                                          setFieldValue("isCertify28bEntity", false)
+                                        },);
+                                      }} />
                                   </Typography>
                                   <Typography className="mt-2">
                                     I certify that :
@@ -1222,7 +1271,13 @@ export default function Fedral_tax(props: any) {
                                     b
                                   </Typography>
                                   <Typography>
-                                    <Checkbox name="isCertify28bEntity" value={values.isCertify28bEntity} checked={values.isCertify28bEntity} onChange={handleChange} />
+                                    <Checkbox disabled={values.isCertify28aEntity} name="isCertify28bEntity" value={values.isCertify28bEntity} checked={values.isCertify28bEntity}
+                                      onChange={(e) => {
+                                        handleChange(e)
+                                        setTimeout(() => {
+                                          setFieldValue("isCertify28aEntity", false)
+                                        },);
+                                      }} />
                                   </Typography>
                                   <Typography className="mt-2">
                                     I certify that the entity identified in Part I :
@@ -1363,6 +1418,7 @@ export default function Fedral_tax(props: any) {
                                         width: "100%",
                                       }}
                                       name="iGAbetweenUnitedStates"
+                                      value = {values.iGAbetweenUnitedStates}
                                       defaultValue={1}
                                       onBlur={handleBlur}
                                       onChange={handleChange}
@@ -1435,7 +1491,7 @@ export default function Fedral_tax(props: any) {
                                       </select>
                                     </span>
                                     <span style={{ marginLeft: "6px" }}>
-                                      <TextField
+                                      {/* <TextField
                                         style={{
                                           backgroundColor: "#fff",
                                           color: "#121112",
@@ -1447,44 +1503,110 @@ export default function Fedral_tax(props: any) {
                                         placeholder="---Enter the specific entity type---"
                                         onChange={handleChange}
                                         value={values.otherTreated}
-                                      />
+                                      /> */}
                                       <span style={{ color: "red", verticalAlign: "super" }}>
                                         *
                                       </span>
                                     </span>
-                                    <Typography>
-                                      under the provisions of the applicable IGA or Treasury regulations (if applicable, see instructions);
-                                    </Typography>
-
-
 
                                   </Typography>
-
+                                  <Typography>
+                                    under the provisions of the applicable IGA or Treasury regulations (if applicable, see instructions);
+                                  </Typography>
                                   <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
                                   <Typography className="my-2">
                                     Are you a trustee or a sponsored entity?
-                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                    {/* <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} /> */}
 
                                   </Typography>
-                                  <Typography className="my-2">
-                                    Neither the applicable laws of the entity's country of residence nor the entity's formation documents permit any income or assets of the entity to be distributed to, or applied for the benefit of, a private person or non-charitable entity other than pursuant to the conduct of the entity's charitable activities or as payment of reasonable compensation for services rendered or payment representing the fair market value of property which the entity has purchased; <span style={{ fontWeight: "bold" }}>
-                                      and</span>
-
-
-
+                                  <FormControlLabel
+                                    control={
+                                      <Radio
+                                        // checked={selectedValue === 'a'}
+                                        name="isCertify24a"
+                                        value={values.isCertify24a}
+                                        // checked = "{}"
+                                        onChange={handleChange}
+                                        //inputProps={{ 'aria-label': 'A' }}
+                                      />
+                                    }
+                                    label="Trustee"
+                                  />
+                                  <FormControlLabel
+                                    control={
+                                      <Radio
+                                        //checked={selectedValue === 'b'}
+                                        onChange={handleChange}
+                                        name="isCertify24b"
+                                        value = {values.isCertify24b}
+                                        //inputProps={{ 'aria-label': 'B' }}
+                                      />
+                                    }
+                                    label="Sponsor"
+                                  />
+                                  <FormControlLabel
+                                    control={
+                                      <Radio
+                                        //checked={selectedValue === 'b'}
+                                        onChange={handleChange}
+                                        name="isCertify24c"
+                                        value={values.isCertify24c}
+                                        //inputProps={{ 'aria-label': 'C' }}
+                                      />
+                                    }
+                                    label="Niether"
+                                  />
+                                  <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                  <Typography className="mt-2">
+                                    provide the name of the trustee or sponsor:
+                                    <span className="mx-2">
+                                      <FormControl>
+                                        <TextField
+                                          style={{
+                                            backgroundColor: "#fff",
+                                            fontStyle: "italic",
+                                          }}
+                                          name="nameSponsoringEntity24"
+                                          value={values.nameSponsoringEntity24}
+                                          onBlur={handleBlur}
+                                          onChange={handleChange}
+                                        />
+                                      </FormControl>
+                                    </span>
                                   </Typography>
                                   <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
-
                                   <Typography className="my-2">
-                                    The applicable laws of the entity's country of residence or the entity's formation documents require that, upon the entity's liquidation or dissolution, all of its assets be distributed to an entity that is a foreign government, an integral part of a foreign government, a controlled entity of a foreign government, or another organization that is described in this Part XXII or escheats to the government of the entity's country of residence or any political subdivision thereof.
+                                    Is treated as a <span style={{ color: 'red' }}> *
+                                    </span>
+                                    <span>
+                                      <select
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          padding: " 0 10px",
+                                          color: "#121112",
+                                          fontStyle: "italic",
+                                          height: "50px",
+                                          width: "40%",
+                                        }}
+                                        name="istreated24"
+                                        value={values.istreated24}
+                                        defaultValue={0}
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                      >
+                                        <option value={0}>---select---</option>
+                                        <option value={1}>U.S</option>
+                                        <option value={1}>Foreign</option>
 
+                                      </select>
+                                    </span>
+                                    <span style={{ marginLeft: "6px" }}>
+                                      <span style={{ color: "red", verticalAlign: "super" }}>
+                                        *
+                                      </span>
+                                    </span>
 
                                   </Typography>
-
-
-
-
-
                                 </Paper>
                               </>
 
@@ -2128,7 +2250,13 @@ export default function Fedral_tax(props: any) {
                                     37a
                                   </Typography>
                                   <Typography>
-                                    <Checkbox name="isCertify37a" value={values.isCertify37a} checked={values.isCertify37a} onChange={handleChange} />
+                                    <Checkbox disabled={values.isCertify37b} name="isCertify37a" value={values.isCertify37a} checked={values.isCertify37a}
+                                      onChange={(e) => {
+                                        handleChange(e)
+                                        setTimeout(() => {
+                                          setFieldValue("isCertify37b", false)
+                                        }, 2000);
+                                      }} />
                                   </Typography>
                                   <Typography className="mt-2">
                                     I certify that:
@@ -2153,6 +2281,7 @@ export default function Fedral_tax(props: any) {
                                             backgroundColor: "#fff",
                                             fontStyle: "italic",
                                           }}
+                                          disabled={values.isCertify37b}
                                           name="aEntityStockMarket"
                                           value={values.aEntityStockMarket}
                                           onBlur={handleBlur}
@@ -2170,7 +2299,13 @@ export default function Fedral_tax(props: any) {
                                     b
                                   </Typography>
                                   <Typography>
-                                    <Checkbox name="isCertify37b" value={values.isCertify37b} checked={values.isCertify37b} onChange={handleChange} />
+                                    <Checkbox disabled={values.isCertify37a} name="isCertify37b" value={values.isCertify37b} checked={values.isCertify37b}
+                                      onChange={(e) => {
+                                        handleChange(e)
+                                        setTimeout(() => {
+                                          setFieldValue("isCertify37a", false)
+                                        }, 2000);
+                                      }} />
                                   </Typography>
                                   <Typography className="mt-2">
                                     I certify that:
@@ -2208,6 +2343,7 @@ export default function Fedral_tax(props: any) {
                                                 fontStyle: "italic",
 
                                               }}
+                                              disabled={values.isCertify37a}
                                               name="bEntityStockMarket"
                                               value={values.bEntityStockMarket}
                                               onBlur={handleBlur}
@@ -2239,6 +2375,7 @@ export default function Fedral_tax(props: any) {
                                             fontStyle: "italic",
 
                                           }}
+                                          disabled={values.isCertify37a}
                                           name="namesecuritiesmarket"
                                           value={values.namesecuritiesmarket}
                                           onBlur={handleBlur}
