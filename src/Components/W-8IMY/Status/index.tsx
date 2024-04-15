@@ -285,8 +285,8 @@ export default function Fedral_tax(props: any) {
             <div style={{ padding: "13px" }}>
               <Paper style={{ padding: "10px" }}>
                 <Formik
-                  validateOnChange={true}
-                  validateOnBlur={true}
+                  validateOnChange={false}
+                  validateOnBlur={false}
                   validateOnMount={false}
                   initialValues={initialValue}
                   validationSchema={TaxPurposeSchemaW81Chapter3}
@@ -300,10 +300,23 @@ export default function Fedral_tax(props: any) {
                       stepName: null
                     };
                     //console.log(temp);
-
-                    dispatch(postW81MY_EForm(temp,() => {
-                      history("/IMY/Tax_Purpose_Exp/Chapter4_IMY");
-                    }))
+                    const returnPromise = new Promise((resolve, reject) => {
+                      dispatch(
+                        postW81MY_EForm(temp,
+                          (responseData: any) => {
+                            localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                            resolve(responseData);
+                            history("/IMY/Tax_Purpose_Exp/Chapter4_IMY");
+                          },
+                          (err: any) => {
+                            reject(err);
+                          }
+                        )
+                      );
+                    })
+                    // dispatch(postW81MY_EForm(temp,() => {
+                    //   history("/IMY/Tax_Purpose_Exp/Chapter4_IMY");
+                    // }))
 
                     //  setSubmitting(true);
                     //history("/IMY/Tax_Purpose_Exp/Chapter4_IMY");
@@ -1939,7 +1952,7 @@ export default function Fedral_tax(props: any) {
                             marginTop: "80px",
                           }}
                         >
-                          <SaveAndExit Callback={() => {
+                        <SaveAndExit Callback={() => {
                         submitForm().then(() => {
                           const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                           const urlValue = window.location.pathname.substring(1);
