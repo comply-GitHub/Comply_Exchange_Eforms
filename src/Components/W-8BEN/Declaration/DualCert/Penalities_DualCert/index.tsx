@@ -761,23 +761,20 @@ const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
                               );
                               const urlValue =
                                 window.location.pathname.substring(1);
-                              // dispatch(
-                              //   PostDualCert(
-                              //     {
-                              //       ...prevStepData,
-                              //       ...values,
-                              //       stepName: `/${urlValue}`,
-                              //     },
-                              //     () => {
-                              //       history(GlobalValues.basePageRoute);
-                              //     }
-                              //   )
-                              // );
-                            })
-                              .catch((err) => {
+                                dispatch(PostDualCert(
+                                  {
+                                      ...prevStepData,
+                                      ...values,
+                                      stepName: `/${urlValue}`
+                                  }
+                                  , () => { }, 
+                                  () => { }) 
+                              );
+                                history(GlobalValues.basePageRoute)
+                              }).catch((err) => {
                                 console.log(err);
                               })
-                          }} formTypeId={FormTypeId.BEN} />
+                            }} formTypeId={FormTypeId.BEN}/>
                         </div>
                     <Button
                       type="submit"

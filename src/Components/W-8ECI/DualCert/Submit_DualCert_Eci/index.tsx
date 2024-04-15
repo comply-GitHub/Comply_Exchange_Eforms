@@ -1,6 +1,7 @@
-import React, { Fragment, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { SubmitSchema } from "../../../../../schemas/submit";
+import { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import React from "react";
+import { SubmitSchema } from "../../../../schemas/submit";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -8,16 +9,28 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
-import { W8_state_ECI, PostDualCert } from "../../../../../Redux/Actions";
-import { useDispatch } from "react-redux";
-import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
-import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
+import { W8_state_ECI, PostDualCert } from "../../../../Redux/Actions";
+import { useDispatch, useSelector } from "react-redux";
+import useAuth from "../../../../customHooks/useAuth";
+import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
+import { SubmitSchemaECI } from "../../../../schemas/w8ECI";
+import { GetEciPdf } from "../../../../Redux/Actions/PfdActions";
+
+
+
+
 const Declaration = (props: any) => {
-  const location = useLocation();
   const { open, setOpen } = props;
+  const { authDetails } = useAuth();
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    document.title = "Electronic Signature Confirmation"
+  }, [])
+
   const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,22 +45,20 @@ const Declaration = (props: any) => {
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
-
-  const urlValue = location.pathname.substring(1);
-  const agentDefaultDetails = JSON.parse(
-    localStorage.getItem("agentDefaultDetails") || "{}"
-  );
-
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
-  console.log(PrevStepData,"op")
+  const W8ECIData = useSelector((state: any) => state.W8ECI);
   const initialValue = {
-    isAgreeWithDeclaration: false,
-    isConsentReceipentstatement: false,
-    isNotConsentReceipentstatement: false,
+    isAgreeWithDeclaration: PrevStepData?.isAgreeWithDeclaration ?? false,
+    isConsentRecipent: PrevStepData?.isConsentRecipent ?? false,
+    isNotConsentRecipent: PrevStepData?.isNotConsentRecipent ?? false
   };
-  const viewPdf=()=>{
-    history("w8Ben_pdf");
+
+
+
+  const viewPdf = () => {
+    history("/w8Eci_pdf", { replace: true });
   }
+
   return (
     <Fragment>
       <section
@@ -57,32 +68,43 @@ const Declaration = (props: any) => {
         <div style={{ padding: "25px" }}>
           <Paper style={{ padding: "22px" }}>
             <Formik
+              enableReinitialize
+              validateOnChange={true}
+              validateOnBlur={true}
+              validateOnMount={true}
               initialValues={initialValue}
-              validationSchema={SubmitSchema}
+              validationSchema={SubmitSchemaECI}
               onSubmit={(values, { setSubmitting }) => {
-                console.log("values", values);
+                console.log("values", values)
                 setSubmitting(true);
-                const result = {
-                  ...PrevStepData, 
+                let temp = {
+                  ...PrevStepData,
                   ...values,
-                 
+                  agentId: authDetails?.agentId,
+                  accountHolderBasicDetailId: authDetails?.accountHolderId,
                   statusId: 1,
                 };
                 const returnPromise = new Promise((resolve, reject) => {
-                dispatch(
-                  PostDualCert(result, (data: any) => {
-                    localStorage.setItem("DualCertData", JSON.stringify(result))
-                    resolve(data);
-                  }
-                    , (err: any) => {
-                      reject(err);
-                    }
-                  )
-                );
-              })
+                  dispatch(
+                    PostDualCert(
+                      [temp],
+                      (res: any) => {
+                        localStorage.setItem(
+                          "DualCertData",
+                          JSON.stringify(temp)
+                        );
 
+                        resolve(res);
+                      },
+                      (err: any) => {
+                        reject(err);
+                      }
+                    )
+                  );
+                });
+                return returnPromise;
 
-            }}
+              }}
             >
               {({
                 errors,
@@ -110,6 +132,7 @@ const Declaration = (props: any) => {
                       Electronic Signature Confirmation
                     </Typography>
                   }
+
                   <Divider style={{ background: "black" }} />
 
                   <div>
@@ -168,39 +191,40 @@ const Declaration = (props: any) => {
                             >
                               Under Penalties or Perjury
                             </span>{" "}
-                            you hereby declare that, pursuant to the Electronic
-                            Signature in Global and National Commerce Act - the
-                            E-Sign Act - Title 15 U.S.C. §7001, you are
-                            declaring that you have examined the information you
-                            are about to electronically submit and that to the
-                            best of your knowledge and belief it is true,
-                            correct and complete.
+                            you hereby declare that, pursuant to the
+                            Electronic Signature in Global and National
+                            Commerce Act - the E-Sign Act - Title 15 U.S.C.
+                            §7001, you are declaring that you have examined
+                            the information you are about to electronically
+                            submit and that to the best of your knowledge and
+                            belief it is true, correct and complete.
                           </Typography>
 
                           <Typography
                             align="left"
                             style={{ fontSize: "15px", marginTop: "13px" }}
                           >
-                            Furthermore you acknowledge that you understand your
-                            rights and obligations under Title 28 U.S.C. §1746
-                            governing unsworn declarations made under the
-                            Penalties of Perjury.
+                            Furthermore you acknowledge that you understand
+                            your rights and obligations under Title 28 U.S.C.
+                            §1746 governing unsworn declarations made under
+                            the Penalties of Perjury.
                           </Typography>
                           <Typography
                             align="left"
                             style={{ fontSize: "15px", marginTop: "13px" }}
                           >
-                            Additionally, you are certifying that you have read
-                            and agreed the certification statement presented
-                            through the submission process, confirming that:
+                            Additionally, you are certifying that you have
+                            read and agreed the certification statement
+                            presented through the submission process,
+                            confirming that:
                           </Typography>
                           <Typography
                             align="left"
                             style={{ fontSize: "15px", marginTop: "13px" }}
                           >
-                            1. You are the beneficial owner (or an authorized to
-                            sign for the beneficial owner) of all the income to
-                            which the form relates,
+                            1. You are the beneficial owner (or an authorized
+                            to sign for the beneficial owner) of all the
+                            income to which the form relates,
                           </Typography>
                           <Typography
                             align="left"
@@ -212,7 +236,8 @@ const Declaration = (props: any) => {
                             align="left"
                             style={{ fontSize: "15px", marginTop: "13px" }}
                           >
-                            3. You are a U.S. person submitting a Form type W-9
+                            3. You are a U.S. person submitting a Form type
+                            W-9
                           </Typography>
 
                           <Typography
@@ -225,10 +250,16 @@ const Declaration = (props: any) => {
                           >
                             To Confirm:
                           </Typography>
-                          <Typography align="left" style={{ fontSize: "15px" }}>
+                          <Typography
+                            align="left"
+                            style={{ fontSize: "15px" }}
+                          >
                             1. You have entered your name in the box provided
                           </Typography>
-                          <Typography align="left" style={{ fontSize: "15px" }}>
+                          <Typography
+                            align="left"
+                            style={{ fontSize: "15px" }}
+                          >
                             2. Checked the{" "}
                             <span
                               style={{
@@ -241,9 +272,13 @@ const Declaration = (props: any) => {
                             </span>
                             and
                           </Typography>
-                          <Typography align="left" style={{ fontSize: "15px" }}>
-                            3. By submitting this form you are providing a
-                            legally binding self certified electronic signature.
+                          <Typography
+                            align="left"
+                            style={{ fontSize: "15px" }}
+                          >
+                            3. By submitting this form you are providing
+                            a legally binding self certified electronic
+                            signature.
                           </Typography>
 
                           <Typography
@@ -251,26 +286,20 @@ const Declaration = (props: any) => {
                             style={{ fontSize: "15px", marginTop: "13px" }}
                           >
                             On submission your details will be transmitted to
-                            your previously selected withholding agent
-                            previously selected, who may wish to contact you for
-                            further confirmation. No data is stored within the
-                            Comply Exchange Service on transfer and it is again
-                            recommended that you save a copy locally for your
-                            own records.
+                            your previously selected withholding agent previously selected, who
+                            may wish to contact you for further confirmation.
+                            No data is stored within the Comply Exchange
+                            Service on transfer and it is again recommended
+                            that you save a copy locally for your own records.
                           </Typography>
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox
-                            name="isAgreeWithDeclaration"
-                            value={values.isAgreeWithDeclaration}
-                            onChange={handleChange}
-                            checked={values.isAgreeWithDeclaration}
-                          />
+                          <Checkbox name="isAgreeWithDeclaration" value={values.isAgreeWithDeclaration} onChange={handleChange} checked={values.isAgreeWithDeclaration} />
                           <Typography style={{ marginTop: "9px" }}>
                             I agree with the above Declarations
                           </Typography>
                         </div>
-                        <p className="error">{errors.isAgreeWithDeclaration}</p>
+                        <p className="error">{touched.isAgreeWithDeclaration ? errors.isAgreeWithDeclaration?.toString() : ""}</p>
                       </AccordionDetails>
                     </Accordion>
                     <Accordion
@@ -311,65 +340,64 @@ const Declaration = (props: any) => {
                               marginTop: "10px",
                             }}
                           >
-                            We may be required to provide you with a Form 1042-S
-                            or 1099 depending on your U.S. status. In order to
-                            receive this statement electronically, by email or
-                            accessible through our onboarding portal you must
-                            provide your consent by checking the box below. If
-                            you do not provide consent a paper copy will be
-                            provided. Furthermore: The statement will be
-                            provided in PDF format. This consent will remain in
-                            place until you withdraw your consent. You may
-                            withdraw this consent at any time by writing to our
-                            support centre requesting that a paper copy is
-                            provided to you. If you require a paper copy after
-                            giving consent you may request a copy by writing to
-                            our support centre requesting that a paper copy is
-                            provided to you. We reserve the right to change our
-                            delivery processes and should circumstances change
-                            we will contact you by written notice after which
-                            time statements will be provided by paper, until a
-                            further consent is given by you.
+                            We may be required to provide you with a Form
+                            1042-S or 1099 depending on your U.S. status. In
+                            order to receive this statement electronically, by
+                            email or accessible through our onboarding portal
+                            you must provide your consent by checking the box
+                            below. If you do not provide consent a paper copy
+                            will be provided. Furthermore: The statement will
+                            be provided in PDF format. This consent will
+                            remain in place until you withdraw your consent.
+                            You may withdraw this consent at any time by
+                            writing to our support centre requesting that a
+                            paper copy is provided to you. If you require a
+                            paper copy after giving consent you may request a
+                            copy by writing to our support centre requesting
+                            that a paper copy is provided to you. We reserve
+                            the right to change our delivery processes and
+                            should circumstances change we will contact you by
+                            written notice after which time statements will be
+                            provided by paper, until a further consent is
+                            given by you.
                           </Typography>
                           <Divider style={{ marginBottom: "10px" }} />
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
                           <Checkbox
-                            name="isConsentReceipentstatement"
-                            value={values.isConsentReceipentstatement}
-                            onChange={(e)=>{
+                            name="isConsentRecipent"
+                            value={values.isConsentRecipent}
+                            onChange={(e) => {
                               handleChange(e);
-                              setTimeout(()=>{setFieldValue("IsSubmit_not",false)},50)
+                              setTimeout(() => { setFieldValue("isNotConsentRecipent", false) }, 50)
                             }}
-                            checked={values.isConsentReceipentstatement}
-                          />
+                            checked={values.isConsentRecipent} />
 
                           <Typography style={{ marginTop: "9px" }}>
                             I give consent to receiving a recipent statement
                             electronically.
                           </Typography>
+
                         </div>
-                        <p className="error">{errors.isConsentReceipentstatement}</p>
+                        <p className="error">{touched.isConsentRecipent ? errors?.isConsentRecipent?.toString() : ""}</p>
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox
-                            name="isNotConsentReceipentstatement"
-                            value={values.isNotConsentReceipentstatement}
-                            onChange={(e)=>{
+                          <Checkbox name="isNotConsentRecipent"
+                            value={values.isNotConsentRecipent}
+                            onChange={(e) => {
                               handleChange(e);
-                              setTimeout(()=>{setFieldValue("isConsentReceipentstatement",false)},50)
-                            }}
-                            checked={values.isNotConsentReceipentstatement}
-                          />
+                              setTimeout(() => { setFieldValue("isConsentRecipent", false) }, 50)
+                            }} checked={values.isNotConsentRecipent} />
                           <Typography style={{ marginTop: "9px" }}>
                             {" "}
                             I do not give consent to receiving a recipent
                             statement electronically.
                           </Typography>
                         </div>
-                        <p className="error">{errors.isNotConsentReceipentstatement}</p>
+                        <p className="error">{touched.isNotConsentRecipent ? errors.isNotConsentRecipent?.toString() : ""}</p>
                       </AccordionDetails>
                     </Accordion>
                   </div>
+
 
                   <div
                     style={{
@@ -379,10 +407,10 @@ const Declaration = (props: any) => {
                     }}
                   >
                     <SaveAndExit Callback={() => {
-                        submitForm().then(() => {
-                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                          const urlValue = window.location.pathname.substring(1);
-                          dispatch(PostDualCert(
+                      submitForm().then(() => {
+                        const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                        const urlValue = window.location.pathname.substring(1);
+                        dispatch(PostDualCert(
                             {
                                 ...prevStepData,
                                 ...values,
@@ -391,31 +419,29 @@ const Declaration = (props: any) => {
                             , () => { }, 
                             () => { }) 
                         );
-                          history(GlobalValues.basePageRoute)
-                        }).catch((err) => {
-                          console.log(err);
-                        })
-                      }} formTypeId={FormTypeId.BEN} ></SaveAndExit>
+                        history(
+                          GlobalValues.basePageRoute
+                        );
+                      })
+                    }} formTypeId={FormTypeId.W8ECI} />
                     <Button
+                      onClick={() => {
+                        dispatch(GetEciPdf(authDetails?.accountHolderId))
+                      }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
-                      onClick={viewPdf}
                     >
                       View Form
                     </Button>
 
                     <Button
-                      // onClick={()=>{
-                      //   history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233")
-                      // }}
-                      disabled={!isValid}
                       onClick={() => {
-                        submitForm().then((data: any) => {
-                          history("/ThankYou_DC_BEN");
-                        }).catch(() => {
-  
+                        submitForm().then(() => {
+                          history("/Thankyou_dualCert_Eci");
                         })
-                      }}       
+                      }}
+                      disabled={!isValid}
+                      //type="submit"
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >
@@ -425,7 +451,7 @@ const Declaration = (props: any) => {
                   <Typography
                     align="center"
                     style={{
-                      color: "#adadac",
+                      color: "#505E50",
                       justifyContent: "center",
                       alignItems: "center",
                       marginTop: "20px",
@@ -442,10 +468,9 @@ const Declaration = (props: any) => {
                         marginTop: "10px",
                         marginBottom: "20px",
                       }}
+
                       onClick={() => {
-                        history(
-                          "/penalities_DC_BEN"
-                        );
+                        history("/W-8ECI/Certification/Participation")
                       }}
                     >
                       Back
@@ -456,6 +481,7 @@ const Declaration = (props: any) => {
               )}
             </Formik>
           </Paper>
+
         </div>
       </section>
     </Fragment>

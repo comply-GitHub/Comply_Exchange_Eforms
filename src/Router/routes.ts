@@ -118,6 +118,26 @@ const ThankYou_Eci = React.lazy(
   () => import("../Components/W-8ECI/Thankyou_eci")
 );
 
+const Tax_dualCert_Eci = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/TaxDualCert")
+);
+
+
+const Certi_dualCert_Eci = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/CertificationDualCert")
+);
+
+const Perti_dualCert_Eci = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/PenalitiesDualCert")
+);
+
+const Submit_dualCert_Eci = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/Submit_DualCert_Eci")
+);
+const Thankyou_dualCert_Eci = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/ThankYou_DualCert")
+);
+
 const Formw9 = React.lazy(
   () => import("../formPDF/formw9")
 );
@@ -234,6 +254,43 @@ const ROUTES: Array<RouteType> = [
     Component: Certification_DC_BEN,
     isPrivate: true,
   },
+  {
+    name: "Tax_dualCert_Eci",
+    path: "/Tax_dualCert_Eci",
+    id: 2,
+    Component: Tax_dualCert_Eci,
+    isPrivate: true,
+  },
+  {
+    name: "Certi_dualCert_Eci",
+    path: "/Certi_dualCert_Eci",
+    id: 2,
+    Component: Certi_dualCert_Eci,
+    isPrivate: true,
+  },
+  {
+    name: "Perti_dualCert_Eci",
+    path: "/Perti_dualCert_Eci",
+    id: 2,
+    Component: Perti_dualCert_Eci,
+    isPrivate: true,
+  },
+  {
+    name: "Submit_dualCert_Eci",
+    path: "/Submit_dualCert_Eci",
+    id: 2,
+    Component: Submit_dualCert_Eci,
+    isPrivate: true,
+  },
+  {
+    name: "Thankyou_dualCert_Eci",
+    path: "/Thankyou_dualCert_Eci",
+    id: 2,
+    Component: Thankyou_dualCert_Eci,
+    isPrivate: true,
+  },
+
+  //Tax_dualCert_Eci
   {
     name: "Susbtantial_BEN",
     path: "/Susbtantial_BEN",

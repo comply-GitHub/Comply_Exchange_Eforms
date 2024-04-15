@@ -15,17 +15,17 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik } from "formik";
-import { W8_state_ECI, PostDualCert, GetHelpVideoDetails } from "../../../Redux/Actions";
-import { certificateSchema_w9_DC } from "../../../schemas/w8Exp";
+import { W8_state_ECI, PostDualCert, GetHelpVideoDetails } from "../../../../Redux/Actions";
+import { certificateSchema_w9_DC } from "../../../../schemas/w8Exp";
 import InfoIcon from "@mui/icons-material/Info";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useNavigate } from "react-router-dom";
-import BreadCrumbComponent from "../../reusables/breadCrumb";
-import View_Insructions from "../../viewInstruction";
+import BreadCrumbComponent from "../../../reusables/breadCrumb";
+import View_Insructions from "../../../viewInstruction";
 import { useLocation } from "react-router-dom";
-import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
-import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
+import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 
 export default function Certifications(props: any) {
   const location = useLocation();
@@ -34,8 +34,8 @@ export default function Certifications(props: any) {
   const urlValue = location.pathname.substring(1);
   const initialValue = {
 
-    confirmThisisaTrueAndAccurate: false,
-    confirmYouhaveRewiedElectronicForm:false,
+    confirmThisisaTrueAndAccurate:PrevStepData?.confirmThisisaTrueAndAccurate || false,
+    confirmYouhaveRewiedElectronicForm:PrevStepData?.confirmYouhaveRewiedElectronicForm || false,
 
   };
 
@@ -138,11 +138,11 @@ export default function Certifications(props: any) {
                   const submitPromise = new Promise((resolve, reject) => {
                     setSubmitting(true);
                      
-                    const result = [{ ...PrevStepData[0], ...values,stepName: `/${urlValue}` }];
+                    const result = [{ ...PrevStepData, ...values,stepName: `/${urlValue}` }];
                     dispatch(
                       PostDualCert(result, () => {
                         localStorage.setItem("DualCertData", JSON.stringify(result))
-                        history("/Participation_W9_DC")
+                        history("/Perti_dualCert_Eci")
                       
                         resolve("");
                       },
@@ -230,7 +230,11 @@ Section 4: Declaration and Undertaking
                             Check to confirm this is a true and accurate statement
                             </Typography>
                           </Typography>
-                          <p className="error">{errors.confirmThisisaTrueAndAccurate}</p>
+                          {errors?.confirmThisisaTrueAndAccurate && typeof errors?.confirmThisisaTrueAndAccurate === 'string' && (
+                                <p className="error">{errors?.confirmThisisaTrueAndAccurate}</p>
+                              )}
+
+                         
                           <Typography style={{ display: "flex" }}>
 
                             <Checkbox name="confirmYouhaveRewiedElectronicForm"
@@ -252,7 +256,9 @@ Section 4: Declaration and Undertaking
                               </span>
                             </Typography>
                           </Typography>
-                          <p className="error">{errors.confirmYouhaveRewiedElectronicForm}</p>
+                          {errors?.confirmYouhaveRewiedElectronicForm && typeof errors?.confirmYouhaveRewiedElectronicForm === 'string' && (
+                                <p className="error">{errors?.confirmYouhaveRewiedElectronicForm}</p>
+                              )}
                          
                         
                         </div>
@@ -293,7 +299,6 @@ Section 4: Declaration and Undertaking
                             }).catch((err) => {
                               console.log(err);
                             })
-                              
                           }} formTypeId={FormTypeId.W9} />
                         <Button
 

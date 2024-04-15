@@ -1109,22 +1109,24 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                         SAVE & EXIT
                       </Button> */}
 
-                      {/* <SaveAndExit Callback={() => {
+                      <SaveAndExit Callback={() => {
                         submitForm().then(() => {
                           const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                           const urlValue = window.location.pathname.substring(1);
                           dispatch(PostDualCert(
                             {
-                              ...values,
-                              ...prevStepData,
-                              stepName: `/${urlValue}`
+                                ...prevStepData,
+                                ...values,
+                                stepName: `/${urlValue}`
                             }
-                            , () => { }))
-                          history(
-                            GlobalValues.basePageRoute
-                          );
+                            , () => { }, 
+                            () => { }) 
+                        );
+                          history(GlobalValues.basePageRoute)
+                        }).catch((err) => {
+                          console.log(err);
                         })
-                      }} formTypeId={FormTypeId.BEN} ></SaveAndExit> */}
+                      }} formTypeId={FormTypeId.BEN} ></SaveAndExit>
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}

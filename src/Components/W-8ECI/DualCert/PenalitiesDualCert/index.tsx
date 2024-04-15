@@ -1,134 +1,132 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Button,
   TextField,
   Paper,
+  Accordion,
+  FormControlLabel,
+  AccordionSummary,
+  AccordionDetails,
   Checkbox,
   Tooltip,
   Link,
-  FormControl,
   Input,
 } from "@mui/material";
-import "./index.scss"
 import { useLocation } from "react-router-dom";
-import Infoicon from "../../../assets/img/info.png";
 import { Info } from "@mui/icons-material";
-import DatePicker from "react-date-picker";
-import "react-date-picker/dist/DatePicker.css";
-import "react-calendar/dist/Calendar.css";
+import checksolid from "../../../assets/img/check-solid.png";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InfoIcon from "@mui/icons-material/Info";
-import { GetHelpVideoDetails, PostDualCert } from "../../../Redux/Actions"
-import Declaration from "../../reusables/Declaration";
+import Infoicon from "../../../../assets/img/info.png";
 import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { W8_state } from "../../../Redux/Actions";
-import {  useNavigate } from "react-router";
 import { ContentCopy } from "@mui/icons-material";
-import checksolid from "../../../assets/img/check-solid.png";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { partCertiSchema } from "../../../schemas/w8Ben";
-import BreadCrumbComponent from "../../reusables/breadCrumb";
-import moment from "moment";
-import SecurityCodeRecover from "../../Reusable/SecurityCodeRecover";
-import useAuth from "../../../customHooks/useAuth";
-import SaveAndExit from "../../Reusable/SaveAndExit/Index";
-import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
-type ValuePiece = Date | null;
-console.log(Date, "date");
-type Value2 = ValuePiece | [ValuePiece, ValuePiece];
+import { useNavigate } from "react-router";
+import { partCertiSchema } from "../../../../schemas/w8ECI";
+import { W8_state_ECI, GetHelpVideoDetails, PostDualCert } from "../../../../Redux/Actions";
+import BreadCrumbComponent from "../../../reusables/breadCrumb";
+import useAuth from "../../../../customHooks/useAuth";
+import SecurityCodeRecover from "../../../Reusable/SecurityCodeRecover";
+import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
+import { GetEciPdf } from "../../../../Redux/Actions/PfdActions";
 export default function Penalties() {
-
+  const location = useLocation();
   const { authDetails } = useAuth();
   const [open2, setOpen2] = useState(false);
   const handleClickOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
   const [expanded, setExpanded] = React.useState<string | false>("");
-  const [showRecoverSection, setShowRecoverSection] = useState(false);
-  const [isSecurityWordMatched, setIsSecurityWordMatched] = useState(false);
-  const [securityWordError, setSecurityWordError] = useState("");
-  const [value, onChange] = useState<Value2>(null);
-  const toggleRecoverSection = () => {
-    setShowRecoverSection((prev) => !prev);
+  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+  const W8ECIData = useSelector((state: any) => state.W8ECI);
 
-    setSecurityWordError("");
-  };
-  useEffect(()=>{
-    document.title = "Certifications II"
-  },[])
-  useEffect(() => {
-    dispatch(GetHelpVideoDetails());
-  }, [])
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
-  const [toolInfo, setToolInfo] = useState("");
+  const [showRecoverSection, setShowRecoverSection] = useState(false);
+  const [isSecurityWordMatched, setIsSecurityWordMatched] = useState(false);
+  const [securityWordError, setSecurityWordError] = useState("");
 
-  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
-  console.log(PrevStepData,";;")
-  const W9Data = useSelector((state: any) => state.W9Data);
+  const showHideRecoverSection = (data: boolean) => {
+    setShowRecoverSection(data);
+  }
+  const toggleRecoverSection = () => {
+    setShowRecoverSection(!showRecoverSection);
+    setSecurityWordError("");
+  };
+
+  useEffect(() => {
+    document.title = "Certfication II"
+  }, [])
+
+  useEffect(() => {
+    dispatch(GetHelpVideoDetails());
+  }, []);
+  const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
-  const initialValue = {
-    signedBy: W9Data?.signedBy ?? "",
-    confirmationCode: W9Data?.confirmationCode ?? "",
-    securityCode: W9Data?.confirmationCode ?? "",
-    date: W9Data?.date ?? new Date().toLocaleDateString('en-US', {
+  const [initialValue, setInitialValues] = useState({
+    signedBy: W8ECIData?.signedBy ?? "",
+    confirmationCode: W8ECIData?.confirmationCode ?? "",
+    date: new Date().toLocaleDateString('en-US', {
       month: '2-digit',
       day: '2-digit',
       year: 'numeric',
     }),
-    isCheckAcceptance: W9Data?.isCheckAcceptance ? true : false
-  };
-  const location = useLocation();
-  const dispatch = useDispatch();
-  const history = useNavigate();
-  const [clickCount, setClickCount] = useState(0);
+    isAcceptanceDeclarations: W8ECIData?.isAcceptanceDeclarations ?? false
+  });
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
   const urlValue = location.pathname.substring(1);
+  const [clickCount, setClickCount] = useState(1);
+  const dispatch = useDispatch();
+  const history = useNavigate();
+
   const viewPdf = () => {
-    history("/w8BenE_pdf", { replace: true });
+    history("/w8Eci_pdf", { replace: true });
   }
+
   return (
     <>
       <Formik
         validateOnChange={true}
         validateOnBlur={true}
         initialValues={initialValue}
+        enableReinitialize
+        validateOnMount={true}
         validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
+          setSubmitting(true);
+          let temp = {
+            ...PrevStepData[0],
+            ...values,
+            AccountHolderDetailsId:authDetails?.accountHolderId,
+            date: new Date().toISOString(),
+            stepName: `/${urlValue}`
+          };
           const returnPromise = new Promise((resolve, reject) => {
-
-            const temp = [{
-              ...PrevStepData[0], 
-              ...values,
-              date: new Date().toISOString(),
-              stepName: `/${urlValue}`
-            }]
             dispatch(
-              PostDualCert(temp, () => {
-                setSubmitting(true);
-                localStorage.setItem("DualCertData", JSON.stringify(temp))
-              
-                
-                resolve("success")
-              }, (err: any) => {
-                reject(err);
-              })
+              PostDualCert(
+                [temp],
+                (res: any) => {
+                  localStorage.setItem(
+                    "DualCertData",
+                    JSON.stringify(temp)
+                  );
+
+                  resolve(res);
+                },
+                (err: any) => {
+                  reject(err);
+                }
+              )
             );
-
-
-          })
-
+          });
           return returnPromise;
-        }
-        }
+
+        }}
       >
         {({
           errors,
@@ -139,31 +137,33 @@ export default function Penalties() {
           handleChange,
           isSubmitting,
           setFieldValue,
-          isValid,
-          submitForm
-
+          submitForm,
+          isValid
         }) => (
           <Form onSubmit={handleSubmit}>
-            <>{console.log(values, "val", errors, "err")}</>
+            <>{console.log(values, "values")}</>
+            <>{console.log(errors, "errors")}</>
             <section
               className="inner_content"
-              style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
+              style={{ backgroundColor: "#0c3d69", }}
             >
               <div className="overlay-div">
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
-                  <div className="viewform">View Form</div>
+                  <div className="viewform" onClick={() => {
+                    dispatch(GetEciPdf(authDetails?.accountHolderId))
+                  }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
-                    {GethelpData && GethelpData[3].id === 5 ? (
+                    {GethelpData && GethelpData[5].id === 7 ? (
                       <a
-                        href={GethelpData[3].fieldValue}
+                        href={GethelpData[5].fieldValue}
                         target="popup"
                         onClick={() =>
                           window.open(
-                            GethelpData[3].fieldValue,
+                            GethelpData[5].fieldValue,
                             'name',
-                            `width=${GethelpData[3].width},height=${GethelpData[3].height},top=${GethelpData[3].top},left=${GethelpData[3].left}`
+                            `width=${GethelpData[5].width},height=${GethelpData[5].height},top=${GethelpData[5].top},left=${GethelpData[5].left}`
                           )
                         }
                       >
@@ -175,19 +175,17 @@ export default function Penalties() {
                   </div>
                 </div>
               </div>
-              <div className="row w-100 ">
+              <div className="row w-100">
                 <div className="col-4">
                   <div style={{ padding: "20px 0px", height: "100%" }}>
-                    <BreadCrumbComponent breadCrumbCode={1285} formName={3} />
-
+                    <BreadCrumbComponent breadCrumbCode={1301} formName={4} />
                   </div>
                 </div>
                 <div className="col-8 mt-3">
 
-                  <div style={{ padding: "14px" }}>
-                    <Paper style={{ padding: "10px" }}>
-
-                      {obValues.uniqueIdentifier !== values.signedBy && clickCount === 1 ? (
+                  <div style={{ padding: "13px" }}>
+                    <Paper style={{ padding: "18px" }}>
+                      {obValues.uniqueIdentifier !== values.signedBy && touched.signedBy && clickCount === 1 ? (
                         <div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                           <Typography>
                             SIG101
@@ -196,12 +194,8 @@ export default function Penalties() {
                                 color: "#ffc107", height: "22px",
                                 width: "20px",
                                 boxShadow: "inherit",
-
-
-
                                 cursor: "pointer",
                                 marginBottom: "3px"
-
                               }} />
 
                               You have entered an electronic signature name that is different to the one expected
@@ -221,7 +215,7 @@ export default function Penalties() {
                           fontWeight: "550",
                         }}
                       >
-                         Certification<span style={{ color: "red" }}>*</span>
+                      Certification<span style={{ color: "red" }}>*</span>
                       </Typography>
                       <Typography
                         align="left"
@@ -231,7 +225,7 @@ export default function Penalties() {
                           fontWeight: "550",
                         }}
                       >
-                       SelfCert Individual Electronic Substitute Form Statement
+                       Self Cert Individual Electronic Substitute Form Statement
                       </Typography>
                       <Typography
                         align="left"
@@ -246,7 +240,6 @@ export default function Penalties() {
                         className="row"
                         style={{
                           margin: "10px",
-
                           marginTop: "20px",
                         }}
                       >
@@ -323,7 +316,7 @@ export default function Penalties() {
                                 <Link
                                   href="#"
                                   underline="none"
-                                  style={{ marginTop: "10px", fontSize: "16px" }}
+                                  style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7"}}
                                   onClick={() => {
                                     setToolInfo("");
                                   }}
@@ -347,7 +340,7 @@ export default function Penalties() {
                             onChange={handleChange}
                             error={Boolean(touched.signedBy && errors.signedBy)}
                           />
-                          <p className="error">{typeof (errors.signedBy) === "string" ? errors.signedBy : ""}</p>
+                          <p className="error">{touched.signedBy ? errors.signedBy?.toString() : ""}</p>
                         </div>
 
                         <div className="col-md-6 col-12">
@@ -416,7 +409,7 @@ export default function Penalties() {
                                 <Link
                                   href="#"
                                   underline="none"
-                                  style={{ marginTop: "10px", fontSize: "16px" }}
+                                  style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                                   onClick={() => {
                                     setToolInfo("");
                                   }}
@@ -436,7 +429,12 @@ export default function Penalties() {
                               name="confirmationCode"
                               value={values.confirmationCode}
                               onBlur={handleBlur}
-                              onChange={handleChange}
+                              onChange={(e) => {
+                                handleChange(e)
+                                setTimeout(() => {
+                                  setShowRecoverSection(false)
+                                }, 200);
+                              }}
                               error={Boolean(
                                 touched.confirmationCode && errors.confirmationCode
                               )}
@@ -455,7 +453,7 @@ export default function Penalties() {
                             >
                               Recover Password
                             </span>
-                            <p className="error">{touched.confirmationCode && typeof (errors.confirmationCode) == "string" ? errors.confirmationCode : ""}</p>
+                            <p className="error">{touched.confirmationCode ? errors.confirmationCode?.toString() : ""}</p>
                           </div>
                         </div>
                       </div>
@@ -556,14 +554,8 @@ export default function Penalties() {
                             OK
                           </Button>
                         </Typography> */}
-
-                          <SecurityCodeRecover setRecoverPassword={setShowRecoverSection} ></SecurityCodeRecover>
-
-                        </div>
-                        )}
-
-
-
+                          <SecurityCodeRecover setRecoverPassword={showHideRecoverSection} hideBack={true}></SecurityCodeRecover>
+                        </div>)}
                       <div
                         className="row"
                         style={{
@@ -572,42 +564,33 @@ export default function Penalties() {
                           marginTop: "20px",
                         }}
                       >
-                        <div className="col-12 col-md-6 p-0">
+                        <div className="col-6 col-md-6 p-0">
                           <Typography align="left" style={{ padding: "0px" }}>
                             <Typography style={{ fontSize: "15px" }}>
                               Date
                             </Typography>
-                            {/* <TextField */}
-                            <FormControl style={{ width: "100%" }}>
-                              <Input
-                                className="inputTextField"
-                                id="outlined"
-                                fullWidth
-                                name="date"
-                                value={
-                                  new Date().toLocaleDateString('en-US', {
-                                    month: '2-digit',
-                                    day: '2-digit',
-                                    year: 'numeric',
-                                  })
-                                }
-                                onBlur={handleBlur}
-                                readOnly={true}
-                              />
+                            <Input
+                              className="inputTextField"
+                              id="outlined"
+                              fullWidth
+                              name="date"
+                              value={
+                                values.date
+                              }
+                              onBlur={handleBlur}
+                              disabled
+                            />
 
-                            </FormControl>
-
-                            {/* /> */}
-                            {/* <p className="error">{errors.date}</p> */}
+                            {/* {values.date ?(""):<p className="error">{errors.date}</p>} */}
                           </Typography>
                         </div>
                       </div>
 
                       <Typography style={{ display: "flex", marginLeft: "10px" }}>
                         <Checkbox
-                          name="isCheckAcceptance"
-                          value={values.isCheckAcceptance}
-                          checked={values.isCheckAcceptance}
+                          name="isAcceptanceDeclarations"
+                          value={values.isAcceptanceDeclarations}
+                          checked={values.isAcceptanceDeclarations}
                           onChange={handleChange}
                         />
                         <Typography
@@ -619,16 +602,7 @@ export default function Penalties() {
                         >
                           Please "check" box to confirm your acceptance with the
                           above declarations{" "}
-                          {errors.isCheckAcceptance &&
-                            touched.isCheckAcceptance ? (
-                            <div>
-                              <Typography color="error">
-                                {errors.isCheckAcceptance}
-                              </Typography>
-                            </div>
-                          ) : (
-                            ""
-                          )}
+
                           <span>
                             <Tooltip
                               style={{ backgroundColor: "black", color: "white" }}
@@ -662,6 +636,16 @@ export default function Penalties() {
                               />
                             </Tooltip>
                           </span>
+                          {errors.isAcceptanceDeclarations &&
+                            touched.isAcceptanceDeclarations ? (
+                            <div>
+                              <Typography color="error">
+                                {touched.isAcceptanceDeclarations ? errors.isAcceptanceDeclarations.toString() : ""}
+                              </Typography>
+                            </div>
+                          ) : (
+                            ""
+                          )}
                         </Typography>
                       </Typography>
                       {toolInfo === "check" ? (
@@ -704,7 +688,7 @@ export default function Penalties() {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" }}
+                              style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -724,66 +708,66 @@ export default function Penalties() {
                           marginTop: "40px",
                         }}
                       >
+                        <SaveAndExit Callback={() => {
+                          submitForm().then(() => {
+                            const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                            const urlValue = window.location.pathname.substring(1);
+                         
+                              dispatch(PostDualCert(
+                                {
+                                    ...prevStepData,
+                                    ...values,
+                                    stepName: `/${urlValue}`
+                                }
+                                , () => { }, 
+                                () => { }) 
+                            );
+                            history(
+                              GlobalValues.basePageRoute
+                            );
+                          })
+                        }} formTypeId={FormTypeId.W8ECI} />
                         <Button
-
-                          variant="contained"
-                          style={{ color: "white" }}
-                        >
-                          View Form
-                        </Button>
-                        {/* <Button
                           onClick={() => {
-                            setOpen2(true);
-                          }}
-                          variant="contained"
-                          style={{ color: "white", marginLeft: "15px" }}
-                        >
-                          SAVE & EXIT
-                        </Button> */}
-                        <div style={{ color: "white", marginLeft: "15px" }}>
-                          <SaveAndExit Callback={() => {
                             submitForm().then(() => {
-                              const prevStepData = JSON.parse(
-                                localStorage.getItem("PrevStepData") || "{}"
-                              );
-                              const urlValue =
-                                window.location.pathname.substring(1);
-                                dispatch(PostDualCert(
-                                  {
-                                      ...prevStepData,
-                                      ...values,
-                                      stepName: `/${urlValue}`
-                                  }
-                                  , () => { }, 
-                                  () => { }) 
-                              );
-                                history(GlobalValues.basePageRoute)
-                              }).catch((err) => {
-                                console.log(err);
-                              })
-                            
-                             
-                          }} formTypeId={FormTypeId.BENE} />
-                        </div>
-
-
-                        <Button
-                          //type="submit"
-                          onClick={() => {
-                            submitForm().then((data: any) => {
-                              history("/Submit_W9_DC");
-                            }).catch(() => {
-
+                              history("/Submit_dualCert_Eci");
                             })
                           }}
-                          disabled={!isValid || !values.isCheckAcceptance}
+                          // type="submit"
+                          disabled={!isValid}
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                         >
                           Submit Electronically
                         </Button>
                       </div>
-                    
+                      <Typography
+                        align="center"
+                        style={{
+                          color: "#505E50",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginTop: "20px",
+                        }}
+                      >
+                        Do you want to go back?
+                      </Typography>
+                      <Typography align="center">
+                        <Button
+                          onClick={() => {
+                            history("/W-8ECI/Certification")
+                          }}
+                          variant="contained"
+                          style={{
+                            color: "white",
+                            backgroundColor: "black",
+                            marginTop: "10px",
+                            marginBottom: "20px",
+                          }}
+                        >
+                          Back
+                        </Button>
+                      </Typography>
                     </Paper>
                   </div>
                 </div>
@@ -791,14 +775,13 @@ export default function Penalties() {
             </section>
           </Form>
         )}
-      </Formik >
-
-      <Declaration
+      </Formik>
+      {/* <Declaration
         open={open2}
         setOpen={setOpen2}
         handleClickOpen={handleClickOpen2}
         handleClose={handleClose2}
-      />
+      /> */}
     </>
   );
 }
