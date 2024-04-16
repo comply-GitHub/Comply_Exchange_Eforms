@@ -48,9 +48,19 @@ import SubstantialUsPassiveNFE from "./SubstantialUsPassiveNFE";
 import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
+const handleChange = (event: { target: { name: string; }; }) => {
+  setSelectedValue(event.target.name);
+  // Simulate some async operation that affects fields
+  setTimeout(() => {
+    // Reset selected value to allow selection of other options after 2 seconds
+    setSelectedValue('');
+  }, 2000);
+};
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const { authDetails } = useAuth();
+  const [selectedValue, setSelectedValue] = useState('');
+
   const {
     handleTaxClassificationChange,
     selectedTaxClassification,
@@ -58,6 +68,7 @@ export default function Fedral_tax(props: any) {
     handleChange,
     setselectedContinue,
   } = props;
+
 
   const [initialValue, setInitialValues] = useState({
     chapter4Status: 0,
@@ -82,14 +93,23 @@ export default function Fedral_tax(props: any) {
     isCertify38Entity: false,
     isCertify27Entity: false,
     isCertify28aEntity: false,
+    isCertify29aEntity: false,
+    isCertify29bEntity: false,
+    isCertify29cEntity: false,
+    isCertify29dEntity: false,
+    isCertify29eEntity: false,
+    isCertify29fEntity: false,
     isCertify28bEntity: false,
     isCertify36Entity: false,
     isCertify26Entity: false,
     iGAbetweenUnitedStates: 0,
     iGA: "",
     istreated: 0,
-    istreated24:"",
+    istreated24: "",
     otherTreated: "",
+    trustee: "",
+    sponsor: "",
+    neither: "",
     isCertify24aFFIPart1: false,
     isCertify24bFFIPart1: false,
     isCertify24cFFIPart1: false,
@@ -126,7 +146,12 @@ export default function Fedral_tax(props: any) {
       ...PrevStepData,
       ...W8BENEData
     }
-    setInitialValues({ ...initialValue, ...temp });
+    setInitialValues({
+      ...initialValue, ...temp,
+      trustee: temp.trustee ? "Yes" : "",
+      sponsor: temp.sponsor ? "Yes" : "",
+      neither: temp.neither ? "Yes" : "",
+    });
 
   }
 
@@ -268,6 +293,9 @@ export default function Fedral_tax(props: any) {
                       accountHolderBasicDetailId: authDetails.accountHolderId,
                       ...PrevStepData,
                       ...values,
+                      trustee: values.trustee == "Yes",
+                      sponsor: values.sponsor == "Yes",
+                      neither: values.neither == "Yes",
                       stepName: null
                     };
                     const returnPromise = new Promise((resolve, reject) => {
@@ -1313,6 +1341,196 @@ export default function Fedral_tax(props: any) {
                               </>
 
                             ) : ""}
+                            {values.chapter4Status == 19 ? (
+                              <>
+                                <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
+                                  Part XV <span style={{ fontWeight: "bold", marginLeft: "10px" }}> Exempt Retirement Plans</span>
+
+                                </Typography>
+                                <span>
+                                  Check box 29a, b, c, d, e, or f, whichever applies:
+                                </span>
+                                <div className="d-flex mt-3">
+                                  <Typography className="mt-2" style={{ marginTop: "10px" }}>
+                                    29 a
+                                  </Typography>
+                                  <Typography>
+                                    <Checkbox 
+                                    // disabled={values.isCertify29aEntity}
+                                     name="isCertify29aEntity" value={values.isCertify29aEntity} checked={values.isCertify29aEntity}
+                                     onChange={handleChange}/>
+                                  </Typography>
+                                  <Typography className="mt-2">
+                                    I certify that the entity identified in Part I:
+                                  </Typography>
+                                </div>
+                                <Paper style={{ backgroundColor: "#e3e3e3", padding: "10px" }}>
+                                  <Typography className="my-2">
+                                    <>
+                                      Is established in a country with which the United States has an income tax treaty in force (see Part III if claiming treaty benefits);
+                                      <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                      Is operated principally to administer or provide pension or retirement benefits; and
+                                      <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                      Is entitled to treaty benefits on income that the fund derives from U.S. sources (or would be entitled to benefits if it derived any such income) as a resident of the other country which satisfies any applicable limitation on benefits requirement.
+                                    </>
+
+                                  </Typography>
+                                </Paper>
+                                <div className="d-flex mt-3">
+                                  <Typography className="mt-2" style={{ marginTop: "10px" }}>
+                                    b
+                                  </Typography>
+                                  <Typography>
+                                    <Checkbox 
+                                    //  disabled={values.isCertify29bEntity} 
+                                    name="isCertify29bEntity" value={values.isCertify29bEntity} checked={values.isCertify29bEntity}
+                                    onChange= {handleChange} />
+                                  </Typography>
+                                  <Typography className="mt-2">
+                                    I certify that the entity identified in Part I :
+                                  </Typography>
+                                </div>
+
+                                <Paper style={{ backgroundColor: "#e3e3e3", padding: "10px" }}>
+                                  <Typography className="my-2">
+                                    Is organized for the provision of retirement, disability, or death benefits (or any combination thereof) to beneficiaries that are former employees of one or more employers in consideration for services rendered;
+                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                    No single beneficiary has a right to more than 5% of the FFI's assets;
+                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                    Is subject to government regulation and provides annual information reporting about its beneficiaries to the relevant tax authorities in the country in which the fund is established or operated; and
+                                    Is generally exempt from tax on investment income under the laws of the country in which it is established or operates due to its status as a retirement or pension plan;
+                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                    Receives at least 50% of its total contributions from sponsoring employers (disregarding transfers of assets from other plans described in this part, retirement and pension accounts described in an applicable Model 1 or Model 2 IGA, other retirement funds described in an applicable Model 1 or Model 2 IGA, or accounts described in
+                                    <Typography>
+                                      <Link style={{ textDecorationLine: "none", marginLeft: "5px" }}>
+                                        Regulations section 1.1471-5(b)(2)(i)(A)
+                                      </Link>
+                                    </Typography>
+                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                    Either does not permit or penalizes distributions or withdrawals made before the occurrence of specified events related to retirement, disability, or death (except rollover distributions to accounts described in
+                                    <Typography>
+                                      <Link style={{ textDecorationLine: "none", marginLeft: "5px" }}>
+                                        Regulations section 1.1471-5(b)(2)(i)(A)
+                                      </Link>
+                                    </Typography>
+                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                    (referring to retirement and pension accounts), to retirement and pension accounts described in an applicable Model 1 or Model 2 IGA, or to other retirement funds described in this part or in an applicable Model 1 or Model 2 IGA); or
+                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                    Limits contributions by employees to the fund by reference to earned income of the employee or may not exceed $50,000 annually.
+
+                                  </Typography>
+                                </Paper>
+                                <div className="d-flex mt-3">
+                                  <Typography className="mt-2" style={{ marginTop: "10px" }}>
+                                    c
+                                  </Typography>
+                                  <Typography>
+                                    <Checkbox
+                                    //  disabled={values.isCertify29cEntity}
+                                      name="isCertify29cEntity" value={values.isCertify29cEntity} checked={values.isCertify29cEntity}
+                                     onChange = {handleChange} />
+                                  </Typography>
+                                  <Typography className="mt-2">
+                                    I certify that the entity identified in Part I :
+                                  </Typography>
+                                </div>
+                                <Paper style={{ backgroundColor: "#e3e3e3", padding: "10px" }}>
+                                  <Typography className="my-2">
+                                    Is organized for the provision of retirement, disability, or death benefits (or any combination thereof) to beneficiaries that are former employees of one or more employers in consideration for services rendered;
+                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                    Has fewer than 50 participants;
+                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                    Is sponsored by one or more employers each of which is not an investment entity or passive NFFE;
+                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                    Employee and employer contributions to the fund (disregarding transfers of assets from other plans described in this part, retirement and pension accounts described in an applicable Model 1 or Model 2 IGA, or accounts described in
+                                    <Typography>
+                                      <Link style={{ textDecorationLine: "none", marginLeft: "5px" }}>
+                                        Regulations section 1.1471-5(b)(2)(i)(A)
+                                      </Link>  are limited by reference to earned income and compensation of the employee, respectively;
+                                    </Typography>
+                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                    Participants that are not residents of the country in which the fund is established or operated are not entitled to more than 20% of the fund's assets; and
+                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                    Is subject to government regulation and provides annual information reporting about its beneficiaries to the relevant tax authorities in the country in which the fund is established or operates.
+                                  </Typography>
+                                </Paper>
+                                <div className="d-flex mt-3">
+                                  <Typography className="mt-2" style={{ marginTop: "10px" }}>
+                                    d
+                                  </Typography>
+                                  <Typography>
+                                    <Checkbox 
+                                    // disabled={values.isCertify29dEntity} 
+                                    name="isCertify29dEntity" value={values.isCertify29dEntity} checked={values.isCertify29dEntity}
+                                     onChange = {handleChange} />
+                                  </Typography>
+                                  <Typography className="mt-2">
+                                    I certify that the entity identified in Part I :
+                                  </Typography>
+                                </div>
+                                <Paper style={{ backgroundColor: "#e3e3e3", padding: "10px" }}>
+                                  <Typography className="my-2">
+                                    is formed pursuant to a pension plan that would meet the requirements of section 401(a), other than the requirement that the plan be funded by a trust created or organized in the United States.
+                                  </Typography>
+                                </Paper>
+                                <div className="d-flex mt-3">
+                                  <Typography className="mt-2" style={{ marginTop: "10px" }}>
+                                    e
+                                  </Typography>
+                                  <Typography>
+                                    <Checkbox
+                                    //  disabled={values.isCertify29eEntity} 
+                                     name="isCertify29eEntity" value={values.isCertify29eEntity} checked={values.isCertify29eEntity}
+                                      onChange = {handleChange} />
+                                  </Typography>
+                                  <Typography className="mt-2">
+                                    I certify that the entity identified in Part I :
+                                  </Typography>
+                                </div>
+                                <Paper style={{ backgroundColor: "#e3e3e3", padding: "10px" }}>
+                                  <Typography className="my-2">
+                                    is established exclusively to earn income for the benefit of one or more retirement funds described in this part or in an applicable Model 1 or Model 2 IGA, or accounts described in
+                                    <Typography>
+                                      <Link style={{ textDecorationLine: "none", marginLeft: "5px" }}>
+                                        Regulations section 1.1471-5(b)(2)(i)(A)
+                                      </Link>   (referring to retirement and pension accounts), or retirement and pension accounts described in an applicable Model 1 or Model 2 IGA.
+                                    </Typography>
+                                  </Typography>
+                                </Paper>
+                                <div className="d-flex mt-3">
+                                  <Typography className="mt-2" style={{ marginTop: "10px" }}>
+                                    f
+                                  </Typography>
+                                  <Typography>
+                                    <Checkbox 
+                                    // disabled={values.isCertify29fEntity} 
+                                    name="isCertify29fEntity" value={values.isCertify29fEntity} checked={values.isCertify29fEntity}
+                                      onChange = {handleChange} />
+                                  </Typography>
+                                  <Typography className="mt-2">
+                                    I certify that the entity identified in Part I :
+                                  </Typography>
+                                </div>
+                                <Paper style={{ backgroundColor: "#e3e3e3", padding: "10px" }}>
+                                  <Typography className="my-2">
+                                    Is established and sponsored by a foreign government, international organization, central bank of issue, or government of a U.S. possession (each as defined in
+                                    <Link style={{ textDecorationLine: "none", marginLeft: "5px" }}>
+                                      Regulations section 1.1471-6
+                                    </Link>
+                                    ) or an exempt beneficial owner described in an applicable Model 1 or Model 2 IGA to provide retirement, disability, or death benefits to beneficiaries or participants that are current or former employees of the sponsor (or persons designated by such employees); or
+                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                    Is established and sponsored by a foreign government, international organization, central bank of issue, or government of a U.S. possession (each as defined in
+                                    <Link style={{ textDecorationLine: "none", marginLeft: "5px" }}>
+                                      Regulations section 1.1471-6
+                                    </Link>  ) or an exempt beneficial owner described in an applicable Model 1 or Model 2 IGA to provide retirement, disability, or death benefits to beneficiaries or participants that are not current or former employees of such sponsor, but are in consideration of personal services performed for the sponsor.
+
+                                  </Typography>
+                                </Paper>
+                              </>
+
+
+
+                            ) : ""}
                             {values.chapter4Status == 23 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
@@ -1418,7 +1636,7 @@ export default function Fedral_tax(props: any) {
                                         width: "100%",
                                       }}
                                       name="iGAbetweenUnitedStates"
-                                      value = {values.iGAbetweenUnitedStates}
+                                      value={values.iGAbetweenUnitedStates}
                                       defaultValue={1}
                                       onBlur={handleBlur}
                                       onChange={handleChange}
@@ -1519,15 +1737,21 @@ export default function Fedral_tax(props: any) {
                                     {/* <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} /> */}
 
                                   </Typography>
+
                                   <FormControlLabel
                                     control={
                                       <Radio
                                         // checked={selectedValue === 'a'}
-                                        name="isCertify24a"
-                                        value={values.isCertify24a}
-                                        // checked = "{}"
+                                        checked={selectedValue === 'trustee'}
+                                        name="trustee"
+                                        value={"Yes"}
+                                        // onChange={(e) => {
+                                        //   handleChange(e)
+                                        //   setTimeout(() => {
+                                        //     setFieldValue("Trustee", false)
+                                        //   }, 2000);
+                                        // }}
                                         onChange={handleChange}
-                                        //inputProps={{ 'aria-label': 'A' }}
                                       />
                                     }
                                     label="Trustee"
@@ -1535,11 +1759,17 @@ export default function Fedral_tax(props: any) {
                                   <FormControlLabel
                                     control={
                                       <Radio
-                                        //checked={selectedValue === 'b'}
+                                        checked={selectedValue === 'Sponsor'}
+                                        name="sponsor"
+                                        value={"Yes"}
                                         onChange={handleChange}
-                                        name="isCertify24b"
-                                        value = {values.isCertify24b}
-                                        //inputProps={{ 'aria-label': 'B' }}
+                                      // onChange={(e) => {
+                                      //   handleChange(e)
+                                      //   setTimeout(() => {
+                                      //     setFieldValue("Sponsor", false)
+                                      //   }, 2000);
+                                      // }}
+                                      //inputProps={{ 'aria-label': 'B' }}
                                       />
                                     }
                                     label="Sponsor"
@@ -1547,66 +1777,80 @@ export default function Fedral_tax(props: any) {
                                   <FormControlLabel
                                     control={
                                       <Radio
-                                        //checked={selectedValue === 'b'}
+                                        checked={selectedValue === 'Niether'}
+                                        name="neither"
+                                        value={"Yes"}
                                         onChange={handleChange}
-                                        name="isCertify24c"
-                                        value={values.isCertify24c}
-                                        //inputProps={{ 'aria-label': 'C' }}
+                                      // onChange={(e) => {
+                                      //   handleChange(e)
+                                      //   setTimeout(() => {
+                                      //     setFieldValue("Niether", false)
+                                      //   }, 2000);
+                                      // }}
+                                      //inputProps={{ 'aria-label': 'C' }}
                                       />
                                     }
                                     label="Niether"
                                   />
-                                  <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
-                                  <Typography className="mt-2">
-                                    provide the name of the trustee or sponsor:
-                                    <span className="mx-2">
-                                      <FormControl>
-                                        <TextField
+                                  {(values.sponsor == "Yes" || values.trustee == "Yes") ? <>
+                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+                                    <Typography className="mt-2">
+                                      provide the name of the trustee or sponsor:
+                                      <span className="mx-2">
+                                        <FormControl>
+                                          <TextField
+                                            style={{
+                                              backgroundColor: "#fff",
+                                              fontStyle: "italic",
+                                            }}
+                                            name="nameSponsoringEntity24"
+                                            value={values.nameSponsoringEntity24}
+                                            onBlur={handleBlur}
+                                            onChange={handleChange}
+                                          />
+                                        </FormControl>
+                                      </span>
+                                    </Typography>
+
+                                  </> : <></>}
+
+                                  {(values.trustee == "Yes") ? <>
+                                    <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
+
+                                    <Typography className="my-2">
+                                      Is treated as a <span style={{ color: 'red' }}> *
+                                      </span>
+                                      <span>
+                                        <select
                                           style={{
-                                            backgroundColor: "#fff",
+                                            border: " 1px solid #d9d9d9 ",
+                                            padding: " 0 10px",
+                                            color: "#121112",
                                             fontStyle: "italic",
+                                            height: "50px",
+                                            width: "40%",
                                           }}
-                                          name="nameSponsoringEntity24"
-                                          value={values.nameSponsoringEntity24}
+                                          name="istreated24"
+                                          value={values.istreated24}
+                                          defaultValue={0}
                                           onBlur={handleBlur}
                                           onChange={handleChange}
-                                        />
-                                      </FormControl>
-                                    </span>
-                                  </Typography>
-                                  <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
-                                  <Typography className="my-2">
-                                    Is treated as a <span style={{ color: 'red' }}> *
-                                    </span>
-                                    <span>
-                                      <select
-                                        style={{
-                                          border: " 1px solid #d9d9d9 ",
-                                          padding: " 0 10px",
-                                          color: "#121112",
-                                          fontStyle: "italic",
-                                          height: "50px",
-                                          width: "40%",
-                                        }}
-                                        name="istreated24"
-                                        value={values.istreated24}
-                                        defaultValue={0}
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                      >
-                                        <option value={0}>---select---</option>
-                                        <option value={1}>U.S</option>
-                                        <option value={1}>Foreign</option>
+                                        >
+                                          <option value={0}>---select---</option>
+                                          <option value={1}>U.S</option>
+                                          <option value={1}>Foreign</option>
 
-                                      </select>
-                                    </span>
-                                    <span style={{ marginLeft: "6px" }}>
-                                      <span style={{ color: "red", verticalAlign: "super" }}>
-                                        *
+                                        </select>
                                       </span>
-                                    </span>
+                                      <span style={{ marginLeft: "6px" }}>
+                                        <span style={{ color: "red", verticalAlign: "super" }}>
+                                          *
+                                        </span>
+                                      </span>
 
-                                  </Typography>
+                                    </Typography>
+                                  </> : <></>}
+
                                 </Paper>
                               </>
 
@@ -2525,3 +2769,7 @@ export default function Fedral_tax(props: any) {
     </>
   );
 }
+function setSelectedValue(arg0: string) {
+  throw new Error("Function not implemented.");
+}
+
