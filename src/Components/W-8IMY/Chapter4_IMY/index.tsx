@@ -230,7 +230,6 @@ export default function Fedral_tax(props: any) {
     document.title = "Chapter IV"
   },[])
 
-  console.log("GetChapter4StatusesReducer",GetChapter4StatusesReducer)
   return (
     <>
       <section
@@ -286,22 +285,21 @@ export default function Fedral_tax(props: any) {
                       ...values,
                       stepName: null
                     };
-                    console.log(temp)
 
-                    // const returnPromise = new Promise((resolve, reject) => {
-                    //   dispatch(
-                    //     postW81MY_EForm(temp,
-                    //       (responseData: any) => {
-                    //         localStorage.setItem("PrevStepData", JSON.stringify(temp));
-                    //         resolve(responseData);
-                    //         //history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY");
-                    //       },
-                    //       (err: any) => {
-                    //         reject(err);
-                    //       }
-                    //     )
-                    //   );
-                    // })
+                    const returnPromise = new Promise((resolve, reject) => {
+                      dispatch(
+                        postW81MY_EForm(temp,
+                          (responseData: any) => {
+                            localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                            resolve(responseData);
+                            //history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY");
+                          },
+                          (err: any) => {
+                            reject(err);
+                          }
+                        )
+                      );
+                    })
 
                     // if (clickCount === 0) {
 
@@ -516,7 +514,73 @@ export default function Fedral_tax(props: any) {
                                   <select
                                     name="chapter4StatusId"
                                     value={values.chapter4StatusId}
-                                    onChange={handleChange}
+                                    onChange={(e) => {
+                                      handleChange(e);
+                                      setTimeout(() => {
+                                        setFieldValue("isPart1Nationalprincipalcontract",false);
+                                        setFieldValue("lessthan50perentitygrossincome",false);
+                                        setFieldValue("isnotengagedprimarilyintheBusinessofInvesting",false);
+                                        setFieldValue("istrustindentureorsimilaragreement",false);
+                                        setFieldValue("isPart1greaterthan5perintrest",false);
+                                        setFieldValue("sponsoringEntity","");
+                                        setFieldValue("isPart1FFIinvestmententity",false);
+                                        
+
+                                        setFieldValue("isPart1entityidentified",false);
+                                        setFieldValue("planofLuquidation","");
+                                        setFieldValue("isPart1Companyholdingentities",false);
+                                        setFieldValue("isPart1NonfinancialIdentified",false);
+                                        setFieldValue("dateofBoardresolution","");
+                                        setFieldValue("isPart1bonafideresidentspossession",false);
+                                        setFieldValue("isPart1Benefitsonincome",false);
+                                        setFieldValue("isrighttomorethan5PeroftheFFI",false);
+                                        setFieldValue("issponsoredbyoneormoreemployers",false);
+                                        setFieldValue("isformedpursuansection401a",false);
+                                        setFieldValue("isestablishedbenefitoneormoreRetFunds",false);
+                                        setFieldValue("isestablishedCentralbankofissue",false);
+                                        
+                                        setFieldValue("istreatedaspurposeofchapter4",false);
+                                        setFieldValue("isusingportionofthepaymentallocated",false);
+
+                                        setFieldValue("iscertifythatNonreportingIGAFFI",false);
+                                        setFieldValue("iGAbetweentheUnitedStatesAnd","");
+                                        setFieldValue("applicableIGA","");
+                                        setFieldValue("istreatedAs",false);
+                                        setFieldValue("istreatedAsOthers","");
+                                        setFieldValue("sponsoredEntityTrustee","");
+                                        setFieldValue("nameoftheTrustee","");
+                                        setFieldValue("thetrusteeIs","");
+
+                                        setFieldValue("isnotaffiliatedwithanentity",false);
+                                        setFieldValue("isProvidedFFIownerReportingstatement","");
+                                        setFieldValue("isProvidedAuditorsLetter","");
+
+                                        setFieldValue("isnotaFinancialInstitution",false);
+                                        setFieldValue("oneormoreEstablishedSecurities","");
+                                        setFieldValue("nameoftheEntityRegularyTraded","");
+                                        setFieldValue("ismemberofthesameExpandedaffiliatedGroup",false);
+                                        setFieldValue("nameoftheSecuritiesMarket","");
+
+                                        setFieldValue("isrequiredtoperformAML",false);
+                                        setFieldValue("hasbeenboundbyTerminatedAgreement",false);
+                                        setFieldValue("isprohibitiononthesaleofDebt",false);
+
+                                        setFieldValue("nameofDirectSponsoringEntity","");
+                                        setFieldValue("isadirectReportingNFFE",false);
+
+                                        setFieldValue("nameofSponsoringEntity","");
+                                        setFieldValue("hasagreedwiththeNonparticipatingFFI",false);
+                                        setFieldValue("IswhollyownedDirectlyIndirectlybytheUS",false);
+
+                                        setFieldValue("tFI18a",false);
+                                        setFieldValue("tFI18b",false);
+                                        setFieldValue("tFI18c",false);
+                                        setFieldValue("tFI18d",false);
+                                        setFieldValue("tFI18e",false);
+                                        setFieldValue("tFI18f",false);
+
+                                      }, 200);
+                                    }}
                                     onBlur={handleBlur}
                                     style={{
                                       padding: " 0 10px",

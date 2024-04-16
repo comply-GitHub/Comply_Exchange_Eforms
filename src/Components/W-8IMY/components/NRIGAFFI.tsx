@@ -4,7 +4,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import { Checkbox, Divider, FormControl, FormControlLabel, Paper, Radio, RadioGroup, TextField, Tooltip, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllCountries } from '../../../Redux/Actions';
+import { getAllCountries, getIGA } from '../../../Redux/Actions';
 
 export {};
 const NRIGAFFI = (props:any) => {
@@ -12,8 +12,10 @@ const NRIGAFFI = (props:any) => {
     const dispatch = useDispatch();
     useEffect(()=>{
       dispatch(getAllCountries())  
+      dispatch(getIGA())
     },[])
     const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer);
+    // const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer);
   return (
     <div style={{ padding: "10px", width: "100%" }}>
         <div>

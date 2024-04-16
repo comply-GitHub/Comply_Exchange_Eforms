@@ -81,7 +81,7 @@ const Login = () => {
             { ...data, isDefaultAgent },
             (resp: any) => {
               localStorage.setItem("userType", resp.userType);
-              localStorage.setItem("loginTime", JSON.stringify(15));
+              // localStorage.setItem("loginTime", JSON.stringify(15));
               // localStorage.setItem("loginTime", JSON.stringify(new Date()));
 
               // if (resp.userType === "GEN") {
@@ -124,7 +124,7 @@ const Login = () => {
               }
             )
           );
-          localStorage.setItem("loginTime", JSON.stringify(15));
+          // localStorage.setItem("loginTime", JSON.stringify(15));
           history(`/${res?.stepName}`);
         },
         (err: any) => {

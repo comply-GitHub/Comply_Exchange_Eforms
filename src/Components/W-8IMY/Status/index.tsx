@@ -486,7 +486,6 @@ export default function Fedral_tax(props: any) {
                                     value={values.chapter3StatusId}
                                     onChange={(e) => {
                                       handleChange(e);
-                                      console.log(e.target.value)
                                       setTimeout(() => { 
                                         //QDD form
                                         setFieldValue("isPart1Integral",false)
