@@ -2378,3 +2378,29 @@ export const postW81MY_EForm = (value: any, callback: Function, errorCallback: F
     );
   };
 };
+
+export const getIGA = (callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetIGA,
+      "",
+      (resData) => {
+        if (resData.status === 200) {
+          if (callback) {
+            callback(resData.data)
+          }
+          dispatch({
+            type: Utils.actionName.GetIGA,
+            payload: {
+              allIGAData: resData.data,
+            },
+          });
+
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};

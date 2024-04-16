@@ -30,7 +30,8 @@ const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType
   GetAllLanguage,
   GetDualCertW9,
   GetDual,
-  GetSettings
+  GetSettings,
+  GetIGA
 } = Utils.actionName
 
 
@@ -418,6 +419,15 @@ export const SpecialRateAndConditionIncomeTypesReducer = (state = initialState, 
   switch (action.type) {
     case UpsertSpecialRateAndConditionsIncomeTypes:
       return [ ...action.payload ];
+    default:
+      return state;
+  }
+};
+
+export const getIGAReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case GetIGA:
+      return { ...state, ...action.payload };
     default:
       return state;
   }

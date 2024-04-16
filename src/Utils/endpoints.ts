@@ -24,6 +24,7 @@ const EndPoint = {
   GetIncomeTypes:"/W9Common/GetIncomeTypeDefaults",
   GetAllHelpVideosDetails:"/HelpVideo/GetAllHelpVideos",
   GetAllLanguage:"/Language/GetAllLanguage",
+  GetIGA:"/Countries/GetIGA",
 
   //
   GetAgentCapacityHiddenForEform: "/WebAppBasic/GetAgentCapacityHiddenForEform",
