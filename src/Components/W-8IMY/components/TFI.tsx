@@ -10,8 +10,10 @@ const TFI = (props:any) => {
 
   return (
     <div style={{ padding: "10px", width: "100%" }}>
-        <div className="d-flex partParentDiv">
-            <h5 className="sub_title_inner"><span className="partSpan">Part V</span>  Territory Financial Institution</h5>
+        <div>
+        <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
+            Part V <span style={{ fontWeight: "bold", marginLeft: "10px" }}>Territory Financial Institution</span>
+        </Typography>
         </div>
 
         <Typography color="inherit">
@@ -20,9 +22,9 @@ const TFI = (props:any) => {
                 <Checkbox
                 className="mx-2"
                 onChange={props.handleChange}
-                value={props.values.isPart1lawsofterritoryofUS}
-                checked={props.values.isPart1lawsofterritoryofUS}
-                name="isPart1lawsofterritoryofUS"
+                value={props.values.tFI18a}
+                checked={props.values.tFI18a}
+                name="tFI18a"
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -54,12 +56,12 @@ const TFI = (props:any) => {
                 onChange={(e) => {
                     props.handleChange(e);
                     setTimeout(() => {
-                        props.setFieldValue("isPart1withholdablepayment", false)
+                        props.setFieldValue("tFI18c", false)
                     },200)
                 }}
-                value={props.values.isPart1EvidenceofChap3and4}
-                checked={props.values.isPart1EvidenceofChap3and4}
-                name="isPart1EvidenceofChap3and4"
+                value={props.values.tFI18b}
+                checked={props.values.tFI18b}
+                name="tFI18b"
                 size="medium"
                 style={{ fontSize: "2rem" }}
             />
@@ -91,12 +93,12 @@ const TFI = (props:any) => {
                 onChange={(e) => {
                     props.handleChange(e);
                     setTimeout(() => {
-                        props.setFieldValue("isPart1EvidenceofChap3and4", false)
+                        props.setFieldValue("tFI18b", false)
                     },200)
                 }}
-                value={props.values.isPart1withholdablepayment}
-                checked={props.values.isPart1withholdablepayment}
-                name="isPart1withholdablepayment"
+                value={props.values.tFI18c}
+                checked={props.values.tFI18c}
+                name="tFI18c"
                 size="medium"
                 style={{ fontSize: "2rem" }}
             />
@@ -145,9 +147,9 @@ const TFI = (props:any) => {
                 <Checkbox
                 className="mx-2"
                 onChange={props.handleChange}
-                value={props.values.isPart1regulationSec11446f4aiB}
-                checked={props.values.isPart1regulationSec11446f4aiB}
-                name="isPart1regulationSec11446f4aiB"
+                value={props.values.tFI18d}
+                checked={props.values.tFI18d}
+                name="tFI18d"
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -175,13 +177,13 @@ const TFI = (props:any) => {
                 onChange={(e) => {
                     props.handleChange(e);
                     setTimeout(() => {
-                        props.setFieldValue("partVNomineeforDistribution", false)
+                        props.setFieldValue("tFI18f", false)
                     },200)
                 }}
-                value={props.values.isPart1regulationSec11446f41vA}
-                checked={props.values.isPart1regulationSec11446f41vA}
-                disabled={props.values.isPart1regulationSec11446f4aiB ? false : true}
-                name="isPart1regulationSec11446f41vA"
+                value={props.values.tFI18e}
+                checked={props.values.tFI18e}
+                disabled={props.values.tFI18d ? false : true}
+                name="tFI18e"
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
@@ -211,13 +213,13 @@ const TFI = (props:any) => {
                 onChange={(e) => {
                     props.handleChange(e);
                     setTimeout(() => {
-                        props.setFieldValue("isPart1regulationSec11446f41vA", false)
+                        props.setFieldValue("tFI18e", false)
                     },200)
                 }}
-                value={props.values.partVNomineeforDistribution}
-                checked={props.values.partVNomineeforDistribution}
-                name="partVNomineeforDistribution"
-                disabled={props.values.isPart1regulationSec11446f4aiB ? false:true}
+                value={props.values.tFI18f}
+                checked={props.values.tFI18f}
+                name="tFI18f"
+                disabled={props.values.tFI18d ? false:true}
                 size="medium"
                 style={{ fontSize: "2rem" }}
                 />
