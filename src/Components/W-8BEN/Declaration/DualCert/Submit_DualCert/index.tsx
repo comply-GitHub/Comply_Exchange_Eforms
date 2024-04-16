@@ -61,18 +61,20 @@ const Declaration = (props: any) => {
               validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
                 console.log("values", values);
-                setSubmitting(true);
+            
                 const result = {
-                  ...PrevStepData, 
+                  ...PrevStepData[0], 
                   ...values,
                  
                   statusId: 1,
                 };
                 const returnPromise = new Promise((resolve, reject) => {
                 dispatch(
-                  PostDualCert(result, (data: any) => {
+                  PostDualCert([result], (data: any) => {
+                   
                     localStorage.setItem("DualCertData", JSON.stringify(result))
                     resolve(data);
+                    setSubmitting(true);
                   }
                     , (err: any) => {
                       reject(err);
@@ -81,7 +83,8 @@ const Declaration = (props: any) => {
                 );
               })
 
-
+              return returnPromise;
+            
             }}
             >
               {({

@@ -85,25 +85,33 @@ export const tinSchema = () => {
 
 export const TinSchema_W9_DC = () => {
   return Yup.object().shape({
-    // taxpayerIdTypeID: Yup.number().notOneOf([0], "This Field is Required.")
-    //   .required("This Field is Required.")
-    //   .notOneOf([0], "Required Field"),
-    // Tin: Yup.string().when("taxpayerIdTypeID", {
-    //   is: (taxpayerIdTypeID: any) =>
-    //     (taxpayerIdTypeID != 1 && taxpayerIdTypeID != 7 && taxpayerIdTypeID != 8),
-    //   then: () => Yup.string().required("Please enter TIN ")
-    // }),
-    entityWithMultipleTaxJurisdictions:Yup.string().required("Please Select One of option"),
+   
+    entityWithMultipleTaxJurisdictions: Yup.string().required("Please select one of the options"),
+   
+  });
+
+};
+
+export const TinSchema_DualCert = () => {
+  return Yup.object().shape({
+   
+    additionalTaxJurisdictions: Yup.string().required("Please select one of the options"),
+    // additionalTaxJurisdictions: Yup.string().notOneOf([""]).when(
+    //   'entityWithMultipleTaxJurisdictions', {
+    //     is: (entityWithMultipleTaxJurisdictions: any,) => 
+    //        entityWithMultipleTaxJurisdictions === "Yes",then:()=> Yup.string().notOneOf([""]).required("Please select one of the options"),
+    //   }),
+    
     isTinAvailable: Yup.boolean().when("entityWithMultipleTaxJurisdictions",{
-      is:(entityWithMultipleTaxJurisdictions : any )=> entityWithMultipleTaxJurisdictions === "Yes",then: () =>Yup.boolean().required("Please Select")
+      is:(entityWithMultipleTaxJurisdictions : any )=> entityWithMultipleTaxJurisdictions === "Yes",then: () =>Yup.boolean()
     }),
     countryId: Yup.number() .notOneOf([0]).when("entityWithMultipleTaxJurisdictions",{
       is:(entityWithMultipleTaxJurisdictions : any )=> entityWithMultipleTaxJurisdictions == "Yes",then: () =>Yup.number() .notOneOf([0]).required("Please Select one option")
     }),
-    TinNumber:Yup.string().when("entityWithMultipleTaxJurisdictions",{
-      is:(entityWithMultipleTaxJurisdictions : any )=> entityWithMultipleTaxJurisdictions == "Yes",then: () =>Yup.string().required("Please Enter TIN Number")
+    tinNumber:Yup.string().notOneOf([""]).when("entityWithMultipleTaxJurisdictions",{
+      is:(entityWithMultipleTaxJurisdictions : any )=> entityWithMultipleTaxJurisdictions == "Yes",then: () =>Yup.string().notOneOf([""]).required("Please Enter TIN Number")
     }),
-    notAvailableReason: Yup.string().when("notAvailable", {
+    notAvailableReason: Yup.string().when("isTinAvailable", {
       is: true,
       then: () =>
         Yup.string()

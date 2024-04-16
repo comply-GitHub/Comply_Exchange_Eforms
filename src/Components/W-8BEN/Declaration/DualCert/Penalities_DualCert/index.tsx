@@ -86,6 +86,7 @@ const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
     const GethelpData = useSelector(
       (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
     );
+    const { authDetails } = useAuth()
     const [clickCount, setClickCount] = useState(0);
     const [isSecurityWordMatched, setIsSecurityWordMatched] = useState(false);
     const [securityWordError, setSecurityWordError] = useState("");
@@ -126,6 +127,9 @@ const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
             const temp = [{
               ...PrevStepData, 
               ...values,
+              AccountHolderDetailsId:authDetails?.accountHolderId,
+              AgentId:authDetails?.agentId,
+              FormTypeID:FormTypeId.BEN,
               date: new Date().toISOString(),
               stepName: `/${urlValue}`
             }]
