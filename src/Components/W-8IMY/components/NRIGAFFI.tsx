@@ -15,7 +15,7 @@ const NRIGAFFI = (props:any) => {
       dispatch(getIGA())
     },[])
     const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer);
-    // const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer);
+    const getAllIga = useSelector((state:any) => state.getIGAReducer);
   return (
     <div style={{ padding: "10px", width: "100%" }}>
         <div>
@@ -47,7 +47,7 @@ const NRIGAFFI = (props:any) => {
             <Typography className="my-2" style={{ fontSize: "14px" }}>
             Meets the requirements to be considered a nonreporting financial institution pursuant to an IGA between the United States and
             <select
-            name="iGAbetweentheUnitedStatesAnd"
+            name="igAbetweentheUnitedStatesAnd"
             style={{
               border: " 1px solid #d9d9d9 ",
               padding: " 0 10px",
@@ -56,11 +56,13 @@ const NRIGAFFI = (props:any) => {
               height: "50px",
               width: "100%",
             }}
-            value={props.values.iGAbetweentheUnitedStatesAnd}
+            value={props.values.igAbetweentheUnitedStatesAnd}
             onBlur={props.handleBlur}
             onChange={props.handleChange}>
                 <option value="">--select country--</option>
+                <option value={257}>United Kingdom</option>
                 {getCountriesReducer.allCountriesData?.map((ele:any) => (
+                    
                     <option key={ele?.id} value={ele?.id}>{ele?.name}</option>
                 ))}
             </select>
@@ -82,9 +84,13 @@ const NRIGAFFI = (props:any) => {
             value={props.values.applicableIGA}
             onBlur={props.handleBlur}
             onChange={props.handleChange}>
-                <option value={1}>---select---</option>
-                <option value={257}>Model 1 IGA</option>
-                <option value={258}>Model 2 IGA</option>
+                <option value={0}>---select---</option>
+                {getAllIga.allIGAData?.map((ele:any) => (
+                    
+                    <option key={ele?.id} value={ele?.id}>{ele?.name} IGA</option>
+                ))}
+                
+                {/* <option value={258}>Model 2 IGA</option> */}
             </select> and
             </Typography>
 
