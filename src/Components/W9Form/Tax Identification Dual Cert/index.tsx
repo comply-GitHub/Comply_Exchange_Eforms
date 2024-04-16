@@ -24,7 +24,7 @@ import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore, Info } from "@mui/icons-material";
 import { Formik, Form } from "formik";
-import { TinSchema_W9_DC} from "../../../schemas";
+import { TinSchema_DualCert, TinSchema_W9_DC} from "../../../schemas";
 import { useNavigate } from "react-router-dom";
 import { getTinTypes, PostDualCertDetails, GetHelpVideoDetails, getW9Form, getAllCountries, getDualCertW9,PostDualCert} from "../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -147,14 +147,8 @@ export default function TaxPayer(props: any) {
     }
   };
  
-  const [selectedTaxClassification, setSelectedTaxClassification] =useState(0);
-  const handleTaxClassificationChange = (
-    event: any
-    ) => {
-    
-    setSelectedTaxClassification(event.target.value);
-  };
-
+  const [TinTax, setTinTax] =useState(false);
+ 
   const handlePayloadUpdate=(data:any,index:number)=>{
     console.log(data,index,"parent method");
     const temp=[...payload.map((ele:any,ind:number)=>{
@@ -166,6 +160,19 @@ export default function TaxPayer(props: any) {
     })];
     setPayload([...temp])
   }
+
+
+  useEffect(()=>{
+    Promise.all(payload.map(x => TinSchema_DualCert().validate(x))).then(() => {
+      setTinTax(true);
+  }).catch((err) => {
+    console.log(err,"123")
+
+      setTinTax(false);
+  })
+
+  },[payload])
+
 
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
@@ -250,8 +257,8 @@ const TaxJurisdictions = values.entityWithMultipleTaxJurisdictions
   }
 
 
-  const handlePayloadSubmit = async (e: any): Promise<any> => {
-    e.preventDefault();
+  const handlePayloadSubmit = async (e:any): Promise<any> => {
+ 
     const payloadSubmitPromise = new Promise((resolve, reject) => {
       let updateData = payload.map((ele, index) => {
         return {
@@ -259,7 +266,7 @@ const TaxJurisdictions = values.entityWithMultipleTaxJurisdictions
           agentId: authDetails?.agentId,
           accountHolderDetailsId: authDetails?.accountHolderId,
           formTypeId: FormTypeId.W9,
-          formEntryId: 1,
+          formEntryId: FormTypeId.W9,
           additionalTaxJurisdictions: ele?.additionalTaxJurisdictions,
           countryId: parseInt(ele?.countryId),
           otherCountry: ele?.otherCountry || "",
@@ -387,10 +394,32 @@ const TaxJurisdictions = values.entityWithMultipleTaxJurisdictions
             };  
             
             localStorage.setItem("DualCertData",JSON.stringify(temp));
-            //crate a action and reducer for parent -- call action here 
-            //when it is success - call the child submissin method
-            //
+            if (values.entityWithMultipleTaxJurisdictions === 'No') {
+              console.log("Nooo",values.entityWithMultipleTaxJurisdictions)
 
+              handleSecondPayloadSubmit(values)
+              history("/Certification_W9_DC");
+              setSubmitting(false); 
+            } else {
+              console.log("Yess",values.entityWithMultipleTaxJurisdictions)
+              handleSecondPayloadSubmit(values)
+                .then(() => {
+                  handlePayloadSubmit(values)
+                    .then(() => {
+                      history("/Certification_W9_DC");
+                    })
+                    .catch((error) => {
+                      console.error("Error in first payload submission:", error);
+                    });
+                })
+                .catch((error) => {
+                  console.error("Error in second payload submission:", error);
+                })
+                .finally(() => {
+                  setSubmitting(false); 
+                });
+            }
+       
           })
           return returnPromise;
         }
@@ -683,7 +712,8 @@ const TaxJurisdictions = values.entityWithMultipleTaxJurisdictions
                               name="entityWithMultipleTaxJurisdictions"
                               aria-labelledby="demo-row-radio-buttons-group-label"
                               value={values?.entityWithMultipleTaxJurisdictions}
-                              onBlur={handleBlur}  
+                              onBlur={handleBlur} 
+                            
                               onChange={(e)=>{
                                 handleRadioChange(e,1)
                                 handleChange(e)
@@ -706,7 +736,18 @@ const TaxJurisdictions = values.entityWithMultipleTaxJurisdictions
                                
                               />
 
+
                             </RadioGroup>
+                            {errors.entityWithMultipleTaxJurisdictions &&
+                              touched.entityWithMultipleTaxJurisdictions ? (
+                              <div>
+                                <p className="error">
+                                  {errors.entityWithMultipleTaxJurisdictions}
+                                </p>
+                              </div>
+                            ) : (
+                              ""
+                            )}
                             {renderMultipleTimes()}
                          
                           </FormControl>
@@ -726,26 +767,35 @@ const TaxJurisdictions = values.entityWithMultipleTaxJurisdictions
                 marginTop: "80px",
               }}
             >
-              <Button variant="contained" style={{ color: "white" }}
-                onClick={() => {
-                  submitForm().then((data) => {
-                    history(GlobalValues.basePageRoute)
-                  }).catch((error) => {
-                    console.log(error);
-                  })
-                }}>
-                SAVE & EXIT
-              </Button>
+              <SaveAndExit Callback={() => {
+                          submitForm().then(() => {
+                            const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                            const urlValue = window.location.pathname.substring(1);
+                            dispatch(PostDualCert(
+                              {
+                                  ...prevStepData,
+                                  ...values,
+                                  stepName: `/${urlValue}`
+                              }
+                              , () => { }, 
+                              () => { }) 
+                          );
+                            history(
+                              GlobalValues.basePageRoute
+                            );
+                          })
+                        }} formTypeId={FormTypeId.W9} />
               <Button variant="contained" onClick={viewPdf} style={{ color: "white", marginLeft: "15px" }}>
                 View Form
               </Button>
               <Button
-              // onChange={handlePayloadSubmit}
-               onClick={(e)=>{
-              handleSecondPayloadSubmit(e)
-               handlePayloadSubmit(e)
-               history("/Certification_W9_DC")
-             }}
+         
+            //    onClick={(e)=>{
+            //   handleSecondPayloadSubmit(e)
+            //    handlePayloadSubmit(e)
+            //    history("/Certification_W9_DC")
+            //  }}
+            disabled={!isValid || !TinTax}
                    type="submit"
                 variant="contained"
                 style={{ color: "white", marginLeft: "15px" }}

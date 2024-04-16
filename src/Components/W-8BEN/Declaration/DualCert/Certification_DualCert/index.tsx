@@ -278,21 +278,24 @@ Section 4: Declaration and Undertaking
                         >
                           SAVE & EXIT
                         </Button> */}
-                          {/* <SaveAndExit Callback={() => {
+                           <SaveAndExit Callback={() => {
                             submitForm().then((data) => {
                               const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                               const urlValue = window.location.pathname.substring(1);
                               dispatch(PostDualCert(
                                 {
-                                  ...prevStepData,
-                                  stepName: `/${urlValue}`
+                                    ...prevStepData,
+                                    ...values,
+                                    stepName: `/${urlValue}`
                                 }
-                                , () => { }))
+                                , () => { }, 
+                                () => { }) 
+                            );
                               history(GlobalValues.basePageRoute)
                             }).catch((err) => {
                               console.log(err);
                             })
-                          }} formTypeId={FormTypeId.W9} /> */}
+                          }} formTypeId={FormTypeId.BEN} />
                         <Button
 
                           variant="contained"

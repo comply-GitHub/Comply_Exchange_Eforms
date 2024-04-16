@@ -28,7 +28,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import CloseIcon from "@mui/icons-material/Close";
 import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
-import { US_TINSchemaW8BenE } from "../../../../../schemas/w8Ben";
+import { TaxPurposeSchema } from "../../../../../schemas/w8ECI";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
@@ -138,9 +138,11 @@ export default function Tin(props: any) {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+ 
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   console.log(obValues.taxpayerIdTypeID, "pp")
+  const [IsIndividual, setIsIndividual] = useState(obValues?.businessTypeId == 1);
   const dispatch = useDispatch();
   const [initialValue, setInitialValues] = useState({
     usTinTypeId: obValues.taxpayerIdTypeID?.toString(),
@@ -215,7 +217,7 @@ export default function Tin(props: any) {
                 initialValues={initialValue}
                 validateOnMount={true}
                 enableReinitialize
-                validationSchema={US_TINSchemaW8BenE}
+                validationSchema={TaxPurposeSchema(IsIndividual)}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
                   const temp = {
