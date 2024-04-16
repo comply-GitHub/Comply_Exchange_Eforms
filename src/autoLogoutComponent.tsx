@@ -151,9 +151,9 @@ const WithAutoLogout = <P extends object>(
                     style={{ display: "grid", gridTemplateColumns: "95% 5%" }}
                   >
                     <Typography>
-                      You will be logged out in {formatTime(countdown)}{" "}
+                     Session has been ide over its time limit. It will disconnected in {formatTime(countdown)}{" "} minutes. Press any key to continue
                     </Typography>
-                    <Typography
+                    {/* <Typography
                       sx={{ color: "black", justifySelf: "end" }}
                       onClick={() => {
                         ShowCounter(false);
@@ -161,7 +161,7 @@ const WithAutoLogout = <P extends object>(
                       }}
                     >
                       X
-                    </Typography>
+                    </Typography> */}
                   </div>
                 </Alert>
               </div>
