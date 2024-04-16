@@ -176,16 +176,15 @@ export const chapter4Schema = () => {
       if (chapter4Status == 21 && isCertify28aEntity == false) {
         return schema.oneOf([true], "Please check this checkbox");
       } else
-      if(chapter4Status == 21) 
-      {
-        if (isCertify28aEntity == true) { return schema; }
-        else {
-          return schema.oneOf([true], "Please check this checkbox a or b");
+        if (chapter4Status == 21) {
+          if (isCertify28aEntity == true) { return schema; }
+          else {
+            return schema.oneOf([true], "Please check this checkbox a or b");
+          }
         }
-      }
-      else {
-        return schema;
-      }
+        else {
+          return schema;
+        }
     }),
 
 
@@ -342,30 +341,29 @@ export const chapter4Schema = () => {
         return schema;
       }
     }),
-
     // Non reporting IGA FFI
-    isCertify26Entity:Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+    isCertify26Entity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
       if (chapter4Status == 24) {
         return schema.oneOf([true], "Please check this checkbox");
       } else {
         return schema;
       }
     }),
-    iGAbetweenUnitedStates:Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+    iGAbetweenUnitedStates: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
       if (chapter4Status == 24) {
         return schema.oneOf([true], "Please check this checkbox");
       } else {
         return schema;
       }
     }),
-    iGA:Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+    iGA: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
       if (chapter4Status == 24) {
         return schema.oneOf([true], "Please check this checkbox");
       } else {
         return schema;
       }
     }),
-    istreated:Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+    istreated: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
       if (chapter4Status == 24) {
         return schema.oneOf([true], "Please check this checkbox");
       } else {
@@ -373,10 +371,66 @@ export const chapter4Schema = () => {
       }
     }),
 
-    
+    //Exempt Retirement Plans
+    isCertify29aEntity: Yup.boolean().when(["chapter4Status", "isCertify29bEntity", "isCertify29cEntity", "isCertify29dEntity", "isCertify29eEntity", "isCertify29fEntity"], ([chapter4Status, isCertify29bEntity, isCertify29cEntity, isCertify29dEntity, isCertify29eEntity, isCertify29fEntity], schema) => {
+      if (chapter4Status == 19) {
+        if (isCertify29bEntity === true) {
+          return schema.oneOf([false], "");
+        } else if (isCertify29cEntity === true) {
+          return schema.oneOf([false], "");
+
+        } else if (isCertify29dEntity === true) {
+          return schema.oneOf([false], "");
+
+        } else if (isCertify29eEntity === true) {
+          return schema.oneOf([false], "");
+
+        } else if (isCertify29fEntity === true) {
+          return schema.oneOf([false], "");
+
+        }
+        return schema.oneOf([true], "Please check this checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    // isCertify29bEntity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+    //   if (chapter4Status == 19) {
+    //     return schema.oneOf([true, false], "Please check this checkbox");
+    //   } else {
+    //     return schema;
+    //   }
+    // }),
+    // isCertify29cEntity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+    //   if (chapter4Status == 19) {
+    //     return schema.oneOf([true, false], "Please check this checkbox");
+    //   } else {
+    //     return schema;
+    //   }
+    // }),
+    // isCertify29dEntity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+    //   if (chapter4Status == 19) {
+    //     return schema.oneOf([true, false], "Please check this checkbox");
+    //   } else {
+    //     return schema;
+    //   }
+    // }),
+    // isCertify29eEntity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+    //   if (chapter4Status == 19) {
+    //     return schema.oneOf([true, false], "Please check this checkbox");
+    //   } else {
+    //     return schema;
+    //   }
+    // }),
+    // isCertify29fEntity: Yup.boolean().when(["chapter4Status"], ([chapter4Status], schema) => {
+    //   if (chapter4Status == 19) {
+    //     return schema.oneOf([true, false], "Please check this checkbox");
+    //   } else {
+    //     return schema;
+    //   }
+    // }),
   });
 };
-
 
 
 export const US_TINSchemaW8BenE = () => {
@@ -408,6 +462,8 @@ export const US_TINSchemaW8BenE = () => {
           .required("Please select Foreign Tin Country"),
 
     }),
+
+
     foreignTIN: Yup.string()
       .test(
         "Foreign tin",

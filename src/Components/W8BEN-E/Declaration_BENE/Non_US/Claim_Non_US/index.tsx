@@ -75,6 +75,7 @@ export default function FCTA_Reporting(props: any) {
   const getCountriesData = useSelector((state: any) => state.CountriesTreaty.records?.filter((ele: any) => ele.treatyEffectiveYear !== 0))
   console.log(getCountriesData, "get countries data")
   useEffect(() => {
+    document.title = "Treaty Claim Statement";
     dispatch(getAllCountriesWithTreaty());
     dispatch(GetAgentCountriesImportantForEform());
     dispatch(GetLimitationBenefits());
