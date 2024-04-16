@@ -32,6 +32,7 @@ import {
   GetAllLanguageReducer,
   GetDualCertW9Reducer,
   GetDualCertReducer,
+  getIGAReducer
   
 } from "./Reducers";
 import w9Reducer from "./Reducers/w9Reducer";
@@ -78,6 +79,7 @@ let reducers = {
   formPDFFieldDataReducer,
   GetAllLanguageReducer,
   GetDualCertReducer,
+  getIGAReducer,
 
 
 };

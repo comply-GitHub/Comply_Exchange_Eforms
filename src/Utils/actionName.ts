@@ -82,7 +82,8 @@ const ActionName = {
     GetByW8ECIIndividualId:"GetByW8ECIIndividualId",
     GetByW8EXPIndividualId:"GetByW8EXPIndividualId",
     //errors
-    UpdateError:"UpdateError"
+    UpdateError:"UpdateError",
+    GetIGA:"GetIGA"
   };
 
   export default ActionName;
