@@ -27,10 +27,7 @@ const WithAutoLogout = <P extends object>(
     const logoutTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
-      console.log(
-        authDetails?.configurations,
-        "SIGNINDETAILS"
-      );
+      console.log(authDetails?.configurations, "SIGNINDETAILS");
       setCountdown(
         authDetails?.configurations?.sessionTimeinMin
           ? (authDetails?.configurations?.sessionTimeinMin -
@@ -44,62 +41,64 @@ const WithAutoLogout = <P extends object>(
       );
       sessionConfig();
     }, [authDetails]);
+    const clearTimeouts = () => {
+      if (warnTimeoutRef.current) clearTimeout(warnTimeoutRef.current);
+      if (logoutTimeoutRef.current) clearTimeout(logoutTimeoutRef.current);
+    };
+
+    function resetTimeout() {
+      ShowCounter(false);
+      clearTimeouts();
+      setTimeouts();
+    }
+
+    const warn = () => {
+      ShowCounter(true);
+      const timer = setInterval(() => {
+        setCountdown((prevCountdown) => {
+          if (prevCountdown > 0) return prevCountdown - 1;
+          else {
+            clearInterval(timer);
+            logout();
+            return 0;
+          }
+        });
+      }, 1000);
+    };
+
+    const logout = () => {
+      destroy();
+    };
+
+    const destroy = () => {
+      window.location.replace(base_url + "/login");
+      localStorage.clear();
+    };
+
+    const setTimeouts = () => {
+      let currentTime;
+      if (
+        (authDetails && authDetails?.configurations !== null) ||
+        (pathArray[1] !== "login" && pathArray[1] !== "")
+      ) {
+        currentTime = JSON.parse(storedLoginTime);
+        warnTimeoutRef.current = setTimeout(
+          warn,
+          60000 *
+            (authDetails?.configurations?.sessionTimeReminderBeforeinMin
+              ? authDetails?.configurations?.sessionTimeReminderBeforeinMin
+              : authDetails?.configurations?.accountHolderDetail
+                  ?.sessionTimeReminderBeforeinMin)
+        );
+        // logoutTimeoutRef.current = setTimeout(
+        //   logout,
+        //   120000
+        // );
+      }
+    };
 
     useEffect(() => {}, [countdown]);
-    const sessionConfig = () => {
-      const setTimeouts = () => {
-        let currentTime;
-        if (
-          (authDetails && authDetails?.configurations !== null) ||
-          (pathArray[1] !== "login" && pathArray[1] !== "")
-        ) {
-          currentTime = JSON.parse(storedLoginTime);
-          warnTimeoutRef.current = setTimeout(
-            warn,
-            60000 *(authDetails?.configurations?.sessionTimeReminderBeforeinMin ? authDetails?.configurations?.sessionTimeReminderBeforeinMin : authDetails?.configurations?.accountHolderDetail?.sessionTimeReminderBeforeinMin )
-          );
-          // logoutTimeoutRef.current = setTimeout(
-          //   logout,
-          //   120000
-          // );
-        }
-      };
-      // configurations,sessionTimeinMin,sessionTimeReminderBeforeinMin
-      // *authDetails?.configurations?.sessionTimeReminderBeforeinMin
-
-      const clearTimeouts = () => {
-        if (warnTimeoutRef.current) clearTimeout(warnTimeoutRef.current);
-        if (logoutTimeoutRef.current) clearTimeout(logoutTimeoutRef.current);
-      };
-
-      const resetTimeout = () => {
-        clearTimeouts();
-        setTimeouts();
-      };
-
-      const warn = () => {
-        ShowCounter(true);
-        const timer = setInterval(() => {
-          setCountdown((prevCountdown) => {
-            if (prevCountdown > 0) return prevCountdown - 1;
-            else {
-              clearInterval(timer);
-              logout();
-              return 0;
-            }
-          });
-        }, 1000);
-      };
-
-      const logout = () => {
-        destroy();
-      };
-
-      const destroy = () => {
-        window.location.replace(base_url + "/login");
-        localStorage.clear();
-      };
-      for (let i = 0; i < events.length; i++) {
+    const sessionConfig = () => {for (let i = 0; i < events.length; i++) {
         window.addEventListener(events[i], resetTimeout);
       }
       setTimeouts();
@@ -156,7 +155,10 @@ const WithAutoLogout = <P extends object>(
                     </Typography>
                     <Typography
                       sx={{ color: "black", justifySelf: "end" }}
-                      onClick={() => ShowCounter(false)}
+                      onClick={() => {
+                        ShowCounter(false);
+                        resetTimeout();
+                      }}
                     >
                       X
                     </Typography>
