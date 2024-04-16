@@ -26,6 +26,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
+import { FormTypeId } from "../../../Utils/constVals";
 
 export default function Tin(props: any) {
   const history = useNavigate();
@@ -153,7 +154,7 @@ export default function Tin(props: any) {
           <div
             style={{ padding: "20px 0px", height: "100%" }}
           >
-            <BreadCrumbComponent breadCrumbCode={1249} formName={7} />
+            <BreadCrumbComponent breadCrumbCode={1249} formName={FormTypeId.FW81MY} />
           </div>
         </div>
 
