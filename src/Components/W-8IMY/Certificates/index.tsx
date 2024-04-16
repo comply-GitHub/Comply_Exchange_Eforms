@@ -11,7 +11,7 @@ import {
   Checkbox,
 } from "@mui/material";
 import { Form, Formik } from "formik";
-import { W8_state_ECI,GetHelpVideoDetails } from "../../../Redux/Actions";
+import { W8_state_ECI,GetHelpVideoDetails, postW81MY_EForm } from "../../../Redux/Actions";
 import { certificateSchema } from "../../../schemas/w8Exp";
 import checksolid from "../../../../../assets/img/check-solid.png";
 import InfoIcon from "@mui/icons-material/Info";
@@ -22,18 +22,25 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import { useDispatch,useSelector } from "react-redux";
+import { certificateSchema8IMY } from "../../../schemas/w81my";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import useAuth from "../../../customHooks/useAuth";
 export default function Certifications(props: any) {
+  const { authDetails } = useAuth();
   const history = useNavigate();
   const [open2, setOpen2] = useState(false);
   const handleClickOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);                               
   const [toolInfo, setToolInfo] = useState("");
   const [expanded, setExpanded] = React.useState<string | false>("");
+  const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
+
   const initialValue = {
-    isBeneficialOwnerIncome: false,
-    isAmountCertificationUS: false,
-    isBeneficialOwnerGrossIncome: false,
-    isBeneficialOwnerNotUSPerson: false,
+    cerExaminedtheInfo: prevStepData?.CerExaminedtheInfo ? prevStepData?.CerExaminedtheInfo : false,
+    cerDistributeorMakepayment: prevStepData?.CerDistributeorMakepayment ? prevStepData?.CerDistributeorMakepayment : false,
+    cerSubitformwithin30Days: prevStepData?.CerSubitformwithin30Days ? prevStepData?.CerSubitformwithin30Days : false,
+    cerConfirmReceivedElecForm: prevStepData?.CerConfirmReceivedElecForm ? prevStepData?.CerConfirmReceivedElecForm : false,
    
   };
   useEffect(()=>{
@@ -88,27 +95,49 @@ export default function Certifications(props: any) {
         <div className="row w-100 ">
         <div className="col-4">
           <div style={{ padding: "20px 0px",height:"100%" }}>
-            <BreadCrumbComponent breadCrumbCode={1500} formName={7}/>
+            <BreadCrumbComponent breadCrumbCode={1500} formName={FormTypeId.FW81MY}/>
       </div>
       </div>
       <div className="col-8 mt-3">
   
     <div style={{ padding: "13px" }}>
       <Formik
-       validateOnChange={false}
-       validateOnBlur={false}
+       validateOnChange={true}
+       validateOnBlur={true}
+       validateOnMount={false}
             initialValues={initialValue}
             enableReinitialize
-            validationSchema={certificateSchema}
+            validationSchema={certificateSchema8IMY}
             onSubmit={(values, { setSubmitting }) => {
               setSubmitting(true);
-              console.log(values, "vallllll");
-              dispatch(
-                W8_state_ECI(values, () => {
-                 history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY");
-                })
-              );
-             history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY");
+              const temp = {
+                agentId: authDetails.agentId,
+                accountHolderBasicDetailId: authDetails.accountHolderId,
+                ...prevStepData,
+                ...values,
+                stepName: null
+              };
+              const returnPromise = new Promise((resolve, reject) => {
+                dispatch(
+                  postW81MY_EForm(temp,
+                    (responseData: any) => {
+                      localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                      resolve(responseData);
+                      history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY");
+                    },
+                    (err: any) => {
+                      reject(err);
+                    }
+                  )
+                );
+              })
+              return returnPromise
+            //   dispatch(
+            //     W8_state_ECI(values, () => {
+            //      history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY");
+            //     })
+            //   );
+            //  history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY");
             }}
           >
             {({
@@ -119,6 +148,7 @@ export default function Certifications(props: any) {
               handleSubmit,
               handleChange,
               setFieldValue,
+              submitForm
             }) => (
               <Form onSubmit={handleSubmit}>
         <Paper style={{ padding: "14px" }}>
@@ -255,8 +285,8 @@ export default function Certifications(props: any) {
                 }}
               />
               <Typography style={{ display: "flex" }}>
-                <Checkbox  name="isBeneficialOwnerIncome"
-                        value={values.isBeneficialOwnerIncome}
+                <Checkbox  name="cerExaminedtheInfo"
+                        value={values.cerExaminedtheInfo}
                         onChange={handleChange}
                         size="medium"
                         style={{ fontSize: "2rem" }} className="mx-2" />
@@ -271,7 +301,10 @@ export default function Certifications(props: any) {
                  I have examined the information on this form and to the best of my knowledge and belief it is true, correct, and complete.
                 </Typography>
               </Typography>
-              <p className="error">{errors.isBeneficialOwnerIncome}</p>
+              {errors?.cerExaminedtheInfo && typeof errors?.cerExaminedtheInfo === 'string' && (
+                                <p className="error">{errors?.cerExaminedtheInfo}</p>
+                              )}
+              {/* <p className="error">{errors.cerExaminedtheInfo}</p> */}
               <Divider
                 style={{
                   marginTop: "1rem",
@@ -280,8 +313,8 @@ export default function Certifications(props: any) {
                 }}
               />
               <Typography style={{ display: "flex" }}>
-                <Checkbox  name="isBeneficialOwnerNotUSPerson"
-                        value={values.isBeneficialOwnerNotUSPerson}
+                <Checkbox  name="cerDistributeorMakepayment"
+                        value={values.cerDistributeorMakepayment}
                         onChange={handleChange}
                         size="medium"
                         style={{ fontSize: "2rem" }} className="mx-2" />
@@ -292,7 +325,10 @@ export default function Certifications(props: any) {
 which I am providing this form or any withholding agent that can disburse or make payments of the amounts for which I am providing this form
                 </Typography>
               </Typography>
-              <p className="error">{errors.isBeneficialOwnerNotUSPerson}</p>
+              {errors?.cerDistributeorMakepayment && typeof errors?.cerDistributeorMakepayment === 'string' && (
+                                <p className="error">{errors?.cerDistributeorMakepayment}</p>
+                              )}
+              {/* <p className="error">{errors.cerDistributeorMakepayment}</p> */}
               <Divider
                 style={{
                   marginTop: "1rem",
@@ -302,8 +338,8 @@ which I am providing this form or any withholding agent that can disburse or mak
               />
               
               <Typography style={{ display: "flex" }}>
-                <Checkbox name="isAmountCertificationUS"
-                        value={values.isAmountCertificationUS}
+                <Checkbox name="cerSubitformwithin30Days"
+                        value={values.cerSubitformwithin30Days}
                         onChange={handleChange}
                         size="medium"
                         style={{ fontSize: "2rem" }} className="mx-2" />
@@ -313,7 +349,10 @@ which I am providing this form or any withholding agent that can disburse or mak
                  I agree that I will submit a new form within 30 days if any certification on this form becomes incorrect.
                 </Typography>
               </Typography>
-              <p className="error">{errors.isAmountCertificationUS}</p>
+              {errors?.cerSubitformwithin30Days && typeof errors?.cerSubitformwithin30Days === 'string' && (
+                                <p className="error">{errors?.cerSubitformwithin30Days}</p>
+                              )}
+              {/* <p className="error">{errors.cerSubitformwithin30Days}</p> */}
               <Divider
                 style={{
                   marginTop: "1rem",
@@ -327,8 +366,8 @@ which I am providing this form or any withholding agent that can disburse or mak
 
               
               <Typography style={{ display: "flex" }}>
-                <Checkbox name="isBeneficialOwnerGrossIncome"
-                        value={values.isBeneficialOwnerGrossIncome}
+                <Checkbox name="cerConfirmReceivedElecForm"
+                        value={values.cerConfirmReceivedElecForm}
                         onChange={handleChange}
                         size="medium"
                         style={{ fontSize: "2rem" }}className="mx-2" />
@@ -347,7 +386,10 @@ which I am providing this form or any withholding agent that can disburse or mak
                   </span>
                 </Typography>
               </Typography>
-              <p className="error">{errors.isBeneficialOwnerGrossIncome}</p>
+              {errors?.cerConfirmReceivedElecForm && typeof errors?.cerConfirmReceivedElecForm === 'string' && (
+                                <p className="error">{errors?.cerConfirmReceivedElecForm}</p>
+                              )}
+              {/* <p className="error">{errors.cerConfirmReceivedElecForm}</p> */}
               <Divider
                 style={{
                   marginTop: "1rem",
@@ -365,9 +407,25 @@ which I am providing this form or any withholding agent that can disburse or mak
               marginTop: "40px",
             }}
           >
-            <Button variant="contained" style={{ color: "white" }}>
-              SAVE & EXIT
-            </Button>
+            <SaveAndExit Callback={() => {
+                        submitForm().then(() => {
+                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                          const urlValue = window.location.pathname.substring(1);
+                          const temp = {
+                            agentId: authDetails.agentId,
+                            accountHolderBasicDetailId: authDetails.accountHolderId,
+                            ...prevStepData,
+                            ...values,
+                            stepName: `/${urlValue}`
+                          };
+                          dispatch(postW81MY_EForm(
+                            temp
+                            , () => { }))
+                          history(
+                            GlobalValues.basePageRoute
+                          );
+                        })
+                      }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
             <Button
               variant="contained"
               style={{ color: "white", marginLeft: "15px" }}

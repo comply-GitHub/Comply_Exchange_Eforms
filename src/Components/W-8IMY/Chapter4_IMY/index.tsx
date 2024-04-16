@@ -113,7 +113,7 @@ export default function Fedral_tax(props: any) {
     isusingportionofthepaymentallocated:PrevStepData?.isusingportionofthepaymentallocated ? PrevStepData?.isusingportionofthepaymentallocated:false,
     //NRIGAFFI
     iscertifythatNonreportingIGAFFI:PrevStepData?.iscertifythatNonreportingIGAFFI ? PrevStepData?.iscertifythatNonreportingIGAFFI:false,
-    iGAbetweentheUnitedStatesAnd:PrevStepData?.iGAbetweentheUnitedStatesAnd ? PrevStepData?.iGAbetweentheUnitedStatesAnd:"",
+    igAbetweentheUnitedStatesAnd:PrevStepData?.igAbetweentheUnitedStatesAnd ? PrevStepData?.igAbetweentheUnitedStatesAnd:"",
     applicableIGA:PrevStepData?.applicableIGA ? PrevStepData?.applicableIGA:"",
     istreatedAs:PrevStepData?.istreatedAs ? PrevStepData?.istreatedAs:false,
     istreatedAsOthers:PrevStepData?.istreatedAsOthers ? PrevStepData?.istreatedAsOthers:"",
@@ -292,7 +292,7 @@ export default function Fedral_tax(props: any) {
                           (responseData: any) => {
                             localStorage.setItem("PrevStepData", JSON.stringify(temp));
                             resolve(responseData);
-                            //history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY");
+                            history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY");
                           },
                           (err: any) => {
                             reject(err);
@@ -543,7 +543,7 @@ export default function Fedral_tax(props: any) {
                                         setFieldValue("isusingportionofthepaymentallocated",false);
 
                                         setFieldValue("iscertifythatNonreportingIGAFFI",false);
-                                        setFieldValue("iGAbetweentheUnitedStatesAnd","");
+                                        setFieldValue("igAbetweentheUnitedStatesAnd","");
                                         setFieldValue("applicableIGA","");
                                         setFieldValue("istreatedAs",false);
                                         setFieldValue("istreatedAsOthers","");
@@ -985,7 +985,7 @@ export default function Fedral_tax(props: any) {
                               values.chapter4StatusId == 24 &&
                               (
                                 (
-                                  values.iscertifythatNonreportingIGAFFI && values.iGAbetweentheUnitedStatesAnd && values.applicableIGA
+                                  values.iscertifythatNonreportingIGAFFI && values.igAbetweentheUnitedStatesAnd && values.applicableIGA
                                 ) &&
                                 (
                                   values.istreatedAs &&
