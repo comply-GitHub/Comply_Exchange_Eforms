@@ -22,3 +22,68 @@ export const TaxPurposeSchemaW81Chapter4 = ()=>{
         
       });
 }
+
+export const US_TINSchema8IMY = () => {
+    return Yup.object().shape({
+      
+  
+      usTinTypeId: Yup.string().notOneOf(['0'], 'please select a valid value').when('$isRequired',{
+        is:true,
+        then: () => Yup.string().required('Selection is required when value is 0')
+      }),
+      
+      notAvailable: Yup.boolean(),
+      usTin:Yup.string().when("notAvailable" ,{
+        is:true,
+        then:() => Yup.string().notRequired(),
+        otherwise:() => Yup.string().required(),
+      }),
+      ReasionForForegionTIN_NotAvailable:Yup.string().when("tinisFTINNotLegallyRequired",{
+        is:(tinisFTINNotLegallyRequired: any) => tinisFTINNotLegallyRequired == "NO",
+        then:() => Yup.string().required('required'),
+        otherwise : () => Yup.string().notRequired()
+      }),
+      tinisFTINNotLegallyRequired: Yup.string(),
+      isFTINNotLegallyRequired: Yup.boolean(),
+     
+      foreignTINCountry:Yup.string().when(['isFTINNotLegallyRequired','tinisFTINNotLegallyRequired'], {
+        is:(isFTINNotLegallyRequired: boolean, tinisFTINNotLegallyRequired: any) => !isFTINNotLegallyRequired && tinisFTINNotLegallyRequired !== "NO",
+        then: ()=> Yup.string().required("Foreign TIN is required"),
+        otherwise: ()=>Yup.string().notRequired()
+      }),
+      
+      foreignTIN:Yup.string().when(['isFTINNotLegallyRequired','foreignTINCountry','tinisFTINNotLegallyRequired'], {
+        is:(isFTINNotLegallyRequired: boolean, foreignTINCountry: any, tinisFTINNotLegallyRequired:any) => !isFTINNotLegallyRequired && foreignTINCountry !== "0" && tinisFTINNotLegallyRequired !== "NO",
+        then: ()=> Yup.string().required("Foreign TIN is required"),
+        otherwise: ()=>Yup.string().notRequired()
+      }),
+      
+      
+      isNotLegallyFTIN: Yup.string().when("isFTINNotLegallyRequired", {
+        is: true,
+        then: () => Yup.string().required("required"),
+        otherwise : () => Yup.string().notRequired(),
+      }),
+  
+  
+    });
+  };
+
+
+  export const statementSchema8IMY = () => {
+    return Yup.object().shape({
+        previouslySubmittedAllocationStatement: Yup.string().required("required"),
+      
+    });
+  };
+
+
+  export const certificateSchema8IMY = () => {
+    return Yup.object().shape({
+        cerExaminedtheInfo:Yup.boolean().oneOf([true], "Please mark the checkbox"),
+        cerDistributeorMakepayment: Yup.boolean().oneOf([true],"Please mark the checkbox"),
+        cerSubitformwithin30Days:Yup.boolean().oneOf([true], "Please mark the checkbox"),
+        cerConfirmReceivedElecForm: Yup.boolean().oneOf([true],"Please mark the checkbox"),
+      
+    });
+  };
