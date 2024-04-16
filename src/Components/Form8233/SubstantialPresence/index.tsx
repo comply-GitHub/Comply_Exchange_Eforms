@@ -73,9 +73,9 @@ const GethelpData = useSelector(
   }, [totalQualifyingDays]);
   return (
     <Formik
-      validateOnChange={true}
+      validateOnChange={false}
       validateOnBlur={true}
-      validateOnMount={true}
+      validateOnMount={false}
       initialValues={{
         daysAvailableInThisYear: PrevStepData?.daysAvailableInThisYear,
         daysAvailableIn_OneYearbefore: PrevStepData?.daysAvailableIn_OneYearbefore,

@@ -18,12 +18,12 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import InfoIcon from "@mui/icons-material/Info";
-import { GetHelpVideoDetails, postW8BEN_EForm } from "../../../Redux/Actions"
+import { GetHelpVideoDetails, postW8BEN_EForm, postW9Form } from "../../../Redux/Actions"
 import Declaration from "../../reusables/Declaration";
 import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { W8_state } from "../../../Redux/Actions";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { ContentCopy } from "@mui/icons-material";
 import checksolid from "../../../assets/img/check-solid.png";
 import Accordion from "@mui/material/Accordion";
@@ -37,6 +37,7 @@ import SecurityCodeRecover from "../../Reusable/SecurityCodeRecover";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 type ValuePiece = Date | null;
 console.log(Date, "date");
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
@@ -56,9 +57,9 @@ export default function Penalties() {
 
     setSecurityWordError("");
   };
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Certifications II"
-  },[])
+  }, [])
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, [])
@@ -69,21 +70,25 @@ export default function Penalties() {
   const [toolInfo, setToolInfo] = useState("");
 
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-  const W8BENEData = useSelector((state: any) => state.W8BENE);
+  const W9Data =  useSelector(
+    (state: any) => state?.GetByW9FormReducer?.GetByW9FormData
+  );
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
   const initialValue = {
-    signedBy: W8BENEData?.signedBy ?? "",
-    confirmationCode: W8BENEData?.confirmationCode ?? "",
-    date: W8BENEData?.date ?? new Date().toLocaleDateString('en-US', {
+    signedBy: W9Data?.signedBy ?? "",
+    confirmationCode: W9Data?.confirmationCode ?? "",
+    date: W9Data?.date ?? new Date().toLocaleDateString('en-US', {
       month: '2-digit',
       day: '2-digit',
       year: 'numeric',
     }),
-    isCheckAcceptance: W8BENEData?.isCheckAcceptance ? true : false
+    isCheckAcceptance: W9Data?.isCheckAcceptance ? true : false
   };
   const dispatch = useDispatch();
   const history = useNavigate();
+  const location = useLocation();
   const [clickCount, setClickCount] = useState(1);
+  const urlValue = location.pathname.substring(1);
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
@@ -100,32 +105,30 @@ export default function Penalties() {
         // validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
           const returnPromise = new Promise((resolve, reject) => {
-
+            const new_obj = { ...PrevStepData, stepName: `/${urlValue}` };
+            const result = { ...new_obj, ...values };
             let temp = {
-              ...PrevStepData,
+              ...result,
               ...values,
               date: new Date().toLocaleDateString('en-US', {
                 month: '2-digit',
                 day: '2-digit',
                 year: 'numeric',
               }),
-              agentId: authDetails?.agentId,
-              accountHolderBasicDetailId: authDetails?.accountHolderId,
+             
             }
             dispatch(
-              postW8BEN_EForm(temp, (data: any) => {
+              postW9Form(result, (data: any) => {
                 setSubmitting(true);
                 localStorage.setItem(
                   "PrevStepData",
-                  JSON.stringify(temp)
+                  JSON.stringify(result)
                 );
                 resolve("success")
               }, (err: any) => {
                 reject(err);
               })
             );
-
-
           })
 
           return returnPromise;
@@ -154,7 +157,10 @@ export default function Penalties() {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
-                  <div className="viewform">View Form</div>
+                  <div className="viewform"
+                    onClick={() => {
+                      dispatch(GetW9Pdf(authDetails?.accountHolderId))
+                    }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                     {GethelpData && GethelpData[3].id === 5 ? (
@@ -418,7 +424,7 @@ export default function Penalties() {
                                 <Link
                                   href="#"
                                   underline="none"
-                                  style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
+                                  style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                                   onClick={() => {
                                     setToolInfo("");
                                   }}
@@ -706,7 +712,7 @@ export default function Penalties() {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7"}}
+                              style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -727,7 +733,9 @@ export default function Penalties() {
                         }}
                       >
                         <Button
-
+                          onClick={() => {
+                            dispatch(GetW9Pdf(authDetails?.accountHolderId))
+                          }}
                           variant="contained"
                           style={{ color: "white" }}
                         >
@@ -751,7 +759,7 @@ export default function Penalties() {
                               const urlValue =
                                 window.location.pathname.substring(1);
                               dispatch(
-                                postW8BEN_EForm(
+                                postW9Form(
                                   {
                                     ...prevStepData,
                                     ...values,
@@ -789,7 +797,7 @@ export default function Penalties() {
                       <Typography
                         align="center"
                         style={{
-                          color: "#505E50",  
+                          color: "#505E50",
                           justifyContent: "center",
                           alignItems: "center",
                           marginTop: "20px",

@@ -26,6 +26,7 @@ import { useLocation } from "react-router-dom";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../customHooks/useAuth";
+import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 
 export default function Certifications(props: any) {
   const location = useLocation();
@@ -47,9 +48,9 @@ export default function Certifications(props: any) {
   const handleCanvaClose = () => {
     setCanvaBx(false);
   }
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Certification I"
-  },[])
+  }, [])
   useEffect(() => {
     dispatch(
       getW9Form(authDetails?.accountHolderId, (data: any) => {
@@ -72,16 +73,16 @@ export default function Certifications(props: any) {
   const handleClickOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
   const [toolInfo, setToolInfo] = useState("");
-  
+
   var initialValue = {
-    certification_CorrectTaxpayerIdentification:getReducerData?.certification_CorrectTaxpayerIdentification ?? false,
-    certification_IRSBackupWithHolding:getReducerData?.certification_IRSBackupWithHolding ?? false,
-    certification_FATCACode:getReducerData?.certification_FATCACode ?? false,
-    certification_IRS: getReducerData?.certification_IRS ??false,
-    certification_ElectronicForm:getReducerData?.certification_ElectronicForm ?? false,
-    certification_USCitizenPerson:getReducerData?.certification_USCitizenPerson ?? false,
+    certification_CorrectTaxpayerIdentification: getReducerData?.certification_CorrectTaxpayerIdentification ?? false,
+    certification_IRSBackupWithHolding: getReducerData?.certification_IRSBackupWithHolding ?? false,
+    certification_FATCACode: getReducerData?.certification_FATCACode ?? false,
+    certification_IRS: getReducerData?.certification_IRS ?? false,
+    certification_ElectronicForm: getReducerData?.certification_ElectronicForm ?? false,
+    certification_USCitizenPerson: getReducerData?.certification_USCitizenPerson ?? false,
   };
-  const viewPdf=()=>{
+  const viewPdf = () => {
     history("w9_pdf");
   }
   return (
@@ -95,7 +96,9 @@ export default function Certifications(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+            dispatch(GetW9Pdf(authDetails?.accountHolderId))
+          }} >View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
@@ -135,23 +138,25 @@ export default function Certifications(props: any) {
                 enableReinitialize
                 validationSchema={certificateSchema_w9}
                 onSubmit={(values, { setSubmitting }) => {
-                  const submitPromise = new Promise((resolve, reject) => {
+               
+                  // const submitPromise = new Promise((resolve, reject) => {
                     setSubmitting(true);
                     const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
                     const result = { ...new_obj, ...values };
                     dispatch(
                       postW9Form(result, () => {
                         localStorage.setItem("PrevStepData", JSON.stringify(result))
-                        //history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
+                        history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
                         setSubmitting(false);
-                        resolve("");
+                        // resolve("");
                       },
                       (err:any)=>{
-                        reject(err);
+                        // reject(err);
                         setSubmitting(false);
                       })
                     );
-                  });
+
+                  // });
 
                 }}
               >
@@ -282,7 +287,7 @@ export default function Certifications(props: any) {
                             <Link
                               href="#"
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
+                              style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -294,7 +299,7 @@ export default function Certifications(props: any) {
                       ) : (
                         ""
                       )}
-              
+
                       <Typography
                         style={{
                           margin: "10px",
@@ -315,7 +320,7 @@ export default function Certifications(props: any) {
                               checked={values.certification_CorrectTaxpayerIdentification}
                               onChange={handleChange}
                               size="medium"
-                              style={{ fontSize: "2rem",marginTop: "6px" }} />
+                              style={{ fontSize: "2rem", marginTop: "6px" }} />
                             <Typography className="mx-2"
                               style={{ fontSize: "14px", color: "black", marginTop: "15px", textAlign: "justify" }}
                             >
@@ -327,8 +332,8 @@ export default function Certifications(props: any) {
                           {errors.certification_CorrectTaxpayerIdentification && touched.certification_CorrectTaxpayerIdentification ? (
                             <div>
                               <Typography color="error">
-                                
-                                {typeof errors.certification_CorrectTaxpayerIdentification  ==="string" ? errors.certification_CorrectTaxpayerIdentification:""}
+
+                                {typeof errors.certification_CorrectTaxpayerIdentification === "string" ? errors.certification_CorrectTaxpayerIdentification : ""}
                               </Typography>
                             </div>
                           ) : (
@@ -362,8 +367,8 @@ export default function Certifications(props: any) {
                           {errors.certification_IRSBackupWithHolding && touched.certification_IRSBackupWithHolding ? (
                             <div>
                               <Typography color="error">
-                                
-                                {typeof errors.certification_IRSBackupWithHolding  ==="string" ? errors.certification_IRSBackupWithHolding:""}
+
+                                {typeof errors.certification_IRSBackupWithHolding === "string" ? errors.certification_IRSBackupWithHolding : ""}
                               </Typography>
                             </div>
                           ) : (
@@ -388,8 +393,8 @@ export default function Certifications(props: any) {
                           {errors.certification_USCitizenPerson && touched.certification_USCitizenPerson ? (
                             <div>
                               <Typography color="error">
-                                
-                                {typeof errors.certification_USCitizenPerson  ==="string" ? errors.certification_USCitizenPerson:""}
+
+                                {typeof errors.certification_USCitizenPerson === "string" ? errors.certification_USCitizenPerson : ""}
                               </Typography>
                             </div>
                           ) : (
@@ -412,8 +417,8 @@ export default function Certifications(props: any) {
                           {errors.certification_FATCACode && touched.certification_FATCACode ? (
                             <div>
                               <Typography color="error">
-                                
-                                {typeof errors.certification_FATCACode  ==="string" ? errors.certification_FATCACode:""}
+
+                                {typeof errors.certification_FATCACode === "string" ? errors.certification_FATCACode : ""}
                               </Typography>
                             </div>
                           ) : (
@@ -466,8 +471,8 @@ export default function Certifications(props: any) {
                           {errors.certification_IRS && touched.certification_IRS ? (
                             <div>
                               <Typography color="error">
-                                
-                                {typeof errors.certification_IRS  ==="string" ? errors.certification_IRS:""}
+
+                                {typeof errors.certification_IRS === "string" ? errors.certification_IRS : ""}
                               </Typography>
                             </div>
                           ) : (
@@ -486,7 +491,7 @@ export default function Certifications(props: any) {
                             >
                               Check to confirm you have reviewed the Electronic Form
                               <span
-                                style={{ color: "blue", fontSize: "14px", marginLeft: "5px",cursor:"pointer" }}
+                                style={{ color: "blue", fontSize: "14px", marginLeft: "5px", cursor: "pointer" }}
                               >
                                 (View Electronic Form)
                               </span>
@@ -495,8 +500,8 @@ export default function Certifications(props: any) {
                           {errors.certification_ElectronicForm && touched.certification_ElectronicForm ? (
                             <div>
                               <Typography color="error">
-                                
-                                {typeof errors.certification_ElectronicForm  ==="string" ? errors.certification_ElectronicForm:""}
+
+                                {typeof errors.certification_ElectronicForm === "string" ? errors.certification_ElectronicForm : ""}
                               </Typography>
                             </div>
                           ) : (
@@ -506,7 +511,7 @@ export default function Certifications(props: any) {
                         </div>
                       </Paper>
 
-
+<>{console.log(errors,"ERRORS")}</>
                       <div
                         style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}
                       >
@@ -524,42 +529,42 @@ export default function Certifications(props: any) {
                         >
                           SAVE & EXIT
                         </Button> */}
-                          <SaveAndExit Callback={() => {
-                            submitForm().then((data) => {
-                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                              const urlValue = window.location.pathname.substring(1);
-                              dispatch(postW9Form(
-                                {
-                                  ...prevStepData,
-                                  stepName: `/${urlValue}`
-                                }
-                                , () => { }))
-                              history(GlobalValues.basePageRoute)
-                            }).catch((err) => {
-                              console.log(err);
-                            })
-                          }} formTypeId={FormTypeId.W9} />
+                        <SaveAndExit Callback={() => {
+                          submitForm().then((data) => {
+                            const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                            const urlValue = window.location.pathname.substring(1);
+                            dispatch(postW9Form(
+                              {
+                                ...prevStepData,
+                                stepName: `/${urlValue}`
+                              }
+                              , () => { }))
+                            history(GlobalValues.basePageRoute)
+                          }).catch((err) => {
+                            console.log(err);
+                          })
+                        }} formTypeId={FormTypeId.W9} />
                         <Button
-
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
-                          onClick={viewPdf}
+                          onClick={() => {
+                            dispatch(GetW9Pdf(authDetails?.accountHolderId))
+                          }}
                         >
                           View form
                         </Button>
                         <Button
-                          //type="submit"
+                          type="submit"
                           disabled={!isValid}
-
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
-                          onClick={() => {
-                            submitForm().then((data) => {
-                              history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
-                            }).catch((error) => {
-                              console.log(error);
-                            })
-                          }}
+                          // onClick={() => {
+                          //   submitForm().then((data) => {
+                          //     history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
+                          //   }).catch((error) => {
+                          //     console.log(error);
+                          //   })
+                          // }}
                         >
                           Continue
                         </Button>
@@ -567,7 +572,7 @@ export default function Certifications(props: any) {
                       <Typography
                         align="center"
                         style={{
-                          color: "#505E50",  
+                          color: "#505E50",
                           justifyContent: "center",
                           alignItems: "center",
                           marginTop: "20px",

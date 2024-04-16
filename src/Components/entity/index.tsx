@@ -281,9 +281,9 @@ export default function Entity() {
   }
 
 
-// useEffect(() =>{
-// document.title=""
-// },[])
+  // useEffect(() =>{
+  // document.title=""
+  // },[])
 
   useEffect(() => {
     dispatch(getAllCountries());
@@ -315,7 +315,7 @@ export default function Entity() {
       }));
 
     LoadPageData();
-  }, []);
+  }, [authDetails]);
 
   const onUidBlur = (e: any, values: any): any => {
     const value = e.target.value;
@@ -738,9 +738,9 @@ export default function Entity() {
             <Formik
               initialValues={initialValues}
               enableReinitialize
-              validateOnChange={true}
+              // validateOnChange={true}
               validateOnBlur={true}
-              validateOnMount={true}
+              // validateOnMount={true}
               onSubmit={(values, { setSubmitting }) => {
                 console.log("e", values?.taxpayerIdTypeID);
                 const payload = {
@@ -1348,7 +1348,7 @@ export default function Entity() {
                         </Typography>
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -1628,9 +1628,9 @@ export default function Entity() {
                           </Tooltip>
                         </div>
                         <p className="error mb-0">
-                          {errors?.taxpayerIdTypeID  && touched?.taxpayerIdTypeID||
-                            errors?.usTin &&  touched?.usTin||
-                            errors?.vatId &&  touched?.vatId || errors?.vat && touched?.vat
+                          {errors?.taxpayerIdTypeID && touched?.taxpayerIdTypeID ||
+                            errors?.usTin && touched?.usTin ||
+                            errors?.vatId && touched?.vatId || errors?.vat && touched?.vat
                             ? "Mandatory Information Required!"
                             : ""}
                         </p>
@@ -1759,7 +1759,7 @@ export default function Entity() {
 
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer",color: "#0000C7" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -2312,10 +2312,10 @@ export default function Entity() {
                             errors?.permanentResidentialZipPostalCode && touched?.permanentResidentialZipPostalCode ||
                             errors?.isAddressRuralRoute && touched?.isAddressRuralRoute ||
                             errors?.isalternativebusinessaddress && touched?.isalternativebusinessaddress ||
-                            errors?.isAddressPostOfficeBox && touched?.isAddressPostOfficeBox||
+                            errors?.isAddressPostOfficeBox && touched?.isAddressPostOfficeBox ||
                             errors?.isCareOfAddress && touched?.isCareOfAddress ||
                             errors?.permanentResidentialCountryId1 && touched?.permanentResidentialCountryId1 ||
-                            errors?.permanentResidentialStreetNumberandName1 &&  touched?.permanentResidentialStreetNumberandName1 ||
+                            errors?.permanentResidentialStreetNumberandName1 && touched?.permanentResidentialStreetNumberandName1 ||
                             errors?.permanentResidentialCityorTown1 && touched?.permanentResidentialCityorTown1 ||
                             errors?.permanentResidentialZipPostalCode1 && touched?.permanentResidentialZipPostalCode1
                             ? "Mandatory Information Required!"
@@ -2367,7 +2367,7 @@ export default function Entity() {
 
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7"}}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -2955,7 +2955,7 @@ export default function Entity() {
                                         underline="none"
                                         style={{
                                           marginTop: "10px",
-                                          fontSize: "16px", cursor: "pointer" , color: "#0000C7"
+                                          fontSize: "16px", cursor: "pointer", color: "#0000C7"
                                         }}
                                         onClick={() => {
                                           setToolInfo("");
@@ -3104,7 +3104,7 @@ export default function Entity() {
                                       underline="none"
                                       style={{
                                         marginTop: "10px",
-                                        fontSize: "16px", cursor: "pointer" , color: "#0000C7"
+                                        fontSize: "16px", cursor: "pointer", color: "#0000C7"
                                       }}
                                       onClick={() => {
                                         setToolInfo("");
@@ -3250,7 +3250,7 @@ export default function Entity() {
                                       underline="none"
                                       style={{
                                         marginTop: "10px",
-                                        fontSize: "16px", cursor: "pointer" , color: "#0000C7"
+                                        fontSize: "16px", cursor: "pointer", color: "#0000C7"
                                       }}
                                       onClick={() => {
                                         setToolInfo("");
@@ -3726,7 +3726,7 @@ export default function Entity() {
                         </Typography>
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" ,  color: "#0000C7" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -4144,7 +4144,7 @@ export default function Entity() {
 
                             <Link
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7"}}
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -4334,7 +4334,7 @@ export default function Entity() {
 
                             <Link
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7" }}
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}
@@ -4531,7 +4531,7 @@ export default function Entity() {
 
                         <Link
                           underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7" }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -4771,7 +4771,7 @@ export default function Entity() {
 
                             <Link
                               underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7" }}
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
                               onClick={() => {
                                 setToolInfo("");
                               }}

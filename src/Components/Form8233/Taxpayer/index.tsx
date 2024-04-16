@@ -102,21 +102,28 @@ export default function Tin(props: any) {
   return (
     <>
       <Formik
-        validateOnChange={true}
-        validateOnBlur={true}
-        validateOnMount={false}
+       validateOnChange={false}
+       validateOnBlur={true}
+       validateOnMount={false}
         initialValues={initialValue}
         enableReinitialize
         validationSchema={US_TINSchema}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
           const temp = {
-            ...values,
+            agentId: authDetails.agentId,
+            accountHolderBasicDetailId: authDetails.accountHolderId,
             ...onBoardingFormValuesPrevStepData,
-            agentId: authDetails?.agentId,
-            accountHolderBasicDetailId: authDetails?.accountHolderId,
-            stepName: null,
+            ...values,
+            stepName: null
           };
+          // const temp = {
+          //   ...values,
+          //   ...onBoardingFormValuesPrevStepData,
+          //   agentId: authDetails?.agentId,
+          //   accountHolderBasicDetailId: authDetails?.accountHolderId,
+          //   stepName: null,
+          // };
           const returnPromise = new Promise((resolve, reject) => {
             dispatch(
               post8233_EForm(temp,

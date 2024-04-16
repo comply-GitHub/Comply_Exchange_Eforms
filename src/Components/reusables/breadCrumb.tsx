@@ -57,8 +57,10 @@ export default function BreadCrumbComponent(props: any): any {
     setBreadCrumbDisplay(groupedData);
   }
 
+
   const handleChangestatus =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    (panel: any) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+      console.log(panel)
       setExpanded(isExpanded ? panel : false);
     };
   

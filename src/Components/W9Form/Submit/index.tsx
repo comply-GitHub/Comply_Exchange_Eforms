@@ -13,8 +13,11 @@ import { W8_state_ECI, postW8BEN_EForm, postW9Form } from "../../../Redux/Action
 import { useDispatch } from "react-redux";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
+import useAuth from "../../../customHooks/useAuth";
 
 const Declaration = (props: any) => {
+  const { authDetails } = useAuth();
   const { open, setOpen } = props;
   const handleClose = () => {
     setOpen(false);
@@ -57,7 +60,7 @@ const Declaration = (props: any) => {
                 console.log("values", values)
                 setSubmitting(true);
                 dispatch(
-                  W8_state_ECI(values, () => {
+                  postW9Form(values, () => {
                     history("/Thankyou_w9");
                   })
                 );
@@ -364,23 +367,25 @@ const Declaration = (props: any) => {
                       marginTop: "40px",
                     }}
                   >
-                     <SaveAndExit Callback={() => {
-                            submitForm().then((data) => {
-                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                              const urlValue = window.location.pathname.substring(1);
-                              dispatch(postW9Form(
-                                {
-                                  ...prevStepData,
-                                  stepName: `/${urlValue}`
-                                }
-                                , () => { }))
-                              history(GlobalValues.basePageRoute)
-                            }).catch((err) => {
-                              console.log(err);
-                            })
-                          }} formTypeId={FormTypeId.W9} />
+                    <SaveAndExit Callback={() => {
+                      submitForm().then((data) => {
+                        const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                        const urlValue = window.location.pathname.substring(1);
+                        dispatch(postW9Form(
+                          {
+                            ...prevStepData,
+                            stepName: `/${urlValue}`
+                          }
+                          , () => { }))
+                        history(GlobalValues.basePageRoute)
+                      }).catch((err) => {
+                        console.log(err);
+                      })
+                    }} formTypeId={FormTypeId.W9} />
                     <Button
-
+                      onClick={() => {
+                        dispatch(GetW9Pdf(authDetails?.accountHolderId))
+                      }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >
