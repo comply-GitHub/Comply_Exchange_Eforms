@@ -295,7 +295,7 @@ Section 4: Declaration and Undertaking
                             }).catch((err) => {
                               console.log(err);
                             })
-                          }} formTypeId={FormTypeId.W9} />
+                          }} formTypeId={FormTypeId.BEN} />
                         <Button
 
                           variant="contained"

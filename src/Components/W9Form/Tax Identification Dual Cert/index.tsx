@@ -767,16 +767,24 @@ const TaxJurisdictions = values.entityWithMultipleTaxJurisdictions
                 marginTop: "80px",
               }}
             >
-              <Button variant="contained" style={{ color: "white" }}
-                onClick={() => {
-                  submitForm().then((data) => {
-                    history(GlobalValues.basePageRoute)
-                  }).catch((error) => {
-                    console.log(error);
-                  })
-                }}>
-                SAVE & EXIT
-              </Button>
+              <SaveAndExit Callback={() => {
+                          submitForm().then(() => {
+                            const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                            const urlValue = window.location.pathname.substring(1);
+                            dispatch(PostDualCert(
+                              {
+                                  ...prevStepData,
+                                  ...values,
+                                  stepName: `/${urlValue}`
+                              }
+                              , () => { }, 
+                              () => { }) 
+                          );
+                            history(
+                              GlobalValues.basePageRoute
+                            );
+                          })
+                        }} formTypeId={FormTypeId.W9} />
               <Button variant="contained" onClick={viewPdf} style={{ color: "white", marginLeft: "15px" }}>
                 View Form
               </Button>

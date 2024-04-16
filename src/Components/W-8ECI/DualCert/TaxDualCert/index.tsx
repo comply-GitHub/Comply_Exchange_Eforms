@@ -1220,7 +1220,7 @@ export default function Tin(props: any) {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history("/W-8ECI/Tax_Purpose");
+                            history("/W-8ECI/Certification/Participation/Submit_Eci/ThankYou_Eci");
                           }}
                           variant="contained"
                           style={{

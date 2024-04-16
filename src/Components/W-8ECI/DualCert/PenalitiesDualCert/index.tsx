@@ -755,7 +755,7 @@ export default function Penalties() {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history("/W-8ECI/Certification")
+                            history("/Certi_dualCert_Eci")
                           }}
                           variant="contained"
                           style={{

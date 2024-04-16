@@ -470,7 +470,7 @@ const Declaration = (props: any) => {
                       }}
 
                       onClick={() => {
-                        history("/W-8ECI/Certification/Participation")
+                        history("/Perti_dualCert_Eci")
                       }}
                     >
                       Back

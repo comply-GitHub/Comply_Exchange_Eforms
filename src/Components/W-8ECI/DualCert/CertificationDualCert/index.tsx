@@ -299,7 +299,7 @@ Section 4: Declaration and Undertaking
                             }).catch((err) => {
                               console.log(err);
                             })
-                          }} formTypeId={FormTypeId.W9} />
+                          }} formTypeId={FormTypeId.W8ECI} />
                         <Button
 
                           variant="contained"
@@ -325,7 +325,33 @@ Section 4: Declaration and Undertaking
                           Continue
                         </Button>
                       </div>
-                     
+                      <Typography
+                        align="center"
+                        style={{
+                          color: "#505E50",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginTop: "20px",
+                        }}
+                      >
+                        Do you want to go back?
+                      </Typography>
+                      <Typography align="center">
+                        <Button
+                          onClick={() => {
+                            history("/Tax_dualCert_Eci")
+                          }}
+                          variant="contained"
+                          style={{
+                            color: "white",
+                            backgroundColor: "black",
+                            marginTop: "10px",
+                            marginBottom: "20px",
+                          }}
+                        >
+                          Back
+                        </Button>
+                      </Typography>
                     </Paper>
                   </Form>
                 )}
