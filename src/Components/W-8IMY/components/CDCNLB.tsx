@@ -17,6 +17,69 @@ const CDCNLB = (props:any) => {
         <div className="d-flex mt-3">
             <Typography className="mt-2" style={{ marginTop: "10px" }}>
                 25
+                <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 25
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("25")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "25" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Select check box 25if you are a non-registering
+All non-registering local banks must check box 25to certify that you satisfy all of the requirements for this certified deemed-compliant classification.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             </Typography>
             <Typography>
             <Checkbox 

@@ -10,12 +10,75 @@ const USBranch = (props:any) => {
 
   return (
     <div style={{ padding: "10px", width: "100%" }}>
-        <div className="d-flex partParentDiv">
-            <h5 className="sub_title_inner"><span className="partSpan">Part VI</span>  Certain U.S. Branches</h5>
-        </div>
+        <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
+            Part VI <span style={{ fontWeight: "bold", marginLeft: "10px" }}>Certain U.S. Branches</span>
+        </Typography>
+        
 
         <Typography color="inherit">
             19 a
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            19a
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("19")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "19" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Check box 19a to certify that you are a U.S. branch receiving payments of income that are reportable amounts or withholdable payments not effectively connected with the conduct of a trade or business in the United States, payments of PTP distributions, or payments of amounts realized.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )} 
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -49,6 +112,68 @@ const USBranch = (props:any) => {
             Check box 19b or 19c, whichever applies.
             </Typography>
             b 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            19b
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("b")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "b" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Check box 19b to certify that you are a U.S. branch of a foreign bank or insurance company described in this certification that has agreed with the withholding agent to be treated as a U.S. person under Regulations section 1.1441-1(b)(2)(iv) with respect to such payments associated with this Form W-8IMY. In such case, you will be responsible for chapter 3 withholding and reporting and chapter 4 withholding and reporting for any such payments you make to persons for whom you are receiving a withholdable payment (including any of your branches treated as NPFFIs). In addition, you will be treated as a U.S. payor for chapter 61 purposes by checking the box on line 19b (including for backup withholding under section 3406). You must provide your EIN on line 8. You do not need to provide a chapter 4 status on line 5 or a GIIN on line 9.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )} 
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -75,7 +200,69 @@ const USBranch = (props:any) => {
                 </Typography>
             </Typography>
 
-            c 
+            c
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            19c
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("c")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "c" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Check box 19c to certify that you are a U.S. branch that does not have an agreement with the withholding agent to be treated as U.S. person under Regulations section 1.1441-1(b)(2)(iv). You must certify that you are transmitting withholding certificates or other documentation for persons for whom you are receiving the payment of a reportable amount or withholdable payment. You must also certify that you have provided or will provide a withholding statement (as required) with the information required on an NQI withholding statement. Also, check box 19c to certify that, when you are receiving a withholdable payment associated with this form, you are applying the rules described in Regulations section 1.1471-4(d)(2)(iii)(C). You must also provide your EIN on line 8 but do not need to include a chapter 4 status in Part I, line 5, or a GIIN on line 9. If you are unable to make this certification, you cannot fill out this part but instead must check the box on line 5 indicating you are a nonparticipating FFI.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )} 
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -120,6 +307,68 @@ const USBranch = (props:any) => {
             </Typography>
 
             d 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            19d
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("d")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "d" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        If this form is being provided for purposes of the entity’s holding of an interest in a PTP, check the box on 19d to certify that you are a U.S. branch described in Regulations section 1.1446(f)-4(a)(2)(i)(B) that is acting as a U.S. person with respect to an amount realized from the sale of a PTP interest. You may provide a withholding statement when you do not act as a U.S. person for an amount realized under the same conditions that apply to an NQI receiving an amount realized. You must provide your EIN on line 8 but do not need to provide a chapter 4 status on line 5 or a GIIN on line 9.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )} 
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -154,6 +403,68 @@ const USBranch = (props:any) => {
             </Typography>
 
             e 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            19e
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("e")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "e" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Check box 19e to certify that you are a U.S. branch described in Regulations section 1.1441-1(b)(2)(iv) that is acting as a nominee with respect to distributions by PTPs under Regulations section 1.1446-4(b)(3). You must provide your EIN on line 8 but do not need to provide a chapter 4 status on line 5 or a GIIN on line 9.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -193,6 +504,68 @@ const USBranch = (props:any) => {
             </Typography>
 
             f 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            19f
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("f")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "f" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        If you are a U.S. branch receiving PTP distributions associated with the form and are not acting as a nominee for the distributions under Regulations section 1.1446-4(b)(3), you should check box 19f. You should provide a withholding statement to allocate the amounts subject to withholding on a distribution and provide the appropriate account holder documentation, taking into account the limitation on an NQI providing this documentation for amount realized (to the extent applicable).
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"

@@ -17,6 +17,69 @@ const ETNFFE = (props:any) => {
         <div className="d-flex mt-3">
             <Typography className="mt-2" style={{ marginTop: "10px" }}>
                 38
+                <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 38
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("38")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "38" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Select check box 38 for all excepted territory NFFEs.
+All excepted territory NFFEs must check box 38 to certify that you satisfy the requirements for this classification. See Regulations section 1.1472-1(c)(1)(iii) for the definition of an excepted territory NFFE.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             </Typography>
             <Typography>
                 <Checkbox 

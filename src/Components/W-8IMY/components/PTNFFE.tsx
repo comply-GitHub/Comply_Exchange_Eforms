@@ -23,6 +23,69 @@ const PTNFFE = (props:any) => {
         <div className="d-flex mt-3">
         <Typography className="mt-2" style={{ marginTop: "5px" }}>
             37a
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 37a
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("37a")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "37a" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Select check box 37a for all publicly traded NFFEs.
+All publicly traded NFFEs must check box 37a to certify that you are not a financial institution and provide the name of a securities exchange on which the stock of the NFFE is publicly traded.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
         </Typography>
         <Typography>
             <Checkbox 
@@ -72,6 +135,70 @@ const PTNFFE = (props:any) => {
         <div className="d-flex mt-3">
         <Typography className="mt-2" style={{ marginTop: "5px" }}>
             37b
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 37b
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("37b")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "37b" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Select check box 37b if you are a member of the same expanded affiliated group.
+If you are an NFFE that is a member of the same expanded affiliated group (as described in Regulations section 1.1471-5(i)) as a publicly traded U.S. or foreign entity, you must check box 37b to certify that you are an NFFE affiliate of a publicly traded corporation, provide the name of the publicly traded entity, and identify the securities market on which the stock of the publicly traded entity is traded. See Regulations section 1.1472-1(c)(1)(i) to determine if an entity is publicly traded.
+
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
         </Typography>
         <Typography>
         <Checkbox 

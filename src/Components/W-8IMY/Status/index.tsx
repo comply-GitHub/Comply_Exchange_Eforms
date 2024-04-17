@@ -419,28 +419,22 @@ export default function Fedral_tax(props: any) {
                                       }}
                                     >
                                       <Typography>
-                                        Please make a selection from the
-                                        dropdown provided. The selection must
-                                        represent the Chapter 3 classification,
-                                        under U.S. tax principles, of the
-                                        individual, business, or organization
-                                        that the certificate will represent.
+                                      EH008: Please make a selection from the drop down list provided. The selection must represent the chapter 3 classification, under U.S. tax principles of the individual, business or organization the certificate will represent.
                                       </Typography>
                                       <Typography style={{ marginTop: "10px" }}>
-                                        For more information, please review the
-                                        Chapter 3 Classification Guide to
-                                        establish your entity status for
-                                        purposes of Chapter 3.
+                                      Complete this line or use the Chapter 3 Classification Guide to establish your entity status for purposes of chapter 3. Check the one appropriate box that applies.
+
+
                                       </Typography>
                                       <Typography
                                         style={{
                                           marginTop: "10px",
-                                          fontWeight: "550",
+                                          //fontWeight: "550",
                                         }}
                                       >
-                                        IRS Guidance:
+                                        A foreign central bank of issue (wholly owned by a foreign sovereign) should check the “Foreign government” box. If you are a foreign private foundation, you should check the “foreign private foundation” box rather than the “foreign tax-exempt organization” box.
                                       </Typography>
-                                      <Typography style={{ marginTop: "10px" }}>
+                                      {/* <Typography style={{ marginTop: "10px" }}>
                                         Please selection the option that
                                         applies. By making this selection, you
                                         are representing that you qualify for
@@ -459,7 +453,7 @@ export default function Fedral_tax(props: any) {
                                         option. If you are a sole proprietor
                                         select the 'Individual' option, not
                                         'Disregarded entity'.
-                                      </Typography>
+                                      </Typography> */}
 
                                       <Link
                                         href="#"
@@ -586,7 +580,7 @@ export default function Fedral_tax(props: any) {
                                     >
                                       Business Name:
                                       <span style={{ color: "red" }}>*</span>
-                                      <span>
+                                      {/* <span>
                                         <Tooltip
                                           style={{
                                             backgroundColor: "black",
@@ -623,7 +617,7 @@ export default function Fedral_tax(props: any) {
                                             }}
                                           />
                                         </Tooltip>
-                                      </span>
+                                      </span> */}
                                     </Typography>
                                     {toolInfo === "name" ? (
                                       <div>

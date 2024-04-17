@@ -18,6 +18,68 @@ const TFI = (props:any) => {
 
         <Typography color="inherit">
             18 a
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 18a
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("18")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "18" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                            Check box 18a to certify that you are a financial institution (other than an investment entity that is not also a depository institution, custodial institution, or specified insurance company) incorporated or organized under the laws of a territory of the United States.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -51,6 +113,68 @@ const TFI = (props:any) => {
             Check the box on line 18b or 18c, whichever applies.
             </Typography>
             b 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 18b
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("b")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "b" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Check box 18b to certify that you have agreed to be treated as a U.S. person for purposes of both chapter 3 and chapter 4 with respect to payments of reportable amounts and withholdable payments associated with this Form W-8IMY. In this case, you will be responsible for chapter 3 withholding and reporting, backup withholding under section 3406, and chapter 4 withholding and reporting for any payments you make to persons for whom you are receiving a reportable amount or withholdable payment. If you check the box on line 18b, you must provide an EIN on line 8.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             <Typography style={{ display: "flex" }}>
             <Checkbox 
                 onChange={(e) => {
@@ -88,6 +212,68 @@ const TFI = (props:any) => {
             </Typography>
 
             c 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 18c
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("c")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "c" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Check box 18c to certify that you are a territory financial institution that has not agreed to be treated as a U.S. person for reportable amounts and withholdable payments associated with this form. You must certify that you are transmitting withholding certificated or other documentation for persons for whom you are receiving a payment (as required for chapter 3, chapter 61, and section 3496 purposes, and, in the case of a withholdable payment, for chapter 4 withholding and reporting purposes). You must also certify that you have provided or will provide a withholding statement (as required) with the information required on an NQI withholding statement.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             <Typography style={{ display: "flex" }}>
             <Checkbox 
                 onChange={(e) => {
@@ -143,6 +329,68 @@ const TFI = (props:any) => {
             </Typography>
 
             d 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 18d
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("d")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "d" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        If this form is being provided for purposes of the entity’s holding of an interest in a PTP, check box 18d to certify that you have agreed to be treated as a U.S. person under Regulations section 1.1446(f)-4(a)(2)(i)(B) with respect to an amount realized from a sale of a PTP interest. You may provide a withholding statement when you do not act as a U.S. person for an amount realized under the same conditions that apply to an NQI receiving an amount realized. If you check 18d, you must provide an EIN on line 8.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -171,6 +419,68 @@ const TFI = (props:any) => {
             </Typography>
 
             e 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 18e
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("e")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "e" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Check box 18e to certify that you have agreed to be treated as a U.S. person (as described in Regulations section 1.1441-1(b)(2)(iv)) and as a nominee under Regulations section 1.1446-4(b)(3) with respect to distributions made by PTPs. If you check 18e, you must provide an EIN on line 8.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -207,6 +517,68 @@ const TFI = (props:any) => {
             </Typography>
 
             f 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 18f
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("f")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "f" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        If you receive PTP distributions for which you do not act as a nominee under Regulations section 1.1446-4(b)(3), check box 18f. You should provide a withholding statement to allocate the amounts subject to withholding on a distribution and provide the appropriate account holder documentation, taking into account the limitation on an NQI providing this documentation for amount realized (to the extent applicable).
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )} 
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
