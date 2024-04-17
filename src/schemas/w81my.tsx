@@ -87,3 +87,18 @@ export const US_TINSchema8IMY = () => {
       
     });
   };
+
+  export const partCertiSchema8IMY = () => {
+    return Yup.object().shape({
+  
+      signedBy: Yup.string().required("Please enter name of the person signing the form"),
+      confirmationCode: Yup.string()
+        .required("Please enter code"),
+      
+      date: Yup.date(),
+      isAgreeWithDeclaration: Yup.boolean().oneOf(
+        [true],
+        "Please mark the checkbox"
+      ),
+    });
+  };

@@ -9,10 +9,14 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
-import { W8_state_ECI } from "../../../Redux/Actions";
+import { W8_state_ECI, postW81MY_EForm } from "../../../Redux/Actions";
 import { useDispatch } from "react-redux";
+import useAuth from "../../../customHooks/useAuth";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 
 const Declaration = (props: any) => {
+  const {authDetails} = useAuth();
   const { open, setOpen } = props;
   const handleClose = () => {
     setOpen(false);
@@ -22,6 +26,7 @@ const Declaration = (props: any) => {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsCheckboxChecked(event.target.checked);
   };
+  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
 
 
   const history = useNavigate();
@@ -37,9 +42,9 @@ const Declaration = (props: any) => {
       setExpanded(isExpanded ? panel : false);
     };
     const initialValue = {
-      declaration:false,
-      IsSubmit:false,
-      IsSubmit_not:false
+      isAgreeWithDeclaration:false,
+      isConsentReceipentstatement:false,
+      isNotConsentReceipentstatement:false
     };
   return (
     <Fragment>
@@ -54,13 +59,41 @@ const Declaration = (props: any) => {
              validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
                 console.log("values" , values)
+
                 setSubmitting(true);
-                dispatch(
-                  W8_state_ECI(values, () => {
-                    history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY/Submit_IMY/ThankYou_IMY");
-                  })
-                );
-                history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY/Submit_IMY/ThankYou_IMY");
+                let temp = {
+                  ...PrevStepData,
+                  ...values,
+                  agentId: authDetails?.agentId,
+                  accountHolderBasicDetailId: authDetails?.accountHolderId,
+                };
+                const returnPromise = new Promise((resolve, reject) => {
+                  dispatch(
+                    postW81MY_EForm(
+                      temp,
+                      (res: any) => {
+                        localStorage.setItem(
+                          "PrevStepData",
+                          JSON.stringify(temp)
+                        );
+      
+                        resolve(res);
+                        history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY/Submit_IMY/ThankYou_IMY");
+                      },
+                      (err: any) => {
+                        reject(err);
+                      }
+                    )
+                  );
+                });
+                return returnPromise;
+
+                // dispatch(
+                //   W8_state_ECI(values, () => {
+                //     history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY/Submit_IMY/ThankYou_IMY");
+                //   })
+                // );
+                // history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY/Submit_IMY/ThankYou_IMY");
               }}
             >
               {({
@@ -72,9 +105,11 @@ const Declaration = (props: any) => {
                 handleChange,
                 isSubmitting,
                 isValid,
-                setFieldValue
+                setFieldValue,
+                submitForm
               }) => (
                 <form onSubmit={handleSubmit}>
+                  <>{console.log(errors, values, "errorsssss")}</>
                   {/* <form> */}
                     {
                       <Typography
@@ -249,12 +284,15 @@ const Declaration = (props: any) => {
                             </Typography>
                           </Paper>
                           <div style={{ display: "flex", marginTop: "10px" }}>
-                            <Checkbox name="declaration" value={values.declaration} onChange={handleChange} checked={values.declaration}/>
+                            <Checkbox name="isAgreeWithDeclaration" value={values.isAgreeWithDeclaration} onChange={handleChange} checked={values.isAgreeWithDeclaration}/>
                             <Typography style={{ marginTop: "9px" }}>
-                              I agree with the above Declarations
+                              I agree with the above isAgreeWithDeclarations
                             </Typography>
                           </div>
-                          <p className="error">{errors.declaration}</p>
+                          {/* {errors?.isAgreeWithDeclaration && typeof errors?.isAgreeWithDeclaration === 'string' && (
+                                <p className="error">{errors?.isAgreeWithDeclaration}</p>
+                              )} */}
+                          <p className="error">{errors.isAgreeWithDeclaration}</p>
                         </AccordionDetails>
                       </Accordion>
                       <Accordion
@@ -319,12 +357,12 @@ const Declaration = (props: any) => {
                             <Divider style={{ marginBottom: "10px" }} />
                           </Paper>
                           <div style={{ display: "flex", marginTop: "10px" }}>
-                            <Checkbox     name="IsSubmit" value={values.IsSubmit} 
+                            <Checkbox     name="isConsentReceipentstatement" value={values.isConsentReceipentstatement} 
                             onChange={(e)=>{
                               handleChange(e);
-                              setTimeout(()=>{setFieldValue("IsSubmit_not",false)},50)
+                              setTimeout(()=>{setFieldValue("isNotConsentReceipentstatement",false)},50)
                             }} 
-                            checked={values.IsSubmit}/>
+                            checked={values.isConsentReceipentstatement}/>
                          
                             <Typography style={{ marginTop: "9px" }}>
                               I give consent to receiving a recipent statement
@@ -332,21 +370,21 @@ const Declaration = (props: any) => {
                             </Typography>
                            
                           </div>
-                          <p className="error">{errors.IsSubmit}</p>
+                          <p className="error">{errors.isConsentReceipentstatement}</p>
                           <div style={{ display: "flex", marginTop: "10px" }}>
-                            <Checkbox  name="IsSubmit_not" value={values.IsSubmit_not} 
+                            <Checkbox  name="isNotConsentReceipentstatement" value={values.isNotConsentReceipentstatement} 
                             onChange={(e)=>{
                               handleChange(e);
-                              setTimeout(()=>{setFieldValue("IsSubmit",false)},50)
+                              setTimeout(()=>{setFieldValue("isConsentReceipentstatement",false)},50)
                             }} 
-                            checked={values.IsSubmit_not} />
+                            checked={values.isNotConsentReceipentstatement} />
                             <Typography style={{ marginTop: "9px" }}>
                               {" "}
                               I do not give consent to receiving a recipent
                               statement electronically.
                             </Typography>
                           </div>
-                          <p className="error">{errors.IsSubmit_not}</p>
+                          <p className="error">{errors.isNotConsentReceipentstatement}</p>
                         </AccordionDetails>
                       </Accordion>
                     </div>
@@ -359,13 +397,25 @@ const Declaration = (props: any) => {
             marginTop: "40px",
           }}
         >
-          <Button
-           
-            variant="contained"
-            style={{ color: "white" }}
-          >
-            SAVE & EXIT
-          </Button>
+          <SaveAndExit Callback={() => {
+                        submitForm().then(() => {
+                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                          const urlValue = window.location.pathname.substring(1);
+                          const temp = {
+                            agentId: authDetails.agentId,
+                            accountHolderBasicDetailId: authDetails.accountHolderId,
+                            ...prevStepData,
+                            ...values,
+                            stepName: `/${urlValue}`
+                          };
+                          dispatch(postW81MY_EForm(
+                            temp
+                            , () => { }))
+                          history(
+                            GlobalValues.basePageRoute
+                          );
+                        })
+                      }} formTypeId={FormTypeId.FW81MY} ></SaveAndExit>
           <Button
           
             variant="contained"

@@ -21,7 +21,7 @@ import { Formik, Form } from "formik";
 import { Info } from "@mui/icons-material";
 import { ContentCopy } from "@mui/icons-material";
 import { useDispatch,useSelector } from "react-redux";
-import { W8_state,GetHelpVideoDetails } from "../../../Redux/Actions";
+import { W8_state,GetHelpVideoDetails, postW81MY_EForm } from "../../../Redux/Actions";
 import { useNavigate } from "react-router";
 import checksolid from "../../../../../assets/img/check-solid.png";
 import Accordion from "@mui/material/Accordion";
@@ -30,7 +30,12 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { partCertiSchema } from "../../../schemas/w8Ben";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
+import useAuth from "../../../customHooks/useAuth";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import { partCertiSchema8IMY } from "../../../schemas/w81my";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 export default function Penalties() {
+  const {authDetails} = useAuth();
   const [open2, setOpen2] = useState(false);
   const [clickCount, setClickCount] = useState(0);
   const handleClickOpen2 = () => setOpen2(true);
@@ -39,6 +44,8 @@ export default function Penalties() {
   const [showRecoverSection, setShowRecoverSection] = useState(false);
   const [isSecurityWordMatched, setIsSecurityWordMatched] = useState(false);
   const [securityWordError, setSecurityWordError] = useState("");
+  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  const W8IMYData = useSelector((state: any) => state.W8IMY);
   useEffect(() => {
     
     dispatch(GetHelpVideoDetails());
@@ -60,41 +67,80 @@ export default function Penalties() {
     };
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
-  const initialValue = {
-    signedBy: "",
-    EnterconfirmationCode:"",
-    confirmationCode: "",
-    date: "",
+
+  const [initialValue, setInitialValues] = useState({
+    signedBy: W8IMYData?.signedBy ?? "",
+    enterconfirmationCode:"",
+    confirmationCode: W8IMYData?.confirmationCode ?? "",
+    date: new Date().toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+    }),
     isAgreeWithDeclaration: false,
+    isAcceptanceDeclarations: W8IMYData?.isAcceptanceDeclarations ?? false,
     question:"",
     word :""
-  };
+  });
+
   const dispatch = useDispatch();
   const history = useNavigate();
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+  const viewPdf = () => {
+    history("/w8Eci_pdf", { replace: true });
+  }
   return (
     <>
       <Formik
       validateOnChange={false}
       validateOnBlur={false}
         initialValues={initialValue}
-        validationSchema={partCertiSchema}
+        validationSchema={partCertiSchema8IMY}
         onSubmit={(values, { setSubmitting }) => {
-          if (clickCount === 0) {
+
+          let temp = {
+            ...PrevStepData,
+            ...values,
+            agentId: authDetails?.agentId,
+            accountHolderBasicDetailId: authDetails?.accountHolderId,
+          };
+
+          const returnPromise = new Promise((resolve, reject) => {
+            dispatch(
+              postW81MY_EForm(
+                temp,
+                (res: any) => {
+                  localStorage.setItem(
+                    "PrevStepData",
+                    JSON.stringify(temp)
+                  );
+
+                  resolve(res);
+                  history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY/Submit_IMY");
+                },
+                (err: any) => {
+                  reject(err);
+                }
+              )
+            );
+          });
+          return returnPromise;
+
+          // if (clickCount === 0) {
         
-            setClickCount(clickCount+1);
-          }else{
+          //   setClickCount(clickCount+1);
+          // }else{
          
-          dispatch(
-            W8_state(values, () => {
-              history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY/Submit_IMY");
-              setSubmitting(true);
+          // dispatch(
+          //   W8(values, () => {
+          //     history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY/Submit_IMY");
+          //     setSubmitting(true);
            
-            })
-          );
-          }
+          //   })
+          // );
+          // }
         }}
       >
         {({
@@ -105,9 +151,11 @@ export default function Penalties() {
           handleSubmit,
           handleChange,
           isSubmitting,
-          setFieldValue
+          setFieldValue,
+          submitForm
         }) => (
           <Form onSubmit={handleSubmit}>
+            
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
@@ -141,7 +189,7 @@ export default function Penalties() {
         <div className="row w-100 ">
         <div className="col-4">
           <div style={{ padding: "20px 0px", height:"100%" }}>
-            <BreadCrumbComponent breadCrumbCode={1292} formName={7}/>
+            <BreadCrumbComponent breadCrumbCode={1292} formName={FormTypeId.FW81MY}/>
           
       </div>
       </div>
@@ -304,7 +352,10 @@ export default function Penalties() {
                         onChange={handleChange}
                         error={Boolean(touched.signedBy && errors.signedBy)}
                       />
-                      <p className="error">{errors.signedBy}</p>
+                      {errors?.signedBy && typeof errors?.signedBy === 'string' && (
+                                <p className="error">{errors?.signedBy}</p>
+                              )}
+                      {/* <p className="error">{errors.signedBy}</p> */}
                     </div>
 
                     <div className="col-md-6 col-12">
@@ -390,12 +441,12 @@ export default function Penalties() {
                         className="inputTextField"
                         id="outlined"
                         fullWidth
-                          name="EnterconfirmationCode"
-                          value={values.EnterconfirmationCode}
+                          name="confirmationCode"
+                          value={values.confirmationCode}
                           onBlur={handleBlur}
                           onChange={handleChange}
                           error={Boolean(
-                            touched.EnterconfirmationCode && errors.EnterconfirmationCode
+                            touched.confirmationCode && errors.confirmationCode
                           )}
                           type="password"
                           
@@ -412,7 +463,10 @@ export default function Penalties() {
                         >
                           Recover Password
                         </span>
-                        <p className="error">{errors.EnterconfirmationCode}</p>
+                        {errors?.confirmationCode && typeof errors?.confirmationCode === 'string' && (
+                                <p className="error">{errors?.confirmationCode}</p>
+                              )}
+                        {/* <p className="error">{errors.EnterconfirmationCode}</p> */}
                       </div>
                     </div>
                   </div>
@@ -688,15 +742,25 @@ export default function Penalties() {
                     >
                     View Form
                     </Button>
-                    <Button
-                      onClick={() => {
-                        setOpen2(true);
-                      }}
-                      variant="contained"
-                      style={{ color: "white" , marginLeft: "15px" }}
-                    >
-                      SAVE & EXIT
-                    </Button>
+                    <SaveAndExit Callback={() => {
+                        submitForm().then(() => {
+                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                          const urlValue = window.location.pathname.substring(1);
+                          const temp = {
+                            agentId: authDetails.agentId,
+                            accountHolderBasicDetailId: authDetails.accountHolderId,
+                            ...prevStepData,
+                            ...values,
+                            stepName: `/${urlValue}`
+                          };
+                          dispatch(postW81MY_EForm(
+                            temp
+                            , () => { }))
+                          history(
+                            GlobalValues.basePageRoute
+                          );
+                        })
+                      }} formTypeId={FormTypeId.FW81MY} ></SaveAndExit>
                     <Button
                       type="submit"
                      

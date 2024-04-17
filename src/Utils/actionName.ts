@@ -23,6 +23,7 @@ const ActionName = {
     InsertAccountHolderDetail:"InsertAccountHolderDetail",
     InserDualCert:"InserDualCert",
     CREATE_8233:"CREATE_8233",
+    CREATE_8IMY:"CREATE_8IMY",
     postSecurutyCode:"postSecurityCode",
     GetSecurityQuestions:"GetSecurityQuestions",
     GetTinTypes:"GetTinTypes",

@@ -7,9 +7,12 @@ const WithAutoLogout = <P extends object>(
 ) => {
   const AutoLogout: React.FC<P> = (props) => {
     const { authDetails } = useAuth();
+    // const [countdown, setCountdown] = useState<number>(
+    //   authDetails?.configurations?.sessionTimeinMin * 60 ||
+    //     authDetails?.configurations?.accountHolderDetail?.sessionTimeinMin
+    // );
     const [countdown, setCountdown] = useState<number>(
-      authDetails?.configurations?.sessionTimeinMin * 60 ||
-        authDetails?.configurations?.accountHolderDetail?.sessionTimeinMin
+      60 * 60
     );
     const [counter, ShowCounter] = useState(false);
     const events = [
@@ -28,17 +31,18 @@ const WithAutoLogout = <P extends object>(
 
     useEffect(() => {
       console.log(authDetails?.configurations, "SIGNINDETAILS");
-      setCountdown(
-        authDetails?.configurations?.sessionTimeinMin
-          ? (authDetails?.configurations?.sessionTimeinMin -
-              authDetails?.configurations?.sessionTimeReminderBeforeinMin) *
-              60
-          : 60 *
-              (authDetails?.configurations?.accountHolderDetail
-                ?.sessionTimeinMin -
-                authDetails?.configurations?.accountHolderDetail
-                  ?.sessionTimeReminderBeforeinMin)
-      );
+      // setCountdown(
+      //   authDetails?.configurations?.sessionTimeinMin
+      //     ? (authDetails?.configurations?.sessionTimeinMin -
+      //         authDetails?.configurations?.sessionTimeReminderBeforeinMin) *
+      //         60
+      //     : 60 *
+      //         (authDetails?.configurations?.accountHolderDetail
+      //           ?.sessionTimeinMin -
+      //           authDetails?.configurations?.accountHolderDetail
+      //             ?.sessionTimeReminderBeforeinMin)
+      // );
+      setCountdown(60*60);
       sessionConfig();
     }, [authDetails]);
     const clearTimeouts = () => {
