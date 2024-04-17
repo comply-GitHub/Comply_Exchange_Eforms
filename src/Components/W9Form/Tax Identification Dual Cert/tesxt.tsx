@@ -24,7 +24,7 @@ import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ExpandMore, Info } from "@mui/icons-material";
 import { Formik, Form } from "formik";
-import { TinSchema_W9_DC} from "../../../schemas";
+import { TinSchema_DualCert} from "../../../schemas";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
@@ -104,7 +104,7 @@ export default function Tin({data,index,handlePayloadUpdate,handleRadioChange}: 
     enableReinitialize      
     validateOnChange={true}
     validateOnBlur={true}
-    validationSchema={TinSchema_W9_DC} 
+    validationSchema={TinSchema_DualCert} 
     onSubmit={(values, { setSubmitting }) => {
       
       
@@ -151,7 +151,10 @@ export default function Tin({data,index,handlePayloadUpdate,handleRadioChange}: 
                           name="countryId"
                           id="Income"
                           defaultValue={1}
-                          
+                          // error={Boolean(
+                          //   touched.countryId &&
+                          //   errors.countryId
+                          // )}
                           value={values?.countryId}
                           onChange={(e)=>{
                             handleChange(e)
@@ -171,6 +174,10 @@ export default function Tin({data,index,handlePayloadUpdate,handleRadioChange}: 
                                 )}
                             
                         </select>
+
+                        {errors?.countryId && typeof errors?.countryId === 'number' && (
+                                <p className="error">{errors?.countryId}</p>
+                              )}
                    
                       </div>
 
@@ -186,7 +193,7 @@ export default function Tin({data,index,handlePayloadUpdate,handleRadioChange}: 
                           onKeyDown={(e) =>{ if(values.isAlternativeTinFormat === false) formatTin(e, values)} }
                          onChange={(e)=>{
                             handleChange(e)
-                                handleFormChange(e)
+                            handleFormChange(e)
                          }                            
                          }
                           
@@ -201,8 +208,10 @@ export default function Tin({data,index,handlePayloadUpdate,handleRadioChange}: 
                         />
 
                         <>{console.log(errors,"88")}</>
-                       
-                        {/* <p className="error">{errors?.tinNumber}</p> */}
+                        {errors?.tinNumber && typeof errors?.tinNumber === 'string' && (
+                                <p className="error">{errors?.tinNumber}</p>
+                              )}
+                        
                         <div className="Alternate">
                           <Checkbox
                             value={values.isAlternativeTinFormat}
@@ -261,15 +270,12 @@ export default function Tin({data,index,handlePayloadUpdate,handleRadioChange}: 
                         />
                           <span style={{ fontSize: "12px" }}>
                             Not Available
-                            {/* {errors.isTinAvailable && touched.isTinAvailable ? (
-                              <div>
-                                <p className="error">
-                                  {errors?.isTinAvailable}
-                                </p>
-                              </div>
-                            ) : (
-                              ""
-                            )} */}
+                           
+
+{errors?.isTinAvailable && typeof errors?.isTinAvailable === 'boolean' && (
+                                <p className="error">{errors?.isTinAvailable}</p>
+                              )}
+                        
                           </span>
                         </div>
                       </div>
@@ -284,7 +290,7 @@ export default function Tin({data,index,handlePayloadUpdate,handleRadioChange}: 
                               name="additionalTaxJurisdictions"
                               aria-labelledby="demo-row-radio-buttons-group-label"
                               value={values.additionalTaxJurisdictions}
-                            onChange={(e)=>{
+                               onChange={(e)=>{
                                 handleRadioChange(e,index+1)
                                 handleChange(e)
                                 handleFormChange(e)
@@ -326,16 +332,16 @@ export default function Tin({data,index,handlePayloadUpdate,handleRadioChange}: 
                               )} */}
                             </RadioGroup>
 
-                            {/* {errors.tinisFTINNotLegallyRequired &&
-                            touched.tinisFTINNotLegallyRequired ? (
+                            {errors.additionalTaxJurisdictions &&
+                            touched.additionalTaxJurisdictions && typeof errors?.additionalTaxJurisdictions === 'string' ? (
                               <div>
-                                <Typography color="error">
-                                  {errors.tinisFTINNotLegallyRequired}
-                                </Typography>
+                                <p color="error">
+                                  {errors.additionalTaxJurisdictions}
+                                </p>
                               </div>
                             ) : (
                               ""
-                            )} */}
+                            )}
                           </FormControl>
                         </div>
                     

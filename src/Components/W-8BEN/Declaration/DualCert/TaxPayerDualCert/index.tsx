@@ -27,7 +27,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import CloseIcon from "@mui/icons-material/Close";
-import { US_TINSchemaW8Ben_Dc } from "../../../../../schemas/w8Ben";
+import { TaxPurposeSchema } from "../../../../../schemas/w8ECI";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
@@ -54,7 +54,7 @@ export default function Tin(props: any) {
   const onBoardingFormValues = JSON.parse(
     localStorage.getItem("agentDetails") ?? "null"
   );
-
+  const [IsIndividual, setIsIndividual] = useState(onBoardingFormValues?.businessTypeId == 1);
   const W8BENData = useSelector((state: any) => state.W8BEN);
 
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
@@ -212,7 +212,7 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                 initialValues={initialValue}
                 validateOnMount={true}
                 enableReinitialize
-                validationSchema={US_TINSchemaW8Ben_Dc()}
+                validationSchema={TaxPurposeSchema(IsIndividual)}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
                   const temp = {
@@ -1109,22 +1109,24 @@ console.log(obValues.taxpayerIdTypeID,"pp")
                         SAVE & EXIT
                       </Button> */}
 
-                      {/* <SaveAndExit Callback={() => {
+                      <SaveAndExit Callback={() => {
                         submitForm().then(() => {
                           const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                           const urlValue = window.location.pathname.substring(1);
                           dispatch(PostDualCert(
                             {
-                              ...values,
-                              ...prevStepData,
-                              stepName: `/${urlValue}`
+                                ...prevStepData,
+                                ...values,
+                                stepName: `/${urlValue}`
                             }
-                            , () => { }))
-                          history(
-                            GlobalValues.basePageRoute
-                          );
+                            , () => { }, 
+                            () => { }) 
+                        );
+                          history(GlobalValues.basePageRoute)
+                        }).catch((err) => {
+                          console.log(err);
                         })
-                      }} formTypeId={FormTypeId.BEN} ></SaveAndExit> */}
+                      }} formTypeId={FormTypeId.BEN} ></SaveAndExit>
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}

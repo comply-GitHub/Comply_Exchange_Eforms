@@ -10,7 +10,8 @@ import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
 import { W8_state_ECI, PostDualCert } from "../../../../../Redux/Actions";
 import { useDispatch } from "react-redux";
-
+import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
+import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 const Declaration = (props: any) => {
   const location = useLocation();
   const { open, setOpen } = props;
@@ -60,18 +61,20 @@ const Declaration = (props: any) => {
               validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
                 console.log("values", values);
-                setSubmitting(true);
+            
                 const result = {
-                  ...PrevStepData, 
+                  ...PrevStepData[0], 
                   ...values,
                  
                   statusId: 1,
                 };
                 const returnPromise = new Promise((resolve, reject) => {
                 dispatch(
-                  PostDualCert(result, (data: any) => {
+                  PostDualCert([result], (data: any) => {
+                   
                     localStorage.setItem("DualCertData", JSON.stringify(result))
                     resolve(data);
+                    setSubmitting(true);
                   }
                     , (err: any) => {
                       reject(err);
@@ -80,7 +83,8 @@ const Declaration = (props: any) => {
                 );
               })
 
-
+              return returnPromise;
+            
             }}
             >
               {({
@@ -377,9 +381,24 @@ const Declaration = (props: any) => {
                       marginTop: "40px",
                     }}
                   >
-                    <Button variant="contained" style={{ color: "white" }}>
-                      SAVE & EXIT
-                    </Button>
+                    <SaveAndExit Callback={() => {
+                        submitForm().then(() => {
+                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                          const urlValue = window.location.pathname.substring(1);
+                          dispatch(PostDualCert(
+                            {
+                                ...prevStepData,
+                                ...values,
+                                stepName: `/${urlValue}`
+                            }
+                            , () => { }, 
+                            () => { }) 
+                        );
+                          history(GlobalValues.basePageRoute)
+                        }).catch((err) => {
+                          console.log(err);
+                        })
+                      }} formTypeId={FormTypeId.BEN} ></SaveAndExit>
                     <Button
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}

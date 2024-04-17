@@ -56,6 +56,7 @@ export default function Certifications(props: any) {
   });
 
   useEffect(() => {
+    document.title="Certification I"
     setInitialValue((prev: any) => {
       return {
         ...prev,

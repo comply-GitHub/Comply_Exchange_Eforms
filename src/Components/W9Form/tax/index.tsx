@@ -178,7 +178,7 @@ export default function Tin(props: any) {
             : selectedTaxClassification == 1
               ? firstStepSchema
               : firstStepBusinessSchema
-        } // Uncomment after testing ,this is validation Schema
+        } 
         onSubmit={(values, { setSubmitting }) => {
 
 

@@ -67,6 +67,7 @@ export default function Factors() {
   console.log(SpecialRateAndConditionIncomeTypes, "SpecialRateAndConditionIncomeTypes")
 
   useEffect(() => {
+    document.title = "SRC-Prepopulator";
     dispatch(getAllCountriesIncomeCode());
     dispatch(GetHelpVideoDetails());
   }, [])

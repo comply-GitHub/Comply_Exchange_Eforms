@@ -12,7 +12,8 @@ const WithAutoLogout = <P extends object>(
     //     authDetails?.configurations?.accountHolderDetail?.sessionTimeinMin
     // );
     const [countdown, setCountdown] = useState<number>(
-      60 * 60
+      authDetails?.configurations?.sessionTimeinMin * 60 ||
+        authDetails?.configurations?.accountHolderDetail?.sessionTimeinMin *60
     );
     const [counter, ShowCounter] = useState(false);
     const events = [
@@ -51,6 +52,8 @@ const WithAutoLogout = <P extends object>(
     };
 
     function resetTimeout() {
+      setCountdown(authDetails?.configurations?.sessionTimeinMin * 60 ||
+        authDetails?.configurations?.accountHolderDetail?.sessionTimeinMin *60)
       ShowCounter(false);
       clearTimeouts();
       setTimeouts();
@@ -102,7 +105,8 @@ const WithAutoLogout = <P extends object>(
     };
 
     useEffect(() => {}, [countdown]);
-    const sessionConfig = () => {for (let i = 0; i < events.length; i++) {
+    const sessionConfig = () => {
+      for (let i = 0; i < events.length; i++) {
         window.addEventListener(events[i], resetTimeout);
       }
       setTimeouts();
@@ -134,6 +138,7 @@ const WithAutoLogout = <P extends object>(
     return (
       <>
         <ComposedComponent {...props} />
+        {/* <>{console.log(formatTime(countdown),"Coundown")}</> */}
         {counter &&
         authDetails &&
         authDetails?.configurations !== null &&
@@ -155,7 +160,9 @@ const WithAutoLogout = <P extends object>(
                     style={{ display: "grid", gridTemplateColumns: "95% 5%" }}
                   >
                     <Typography>
-                     Session has been ide over its time limit. It will disconnected in {formatTime(countdown)}{" "} minutes. Press any key to continue
+                      Session has been idle over its time limit. It will
+                      disconnected in {formatTime(countdown)} minutes. Press any
+                      key to continue
                     </Typography>
                     {/* <Typography
                       sx={{ color: "black", justifySelf: "end" }}

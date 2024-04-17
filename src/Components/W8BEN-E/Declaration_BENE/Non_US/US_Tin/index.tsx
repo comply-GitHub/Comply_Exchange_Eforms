@@ -101,6 +101,7 @@ export default function Tin(props: any) {
       setExpanded(isExpanded ? panel : false);
     };
   useEffect(() => {
+    document.title="Tax-Payer";
     dispatch(GetHelpVideoDetails());
     dispatch(getAllCountries());
     dispatch(
