@@ -10,14 +10,77 @@ const NWFP = (props:any) => {
 
   return (
     <div style={{ padding: "10px", width: "100%" }}>
-        <div className="d-flex partParentDiv">
-            <h5 className="sub_title_inner"><span className="partSpan">Part VIII</span>  Nonwithholding Foreign Partnership, Simple Trust, or Grantor Trust</h5>
-        </div>
+        <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
+            Part VIII <span style={{ fontWeight: "bold", marginLeft: "10px" }}>Nonwithholding Foreign Partnership, Simple Trust, or Grantor Trust</span>
+        </Typography>
+        
         <Typography>
         Check all that apply:
         </Typography>
         <Typography color="inherit">
             21 a
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 21a
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("21")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "21" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Check box 21a if you are a foreign partnership or a foreign simple or grantor trust that is not a WP or WT, and is providing this form for payments that are not effectively connected, or are not treated as effectively connected, with the conduct of a trade or business in the United States.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -52,6 +115,68 @@ const NWFP = (props:any) => {
 
             
             b 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 21b
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("b")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "b" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Check box 21b if you are a foreign partnership or foreign grantor trust providing this form for purposes of section 1446(a). If you are a foreign partnership (other than a WP) or grantor trust receiving payments of both the amounts described on line 21a and for purposes of section 1446(a), you should check both boxes. By checking either box, you are certifying to the applicable statements on the form.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -84,6 +209,69 @@ const NWFP = (props:any) => {
             </Typography>
 
             c 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 21c
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("c")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "c" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Check box 21c if you are a foreign partnership that is a transferor of an interest in a partnership receiving an amount realized from the transfer. If you check box 21c and are providing a withholding statement for a modified amount realized on the transfer, also check box 21d.
+
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -117,6 +305,69 @@ const NWFP = (props:any) => {
         
 
             d 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 21d
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("d")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "d" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        If you check box 21c and are providing a withholding statement for a modified amount realized on the transfer, also check box 21d. The withholding statement for a modified amount realized must show the allocation of the gain from the transfer to each of the partners for which a lower rate of withholding is being requested, and you must provide withholding certificates for each of the partners to avoid the requirement that the transferee (or your broker for a transfer of a PTP interest) treat a partner as a presumed foreign partner.
+
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -149,6 +400,69 @@ const NWFP = (props:any) => {
             </Typography>
 
             e 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 21e
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("e")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "e" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Check box 21e if you are a foreign grantor trust providing the form on behalf of each grantor or owner of the trust under Regulations section 1.1446(f)-1(c)(2)(vii) that is transmitting withholding certificates and providing a withholding statement to allocate an amount realized to each grantor or other owner in the trust for purposes of section 1446(f).
+
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -184,6 +498,69 @@ const NWFP = (props:any) => {
             </Typography>
 
             f 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 21f
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("f")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "f" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        To the extent that the entity identified in Part 1 of this form is providing an alternative withholding statement described in Regulations section 1.1441-1(e)(3)(iv)(C)(3), you may check the box on this line to make the representation included on this line instead of making the representation on each alternative withholding statement.
+
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"

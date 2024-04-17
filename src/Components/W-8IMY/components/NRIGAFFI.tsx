@@ -26,6 +26,68 @@ const NRIGAFFI = (props:any) => {
         <div className="d-flex mt-3">
             <Typography className="mt-2" style={{ marginTop: "10px" }}>
                 32
+                <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 32
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("32")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "32" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Check box 32 to indicate you are treated as a nonreporting IGA FFI. You must identify the IGA by entering the name of the jurisdiction that has the applicable IGA in effect with the United States and indicate whether it is a Model 1 or a Model 2 IGA. You must also provide the withholding agent with the specific category of entity described in Annex II of the IGA applicable to your status. In providing the specific category of FFI described in Annex II, you should use the language from Annex II that best and most specifically describes your status in the IGA. If you are a nonreporting IGA FFI claiming a deemed-compliant status under the regulations, you must instead indicate on this line which section of the regulations you qualify under. If you are a Trustee Documented Trust or Sponsored Entity, you must also provide the name of the Trustee or Sponsor. Where a Trustee is provided, you must also indicate whether the Trustee is U.S. or Foreign. See instructions for line 9 when a GIIN is required for a nonreporting IGA FFI (including a trustee of a trustee-documented trust that is a foreign person).
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             </Typography>
             <Typography>
                 <Checkbox 
