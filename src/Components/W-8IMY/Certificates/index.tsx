@@ -37,10 +37,10 @@ export default function Certifications(props: any) {
   const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
 
   const initialValue = {
-    cerExaminedtheInfo: prevStepData?.CerExaminedtheInfo ? prevStepData?.CerExaminedtheInfo : false,
-    cerDistributeorMakepayment: prevStepData?.CerDistributeorMakepayment ? prevStepData?.CerDistributeorMakepayment : false,
-    cerSubitformwithin30Days: prevStepData?.CerSubitformwithin30Days ? prevStepData?.CerSubitformwithin30Days : false,
-    cerConfirmReceivedElecForm: prevStepData?.CerConfirmReceivedElecForm ? prevStepData?.CerConfirmReceivedElecForm : false,
+    cerExaminedtheInfo: prevStepData?.cerExaminedtheInfo ? prevStepData?.cerExaminedtheInfo : false,
+    cerDistributeorMakepayment: prevStepData?.cerDistributeorMakepayment ? prevStepData?.cerDistributeorMakepayment : false,
+    cerSubitformwithin30Days: prevStepData?.cerSubitformwithin30Days ? prevStepData?.cerSubitformwithin30Days : false,
+    cerConfirmReceivedElecForm: prevStepData?.cerConfirmReceivedElecForm ? prevStepData?.cerConfirmReceivedElecForm : false,
    
   };
   useEffect(()=>{
@@ -287,6 +287,7 @@ export default function Certifications(props: any) {
               <Typography style={{ display: "flex" }}>
                 <Checkbox  name="cerExaminedtheInfo"
                         value={values.cerExaminedtheInfo}
+                        checked={values.cerExaminedtheInfo}
                         onChange={handleChange}
                         size="medium"
                         style={{ fontSize: "2rem" }} className="mx-2" />
@@ -315,6 +316,7 @@ export default function Certifications(props: any) {
               <Typography style={{ display: "flex" }}>
                 <Checkbox  name="cerDistributeorMakepayment"
                         value={values.cerDistributeorMakepayment}
+                        checked={values.cerDistributeorMakepayment}
                         onChange={handleChange}
                         size="medium"
                         style={{ fontSize: "2rem" }} className="mx-2" />
@@ -340,6 +342,7 @@ which I am providing this form or any withholding agent that can disburse or mak
               <Typography style={{ display: "flex" }}>
                 <Checkbox name="cerSubitformwithin30Days"
                         value={values.cerSubitformwithin30Days}
+                        checked={values.cerSubitformwithin30Days}
                         onChange={handleChange}
                         size="medium"
                         style={{ fontSize: "2rem" }} className="mx-2" />
@@ -368,6 +371,7 @@ which I am providing this form or any withholding agent that can disburse or mak
               <Typography style={{ display: "flex" }}>
                 <Checkbox name="cerConfirmReceivedElecForm"
                         value={values.cerConfirmReceivedElecForm}
+                        checked={values.cerConfirmReceivedElecForm}
                         onChange={handleChange}
                         size="medium"
                         style={{ fontSize: "2rem" }}className="mx-2" />
@@ -425,7 +429,7 @@ which I am providing this form or any withholding agent that can disburse or mak
                             GlobalValues.basePageRoute
                           );
                         })
-                      }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
+                      }} formTypeId={FormTypeId.FW81MY} ></SaveAndExit>
             <Button
               variant="contained"
               style={{ color: "white", marginLeft: "15px" }}

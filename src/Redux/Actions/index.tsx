@@ -106,6 +106,17 @@ export const CREATE_8233 = (value: any, callback: any = false): any => {
   }
 };
 
+export const CREATE_8IMY = (value: any, callback: any = false): any => {
+  return {
+    type: Utils.actionName.CREATE_8IMY,
+    payload: value,
+  };
+  if (callback) {
+    callback();
+  }
+};
+
+
 export const loginAction = (value: any, callback: Function): any => {
   return (dispatch: any) => {
     const dataToSend = { message: value };
