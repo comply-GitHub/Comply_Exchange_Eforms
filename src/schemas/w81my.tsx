@@ -70,9 +70,15 @@ export const US_TINSchema8IMY = () => {
   };
 
 
+  const itemSchema = Yup.object().shape({
+    firstName: Yup.string().required('First Name is required'),
+    
+  });
+  
   export const statementSchema8IMY = () => {
     return Yup.object().shape({
         previouslySubmittedAllocationStatement: Yup.string().required("required"),
+        items: Yup.array().of(itemSchema),
       
     });
   };

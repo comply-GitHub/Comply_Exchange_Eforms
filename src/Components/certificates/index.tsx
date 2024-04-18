@@ -36,6 +36,10 @@ export default function Certificates(props: any) {
   const [InfoMore, setInfoMore] = useState("");
   const [showInfoMore, setShowInfoMore] = useState(false);
   const [diableForm, setDisableForm] = useState("usIndividual");
+  const authDetailsString = localStorage.getItem("authDetails") || "{}";
+
+  const auth = JSON.parse(authDetailsString);
+  const userType = auth?.configurations?.userType;
   type ComponentPaths = {
     [key: string]: string;
   };
@@ -95,7 +99,9 @@ export default function Certificates(props: any) {
       "form 8233": "/Form8233/SubstantialPresence",
       "W-8BEN-E": "/BenE/Tax_Purpose_BenE",
       "W-8EXP": "/Exp/Tax_Purpose_Exp",
-      "W-8IMY": "/IMY/Tax_Purpose_Exp"
+      "W-8IMY": "/IMY/Tax_Purpose_Exp",
+      "cayman-individual":"/Cayman/Individual/start",
+      "cayman-entity":"/Cayman/Entity/start"
     };
     // dispatch(
     //   postFormSelection(submitData, () => {
@@ -116,13 +122,14 @@ export default function Certificates(props: any) {
     {
       id: "W-9",
       title: "W-9",
+      userType:"gen",
       enabled: ["usIndividual", "usEntity"],
-      description:
-        "Used by individuals and entities to certify US Tax ID number",
+      description:"Used by individuals and entities to certify US Tax ID number",
     },
     {
       id: "W-8BEN",
       title: "W-8BEN",
+      userType:"gen",
       enabled: ["usNonIndividual"],
       description:
         "Used by individuals to certify beneficial owner, or account holder of financial institution, and claim treaty benefits",
@@ -130,6 +137,7 @@ export default function Certificates(props: any) {
     {
       id: "W-8BEN-E",
       title: "W-8BEN-E",
+      userType:"gen",
       enabled: ["usNonEntity"],
       description:
         "Used by entities to certify beneficial owner, or account holder of financial institution, and claim treaty benefits",
@@ -137,6 +145,7 @@ export default function Certificates(props: any) {
     {
       id: "W-8ECI",
       title: "W-8ECI",
+      userType:"gen",
       enabled: ["usNonIndividual", "usNonEntity"],
       description:
         "Used by individuals, or entities, to certify beneficial owner receiving U.S. sourced income that is effectively connected with a U.S. trade or business ",
@@ -144,6 +153,7 @@ export default function Certificates(props: any) {
     {
       id: "W-8EXP",
       title: "W-8EXP",
+      userType:"gen",
       enabled: ["usNonEntity"],
       description:
         "Used by governments, or other tax exempt entities, to certify beneficial owner, or account holder of financial institution",
@@ -151,6 +161,7 @@ export default function Certificates(props: any) {
     {
       id: "W-8IMY",
       title: "W-8IMY",
+      userType:"gen",
       enabled: ["usNonEntity"],
       description:
         "Used by entities to certify intermediary, or flow through entity, receiving payments on behalf of another person",
@@ -158,9 +169,26 @@ export default function Certificates(props: any) {
     {
       id: "form 8233",
       title: "Form 8233",
+      userType:"gen",
       enabled: ["usNonIndividual"],
       description:
         "Used by individuals to certify beneficial owner claiming treaty exemption on compensation for personal services",
+    },
+    {
+      id: "cayman-individual",
+      title: "Cayman Individual 2018",
+      userType:"SC",
+      enabled: ["usNonIndividual"],
+      description:
+        "Used by individuals to declare any/all tax residencies",
+    },
+    {
+      id: "cayman-entity",
+      title: "Cayman Entity 2018",
+      userType:"SC",
+      enabled: ["usNonEntity"],
+      description:
+        "Used by an entity to declare any/all tax residencies, US FATCA Status, CRS Classification and/or Controlling Person(s)",
     },
   ];
 
@@ -551,6 +579,79 @@ export default function Certificates(props: any) {
           ""
         )}
 
+        {showInfoMore && InfoMore == "cayman individual 2018" ? (
+          <Paper
+            style={{
+              backgroundColor: "#cce5ff",
+              padding: "15px",
+              marginBottom: "10px",
+            }}
+          >
+            <div style={{ margin: "20px" }}>
+              <Typography
+                style={{
+                  fontSize: "20px",
+                  marginTop: "10px",
+                  color: "#56595c",
+                  fontWeight: "550",
+                }}
+              >
+                Cayman Individual 2018
+              </Typography>
+              <Typography
+                style={{
+                  fontSize: "16px",
+                  marginTop: "20px",
+                  fontWeight: "550",
+                  color: "#274b6e",
+                }}
+              >
+                FORM Cayman Individual self-certification - Certificate of Foreign Status of Beneficial Owner for U.S. Tax Withholding and Reporting (Entities) The purpose of the W-8BEN-E form is to establish that you are a non-U.S. person or entity. As the beneficial owner of the income for which, the W-8BEN-E form is being provided, completion of this form will enable you to claim a reduced rate of or exemption from withholding tax as a resident of a foreign country with which, the U.S. has an Income Treaty.
+              </Typography>
+              
+            </div>
+          </Paper>
+        ) : (
+          ""
+        )}
+
+        {showInfoMore && InfoMore == "cayman entity 2018" ? (
+          <Paper
+            style={{
+              backgroundColor: "#cce5ff",
+              padding: "15px",
+              marginBottom: "10px",
+            }}
+          >
+            <div style={{ margin: "20px" }}>
+              <Typography
+                style={{
+                  fontSize: "20px",
+                  marginTop: "10px",
+                  color: "#56595c",
+                  fontWeight: "550",
+                }}
+              >
+                Cayman Entity 2018
+              </Typography>
+              <Typography
+                style={{
+                  fontSize: "16px",
+                  marginTop: "20px",
+                  fontWeight: "550",
+                  color: "#274b6e",
+                }}
+              >
+                FORM Cayman Entity self-certification - Certificate of Foreign Status of Beneficial Owner for U.S. Tax Withholding and Reporting (Entities) The purpose of the W-8BEN-E form is to establish that you are a non-U.S. person or entity. As the beneficial owner of the income for which, the W-8BEN-E form is being provided, completion of this form will enable you to claim a reduced rate of or exemption from withholding tax as a resident of a foreign country with which, the U.S. has an Income Treaty.
+
+              </Typography>
+              
+            </div>
+          </Paper>
+        ) : (
+          ""
+        )}
+
         <div style={{ justifyContent: "space-between", display: "flex" }}>
           <Typography
             align="left"
@@ -666,8 +767,10 @@ export default function Certificates(props: any) {
         <div
           className="d-flex row forms-card-data"
         >
-          {cards.map((card, index1) => (
-            <Card
+          {userType === 'SC' && (<>
+            {cards.map((card, index1) => ( 
+              card.userType === 'SC' ? <>
+                <Card
               key={card?.id}
               className={card.enabled.includes(diableForm) ? "mx-3 mt-3" : "mx-3 mt-3 disabled"}
               sx={{
@@ -724,8 +827,74 @@ export default function Certificates(props: any) {
               </div>
 
             </Card>
+              </> : "" 
+            ))}
+          </>) }
 
-          ))}
+
+            {userType !== 'SC' ? <>
+              { cards.map((card, index1) => (
+
+                  <Card
+                  key={card?.id}
+                  className={card.enabled.includes(diableForm) ? "mx-3 mt-3" : "mx-3 mt-3 disabled"}
+                  sx={{
+                    width: "310px",
+                    border:
+                      selectedCard === card.id
+                        ? "7px solid #ffc107"
+                        : "7px solid transparent",
+                  }}
+                  onClick={() => handleCardSelect(card)}
+                  >
+                  <div
+                    tabIndex={index1}
+                    onFocus={() => handleCardSelect(card)}
+                    onKeyDown={(e: any) => {
+                      if (e.code.toLowerCase() === "enter" && e?.target?.tagName?.toUpperCase() === "DIV") {
+                        redirectToComponent(selectedCard)
+                      }
+                    }}
+                  >
+                    <CardContent>
+                      <div className="iconBox text-center" >
+                        <img src={docIcon} alt="" className="img-fluid mb-2" />
+                      </div>
+                      <div className="check-div">
+                        {card.enabled.includes(diableForm) ? (<img src={checksolid} />) : ""}
+                        disabled
+                      </div>
+                      <Typography align="center" variant="h6" component="div">
+                        {card?.title}
+                      </Typography>
+
+                      <Typography
+                        align="center"
+                        style={{ fontSize: "13px", marginTop: "14px" }}
+                      >
+                        {card?.description}
+                        <br />
+                      </Typography>
+                      <Typography align="center">
+                        <Button
+                          onClick={() => {
+                            setInfoMore(card?.id);
+                            setShowInfoMore(!showInfoMore);
+                          }}
+                          className="mt-4"
+                          size="small"
+                          style={{ fontWeight: "bold" }}
+                        >
+                          Read More
+                        </Button>
+                      </Typography>
+                    </CardContent>
+                  </div>
+
+                  </Card>
+                ))}
+                </> : ""}
+          
 
           {/* <Card className="mx-3 mt-3"sx={{ width:"330px"}}>
       <CardContent>
