@@ -195,6 +195,7 @@ const Participation_IMY = React.lazy(() => import("../Components/W-8IMY/Particip
 const Submit_IMY = React.lazy(() => import("../Components/W-8IMY/Sumit_imy"));
 const ThankYou_IMY = React.lazy(() => import("../Components/W-8IMY/Thankyou_imy"));
 
+const CaymanIndividualStart = React.lazy(() => import("../Components/Cayman/Individual/Start"));
 
 
 const ROUTES: Array<RouteType> = [
@@ -643,6 +644,13 @@ const ROUTES: Array<RouteType> = [
     path: "Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233/ThankYou_8233",
     id: 7,
     Component: ThankYou_8233,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualStart",
+    path: "Cayman/Individual/Start",
+    id: 7,
+    Component: CaymanIndividualStart,
     isPrivate: true,
   },
   {

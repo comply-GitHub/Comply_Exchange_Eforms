@@ -164,6 +164,24 @@ export default function AddMoreForm(props: any) {
      validationSchema={statementSchema8IMY}
      onSubmit={(values, { setSubmitting }) => {
         setSubmitting(true);
+
+        const formData = new FormData()
+        let obj ={}
+        //const mergedArray = [...additionalDocs, ...existingDoc];
+
+        values.items?.forEach((me:any,i)=>{
+          Object.keys(me).forEach((key:any) => {
+            const value = me[key];
+            const objectKey = `Data[${i}].${key}`
+            obj ={...obj , [objectKey]:value}
+            
+            
+          });
+          
+        })
+
+        console.log(obj);
+
         const temp = {
           agentId: authDetails.agentId,
           accountHolderBasicDetailId: authDetails.accountHolderId,
@@ -172,21 +190,21 @@ export default function AddMoreForm(props: any) {
           stepName: null
         };
         console.log("temp",temp)
-        const returnPromise = new Promise((resolve, reject) => {
-          dispatch(
-            postW81MY_EForm(temp,
-              (responseData: any) => {
-                localStorage.setItem("PrevStepData", JSON.stringify(temp));
-                resolve(responseData);
-                history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY")
-              },
-              (err: any) => {
-                reject(err);
-              }
-            )
-          );
-        })
-        return returnPromise
+        // const returnPromise = new Promise((resolve, reject) => {
+        //   dispatch(
+        //     postW81MY_EForm(temp,
+        //       (responseData: any) => {
+        //         localStorage.setItem("PrevStepData", JSON.stringify(temp));
+        //         resolve(responseData);
+        //         history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY")
+        //       },
+        //       (err: any) => {
+        //         reject(err);
+        //       }
+        //     )
+        //   );
+        // })
+        // return returnPromise
         // dispatch(
         //   CREATE_8233(values, () => {
         //     history("/Form8233/TaxPayer_Identification/Owner");
@@ -207,7 +225,7 @@ export default function AddMoreForm(props: any) {
           isValid}) => (
             <Form onSubmit={handleSubmit}>
 
-            {/* <>{console.log(errors, values, "errorsssss")}</> */}
+            <>{console.log(errors.items, values, "errorsssss")}</>
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
@@ -355,7 +373,7 @@ export default function AddMoreForm(props: any) {
                                                 
                                                 
                                             <div>
-                                                {values.items.map((item, index) => (
+                                                {values.items.map((item:any, index:any) => (
                                                 <div key={index}>
                                                     <Paper className="my-2" style={{ backgroundColor: "#EAE5E4", padding: "10px" }}>
                                                     <Typography>
@@ -399,7 +417,15 @@ export default function AddMoreForm(props: any) {
                                                         height: "40px",
                                                         width: "100%",
                                                       }}
+                                                      
                                                     />
+                                                    {/* {typeof errors?.items[index] !== 'string' && errors?.items[index]?.firstName && (
+                                                      <p className="error">{errors.items[index].firstName}</p>
+                                                    )} */}
+
+                                                    {/* {errors.items && errors.items[index] && errors.items[index] && touched.items && touched.items[index] && (
+                                                      <div className="error">{errors.items[index].firstName}</div>
+                                                    )} */}
                                                     </div>
 
                                                     <div className="col-lg-6 col-6">
@@ -725,7 +751,7 @@ export default function AddMoreForm(props: any) {
                                                     handleChange({
                                                     target: {
                                                         name: "items",
-                                                        value: [...values.items, { name: "" }],
+                                                        value: [...values.items, { firstName: "" }],
                                                     },
                                                     })
                                                 }
