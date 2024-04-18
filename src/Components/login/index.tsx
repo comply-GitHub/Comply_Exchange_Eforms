@@ -63,8 +63,10 @@ const Login = () => {
     dispatch(getSettings());
   }, []);
 
-  const redirectFunc = () => {
-    history("/IndividualUs");
+  const redirectFunc = (defaultSelection:any) => {
+    if(defaultSelection=="individual")
+    {history("/IndividualUs")}
+    else{history("/EntityUs");}
   };
   const handleChange = (e: any) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -80,6 +82,7 @@ const Login = () => {
           eFormSignIn1(
             { ...data, isDefaultAgent },
             (resp: any) => {
+              console.log(resp,"RESPPPP")
               localStorage.setItem("userType", resp.userType);
               // localStorage.setItem("loginTime", JSON.stringify(15));
               // localStorage.setItem("loginTime", JSON.stringify(new Date()));
@@ -92,7 +95,7 @@ const Login = () => {
               //   alert("Dual Cert");
               // }
 
-              redirectFunc();
+              redirectFunc(resp?.defaultSelection);
             },
             (err: any) => {
               console.log(err);

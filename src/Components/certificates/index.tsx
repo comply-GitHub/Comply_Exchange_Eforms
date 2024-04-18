@@ -18,7 +18,6 @@ import agreement from "../../assets/img/agreement.png";
 import docIcon from "../../assets/img/docIcon.png";
 import useAuth from "../../customHooks/useAuth";
 export default function Certificates(props: any) {
-
   const { authDetails } = useAuth();
   const history = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -27,7 +26,15 @@ export default function Certificates(props: any) {
       "Instructor Identifier Format is ?*********************** \n 9- Numeric Value Only \n A - Alphabetical Character Only \n* = Alphanumeric Character only \n ? - Characters optional after this"
     );
   };
-
+  const isHide:any = {
+    enableW8BEN: true,
+    enableW8BENE: true,
+    enableW8ECI: true,
+    enableW8EXP: true,
+    enableW8IMY: true,
+    enableW9: true,
+    enable8233: true,
+  };
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -43,10 +50,10 @@ export default function Certificates(props: any) {
     if (card.enabled.includes(diableForm)) {
       setSelectedCard(card.id);
     }
-  }; 
-   
+  };
+
   useEffect(() => {
-    document.title = "Form Selection"
+    document.title = "Form Selection";
     let onboardingStingifiedData = localStorage.getItem("agentDetails");
     let onboardingData;
     let isDisabledFormed;
@@ -57,15 +64,21 @@ export default function Certificates(props: any) {
     }
     if (onboardingData !== "" && onboardingData !== null) {
       if (onboardingData?.isUSIndividual == true && selectedEntity == false) {
-        isDisabledFormed = "usIndividual"
-      } else if (onboardingData?.isUSIndividual == false && selectedEntity == false) {
-        isDisabledFormed = "usNonIndividual"
+        isDisabledFormed = "usIndividual";
+      } else if (
+        onboardingData?.isUSIndividual == false &&
+        selectedEntity == false
+      ) {
+        isDisabledFormed = "usNonIndividual";
       } else if (onboardingData?.isUSEntity == true && selectedEntity == true) {
-        isDisabledFormed = "usEntity"
-      } else if (onboardingData?.isUSEntity == false && selectedEntity == true) {
-        isDisabledFormed = "usNonEntity"
+        isDisabledFormed = "usEntity";
+      } else if (
+        onboardingData?.isUSEntity == false &&
+        selectedEntity == true
+      ) {
+        isDisabledFormed = "usNonEntity";
       } else {
-        isDisabledFormed = "usIndividual"
+        isDisabledFormed = "usIndividual";
       }
       setDisableForm(isDisabledFormed);
     }
@@ -75,7 +88,7 @@ export default function Certificates(props: any) {
       localStorage.getItem("formSelection") || "{}"
     );
     // let submitData = {
-    //   agentId: formSelection.agentId,  
+    //   agentId: formSelection.agentId,
     //   confirmationCode: formSelection.confirmationCode,
     //   securityAnswer: formSelection.securityAnswer,
     //   formSelection: cardId,
@@ -95,7 +108,7 @@ export default function Certificates(props: any) {
       "form 8233": "/Form8233/SubstantialPresence",
       "W-8BEN-E": "/BenE/Tax_Purpose_BenE",
       "W-8EXP": "/Exp/Tax_Purpose_Exp",
-      "W-8IMY": "/IMY/Tax_Purpose_Exp"
+      "W-8IMY": "/IMY/Tax_Purpose_Exp",
     };
     // dispatch(
     //   postFormSelection(submitData, () => {
@@ -112,17 +125,20 @@ export default function Certificates(props: any) {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+
   const cards = [
     {
       id: "W-9",
       title: "W-9",
       enabled: ["usIndividual", "usEntity"],
+      isHide: isHide?.enableW9,
       description:
         "Used by individuals and entities to certify US Tax ID number",
     },
     {
       id: "W-8BEN",
       title: "W-8BEN",
+      isHide: isHide?.enableW8BEN,
       enabled: ["usNonIndividual"],
       description:
         "Used by individuals to certify beneficial owner, or account holder of financial institution, and claim treaty benefits",
@@ -130,6 +146,7 @@ export default function Certificates(props: any) {
     {
       id: "W-8BEN-E",
       title: "W-8BEN-E",
+      isHide: isHide?.enableW8BENE,
       enabled: ["usNonEntity"],
       description:
         "Used by entities to certify beneficial owner, or account holder of financial institution, and claim treaty benefits",
@@ -137,6 +154,7 @@ export default function Certificates(props: any) {
     {
       id: "W-8ECI",
       title: "W-8ECI",
+      isHide: isHide?.enableW8ECI,
       enabled: ["usNonIndividual", "usNonEntity"],
       description:
         "Used by individuals, or entities, to certify beneficial owner receiving U.S. sourced income that is effectively connected with a U.S. trade or business ",
@@ -144,6 +162,7 @@ export default function Certificates(props: any) {
     {
       id: "W-8EXP",
       title: "W-8EXP",
+      isHide: isHide?.enableW8EXP,
       enabled: ["usNonEntity"],
       description:
         "Used by governments, or other tax exempt entities, to certify beneficial owner, or account holder of financial institution",
@@ -151,6 +170,7 @@ export default function Certificates(props: any) {
     {
       id: "W-8IMY",
       title: "W-8IMY",
+      isHide: isHide?.enableW8IMY,
       enabled: ["usNonEntity"],
       description:
         "Used by entities to certify intermediary, or flow through entity, receiving payments on behalf of another person",
@@ -158,6 +178,7 @@ export default function Certificates(props: any) {
     {
       id: "form 8233",
       title: "Form 8233",
+      isHide: isHide?.enable8233,
       enabled: ["usNonIndividual"],
       description:
         "Used by individuals to certify beneficial owner claiming treaty exemption on compensation for personal services",
@@ -169,14 +190,11 @@ export default function Certificates(props: any) {
       className="inner_content backGround_Image py-4"
       style={{ marginBottom: "10px" }}
     >
-      
-
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform">View Form</div>
           <div className="helpvideo">
-
             {GethelpData && GethelpData[2].id === 4 ? (
               <a
                 href={GethelpData[2].fieldValue}
@@ -184,7 +202,7 @@ export default function Certificates(props: any) {
                 onClick={() =>
                   window.open(
                     GethelpData[2].fieldValue,
-                    'name',
+                    "name",
                     `width=${GethelpData[2].width},height=${GethelpData[2].height},top=${GethelpData[2].top},left=${GethelpData[2].left}`
                   )
                 }
@@ -604,7 +622,7 @@ export default function Certificates(props: any) {
                 // setOpen(true);
               }}
               style={{
-                marginRight : "20px",
+                marginRight: "20px",
                 backgroundColor: "#ffc107",
                 color: "black",
                 fontSize: "10px",
@@ -650,7 +668,11 @@ export default function Certificates(props: any) {
               <Link
                 href="#"
                 underline="none"
-                style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
+                style={{
+                  marginTop: "10px",
+                  fontSize: "16px",
+                  color: "#0000C7",
+                }}
                 onClick={() => {
                   setToolInfo("");
                 }}
@@ -662,14 +684,19 @@ export default function Certificates(props: any) {
         ) : (
           ""
         )}
-
-        <div
-          className="d-flex row forms-card-data"
-        >
-          {cards.map((card, index1) => (
-            <Card
+card.id=isEnablexyz; 
+        <div className="d-flex row forms-card-data">
+          {cards.map((card, index1):any => (
+          <>
+        
+         {card?.isHide? 
+         (<Card
               key={card?.id}
-              className={card.enabled.includes(diableForm) ? "mx-3 mt-3" : "mx-3 mt-3 disabled"}
+              className={
+                card.enabled.includes(diableForm)
+                  ? "mx-3 mt-3"
+                  : "mx-3 mt-3 disabled"
+              }
               sx={{
                 width: "310px",
                 border:
@@ -683,17 +710,24 @@ export default function Certificates(props: any) {
                 tabIndex={index1}
                 onFocus={() => handleCardSelect(card)}
                 onKeyDown={(e: any) => {
-                  if (e.code.toLowerCase() === "enter" && e?.target?.tagName?.toUpperCase() === "DIV") {
-                    redirectToComponent(selectedCard)
+                  if (
+                    e.code.toLowerCase() === "enter" &&
+                    e?.target?.tagName?.toUpperCase() === "DIV"
+                  ) {
+                    redirectToComponent(selectedCard);
                   }
                 }}
               >
                 <CardContent>
-                  <div className="iconBox text-center" >
+                  <div className="iconBox text-center">
                     <img src={docIcon} alt="" className="img-fluid mb-2" />
                   </div>
                   <div className="check-div">
-                    {card.enabled.includes(diableForm) ? (<img src={checksolid} />) : ""}
+                    {card.enabled.includes(diableForm) ? (
+                      <img src={checksolid} />
+                    ) : (
+                      ""
+                    )}
                     disabled
                   </div>
                   <Typography align="center" variant="h6" component="div">
@@ -722,9 +756,9 @@ export default function Certificates(props: any) {
                   </Typography>
                 </CardContent>
               </div>
+            </Card>) : ""}
 
-            </Card>
-
+            </>
           ))}
 
           {/* <Card className="mx-3 mt-3"sx={{ width:"330px"}}>
@@ -846,9 +880,9 @@ export default function Certificates(props: any) {
                 type="submit"
                 onClick={() => redirectToComponent(selectedCard)}
                 variant="contained"
-              // onClick={()=>(
-              //   history("/W9")
-              // )}
+                // onClick={()=>(
+                //   history("/W9")
+                // )}
               >
                 Continue
               </Button>
@@ -914,8 +948,6 @@ export default function Certificates(props: any) {
         setOpen={setOpen}
         handleClickOpen={handleClickOpen}
         handleClose={handleClose}
-
-
       />
     </section>
   );

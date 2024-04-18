@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Tooltip, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import GoogleTranslate from "../Reusable/multilanguage";
 import { display } from "@mui/system";
+import useAuth from "../../customHooks/useAuth";
 
 export default function Nav( ) {
+  const [languageDropdown,setLanguageDropDown]=useState(false)
   const hiddenRoutes=["login",""]
+  const { authDetails } = useAuth();
   const urlValue = window.location.pathname.substring(1);
   const isHide=hiddenRoutes.includes(urlValue);
 
@@ -24,6 +27,15 @@ export default function Nav( ) {
     // )
   }
 
+  const returnTransale=()=>{
+    if(authDetails?.configurations?.languageDropdown){
+return (<GoogleTranslate />)
+    }
+  }
+  useEffect(()=>{
+    console.log(authDetails,"languageDropdown")
+    setLanguageDropDown(authDetails?.configurations?.languageDropdown)
+  },[authDetails])
   return (
     <div style={{ width: "100%", backgroundColor: "white", display:isHide?"none":"block" }}>
       <div
@@ -36,7 +48,7 @@ export default function Nav( ) {
           src={require("../../assets/img/logo.png")}
         />
         <div className="my-auto" style={{ height: "40px", display: "flex" }}>
-        <GoogleTranslate />
+       {returnTransale()}
 
           <Tooltip
             style={{ backgroundColor: "black", color: "white" }}
