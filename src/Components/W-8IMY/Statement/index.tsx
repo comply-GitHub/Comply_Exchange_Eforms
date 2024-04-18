@@ -17,7 +17,7 @@ import {
     Radio,
     TextField,
   } from "@mui/material";
-  import { CREATE_8233, GetHelpVideoDetails, post8233_EForm, postW81MY_EForm } from "../../../Redux/Actions";
+  import { CREATE_8233,  GetHelpVideoDetails, getAllAccountStatement, getAllUSFormTypes, post8233_EForm, postW81MY_EForm, postW81MY_EForm_AccountStatement } from "../../../Redux/Actions";
 import { Info, DeleteOutline, Delete } from "@mui/icons-material";
 import "./index.scss";
 import checksolid from "../../../assets/img/check-solid.png";
@@ -33,9 +33,15 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { US_TINSchema8IMY, statementSchema8IMY } from "../../../schemas/w81my";
 
 interface FormValues {
+    isWithholdingStatementClicked:boolean;
     previouslySubmittedAllocationStatement: boolean;
     attachCopyofAllocationStatement: boolean;
   items: { 
+    id:number,
+    accountHolderDetailsId: number,
+    agentId: number,
+    formTypeId: number,
+    formEntryId: number,
     accountIdentifier: string ,
     firstName: string, 
     familyName: string ,
@@ -64,34 +70,85 @@ export default function AddMoreForm(props: any) {
 
     const onBoardingFormValues = JSON.parse(localStorage.getItem("agentDetails") ?? "null");
 
+    const authD = JSON.parse(localStorage.getItem("authDetails") ?? "null");
+
+    const accountStatementData = useSelector(
+      (state: any) => state.AccountStatement.getAllAccountStatement
+    );
+    // const accountStatementData = useSelector(state => state.AccountStatment)
+
     const onBoardingFormValuesPrevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
+
+
+    const itemsData = accountStatementData?.map((dataItem: any, index: number) => ({
+      id: index, // Assuming you want to use the index as the id
+      agentId: authDetails?.agentId,
+      accountHolderDetailsId: authDetails?.accountHolderId,
+      formTypeId: FormTypeId.FW81MY,
+      formEntryId: 1,
+      accountIdentifier: dataItem.accountIdentifier,
+      firstName: dataItem.firstName,
+      familyName: dataItem.familyName,
+      entityName: dataItem.entityName,
+      houseNumberName: dataItem.houseNumberName,
+      roadName: dataItem.roadName,
+      city: dataItem.city,
+      state: dataItem.state,
+      zipcode: dataItem.zipcode,
+      residentialCountry: dataItem.residentialCountry,
+      otherCountry: dataItem.otherCountry,
+      tin: dataItem.tin,
+      tinType: dataItem.tinType,
+      allocation: dataItem.allocation,
+      email: dataItem.email,
+      formType: dataItem.formType,
+      file: dataItem.file,
+    }));
+
+    // const [initialValues, setInitialValues] = useState<FormValues>(
+    //   {
+    //     isWithholdingStatementClicked:false,
+    //     previouslySubmittedAllocationStatement: onBoardingFormValuesPrevStepData?.previouslySubmittedAllocationStatement ?  onBoardingFormValuesPrevStepData?.previouslySubmittedAllocationStatement : false,
+    //     attachCopyofAllocationStatement: onBoardingFormValuesPrevStepData?.attachCopyofAllocationStatement ?  onBoardingFormValuesPrevStepData?.attachCopyofAllocationStatement : false,
+        
+    //     items: [{ 
+    //       id:0,
+    //       agentId: authD?.agentId,
+    //       accountHolderDetailsId: authD?.accountHolderId,
+    //       formTypeId: FormTypeId.FW81MY,
+    //       formEntryId: 1,
+    //       accountIdentifier: "" ,
+    //       firstName: "", 
+    //       familyName: "" ,
+    //       entityName:"", 
+    //       houseNumberName:"",
+    //       roadName:"",
+    //       city:"",
+    //       state:"",
+    //       zipcode:"",
+    //       residentialCountry:"",
+    //       otherCountry:"", 
+    //       tin:"",
+    //       tinType:"",
+    //       allocation:"",
+    //       email:"",
+    //       formType:"",
+    //       file:"", 
+    //      }],
+    //   }
+    // );
+
     const initialValues: FormValues = {
-        previouslySubmittedAllocationStatement: onBoardingFormValuesPrevStepData?.previouslySubmittedAllocationStatement ?  onBoardingFormValuesPrevStepData?.previouslySubmittedAllocationStatement : false,
-        attachCopyofAllocationStatement: onBoardingFormValuesPrevStepData?.attachCopyofAllocationStatement ?  onBoardingFormValuesPrevStepData?.attachCopyofAllocationStatement : false,
-        items: [{ 
-            accountIdentifier: "" ,
-            firstName: "", 
-            familyName: "" ,
-            entityName:"", 
-            houseNumberName:"",
-            roadName:"",
-            city:"",
-            state:"",
-            zipcode:"",
-            residentialCountry:"",
-            otherCountry:"", 
-            tin:"",
-            tinType:"",
-            allocation:"",
-            email:"",
-            formType:"",
-            file:"", 
-         }],
-      };
-      const [ustinArray, setUStinArray] = useState([]);
+      isWithholdingStatementClicked:itemsData?.length > 0 ? true : false,  
+      previouslySubmittedAllocationStatement: onBoardingFormValuesPrevStepData?.previouslySubmittedAllocationStatement ?  onBoardingFormValuesPrevStepData?.previouslySubmittedAllocationStatement : false,
+      attachCopyofAllocationStatement: onBoardingFormValuesPrevStepData?.attachCopyofAllocationStatement ?  onBoardingFormValuesPrevStepData?.attachCopyofAllocationStatement : false,
+      items: itemsData,
+    };
+    const [ustinArray, setUStinArray] = useState([]);
     const [ustinValue, setUStinvalue] = useState([]);
     const [notUsIndividual, setNonUsIndividual] = useState([]);
 
+    const [usFormType, setUsFormType] = useState([]);
     useEffect(() => {
         document.title = "Tax-Payer"
     }, [])
@@ -101,7 +158,16 @@ export default function AddMoreForm(props: any) {
     dispatch(getAllCountries())
     dispatch(getAllCountriesCode())
     dispatch(getAllCountriesIncomeCode())
-    // dispatch(getAllStateByCountryId())  
+
+    
+
+    dispatch(
+      getAllUSFormTypes(3, (data: any) => {
+        setUsFormType(data);
+      })
+    );
+
+
     dispatch(
       getTinTypes(3, (data: any) => {
         setUStinArray(data)
@@ -123,6 +189,10 @@ export default function AddMoreForm(props: any) {
       })
     );
   }, []);
+
+  useEffect(() => {
+    dispatch(getAllAccountStatement(authDetails?.accountHolderId, FormTypeId.FW81MY))
+  },[authDetails])
   const [expanded, setExpanded] = React.useState<string | false>("");
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -139,19 +209,57 @@ export default function AddMoreForm(props: any) {
   const dispatch = useDispatch();
   const [toolInfo, setToolInfo] = useState("");
 
-  const handleUploadExisting = (event: any, index: number) => {
+
+//   const handleAddDocument = () => {
+//     const updatedItems = { 
+//           id:0,
+//             agentId: authDetails.agentId,
+//             accountHolderDetailsId: authDetails.accountHolderId,
+//             formTypeId: FormTypeId.FW81MY,
+//             formEntryId: (initialValues.items).length + 1,
+//             accountIdentifier: "" ,
+//             firstName: "", 
+//             familyName: "" ,
+//             entityName:"", 
+//             houseNumberName:"",
+//             roadName:"",
+//             city:"",
+//             state:"",
+//             zipcode:"",
+//             residentialCountry:"",
+//             otherCountry:"", 
+//             tin:"",
+//             tinType:"",
+//             allocation:"",
+//             email:"",
+//             formType:"",
+//             file:"", 
+//          };
+
+//          // If you want to directly add a new item without copying existing items:
+// setInitialValues(prevValues => ({
+//   ...prevValues,
+//   items: [
+//     ...prevValues.items,
+//     updatedItems
+//   ]
+// }));
+//       // setInitialValues({
+//       //   ...initialValues, 
+//       //   items : updatedItems
+//       // });
+    
+//   };
+
+
+  const handleUploadExisting = (event: any, index: number,valueArray:any) => {
     const files = event.target.files;
 
-    console.log(files);
-    console.log(index);
-    //initialValues.items.index.file = files[0];
-    // if (files && files.length > 0) {
-    //   const documentTypeId = GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData.filter((item:any) => item.name?.trim==docNam?.trim)
-    //   const updatedDocs = [...existingDoc];
-    //   updatedDocs[index].file = files[0];
-    //   setExistingDocNew(updatedDocs);
-    //   setDocname("");
-    // }
+    if (valueArray.items[index]) {
+      const updatedItems = [...valueArray.items];
+      updatedItems[index].file = files[0];
+    }
+  
   };
 
   return (
@@ -167,20 +275,16 @@ export default function AddMoreForm(props: any) {
 
         const formData = new FormData()
         let obj ={}
-        //const mergedArray = [...additionalDocs, ...existingDoc];
-
         values.items?.forEach((me:any,i)=>{
           Object.keys(me).forEach((key:any) => {
             const value = me[key];
-            const objectKey = `Data[${i}].${key}`
-            obj ={...obj , [objectKey]:value}
-            
+            const objectKey = `[${i}].${key}`
+            obj ={...obj , [objectKey]:value}            
             
           });
           
         })
 
-        console.log(obj);
 
         const temp = {
           agentId: authDetails.agentId,
@@ -189,28 +293,27 @@ export default function AddMoreForm(props: any) {
           ...values,
           stepName: null
         };
-        console.log("temp",temp)
-        // const returnPromise = new Promise((resolve, reject) => {
-        //   dispatch(
-        //     postW81MY_EForm(temp,
-        //       (responseData: any) => {
-        //         localStorage.setItem("PrevStepData", JSON.stringify(temp));
-        //         resolve(responseData);
-        //         history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY")
-        //       },
-        //       (err: any) => {
-        //         reject(err);
-        //       }
-        //     )
-        //   );
-        // })
-        // return returnPromise
-        // dispatch(
-        //   CREATE_8233(values, () => {
-        //     history("/Form8233/TaxPayer_Identification/Owner");
-        //   })
-        // );
-        // history("/Form8233/TaxPayer_Identification/Owner");
+        const returnPromise = new Promise((resolve, reject) => {
+          dispatch(
+            postW81MY_EForm(temp,
+              (responseData: any) => {
+                localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                resolve(responseData);
+                //history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY")
+              },
+              (err: any) => {
+                reject(err);
+              }
+            )
+          );
+        })
+
+        dispatch(postW81MY_EForm_AccountStatement(obj,() => {
+          
+        }))
+        history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY")
+        return returnPromise
+        
       }}
     >
       {({ errors,
@@ -225,7 +328,7 @@ export default function AddMoreForm(props: any) {
           isValid}) => (
             <Form onSubmit={handleSubmit}>
 
-            <>{console.log(errors.items, values, "errorsssss")}</>
+            {/* <>{console.log(errors.items, values, "errorsssss")}</> */}
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
@@ -316,48 +419,21 @@ export default function AddMoreForm(props: any) {
                         
                       />
                       <label>Attach a copy of a Withholding / Allocation Statement already created or using the template provided (You will be able to attach later in the process) </label>
-              
-
-                        
-
-                      {/* <RadioGroup
-                              row
-                              
-                              name="previouslySubmittedAllocationStatement"
-                              aria-labelledby="demo-row-radio-buttons-group-label"
-                              value={values.previouslySubmittedAllocationStatement}
-                              onChange={handleChange}
-                            >
-                                <FormControlLabel
-                                value="Yes"
-                                control={<Radio />}
-                                label="I have previously submitted a Withholding / Allocation Statement, which remains valid"
-                                name="previouslySubmittedAllocationStatement"
-                              />
-                              <FormControlLabel
-                                className="label"
-                                value="No"
-                                control={<Radio />}
-                                label="Attach a copy of a Withholding / Allocation Statement already created or using the template provided (You will be able to attach later in the process)"
-                                name="previouslySubmittedAllocationStatement"
-                              />
-                        </RadioGroup>
-                        {touched.previouslySubmittedAllocationStatement && errors.previouslySubmittedAllocationStatement && typeof errors?.previouslySubmittedAllocationStatement === 'string' && (
-                            <p className="error">{errors?.previouslySubmittedAllocationStatement}</p>
-                        )} */}
-
-                    
-                        
-                        </div>
-                        {/* {values.attachCopyofAllocationStatement && (<>
+                      </div>
+                        {values.attachCopyofAllocationStatement && (<>
                             <Button
                             variant="contained" 
+                            onClick={() => {
+                              setTimeout(() => {
+                                setFieldValue("isWithholdingStatementClicked", true);
+                              }, 200);
+                            }}
                             >
                                 Click to create a Withholding Statement
                             </Button>
-                        </>)} */}
+                        </>)}
 
-                        {values.attachCopyofAllocationStatement && (<>
+                        {values.isWithholdingStatementClicked && (<>
                             <Typography 
                             style={{
                                  margin: "10px",
@@ -403,7 +479,7 @@ export default function AddMoreForm(props: any) {
                                                     </div>
                                                     <div className="col-lg-6 col-6">
                                                     <Typography style={{ fontSize: "14px" }}>
-                                                        First Name
+                                                        First Name <span style={{ color: "red" }}>*</span>
                                                     </Typography>
                                                     <Input
                                                     name={`items.${index}.firstName`}
@@ -419,18 +495,14 @@ export default function AddMoreForm(props: any) {
                                                       }}
                                                       
                                                     />
-                                                    {/* {typeof errors?.items[index] !== 'string' && errors?.items[index]?.firstName && (
-                                                      <p className="error">{errors.items[index].firstName}</p>
-                                                    )} */}
-
-                                                    {/* {errors.items && errors.items[index] && errors.items[index] && touched.items && touched.items[index] && (
-                                                      <div className="error">{errors.items[index].firstName}</div>
-                                                    )} */}
+                                                    {(errors?.items && errors?.items[index] && typeof errors.items[index] !== 'string') && (
+                                                      <p className="error">First Name is required</p>
+                                                    )}
                                                     </div>
 
                                                     <div className="col-lg-6 col-6">
                                                     <Typography style={{ fontSize: "14px" }}>
-                                                        Family Name
+                                                        Family Name <span style={{ color: "red" }}>*</span>
                                                     </Typography>
                                                     <Input
                                                     name={`items.${index}.familyName`}
@@ -445,6 +517,9 @@ export default function AddMoreForm(props: any) {
                                                         width: "100%",
                                                       }}
                                                     />
+                                                    {(errors?.items && errors?.items[index] && typeof errors.items[index] !== 'string') && (
+                                                      <p className="error">Family Name is required</p>
+                                                    )}
                                                     </div>
 
                                                     <div className="col-lg-6 col-6">
@@ -707,7 +782,37 @@ export default function AddMoreForm(props: any) {
                                                     <Typography style={{ fontSize: "14px" }}>
                                                     Select the form type and attach the account holders form here
                                                     </Typography>
-                                                    <Input
+                                                    <select
+                          
+                                                        style={{
+                                                        border: " 1px solid #d9d9d9 ",
+                                                        padding: " 0 10px",
+                                                        color: "#121112",
+                                                        fontStyle: "italic",
+                                                        height: "40px",
+                                                        width: "100%",
+                                                        }}
+                                                        name={`items.${index}.formType`}
+                                                        onChange={handleChange}
+                                                        value={values.items[index].formType}
+                                                        id="Income"
+                                                        
+                                                    >
+                                                        <option value={0}>---select---</option>
+                                                        {usFormType?.map((ele: any) => (
+                                                    
+                                                            <option
+
+                                                                key={ele?.id}
+                                                                value={ele?.id}
+                                                            >
+                                                                {ele?.name}
+                                                            </option>
+                                                            
+                                                            ))}
+                                                    </select>
+
+                                                    {/* <Input
                                                     name={`items.${index}.formType`}
                                                     onChange={handleChange}
                                                     value={values.items[index].formType}
@@ -719,14 +824,14 @@ export default function AddMoreForm(props: any) {
                                                         height: "40px",
                                                         width: "100%",
                                                       }}
-                                                    />
+                                                    /> */}
                                                     </div>
 
                                                     <div className="col-lg-6 col-6">
                                                     
                                                     <Input
                                                     type="file"
-                                                    onChange={(e) => handleUploadExisting(e,index)}
+                                                    onChange={(e) => handleUploadExisting(e,index,values)}
                                                     style={{
                                                       border: " 1px solid #d9d9d9 ",
                                                       padding: " 0 10px",
@@ -745,16 +850,76 @@ export default function AddMoreForm(props: any) {
                                                 <Button
                                                 type="button"
                                                 variant="contained"
-                                                
-                                                onClick={() =>
+                                                //this is working fine
+                                                // onClick={() => {
+                                                //   const updatedItems = { 
+                                                //     id:0,
+                                                //       agentId: authDetails.agentId,
+                                                //       accountHolderDetailsId: authDetails.accountHolderId,
+                                                //       formTypeId: FormTypeId.FW81MY,
+                                                //       formEntryId: (initialValues.items).length + 1,
+                                                //       accountIdentifier: "" ,
+                                                //       firstName: "", 
+                                                //       familyName: "" ,
+                                                //       entityName:"", 
+                                                //       houseNumberName:"",
+                                                //       roadName:"",
+                                                //       city:"",
+                                                //       state:"",
+                                                //       zipcode:"",
+                                                //       residentialCountry:"",
+                                                //       otherCountry:"", 
+                                                //       tin:"",
+                                                //       tinType:"",
+                                                //       allocation:"",
+                                                //       email:"",
+                                                //       formType:"",
+                                                //       file:"", 
+                                                //    };
+                                          
+                                                //   setInitialValues(prevValues => ({
+                                                //     ...prevValues,
+                                                //     items: [
+                                                //       ...prevValues.items,
+                                                //       updatedItems
+                                                //     ]
+                                                //   }));
+                                                // }}
+                                                //onClick={handleAddDocument}
+                                                onClick={() => {
                                                     // Push a new item into the items array
                                                     handleChange({
+                                                      
                                                     target: {
                                                         name: "items",
-                                                        value: [...values.items, { firstName: "" }],
+                                                        value: [...values.items, { 
+                                                          id:0,
+                                                            agentId: authDetails.agentId,
+                                                            accountHolderDetailsId: authDetails.accountHolderId,
+                                                            formTypeId: FormTypeId.FW81MY,
+                                                            formEntryId: (values.items).length + 1,
+                                                            accountIdentifier: "" ,
+                                                            firstName: "", 
+                                                            familyName: "" ,
+                                                            entityName:"", 
+                                                            houseNumberName:"",
+                                                            roadName:"",
+                                                            city:"",
+                                                            state:"",
+                                                            zipcode:"",
+                                                            residentialCountry:"",
+                                                            otherCountry:"", 
+                                                            tin:"",
+                                                            tinType:"",
+                                                            allocation:"",
+                                                            email:"",
+                                                            formType:"",
+                                                            file:"", 
+                                                         }],
                                                     },
                                                     })
                                                 }
+                                              }
                                                 >
                                                  Add Additional Account Information
                                                 </Button>

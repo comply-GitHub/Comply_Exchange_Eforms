@@ -72,6 +72,7 @@ export const US_TINSchema8IMY = () => {
 
   const itemSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
+    familyName: Yup.string().required('Family Name is required'),
     
   });
   

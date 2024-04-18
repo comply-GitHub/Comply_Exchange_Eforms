@@ -25,6 +25,7 @@ const EndPoint = {
   GetAllHelpVideosDetails:"/HelpVideo/GetAllHelpVideos",
   GetAllLanguage:"/Language/GetAllLanguage",
   GetIGA:"/Countries/GetIGA",
+  GetAllUSFormTypes:"/FormTypes/GetAllUSFormTypes",
 
   //
   GetAgentCapacityHiddenForEform: "/WebAppBasic/GetAgentCapacityHiddenForEform",
@@ -58,6 +59,7 @@ const EndPoint = {
  InsertForm8233IndividualNonUSForm:"/Form8233Individual/InsertForm8233IndividualNonUSForm",
  UpsertSupportingDocumentation:"/AccountHolderDetail/UpsertSupportingDocumentation",
  UpsertDualCertW9:"/DualCert/UpsertDualCertDetails",
+ UpsertAccountHolderWithholdingStatement:"/AccountHolderDetail/UpsertAccountHolderWithholdingStatement",
  InserDualCert:"/DualCert/UpsertDualCert",
 
 // Form GetApis:
@@ -74,6 +76,7 @@ getSupportedFile:"/FileUpload/GetFileBase64",
 
 
 
+
 //Pdf apis
 GetW9Pdf:"/W9IndividualEntity/GetW9Pdf",
 GetECIPdf:"/W8ECIIndividualEntity/GetECIPdf",
@@ -83,7 +86,7 @@ GetBENEPdf:"/W8BENEEntity/GetBENEPdf",
  //Account Holder Endpoints
  UpsertAccountHolderIncomeAllocation:"/AccountHolderDetail/UpsertAccountHolderIncomeAllocation",
  GetAccountHolderIncomeAllocation:"/AccountHolderDetail/GetAccountHolderIncomeAllocation",
-
+ GetAccountHolderWithholdingStatement:"/AccountHolderDetail/GetAccountHolderWithholdingStatement",
  //SubstancialUsPassiveNFE
  UpsertAccountHolderSubstantialUsPassiveNFE:"/AccountHolderDetail/UpsertAHDSubstantialUsPassiveNFE",
  GetAccountHolderSubstantialUsPassiveNFE:"/AccountHolderDetail/GetAHDSubstantialUsPassiveNFE",
