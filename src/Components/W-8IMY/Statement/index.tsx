@@ -407,6 +407,7 @@ export default function AddMoreForm(props: any) {
                         onChange={(e) => {
                           setFieldValue("previouslySubmittedAllocationStatement",true)
                           setFieldValue("attachCopyofAllocationStatement",false)
+                          setFieldValue("isWithholdingStatementClicked",false)
                         }}
                         value={values.previouslySubmittedAllocationStatement}
                         
@@ -425,7 +426,7 @@ export default function AddMoreForm(props: any) {
                       />
                       <label>Attach a copy of a Withholding / Allocation Statement already created or using the template provided (You will be able to attach later in the process) </label>
                       </div>
-                        {values.attachCopyofAllocationStatement && (<>
+                        {values.attachCopyofAllocationStatement===true && (<>
                             <Button
                             variant="contained" 
                             onClick={() => {
