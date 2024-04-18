@@ -21,6 +21,7 @@ export const FormTypeId={
     W8EXP:6,
     FW81MY:7,
     F8233:8,
+    CaymanIndividual:9
     
 };
 

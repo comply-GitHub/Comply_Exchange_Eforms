@@ -21,7 +21,7 @@ export const individualSchema = (Cert: string, payment: boolean, income: boolean
       .required("Please Enter unique Identifier")
       // .min(3, "Too short")
       .max(50, "Too long"),
-    countryOfCitizenshipId: Yup.number().when("isUSIndividual", {
+    countryOfCitizenshipId: Cert==="SC" ? Yup.number() : Yup.number().when("isUSIndividual", {
       is: "no",
       then: () =>
         Yup.number()

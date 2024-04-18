@@ -18,6 +18,69 @@ const ENSUC = (props:any) => {
         <div className="d-flex mt-3">
             <Typography className="mt-2" style={{ marginTop: "10px" }}>
                 35
+                <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 35
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("35")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "35" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Select box 35 for all excepted nonfinancial start-up companies
+All excepted nonfinancial start-up companies must check box 35 to certify that you satisfy the requirements for this classification. You must also provide the date you were formed or your board passed a resolution (or equivalent measure) approving a new line of business (which cannot be that of a financial institution or passive NFFE).
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             </Typography>
             <Typography>
             <Checkbox 

@@ -20,6 +20,69 @@ const ENELB = (props:any) => {
         <div className="d-flex mt-3">
             <Typography className="mt-2" style={{ marginTop: "10px" }}>
                 36
+                <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 36
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("36")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "36" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Select check box 36 for all excepted nonfinancial group entities in liquidation or bankruptcy
+All excepted nonfinancial group entities in liquidation or bankruptcy must check box 36 to certify that you satisfy the requirements for this classification. You must also provide the date that you filed a plan of liquidation, plan of reorganization, or bankruptcy petition.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             </Typography>
             <Typography>
                 <Checkbox 

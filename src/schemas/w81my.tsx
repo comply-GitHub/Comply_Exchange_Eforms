@@ -70,9 +70,15 @@ export const US_TINSchema8IMY = () => {
   };
 
 
+  const itemSchema = Yup.object().shape({
+    firstName: Yup.string().required('First Name is required'),
+    
+  });
+  
   export const statementSchema8IMY = () => {
     return Yup.object().shape({
         previouslySubmittedAllocationStatement: Yup.string().required("required"),
+        items: Yup.array().of(itemSchema),
       
     });
   };
@@ -85,5 +91,20 @@ export const US_TINSchema8IMY = () => {
         cerSubitformwithin30Days:Yup.boolean().oneOf([true], "Please mark the checkbox"),
         cerConfirmReceivedElecForm: Yup.boolean().oneOf([true],"Please mark the checkbox"),
       
+    });
+  };
+
+  export const partCertiSchema8IMY = () => {
+    return Yup.object().shape({
+  
+      signedBy: Yup.string().required("Please enter name of the person signing the form"),
+      confirmationCode: Yup.string()
+        .required("Please enter code"),
+      
+      date: Yup.date(),
+      isAgreeWithDeclaration: Yup.boolean().oneOf(
+        [true],
+        "Please mark the checkbox"
+      ),
     });
   };

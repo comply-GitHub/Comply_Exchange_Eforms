@@ -47,9 +47,9 @@ export default function Term() {
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
     
-      <div style={{ paddingBlockStart: "30px" }}>
+      {/* <div style={{ paddingBlockStart: "30px" }}>
         <FormW8IMY/>
-      </div>
+      </div> */}
      
       <div className="container-fluid">
         <div className="col-lg-12 mt-20" style={{ padding: "18px" }}>

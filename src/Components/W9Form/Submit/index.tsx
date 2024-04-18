@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { SubmitSchema } from "../../../schemas/submit";
+import { SubmitSchema_BEN } from "../../../schemas/submit";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -55,7 +55,7 @@ const Declaration = (props: any) => {
           <Paper style={{ padding: "22px" }}>
             <Formik
               initialValues={initialValue}
-              validationSchema={SubmitSchema}
+              validationSchema={SubmitSchema_BEN}
               onSubmit={(values, { setSubmitting }) => {
                 console.log("values", values)
                 setSubmitting(true);

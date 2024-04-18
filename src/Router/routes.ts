@@ -118,6 +118,26 @@ const ThankYou_Eci = React.lazy(
   () => import("../Components/W-8ECI/Thankyou_eci")
 );
 
+const Tax_dualCert_Eci = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/TaxDualCert")
+);
+
+
+const Certi_dualCert_Eci = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/CertificationDualCert")
+);
+
+const Perti_dualCert_Eci = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/PenalitiesDualCert")
+);
+
+const Submit_dualCert_Eci = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/Submit_DualCert_Eci")
+);
+const Thankyou_dualCert_Eci = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/ThankYou_DualCert")
+);
+
 const Formw9 = React.lazy(
   () => import("../formPDF/formw9")
 );
@@ -169,12 +189,13 @@ const ThankYou_Exp = React.lazy(() => import("../Components/W-8EXP/Thankyou_exp"
 const Purpose_IMY = React.lazy(() => import("../Components/W-8IMY/Status"));
 const Chapter4_IMY = React.lazy(() => import("../Components/W-8IMY/Chapter4_IMY"));
 const TaxPayer_IMY = React.lazy(() => import("../Components/W-8IMY/TaxPayer"));
-// const Statement_IMY = React.lazy(() => import("../Components/W-8IMY/Statement"));
+const Statement_IMY = React.lazy(() => import("../Components/W-8IMY/Statement"));
 const Certificates_IMY = React.lazy(() => import("../Components/W-8IMY/Certificates"));
 const Participation_IMY = React.lazy(() => import("../Components/W-8IMY/Participation"));
 const Submit_IMY = React.lazy(() => import("../Components/W-8IMY/Sumit_imy"));
 const ThankYou_IMY = React.lazy(() => import("../Components/W-8IMY/Thankyou_imy"));
 
+const CaymanIndividualStart = React.lazy(() => import("../Components/Cayman/Individual/Start"));
 
 
 const ROUTES: Array<RouteType> = [
@@ -235,6 +256,43 @@ const ROUTES: Array<RouteType> = [
     Component: Certification_DC_BEN,
     isPrivate: true,
   },
+  {
+    name: "Tax_dualCert_Eci",
+    path: "/Tax_dualCert_Eci",
+    id: 2,
+    Component: Tax_dualCert_Eci,
+    isPrivate: true,
+  },
+  {
+    name: "Certi_dualCert_Eci",
+    path: "/Certi_dualCert_Eci",
+    id: 2,
+    Component: Certi_dualCert_Eci,
+    isPrivate: true,
+  },
+  {
+    name: "Perti_dualCert_Eci",
+    path: "/Perti_dualCert_Eci",
+    id: 2,
+    Component: Perti_dualCert_Eci,
+    isPrivate: true,
+  },
+  {
+    name: "Submit_dualCert_Eci",
+    path: "/Submit_dualCert_Eci",
+    id: 2,
+    Component: Submit_dualCert_Eci,
+    isPrivate: true,
+  },
+  {
+    name: "Thankyou_dualCert_Eci",
+    path: "/Thankyou_dualCert_Eci",
+    id: 2,
+    Component: Thankyou_dualCert_Eci,
+    isPrivate: true,
+  },
+
+  //Tax_dualCert_Eci
   {
     name: "Susbtantial_BEN",
     path: "/Susbtantial_BEN",
@@ -589,6 +647,13 @@ const ROUTES: Array<RouteType> = [
     isPrivate: true,
   },
   {
+    name: "CaymanIndividualStart",
+    path: "Cayman/Individual/Start",
+    id: 7,
+    Component: CaymanIndividualStart,
+    isPrivate: true,
+  },
+  {
     name: "PDFViewer",
     path: "PDFViewer",
     id: 7,
@@ -849,13 +914,13 @@ const ROUTES: Array<RouteType> = [
     Component: TaxPayer_IMY,
     isPrivate: true,
   },
-  // {
-  //   name: "Statement_IMY",
-  //   path: "/IMY/Tax_Purpose_Exp/Chapter4_IMY/Statement",
-  //   id: 7,
-  //   Component: Statement_IMY,
-  //   isPrivate: true,
-  // },
+  {
+    name: "Statement_IMY",
+    path: "/IMY/Tax_Purpose_Exp/Chapter4_IMY/Statement",
+    id: 7,
+    Component: Statement_IMY,
+    isPrivate: true,
+  },
   {
     name: "Certificates_IMY",
     path: "/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY",

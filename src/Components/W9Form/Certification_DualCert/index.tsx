@@ -278,19 +278,22 @@ Section 4: Declaration and Undertaking
                         </Button> */}
                           <SaveAndExit Callback={() => {
                             submitForm().then((data) => {
-                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const prevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
                               const urlValue = window.location.pathname.substring(1);
-                              // dispatch(PostDualCert(
-                              //   {
-                              //     ...prevStepData,
-                              //     ...values,
-                              //     stepName: `/${urlValue}`
-                              //   }
-                              //   , () => { }))
+                              dispatch(PostDualCert(
+                                {
+                                    ...prevStepData,
+                                    ...values,
+                                    stepName: `/${urlValue}`
+                                }
+                                , () => { }, 
+                                () => { }) 
+                            );
                               history(GlobalValues.basePageRoute)
                             }).catch((err) => {
                               console.log(err);
                             })
+                              
                           }} formTypeId={FormTypeId.W9} />
                         <Button
 

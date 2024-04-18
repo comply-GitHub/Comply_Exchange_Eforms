@@ -744,27 +744,26 @@ export default function Penalties() {
                           <SaveAndExit Callback={() => {
                             submitForm().then(() => {
                               const prevStepData = JSON.parse(
-                                localStorage.getItem("PrevStepData") || "{}"
+                                localStorage.getItem("DualCertData") || "{}"
                               );
                               const urlValue =
                                 window.location.pathname.substring(1);
-                              // dispatch(
-                              //   PostDualCert(
-                              //     {
-                              //       ...prevStepData,
-                              //       ...values,
-                              //       stepName: `/${urlValue}`,
-                              //     },
-                              //     () => {
-                              //       history(GlobalValues.basePageRoute);
-                              //     }
-                              //   )
-                              // );
-                            })
-                              .catch((err) => {
+                                dispatch(PostDualCert(
+                                  {
+                                      ...prevStepData,
+                                      ...values,
+                                      stepName: `/${urlValue}`
+                                  }
+                                  , () => { }, 
+                                  () => { }) 
+                              );
+                                history(GlobalValues.basePageRoute)
+                              }).catch((err) => {
                                 console.log(err);
                               })
-                          }} formTypeId={FormTypeId.BENE} />
+                            
+                             
+                          }} formTypeId={FormTypeId.W9} />
                         </div>
 
 

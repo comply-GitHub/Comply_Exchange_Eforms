@@ -27,8 +27,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
 import { individualSchema } from "../../schemas/individualindex";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
+ import Radio from "@mui/material/Radio";
+ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import "bootstrap/dist/css/bootstrap.css";
 import entity from "../../../src/assets/img/entity.png";
@@ -46,7 +46,7 @@ import {
   getTinTypes,
   GetAgentPaymentType,
   GetHelpVideoDetails,
-  GET_AGENT_BY_ID,
+  GET_AGENT_BY_ID
 } from "../../Redux/Actions";
 import moment from "moment";
 import { AppDispatch } from "../../Redux/store";
@@ -96,21 +96,20 @@ export default function IndividualUs() {
   const [stateList2, setallStateById2] = useState([]);
   // const [touched, setTouched] = useState(false);
 
+
+
   const allCountriesData = useSelector(
     (state: any) => state.getCountriesReducer
   );
-  const accountHolderDetails = JSON.parse(
-    localStorage.getItem("accountHolderDetails") || "{}"
-  );
+  const accountHolderDetails = JSON.parse(localStorage.getItem("accountHolderDetails") || "{}")
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
 
-  const userType = authDetails?.configurations?.userType;
-  const Income = authDetails?.configurations?.requestincometype;
-  const IncomeMandatory =
-    authDetails?.configurations?.requestincometypeAndWhenYesMakeMandatory;
-  const Payment = authDetails?.configurations?.requestBankAccountInformation;
-  const PaymentMandatry =
-    authDetails?.configurations?.requestBankAccountInformationAndWhenYesMakeMandatory;
+  const auth = JSON.parse(authDetailsString);
+  const userType = auth?.configurations?.userType;
+  const Income = auth?.configurations?.requestincometype;
+  const IncomeMandatory = auth?.configurations?.requestincometypeAndWhenYesMakeMandatory;
+  const Payment = auth?.configurations?.requestBankAccountInformation;
+  const PaymentMandatry = auth?.configurations?.requestBankAccountInformationAndWhenYesMakeMandatory;
 
   const [payload, setPayload] = useState({
     id: 0,
@@ -262,12 +261,12 @@ export default function IndividualUs() {
     capacityId: 1,
     isCorrectPaymentPurposes: true,
     isConfirmed: false,
-    taxpayerIdTypeName: "",
+    taxpayerIdTypeName: ""
   });
 
-  useEffect(() => {
-    document.title = "OnBoarding";
-  }, []);
+  useEffect(()=>{
+    document.title = "OnBoarding"
+  },[])
 
   const formatTin = (e: any, values: any): any => {
     if (e.key === "Backspace" || e.key === "Delete") return;
@@ -294,6 +293,7 @@ export default function IndividualUs() {
   };
 
   const formatBankCode = (e: any, values: any): any => {
+
     if (e.target.value.length === 9) return;
     if (e.key === "Backspace" || e.key === "Delete") return;
     if (e.target.value.length === 2) {
@@ -304,6 +304,7 @@ export default function IndividualUs() {
       setPayload({ ...payload, usTin: payload.bankCode + "-" });
       values.bankCode = values.bankCode + "-";
     }
+
   };
 
   const formatDate = (date: any) => {
@@ -315,11 +316,12 @@ export default function IndividualUs() {
     const formattedDate = `${month.toString().padStart(2, "0")}-${day
       .toString()
       .padStart(2, "0")}-${year}`;
+  
   };
 
   const isLoginAndContinue = () => {
     return false;
-  };
+  }
 
   const ahdData: any = useSelector((state: any) => state?.accountHolder);
 
@@ -330,129 +332,131 @@ export default function IndividualUs() {
         id: accountHolderDetails.id ?? 0,
         isUSEntity: ahdData.isUSEntity === true ? "yes" : "no",
         isUSIndividual: ahdData.isUSIndividual === true ? "yes" : "no",
-        isAddressRuralRoute:
-          ahdData.isAddressRuralRoute === true ? "yes" : "no",
-        isAddressPostOfficeBox:
-          ahdData.isAddressPostOfficeBox === true ? "yes" : "no",
+        isAddressRuralRoute: ahdData.isAddressRuralRoute === true ? "yes" : "no",
+        isAddressPostOfficeBox: ahdData.isAddressPostOfficeBox === true ? "yes" : "no",
         isCareOfAddress: ahdData.isCareOfAddress === true ? "yes" : "no",
-        isalternativebusinessaddress:
-          ahdData.isalternativebusinessaddress === true ? "yes" : "no",
+        isalternativebusinessaddress: ahdData.isalternativebusinessaddress === true ? "yes" : "no",
       };
       setInitialValues(temp);
     }
-  };
-  console.log(authDetails?.agentId, "90");
-  useEffect(() => {
-    if (authDetails?.agentId) {
-      dispatch(GetAgentUSVisaTypeHiddenForEformAction(authDetails?.agentId));
-      dispatch(
-        getTinTypes(authDetails?.agentId, (data: any) => {
-          setUStinArray(data);
-          let datas = data.filter((ele: any) => {
-            return ele.usIndividual === true;
-          });
-          setUStinvalue(datas);
-          let nonData = data.filter((ele: any) => {
-            return ele.nonUSIndividual === true;
-          });
-          setNonUsIndividual(nonData);
-        })
-      );
-      dispatch(
-        GetAgentPaymentType(authDetails?.agentId, () => {
-          // console.log("Data");
-        })
-      );
+  }
+// console.log(authDetails?.agentId,"90")
+useEffect(()=>{
+  if(authDetails?.agentId){
+    dispatch(GetAgentUSVisaTypeHiddenForEformAction(authDetails?.agentId));
+    dispatch(
+      getTinTypes(authDetails?.agentId, (data: any) => {
+        setUStinArray(data);
+        let datas = data.filter((ele: any) => {
+          return ele.usIndividual === true;
+        });
+        setUStinvalue(datas);
+        let nonData = data.filter((ele: any) => {
+          return ele.nonUSIndividual === true;
+        });
+        setNonUsIndividual(nonData)
+      })
+    );
+    dispatch(
+      GetAgentPaymentType(authDetails?.agentId, () => {
+        // console.log("Data");
+      })
+    );
 
-      dispatch(
-        GET_AGENT_BY_ID(authDetails?.agentId, (data: any) => {
-          // alert(data.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat)
-          setAgentData(data);
-        })
-      );
-    }
-  }, [authDetails]);
+    dispatch(
+      GET_AGENT_BY_ID(authDetails?.agentId, (data: any) => {
+        // alert(data.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat)
+        setAgentData(data);
+      }));
+  }
+},[authDetails])
 
   useEffect(() => {
     dispatch(getAllCountries());
-
+   
+     
+   
     dispatch(GetAgentIncomeTypeHiddenAllowAnoymo());
     dispatch(getAllCountriesCode());
     dispatch(GetHelpVideoDetails());
     dispatch(getAllCountriesIncomeCode());
     dispatch(getAllStateByCountryId(0));
+   
 
     LoadPageData();
   }, []);
 
+
+
+
+
   const onUidBlur = (e: any, values: any): any => {
     // setTouched(true);
-    const value = e.target.value;
+    const value = e.target.value
 
-    if (
-      agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat ===
-      undefined
-    )
-      return;
+    if (agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat === undefined) return;
 
     var format = "S";
-    const formatVal =
-      agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat;
+    const formatVal = agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat;
     if (formatVal.length == 0) return;
 
-    if (value.length < formatVal.split("?")[0].length) {
+    if (value.length < formatVal.split('?')[0].length) {
+
       setPayload({ ...payload, uniqueIdentifier: payload.uniqueIdentifier });
       values.uniqueIdentifier = "";
       setPreVal(values.uniqueIdentifier);
     }
-  };
+  }
+
+
 
   const onNumberChange = (e: any, values: any): any => {
-    const value = e.target.value;
+    const value = e.target.value
 
-    if (
-      agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat ===
-      undefined
-    )
-      return;
+    if (agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat === undefined) return;
 
     var format = "S";
-    const formatVal =
-      agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat;
+    const formatVal = agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat;
 
     if (formatVal.length == 0) return;
 
     setPayload({ ...payload, uniqueIdentifier: payload.uniqueIdentifier });
-    if (
-      (checkNUmberOnly(value) && formatVal.split("")[0] == "9") ||
-      (checkCharecterOnly(value) && formatVal.split("")[0] == "S") ||
-      formatVal.split("")[0] == "*"
+    if ((checkNUmberOnly(value) && formatVal.split('')[0] == "9")
+      || (checkCharecterOnly(value) && formatVal.split('')[0] == "S")
+      || formatVal.split('')[0] == "*"
     ) {
+
       if (values.uniqueIdentifier.length <= formatVal.length) {
         setPreVal(values.uniqueIdentifier);
-      } else {
+      }
+      else {
         values.uniqueIdentifier = holdPreviousVal;
       }
     } else {
+
       values.uniqueIdentifier = holdPreviousVal;
+
     }
-  };
+
+  }
 
   const checkCharecterOnly = (val: any): any => {
+
     let pattern = /\d/g;
     let result = val.match(pattern);
     if (result && result.length) {
       return false;
     }
     return true;
-  };
+
+  }
 
   const checkNUmberOnly = (val: any): any => {
-    if (!isNaN(+val)) {
-      return true;
-    }
+
+    if (!isNaN(+val)) { return true; }
     return false;
-  };
+
+  }
 
   // isUSIndividual
 
@@ -488,17 +492,17 @@ export default function IndividualUs() {
     (state: any) => state.GetStateByCountryIdReducer
   );
 
+
+
   // const GetAgentUSVisaTypeHiddenForEform = useSelector(
   //   (state: any) =>
   //     state.GetAgentUSVisaTypeHiddenForEformReducer
   //       .GetAgentUSVisaTypeHiddenForEform
   // );
   // FOR ISSUE 108 UNCOMMENT bottom code and comment top code
-  const GetAgentUSVisaTypeHiddenForEform = useSelector(
-    (state: any) =>
-      state.GetAgentIncomeTypeHiddenAllowAnoymoReducer
-        .GetAgentIncomeTypeHiddenAllowAnoymoData
-  );
+  const GetAgentUSVisaTypeHiddenForEform = useSelector((state: any) =>
+    state.GetAgentIncomeTypeHiddenAllowAnoymoReducer.GetAgentIncomeTypeHiddenAllowAnoymoData
+  )
 
   const redirectFunc = () => {
     history("/Term");
@@ -527,6 +531,7 @@ export default function IndividualUs() {
     setIncomeArr(updatedIncomeCodes);
     setIncomeData(incomeData);
   };
+
 
   const returnFieldName = (
     handleBlur: any,
@@ -676,6 +681,8 @@ export default function IndividualUs() {
     }
   };
 
+
+
   const setAccountHolder = (e: any, values: any): any => {
     if (values.accountHolderName === "") {
       values.accountHolderName = values.firstName + values.lastName;
@@ -699,9 +706,7 @@ export default function IndividualUs() {
     }
     return null;
   }
-  const [selectedValues, setSelectedValues] = useState(
-    Array(incomeArr.length).fill("0")
-  );
+  const [selectedValues, setSelectedValues] = useState(Array(incomeArr.length).fill("0"));
   const [incomeErrors, setIncomeErrors] = useState("");
   // const Options = {userType, PaymentMandatry}
 
@@ -716,21 +721,23 @@ export default function IndividualUs() {
   useEffect(() => {
     selectedValues.forEach((ele, i) => {
       if (ele === "0") {
-        setIncomeErrors("Income field is mandatory");
+        setIncomeErrors("Income field is mandatory")
         return;
       }
-      setIncomeErrors("");
-    });
-  }, [selectedValues]);
+      setIncomeErrors("")
+    })
+
+  }, [selectedValues])
 
   const handleIcome = (e: any, i: number) => {
     const newValue = e.target.value;
-    setSelectedValues((prevState) => {
+    setSelectedValues(prevState => {
       const newState = [...prevState];
       newState[i] = newValue;
       return newState;
     });
   };
+
 
   let selectCitizenOptions: Array<string> = [];
   let selectUSCitizenOptions: Array<string> = [];
@@ -745,17 +752,21 @@ export default function IndividualUs() {
     }
   });
 
+
   function getTaxPayerName(value: any) {
     var val = "";
 
     selectNON_USCitizenOptions.filter((item: any) => {
+
       if (item?.taxpayerIdTypeID == value) {
-        val = item.taxpayerIdTypeName;
+        val = item.taxpayerIdTypeName
       }
     });
 
     return val;
   }
+
+
 
   return (
     <section
@@ -789,8 +800,8 @@ export default function IndividualUs() {
                         <img src={individual} />
                       </div>
                       <span style={{ fontSize: "14px", fontWeight: "600" }}>
-                        Individual
-                      </span>
+                        Individual 
+                      </span> 
                     </div>
                   </button>
                 </li>
@@ -819,18 +830,19 @@ export default function IndividualUs() {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="helpvideo">
+
               <div className="helpvideo">
                 {GethelpData && GethelpData[1].id === 3 ? (
                   <a
                     href={GethelpData[1].fieldValue}
                     target="popup"
-                    // onClick={() =>
-                    //   window.open(
-                    //     GethelpData[1].fieldValue,
-                    //     'name',
-                    //     `width=${GethelpData[1].width},height=${GethelpData[1].height},top=${GethelpData[1].top},left=${GethelpData[1].left}`
-                    //   )
-                    // }
+                  // onClick={() =>
+                  //   window.open(
+                  //     GethelpData[1].fieldValue,
+                  //     'name',
+                  //     `width=${GethelpData[1].width},height=${GethelpData[1].height},top=${GethelpData[1].top},left=${GethelpData[1].left}`
+                  //   )
+                  // }
                   >
                     Help Video
                   </a>
@@ -838,6 +850,7 @@ export default function IndividualUs() {
                   ""
                 )}
               </div>
+
             </div>
           </div>
         </div>
@@ -851,6 +864,7 @@ export default function IndividualUs() {
             className="underline-none"
           >
             <Formik
+
               initialValues={initialValues}
               enableReinitialize
               validateOnChange={true}
@@ -859,6 +873,7 @@ export default function IndividualUs() {
               onSubmit={(values, { setSubmitting }) => {
                 if (IncomeMandatory === true && incomeErrors.length > 0) {
                   return;
+
                 }
                 // console.log(values, "AHD values")
                 const payload = {
@@ -959,49 +974,30 @@ export default function IndividualUs() {
                   isConfirmed: values?.isConfirmed,
                   taxpayerIdTypeName: values?.taxpayerIdTypeName,
                   usTinTypeId: +values?.taxpayerIdTypeID,
-                  permanentresidentialzippostalcode:
-                    values?.permanentResidentialZipPostalCode,
+                  permanentresidentialzippostalcode: values?.permanentResidentialZipPostalCode,
                 };
-                dispatch(
-                  postOnboarding(payload, (data: any) => {
-                    console.log(data);
-                    if (data.accountHolderID) {
-                      dispatch({
-                        type: Utils.actionName.UpdateAuthDetails,
-                        payload: {
-                          ...authDetails,
-                          accountHolderId: data.accountHolderID,
-                        },
-                      });
-                      localStorage.setItem(
-                        "authDetails",
-                        JSON.stringify({
-                          ...authDetails,
-                          accountHolderId: data.accountHolderID,
-                        })
-                      );
-                    }
-                    localStorage.setItem(
-                      "agentDetails",
-                      JSON.stringify({ ...payload, id: data.accountHolderID })
-                    );
-                    localStorage.setItem(
-                      "accountHolderDetails",
-                      JSON.stringify({ ...payload, id: data.accountHolderID })
-                    );
-                    localStorage.setItem("isFormFilling", "true");
+                dispatch(postOnboarding(payload, (data: any) => {
+                  console.log(data)
+                  if (data.accountHolderID) {
+                    dispatch({
+                      type: Utils.actionName.UpdateAuthDetails,
+                      payload: { ...authDetails, accountHolderId: data.accountHolderID }
+                    })
+                    localStorage.setItem("authDetails", JSON.stringify({ ...authDetails, accountHolderId: data.accountHolderID }));
+                  }
+                  localStorage.setItem("agentDetails", JSON.stringify({ ...payload, id: data.accountHolderID }));
+                  localStorage.setItem("accountHolderDetails", JSON.stringify({ ...payload, id: data.accountHolderID }));
+                  localStorage.setItem("isFormFilling", "true");
 
-                    redirectFunc();
-                  })
-                );
+                  redirectFunc();
+                }));
 
                 setSubmitting(false);
-              }}
-              validationSchema={individualSchema(
-                userType,
-                PaymentMandatry,
-                IncomeMandatory
-              )}
+
+              }
+
+              }
+              validationSchema={individualSchema(userType, PaymentMandatry, IncomeMandatory)}
             >
               {({
                 errors,
@@ -1012,220 +1008,142 @@ export default function IndividualUs() {
                 handleChange,
                 isSubmitting,
                 setFieldValue,
-                isValid,
+                isValid
               }) => (
                 <Form onSubmit={handleSubmit}>
-                  {values.permanentResidentialCountryId == 186 ? (
-                    <div
-                      className="my-4 mx-3"
-                      style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
-                    >
-                      <Typography>
-                        A111
-                        <span className="mx-1">
-                          <img
-                            src={Infoicon}
-                            style={{
-                              color: "#ffc107",
-                              height: "22px",
-                              width: "20px",
-                              boxShadow: "inherit",
-                              cursor: "pointer",
-                              marginBottom: "3px",
-                            }}
-                          />
-                        </span>
-                        <span className="mx-1" style={{ marginTop: "1px" }}>
-                          {" "}
-                          You have selected "other" and entered a country for
-                          your permanent residency address not recognised by the
-                          system. Your agent may need to obtain further
-                          information from you.
-                        </span>
-                      </Typography>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  {values.isAddressPostOfficeBox === "yes" ? (
-                    <div
-                      className="my-4 mx-3"
-                      style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
-                    >
-                      <Typography>
-                        A101
-                        <span className="mx-1">
-                          <img
-                            src={Infoicon}
-                            style={{
-                              color: "#ffc107",
-                              height: "22px",
-                              width: "20px",
-                              boxShadow: "inherit",
-                              cursor: "pointer",
-                              marginBottom: "3px",
-                            }}
-                          />
-                        </span>
-                        <span className="mx-1" style={{ marginTop: "1px" }}>
-                          {" "}
-                          You have indicated that your permanent residency
-                          address is a PO Box. This may not be accepted as a
-                          valid address. Your agent may need to obtain further
-                          information from you.
-                        </span>
-                      </Typography>
-                    </div>
-                  ) : (
-                    ""
-                  )}
 
-                  {values.isCareOfAddress === "yes" ? (
-                    <div
-                      className="my-4 mx-3"
-                      style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
-                    >
-                      <Typography>
-                        A102
-                        <span className="mx-1">
-                          <img
-                            src={Infoicon}
-                            style={{
-                              color: "#ffc107",
-                              height: "22px",
-                              width: "20px",
-                              boxShadow: "inherit",
+                  {values.permanentResidentialCountryId == 186 ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                    <Typography>
+                      A111
+                      <span className="mx-1">
+                        <img src={Infoicon} style={{
+                          color: "#ffc107", height: "22px",
+                          width: "20px",
+                          boxShadow: "inherit",
+                          cursor: "pointer",
+                          marginBottom: "3px"
 
-                              cursor: "pointer",
-                              marginBottom: "3px",
-                            }}
-                          />
-                        </span>
-                        <span className="mx-1" style={{ marginTop: "1px" }}>
-                          {" "}
-                          You have indicated that your permanent residency
-                          address may be located at a Care of Address. This may
-                          not be accepted as a valid address. Your agent may
-                          need to obtain further information from you.
-                        </span>
-                      </Typography>
-                    </div>
-                  ) : (
-                    ""
-                  )}
+                        }} />
+                      </span>
+                      <span className="mx-1" style={{ marginTop: "1px" }}> You have selected "other" and entered a country for your permanent residency address not recognised by the system. Your agent may need to obtain further information from you.</span>
+                    </Typography>
 
-                  {values.isUSIndividual === "yes" &&
-                  values.permanentResidentialCountryId &&
-                  values.permanentResidentialCountryId != 258 ? (
-                    <div
-                      className="my-4 mx-3"
-                      style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
-                    >
-                      <Typography>
-                        A103
-                        <span className="mx-1">
-                          <img
-                            src={Infoicon}
-                            style={{
-                              color: "#ffc107",
-                              height: "22px",
-                              width: "20px",
-                              boxShadow: "inherit",
-                              cursor: "pointer",
-                              marginBottom: "3px",
-                            }}
-                          />
-                        </span>
-                        <span style={{ fontWeight: "Bold" }}>
-                          Potential Address Mismatch
-                        </span>
-                      </Typography>
+                  </div>) : ""}
+                  {values.isAddressPostOfficeBox === "yes" ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                    <Typography>
+                      A101
+                      <span className="mx-1">
+                        <img src={Infoicon} style={{
+                          color: "#ffc107", height: "22px",
+                          width: "20px",
+                          boxShadow: "inherit",
+                          cursor: "pointer",
+                          marginBottom: "3px"
 
-                      <Typography className="mt-3">
-                        You have identified that you are submitting a form on
-                        behalf of a U.S. Individual or a US Entity and indicated
-                        that the Permanent Residential Address used for U.S tax
-                        purposes is not in the U.S.
-                      </Typography>
-                      <Typography className="mt-2">
-                        You will be asked to supply additional information later
-                        in the process and your agent may need to contact you
-                        for further information.
-                      </Typography>
-                    </div>
-                  ) : (
-                    ""
-                  )}
+                        }} />
 
-                  {values.isUSIndividual === "no" &&
-                  values.permanentResidentialCountryId &&
-                  values.permanentResidentialCountryId == 258 ? (
-                    <div
-                      className="my-4 mx-3"
-                      style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
-                    >
+                      </span>
+                      <span className="mx-1" style={{ marginTop: "1px" }}> You have indicated that your permanent residency address is a PO Box. This may not be accepted as a valid address. Your agent may need to obtain further information from you.</span>
+                    </Typography>
+
+                  </div>) : ""}
+
+                  {values.isCareOfAddress === "yes" ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                    <Typography>
+                      A102
+
+                      <span className="mx-1">
+                        <img src={Infoicon} style={{
+                          color: "#ffc107", height: "22px",
+                          width: "20px",
+                          boxShadow: "inherit",
+
+
+
+                          cursor: "pointer",
+                          marginBottom: "3px"
+
+                        }} />
+
+                      </span>
+                      <span className="mx-1" style={{ marginTop: "1px" }}> You have indicated that your permanent residency address may be located at a Care of Address. This may not be accepted as a valid address. Your agent may need to obtain further information from you.</span>
+                    </Typography>
+
+
+
+
+
+
+
+
+                  </div>) : ""}
+
+                  {values.isUSIndividual === "yes" && values.permanentResidentialCountryId && values.permanentResidentialCountryId != 258 ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                    <Typography>
+                      A103
+                      <span className="mx-1">
+                        <img src={Infoicon} style={{
+                          color: "#ffc107", height: "22px",
+                          width: "20px",
+                          boxShadow: "inherit",
+                          cursor: "pointer",
+                          marginBottom: "3px"
+                        }} />
+
+                      </span>
+                      <span style={{ fontWeight: "Bold" }}>
+                        Potential Address Mismatch
+                      </span>
+                    </Typography>
+
+                    <Typography className="mt-3">
+                      You have identified that you are submitting a form on behalf of a U.S. Individual or a US Entity and indicated that the Permanent Residential Address used for U.S tax purposes is not in the U.S.
+                    </Typography>
+                    <Typography className="mt-2">
+                      You will be asked to supply additional information later in the process and your agent may need to contact you for further information.
+
+                    </Typography>
+
+                  </div>) : ""}
+
+                  {values.isUSIndividual === "no" && values.permanentResidentialCountryId && values.permanentResidentialCountryId == 258 ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                    <Typography>
+                      A113
+                      <span className="mx-1">
+                        <img src={Infoicon} style={{
+                          color: "#ffc107", height: "22px",
+                          width: "20px",
+                          boxShadow: "inherit",
+                          cursor: "pointer",
+                          marginBottom: "3px"
+
+                        }} />
+
+                      </span>
+                      <span className="mx-1" style={{ marginTop: "1px" }}>You are submitting a form on behalf of a Non U.S Individual or a Non U.S Entity and indicated that the Permanent Residential Address used for U.S tax purposes is in the United States.</span>
+                    </Typography>
+
+                  </div>) : ""}
+                  {values.isUSIndividual === "no" && values.permanentResidentialCountryId && values.permanentResidentialCountryId === 256 ? (
+                    <div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                       <Typography>
                         A113
                         <span className="mx-1">
-                          <img
-                            src={Infoicon}
-                            style={{
-                              color: "#ffc107",
-                              height: "22px",
-                              width: "20px",
-                              boxShadow: "inherit",
-                              cursor: "pointer",
-                              marginBottom: "3px",
-                            }}
-                          />
+                          <img src={Infoicon} style={{
+                            color: "#ffc107", height: "22px",
+                            width: "20px",
+                            boxShadow: "inherit",
+                            cursor: "pointer",
+                            marginBottom: "3px"
+
+                          }} />
+
                         </span>
-                        <span className="mx-1" style={{ marginTop: "1px" }}>
-                          You are submitting a form on behalf of a Non U.S
-                          Individual or a Non U.S Entity and indicated that the
-                          Permanent Residential Address used for U.S tax
-                          purposes is in the United States.
-                        </span>
+                        <span className="mx-1" style={{ marginTop: "1px" }}>You have identified that you are submitting a form on behalf of a NON U.S. Individual or a NON US Entity and selected a form type W-8. You have indicated that the Permanent Residential Address for U.S tax purposes IS IN the United States. You will be asked to supply additional information later in the process and your agent may need to contact you for further information.</span>
                       </Typography>
+
                     </div>
-                  ) : (
-                    ""
-                  )}
-                  {values.isUSIndividual === "no" &&
-                  values.permanentResidentialCountryId &&
-                  values.permanentResidentialCountryId === 256 ? (
-                    <div
-                      className="my-4 mx-3"
-                      style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
-                    >
-                      <Typography>
-                        A113
-                        <span className="mx-1">
-                          <img
-                            src={Infoicon}
-                            style={{
-                              color: "#ffc107",
-                              height: "22px",
-                              width: "20px",
-                              boxShadow: "inherit",
-                              cursor: "pointer",
-                              marginBottom: "3px",
-                            }}
-                          />
-                        </span>
-                        <span className="mx-1" style={{ marginTop: "1px" }}>
-                          You have identified that you are submitting a form on
-                          behalf of a NON U.S. Individual or a NON US Entity and
-                          selected a form type W-8. You have indicated that the
-                          Permanent Residential Address for U.S tax purposes IS
-                          IN the United States. You will be asked to supply
-                          additional information later in the process and your
-                          agent may need to contact you for further information.
-                        </span>
-                      </Typography>
-                    </div>
-                  ) : (
-                    ""
-                  )}
+                  ) : ""}
 
                   {toolInfo === "ForeignTin" ? (
                     <div className="mt-5">
@@ -1328,6 +1246,7 @@ export default function IndividualUs() {
                                     e.stopPropagation();
                                     setToolInfo("basic");
                                   }}
+
                                 >
                                   <Typography
                                     style={{
@@ -1346,8 +1265,11 @@ export default function IndividualUs() {
                             <Info
                               onClick={(e) => {
                                 e.stopPropagation();
+
                               }}
+
                               style={{
+
                                 color: "#ffc107",
                                 fontSize: "15px",
                                 marginLeft: "5px",
@@ -1357,18 +1279,14 @@ export default function IndividualUs() {
                           </Tooltip>
                         </div>
                         <p className="error mb-0">
-                          {(errors?.isUSIndividual &&
-                            touched?.isUSIndividual) ||
-                          (errors?.firstName && touched?.firstName) ||
-                          (errors?.lastName && touched?.lastName) ||
-                          (errors?.countryOfCitizenshipId &&
-                            touched?.countryOfCitizenshipId) ||
-                          (errors?.dob && touched?.dob) ||
-                          (errors?.uniqueIdentifier &&
-                            touched?.uniqueIdentifier) ||
-                          (errors?.countryOfBirthId &&
-                            touched?.countryOfBirthId) ||
-                          (errors?.cityOfBirth && touched?.cityOfBirth)
+                          {errors?.isUSIndividual && touched?.isUSIndividual ||
+                            errors?.firstName && touched?.firstName ||
+                            errors?.lastName && touched?.lastName ||
+                            errors?.countryOfCitizenshipId && touched?.countryOfCitizenshipId ||
+                            errors?.dob && touched?.dob ||
+                            errors?.uniqueIdentifier && touched?.uniqueIdentifier ||
+                            errors?.countryOfBirthId && touched?.countryOfBirthId ||
+                            errors?.cityOfBirth && touched?.cityOfBirth
                             ? "Mandatory Information Required"
                             : ""}
                         </p>
@@ -1416,13 +1334,9 @@ export default function IndividualUs() {
                           Ref: EH165
                         </Typography>
                         <Link
+
                           underline="none"
-                          style={{
-                            marginTop: "10px",
-                            fontSize: "16px",
-                            cursor: "pointer",
-                            color: "#0000C7",
-                          }}
+                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
                           onClick={() => {
                             setToolInfo("");
                           }}
@@ -1435,63 +1349,61 @@ export default function IndividualUs() {
                     ""
                   )}
 
-                  {userType === "DC" ? (
-                    <>
-                      <Collapse
-                        className="px-5 mx-2"
-                        in={open === "basics"}
-                        timeout="auto"
-                        unmountOnExit
-                      >
-                        <FormControl className="w-100">
-                          <div className="row">
-                            <div>
-                              <Typography
-                                align="left"
-                                style={{ marginTop: "20px" }}
-                              >
-                                Are you a U.S. Individual?
-                                <span style={{ color: "red" }}>*</span>
-                              </Typography>
+                  {userType === "DC" || userType === "SC" ? (<>
 
-                              <div className="d-flex">
-                                <FormControl
-                                  error={Boolean(errors.isUSIndividual)}
+                    <Collapse
+                      className="px-5 mx-2"
+                      in={open === "basics"}
+                      timeout="auto"
+                      unmountOnExit
+                    >
+                      <FormControl className="w-100">
+                        <div className="row">
+                          <div>
+                            <Typography
+                              align="left"
+                              style={{ marginTop: "20px" }}
+                            >
+                              Are you a U.S. Individual?
+                              <span style={{ color: "red" }}>*</span>
+                            </Typography>
+
+                            <div className="d-flex">
+                              <FormControl error={Boolean(errors.isUSIndividual)}>
+                                <RadioGroup
+                                  id="isUSIndividual"
+                                  row
+                                  aria-labelledby="demo-row-radio-buttons-group-label"
+                                  value={values.isUSIndividual}
+                                  onChange={(e) => {
+                                    handleChange(e);
+                                    // onChangeUsInit(values);
+                                  }}
                                 >
-                                  <RadioGroup
-                                    id="isUSIndividual"
-                                    row
-                                    aria-labelledby="demo-row-radio-buttons-group-label"
-                                    value={values.isUSIndividual}
-                                    onChange={(e) => {
-                                      handleChange(e);
-                                      // onChangeUsInit(values);
-                                    }}
-                                  >
-                                    <FormControlLabel
-                                      control={<Radio />}
-                                      value="yes"
-                                      name="isUSIndividual"
-                                      label="Yes"
-                                    />
-                                    <FormControlLabel
-                                      control={<Radio />}
-                                      value="no"
-                                      name="isUSIndividual"
-                                      label="No"
-                                    />
-                                  </RadioGroup>
-                                  {errors.isUSIndividual ? (
-                                    <div>
-                                      <Typography color="error">
-                                        {errors.isUSIndividual}
-                                      </Typography>
-                                    </div>
-                                  ) : (
-                                    ""
-                                  )}
-                                </FormControl>
-                                {/* <Typography className="my-auto">Yes</Typography>
+                                  <FormControlLabel
+                                    control={<Radio />}
+                                    value="yes"
+                                    name="isUSIndividual"
+                                    label="Yes"
+                                  />
+                                  <FormControlLabel
+                                    control={<Radio />}
+                                    value="no"
+                                    name="isUSIndividual"
+                                    label="No"
+                                  />
+                                </RadioGroup>
+                                {errors.isUSIndividual ? (
+                                  <div>
+                                    <Typography color="error">
+                                      {errors.isUSIndividual}
+                                    </Typography>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                              </FormControl>
+                              {/* <Typography className="my-auto">Yes</Typography>
                             <Radio
                               checked={values.isUSEntity}
                               onChange={handleChange}
@@ -1508,39 +1420,77 @@ export default function IndividualUs() {
                               name="isUSEntity"
                               inputProps={{ "aria-label": "No" }}
                             /> */}
-                              </div>
                             </div>
+                          </div>
 
-                            <div className="col-lg-3 col-12 col-md-6">
-                              <Typography className="d-flex w-100">
-                                Unique Identifier
-                                <span style={{ color: "red" }}>*</span>
-                                <Tooltip
+                          <div className="col-lg-3 col-12 col-md-6">
+                            <Typography className="d-flex w-100">
+                              Unique Identifier
+                              <span style={{ color: "red" }}>*</span>
+                              <Tooltip
+                                style={{
+                                  backgroundColor: "black",
+                                  color: "white",
+                                }}
+                                title={
+                                  <>
+                                    <a
+
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setToolInfo("identity");
+                                      }}
+                                    ></a>
+                                  </>
+                                }
+                              >
+                                <Info
+                                  onClick={() => setToolInfo("identity")}
                                   style={{
-                                    backgroundColor: "black",
-                                    color: "white",
+                                    color: "#ffc107",
+                                    fontSize: "15px",
+                                    marginLeft: "5px",
+                                    cursor: "pointer",
                                   }}
-                                  title={
-                                    <>
-                                      <a
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          setToolInfo("identity");
-                                        }}
-                                      ></a>
-                                    </>
-                                  }
-                                >
-                                  <Info
-                                    onClick={() => setToolInfo("identity")}
-                                    style={{
-                                      color: "#ffc107",
-                                      fontSize: "15px",
-                                      marginLeft: "5px",
-                                      cursor: "pointer",
-                                    }}
-                                  />
-                                </Tooltip>
+                                />
+                              </Tooltip>
+                            </Typography>
+                            <Input
+                              style={{
+                                border: " 1px solid #d9d9d9 ",
+                                height: " 36px",
+                                lineHeight: "36px ",
+                                background: "#fff ",
+                                fontSize: "13px",
+                                color: " #000 ",
+                                fontStyle: "normal",
+                                borderRadius: "1px",
+                                padding: " 0 10px ",
+                              }}
+                              className="w-100 input"
+                              name="uniqueIdentifier"
+                              id="outlined"
+                              placeholder="Enter Instructor Identifier"
+                              onChange={handleChange}
+                              onKeyUp={(e: any) => onNumberChange(e, values)}
+                              onBlur={(e: any) => onUidBlur(e, values)}
+
+                              error={Boolean(errors.uniqueIdentifier && touched.uniqueIdentifier)}
+                              value={values.uniqueIdentifier}
+                            // inputProps={{maxLength :agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat.length}}
+                            />
+                            {errors.uniqueIdentifier && touched.uniqueIdentifier ? <p className="error">{errors.uniqueIdentifier}</p> : <></>}
+                          </div>
+                        </div>
+                      </FormControl>
+
+
+                      {values.isUSIndividual === "no" ? (
+                        <div className="row">
+                          <div className="col-lg-3 col-6 col-md-3 mt-2">
+                            <FormControl className="w-100">
+                              <Typography align="left">
+                                First Name<span style={{ color: "red" }}>*</span>
                               </Typography>
                               <Input
                                 style={{
@@ -1554,216 +1504,155 @@ export default function IndividualUs() {
                                   borderRadius: "1px",
                                   padding: " 0 10px ",
                                 }}
-                                className="w-100 input"
-                                name="uniqueIdentifier"
                                 id="outlined"
-                                placeholder="Enter Instructor Identifier"
+                                name="firstName"
+                                placeholder="Enter First Name"
+                                onBlur={handleBlur}
+                                error={Boolean(errors.firstName && touched.firstName)}
                                 onChange={handleChange}
-                                onKeyUp={(e: any) => onNumberChange(e, values)}
-                                onBlur={(e: any) => onUidBlur(e, values)}
-                                error={Boolean(
-                                  errors.uniqueIdentifier &&
-                                    touched.uniqueIdentifier
-                                )}
-                                value={values.uniqueIdentifier}
-                                // inputProps={{maxLength :agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat.length}}
+                                value={values.firstName}
+
                               />
-                              {errors.uniqueIdentifier &&
-                              touched.uniqueIdentifier ? (
-                                <p className="error">
-                                  {errors.uniqueIdentifier}
-                                </p>
-                              ) : (
-                                <></>
-                              )}
-                            </div>
+                              {errors.firstName && touched.firstName ? <p className="error">{errors.firstName}</p> : <></>}
+
+                            </FormControl>
                           </div>
-                        </FormControl>
-
-                        {values.isUSIndividual === "no" ? (
-                          <div className="row">
-                            <div className="col-lg-3 col-6 col-md-3 mt-2">
-                              <FormControl className="w-100">
-                                <Typography align="left">
-                                  First Name
-                                  <span style={{ color: "red" }}>*</span>
-                                </Typography>
-                                <Input
-                                  style={{
-                                    border: " 1px solid #d9d9d9 ",
-                                    height: " 36px",
-                                    lineHeight: "36px ",
-                                    background: "#fff ",
-                                    fontSize: "13px",
-                                    color: " #000 ",
-                                    fontStyle: "normal",
-                                    borderRadius: "1px",
-                                    padding: " 0 10px ",
-                                  }}
-                                  id="outlined"
-                                  name="firstName"
-                                  placeholder="Enter First Name"
-                                  onBlur={handleBlur}
-                                  error={Boolean(
-                                    errors.firstName && touched.firstName
-                                  )}
-                                  onChange={handleChange}
-                                  value={values.firstName}
-                                />
-                                {errors.firstName && touched.firstName ? (
-                                  <p className="error">{errors.firstName}</p>
-                                ) : (
-                                  <></>
+                          <div className="col-lg-3 col-6 col-md-3 mt-2">
+                            <FormControl className="w-100">
+                              <Typography align="left">
+                                Last Name<span style={{ color: "red" }}>*</span>
+                              </Typography>
+                              <Input
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  height: " 36px",
+                                  lineHeight: "36px ",
+                                  background: "#fff ",
+                                  fontSize: "13px",
+                                  color: " #000 ",
+                                  fontStyle: "normal",
+                                  borderRadius: "1px",
+                                  padding: " 0 10px ",
+                                }}
+                                id="outlined"
+                                name="lastName"
+                                placeholder="Enter Last Name"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(
+                                  touched.lastName && errors.lastName
                                 )}
-                              </FormControl>
-                            </div>
-                            <div className="col-lg-3 col-6 col-md-3 mt-2">
-                              <FormControl className="w-100">
-                                <Typography align="left">
-                                  Last Name
-                                  <span style={{ color: "red" }}>*</span>
-                                </Typography>
-                                <Input
-                                  style={{
-                                    border: " 1px solid #d9d9d9 ",
-                                    height: " 36px",
-                                    lineHeight: "36px ",
-                                    background: "#fff ",
-                                    fontSize: "13px",
-                                    color: " #000 ",
-                                    fontStyle: "normal",
-                                    borderRadius: "1px",
-                                    padding: " 0 10px ",
-                                  }}
-                                  id="outlined"
-                                  name="lastName"
-                                  placeholder="Enter Last Name"
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  error={Boolean(
-                                    touched.lastName && errors.lastName
-                                  )}
-                                  value={values.lastName}
-                                />
+                                value={values.lastName}
+                              />
 
-                                {errors.lastName && touched.lastName ? (
-                                  <p className="error">{errors.lastName}</p>
-                                ) : (
-                                  <></>
+                              {errors.lastName && touched.lastName ? <p className="error">{errors.lastName}</p> : <></>}
+                            </FormControl>
+                          </div>
+                          {userType==="DC" && (<>
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
+                            <FormControl className="w-100">
+                              <Typography align="left">
+                                Country Of Citizenship
+                                <span style={{ color: "red" }}>*</span>
+                              </Typography>
+
+                              <select
+                                style={{
+                                  padding: " 0 10px",
+                                  color: "#121112",  
+                                  fontStyle: "italic",
+                                  height: "36px",
+                                }}
+                                name="countryOfCitizenshipId"
+                                id="countryOfCitizenshipId"
+                                onChange={(e) => {
+                                  handleChange(e);
+                                }}
+                                onBlur={handleBlur}
+                                // error={Boolean(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
+                                value={values.countryOfCitizenshipId}
+                              >
+                                <option value="">---select---</option>
+                                <option value={257}>United Kingdom</option>
+                                <option value={258}>United States</option>
+                                <option value={500}>---</option>
+                                {getCountriesReducer.allCountriesData?.map(
+                                  (ele: any) => (
+                                    <option key={ele?.id} value={ele?.id}>
+                                      {ele?.name}
+                                    </option>
+                                  )
                                 )}
-                              </FormControl>
-                            </div>
-                            <div className="col-lg-3 col-6 col-md-3 mt-2">
-                              <FormControl className="w-100">
-                                <Typography align="left">
-                                  Country Of Citizenship
-                                  <span style={{ color: "red" }}>*</span>
-                                </Typography>
+                              </select>
+                              {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ? <p className="error">{errors.countryOfCitizenshipId}</p> : <></>}
 
-                                <select
-                                  style={{
-                                    padding: " 0 10px",
-                                    color: "#121112",
-                                    fontStyle: "italic",
-                                    height: "36px",
-                                  }}
-                                  name="countryOfCitizenshipId"
-                                  id="countryOfCitizenshipId"
-                                  onChange={(e) => {
-                                    handleChange(e);
-                                  }}
-                                  onBlur={handleBlur}
-                                  // error={Boolean(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
-                                  value={values.countryOfCitizenshipId}
-                                >
-                                  <option value="">---select---</option>
-                                  <option value={257}>United Kingdom</option>
-                                  <option value={258}>United States</option>
-                                  <option value={500}>---</option>
-                                  {getCountriesReducer.allCountriesData?.map(
-                                    (ele: any) => (
-                                      <option key={ele?.id} value={ele?.id}>
-                                        {ele?.name}
-                                      </option>
-                                    )
-                                  )}
-                                </select>
-                                {errors.countryOfCitizenshipId &&
-                                touched.countryOfCitizenshipId ? (
-                                  <p className="error">
-                                    {errors.countryOfCitizenshipId}
-                                  </p>
-                                ) : (
-                                  <></>
+                            </FormControl>
+                          </div>
+                          </>)}
+                          
+                          <div className="col-lg-3 col-6 col-md-3 mt-2">
+                            <FormControl className="w-100">
+                              <Typography align="left">
+                                Date of Birth
+                                <span style={{ color: "red" }}>*</span>
+                              </Typography>
+                              <DatePicker
+                                className="dateclass"
+                                onBlur={handleBlur}
+                                name="dob"
+                                onChange={(date) => {
+                                  onChange(date);
+                                  setFieldValue("dob", date);
+                                }}
+                                maxDate={moment().toDate()}
+                                value={value}
+                                clearIcon={null}
+                                format="MM-dd-yy"
+                                dayPlaceholder="DD"
+                                monthPlaceholder="MM"
+                                yearPlaceholder="YYYY"
+                              />
+                              {errors.dob && touched.dob ? (<p className="error">{errors.dob}</p>) : ""}
+
+                            </FormControl>
+                          </div>
+                          <div className="col-lg-3 col-6 col-md-3 mt-2">
+                            <FormControl className="w-100">
+                              <Typography align="left">
+                                Country Of Birth
+                                <span style={{ color: "red" }}>*</span>
+                              </Typography>
+
+                              <select
+                                style={{
+                                  padding: " 0 10px",
+                                  color: "#121112",
+                                  fontStyle: "italic",
+                                  height: "36px",
+                                }}
+                                name="countryOfBirthId"
+                                id="countryOfBirthId"
+                                onChange={(e) => {
+                                  handleChange(e);
+                                }}
+                                onBlur={handleBlur}
+                                // error={Number(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
+                                value={values.countryOfBirthId}
+                              >
+                                <option value="">---select---</option>
+                                <option value={257}>United Kingdom</option>
+                                <option value={258}>United States</option>
+                                <option value={500}>---</option>
+                                {getCountriesReducer.allCountriesData?.map(
+                                  (ele: any) => (
+                                    <option key={ele?.id} value={ele?.id}>
+                                      {ele?.name}
+                                    </option>
+                                  )
                                 )}
-                              </FormControl>
-                            </div>
-                            <div className="col-lg-3 col-6 col-md-3 mt-2">
-                              <FormControl className="w-100">
-                                <Typography align="left">
-                                  Date of Birth
-                                  <span style={{ color: "red" }}>*</span>
-                                </Typography>
-                                <DatePicker
-                                  className="dateclass"
-                                  onBlur={handleBlur}
-                                  name="dob"
-                                  onChange={(date) => {
-                                    onChange(date);
-                                    setFieldValue("dob", date);
-                                  }}
-                                  maxDate={moment().toDate()}
-                                  value={value}
-                                  clearIcon={null}
-                                  format="MM-dd-yy"
-                                  dayPlaceholder="DD"
-                                  monthPlaceholder="MM"
-                                  yearPlaceholder="YYYY"
-                                />
-                                {errors.dob && touched.dob ? (
-                                  <p className="error">{errors.dob}</p>
-                                ) : (
-                                  ""
-                                )}
-                              </FormControl>
-                            </div>
-                            <div className="col-lg-3 col-6 col-md-3 mt-2">
-                              <FormControl className="w-100">
-                                <Typography align="left">
-                                  Country Of Birth
-                                  <span style={{ color: "red" }}>*</span>
-                                </Typography>
+                              </select>
 
-                                <select
-                                  style={{
-                                    padding: " 0 10px",
-                                    color: "#121112",
-                                    fontStyle: "italic",
-                                    height: "36px",
-                                  }}
-                                  name="countryOfBirthId"
-                                  id="countryOfBirthId"
-                                  onChange={(e) => {
-                                    handleChange(e);
-                                  }}
-                                  onBlur={handleBlur}
-                                  // error={Number(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
-                                  value={values.countryOfBirthId}
-                                >
-                                  <option value="">---select---</option>
-                                  <option value={257}>United Kingdom</option>
-                                  <option value={258}>United States</option>
-                                  <option value={500}>---</option>
-                                  {getCountriesReducer.allCountriesData?.map(
-                                    (ele: any) => (
-                                      <option key={ele?.id} value={ele?.id}>
-                                        {ele?.name}
-                                      </option>
-                                    )
-                                  )}
-                                </select>
-
-                                {/* <select
+                              {/* <select
                     style={{
                         padding: " 0 10px",
                         color: "#7e7e7e",
@@ -1791,22 +1680,184 @@ export default function IndividualUs() {
                         )
                     )}
                 </select> */}
-                                {/* {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ?<p className="error">{errors.countryOfCitizenshipId}</p>:<></>} */}
-                                {errors.countryOfBirthId &&
-                                touched.countryOfBirthId ? (
-                                  <p className="error">
-                                    {errors.countryOfBirthId}
-                                  </p>
-                                ) : (
-                                  <></>
-                                )}
+                              {/* {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ?<p className="error">{errors.countryOfCitizenshipId}</p>:<></>} */}
+                              {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
+                              {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
+                                    <p className="error">{errors?.countryOfBirthId}</p>
+                                  )}
+                            </FormControl>
+                          </div>
+                          <div className="col-lg-3 col-6 col-md-3 mt-2">
+                            <FormControl className="w-100">
+                              <Typography align="left">
+                                Town/City of Birth<span style={{ color: "red" }}>*</span>
+                              </Typography>
+                              <Input
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  height: " 36px",
+                                  lineHeight: "36px ",
+                                  background: "#fff ",
+                                  fontSize: "13px",
+                                  color: " #000 ",
+                                  fontStyle: "normal",
+                                  borderRadius: "1px",
+                                  padding: " 0 10px ",
+                                }}
+                                id="outlined"
+                                name="cityOfBirth"
+                                placeholder="Enter Town/City of Birth"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(touched?.cityOfBirth && errors?.cityOfBirth)}
+
+                                value={values?.cityOfBirth}
+
+                              />
+                              {/* {(errors?.cityOfBirth && touched?.cityOfBirth) ? <p className="error">{errors?.cityOfBirth}</p> : <></>} */}
+                              {errors?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
+                                    <p className="error">{errors?.cityOfBirth}</p>
+                                  )}
+                            </FormControl>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          {/* <> {console.log("1123", errors)}</> */}
+                          <div className="row">
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
+                              <FormControl className="w-100">
+                                <Typography align="left">
+                                  First Name<span style={{ color: "red" }}>*</span>
+                                </Typography>
+                                <Input
+                                  style={{
+                                    border: " 1px solid #d9d9d9 ",
+                                    height: " 36px",
+                                    lineHeight: "36px ",
+                                    background: "#fff ",
+                                    fontSize: "13px",
+                                    color: " #000 ",
+                                    fontStyle: "normal",
+                                    borderRadius: "1px",
+                                    padding: " 0 10px ",
+                                  }}
+                                  id="outlined"
+                                  name="firstName"
+                                  placeholder="Enter First Name"
+                                  onBlur={handleBlur}
+                                  error={Boolean(errors.firstName && touched.firstName)}
+                                  onChange={handleChange}
+                                  value={values.firstName}
+
+                                />
+                                {errors.firstName && touched.firstName ? <p className="error">{errors.firstName}</p> : <></>}
+
                               </FormControl>
                             </div>
                             <div className="col-lg-3 col-6 col-md-3 mt-2">
                               <FormControl className="w-100">
                                 <Typography align="left">
-                                  Town/City of Birth
+                                  Last Name<span style={{ color: "red" }}>*</span>
+                                </Typography>
+                                <Input
+                                  style={{
+                                    border: " 1px solid #d9d9d9 ",
+                                    height: " 36px",
+                                    lineHeight: "36px ",
+                                    background: "#fff ",
+                                    fontSize: "13px",
+                                    color: " #000 ",
+                                    fontStyle: "normal",
+                                    borderRadius: "1px",
+                                    padding: " 0 10px ",
+                                  }}
+                                  id="outlined"
+                                  name="lastName"
+                                  placeholder="Enter Last Name"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  error={Boolean(
+                                    touched.lastName && errors.lastName
+                                  )}
+                                  value={values.lastName}
+                                />
+                                {errors.lastName && touched.lastName ? <p className="error">{errors.lastName}</p> : <></>}
+
+                              </FormControl>
+                            </div>
+
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
+                              <FormControl className="w-100">
+                                <Typography align="left">
+                                  Date of Birth
                                   <span style={{ color: "red" }}>*</span>
+                                </Typography>
+                                <DatePicker
+                                  className="dateclass"
+                                  name="dob"
+                                  onBlur={handleBlur}
+                                  onChange={(date) => {
+                                    onChange(date);
+                                    setFieldValue("dob", date);
+                                  }}
+                                  maxDate={moment().toDate()}
+                                  value={value}
+                                  clearIcon={null}
+                                  format="MM-dd-yy"
+                                  dayPlaceholder="DD"
+                                  monthPlaceholder="MM"
+                                  yearPlaceholder="YYYY"
+                                />
+
+                                {errors.dob && touched.dob ? (<p className="error">{errors.dob}</p>) : ""}
+                              </FormControl>
+                            </div>
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
+                              <FormControl className="w-100">
+                                <Typography align="left">
+                                  Country Of Birth
+                                  <span style={{ color: "red" }}>*</span>
+                                </Typography>
+
+                                <select
+                                  style={{
+                                    padding: " 0 10px",
+                                    color: "#121112",
+                                    fontStyle: "italic",
+                                    height: "36px",
+                                  }}
+                                  name="countryOfBirthId"
+                                  id="countryOfBirthId"
+                                  onChange={(e) => {
+                                    handleChange(e); //condition
+                                  }}
+                                  onBlur={handleBlur}
+
+                                  value={values.countryOfBirthId}
+                                >
+                                  <option value="">---select---</option>
+                                  <option value={257}>United Kingdom</option>
+                                  <option value={258}>United States</option>
+                                  <option value={500}>---</option>
+                                  {getCountriesReducer.allCountriesData?.map(
+                                    (ele: any) => (
+                                      <option key={ele?.id} value={ele?.id}>
+                                        {ele?.name}
+                                      </option>
+                                    )
+                                  )}
+                                </select>
+                                {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
+                                    <p className="error">{errors?.countryOfBirthId}</p>
+                                  )}
+                                {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
+                              </FormControl>
+                            </div>
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
+                              <FormControl className="w-100">
+                                <Typography align="left">
+                                  Town/City of Birth<span style={{ color: "red" }}>*</span>
                                 </Typography>
                                 <Input
                                   style={{
@@ -1825,214 +1876,25 @@ export default function IndividualUs() {
                                   placeholder="Enter Town/City of Birth"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
-                                  error={Boolean(
-                                    touched?.cityOfBirth && errors?.cityOfBirth
-                                  )}
+                                  error={Boolean(errors?.cityOfBirth && touched?.cityOfBirth)}
+
                                   value={values?.cityOfBirth}
+
                                 />
-                                {errors?.cityOfBirth && touched?.cityOfBirth ? (
-                                  <p className="error">{errors?.cityOfBirth}</p>
-                                ) : (
-                                  <></>
-                                )}
+                                {errors?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
+                                    <p className="error">{errors?.cityOfBirth}</p>
+                                  )}
+                                {/* {errors.cityOfBirth && touched.cityOfBirth ? <p className="error">{errors.cityOfBirth}</p> : <></>} */}
+
                               </FormControl>
                             </div>
                           </div>
-                        ) : (
-                          <>
-                            <> {console.log("1123", errors)}</>
-                            <div className="row">
-                              <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                <FormControl className="w-100">
-                                  <Typography align="left">
-                                    First Name
-                                    <span style={{ color: "red" }}>*</span>
-                                  </Typography>
-                                  <Input
-                                    style={{
-                                      border: " 1px solid #d9d9d9 ",
-                                      height: " 36px",
-                                      lineHeight: "36px ",
-                                      background: "#fff ",
-                                      fontSize: "13px",
-                                      color: " #000 ",
-                                      fontStyle: "normal",
-                                      borderRadius: "1px",
-                                      padding: " 0 10px ",
-                                    }}
-                                    id="outlined"
-                                    name="firstName"
-                                    placeholder="Enter First Name"
-                                    onBlur={handleBlur}
-                                    error={Boolean(
-                                      errors.firstName && touched.firstName
-                                    )}
-                                    onChange={handleChange}
-                                    value={values.firstName}
-                                  />
-                                  {errors.firstName && touched.firstName ? (
-                                    <p className="error">{errors.firstName}</p>
-                                  ) : (
-                                    <></>
-                                  )}
-                                </FormControl>
-                              </div>
-                              <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                <FormControl className="w-100">
-                                  <Typography align="left">
-                                    Last Name
-                                    <span style={{ color: "red" }}>*</span>
-                                  </Typography>
-                                  <Input
-                                    style={{
-                                      border: " 1px solid #d9d9d9 ",
-                                      height: " 36px",
-                                      lineHeight: "36px ",
-                                      background: "#fff ",
-                                      fontSize: "13px",
-                                      color: " #000 ",
-                                      fontStyle: "normal",
-                                      borderRadius: "1px",
-                                      padding: " 0 10px ",
-                                    }}
-                                    id="outlined"
-                                    name="lastName"
-                                    placeholder="Enter Last Name"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(
-                                      touched.lastName && errors.lastName
-                                    )}
-                                    value={values.lastName}
-                                  />
-                                  {errors.lastName && touched.lastName ? (
-                                    <p className="error">{errors.lastName}</p>
-                                  ) : (
-                                    <></>
-                                  )}
-                                </FormControl>
-                              </div>
+                        </>
+                      )}
 
-                              <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                <FormControl className="w-100">
-                                  <Typography align="left">
-                                    Date of Birth
-                                    <span style={{ color: "red" }}>*</span>
-                                  </Typography>
-                                  <DatePicker
-                                    className="dateclass"
-                                    name="dob"
-                                    onBlur={handleBlur}
-                                    onChange={(date) => {
-                                      onChange(date);
-                                      setFieldValue("dob", date);
-                                    }}
-                                    maxDate={moment().toDate()}
-                                    value={value}
-                                    clearIcon={null}
-                                    format="MM-dd-yy"
-                                    dayPlaceholder="DD"
-                                    monthPlaceholder="MM"
-                                    yearPlaceholder="YYYY"
-                                  />
+                    </Collapse>
 
-                                  {errors.dob && touched.dob ? (
-                                    <p className="error">{errors.dob}</p>
-                                  ) : (
-                                    ""
-                                  )}
-                                </FormControl>
-                              </div>
-                              <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                <FormControl className="w-100">
-                                  <Typography align="left">
-                                    Country Of Birth
-                                    <span style={{ color: "red" }}>*</span>
-                                  </Typography>
-
-                                  <select
-                                    style={{
-                                      padding: " 0 10px",
-                                      color: "#121112",
-                                      fontStyle: "italic",
-                                      height: "36px",
-                                    }}
-                                    name="countryOfBirthId"
-                                    id="countryOfBirthId"
-                                    onChange={(e) => {
-                                      handleChange(e); //condition
-                                    }}
-                                    onBlur={handleBlur}
-                                    value={values.countryOfBirthId}
-                                  >
-                                    <option value="">---select---</option>
-                                    <option value={257}>United Kingdom</option>
-                                    <option value={258}>United States</option>
-                                    <option value={500}>---</option>
-                                    {getCountriesReducer.allCountriesData?.map(
-                                      (ele: any) => (
-                                        <option key={ele?.id} value={ele?.id}>
-                                          {ele?.name}
-                                        </option>
-                                      )
-                                    )}
-                                  </select>
-
-                                  {errors.countryOfBirthId &&
-                                  touched.countryOfBirthId ? (
-                                    <p className="error">
-                                      {errors.countryOfBirthId}
-                                    </p>
-                                  ) : (
-                                    <></>
-                                  )}
-                                </FormControl>
-                              </div>
-                              <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                <FormControl className="w-100">
-                                  <Typography align="left">
-                                    Town/City of Birth
-                                    <span style={{ color: "red" }}>*</span>
-                                  </Typography>
-                                  <Input
-                                    style={{
-                                      border: " 1px solid #d9d9d9 ",
-                                      height: " 36px",
-                                      lineHeight: "36px ",
-                                      background: "#fff ",
-                                      fontSize: "13px",
-                                      color: " #000 ",
-                                      fontStyle: "normal",
-                                      borderRadius: "1px",
-                                      padding: " 0 10px ",
-                                    }}
-                                    id="outlined"
-                                    name="cityOfBirth"
-                                    placeholder="Enter Town/City of Birth"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(
-                                      errors?.cityOfBirth &&
-                                        touched?.cityOfBirth
-                                    )}
-                                    value={values?.cityOfBirth}
-                                  />
-
-                                  {errors.cityOfBirth && touched.cityOfBirth ? (
-                                    <p className="error">
-                                      {errors.cityOfBirth}
-                                    </p>
-                                  ) : (
-                                    <></>
-                                  )}
-                                </FormControl>
-                              </div>
-                            </div>
-                          </>
-                        )}
-                      </Collapse>
-                    </>
-                  ) : (
+                  </>) :
                     <Collapse
                       className="px-5 mx-2"
                       in={open === "basics"}
@@ -2051,9 +1913,7 @@ export default function IndividualUs() {
                             </Typography>
 
                             <div className="d-flex">
-                              <FormControl
-                                error={Boolean(errors.isUSIndividual)}
-                              >
+                              <FormControl error={Boolean(errors.isUSIndividual)}>
                                 <RadioGroup
                                   id="isUSIndividual"
                                   row
@@ -2154,30 +2014,23 @@ export default function IndividualUs() {
                               onChange={handleChange}
                               onKeyUp={(e: any) => onNumberChange(e, values)}
                               onBlur={(e: any) => onUidBlur(e, values)}
-                              error={Boolean(
-                                errors.uniqueIdentifier &&
-                                  touched.uniqueIdentifier
-                              )}
+                              error={Boolean(errors.uniqueIdentifier && touched.uniqueIdentifier)}
                               value={values.uniqueIdentifier}
-                              // inputProps={{maxLength :agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat.length}}
+                            // inputProps={{maxLength :agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat.length}}
                             />
-                            {errors.uniqueIdentifier &&
-                            touched.uniqueIdentifier ? (
-                              <p className="error">{errors.uniqueIdentifier}</p>
-                            ) : (
-                              <></>
-                            )}
+                            {errors.uniqueIdentifier && touched.uniqueIdentifier ? <p className="error">{errors.uniqueIdentifier}</p> : <></>}
+
                           </div>
                         </div>
                       </FormControl>
+
 
                       {values.isUSIndividual === "no" ? (
                         <div className="row">
                           <div className="col-lg-3 col-6 col-md-3 mt-2">
                             <FormControl className="w-100">
                               <Typography align="left">
-                                First Name
-                                <span style={{ color: "red" }}>*</span>
+                                First Name<span style={{ color: "red" }}>*</span>
                               </Typography>
                               <Input
                                 style={{
@@ -2195,17 +2048,13 @@ export default function IndividualUs() {
                                 name="firstName"
                                 placeholder="Enter First Name"
                                 // onBlur={handleBlur}
-                                error={Boolean(
-                                  errors.firstName && touched.firstName
-                                )}
+                                error={Boolean(errors.firstName && touched.firstName)}
                                 onChange={handleChange}
                                 value={values.firstName}
+
                               />
-                              {errors.firstName && touched.firstName ? (
-                                <p className="error">{errors.firstName}</p>
-                              ) : (
-                                <></>
-                              )}
+                              {errors.firstName && touched.firstName ? <p className="error">{errors.firstName}</p> : <></>}
+
                             </FormControl>
                           </div>
                           <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -2235,11 +2084,8 @@ export default function IndividualUs() {
                                 )}
                                 value={values.lastName}
                               />
-                              {errors.lastName && touched.lastName ? (
-                                <p className="error">{errors.lastName}</p>
-                              ) : (
-                                <></>
-                              )}
+                              {errors.lastName && touched.lastName ? <p className="error">{errors.lastName}</p> : <></>}
+
                             </FormControl>
                           </div>
                           <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -2277,14 +2123,8 @@ export default function IndividualUs() {
                                   )
                                 )}
                               </select>
-                              {errors.countryOfCitizenshipId &&
-                              touched.countryOfCitizenshipId ? (
-                                <p className="error">
-                                  {errors.countryOfCitizenshipId}
-                                </p>
-                              ) : (
-                                <></>
-                              )}
+                              {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ? <p className="error">{errors.countryOfCitizenshipId}</p> : <></>}
+
                             </FormControl>
                           </div>
                           <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -2312,11 +2152,8 @@ export default function IndividualUs() {
                                 monthPlaceholder="MM"
                                 yearPlaceholder="YYYY"
                               />
-                              {errors.dob && touched.dob ? (
-                                <p className="error">{errors.dob}</p>
-                              ) : (
-                                <></>
-                              )}
+                              {errors.dob && touched.dob ? <p className="error">{errors.dob}</p> : <></>}
+
                             </FormControl>
                           </div>
                         </div>
@@ -2325,8 +2162,7 @@ export default function IndividualUs() {
                           <div className="col-lg-3 col-6 col-md-3 mt-2">
                             <FormControl className="w-100">
                               <Typography align="left">
-                                First Name
-                                <span style={{ color: "red" }}>*</span>
+                                First Name<span style={{ color: "red" }}>*</span>
                               </Typography>
                               <Input
                                 style={{
@@ -2350,11 +2186,8 @@ export default function IndividualUs() {
                                 onChange={handleChange}
                                 value={values.firstName}
                               />
-                              {errors.firstName && touched.firstName ? (
-                                <p className="error">{errors.firstName}</p>
-                              ) : (
-                                <></>
-                              )}
+                              {errors.firstName && touched.firstName ? <p className="error">{errors.firstName}</p> : <></>}
+
                             </FormControl>
                           </div>
                           <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -2384,17 +2217,17 @@ export default function IndividualUs() {
                                 )}
                                 value={values.lastName}
                               />
-                              {errors.lastName && touched.lastName ? (
-                                <p className="error">{errors.lastName}</p>
-                              ) : (
-                                <></>
-                              )}
+                              {errors.lastName && touched.lastName ? <p className="error">{errors.lastName}</p> : <></>}
+
                             </FormControl>
                           </div>
                         </div>
                       )}
+
                     </Collapse>
-                  )}
+                  }
+
+
 
                   <hr className="w-100"></hr>
                   {/* Tax Identifier Section */}
@@ -2427,10 +2260,13 @@ export default function IndividualUs() {
                                     Taxpayer information
                                   </Typography>
                                   <a
+
+
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setToolInfo("tin");
                                     }}
+
                                   >
                                     <Typography
                                       style={{
@@ -2449,6 +2285,7 @@ export default function IndividualUs() {
                               <Info
                                 onClick={(e) => {
                                   e.stopPropagation();
+
                                 }}
                                 style={{
                                   color: "#ffc107",
@@ -2460,11 +2297,8 @@ export default function IndividualUs() {
                             </Tooltip>
                           </div>
                           <p className="error mb-0">
-                            {(errors?.taxpayerIdTypeID &&
-                              touched?.taxpayerIdTypeID) ||
-                            (errors?.usTin && touched?.usTin) ||
-                            (errors?.vatId && touched?.vatId) ||
-                            (errors?.vat && touched?.vat)
+                            {errors?.taxpayerIdTypeID && touched?.taxpayerIdTypeID || errors?.usTin && touched?.usTin ||
+                              errors?.vatId && touched?.vatId || errors?.vat && touched?.vat
                               ? "Mandatory Information Required"
                               : ""}
                           </p>
@@ -2597,13 +2431,9 @@ export default function IndividualUs() {
                           </Typography>
 
                           <Link
+
                             underline="none"
-                            style={{
-                              marginTop: "10px",
-                              fontSize: "16px",
-                              cursor: "pointer",
-                              color: "#0000C7",
-                            }}
+                            style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" ,color: "#0000C7"}}
                             onClick={() => {
                               setToolInfo("");
                             }}
@@ -2616,7 +2446,7 @@ export default function IndividualUs() {
                       ""
                     )}
 
-                    {userType === "DC" ? (
+                    {userType === "DC" || userType==="SC" ? (
                       <Collapse
                         className="px-5 mx-2"
                         in={open === "tax"}
@@ -2625,13 +2455,11 @@ export default function IndividualUs() {
                       >
                         {values.isUSIndividual === "no" ? (
                           <div className="col-6">
+
                             <div className="row d-flex mt-3">
                               <div className="col-lg-6 col-12 col-md-3 ">
                                 <FormControl className="w-100">
-                                  <Typography
-                                    align="left"
-                                    className="d-flex w-100"
-                                  >
+                                  <Typography align="left" className="d-flex w-100">
                                     U.S. TIN Type
                                     <span
                                       style={{
@@ -2672,7 +2500,8 @@ export default function IndividualUs() {
                                     }}
                                     value={values.taxpayerIdTypeID}
                                   >
-                                    <>{console.log(ustinValue, "")}</>
+
+                                    {/* <>{console.log(ustinValue, "")}</> */}
                                     <option value={0}>---select---</option>
 
                                     {notUsIndividual?.map((ele: any) => (
@@ -2682,6 +2511,7 @@ export default function IndividualUs() {
                                       //   values?.isUSIndividual == "Yes" ?
                                       // (
                                       <option
+
                                         key={ele?.taxpayerIdTypeID}
                                         value={ele?.taxpayerIdTypeID}
                                       >
@@ -2692,24 +2522,14 @@ export default function IndividualUs() {
                                       // );
                                     ))}
                                   </select>
-                                  {errors.taxpayerIdTypeID &&
-                                  touched.taxpayerIdTypeID ? (
-                                    <p className="error">
-                                      {errors.taxpayerIdTypeID}
-                                    </p>
-                                  ) : (
-                                    <></>
-                                  )}
+                                  {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ? <p className="error">{errors.taxpayerIdTypeID}</p> : <></>}
                                   {/* <p className="error">{errors.taxpayerIdTypeID}</p> */}
                                 </FormControl>
                               </div>
 
                               <div className="col-lg-6 col-6 col-md-3">
-                                <FormControl className="w-100">
-                                  <Typography
-                                    className="d-flex w-100"
-                                    align="left"
-                                  >
+                                <FormControl className="w-100" >
+                                  <Typography className="d-flex w-100" align="left">
                                     U.S. TIN
                                     <span
                                       style={{
@@ -2745,25 +2565,18 @@ export default function IndividualUs() {
                                     onChange={handleChange}
                                     inputProps={{ maxLength: 11 }}
                                     onBlur={handleBlur}
-                                    error={Boolean(
-                                      touched.usTin && errors.usTin
-                                    )}
+                                    error={Boolean(touched.usTin && errors.usTin)}
                                     value={values.usTin}
                                   />
-                                  {errors.usTin && touched.usTin ? (
-                                    <p className="error">{errors.usTin}</p>
-                                  ) : (
-                                    <></>
-                                  )}
+                                  {errors.usTin && touched.usTin ? <p className="error">{errors.usTin}</p> : <></>}
+
                                 </FormControl>
                               </div>
 
-                              <div className="col-lg-6 col-6 col-md-3 ">
+                              <>
+                                <div className="col-lg-6 col-6 col-md-3 ">
                                 <FormControl className="w-100">
-                                  <Typography
-                                    align="left"
-                                    className="d-flex w-100"
-                                  >
+                                  <Typography align="left" className="d-flex w-100">
                                     Foreign TIN Country
                                     {/* <span style={{ color: 'red' }}>*</span> */}
                                   </Typography>
@@ -2785,13 +2598,14 @@ export default function IndividualUs() {
                                     <option value={0}>---select---</option>
                                     <option value={257}>United Kingdom</option>
                                     <option value={500}>---</option>
-                                    {getCountriesReducer.allCountriesData?.map(
-                                      (ele: any) => (
-                                        <option key={ele?.id} value={ele?.id}>
-                                          {ele?.name}
-                                        </option>
-                                      )
-                                    )}
+                                    {
+                                      getCountriesReducer.allCountriesData?.map(
+                                        (ele: any) => (
+                                          <option key={ele?.id} value={ele?.id}>
+                                            {ele?.name}
+                                          </option>
+                                        )
+                                      )}
                                   </select>
                                 </FormControl>
                               </div>
@@ -2915,17 +2729,14 @@ export default function IndividualUs() {
                               </div> */}
                                 <div className="d-flex">
                                   <Typography
-                                    style={{
-                                      fontSize: "13px",
-                                      marginTop: "10px",
-                                    }}
+                                    style={{ fontSize: "13px", marginTop: "10px" }}
                                   >
                                     Not Available{" "}
                                   </Typography>
                                   <FormControl
                                     error={Boolean(
                                       touched.foreignTINNotAvailable &&
-                                        errors.foreignTINNotAvailable
+                                      errors.foreignTINNotAvailable
                                     )}
                                   >
                                     <Checkbox
@@ -2945,7 +2756,7 @@ export default function IndividualUs() {
                                     />
 
                                     {errors.foreignTINNotAvailable &&
-                                    touched.foreignTINNotAvailable ? (
+                                      touched.foreignTINNotAvailable ? (
                                       <div>
                                         <Typography color="error">
                                           {errors.foreignTINNotAvailable}
@@ -2956,17 +2767,14 @@ export default function IndividualUs() {
                                     )}
                                   </FormControl>
                                   <Typography
-                                    style={{
-                                      fontSize: "13px",
-                                      marginTop: "10px",
-                                    }}
+                                    style={{ fontSize: "13px", marginTop: "10px" }}
                                   >
                                     Alternative TIN Format
                                   </Typography>
                                   <FormControl
                                     error={Boolean(
                                       touched.alternativeTINFormat &&
-                                        errors.alternativeTINFormat
+                                      errors.alternativeTINFormat
                                     )}
                                   >
                                     <Checkbox
@@ -2992,7 +2800,7 @@ export default function IndividualUs() {
                                     />
 
                                     {errors.alternativeTINFormat &&
-                                    touched.alternativeTINFormat ? (
+                                      touched.alternativeTINFormat ? (
                                       <div>
                                         <Typography color="error">
                                           {errors.alternativeTINFormat}
@@ -3004,18 +2812,21 @@ export default function IndividualUs() {
                                   </FormControl>
                                 </div>
                               </div>
+                              </>
+                              
+
+                              
+
                             </div>
                           </div>
+
                         ) : (
                           <div className="col-12 d-flex">
                             <div className="col-lg-3 col-6 col-md-3 ">
                               <Typography align="left" className="d-flex w-100">
                                 U.S. TIN Type
                                 <span
-                                  style={{
-                                    color: "red",
-                                    verticalAlign: "super",
-                                  }}
+                                  style={{ color: "red", verticalAlign: "super" }}
                                 >
                                   *
                                 </span>
@@ -3066,24 +2877,15 @@ export default function IndividualUs() {
                                     // );
                                   ))}
                                 </select>
-                                {errors.taxpayerIdTypeID &&
-                                touched.taxpayerIdTypeID ? (
-                                  <p className="error">
-                                    {errors.taxpayerIdTypeID}
-                                  </p>
-                                ) : (
-                                  <></>
-                                )}
+                                {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ? <p className="error">{errors.taxpayerIdTypeID}</p> : <></>}
+
                               </FormControl>
                             </div>
                             <div className="col-lg-3 col-6 col-md-3 mx-2">
                               <Typography align="left" className="d-flex w-100">
                                 U.S. TIN{" "}
                                 <span
-                                  style={{
-                                    color: "red",
-                                    verticalAlign: "super",
-                                  }}
+                                  style={{ color: "red", verticalAlign: "super" }}
                                 >
                                   *
                                 </span>
@@ -3118,263 +2920,241 @@ export default function IndividualUs() {
                                   error={Boolean(touched.usTin && errors.usTin)}
                                   value={values.usTin}
                                 />
-                                {errors.usTin && touched.usTin ? (
-                                  <p className="error">{errors.usTin}</p>
-                                ) : (
-                                  <></>
-                                )}
+                                {errors.usTin && touched.usTin ? <p className="error">{errors.usTin}</p> : <></>}
+
                               </FormControl>
                             </div>
                           </div>
                         )}
-                      </Collapse>
-                    ) : (
-                      <>
-                        <Collapse
-                          className="px-5 mx-2"
-                          in={open === "tax"}
-                          timeout="auto"
-                          unmountOnExit
-                        >
-                          {values.isUSIndividual === "no" ? (
-                            <div className="row d-flex mt-3">
-                              <div className="col-lg-3 col-6 col-md-3 ">
-                                <FormControl className="w-100">
-                                  <Typography
-                                    align="left"
-                                    className="d-flex w-100"
+
+                      </Collapse>) : <>
+                      <Collapse
+                        className="px-5 mx-2"
+                        in={open === "tax"}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        {values.isUSIndividual === "no" ? (
+                          <div className="row d-flex mt-3">
+                            <div className="col-lg-3 col-6 col-md-3 ">
+                              <FormControl className="w-100">
+                                <Typography align="left" className="d-flex w-100">
+                                  U.S. TIN Type
+                                  <span
+                                    style={{
+                                      color: "red",
+                                      verticalAlign: "super",
+                                    }}
                                   >
-                                    U.S. TIN Type
-                                    <span
-                                      style={{
-                                        color: "red",
-                                        verticalAlign: "super",
-                                      }}
+                                    *
+                                  </span>
+                                </Typography>
+                                <select
+                                  style={{
+                                    padding: " 0 10px",
+                                    color: "#121112",
+                                    fontStyle: "italic",
+                                    height: "36px",
+                                  }}
+                                  name="taxpayerIdTypeID"
+                                  id="Income"
+                                  defaultValue={0}
+                                  onBlur={handleBlur}
+                                  onChange={(e: any) => {
+                                    handleChange(e);
+
+                                    var nm = getTaxPayerName(e.target.value);
+
+                                    setFieldValue("taxpayerIdTypeName", nm);
+
+                                    if (
+                                      e.target.value == 0 ||
+                                      e.target.value == 1 ||
+                                      e.target.value == 3 ||
+                                      e.target.value == 4 ||
+                                      e.target.value == 7 ||
+                                      e.target.value == 8
+                                    )
+                                      setFieldValue("usTin", "");
+                                  }}
+                                  value={values.taxpayerIdTypeID}
+                                >
+
+                                  {/* <>{console.log(ustinValue, "")}</> */}
+                                  <option value={0}>---select---</option>
+
+                                  {notUsIndividual?.map((ele: any) => (
+                                    // ele?.nonUSIndividual &&
+                                    //   values?.isUSIndividual == "no" ||
+                                    // ele?.usIndividual &&
+                                    //   values?.isUSIndividual == "Yes" ?
+                                    // (
+                                    <option
+
+                                      key={ele?.taxpayerIdTypeID}
+                                      value={ele?.taxpayerIdTypeID}
                                     >
-                                      *
-                                    </span>
-                                  </Typography>
-                                  <select
+                                      {ele?.taxpayerIdTypeName}
+                                    </option>
+                                    // ) : (
+                                    //   ""
+                                    // );
+                                  ))}
+                                </select>
+                                {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ? <p className="error">{errors.taxpayerIdTypeID}</p> : <></>}
+                              </FormControl>
+                            </div>
+
+                            <div className="col-lg-3 col-6 col-md-3">
+                              <FormControl className="w-100" >
+                                <Typography className="d-flex w-100" align="left">
+                                  U.S. TIN
+                                  <span
                                     style={{
-                                      padding: " 0 10px",
-                                      color: "#121112",
-                                      fontStyle: "italic",
-                                      height: "36px",
+                                      color: "red",
+                                      verticalAlign: "super",
                                     }}
-                                    name="taxpayerIdTypeID"
-                                    id="Income"
-                                    defaultValue={0}
-                                    onBlur={handleBlur}
-                                    onChange={(e: any) => {
-                                      handleChange(e);
-
-                                      var nm = getTaxPayerName(e.target.value);
-
-                                      setFieldValue("taxpayerIdTypeName", nm);
-
-                                      if (
-                                        e.target.value == 0 ||
-                                        e.target.value == 1 ||
-                                        e.target.value == 3 ||
-                                        e.target.value == 4 ||
-                                        e.target.value == 7 ||
-                                        e.target.value == 8
-                                      )
-                                        setFieldValue("usTin", "");
-                                    }}
-                                    value={values.taxpayerIdTypeID}
                                   >
-                                    <>{console.log(ustinValue, "")}</>
-                                    <option value={0}>---select---</option>
+                                    *
+                                  </span>
+                                </Typography>
+                                <Input
+                                  disabled={
+                                    values.taxpayerIdTypeID == 8 ||
+                                    values.taxpayerIdTypeID == 7 ||
+                                    values.taxpayerIdTypeID == 1 ||
+                                    values.taxpayerIdTypeID == 0
+                                  }
+                                  style={{
+                                    border: " 1px solid #d9d9d9 ",
+                                    height: " 36px",
+                                    lineHeight: "36px ",
+                                    background: "#fff ",
+                                    fontSize: "13px",
+                                    color: " #000 ",
+                                    fontStyle: "normal",
+                                    borderRadius: "1px",
+                                    padding: " 0 10px ",
+                                  }}
+                                  id="outlined"
+                                  name="usTin"
+                                  placeholder="Enter U.S. TIN"
+                                  onKeyDown={(e: any) => formatTin(e, values)}
+                                  onChange={handleChange}
+                                  inputProps={{ maxLength: 11 }}
+                                  onBlur={handleBlur}
+                                  error={Boolean(touched.usTin && errors.usTin)}
+                                  value={values.usTin}
+                                />
+                                {errors.usTin && touched.usTin ? <p className="error">{errors.usTin}</p> : <></>}
 
-                                    {notUsIndividual?.map((ele: any) => (
-                                      // ele?.nonUSIndividual &&
-                                      //   values?.isUSIndividual == "no" ||
-                                      // ele?.usIndividual &&
-                                      //   values?.isUSIndividual == "Yes" ?
-                                      // (
-                                      <option
-                                        key={ele?.taxpayerIdTypeID}
-                                        value={ele?.taxpayerIdTypeID}
-                                      >
-                                        {ele?.taxpayerIdTypeName}
-                                      </option>
-                                      // ) : (
-                                      //   ""
-                                      // );
-                                    ))}
-                                  </select>
-                                  {errors.taxpayerIdTypeID &&
-                                  touched.taxpayerIdTypeID ? (
-                                    <p className="error">
-                                      {errors.taxpayerIdTypeID}
-                                    </p>
-                                  ) : (
-                                    <></>
-                                  )}
-                                </FormControl>
-                              </div>
+                              </FormControl>
+                            </div>
 
-                              <div className="col-lg-3 col-6 col-md-3">
-                                <FormControl className="w-100">
-                                  <Typography
-                                    className="d-flex w-100"
-                                    align="left"
-                                  >
-                                    U.S. TIN
-                                    <span
-                                      style={{
-                                        color: "red",
-                                        verticalAlign: "super",
-                                      }}
-                                    >
-                                      *
-                                    </span>
-                                  </Typography>
-                                  <Input
-                                    disabled={
-                                      values.taxpayerIdTypeID == 8 ||
-                                      values.taxpayerIdTypeID == 7 ||
-                                      values.taxpayerIdTypeID == 1 ||
-                                      values.taxpayerIdTypeID == 0
-                                    }
-                                    style={{
-                                      border: " 1px solid #d9d9d9 ",
-                                      height: " 36px",
-                                      lineHeight: "36px ",
-                                      background: "#fff ",
-                                      fontSize: "13px",
-                                      color: " #000 ",
-                                      fontStyle: "normal",
-                                      borderRadius: "1px",
-                                      padding: " 0 10px ",
-                                    }}
-                                    id="outlined"
-                                    name="usTin"
-                                    placeholder="Enter U.S. TIN"
-                                    onKeyDown={(e: any) => formatTin(e, values)}
-                                    onChange={handleChange}
-                                    inputProps={{ maxLength: 11 }}
-                                    onBlur={handleBlur}
-                                    error={Boolean(
-                                      touched.usTin && errors.usTin
-                                    )}
-                                    value={values.usTin}
-                                  />
-                                  {errors.usTin && touched.usTin ? (
-                                    <p className="error">{errors.usTin}</p>
-                                  ) : (
-                                    <></>
-                                  )}
-                                </FormControl>
-                              </div>
-
-                              <div className="col-lg-3 col-6 col-md-3 ">
-                                <FormControl className="w-100">
-                                  <Typography
-                                    align="left"
-                                    className="d-flex w-100"
-                                  >
-                                    Foreign TIN Country
-                                    {/* <span style={{ color: 'red' }}>*</span> */}
-                                  </Typography>
-                                  <select
-                                    style={{
-                                      padding: " 0 10px",
-                                      color: "#121112",
-                                      fontStyle: "italic",
-                                      height: "36px",
-                                    }}
-                                    name="foreignTINCountryId"
-                                    id="Income"
-                                    defaultValue={0}
-                                    onChange={(e) => {
-                                      handleChange(e);
-                                    }}
-                                    value={values.foreignTINCountryId}
-                                  >
-                                    <option value={0}>---select---</option>
-                                    <option value={257}>United Kingdom</option>
-                                    <option value={500}>---</option>
-                                    {getCountriesReducer.allCountriesData?.map(
+                            <div className="col-lg-3 col-6 col-md-3 ">
+                              <FormControl className="w-100">
+                                <Typography align="left" className="d-flex w-100">
+                                  Foreign TIN Country
+                                  {/* <span style={{ color: 'red' }}>*</span> */}
+                                </Typography>
+                                <select
+                                  style={{
+                                    padding: " 0 10px",
+                                    color: "#121112",
+                                    fontStyle: "italic",
+                                    height: "36px",
+                                  }}
+                                  name="foreignTINCountryId"
+                                  id="Income"
+                                  defaultValue={0}
+                                  onChange={(e) => {
+                                    handleChange(e);
+                                  }}
+                                  value={values.foreignTINCountryId}
+                                >
+                                  <option value={0}>---select---</option>
+                                  <option value={257}>United Kingdom</option>
+                                  <option value={500}>---</option>
+                                  {
+                                    getCountriesReducer.allCountriesData?.map(
                                       (ele: any) => (
                                         <option key={ele?.id} value={ele?.id}>
                                           {ele?.name}
                                         </option>
                                       )
                                     )}
-                                  </select>
-                                </FormControl>
-                              </div>
+                                </select>
+                              </FormControl>
+                            </div>
 
-                              <div className="col-lg-3 col-6 col-md-3">
-                                <FormControl className="w-100">
-                                  <Typography align="left">
-                                    Foreign TIN
-                                    {values.foreignTINCountryId == 1 ? (
-                                      <span>
-                                        {" "}
-                                        <Tooltip
-                                          style={{
-                                            backgroundColor: "black",
-                                            color: "white",
-                                          }}
-                                          title={
-                                            <>
-                                              <a
-                                                onClick={() =>
-                                                  setToolInfo("ForeignTin")
-                                                }
-                                              ></a>
-                                            </>
+                            <div className="col-lg-3 col-6 col-md-3">
+                              <FormControl className="w-100">
+                                <Typography align="left">
+                                  Foreign TIN
+                                  {values.foreignTINCountryId == 1 ? (
+                                    <span>
+                                      {" "}
+                                      <Tooltip
+                                        style={{
+                                          backgroundColor: "black",
+                                          color: "white",
+                                        }}
+                                        title={
+                                          <>
+                                            <a
+                                              onClick={() =>
+                                                setToolInfo("ForeignTin")
+                                              }
+                                            ></a>
+                                          </>
+                                        }
+                                      >
+                                        <Info
+                                          onClick={() =>
+                                            setToolInfo("ForeignTin")
                                           }
-                                        >
-                                          <Info
-                                            onClick={() =>
-                                              setToolInfo("ForeignTin")
-                                            }
-                                            style={{
-                                              color: "#ffc107",
-                                              fontSize: "15px",
-                                              verticalAlign: "super",
-                                              marginLeft: "5px",
-                                              cursor: "pointer",
-                                            }}
-                                          />
-                                        </Tooltip>
-                                      </span>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </Typography>
+                                          style={{
+                                            color: "#ffc107",
+                                            fontSize: "15px",
+                                            verticalAlign: "super",
+                                            marginLeft: "5px",
+                                            cursor: "pointer",
+                                          }}
+                                        />
+                                      </Tooltip>
+                                    </span>
+                                  ) : (
+                                    ""
+                                  )}
+                                </Typography>
 
-                                  <Input
-                                    disabled={
-                                      values.foreignTINCountryId == 0 ||
-                                      (values.foreignTINCountryId != 0 &&
-                                        values.foreignTINNotAvailable == true)
-                                    }
-                                    style={{
-                                      border: " 1px solid #d9d9d9 ",
-                                      height: " 36px",
-                                      lineHeight: "36px ",
-                                      background: "#fff ",
-                                      fontSize: "13px",
-                                      color: " #000 ",
-                                      fontStyle: "normal",
-                                      borderRadius: "1px",
-                                      padding: " 0 10px ",
-                                    }}
-                                    id="outlined"
-                                    name="foreignTIN"
-                                    placeholder="Enter foreign TIN"
-                                    onChange={handleChange}
-                                    // onKeyDown={(e) => formatTin(e, values)}
-                                    inputProps={{ maxLength: 11 }}
-                                    value={values.foreignTIN}
-                                  />
-                                </FormControl>
-                                {/* <div className="d-flex">
+                                <Input
+                                  disabled={
+                                    values.foreignTINCountryId == 0 ||
+                                    (values.foreignTINCountryId != 0 &&
+                                      values.foreignTINNotAvailable == true)
+                                  }
+                                  style={{
+                                    border: " 1px solid #d9d9d9 ",
+                                    height: " 36px",
+                                    lineHeight: "36px ",
+                                    background: "#fff ",
+                                    fontSize: "13px",
+                                    color: " #000 ",
+                                    fontStyle: "normal",
+                                    borderRadius: "1px",
+                                    padding: " 0 10px ",
+                                  }}
+                                  id="outlined"
+                                  name="foreignTIN"
+                                  placeholder="Enter foreign TIN"
+                                  onChange={handleChange}
+                                  // onKeyDown={(e) => formatTin(e, values)}
+                                  inputProps={{ maxLength: 11 }}
+                                  value={values.foreignTIN}
+                                />
+                              </FormControl>
+                              {/* <div className="d-flex">
                               
                               <Typography
                                 style={{ fontSize: "13px", marginTop: "10px" }}
@@ -3424,327 +3204,285 @@ export default function IndividualUs() {
                                 inputProps={{ "aria-label": "Yes" }}
                               />
                             </div> */}
-                                <div className="d-flex">
-                                  <Typography
-                                    style={{
-                                      fontSize: "13px",
-                                      marginTop: "10px",
-                                    }}
-                                  >
-                                    Not Available{" "}
-                                  </Typography>
-                                  <FormControl
-                                    error={Boolean(
-                                      touched.foreignTINNotAvailable &&
-                                        errors.foreignTINNotAvailable
-                                    )}
-                                  >
-                                    <Checkbox
-                                      id="foreignTINNotAvailable"
-                                      aria-labelledby="demo-row-radio-buttons-group-label"
-                                      value={values.foreignTINNotAvailable}
-                                      checked={values.foreignTINNotAvailable}
-                                      disabled={values.foreignTINCountryId == 0}
-                                      onChange={(e) => {
-                                        handleChange(e);
-                                        if (e.target.value)
-                                          setFieldValue(
-                                            "alternativeTINFormat",
-                                            false
-                                          );
-                                      }}
-                                    />
-
-                                    {errors.foreignTINNotAvailable &&
-                                    touched.foreignTINNotAvailable ? (
-                                      <div>
-                                        <Typography color="error">
-                                          {errors.foreignTINNotAvailable}
-                                        </Typography>
-                                      </div>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </FormControl>
-                                  <Typography
-                                    style={{
-                                      fontSize: "13px",
-                                      marginTop: "10px",
-                                    }}
-                                  >
-                                    Alternative TIN Format
-                                  </Typography>
-                                  <FormControl
-                                    error={Boolean(
-                                      touched.alternativeTINFormat &&
-                                        errors.alternativeTINFormat
-                                    )}
-                                  >
-                                    <Checkbox
-                                      id="alternativeTINFormat"
-                                      aria-labelledby="demo-row-radio-buttons-group-label"
-                                      value={values.alternativeTINFormat}
-                                      // disabled={
-                                      //   values.foreignTINCountryId == 0 ||
-                                      //   values.foreignTINCountryId != 257
-                                      // }
-
-                                      checked={values.alternativeTINFormat}
-                                      disabled={values.foreignTINCountryId == 0}
-                                      onChange={(e) => {
-                                        handleChange(e);
-                                        if (e.target.value)
-                                          setFieldValue(
-                                            "foreignTINNotAvailable",
-                                            false
-                                          );
-                                        // if(e.target.value) setFieldValue('alternativeTINFormat',!values.alternativeTINFormat)
-                                      }}
-                                    />
-
-                                    {errors.alternativeTINFormat &&
-                                    touched.alternativeTINFormat ? (
-                                      <div>
-                                        <Typography color="error">
-                                          {errors.alternativeTINFormat}
-                                        </Typography>
-                                      </div>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </FormControl>
-                                </div>
-                              </div>
-                              <div className="col-12">
-                                <div className="row">
-                                  <div className="col-lg-3 col-6 col-md-3 ">
-                                    <Typography
-                                      align="left"
-                                      className="d-flex w-100"
-                                    >
-                                      Value Added Tax Number (VAT)
-                                      <span style={{ color: "red" }}>*</span>
-                                    </Typography>
-
-                                    <FormControl className="w-100">
-                                      <select
-                                        style={{
-                                          padding: " 0 10px",
-                                          color: "#121112",
-                                          fontStyle: "italic",
-                                          height: "36px",
-                                        }}
-                                        name="vatId"
-                                        onBlur={handleBlur}
-                                        defaultValue={0}
-                                        onChange={(e: any) => {
-                                          handleChange(e);
-
-                                          if (
-                                            e.target.value == 2 ||
-                                            e.target.value == 0
-                                          )
-                                            setFieldValue("vat", "");
-                                          if (e.target.value == 1)
-                                            setFieldValue("vat", vatdata);
-                                        }}
-                                        value={values.vatId}
-                                      >
-                                        <option value={0}>---select---</option>
-                                        <option value={1}>
-                                          My VAT Number is
-                                        </option>
-                                        <option value={2}>
-                                          I Do Not Have A VAT Number
-                                        </option>
-                                      </select>
-
-                                      {errors.vatId && touched.vatId ? (
-                                        <p className="error">{errors.vatId}</p>
-                                      ) : (
-                                        <></>
-                                      )}
-                                    </FormControl>
-                                  </div>
-
-                                  <div className="col-lg-3 col-6 col-md-3 ">
-                                    <FormControl className="w-100">
-                                      <Typography align="left">
-                                        Value Added Tax Number (VAT)
-                                        {/* <span style={{ color: 'red' }}>*</span> */}
-                                      </Typography>
-                                      <Input
-                                        disabled={
-                                          values.vatId == 0 || values.vatId == 2
-                                        }
-                                        style={{
-                                          border: " 1px solid #d9d9d9 ",
-                                          height: " 36px",
-                                          lineHeight: "36px ",
-                                          background: "#fff ",
-                                          fontSize: "13px",
-                                          color: " #000 ",
-                                          fontStyle: "normal",
-                                          borderRadius: "1px",
-                                          padding: " 0 10px ",
-                                        }}
-                                        id="outlined"
-                                        name="vat"
-                                        placeholder="Enter Value Added Tax Number"
-                                        // onKeyDown={formatTin}
-                                        onChange={(e: any) => {
-                                          handleChange(e);
-                                          setVatData(e.target.value);
-                                        }}
-                                        // inputProps={{ maxLength: 9 }}
-                                        onBlur={handleBlur}
-                                        error={Boolean(
-                                          touched.vat && errors.vat
-                                        )}
-                                        value={values.vat}
-                                      />
-                                      {errors.vat && touched.vat ? (
-                                        <p className="error">{errors.vat}</p>
-                                      ) : (
-                                        <></>
-                                      )}
-                                    </FormControl>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="col-12 d-flex">
-                              <div className="col-lg-3 col-6 col-md-3 ">
+                              <div className="d-flex">
                                 <Typography
-                                  align="left"
-                                  className="d-flex w-100"
+                                  style={{ fontSize: "13px", marginTop: "10px" }}
                                 >
-                                  U.S. TIN Type
-                                  <span
-                                    style={{
-                                      color: "red",
-                                      verticalAlign: "super",
-                                    }}
-                                  >
-                                    *
-                                  </span>
+                                  Not Available{" "}
                                 </Typography>
-
-                                <FormControl className="w-100">
-                                  <select
-                                    style={{
-                                      padding: " 0 10px",
-                                      color: "#121112",
-                                      fontStyle: "italic",
-                                      height: "36px",
-                                    }}
-                                    name="taxpayerIdTypeID"
-                                    id="Income"
-                                    onBlur={handleBlur}
-                                    defaultValue={3}
-                                    onChange={(e: any) => {
+                                <FormControl
+                                  error={Boolean(
+                                    touched.foreignTINNotAvailable &&
+                                    errors.foreignTINNotAvailable
+                                  )}
+                                >
+                                  <Checkbox
+                                    id="foreignTINNotAvailable"
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    value={values.foreignTINNotAvailable}
+                                    checked={values.foreignTINNotAvailable}
+                                    disabled={values.foreignTINCountryId == 0}
+                                    onChange={(e) => {
                                       handleChange(e);
-
-                                      if (
-                                        e.target.value == 0 ||
-                                        e.target.value == 1 ||
-                                        e.target.value == 3 ||
-                                        e.target.value == 7 ||
-                                        e.target.value == 8
-                                      )
-                                        setFieldValue("usTin", "");
+                                      if (e.target.value)
+                                        setFieldValue(
+                                          "alternativeTINFormat",
+                                          false
+                                        );
                                     }}
-                                    value={values.taxpayerIdTypeID}
-                                  >
-                                    <option value="0">---select---</option>
+                                  />
 
-                                    {ustinValue?.map((ele: any) => (
-                                      // ele?.nonUSIndividual &&
-                                      //   values?.isUSIndividual == "no" ||
-                                      // ele?.usIndividual &&
-                                      //   values?.isUSIndividual == "Yes" ?
-                                      // (
-                                      <option
-                                        key={ele?.taxpayerIdTypeID}
-                                        value={ele?.taxpayerIdTypeID}
-                                      >
-                                        {ele?.taxpayerIdTypeName}
-                                      </option>
-                                      // ) : (
-                                      //   ""
-                                      // );
-                                    ))}
-                                  </select>
-                                  {errors.taxpayerIdTypeID &&
-                                  touched.taxpayerIdTypeID ? (
-                                    <p className="error">
-                                      {errors.taxpayerIdTypeID}
-                                    </p>
+                                  {errors.foreignTINNotAvailable &&
+                                    touched.foreignTINNotAvailable ? (
+                                    <div>
+                                      <Typography color="error">
+                                        {errors.foreignTINNotAvailable}
+                                      </Typography>
+                                    </div>
                                   ) : (
-                                    <></>
+                                    ""
                                   )}
                                 </FormControl>
-                              </div>
-                              <div className="col-lg-3 col-6 col-md-3 mx-2">
                                 <Typography
-                                  align="left"
-                                  className="d-flex w-100"
+                                  style={{ fontSize: "13px", marginTop: "10px" }}
                                 >
-                                  U.S. TIN{" "}
-                                  <span
-                                    style={{
-                                      color: "red",
-                                      verticalAlign: "super",
-                                    }}
-                                  >
-                                    *
-                                  </span>
+                                  Alternative TIN Format
                                 </Typography>
-                                <FormControl className="w-100">
-                                  <Input
-                                    disabled={
-                                      // values.taxpayerIdTypeID == 3 ||
-                                      values.taxpayerIdTypeID == 1 ||
-                                      values.taxpayerIdTypeID == 7 ||
-                                      values.taxpayerIdTypeID == 8 ||
-                                      values.taxpayerIdTypeID == 0
-                                    }
-                                    style={{
-                                      border: " 1px solid #d9d9d9 ",
-                                      height: " 36px",
-                                      lineHeight: "36px ",
-                                      background: "#fff ",
-                                      fontSize: "13px",
-                                      color: " #000 ",
-                                      fontStyle: "normal",
-                                      borderRadius: "1px",
-                                      padding: " 0 10px ",
+                                <FormControl
+                                  error={Boolean(
+                                    touched.alternativeTINFormat &&
+                                    errors.alternativeTINFormat
+                                  )}
+                                >
+                                  <Checkbox
+                                    id="alternativeTINFormat"
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    value={values.alternativeTINFormat}
+                                    // disabled={
+                                    //   values.foreignTINCountryId == 0 ||
+                                    //   values.foreignTINCountryId != 257
+                                    // }
+
+                                    checked={values.alternativeTINFormat}
+                                    disabled={values.foreignTINCountryId == 0}
+                                    onChange={(e) => {
+                                      handleChange(e);
+                                      if (e.target.value)
+                                        setFieldValue(
+                                          "foreignTINNotAvailable",
+                                          false
+                                        );
+                                      // if(e.target.value) setFieldValue('alternativeTINFormat',!values.alternativeTINFormat)
                                     }}
-                                    id="outlined"
-                                    name="usTin"
-                                    placeholder="Enter U.S. TIN"
-                                    onKeyDown={(e: any) => formatTin(e, values)}
-                                    onChange={handleChange}
-                                    inputProps={{ maxLength: 11 }}
-                                    onBlur={handleBlur}
-                                    error={Boolean(
-                                      touched.usTin && errors.usTin
-                                    )}
-                                    value={values.usTin}
                                   />
-                                  {errors.usTin && touched.usTin ? (
-                                    <p className="error">{errors.usTin}</p>
+
+                                  {errors.alternativeTINFormat &&
+                                    touched.alternativeTINFormat ? (
+                                    <div>
+                                      <Typography color="error">
+                                        {errors.alternativeTINFormat}
+                                      </Typography>
+                                    </div>
                                   ) : (
-                                    <></>
+                                    ""
                                   )}
                                 </FormControl>
                               </div>
                             </div>
-                          )}
-                        </Collapse>
-                      </>
-                    )}
+                            <div className="col-12">
+                              <div className="row">
+                                <div className="col-lg-3 col-6 col-md-3 ">
+                                  <Typography
+                                    align="left"
+                                    className="d-flex w-100"
+                                  >
+                                    Value Added Tax Number (VAT)
+                                    <span style={{ color: "red" }}>*</span>
+                                  </Typography>
+
+                                  <FormControl className="w-100">
+                                    <select
+                                      style={{
+                                        padding: " 0 10px",
+                                        color: "#121112",
+                                        fontStyle: "italic",
+                                        height: "36px",
+                                      }}
+                                      name="vatId"
+                                      onBlur={handleBlur}
+                                      defaultValue={0}
+                                      onChange={(e: any) => {
+                                        handleChange(e);
+
+                                        if (
+                                          e.target.value == 2 ||
+                                          e.target.value == 0
+                                        )
+                                          setFieldValue("vat", "");
+                                        if (e.target.value == 1)
+                                          setFieldValue("vat", vatdata);
+                                      }}
+                                      value={values.vatId}
+                                    >
+                                      <option value={0}>---select---</option>
+                                      <option value={1}>My VAT Number is</option>
+                                      <option value={2}>
+                                        I Do Not Have A VAT Number
+                                      </option>
+                                    </select>
+
+                                    {errors.vatId && touched.vatId ? <p className="error">{errors.vatId}</p> : <></>}
+                                  </FormControl>
+                                </div>
+
+                                <div className="col-lg-3 col-6 col-md-3 ">
+                                  <FormControl className="w-100">
+                                    <Typography align="left">
+                                      Value Added Tax Number (VAT)
+                                      {/* <span style={{ color: 'red' }}>*</span> */}
+                                    </Typography>
+                                    <Input
+                                      disabled={
+                                        values.vatId == 0 || values.vatId == 2
+                                      }
+                                      style={{
+                                        border: " 1px solid #d9d9d9 ",
+                                        height: " 36px",
+                                        lineHeight: "36px ",
+                                        background: "#fff ",
+                                        fontSize: "13px",
+                                        color: " #000 ",
+                                        fontStyle: "normal",
+                                        borderRadius: "1px",
+                                        padding: " 0 10px ",
+                                      }}
+                                      id="outlined"
+                                      name="vat"
+                                      placeholder="Enter Value Added Tax Number"
+                                      // onKeyDown={formatTin}
+                                      onChange={(e: any) => {
+                                        handleChange(e);
+                                        setVatData(e.target.value);
+                                      }}
+                                      // inputProps={{ maxLength: 9 }}
+                                      onBlur={handleBlur}
+                                     error={Boolean(touched.vat && errors.vat)}
+                                      value={values.vat}
+                                    />
+                                     {errors.vat && touched.vat ? <p className="error">{errors.vat}</p> : <></>}
+                                  </FormControl>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="col-12 d-flex">
+                            <div className="col-lg-3 col-6 col-md-3 ">
+                              <Typography align="left" className="d-flex w-100">
+                                U.S. TIN Type
+                                <span
+                                  style={{ color: "red", verticalAlign: "super" }}
+                                >
+                                  *
+                                </span>
+                              </Typography>
+
+                              <FormControl className="w-100">
+                                <select
+                                  style={{
+                                    padding: " 0 10px",
+                                    color: "#121112",
+                                    fontStyle: "italic",
+                                    height: "36px",
+                                  }}
+                                  name="taxpayerIdTypeID"
+                                  id="Income"
+                                  onBlur={handleBlur}
+                                  defaultValue={3}
+                                  onChange={(e: any) => {
+                                    handleChange(e);
+
+                                    if (
+                                      e.target.value == 0 ||
+                                      e.target.value == 1 ||
+                                      e.target.value == 3 ||
+                                      e.target.value == 7 ||
+                                      e.target.value == 8
+                                    )
+                                      setFieldValue("usTin", "");
+                                  }}
+                                  value={values.taxpayerIdTypeID}
+                                >
+                                  <option value="0">---select---</option>
+
+                                  {ustinValue?.map((ele: any) => (
+                                    // ele?.nonUSIndividual &&
+                                    //   values?.isUSIndividual == "no" ||
+                                    // ele?.usIndividual &&
+                                    //   values?.isUSIndividual == "Yes" ?
+                                    // (
+                                    <option
+                                      key={ele?.taxpayerIdTypeID}
+                                      value={ele?.taxpayerIdTypeID}
+                                    >
+                                      {ele?.taxpayerIdTypeName}
+                                    </option>
+                                    // ) : (
+                                    //   ""
+                                    // );
+                                  ))}
+                                </select>
+                                {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ? <p className="error">{errors.taxpayerIdTypeID}</p> : <></>}
+
+                              </FormControl>
+                            </div>
+                            <div className="col-lg-3 col-6 col-md-3 mx-2">
+                              <Typography align="left" className="d-flex w-100">
+                                U.S. TIN{" "}
+                                <span
+                                  style={{ color: "red", verticalAlign: "super" }}
+                                >
+                                  *
+                                </span>
+                              </Typography>
+                              <FormControl className="w-100">
+                                <Input
+                                  disabled={
+                                    // values.taxpayerIdTypeID == 3 ||
+                                    values.taxpayerIdTypeID == 1 ||
+                                    values.taxpayerIdTypeID == 7 ||
+                                    values.taxpayerIdTypeID == 8 ||
+                                    values.taxpayerIdTypeID == 0
+                                  }
+                                  style={{
+                                    border: " 1px solid #d9d9d9 ",
+                                    height: " 36px",
+                                    lineHeight: "36px ",
+                                    background: "#fff ",
+                                    fontSize: "13px",
+                                    color: " #000 ",
+                                    fontStyle: "normal",
+                                    borderRadius: "1px",
+                                    padding: " 0 10px ",
+                                  }}
+                                  id="outlined"
+                                  name="usTin"
+                                  placeholder="Enter U.S. TIN"
+                                  onKeyDown={(e: any) => formatTin(e, values)}
+                                  onChange={handleChange}
+                                  inputProps={{ maxLength: 11 }}
+                                  onBlur={handleBlur}
+                                  error={Boolean(touched.usTin && errors.usTin)}
+                                  value={values.usTin}
+                                />
+                                {errors.usTin && touched.usTin ? <p className="error">{errors.usTin}</p> : <></>}
+
+                              </FormControl>
+                            </div>
+                          </div>
+                        )}
+                      </Collapse>
+                    </>}
                     <hr className="w-100"></hr>
 
                     <CardHeader
@@ -3775,11 +3513,14 @@ export default function IndividualUs() {
                                     Address Details
                                   </Typography>
                                   <a
+
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setToolInfo("Address");
                                     }}
+
                                   >
+
                                     <Typography
                                       style={{
                                         cursor: "pointer",
@@ -3797,6 +3538,7 @@ export default function IndividualUs() {
                               <Info
                                 onClick={(e) => {
                                   e.stopPropagation();
+
                                 }}
                                 style={{
                                   color: "#ffc107",
@@ -3808,30 +3550,18 @@ export default function IndividualUs() {
                             </Tooltip>
                           </div>
                           <p className="error mb-0">
-                            {(errors?.permanentResidentialCountryId &&
-                              touched?.permanentResidentialCountryId) ||
-                            (errors?.permanentResidentialStreetNumberandName &&
-                              touched?.permanentResidentialStreetNumberandName) ||
-                            (errors?.permanentResidentialCityorTown &&
-                              touched?.permanentResidentialCityorTown) ||
-                            (errors?.permanentResidentialZipPostalCode &&
-                              touched?.permanentResidentialZipPostalCode) ||
-                            (errors?.isAddressRuralRoute &&
-                              touched?.isAddressRuralRoute) ||
-                            (errors?.isalternativebusinessaddress &&
-                              touched?.isalternativebusinessaddress) ||
-                            (errors?.isAddressPostOfficeBox &&
-                              touched?.isAddressPostOfficeBox) ||
-                            (errors?.isCareOfAddress &&
-                              touched?.isCareOfAddress) ||
-                            (errors?.permanentResidentialCountryId1 &&
-                              touched?.permanentResidentialCountryId1) ||
-                            (errors?.permanentResidentialStreetNumberandName1 &&
-                              touched?.permanentResidentialStreetNumberandName1) ||
-                            (errors?.permanentResidentialCityorTown1 &&
-                              touched?.permanentResidentialCityorTown1) ||
-                            (errors?.permanentResidentialZipPostalCode1 &&
-                              touched?.permanentResidentialZipPostalCode1)
+                            {errors?.permanentResidentialCountryId && touched?.permanentResidentialCountryId ||
+                              errors?.permanentResidentialStreetNumberandName && touched?.permanentResidentialStreetNumberandName ||
+                              errors?.permanentResidentialCityorTown && touched?.permanentResidentialCityorTown ||
+                              errors?.permanentResidentialZipPostalCode && touched?.permanentResidentialZipPostalCode ||
+                              errors?.isAddressRuralRoute && touched?.isAddressRuralRoute ||
+                              errors?.isalternativebusinessaddress && touched?.isalternativebusinessaddress ||
+                              errors?.isAddressPostOfficeBox && touched?.isAddressPostOfficeBox ||
+                              errors?.isCareOfAddress && touched?.isCareOfAddress ||
+                              errors?.permanentResidentialCountryId1 && touched?.permanentResidentialCountryId1 ||
+                              errors?.permanentResidentialStreetNumberandName1 && touched?.permanentResidentialStreetNumberandName1 ||
+                              errors?.permanentResidentialCityorTown1 && touched?.permanentResidentialCityorTown1 ||
+                              errors?.permanentResidentialZipPostalCode1 && touched?.permanentResidentialZipPostalCode1
                               ? "Mandatory Information Required"
                               : ""}
                           </p>
@@ -3885,12 +3615,7 @@ export default function IndividualUs() {
 
                           <Link
                             underline="none"
-                            style={{
-                              marginTop: "10px",
-                              fontSize: "16px",
-                              cursor: "pointer",
-                              color: "#0000C7",
-                            }}
+                            style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7"}}
                             onClick={() => {
                               setToolInfo("");
                             }}
@@ -3929,18 +3654,13 @@ export default function IndividualUs() {
                               onChange={(e) => {
                                 handleChange(e);
                                 // dispatch(getAllStateByCountryId(e.target.value));
-                                setFieldValue(
-                                  "permanentResidentialStateorProvince",
-                                  ""
-                                );
+                                setFieldValue('permanentResidentialStateorProvince', '');
                                 dispatch(
-                                  getAllStateByCountryId1(
-                                    e.target.value,
-                                    (data: []) => {
-                                      setallStateById1(data);
-                                    }
-                                  )
-                                );
+                                  getAllStateByCountryId1(e.target.value, (data: []) => {
+                                    setallStateById1(data);
+                                  }));
+
+
                               }}
                               onBlur={handleBlur}
                               value={values.permanentResidentialCountryId}
@@ -3958,55 +3678,47 @@ export default function IndividualUs() {
                                 )
                               )}
                             </select>
-                            {errors.permanentResidentialCountryId &&
-                            touched.permanentResidentialCountryId ? (
-                              <p className="error">
-                                {errors.permanentResidentialCountryId}
-                              </p>
-                            ) : (
-                              <></>
-                            )}
+                            {errors.permanentResidentialCountryId && touched.permanentResidentialCountryId ? <p className="error">{errors.permanentResidentialCountryId}</p> : <></>}
+
                           </FormControl>
                         </div>
-                        {values.permanentResidentialCountryId == 186 ? (
-                          <div className="col-lg-3 col-6 col-md-3 mx-3">
-                            <FormControl className="w-100">
-                              <Typography align="left">
-                                Other:
-                                <span style={{ color: "red" }}>*</span>
-                              </Typography>
-                              <Input
-                                style={{
-                                  border: " 1px solid #d9d9d9 ",
-                                  height: " 36px",
-                                  lineHeight: "36px ",
-                                  background: "#fff ",
-                                  fontSize: "13px",
-                                  color: " #000 ",
-                                  fontStyle: "normal",
-                                  borderRadius: "1px",
-                                  padding: " 0 10px ",
-                                }}
-                                id="outlined"
-                                name="otherCountry"
-                                placeholder="Enter Other Country Name"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(
-                                  touched.otherCountry && errors.otherCountry
-                                )}
-                                value={values.otherCountry}
-                              />
-                              {errors.otherCountry && touched.otherCountry ? (
-                                <p className="error">{errors.otherCountry}</p>
-                              ) : (
-                                <></>
+                        {values.permanentResidentialCountryId == 186 ? (<div className="col-lg-3 col-6 col-md-3 mx-3">
+                          <FormControl className="w-100">
+                            <Typography align="left">
+                              Other:
+                              <span style={{ color: "red" }}>*</span>
+                            </Typography>
+                            <Input
+                              style={{
+                                border: " 1px solid #d9d9d9 ",
+                                height: " 36px",
+                                lineHeight: "36px ",
+                                background: "#fff ",
+                                fontSize: "13px",
+                                color: " #000 ",
+                                fontStyle: "normal",
+                                borderRadius: "1px",
+                                padding: " 0 10px ",
+                              }}
+                              id="outlined"
+                              name="otherCountry"
+                              placeholder="Enter Other Country Name"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              error={Boolean(
+                                touched.otherCountry &&
+                                errors.otherCountry
                               )}
-                            </FormControl>
-                          </div>
-                        ) : (
-                          ""
-                        )}
+                              value={
+                                values.otherCountry
+                              }
+                            />
+                            {errors.otherCountry && touched.otherCountry ? <p className="error">{errors.otherCountry}</p> : <></>}
+
+                          </FormControl>
+                        </div>) : ""}
+
+
                       </div>
 
                       <div className="row">
@@ -4035,20 +3747,14 @@ export default function IndividualUs() {
                               onBlur={handleBlur}
                               error={Boolean(
                                 touched.permanentResidentialStreetNumberandName &&
-                                  errors.permanentResidentialStreetNumberandName
+                                errors.permanentResidentialStreetNumberandName
                               )}
                               value={
                                 values.permanentResidentialStreetNumberandName
                               }
                             />
-                            {errors.permanentResidentialStreetNumberandName &&
-                            touched.permanentResidentialStreetNumberandName ? (
-                              <p className="error">
-                                {errors.permanentResidentialStreetNumberandName}
-                              </p>
-                            ) : (
-                              <></>
-                            )}
+                            {errors.permanentResidentialStreetNumberandName && touched.permanentResidentialStreetNumberandName ? <p className="error">{errors.permanentResidentialStreetNumberandName}</p> : <></>}
+
                           </FormControl>
                         </div>
                         <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -4073,14 +3779,8 @@ export default function IndividualUs() {
                               value={values.permanentResidentialAptSuite}
                             />
 
-                            {errors.permanentResidentialAptSuite &&
-                            touched.permanentResidentialAptSuite ? (
-                              <p className="error">
-                                {errors.permanentResidentialAptSuite}
-                              </p>
-                            ) : (
-                              <></>
-                            )}
+                            {errors.permanentResidentialAptSuite && touched.permanentResidentialAptSuite ? <p className="error">{errors.permanentResidentialAptSuite}</p> : <></>}
+
                           </FormControl>
                         </div>
                         <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -4108,21 +3808,17 @@ export default function IndividualUs() {
                               onBlur={handleBlur}
                               error={Boolean(
                                 touched.permanentResidentialCityorTown &&
-                                  errors.permanentResidentialCityorTown
+                                errors.permanentResidentialCityorTown
                               )}
                               value={values.permanentResidentialCityorTown}
                             />
-                            {errors.permanentResidentialCityorTown &&
-                            touched.permanentResidentialCityorTown ? (
-                              <p className="error">
-                                {errors.permanentResidentialCityorTown}
-                              </p>
-                            ) : (
-                              <></>
-                            )}
+                            {errors.permanentResidentialCityorTown && touched.permanentResidentialCityorTown ? <p className="error">{errors.permanentResidentialCityorTown}</p> : <></>}
+
                           </FormControl>
                         </div>
-                        {stateList1 && stateList1?.length > 0 ? (
+                        {stateList1 &&
+                          stateList1
+                            ?.length > 0 ? (
                           <div className="col-lg-3 col-6 col-md-3 mt-2">
                             <Typography align="left" className="d-flex w-100 ">
                               State or Province:
@@ -4147,11 +3843,13 @@ export default function IndividualUs() {
                                 <option value="0">
                                   <em>---select---</em>
                                 </option>
-                                {stateList1?.map((ele: any) => (
-                                  <option key={ele?.id} value={ele?.name}>
-                                    {ele?.name}
-                                  </option>
-                                ))}
+                                {stateList1?.map(
+                                  (ele: any) => (
+                                    <option key={ele?.id} value={ele?.name}>
+                                      {ele?.name}
+                                    </option>
+                                  )
+                                )}
                                 {/* <option key={GetStateByCountryIdReducer?.allCountriesStateIdData?.id} value={GetStateByCountryIdReducer?.allCountriesStateIdData?.name}>{GetStateByCountryIdReducer?.allCountriesStateIdData?.name}</option> */}
                                 {/* {getCountriesReducer.allCountriesData?.map((ele:any) => (
                               <option key={ele?.id} value={ele?.id}>{ele?.name}</option>
@@ -4218,18 +3916,12 @@ export default function IndividualUs() {
                               onBlur={handleBlur}
                               error={Boolean(
                                 touched.permanentResidentialZipPostalCode &&
-                                  errors.permanentResidentialZipPostalCode
+                                errors.permanentResidentialZipPostalCode
                               )}
                               value={values.permanentResidentialZipPostalCode}
                             />
-                            {errors.permanentResidentialZipPostalCode &&
-                            touched.permanentResidentialZipPostalCode ? (
-                              <p className="error">
-                                {errors.permanentResidentialZipPostalCode}
-                              </p>
-                            ) : (
-                              <></>
-                            )}
+                            {errors.permanentResidentialZipPostalCode && touched.permanentResidentialZipPostalCode ? <p className="error">{errors.permanentResidentialZipPostalCode}</p> : <></>}
+
                           </FormControl>
                         </div>
                       </div>
@@ -4244,7 +3936,7 @@ export default function IndividualUs() {
                             <FormControl
                               error={Boolean(
                                 touched.isAddressRuralRoute &&
-                                  errors.isAddressRuralRoute
+                                errors.isAddressRuralRoute
                               )}
                             >
                               <RadioGroup
@@ -4268,7 +3960,7 @@ export default function IndividualUs() {
                                 />
                               </RadioGroup>
                               {errors.isAddressRuralRoute &&
-                              touched.isAddressRuralRoute ? (
+                                touched.isAddressRuralRoute ? (
                                 <div>
                                   <Typography color="error">
                                     {errors.isAddressRuralRoute}
@@ -4305,7 +3997,7 @@ export default function IndividualUs() {
                               <FormControl
                                 error={Boolean(
                                   touched.isalternativebusinessaddress &&
-                                    errors.isalternativebusinessaddress
+                                  errors.isalternativebusinessaddress
                                 )}
                               >
                                 <RadioGroup
@@ -4315,6 +4007,7 @@ export default function IndividualUs() {
                                   value={values.isalternativebusinessaddress}
                                   onChange={handleChange}
                                 >
+
                                   <FormControlLabel
                                     control={<Radio />}
                                     value="no"
@@ -4329,7 +4022,7 @@ export default function IndividualUs() {
                                   />
                                 </RadioGroup>
                                 {errors.isalternativebusinessaddress &&
-                                touched.isalternativebusinessaddress ? (
+                                  touched.isalternativebusinessaddress ? (
                                   <div>
                                     <Typography color="error">
                                       {errors.isalternativebusinessaddress}
@@ -4440,164 +4133,167 @@ export default function IndividualUs() {
                               style={{ justifyContent: "between" }}
                             >
                               <>
+                              {userType === "DC" && (
                                 <div className="col-4">
-                                  <Typography
-                                    align="left"
-                                    style={{ marginTop: "20px" }}
-                                  >
-                                    Is this address a PO Box?
-                                    <span style={{ color: "red" }}>*</span>
-                                    <Tooltip
-                                      style={{
-                                        backgroundColor: "black",
-                                        color: "white",
-                                      }}
-                                      title={
-                                        <>
-                                          <Typography color="inherit">
-                                            PO BOX Address
+                                <Typography
+                                  align="left"
+                                  style={{ marginTop: "20px" }}
+                                >
+                                  Is this address a PO Box?
+                                  <span style={{ color: "red" }}>*</span>
+                                  <Tooltip
+                                    style={{
+                                      backgroundColor: "black",
+                                      color: "white",
+                                    }}
+                                    title={
+                                      <>
+                                        <Typography color="inherit">
+                                          PO BOX Address
+                                        </Typography>
+                                        <a onClick={() => setToolInfo("PO")}>
+                                          <Typography
+                                            style={{
+                                              cursor: "pointer",
+                                              textDecorationLine: "underline",
+                                            }}
+                                            align="center"
+                                          >
+                                            {" "}
+                                            View More...
                                           </Typography>
-                                          <a onClick={() => setToolInfo("PO")}>
-                                            <Typography
-                                              style={{
-                                                cursor: "pointer",
-                                                textDecorationLine: "underline",
-                                              }}
-                                              align="center"
-                                            >
-                                              {" "}
-                                              View More...
-                                            </Typography>
-                                          </a>
-                                        </>
-                                      }
+                                        </a>
+                                      </>
+                                    }
+                                  >
+                                    <Info
+                                      style={{
+                                        color: "#ffc107",
+                                        fontSize: "15px",
+                                        marginLeft: "5px",
+                                        cursor: "pointer",
+                                        verticalAlign: "super",
+                                      }}
+                                    />
+                                  </Tooltip>
+                                </Typography>
+                                {toolInfo === "PO" ? (
+                                  <div className="post">
+                                    <Paper
+                                      style={{
+                                        backgroundColor: "#dedcb1",
+                                        padding: "10px",
+                                      }}
                                     >
-                                      <Info
+                                      <Typography>
+                                        A Post Office Box is a mail box
+                                        located at a post office (versus at a
+                                        permanent residence).
+                                      </Typography>
+                                      <Typography
+                                        style={{ marginTop: "10px" }}
+                                      >
+                                        You should not use a P.O. Box or an
+                                        in-care-of-address (other than a
+                                        registered address). If you do, we may
+                                        need to contact you for further
+                                        information to help validate the
+                                        submission.
+                                      </Typography>
+
+                                      <Typography
+                                        style={{ marginTop: "10px" }}
+                                      >
+                                        If you reside in a country that does
+                                        not use street addresses, you may
+                                        enter a descriptive address.
+                                      </Typography>
+
+                                      <Link
+                                        underline="none"
                                         style={{
-                                          color: "#ffc107",
-                                          fontSize: "15px",
-                                          marginLeft: "5px",
+                                          marginTop: "10px",
+                                          fontSize: "16px",
                                           cursor: "pointer",
-                                          verticalAlign: "super",
+                                          color: "#0000C7"
                                         }}
-                                      />
-                                    </Tooltip>
-                                  </Typography>
-                                  {toolInfo === "PO" ? (
-                                    <div className="post">
-                                      <Paper
-                                        style={{
-                                          backgroundColor: "#dedcb1",
-                                          padding: "10px",
+                                        onClick={() => {
+                                          setToolInfo("");
                                         }}
                                       >
-                                        <Typography>
-                                          A Post Office Box is a mail box
-                                          located at a post office (versus at a
-                                          permanent residence).
-                                        </Typography>
-                                        <Typography
-                                          style={{ marginTop: "10px" }}
-                                        >
-                                          You should not use a P.O. Box or an
-                                          in-care-of-address (other than a
-                                          registered address). If you do, we may
-                                          need to contact you for further
-                                          information to help validate the
-                                          submission.
-                                        </Typography>
-
-                                        <Typography
-                                          style={{ marginTop: "10px" }}
-                                        >
-                                          If you reside in a country that does
-                                          not use street addresses, you may
-                                          enter a descriptive address.
-                                        </Typography>
-
-                                        <Link
-                                          underline="none"
-                                          style={{
-                                            marginTop: "10px",
-                                            fontSize: "16px",
-                                            cursor: "pointer",
-                                            color: "#0000C7",
-                                          }}
-                                          onClick={() => {
-                                            setToolInfo("");
-                                          }}
-                                        >
-                                          --Show Less--
-                                        </Link>
-                                      </Paper>
+                                        --Show Less--
+                                      </Link>
+                                    </Paper>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                                <FormControl
+                                  error={Boolean(
+                                    touched.isAddressPostOfficeBox &&
+                                    errors.isAddressPostOfficeBox
+                                  )}
+                                >
+                                  <RadioGroup
+                                    id="isAddressPostOfficeBox"
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    value={values.isAddressPostOfficeBox}
+                                    onChange={handleChange}
+                                  >
+                                    <FormControlLabel
+                                      control={<Radio />}
+                                      value="yes"
+                                      name="isAddressPostOfficeBox"
+                                      label="Yes"
+                                    />
+                                    <FormControlLabel
+                                      control={<Radio />}
+                                      value="no"
+                                      name="isAddressPostOfficeBox"
+                                      label="No"
+                                    />
+                                  </RadioGroup>
+                                  {errors.isAddressPostOfficeBox &&
+                                    touched.isAddressPostOfficeBox ? (
+                                    <div>
+                                      <Typography color="error">
+                                        {errors.isAddressPostOfficeBox}
+                                      </Typography>
                                     </div>
                                   ) : (
                                     ""
                                   )}
-                                  <FormControl
-                                    error={Boolean(
-                                      touched.isAddressPostOfficeBox &&
-                                        errors.isAddressPostOfficeBox
-                                    )}
-                                  >
-                                    <RadioGroup
-                                      id="isAddressPostOfficeBox"
-                                      row
-                                      aria-labelledby="demo-row-radio-buttons-group-label"
-                                      value={values.isAddressPostOfficeBox}
-                                      onChange={handleChange}
-                                    >
-                                      <FormControlLabel
-                                        control={<Radio />}
-                                        value="yes"
-                                        name="isAddressPostOfficeBox"
-                                        label="Yes"
-                                      />
-                                      <FormControlLabel
-                                        control={<Radio />}
-                                        value="no"
-                                        name="isAddressPostOfficeBox"
-                                        label="No"
-                                      />
-                                    </RadioGroup>
-                                    {errors.isAddressPostOfficeBox &&
-                                    touched.isAddressPostOfficeBox ? (
-                                      <div>
-                                        <Typography color="error">
-                                          {errors.isAddressPostOfficeBox}
-                                        </Typography>
-                                      </div>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </FormControl>
-                                  {/* <RadioGroup
-                                row
-                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                name="row-radio-buttons-group"
-                              >
-                                <FormControlLabel
-                                  value={false}
-                                  control={<Radio />}
-                                  label="No"
-                                  checked={!values.isAddressPostOfficeBox}
-                                  onChange={handleChange}
-                                />
-                                <FormControlLabel
-                                  value={true}
-                                  control={<Radio />}
-                                  label="Yes"
-                                  checked={values.isAddressPostOfficeBox}
-                                  onChange={handleChange}
-                                />
-                              </RadioGroup>
-                              <p className="error">
-                                {errors.isAddressPostOfficeBox}
-                              </p> */}
-                                </div>
+                                </FormControl>
+                                {/* <RadioGroup
+                              row
+                              aria-labelledby="demo-row-radio-buttons-group-label"
+                              name="row-radio-buttons-group"
+                            >
+                              <FormControlLabel
+                                value={false}
+                                control={<Radio />}
+                                label="No"
+                                checked={!values.isAddressPostOfficeBox}
+                                onChange={handleChange}
+                              />
+                              <FormControlLabel
+                                value={true}
+                                control={<Radio />}
+                                label="Yes"
+                                checked={values.isAddressPostOfficeBox}
+                                onChange={handleChange}
+                              />
+                            </RadioGroup>
+                            <p className="error">
+                              {errors.isAddressPostOfficeBox}
+                            </p> */}
+                              </div>
+                              )}
+                                
                               </>
-
-                              <div className="col-4">
+                              {userType === "DC" && (
+                                <div className="col-4">
                                 <Typography style={{ marginTop: "20px" }}>
                                   Is this an In Care Of address?
                                   <span style={{ color: "red" }}>*</span>
@@ -4672,9 +4368,7 @@ export default function IndividualUs() {
                                         underline="none"
                                         style={{
                                           marginTop: "10px",
-                                          fontSize: "16px",
-                                          cursor: "pointer",
-                                          color: "#0000C7",
+                                          fontSize: "16px", cursor: "pointer", color: "#0000C7"
                                         }}
                                         onClick={() => {
                                           setToolInfo("");
@@ -4692,7 +4386,7 @@ export default function IndividualUs() {
                                   <FormControl
                                     error={Boolean(
                                       touched.isCareOfAddress &&
-                                        errors.isCareOfAddress
+                                      errors.isCareOfAddress
                                     )}
                                   >
                                     <RadioGroup
@@ -4716,7 +4410,7 @@ export default function IndividualUs() {
                                       />
                                     </RadioGroup>
                                     {errors.isCareOfAddress &&
-                                    touched.isCareOfAddress ? (
+                                      touched.isCareOfAddress ? (
                                       <div>
                                         <Typography color="error">
                                           {errors.isCareOfAddress}
@@ -4751,6 +4445,8 @@ export default function IndividualUs() {
                                 </p> */}
                                 </div>
                               </div>
+                              )}
+                              
                               <div className="col-4">
                                 <Typography style={{ marginTop: "20px" }}>
                                   Is there an alternative mailing or business
@@ -4792,7 +4488,7 @@ export default function IndividualUs() {
                                           cursor: "pointer",
                                           verticalAlign: "super",
                                         }}
-                                        // onClick={clickInfo}
+                                      // onClick={clickInfo}
                                       />
                                     </Tooltip>
                                   </span>
@@ -4822,9 +4518,7 @@ export default function IndividualUs() {
                                         underline="none"
                                         style={{
                                           marginTop: "10px",
-                                          fontSize: "16px",
-                                          cursor: "pointer",
-                                          color: "#0000C7",
+                                          fontSize: "16px", cursor: "pointer" , color: "#0000C7"
                                         }}
                                         onClick={() => {
                                           setToolInfo("");
@@ -4842,7 +4536,7 @@ export default function IndividualUs() {
                                   <FormControl
                                     error={Boolean(
                                       touched.isalternativebusinessaddress &&
-                                        errors.isalternativebusinessaddress
+                                      errors.isalternativebusinessaddress
                                     )}
                                   >
                                     <RadioGroup
@@ -4868,7 +4562,7 @@ export default function IndividualUs() {
                                       />
                                     </RadioGroup>
                                     {errors.isalternativebusinessaddress &&
-                                    touched.isalternativebusinessaddress ? (
+                                      touched.isalternativebusinessaddress ? (
                                       <div>
                                         <Typography color="error">
                                           {errors.isalternativebusinessaddress}
@@ -4932,21 +4626,19 @@ export default function IndividualUs() {
                                 name="permanentResidentialCountryId1"
                                 // id="Income"
                                 defaultValue={0}
+
                                 onChange={(e) => {
                                   handleChange(e);
-                                  setFieldValue(
-                                    "permanentResidentialStateorProvince1",
-                                    ""
-                                  );
+                                  setFieldValue('permanentResidentialStateorProvince1', '');
                                   dispatch(
-                                    getAllStateByCountryId1(
-                                      e.target.value,
-                                      (data: []) => {
-                                        setallStateById2(data);
-                                      }
-                                    )
-                                  );
+                                    getAllStateByCountryId1(e.target.value, (data: []) => {
+                                      setallStateById2(data);
+
+                                    }));
+
+
                                 }}
+
                                 onBlur={handleBlur}
                                 value={values.permanentResidentialCountryId1}
                               >
@@ -4962,14 +4654,8 @@ export default function IndividualUs() {
                                   )
                                 )}
                               </select>
-                              {errors.permanentResidentialCountryId1 &&
-                              touched.permanentResidentialCountryId1 ? (
-                                <p className="error">
-                                  {errors.permanentResidentialCountryId1}
-                                </p>
-                              ) : (
-                                <></>
-                              )}
+                              {errors.permanentResidentialCountryId1 && touched.permanentResidentialCountryId1 ? <p className="error">{errors.permanentResidentialCountryId1}</p> : <></>}
+
                             </FormControl>
                           </div>
                           <div className="row">
@@ -4998,22 +4684,14 @@ export default function IndividualUs() {
                                   onBlur={handleBlur}
                                   error={Boolean(
                                     touched.permanentResidentialStreetNumberandName1 &&
-                                      errors.permanentResidentialStreetNumberandName1
+                                    errors.permanentResidentialStreetNumberandName1
                                   )}
                                   value={
                                     values.permanentResidentialStreetNumberandName1
                                   }
                                 />
-                                {errors.permanentResidentialStreetNumberandName1 &&
-                                touched.permanentResidentialStreetNumberandName1 ? (
-                                  <p className="error">
-                                    {
-                                      errors.permanentResidentialStreetNumberandName1
-                                    }
-                                  </p>
-                                ) : (
-                                  <></>
-                                )}
+                                {errors.permanentResidentialStreetNumberandName1 && touched.permanentResidentialStreetNumberandName1 ? <p className="error">{errors.permanentResidentialStreetNumberandName1}</p> : <></>}
+
                               </FormControl>
                             </div>
                             <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -5064,21 +4742,16 @@ export default function IndividualUs() {
                                   onBlur={handleBlur}
                                   error={Boolean(
                                     touched.permanentResidentialCityorTown1 &&
-                                      errors.permanentResidentialCityorTown1
+                                    errors.permanentResidentialCityorTown1
                                   )}
                                   value={values.permanentResidentialCityorTown1}
                                 />
-                                {errors.permanentResidentialCityorTown1 &&
-                                touched.permanentResidentialCityorTown1 ? (
-                                  <p className="error">
-                                    {errors.permanentResidentialCityorTown1}
-                                  </p>
-                                ) : (
-                                  <></>
-                                )}
+                                {errors.permanentResidentialCityorTown1 && touched.permanentResidentialCityorTown1 ? <p className="error">{errors.permanentResidentialCityorTown1}</p> : <></>}
+
                               </FormControl>
                             </div>
-                            {stateList2 && stateList2.length > 0 ? (
+                            {stateList2 &&
+                              stateList2.length > 0 ? (
                               <div className="col-lg-3 col-6 col-md-3 mt-2">
                                 <Typography
                                   align="left"
@@ -5106,11 +4779,13 @@ export default function IndividualUs() {
                                     <option value="0">
                                       <em>---select---</em>
                                     </option>
-                                    {stateList2?.map((ele: any) => (
-                                      <option key={ele?.id} value={ele?.name}>
-                                        {ele?.name}
-                                      </option>
-                                    ))}
+                                    {stateList2?.map(
+                                      (ele: any) => (
+                                        <option key={ele?.id} value={ele?.name}>
+                                          {ele?.name}
+                                        </option>
+                                      )
+                                    )}
                                   </select>
                                 </FormControl>
                               </div>
@@ -5172,20 +4847,14 @@ export default function IndividualUs() {
                                   onBlur={handleBlur}
                                   error={Boolean(
                                     touched.permanentResidentialZipPostalCode1 &&
-                                      errors.permanentResidentialZipPostalCode1
+                                    errors.permanentResidentialZipPostalCode1
                                   )}
                                   value={
                                     values.permanentResidentialZipPostalCode1
                                   }
                                 />
-                                {errors.permanentResidentialZipPostalCode1 &&
-                                touched.permanentResidentialZipPostalCode1 ? (
-                                  <p className="error">
-                                    {errors.permanentResidentialZipPostalCode1}
-                                  </p>
-                                ) : (
-                                  <></>
-                                )}
+                                {errors.permanentResidentialZipPostalCode1 && touched.permanentResidentialZipPostalCode1 ? <p className="error">{errors.permanentResidentialZipPostalCode1}</p> : <></>}
+
                               </FormControl>
                             </div>
                           </div>
@@ -5225,10 +4894,13 @@ export default function IndividualUs() {
                                     Contact Details
                                   </Typography>
                                   <a
+
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setToolInfo("Contact");
                                     }}
+
+
                                   >
                                     <Typography
                                       style={{
@@ -5247,6 +4919,7 @@ export default function IndividualUs() {
                               <Info
                                 onClick={(e) => {
                                   e.stopPropagation();
+
                                 }}
                                 style={{
                                   color: "#ffc107",
@@ -5258,11 +4931,9 @@ export default function IndividualUs() {
                             </Tooltip>
                           </div>
                           <p className="error mb-0">
-                            {(errors?.contactFirstName &&
-                              touched?.contactFirstName) ||
-                            (errors?.contactLastName &&
-                              touched?.contactLastName) ||
-                            (errors?.contactEmail && touched?.contactEmail)
+                            {errors?.contactFirstName && touched?.contactFirstName ||
+                              errors?.contactLastName && touched?.contactLastName ||
+                              errors?.contactEmail && touched?.contactEmail
                               ? "Mandatory Information Required"
                               : ""}
                           </p>
@@ -5334,12 +5005,7 @@ export default function IndividualUs() {
                           </Typography>
                           <Link
                             underline="none"
-                            style={{
-                              marginTop: "10px",
-                              fontSize: "16px",
-                              cursor: "pointer",
-                              color: "#0000C7",
-                            }}
+                            style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" ,color: "#0000C7"}}
                             onClick={() => {
                               setToolInfo("");
                             }}
@@ -5382,16 +5048,12 @@ export default function IndividualUs() {
                               onBlur={handleBlur}
                               error={Boolean(
                                 touched.contactFirstName &&
-                                  errors.contactFirstName
+                                errors.contactFirstName
                               )}
                               value={values.contactFirstName}
                             />
-                            {errors.contactFirstName &&
-                            touched.contactFirstName ? (
-                              <p className="error">{errors.contactFirstName}</p>
-                            ) : (
-                              <></>
-                            )}
+                            {errors.contactFirstName && touched.contactFirstName ? <p className="error">{errors.contactFirstName}</p> : <></>}
+
                           </FormControl>
                         </div>
                         <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -5418,16 +5080,12 @@ export default function IndividualUs() {
                               onBlur={handleBlur}
                               error={Boolean(
                                 touched.contactLastName &&
-                                  errors.contactLastName
+                                errors.contactLastName
                               )}
                               value={values.contactLastName}
                             />
-                            {errors.contactLastName &&
-                            touched.contactLastName ? (
-                              <p className="error">{errors.contactLastName}</p>
-                            ) : (
-                              <></>
-                            )}
+                            {errors.contactLastName && touched.contactLastName ? <p className="error">{errors.contactLastName}</p> : <></>}
+
                           </FormControl>
                         </div>
                         <FormControl className="w-100">
@@ -5459,11 +5117,8 @@ export default function IndividualUs() {
                                   )}
                                   value={values.contactEmail}
                                 />
-                                {errors.contactEmail && touched.contactEmail ? (
-                                  <p className="error">{errors.contactEmail}</p>
-                                ) : (
-                                  <></>
-                                )}
+                                {errors.contactEmail && touched.contactEmail ? <p className="error">{errors.contactEmail}</p> : <></>}
+
                               </FormControl>
                             </div>
                           </div>
@@ -5680,9 +5335,7 @@ export default function IndividualUs() {
                                     onClick={() => handleOpen("it")}
                                   >
                                     Income Type
-                                    {IncomeMandatory === true ? (
-                                      ""
-                                    ) : (
+                                    {IncomeMandatory === true ? ("") :
                                       <span
                                         style={{
                                           fontSize: "13px",
@@ -5693,7 +5346,7 @@ export default function IndividualUs() {
                                       >
                                         (Optional)
                                       </span>
-                                    )}
+                                    }
                                     <Tooltip
                                       style={{
                                         backgroundColor: "black",
@@ -5705,10 +5358,13 @@ export default function IndividualUs() {
                                             Q&A, Income Type
                                           </Typography>
                                           <a
+
+
                                             onClick={(e) => {
                                               e.stopPropagation();
                                               setToolInfo("income");
                                             }}
+
                                           >
                                             <Typography
                                               style={{
@@ -5727,6 +5383,7 @@ export default function IndividualUs() {
                                       <Info
                                         onClick={(e) => {
                                           e.stopPropagation();
+
                                         }}
                                         style={{
                                           color: "#ffc107",
@@ -5737,13 +5394,10 @@ export default function IndividualUs() {
                                       />
                                     </Tooltip>
                                   </div>
-                                  {touched.incomeTypeId &&
-                                  incomeErrors.length > 0 &&
-                                  IncomeMandatory === true ? (
-                                    <p className="error mb-0">
-                                      Mandatory Information Required
-                                    </p>
-                                  ) : null}
+                                  {touched.incomeTypeId && incomeErrors.length > 0 && IncomeMandatory === true ?
+                                    <p className="error mb-0">Mandatory Information Required</p>
+                                    : null
+                                  }
                                 </div>
                               }
                               action={
@@ -5771,29 +5425,23 @@ export default function IndividualUs() {
                                   }}
                                 >
                                   <Typography>
-                                    Income type or code is requested as part of
-                                    the tax form completion process for purposes
-                                    of calculating withholding rates, where
-                                    applicable, and to further determine how you
-                                    should be reported on. You should select the
-                                    type of code that best defines the payments
-                                    that you expect to receive. Income Types,
-                                    associated with Form 1099 reporting, can
-                                    include things like: Interest, Dividends,
-                                    Rents, Royalties, Prizes and Awards. Income
-                                    Codes, associated with Form 1042-S
-                                    reporting, can be found here:
+                                    Income type or code is requested as part of the
+                                    tax form completion process for purposes of
+                                    calculating withholding rates, where applicable,
+                                    and to further determine how you should be
+                                    reported on. You should select the type of code
+                                    that best defines the payments that you expect
+                                    to receive. Income Types, associated with Form
+                                    1099 reporting, can include things like:
+                                    Interest, Dividends, Rents, Royalties, Prizes
+                                    and Awards. Income Codes, associated with Form
+                                    1042-S reporting, can be found here:
                                     https://www.irs.gov/pub/irs-pdf/p515.pdf
                                   </Typography>
 
                                   <Link
                                     underline="none"
-                                    style={{
-                                      marginTop: "10px",
-                                      fontSize: "16px",
-                                      cursor: "pointer",
-                                      color: "#0000C7",
-                                    }}
+                                    style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" ,color: "#0000C7"}}
                                     onClick={() => {
                                       setToolInfo("");
                                     }}
@@ -5815,15 +5463,13 @@ export default function IndividualUs() {
                               <Typography className="d-flex w-100 pb-2">
                                 Income Type
                               </Typography>
-                              <>{console.log(incomeArr, "qqq")}</>
+                              {/* <>{console.log(incomeArr, "qqq")}</> */}
                               {incomeArr.length &&
                                 incomeArr.map((ind, i) => {
+
                                   return (
                                     <div className="col-lg-3 col-6 col-md-3 ">
-                                      <FormControl
-                                        className="w-100 d-flex"
-                                        key={i}
-                                      >
+                                      <FormControl className="w-100 d-flex" key={i}>
                                         <span className="w-100 d-flex pb-2">
                                           <select
                                             className="w-100"
@@ -5835,15 +5481,12 @@ export default function IndividualUs() {
                                             }}
                                             name="incomeTypeId"
                                             onBlur={handleBlur}
+
                                             id="Income"
-                                            onChange={(e: any) =>
-                                              handleIcome(e, i)
-                                            }
+                                            onChange={(e: any) => handleIcome(e, i)}
                                             value={selectedValues[i]}
                                           >
-                                            <option value="0">
-                                              ---select---
-                                            </option>
+                                            <option value="0">---select---</option>
 
                                             {GetAgentUSVisaTypeHiddenForEform?.map(
                                               (ele: any) => (
@@ -5868,16 +5511,9 @@ export default function IndividualUs() {
                                             />
                                           )}
                                         </span>
-                                        {selectedValues[i] === "0" &&
-                                        IncomeMandatory === true &&
-                                        incomeErrors.length > 0 &&
-                                        touched.incomeTypeId ? (
-                                          <p className="error">
-                                            Please select an income type.
-                                          </p>
-                                        ) : (
-                                          ""
-                                        )}
+                                        {selectedValues[i] === '0' && IncomeMandatory === true && incomeErrors.length > 0 && touched.incomeTypeId ? (
+                                          <p className="error">Please select an income type.</p>
+                                        ) : ""}
                                         {/* {errors.incomeTypeId && touched.incomeTypeId ?(  <p className="error">{errors.incomeTypeId}</p>):""} */}
                                       </FormControl>
                                     </div>
@@ -5915,25 +5551,24 @@ export default function IndividualUs() {
                                       display: "flex",
                                       alignItems: "left",
 
-                                      cursor: "pointer",
+                                      cursor: "pointer"
                                     }}
                                     onClick={() => handleOpen("it")}
                                   >
                                     Income Code
-                                    {IncomeMandatory === true ? (
-                                      ""
-                                    ) : (
+                                    {IncomeMandatory === true ? ("") :
                                       <span
                                         style={{
                                           fontSize: "13px",
                                           color: "grey",
                                           marginLeft: "4px",
                                           marginTop: "11px",
+
                                         }}
                                       >
                                         (Optional)
                                       </span>
-                                    )}
+                                    }
                                     <Tooltip
                                       style={{
                                         backgroundColor: "black",
@@ -5948,8 +5583,7 @@ export default function IndividualUs() {
                                             onClick={(e) => {
                                               e.stopPropagation();
                                               setToolInfo("income");
-                                            }}
-                                          >
+                                            }}   >
                                             <Typography
                                               style={{
                                                 cursor: "pointer",
@@ -5967,6 +5601,7 @@ export default function IndividualUs() {
                                       <Info
                                         onClick={(e) => {
                                           e.stopPropagation();
+
                                         }}
                                         style={{
                                           color: "#ffc107",
@@ -5977,13 +5612,10 @@ export default function IndividualUs() {
                                       />
                                     </Tooltip>
                                   </div>
-                                  {touched.incomeTypeId &&
-                                  incomeErrors.length > 0 &&
-                                  IncomeMandatory === true ? (
-                                    <p className="error mb-0">
-                                      Mandatory Information Required
-                                    </p>
-                                  ) : null}
+                                  {touched.incomeTypeId && incomeErrors.length > 0 && IncomeMandatory === true ?
+                                    <p className="error mb-0">Mandatory Information Required</p>
+                                    : null
+                                  }
                                 </div>
                               }
                               action={
@@ -6011,29 +5643,23 @@ export default function IndividualUs() {
                                   }}
                                 >
                                   <Typography>
-                                    Income type or code is requested as part of
-                                    the tax form completion process for purposes
-                                    of calculating withholding rates, where
-                                    applicable, and to further determine how you
-                                    should be reported on. You should select the
-                                    type of code that best defines the payments
-                                    that you expect to receive. Income Types,
-                                    associated with Form 1099 reporting, can
-                                    include things like: Interest, Dividends,
-                                    Rents, Royalties, Prizes and Awards. Income
-                                    Codes, associated with Form 1042-S
-                                    reporting, can be found here:
+                                    Income type or code is requested as part of the
+                                    tax form completion process for purposes of
+                                    calculating withholding rates, where applicable,
+                                    and to further determine how you should be
+                                    reported on. You should select the type of code
+                                    that best defines the payments that you expect
+                                    to receive. Income Types, associated with Form
+                                    1099 reporting, can include things like:
+                                    Interest, Dividends, Rents, Royalties, Prizes
+                                    and Awards. Income Codes, associated with Form
+                                    1042-S reporting, can be found here:
                                     https://www.irs.gov/pub/irs-pdf/p515.pdf
                                   </Typography>
 
                                   <Link
                                     underline="none"
-                                    style={{
-                                      marginTop: "10px",
-                                      fontSize: "16px",
-                                      cursor: "pointer",
-                                      color: "#0000C7",
-                                    }}
+                                    style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7"}}
                                     onClick={() => {
                                       setToolInfo("");
                                     }}
@@ -6054,16 +5680,12 @@ export default function IndividualUs() {
                               <Typography className="d-flex w-100 pb-2">
                                 Income Code
                               </Typography>
-                              {incomeArr.length &&
-                                incomeArr.length <= 4 &&
+                              {incomeArr.length && incomeArr.length <= 4 &&
                                 incomeArr.map((ind, i) => {
                                   // console.log(ind, i,"udvgjudgvfjdbgjfd")
                                   return (
                                     <div className="col-lg-3 col-6 col-md-3 ">
-                                      <FormControl
-                                        className="w-100 d-flex"
-                                        key={i}
-                                      >
+                                      <FormControl className="w-100 d-flex" key={i}>
                                         <span className="w-100 d-flex pb-2">
                                           <select
                                             className="w-100"
@@ -6075,14 +5697,10 @@ export default function IndividualUs() {
                                             }}
                                             name="incomeTypeId"
                                             onBlur={handleBlur}
-                                            onChange={(e: any) =>
-                                              handleIcome(e, i)
-                                            }
+                                            onChange={(e: any) => handleIcome(e, i)}
                                             value={selectedValues[i]}
                                           >
-                                            <option value="0">
-                                              ---select---
-                                            </option>
+                                            <option value="0">---select---</option>
                                             {GetAllIncomeCodesReducer.allCountriesIncomeCodeData?.map(
                                               (ele: any) => (
                                                 <option
@@ -6106,20 +5724,14 @@ export default function IndividualUs() {
                                             />
                                           )}
                                         </span>
-                                        {selectedValues[i] === "0" &&
-                                        IncomeMandatory === true &&
-                                        incomeErrors.length > 0 &&
-                                        touched.incomeTypeId ? (
-                                          <p className="error">
-                                            Please select an income type.
-                                          </p>
-                                        ) : (
-                                          ""
-                                        )}
+                                        {selectedValues[i] === '0' && IncomeMandatory === true && incomeErrors.length > 0 && touched.incomeTypeId ? (
+                                          <p className="error">Please select an income type.</p>
+                                        ) : ""}
                                       </FormControl>
                                     </div>
                                   );
                                 })}
+
 
                               {incomeArr.length < 5 ? (
                                 <Typography
@@ -6136,13 +5748,13 @@ export default function IndividualUs() {
                                 ""
                               )}
                             </Collapse>
+
                           </>
                         )}
                         <hr className="w-100"></hr>
                       </>
-                    ) : (
-                      ""
-                    )}
+                    ) : ""}
+
 
                     {/* <hr className="w-100"></hr> */}
                     {/* Payment type */}
@@ -6166,9 +5778,8 @@ export default function IndividualUs() {
                                 onClick={() => handleOpen("pt")}
                               >
                                 Payment Type
-                                {PaymentMandatry === true ? (
-                                  ""
-                                ) : (
+
+                                {PaymentMandatry === true ? ("") :
                                   <span
                                     style={{
                                       fontSize: "13px",
@@ -6179,12 +5790,9 @@ export default function IndividualUs() {
                                   >
                                     (Optional)
                                   </span>
-                                )}
+                                }
                                 <Tooltip
-                                  style={{
-                                    backgroundColor: "black",
-                                    color: "white",
-                                  }}
+                                  style={{ backgroundColor: "black", color: "white" }}
                                   title={
                                     <>
                                       <Typography color="inherit">
@@ -6195,10 +5803,13 @@ export default function IndividualUs() {
                                         information
                                       </Typography>
                                       <a
+
                                         onClick={(e) => {
                                           e.stopPropagation();
                                           setToolInfo("account");
                                         }}
+
+
                                       >
                                         <Typography
                                           style={{
@@ -6217,6 +5828,7 @@ export default function IndividualUs() {
                                   <Info
                                     onClick={(e) => {
                                       e.stopPropagation();
+
                                     }}
                                     style={{
                                       color: "#ffc107",
@@ -6260,21 +5872,16 @@ export default function IndividualUs() {
                               <Typography>
                                 As part of the tax form completion process, your
                                 withholding agent has requested that you provide
-                                banking details associated with your account.
-                                Here, you will be asked to select the method for
-                                which payment will be remitted, as permitted by
-                                the withholding agent. Allowable options can
-                                include: ACH, Wire or Check
+                                banking details associated with your account. Here,
+                                you will be asked to select the method for which
+                                payment will be remitted, as permitted by the
+                                withholding agent. Allowable options can include:
+                                ACH, Wire or Check
                               </Typography>
 
                               <Link
                                 underline="none"
-                                style={{
-                                  marginTop: "10px",
-                                  fontSize: "16px",
-                                  cursor: "pointer",
-                                  color: "#0000C7",
-                                }}
+                                style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -6334,19 +5941,15 @@ export default function IndividualUs() {
                               }}
                             /> */}
                               </span>
-                              {errors.paymentTypeId && touched.paymentTypeId ? (
-                                <p className="error">{errors.paymentTypeId}</p>
-                              ) : (
-                                ""
-                              )}
+                              {errors.paymentTypeId && touched.paymentTypeId ? (<p className="error">{errors.paymentTypeId}</p>) : ""}
                             </FormControl>
                           </div>
                         </Collapse>
                         <hr className="w-100"></hr>
                       </>
-                    ) : (
-                      ""
-                    )}
+                    ) : ""}
+
+
 
                     {values.paymentTypeId ? (
                       <>
@@ -6392,6 +5995,8 @@ export default function IndividualUs() {
                                           e.stopPropagation();
                                           setToolInfo("information");
                                         }}
+
+
                                       >
                                         <Typography
                                           style={{
@@ -6410,6 +6015,7 @@ export default function IndividualUs() {
                                   <Info
                                     onClick={(e) => {
                                       e.stopPropagation();
+
                                     }}
                                     style={{
                                       color: "#ffc107",
@@ -6421,29 +6027,20 @@ export default function IndividualUs() {
                                 </Tooltip>
                               </div>
                               <p className="error mb-0">
-                                {(errors?.accountHolderName &&
-                                  touched?.accountHolderName) ||
-                                (errors?.accountBankName &&
-                                  touched?.accountBankName) ||
-                                (errors?.accountBankBranchLocationId &&
-                                  touched?.accountBankBranchLocationId) ||
-                                (errors?.accountNumber &&
-                                  touched?.accountNumber) ||
-                                (errors?.makePayable && touched?.makePayable) ||
-                                (errors?.payResidentalCountryId &&
-                                  touched?.payResidentalCountryId) ||
-                                (errors?.payStreetNumberAndName &&
-                                  touched?.payStreetNumberAndName) ||
-                                (errors?.payCityorTown &&
-                                  touched?.payCityorTown) ||
-                                (errors?.payStateOrProvince &&
-                                  touched?.payStateOrProvince) ||
-                                (errors?.payZipPostalCode &&
-                                  touched?.payZipPostalCode) ||
-                                (errors?.sortCode && touched?.sortCode) ||
-                                (errors?.bsb && touched?.bsb) ||
-                                (errors?.bankCode && touched?.bankCode) ||
-                                (errors?.abaRouting && touched?.abaRouting)
+                                {errors?.accountHolderName && touched?.accountHolderName ||
+                                  errors?.accountBankName && touched?.accountBankName ||
+                                  errors?.accountBankBranchLocationId && touched?.accountBankBranchLocationId ||
+                                  errors?.accountNumber && touched?.accountNumber ||
+                                  errors?.makePayable && touched?.makePayable ||
+                                  errors?.payResidentalCountryId && touched?.payResidentalCountryId ||
+                                  errors?.payStreetNumberAndName && touched?.payStreetNumberAndName ||
+                                  errors?.payCityorTown && touched?.payCityorTown ||
+                                  errors?.payStateOrProvince && touched?.payStateOrProvince ||
+                                  errors?.payZipPostalCode && touched?.payZipPostalCode ||
+                                  errors?.sortCode && touched?.sortCode ||
+                                  errors?.bsb && touched?.bsb ||
+                                  errors?.bankCode && touched?.bankCode ||
+                                  errors?.abaRouting && touched?.abaRouting
                                   ? "Mandatory Information Required"
                                   : ""}
                               </p>
@@ -6536,12 +6133,7 @@ export default function IndividualUs() {
 
                               <Link
                                 underline="none"
-                                style={{
-                                  marginTop: "10px",
-                                  fontSize: "16px",
-                                  cursor: "pointer",
-                                  color: "#0000C7",
-                                }}
+                                style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7"}}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -6596,33 +6188,22 @@ export default function IndividualUs() {
                                       onBlur={handleBlur}
                                       error={Boolean(
                                         touched.accountHolderName &&
-                                          errors.accountHolderName
+                                        errors.accountHolderName
                                       )}
-                                      value={values.accountHolderName}
+                                      value={
+                                        values.accountHolderName
+                                      }
                                     />
                                     {(() => {
-                                      let data =
-                                        values.accountHolderName === ""
-                                          ? values.firstName !== ""
-                                            ? setFieldValue(
-                                                "accountHolderName",
-                                                values.firstName +
-                                                  " " +
-                                                  values.lastName
-                                              )
-                                            : ""
-                                          : values.accountHolderName;
-                                      return <></>;
+                                      let data = (values.accountHolderName === "" ?
+                                        (values.firstName !== "" ? setFieldValue("accountHolderName", values.firstName +
+                                          " " + values.lastName) : "")
+                                        : values.accountHolderName)
+                                      return <></>
                                     })()}
 
-                                    {errors.accountHolderName &&
-                                    touched.accountHolderName ? (
-                                      <p className="error">
-                                        {errors.accountHolderName}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
+                                    {errors.accountHolderName && touched.accountHolderName ? <p className="error">{errors.accountHolderName}</p> : <></>}
+
                                   </FormControl>
                                 </div>
                                 <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -6650,19 +6231,11 @@ export default function IndividualUs() {
                                       onBlur={handleBlur}
                                       error={Boolean(
                                         touched.accountBankName &&
-                                          errors.accountBankName
+                                        errors.accountBankName
                                       )}
                                       value={values.accountBankName}
                                     />
-                                    {values.accountBankName == "" &&
-                                    errors.accountBankName &&
-                                    touched.accountBankName ? (
-                                      <p className="error">
-                                        {errors.accountBankName}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
+                                    {values.accountBankName == "" && errors.accountBankName && touched.accountBankName ? <p className="error">{errors.accountBankName}</p> : <></>}
                                   </FormControl>
                                 </div>
                                 <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -6699,14 +6272,8 @@ export default function IndividualUs() {
                                         )
                                       )}
                                     </select>
-                                    {errors.accountBankBranchLocationId &&
-                                    touched.accountBankBranchLocationId ? (
-                                      <p className="error">
-                                        {errors.accountBankBranchLocationId}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
+                                    {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? <p className="error">{errors.accountBankBranchLocationId}</p> : <></>}
+
                                   </FormControl>
                                 </div>
 
@@ -6736,18 +6303,12 @@ export default function IndividualUs() {
                                       onBlur={handleBlur}
                                       error={Boolean(
                                         touched.accountNumber &&
-                                          errors.accountNumber
+                                        errors.accountNumber
                                       )}
                                       value={values.accountNumber}
                                     />
-                                    {errors.accountNumber &&
-                                    touched.accountNumber ? (
-                                      <p className="error">
-                                        {errors.accountNumber}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
+                                    {errors.accountNumber && touched.accountNumber ? <p className="error">{errors.accountNumber}</p> : <></>}
+
                                   </FormControl>
                                 </div>
                                 {returnFieldName(
@@ -6799,18 +6360,12 @@ export default function IndividualUs() {
                                       onBlur={handleBlur}
                                       error={Boolean(
                                         touched.makePayable &&
-                                          errors.makePayable
+                                        errors.makePayable
                                       )}
                                       value={values.makePayable}
                                     />
-                                    {errors.makePayable &&
-                                    touched.makePayable ? (
-                                      <p className="error">
-                                        {errors.makePayable}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
+                                    {errors.makePayable && touched.makePayable ? <p className="error">{errors.makePayable}</p> : <></>}
+
                                   </FormControl>
                                 </div>
                                 <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -6835,10 +6390,8 @@ export default function IndividualUs() {
                                       onChange={(e) => {
                                         handleChange(e);
                                         //alert(e.target.value);
-                                        setFieldValue("payStateOrProvince", "");
-                                        dispatch(
-                                          getAllStateByCountryId(e.target.value)
-                                        );
+                                        setFieldValue("payStateOrProvince", "")
+                                        dispatch(getAllStateByCountryId(e.target.value));
                                       }}
                                       onBlur={handleBlur}
                                       value={values.payResidentalCountryId}
@@ -6860,14 +6413,8 @@ export default function IndividualUs() {
                                         )
                                       )}
                                     </select>
-                                    {errors.payResidentalCountryId &&
-                                    touched.payResidentalCountryId ? (
-                                      <p className="error">
-                                        {errors.payResidentalCountryId}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
+                                    {errors.payResidentalCountryId && touched.payResidentalCountryId ? <p className="error">{errors.payResidentalCountryId}</p> : <></>}
+
                                   </FormControl>
                                 </div>
                               </div>
@@ -6897,18 +6444,12 @@ export default function IndividualUs() {
                                       onBlur={handleBlur}
                                       error={Boolean(
                                         touched.payStreetNumberAndName &&
-                                          errors.payStreetNumberAndName
+                                        errors.payStreetNumberAndName
                                       )}
                                       value={values.payStreetNumberAndName}
                                     />
-                                    {errors.payStreetNumberAndName &&
-                                    touched.payStreetNumberAndName ? (
-                                      <p className="error">
-                                        {errors.payStreetNumberAndName}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
+                                    {errors.payStreetNumberAndName && touched.payStreetNumberAndName ? <p className="error">{errors.payStreetNumberAndName}</p> : <></>}
+
                                   </FormControl>
                                 </div>
 
@@ -6963,22 +6504,15 @@ export default function IndividualUs() {
                                       onBlur={handleBlur}
                                       error={Boolean(
                                         touched.payCityorTown &&
-                                          errors.payCityorTown
+                                        errors.payCityorTown
                                       )}
                                       value={values.payCityorTown}
                                     />
-                                    {errors.payCityorTown &&
-                                    touched.payCityorTown ? (
-                                      <p className="error">
-                                        {errors.payCityorTown}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
+                                    {errors.payCityorTown && touched.payCityorTown ? <p className="error">{errors.payCityorTown}</p> : <></>}
+
                                   </FormControl>
                                 </div>
-                                {values.payResidentalCountryId == 258 ||
-                                values.payResidentalCountryId == 45 ? (
+                                {values.payResidentalCountryId == 258 || values.payResidentalCountryId == 45 ? (
                                   <div className="col-lg-3 col-6 col-md-3 mt-2">
                                     <Typography
                                       align="left"
@@ -7047,19 +6581,13 @@ export default function IndividualUs() {
                                         onBlur={handleBlur}
                                         error={Boolean(
                                           touched.payStateOrProvince &&
-                                            errors.payStateOrProvince
+                                          errors.payStateOrProvince
                                         )}
                                         value={values.payStateOrProvince}
                                       />
 
-                                      {errors.payStateOrProvince &&
-                                      touched.payStateOrProvince ? (
-                                        <p className="error">
-                                          {errors.payStateOrProvince}
-                                        </p>
-                                      ) : (
-                                        <></>
-                                      )}
+                                      {errors.payStateOrProvince && touched.payStateOrProvince ? <p className="error">{errors.payStateOrProvince}</p> : <></>}
+
                                     </FormControl>
                                   </div>
                                 )}
@@ -7089,18 +6617,12 @@ export default function IndividualUs() {
                                       onBlur={handleBlur}
                                       error={Boolean(
                                         touched.payZipPostalCode &&
-                                          errors.payZipPostalCode
+                                        errors.payZipPostalCode
                                       )}
                                       value={values.payZipPostalCode}
                                     />
-                                    {errors.payZipPostalCode &&
-                                    touched.payZipPostalCode ? (
-                                      <p className="error">
-                                        {errors.payZipPostalCode}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
+                                    {errors.payZipPostalCode && touched.payZipPostalCode ? <p className="error">{errors.payZipPostalCode}</p> : <></>}
+
                                   </FormControl>
                                 </div>
                               </div>
@@ -7158,32 +6680,21 @@ export default function IndividualUs() {
                                       // onBlur={handleBlur}
                                       error={Boolean(
                                         touched.accountHolderName &&
-                                          errors.accountHolderName
+                                        errors.accountHolderName
                                       )}
-                                      value={values.accountHolderName}
+                                      value={
+                                        values.accountHolderName
+                                      }
                                     />
                                     {(() => {
-                                      let data =
-                                        values.accountHolderName === ""
-                                          ? values.firstName !== ""
-                                            ? setFieldValue(
-                                                "accountHolderName",
-                                                values.firstName +
-                                                  " " +
-                                                  values.lastName
-                                              )
-                                            : ""
-                                          : values.accountHolderName;
-                                      return <></>;
+                                      let data = (values.accountHolderName === "" ?
+                                        (values.firstName !== "" ? setFieldValue("accountHolderName", values.firstName +
+                                          " " + values.lastName) : "")
+                                        : values.accountHolderName)
+                                      return <></>
                                     })()}
-                                    {errors.accountHolderName &&
-                                    touched.accountHolderName ? (
-                                      <p className="error">
-                                        {errors.accountHolderName}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
+                                    {errors.accountHolderName && touched.accountHolderName ? <p className="error">{errors.accountHolderName}</p> : <></>}
+
                                   </FormControl>
                                 </div>
                                 <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -7211,19 +6722,13 @@ export default function IndividualUs() {
                                       onBlur={handleBlur}
                                       error={Boolean(
                                         touched.accountBankName &&
-                                          errors.accountBankName
+                                        errors.accountBankName
                                       )}
                                       value={values.accountBankName}
                                     />
 
-                                    {errors.accountBankName &&
-                                    touched.accountBankName ? (
-                                      <p className="error">
-                                        {errors.accountBankName}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
+                                    {errors.accountBankName && touched.accountBankName ? <p className="error">{errors.accountBankName}</p> : <></>}
+
                                   </FormControl>
                                 </div>
                                 <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -7277,14 +6782,8 @@ export default function IndividualUs() {
                                         )
                                       )}
                                     </select>
-                                    {errors.accountBankBranchLocationId &&
-                                    touched.accountBankBranchLocationId ? (
-                                      <p className="error">
-                                        {errors.accountBankBranchLocationId}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
+                                    {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? <p className="error">{errors.accountBankBranchLocationId}</p> : <></>}
+
                                   </FormControl>
                                 </div>
 
@@ -7313,18 +6812,12 @@ export default function IndividualUs() {
                                       onBlur={handleBlur}
                                       error={Boolean(
                                         touched.accountNumber &&
-                                          errors.accountNumber
+                                        errors.accountNumber
                                       )}
                                       value={values.accountNumber}
                                     />
-                                    {errors.accountNumber &&
-                                    touched.accountNumber ? (
-                                      <p className="error">
-                                        {errors.accountNumber}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
+                                    {errors.accountNumber && touched.accountNumber ? <p className="error">{errors.accountNumber}</p> : <></>}
+
                                   </FormControl>
                                 </div>
 
@@ -7354,18 +6847,12 @@ export default function IndividualUs() {
                                         onBlur={handleBlur}
                                         error={Boolean(
                                           touched.abaRouting &&
-                                            errors.abaRouting
+                                          errors.abaRouting
                                         )}
                                         value={values.abaRouting}
                                       />
-                                      {errors.abaRouting &&
-                                      touched.abaRouting ? (
-                                        <p className="error">
-                                          {errors.abaRouting}
-                                        </p>
-                                      ) : (
-                                        <></>
-                                      )}
+                                      {errors.abaRouting && touched.abaRouting ? <p className="error">{errors.abaRouting}</p> : <></>}
+
                                     </FormControl>
                                   </div>
                                 ) : (
@@ -7459,26 +6946,20 @@ export default function IndividualUs() {
                               value={values.isConfirmed}
                             />
                           </div>
-                          <div
-                            className="w-auto d-flex p-0"
-                            style={{ marginLeft: "-0.5rem" }}
-                          >
+                          <div className="w-auto d-flex p-0" style={{ marginLeft: "-0.5rem" }}>
                             <Typography className="my-auto">
                               I confirm the information above is correct.
                             </Typography>
                           </div>
                         </div>
                       </div>
-                      {errors.isConfirmed && touched.isConfirmed ? (
-                        <p className="error">{errors.isConfirmed}</p>
-                      ) : (
-                        <></>
-                      )}
+                      {errors.isConfirmed && touched.isConfirmed ? <p className="error">{errors.isConfirmed}</p> : <></>}
 
                       {values.isConfirmed ? (
                         <div className="text-center">
                           <Button
                             type="submit"
+
                             // onClick={() => history("/Term")}
                             style={{
                               border: "1px solid #0095dd",
