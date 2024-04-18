@@ -2506,7 +2506,6 @@ export const getAllAccountStatement = (accountHolderId: number, formTypeId: numb
             },
           });
         }
-        console.log(data);
       },
       (error: any) => {
         console.log(error)

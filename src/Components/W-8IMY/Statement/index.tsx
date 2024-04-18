@@ -46,19 +46,20 @@ interface FormValues {
     firstName: string, 
     familyName: string ,
     entityName:string, 
-    houseNumberName:string,
+    houseNumberOrName:string,
     roadName:string,
-    city:string,
-    state:string,
-    zipcode:string,
-    residentialCountry:string,
-    otherCountry:string, 
+    cityOrTown:string,
+    stateOrProvince:string,
+    zip:string,
+    residentialCountryId:string,
+    other:string, 
     tin:string,
-    tinType:string,
+    tinTypeId:string,
     allocation:string,
-    email:string,
-    formType:string,
-    file:string,
+    emailAddress:string,
+    formVersionTypeId:string,
+    attachedFile:string,
+    attachedFileData:string
 
     }[];
 }
@@ -79,7 +80,7 @@ export default function AddMoreForm(props: any) {
 
     const onBoardingFormValuesPrevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
 
-
+// console.log("accountStatementData", accountStatementData)
     const itemsData = accountStatementData?.map((dataItem: any, index: number) => ({
       id: index, // Assuming you want to use the index as the id
       agentId: authDetails?.agentId,
@@ -90,21 +91,23 @@ export default function AddMoreForm(props: any) {
       firstName: dataItem.firstName,
       familyName: dataItem.familyName,
       entityName: dataItem.entityName,
-      houseNumberName: dataItem.houseNumberName,
+      houseNumberOrName: dataItem.houseNumberOrName,
       roadName: dataItem.roadName,
-      city: dataItem.city,
-      state: dataItem.state,
-      zipcode: dataItem.zipcode,
-      residentialCountry: dataItem.residentialCountry,
-      otherCountry: dataItem.otherCountry,
+      cityOrTown: dataItem.cityOrTown,
+      stateOrProvince: dataItem.state,
+      zip: dataItem.zip,
+      residentialCountryId: dataItem.residentialCountryId,
+      other: dataItem.other,
       tin: dataItem.tin,
-      tinType: dataItem.tinType,
+      tinTypeId: dataItem.tinTypeId,
       allocation: dataItem.allocation,
-      email: dataItem.email,
-      formType: dataItem.formType,
-      file: dataItem.file,
+      emailAddress: dataItem.emailAddress,
+      formVersionTypeId: dataItem.formVersionTypeId,
+      attachedFile: dataItem.attachedFile,
+      attachedFileData:dataItem?.attachedFileData!=null ? dataItem.attachedFileData : ""
     }));
 
+    // console.log(itemsData);
     // const [initialValues, setInitialValues] = useState<FormValues>(
     //   {
     //     isWithholdingStatementClicked:false,
@@ -121,19 +124,20 @@ export default function AddMoreForm(props: any) {
     //       firstName: "", 
     //       familyName: "" ,
     //       entityName:"", 
-    //       houseNumberName:"",
+    //       houseNumberOrName:"",
     //       roadName:"",
-    //       city:"",
+    //       cityOrTown:"",
     //       state:"",
-    //       zipcode:"",
-    //       residentialCountry:"",
-    //       otherCountry:"", 
+    //       zip:"",
+    //       residentialCountryId:"",
+    //       other:"", 
     //       tin:"",
-    //       tinType:"",
+    //       tinTypeId:"",
     //       allocation:"",
-    //       email:"",
-    //       formType:"",
-    //       file:"", 
+    //       emailAddress:"",
+    //       formVersionTypeId:"",
+    //       attachedFile:"",
+    //       attachedFileData:""
     //      }],
     //   }
     // );
@@ -221,19 +225,20 @@ export default function AddMoreForm(props: any) {
 //             firstName: "", 
 //             familyName: "" ,
 //             entityName:"", 
-//             houseNumberName:"",
+//             houseNumberOrName:"",
 //             roadName:"",
-//             city:"",
+//             cityOrTown:"",
 //             state:"",
-//             zipcode:"",
-//             residentialCountry:"",
-//             otherCountry:"", 
+//             zip:"",
+//             residentialCountryId:"",
+//             other:"", 
 //             tin:"",
-//             tinType:"",
+//             tinTypeId:"",
 //             allocation:"",
-//             email:"",
-//             formType:"",
-//             file:"", 
+//             emailAddress:"",
+//             formVersionTypeId:"",
+//             attachedFile:"", 
+//              attachedFileData:""
 //          };
 
 //          // If you want to directly add a new item without copying existing items:
@@ -253,11 +258,12 @@ export default function AddMoreForm(props: any) {
 
 
   const handleUploadExisting = (event: any, index: number,valueArray:any) => {
+    
     const files = event.target.files;
 
     if (valueArray.items[index]) {
       const updatedItems = [...valueArray.items];
-      updatedItems[index].file = files[0];
+      updatedItems[index].attachedFileData = files[0];
     }
   
   };
@@ -285,7 +291,6 @@ export default function AddMoreForm(props: any) {
           
         })
 
-
         const temp = {
           agentId: authDetails.agentId,
           accountHolderBasicDetailId: authDetails.accountHolderId,
@@ -312,7 +317,7 @@ export default function AddMoreForm(props: any) {
           
         }))
         history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY")
-        return returnPromise
+        // return returnPromise
         
       }}
     >
@@ -549,9 +554,9 @@ export default function AddMoreForm(props: any) {
                                                         House Number or Name
                                                     </Typography>
                                                     <Input
-                                                    name={`items.${index}.houseNumberName`}
+                                                    name={`items.${index}.houseNumberOrName`}
                                                     onChange={handleChange}
-                                                    value={values.items[index].houseNumberName}
+                                                    value={values.items[index].houseNumberOrName}
                                                     style={{
                                                         border: " 1px solid #d9d9d9 ",
                                                         padding: " 0 10px",
@@ -587,9 +592,9 @@ export default function AddMoreForm(props: any) {
                                                         City or Town
                                                     </Typography>
                                                     <Input
-                                                    name={`items.${index}.city`}
+                                                    name={`items.${index}.cityOrTown`}
                                                     onChange={handleChange}
-                                                    value={values.items[index].city}
+                                                    value={values.items[index].cityOrTown}
                                                     style={{
                                                         border: " 1px solid #d9d9d9 ",
                                                         padding: " 0 10px",
@@ -606,9 +611,9 @@ export default function AddMoreForm(props: any) {
                                                         State or Province
                                                     </Typography>
                                                     <Input
-                                                    name={`items.${index}.state`}
+                                                    name={`items.${index}.stateOrProvince`}
                                                     onChange={handleChange}
-                                                    value={values.items[index].state}
+                                                    value={values.items[index].stateOrProvince}
                                                     style={{
                                                         border: " 1px solid #d9d9d9 ",
                                                         padding: " 0 10px",
@@ -625,9 +630,9 @@ export default function AddMoreForm(props: any) {
                                                         Zip or Postal Code
                                                     </Typography>
                                                     <Input
-                                                    name={`items.${index}.zipcode`}
+                                                    name={`items.${index}.zip`}
                                                     onChange={handleChange}
-                                                    value={values.items[index].zipcode}
+                                                    value={values.items[index].zip}
                                                     style={{
                                                         border: " 1px solid #d9d9d9 ",
                                                         padding: " 0 10px",
@@ -643,9 +648,9 @@ export default function AddMoreForm(props: any) {
                                                     <Typography style={{ fontSize: "14px" }}>
                                                         Residential Country
                                                     </Typography>
-                                                    <select name={`items.${index}.residentialCountry`}
+                                                    <select name={`items.${index}.residentialCountryId`}
                                                     onChange={handleChange}
-                                                    value={values.items[index].residentialCountry}
+                                                    value={values.items[index].residentialCountryId}
                                                     >
                                                       <option value={0}>--select--</option>
                                                       {getCountriesReducer.allCountriesData?.map((ele:any) => (
@@ -671,9 +676,9 @@ export default function AddMoreForm(props: any) {
                                                         Other (not available in the drop down)
                                                     </Typography>
                                                     <Input
-                                                    name={`items.${index}.otherCountry`}
+                                                    name={`items.${index}.other`}
                                                     onChange={handleChange}
-                                                    value={values.items[index].otherCountry}
+                                                    value={values.items[index].other}
                                                     style={{
                                                         border: " 1px solid #d9d9d9 ",
                                                         padding: " 0 10px",
@@ -718,9 +723,9 @@ export default function AddMoreForm(props: any) {
                                                         height: "40px",
                                                         width: "100%",
                                                         }}
-                                                        name={`items.${index}.tinType`}
+                                                        name={`items.${index}.tinTypeId`}
                                                         onChange={handleChange}
-                                                        value={values.items[index].tinType}
+                                                        value={values.items[index].tinTypeId}
                                                         id="Income"
                                                         
                                                     >
@@ -763,9 +768,9 @@ export default function AddMoreForm(props: any) {
                                                     Email Address:
                                                     </Typography>
                                                     <Input
-                                                    name={`items.${index}.email`}
+                                                    name={`items.${index}.emailAddress`}
                                                     onChange={handleChange}
-                                                    value={values.items[index].email}
+                                                    value={values.items[index].emailAddress}
                                                     //value={`items.${index}.firstName`}
                                                     style={{
                                                         border: " 1px solid #d9d9d9 ",
@@ -792,9 +797,9 @@ export default function AddMoreForm(props: any) {
                                                         height: "40px",
                                                         width: "100%",
                                                         }}
-                                                        name={`items.${index}.formType`}
+                                                        name={`items.${index}.formVersionTypeId`}
                                                         onChange={handleChange}
-                                                        value={values.items[index].formType}
+                                                        value={values.items[index].formVersionTypeId}
                                                         id="Income"
                                                         
                                                     >
@@ -862,19 +867,20 @@ export default function AddMoreForm(props: any) {
                                                 //       firstName: "", 
                                                 //       familyName: "" ,
                                                 //       entityName:"", 
-                                                //       houseNumberName:"",
+                                                //       houseNumberOrName:"",
                                                 //       roadName:"",
                                                 //       city:"",
                                                 //       state:"",
-                                                //       zipcode:"",
-                                                //       residentialCountry:"",
-                                                //       otherCountry:"", 
+                                                //       zip:"",
+                                                //       residentialCountryId:"",
+                                                //       other:"", 
                                                 //       tin:"",
-                                                //       tinType:"",
+                                                //       tinTypeId:"",
                                                 //       allocation:"",
-                                                //       email:"",
+                                                //       emailAddress:"",
                                                 //       formType:"",
-                                                //       file:"", 
+                                                //       attachedFile:"", 
+                                                //      attachedFileData:""
                                                 //    };
                                           
                                                 //   setInitialValues(prevValues => ({
@@ -902,19 +908,20 @@ export default function AddMoreForm(props: any) {
                                                             firstName: "", 
                                                             familyName: "" ,
                                                             entityName:"", 
-                                                            houseNumberName:"",
+                                                            houseNumberOrName:"",
                                                             roadName:"",
-                                                            city:"",
+                                                            cityOrTown:"",
                                                             state:"",
-                                                            zipcode:"",
-                                                            residentialCountry:"",
-                                                            otherCountry:"", 
+                                                            zip:"",
+                                                            residentialCountryId:"",
+                                                            other:"", 
                                                             tin:"",
-                                                            tinType:"",
+                                                            tinTypeId:"",
                                                             allocation:"",
-                                                            email:"",
-                                                            formType:"",
-                                                            file:"", 
+                                                            emailAddress:"",
+                                                            formVersionTypeId:"",
+                                                            attachedFile:"", 
+                                                            attachedFileData:""
                                                          }],
                                                     },
                                                     })
