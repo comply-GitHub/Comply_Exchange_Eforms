@@ -144,9 +144,10 @@ export default function Backup_witholding(props: any) {
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(true);
             console.log(selectedValue,"selectedValue")
-            const addSelectedValue={...PrevStepData,excemptionGuide:selectedValue}
+            const addSelectedValue={...PrevStepData}
+
             const new_obj = { ...addSelectedValue, stepName: `/${urlValue}` };
-            const result = { ...new_obj, ...values };
+            const result = { ...new_obj, ...values , excemptionGuide: String(true) };
             // history("/US_Purposes/Back/Exemption")
             const submitPromise = new Promise((resolve, reject) => {
               dispatch(
@@ -976,7 +977,7 @@ export default function Backup_witholding(props: any) {
                 >
                   View Form
                 </Button>
-                {values.isExemptionfromBackup == 2 ? (<Button
+                {/* {values.isExemptionfromBackup == 2 ? (<Button
                   disabled={isSubmitting}
                   //type="submit"
                   variant="contained"
@@ -990,7 +991,10 @@ export default function Backup_witholding(props: any) {
                   }}
                 >
                   Continue
-                </Button>) : (<Button
+                </Button>) : ( */}
+                
+                
+                <Button
                   // disabled={!isRadioSelected}
                   //type="submit"
                   disabled={isSubmitting}
@@ -1005,7 +1009,9 @@ export default function Backup_witholding(props: any) {
                   }}
                 >
                   Continue
-                </Button>)}
+                </Button>
+              
+              
               </div>
               <Typography
                 align="center"

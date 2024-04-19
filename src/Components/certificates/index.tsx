@@ -27,7 +27,9 @@ export default function Certificates(props: any) {
       "Instructor Identifier Format is ?*********************** \n 9- Numeric Value Only \n A - Alphabetical Character Only \n* = Alphanumeric Character only \n ? - Characters optional after this"
     );
   };
-
+useEffect(()=>{
+  dispatch(GetHelpVideoDetails())
+},[])
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -40,6 +42,11 @@ export default function Certificates(props: any) {
 
   const auth = JSON.parse(authDetailsString);
   const userType = auth?.configurations?.userType;
+
+  const AgentDeatilsId = localStorage.getItem("agentDetails") || "{}";
+
+  const authentication = JSON.parse(AgentDeatilsId);
+  const businessType = authentication?.businessTypeId;
   type ComponentPaths = {
     [key: string]: string;
   };
@@ -78,20 +85,7 @@ export default function Certificates(props: any) {
     let formSelection = JSON.parse(
       localStorage.getItem("formSelection") || "{}"
     );
-    // let submitData = {
-    //   agentId: formSelection.agentId,  
-    //   confirmationCode: formSelection.confirmationCode,
-    //   securityAnswer: formSelection.securityAnswer,
-    //   formSelection: cardId,
-    // };
-    //Id	FormName
-    // 1	W-9
-    // 2	W-8BEN
-    // 3	W-8BEN-E
-    // 4	W-8ECI
-    // 6	W-8EXP
-    // 7	W-8IMY
-    // 8	Form 8233
+    
     const componentPaths: ComponentPaths = {
       "W-9": "/W9/purposes",
       "W-8BEN": "/W-8BEN/Declaration",
@@ -103,17 +97,16 @@ export default function Certificates(props: any) {
       "cayman-individual":"/Cayman/Individual/start",
       "cayman-entity":"/Cayman/Entity/start"
     };
-    // dispatch(
-    //   postFormSelection(submitData, () => {
-    //     if (componentPaths.hasOwnProperty(cardId)) {
-    //       history(componentPaths[cardId]);
-    //     }
-    //   })
-    // );
 
-    // if (componentPaths.hasOwnProperty(cardId)) {
+    if (businessType === 1) {
+      componentPaths["W-9"] = "/W9/purposes";
+    }
+    else{
+      componentPaths["W-9"] = "/TaxPurpose_W9";
+    }
+   
     history(componentPaths[cardId]);
-    // }
+ 
   };
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
@@ -705,7 +698,7 @@ export default function Certificates(props: any) {
                 // setOpen(true);
               }}
               style={{
-                marginRight : "20px",
+                marginRight : "22px",
                 backgroundColor: "#ffc107",
                 color: "black",
                 fontSize: "10px",
@@ -994,21 +987,22 @@ export default function Certificates(props: any) {
     </Card> */}
 
           {selectedCard ? (
-            <div style={{ marginTop: "20px" }} className="text-center">
+            <div style={{ marginTop: "25px" }} className="text-center">
               <Button
                 style={{
                   marginTop: "35px",
-                  border: "1px solid #0095dd",
+                  // border: "1px solid #0095dd",
                   // backgroundColor: "#D2D2D4",
                   // borderColor: "#d2d2d2",
+                  width:"10%",
                   color: "#ffff",
-                  height: "35px",
+                  height: "44px",
                   lineHeight: "normal",
                   textAlign: "center",
-                  fontSize: "15px",
+                  fontSize: "17px",
                   textTransform: "uppercase",
-                  borderRadius: "0px",
-                  padding: "0 15px",
+                  borderRadius: "3px",
+                  // padding: "0 15px",
                   letterSpacing: "1px",
                 }}
                 size="small"
@@ -1033,14 +1027,14 @@ export default function Certificates(props: any) {
                   backgroundColor: "#D2D2D4",
                   borderColor: "#d2d2d2",
                   color: "#4a4a4a",
-                  height: "35px",
+                  height: "44px",
                   lineHeight: "normal",
                   textAlign: "center",
-                  fontSize: "13px",
+                  fontSize: "17px",
                   textTransform: "uppercase",
-                  borderRadius: "0px",
-
-                  padding: "0 15px",
+                  borderRadius: "3px",
+width:"10%",
+                  padding: "0 23px",
                   letterSpacing: "1px",
                 }}
               >
@@ -1062,7 +1056,7 @@ export default function Certificates(props: any) {
           <Typography align="center">
             <Button
               onClick={() => {
-                history("/login");
+                history("/IndividualUs");
               }}
               variant="contained"
               size="small"

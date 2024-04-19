@@ -25,7 +25,7 @@ const EndPoint = {
   GetAllHelpVideosDetails:"/HelpVideo/GetAllHelpVideos",
   GetAllLanguage:"/Language/GetAllLanguage",
   GetIGA:"/Countries/GetIGA",
-
+  GetFederalTaxClassification:"/W9Common/GetFederalTaxClassification",
   //
   GetAgentCapacityHiddenForEform: "/WebAppBasic/GetAgentCapacityHiddenForEform",
   GetAgentChapter4EntityTypeHiddenForEform: "/WebAppBasic/GetAgentChapter4EntityTypeHiddenForEform",

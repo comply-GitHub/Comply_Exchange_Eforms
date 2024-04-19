@@ -35,6 +35,15 @@ const Submit_W9_DC = React.lazy(
 const Thankyou_W9_DC = React.lazy(
   () => import("../Components/W9Form/ThankYou_DC")
 );
+
+
+const TaxPurpose_entity_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/tax_purpose_DualCert")
+);
+
+const TaxPurpose_W9 = React.lazy(
+  () => import("../Components/W9Form/TaxPurpose_W9/index")
+);
 //
 const Declaration = React.lazy(
   () => import("../Components/W-8BEN/Declaration")
@@ -284,6 +293,22 @@ const ROUTES: Array<RouteType> = [
     Component: Submit_dualCert_Eci,
     isPrivate: true,
   },
+
+  {
+    name: "TaxPurpose_entity_W9_DC",
+    path: "/TaxPurpose_entity_W9_DC",
+    id: 2,
+    Component: TaxPurpose_entity_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "TaxPurpose_W9",
+    path: "/TaxPurpose_W9",
+    id: 2,
+    Component: TaxPurpose_W9,
+    isPrivate: true,
+  },
+  //TaxPurpose_W9
   {
     name: "Thankyou_dualCert_Eci",
     path: "/Thankyou_dualCert_Eci",

@@ -2389,7 +2389,7 @@ export const postW81MY_EForm = (value: any, callback: Function, errorCallback: F
     );
   };
 };
-
+//GetFederalTaxClassification
 export const getIGA = (callback: any = () => { console.log("") }): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
@@ -2404,6 +2404,32 @@ export const getIGA = (callback: any = () => { console.log("") }): any => {
             type: Utils.actionName.GetIGA,
             payload: {
               allIGAData: resData.data,
+            },
+          });
+
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
+
+export const getFederalTax = (callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetFederalTaxClassification,
+      "",
+      (resData) => {
+        if (resData.status === 200) {
+          if (callback) {
+            callback(resData.data)
+          }
+          dispatch({
+            type: Utils.actionName.GetFederalTaxClassification,
+            payload: {
+              FederalData: resData.data,
             },
           });
 

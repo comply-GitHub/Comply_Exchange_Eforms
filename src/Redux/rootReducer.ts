@@ -30,6 +30,7 @@ import {
   SpecialRateAndConditionIncomeTypesReducer,
   formPDFFieldDataReducer,
   GetAllLanguageReducer,
+  GetAllFederalTaxReducer,
   GetDualCertW9Reducer,
   GetDualCertReducer,
   getIGAReducer
@@ -60,6 +61,7 @@ let reducers = {
   getBreadCrumsReducer,
   GetTinTypesReducer,
   getExpFormDataReducer,
+  GetAllFederalTaxReducer,
   GetAgentPaymentTypeReducer,
   GetAgentUSVisaTypeHiddenForEformReducer,
   GetAgentCountriesImportantForEformReducer,

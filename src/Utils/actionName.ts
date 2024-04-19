@@ -84,7 +84,8 @@ const ActionName = {
     GetByW8EXPIndividualId:"GetByW8EXPIndividualId",
     //errors
     UpdateError:"UpdateError",
-    GetIGA:"GetIGA"
+    GetIGA:"GetIGA",
+    GetFederalTaxClassification:"GetFederalTaxClassification",
   };
 
   export default ActionName;
