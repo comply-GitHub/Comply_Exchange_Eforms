@@ -39,6 +39,7 @@ import BreadCrumbComponent from "../../reusables/breadCrumb";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId, FormTypeSelection } from "../../../Utils/constVals";
+import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const {
@@ -89,9 +90,9 @@ export default function Fedral_tax(props: any) {
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
-    useEffect(()=>{
-      document.title = "Chapter III"
-    },[])
+  useEffect(() => {
+    document.title = "Chapter III"
+  }, [])
   useEffect(() => {
     dispatch(getAllCountries());
     dispatch(getAllCountriesCode());
@@ -142,7 +143,10 @@ export default function Fedral_tax(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform">View Form</div>
+            <div className="viewform"
+              onClick={() => {
+                dispatch(GetExpPdf(authDetails?.accountHolderId));
+              }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[6].id === 8 ? (
@@ -521,7 +525,7 @@ export default function Fedral_tax(props: any) {
                                             underline="none"
                                             style={{
                                               marginTop: "10px",
-                                              fontSize: "16px",  color: "#0000C7"
+                                              fontSize: "16px", color: "#0000C7"
                                             }}
                                             onClick={() => {
                                               setToolInfo("");
@@ -3078,7 +3082,10 @@ export default function Fedral_tax(props: any) {
                           >
                           </SaveAndExit>
                           <Button
-                            type="submit"
+                            // type="submit"
+                            onClick={() => {
+                              dispatch(GetExpPdf(authDetails?.accountHolderId));
+                            }}
                             disabled={isSubmitting}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
@@ -3104,7 +3111,7 @@ export default function Fedral_tax(props: any) {
                         <Typography
                           align="center"
                           style={{
-                            color: "#505E50",   
+                            color: "#505E50",
                             justifyContent: "center",
                             alignItems: "center",
                             marginTop: "20px",

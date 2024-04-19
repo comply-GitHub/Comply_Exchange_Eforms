@@ -15,6 +15,7 @@ import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { SubmitSchemaECI } from "../../../schemas/w8ECI";
+import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
 
 const Declaration = (props: any) => {
   const { open, setOpen } = props;
@@ -28,9 +29,9 @@ const Declaration = (props: any) => {
     setIsCheckboxChecked(event.target.checked);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Electronic Signature Confirmation"
-  },[])
+  }, [])
 
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -414,7 +415,9 @@ const Declaration = (props: any) => {
                       })
                     }} formTypeId={FormTypeId.W8EXP} />
                     <Button
-                      onClick={viewPdf}
+                      onClick={() => {
+                        dispatch(GetExpPdf(authDetails?.accountHolderId));
+                      }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >
@@ -438,7 +441,7 @@ const Declaration = (props: any) => {
                   <Typography
                     align="center"
                     style={{
-                      color: "#505E50",  
+                      color: "#505E50",
                       justifyContent: "center",
                       alignItems: "center",
                       marginTop: "20px",
