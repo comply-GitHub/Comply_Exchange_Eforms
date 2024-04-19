@@ -25,14 +25,15 @@ import BreadCrumbComponent from "../../reusables/breadCrumb";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
 export default function Certifications(props: any) {
 
   const { authDetails } = useAuth()
   const history = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Certfication I"
-  },[])
+  }, [])
 
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
@@ -83,7 +84,9 @@ export default function Certifications(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform">View Form</div>
+          <div className="viewform" onClick={() => {
+            dispatch(GetExpPdf(authDetails?.accountHolderId));
+          }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[6].id === 8 ? (
@@ -237,7 +240,7 @@ export default function Certifications(props: any) {
                           <Link
                             href="#"
                             underline="none"
-                            style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7"}}
+                            style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                             onClick={() => {
                               setToolInfo("");
                             }}
@@ -375,12 +378,12 @@ export default function Certifications(props: any) {
                             Check to confirm you have reviewed the Electronic Form
                             <Link
                               onClick={() => {
-                                history("/w8Exp_pdf");
+                                dispatch(GetExpPdf(authDetails?.accountHolderId));
                               }}
                               style={{
                                 color: "blue",
                                 fontSize: "16px",
-                                cursor:"pointer",
+                                cursor: "pointer",
                                 marginLeft: "5px",
                               }}
                             >
@@ -423,9 +426,9 @@ export default function Certifications(props: any) {
                         })
                       }} formTypeId={FormTypeId.W8EXP} />
                       <Button
-                       onClick={() => {
-                        history("/w8Exp_pdf");
-                      }}
+                        onClick={() => {
+                          dispatch(GetExpPdf(authDetails?.accountHolderId));
+                        }}
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                       >
@@ -452,7 +455,7 @@ export default function Certifications(props: any) {
                     <Typography
                       align="center"
                       style={{
-                        color: "#505E50",  
+                        color: "#505E50",
                         justifyContent: "center",
                         alignItems: "center",
                         marginTop: "20px",

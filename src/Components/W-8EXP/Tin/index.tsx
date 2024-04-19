@@ -31,6 +31,7 @@ import useAuth from "../../../customHooks/useAuth";
 import { TaxPayerSchema } from "../../../schemas/w8Exp";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
 
 export default function Tin(props: any) {
 
@@ -167,7 +168,9 @@ export default function Tin(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform" onClick={viewPdf}>View Form</div>
+            <div className="viewform" onClick={() => {
+              dispatch(GetExpPdf(authDetails?.accountHolderId));
+            }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[5].id === 7 ? (
@@ -675,7 +678,7 @@ export default function Tin(props: any) {
                                 <Link
                                   href="#"
                                   underline="none"
-                                  style={{ marginTop: "10px", fontSize: "16px" ,color: "#0000C7"}}
+                                  style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                                   onClick={() => {
                                     setToolInfo("");
                                   }}
@@ -1081,7 +1084,9 @@ export default function Tin(props: any) {
 
                         <Button
                           variant="contained"
-                          onClick={viewPdf}
+                          onClick={() => {
+                            dispatch(GetExpPdf(authDetails?.accountHolderId));
+                          }}
                           style={{ color: "white", marginLeft: "15px" }}
                         >
                           View Form
