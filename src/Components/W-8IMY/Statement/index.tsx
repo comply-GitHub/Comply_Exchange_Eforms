@@ -279,17 +279,8 @@ export default function AddMoreForm(props: any) {
      onSubmit={(values, { setSubmitting }) => {
         setSubmitting(true);
 
-        const formData = new FormData()
-        let obj ={}
-        values.items?.forEach((me:any,i)=>{
-          Object.keys(me).forEach((key:any) => {
-            const value = me[key];
-            const objectKey = `[${i}].${key}`
-            obj ={...obj , [objectKey]:value}            
-            
-          });
-          
-        })
+        
+        
 
         const temp = {
           agentId: authDetails.agentId,
@@ -298,13 +289,38 @@ export default function AddMoreForm(props: any) {
           ...values,
           stepName: null
         };
+        
+
+        let obj ={}
+        if(values.items.length > 0){
+          values.items?.forEach((me:any,i)=>{
+            Object.keys(me).forEach((key:any) => {
+              const value = me[key];
+              const objectKey = `[${i}].${key}`
+              obj ={...obj , [objectKey]:value}            
+              
+            });
+            
+          })
+        }
+
+        const length = Object.keys(obj).length;
+        if (length>0 && values.attachCopyofAllocationStatement === true) {
+          
+            dispatch(postW81MY_EForm_AccountStatement(obj,() => {
+          
+            }))
+          
+          
+        }
+
         const returnPromise = new Promise((resolve, reject) => {
           dispatch(
             postW81MY_EForm(temp,
               (responseData: any) => {
                 localStorage.setItem("PrevStepData", JSON.stringify(temp));
                 resolve(responseData);
-                //history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY")
+                history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY")
               },
               (err: any) => {
                 reject(err);
@@ -312,12 +328,12 @@ export default function AddMoreForm(props: any) {
             )
           );
         })
-
-        dispatch(postW81MY_EForm_AccountStatement(obj,() => {
+        
           
-        }))
-        history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY")
-        // return returnPromise
+        
+        
+        //history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY")
+        return returnPromise
         
       }}
     >
@@ -330,10 +346,11 @@ export default function AddMoreForm(props: any) {
           isSubmitting,
           setFieldValue,
           submitForm,
+          setErrors,
           isValid}) => (
             <Form onSubmit={handleSubmit}>
 
-            {/* <>{console.log(errors.items, values, "errorsssss")}</> */}
+            {/* <>{console.log(errors, values, "errorsssss")}</> */}
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
@@ -405,9 +422,17 @@ export default function AddMoreForm(props: any) {
                         name="previouslySubmittedAllocationStatement"
                         checked={values.previouslySubmittedAllocationStatement}
                         onChange={(e) => {
-                          setFieldValue("previouslySubmittedAllocationStatement",true)
-                          setFieldValue("attachCopyofAllocationStatement",false)
-                          setFieldValue("isWithholdingStatementClicked",false)
+
+                          setTimeout(() => {
+                            setFieldValue("previouslySubmittedAllocationStatement",true)
+                            setFieldValue("attachCopyofAllocationStatement",false)
+                            setFieldValue("isWithholdingStatementClicked",false)
+                            setFieldValue("items",[])
+                            setErrors({});
+                          }, 200);
+
+
+                          
                         }}
                         value={values.previouslySubmittedAllocationStatement}
                         
@@ -418,8 +443,12 @@ export default function AddMoreForm(props: any) {
                         name="attachCopyofAllocationStatement"
                         checked={values.attachCopyofAllocationStatement}
                         onChange={(e) => {
-                          setFieldValue("attachCopyofAllocationStatement",true)
-                          setFieldValue("previouslySubmittedAllocationStatement",false)
+                          setTimeout(() => {
+                            setFieldValue("attachCopyofAllocationStatement",true)
+                            setFieldValue("previouslySubmittedAllocationStatement",false)
+                          }, 200);
+
+                          
                         }}
                         value={values.attachCopyofAllocationStatement}
                         
@@ -429,15 +458,23 @@ export default function AddMoreForm(props: any) {
                         {values.attachCopyofAllocationStatement===true && (<>
                             <Button
                             variant="contained" 
+                            //color={values.attachCopyofAllocationStatement === true && (!Array.isArray(values?.items)  || (Array.isArray(values?.items) && values?.items.length == 0) ) ? 'error' : 'success'}
                             onClick={() => {
                               setTimeout(() => {
                                 setFieldValue("isWithholdingStatementClicked", true);
                               }, 200);
                             }}
                             >
-                                Click to create a Withholding Statement
+                                <p className="error"></p>Click to create a Withholding Statement
                             </Button>
                         </>)}
+                        {/* {values.attachCopyofAllocationStatement === true && (!Array.isArray(values?.items)  || (Array.isArray(values?.items) && values?.items.length == 0) ) && (
+                          <p className="error">Please attach WithHolding Statements</p>
+                        )} */}
+
+                        {/* {values.itemRequired && (
+                          <p className="error">Please attach WithHolding Statements</p>
+                        )} */}
 
                         {values.isWithholdingStatementClicked && (<>
                             <Typography 
@@ -956,6 +993,30 @@ export default function AddMoreForm(props: any) {
                             ...values,
                             stepName: `/${urlValue}`
                           };
+                          let obj ={}
+                            if(values.items.length > 0){
+                              values.items?.forEach((me:any,i)=>{
+                                Object.keys(me).forEach((key:any) => {
+                                  const value = me[key];
+                                  const objectKey = `[${i}].${key}`
+                                  obj ={...obj , [objectKey]:value}            
+                                  
+                                });
+                                
+                              })
+                            }
+
+                          const length = Object.keys(obj).length;
+                          if (length>0 && values.attachCopyofAllocationStatement === true) {
+                            
+                              dispatch(postW81MY_EForm_AccountStatement(obj,() => {
+                            
+                              }))
+                            
+                            
+                          }
+
+
                           dispatch(postW81MY_EForm(
                             temp
                             , () => { }))
@@ -973,7 +1034,13 @@ export default function AddMoreForm(props: any) {
                     <Button
                       type="submit"
                       variant="contained"
-                      //disabled={!isValid}
+                      disabled={
+                        values.previouslySubmittedAllocationStatement === false && values.attachCopyofAllocationStatement=== false
+
+                        ||
+
+                        values.attachCopyofAllocationStatement === true && (!Array.isArray(values?.items)  || (Array.isArray(values?.items) && values?.items.length == 0))
+                      }
                       style={{ color: "white", marginLeft: "15px" }}
                     >
                       Continue
