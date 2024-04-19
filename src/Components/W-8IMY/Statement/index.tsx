@@ -993,7 +993,7 @@ export default function AddMoreForm(props: any) {
                   <Typography align="center">
                     <Button
                     onClick={()=>{
-                      history("/IMY/Tax_Purpose_Exp/Chapter4_IMY");
+                      history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY");
                     }}
                       variant="contained"
                       style={{
