@@ -72,13 +72,22 @@ export const US_TINSchema8IMY = () => {
 
   const itemSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
+    familyName: Yup.string().required('Family Name is required'),
     
   });
   
   export const statementSchema8IMY = () => {
     return Yup.object().shape({
         previouslySubmittedAllocationStatement: Yup.string().required("required"),
-        items: Yup.array().of(itemSchema),
+        attachCopyofAllocationStatement:Yup.string(),
+        // itemsRequired:Yup.string().when("attachCopyofAllocationStatement",{
+        //   is:true,
+        //   then:() => Yup.string().required("Please attach WithHolding Statements"),
+        //   otherwise:() => Yup.string().notRequired()
+        // }),
+
+        items:Yup.array().of(itemSchema)
+        
       
     });
   };

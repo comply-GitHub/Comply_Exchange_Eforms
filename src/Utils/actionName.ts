@@ -66,6 +66,7 @@ const ActionName = {
     InsertW8IMYEntityNonForm:"InsertW8IMYEntityNonForm",
     InsertForm8233IndividualNonUSForm:"InsertForm8233IndividualNonUSForm",
     UpsertSupportingDocumentation:"UpsertSupportingDocumentation",
+    UpsertAccountHolderWithholdingStatement:"UpsertAccountHolderWithholdingStatement",
     //Account holder
     UpsertAccountHolderIncomeAllocation:"/AccountHolderDetail/UpsertAccountHolderIncomeAllocation",
     GetAccountHolderIncomeAllocation:"/AccountHolderDetail/GetAccountHolderIncomeAllocation",
@@ -86,6 +87,8 @@ const ActionName = {
     UpdateError:"UpdateError",
     GetIGA:"GetIGA",
     GetFederalTaxClassification:"GetFederalTaxClassification",
+    GetAllUSFormTypes:"GetAllUSFormTypes",
+    getAllAccountStatement:"getAllAccountStatement"
   };
 
   export default ActionName;

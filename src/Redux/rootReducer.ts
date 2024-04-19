@@ -33,7 +33,8 @@ import {
   GetAllFederalTaxReducer,
   GetDualCertW9Reducer,
   GetDualCertReducer,
-  getIGAReducer
+  getIGAReducer,
+  GetUSFormTypeReducer,
   
 } from "./Reducers";
 import w9Reducer from "./Reducers/w9Reducer";
@@ -48,6 +49,7 @@ import { ErrorsReducer } from "./Reducers/ErrorReducer";
 import W8EXPReducer from "./Reducers/W8EXPReducer";
 import DualCertReducer from "./Reducers/DualCertReducer";
 import W8IMYReducer from "./Reducers/W8IMY";
+import AccountStatementReducer from "./Reducers/AccountStatementReducer";
 
 let reducers = {
   getCountriesReducer,
@@ -83,7 +85,8 @@ let reducers = {
   GetAllLanguageReducer,
   GetDualCertReducer,
   getIGAReducer,
-
+  GetUSFormTypeReducer,
+  
 
 };
 const rootReducer = combineReducers({
@@ -99,7 +102,9 @@ const rootReducer = combineReducers({
   SubstantialUsPassiveNFE:substantialUsPassiveNFEReducer,
   AuthDetails:AuthDetailsReducer,
   Error:ErrorsReducer,
-  DualCert:DualCertReducer
+  DualCert:DualCertReducer,
+  AccountStatement:AccountStatementReducer
+  
 });
 
 export default rootReducer;

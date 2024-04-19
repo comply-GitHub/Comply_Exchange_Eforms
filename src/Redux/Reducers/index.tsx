@@ -1,6 +1,5 @@
 import Utils from "../../Utils";
-import { GetHelpVideoDetails } from "../Actions";
-// import { postSecurityCode } from "../Actions";
+import { getAllAccountStatement } from "../Actions";
 
 const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType, GetTinTypes, GetSecurityQuestions, GetCountriesCode, GetAllIncomeCodes, GetStateByCountryId, W9PDF, postSecurutyCode,
   GetAgentCapacityHiddenForEform,
@@ -32,7 +31,8 @@ const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType
   GetDualCertW9,
   GetDual,
   GetSettings,
-  GetIGA
+  GetIGA,
+  GetAllUSFormTypes
 } = Utils.actionName
 
 
@@ -442,4 +442,19 @@ export const getIGAReducer = (state = initialState, action: any) => {
       return state;
   }
 };
+
+
+
+export const GetUSFormTypeReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case GetAllUSFormTypes:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+};
+
+
+
+
 // 

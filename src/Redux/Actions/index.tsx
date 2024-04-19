@@ -2440,4 +2440,76 @@ export const getFederalTax = (callback: any = () => { console.log("") }): any =>
       }
     );
   };
+}
+
+export const postW81MY_EForm_AccountStatement = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.UpsertAccountHolderWithholdingStatement,
+      convertToFormData(value),
+      (responseData) => {
+        let { data } = responseData;
+        //console.log("Form 8233 Response Data",responseData);
+        dispatch({
+          type: Utils.actionName.UpsertAccountHolderWithholdingStatement,
+          payload: { ...value, Response: data },
+        });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback({ message: "Internal server error occured", payload: responseData })
+          } else {
+            if (callback) {
+              callback();
+            }
+          }
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(error)
+      },
+      "multi"
+    );
+  };
+};
+
+export const getAllAccountStatement = (accountHolderId: number, formTypeId: number): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetAccountHolderWithholdingStatement,
+      `?AccountHolderId=${accountHolderId}&FormTypeId=${formTypeId}`,
+      async (resData) => {
+        const { data } = resData;
+        
+
+        if (resData.status === 200) {
+          dispatch({
+            type: Utils.actionName.getAllAccountStatement,
+            payload: {
+              getAllAccountStatementdata: resData.data,
+            },
+          });
+        }
+      },
+      (error: any) => {
+        console.log(error)
+      }
+    );
+  };
 };

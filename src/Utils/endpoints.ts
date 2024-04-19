@@ -26,6 +26,8 @@ const EndPoint = {
   GetAllLanguage:"/Language/GetAllLanguage",
   GetIGA:"/Countries/GetIGA",
   GetFederalTaxClassification:"/W9Common/GetFederalTaxClassification",
+  GetAllUSFormTypes:"/FormTypes/GetAllUSFormTypes",
+
   //
   GetAgentCapacityHiddenForEform: "/WebAppBasic/GetAgentCapacityHiddenForEform",
   GetAgentChapter4EntityTypeHiddenForEform: "/WebAppBasic/GetAgentChapter4EntityTypeHiddenForEform",
@@ -58,6 +60,7 @@ const EndPoint = {
  InsertForm8233IndividualNonUSForm:"/Form8233Individual/InsertForm8233IndividualNonUSForm",
  UpsertSupportingDocumentation:"/AccountHolderDetail/UpsertSupportingDocumentation",
  UpsertDualCertW9:"/DualCert/UpsertDualCertDetails",
+ UpsertAccountHolderWithholdingStatement:"/AccountHolderDetail/UpsertAccountHolderWithholdingStatement",
  InserDualCert:"/DualCert/UpsertDualCert",
 
 // Form GetApis:
@@ -74,16 +77,20 @@ getSupportedFile:"/FileUpload/GetFileBase64",
 
 
 
+
 //Pdf apis
 GetW9Pdf:"/W9IndividualEntity/GetW9Pdf",
 GetECIPdf:"/W8ECIIndividualEntity/GetECIPdf",
 GetBENPdf:"/W8BENIndividual/GetBENPdf",
 GetBENEPdf:"/W8BENEEntity/GetBENEPdf",
+GetExpPdf:"/W8EXPEntity/GetExpPdf",
+GetIMYPdf:"/W8IMYEntity/GetIMYPdf",
+GetForm8233Pdf:"/Form8233Individual/GetForm8233Pdf",
 
  //Account Holder Endpoints
  UpsertAccountHolderIncomeAllocation:"/AccountHolderDetail/UpsertAccountHolderIncomeAllocation",
  GetAccountHolderIncomeAllocation:"/AccountHolderDetail/GetAccountHolderIncomeAllocation",
-
+ GetAccountHolderWithholdingStatement:"/AccountHolderDetail/GetAccountHolderWithholdingStatement",
  //SubstancialUsPassiveNFE
  UpsertAccountHolderSubstantialUsPassiveNFE:"/AccountHolderDetail/UpsertAHDSubstantialUsPassiveNFE",
  GetAccountHolderSubstantialUsPassiveNFE:"/AccountHolderDetail/GetAHDSubstantialUsPassiveNFE",

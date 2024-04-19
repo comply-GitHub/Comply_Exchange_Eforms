@@ -1620,7 +1620,7 @@ useEffect(()=>{
                             <FormControl className="w-100">
                               <Typography align="left">
                                 Country Of Birth
-                                <span style={{ color: "red" }}>*</span>
+                                <span style={{ color: "red" }}>**</span>
                               </Typography>
 
                               <select
@@ -1636,7 +1636,7 @@ useEffect(()=>{
                                   handleChange(e);
                                 }}
                                 onBlur={handleBlur}
-                                // error={Number(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
+                                //  error={Boolen(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
                                 value={values.countryOfBirthId}
                               >
                                 <option value="">---select---</option>
@@ -1651,7 +1651,11 @@ useEffect(()=>{
                                   )
                                 )}
                               </select>
-
+                              {errors.countryOfBirthId && touched.countryOfBirthId ? (<p className="error">{errors.countryOfBirthId}</p>) : ""}
+                              {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
+                                {/* {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
+                                    <p className="error">{errors?.countryOfBirthId}</p>
+                                  )} */}
                               {/* <select
                     style={{
                         padding: " 0 10px",
@@ -1682,15 +1686,15 @@ useEffect(()=>{
                 </select> */}
                               {/* {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ?<p className="error">{errors.countryOfCitizenshipId}</p>:<></>} */}
                               {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
-                              {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
+                              {/* {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
                                     <p className="error">{errors?.countryOfBirthId}</p>
-                                  )}
+                                  )} */}
                             </FormControl>
                           </div>
                           <div className="col-lg-3 col-6 col-md-3 mt-2">
                             <FormControl className="w-100">
                               <Typography align="left">
-                                Town/City of Birth<span style={{ color: "red" }}>*</span>
+                                Town/City of Birth<span style={{ color: "red" }}>**</span>
                               </Typography>
                               <Input
                                 style={{
@@ -1709,15 +1713,16 @@ useEffect(()=>{
                                 placeholder="Enter Town/City of Birth"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={Boolean(touched?.cityOfBirth && errors?.cityOfBirth)}
-
-                                value={values?.cityOfBirth}
-
+                                error={Boolean(
+                                  touched.cityOfBirth && errors.cityOfBirth
+                                )}
+                                value={values.cityOfBirth}
                               />
-                              {/* {(errors?.cityOfBirth && touched?.cityOfBirth) ? <p className="error">{errors?.cityOfBirth}</p> : <></>} */}
-                              {errors?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
+
+                              {errors.cityOfBirth && touched.cityOfBirth ? <p className="error">{errors.cityOfBirth}</p> : <></>}
+                              {/* {errors?.cityOfBirth && touched.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
                                     <p className="error">{errors?.cityOfBirth}</p>
-                                  )}
+                                  )} */}
                             </FormControl>
                           </div>
                         </div>
@@ -1801,6 +1806,7 @@ useEffect(()=>{
                                     onChange(date);
                                     setFieldValue("dob", date);
                                   }}
+                                  
                                   maxDate={moment().toDate()}
                                   value={value}
                                   clearIcon={null}
@@ -1848,10 +1854,10 @@ useEffect(()=>{
                                     )
                                   )}
                                 </select>
-                                {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
+                                {/* {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
                                     <p className="error">{errors?.countryOfBirthId}</p>
-                                  )}
-                                {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
+                                  )} */}
+                                {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>}
                               </FormControl>
                             </div>
                             <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -1881,10 +1887,10 @@ useEffect(()=>{
                                   value={values?.cityOfBirth}
 
                                 />
-                                {errors?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
+                                {/* {errors?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
                                     <p className="error">{errors?.cityOfBirth}</p>
-                                  )}
-                                {/* {errors.cityOfBirth && touched.cityOfBirth ? <p className="error">{errors.cityOfBirth}</p> : <></>} */}
+                                  )} */}
+                                {errors.cityOfBirth && touched.cityOfBirth ? <p className="error">{errors.cityOfBirth}</p> : <></>}
 
                               </FormControl>
                             </div>
