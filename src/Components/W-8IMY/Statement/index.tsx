@@ -488,12 +488,12 @@ export default function AddMoreForm(props: any) {
                             </Typography>
 
                             <FieldArray name="items">
-                                            {({ push, remove }) => (
+                                          {  ({ push, remove }) => (
                                                 
                                                 
                                             <div>
                                                 {values.items.map((item:any, index:any) => (
-                                                <div key={index}>
+                                                  <div key={index}>
                                                     <Paper className="my-2" style={{ backgroundColor: "#EAE5E4", padding: "10px" }}>
                                                     <Typography>
                                                         Please Enter the name, TIN and contact details here:
