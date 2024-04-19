@@ -165,11 +165,11 @@ export default function AddMoreForm(props: any) {
 
     
 
-    dispatch(
-      getAllUSFormTypes(3, (data: any) => {
-        setUsFormType(data);
-      })
-    );
+    // dispatch(
+    //   getAllUSFormTypes(3, (data: any) => {
+    //     setUsFormType(data);
+    //   })
+    // );
 
 
     dispatch(
