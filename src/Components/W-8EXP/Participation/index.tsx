@@ -24,6 +24,7 @@ import useAuth from "../../../customHooks/useAuth";
 import SecurityCodeRecover from "../../Reusable/SecurityCodeRecover";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
 export default function Penalties() {
 
   const { authDetails } = useAuth();
@@ -50,9 +51,9 @@ export default function Penalties() {
     setSecurityWordError("");
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Certfication II"
-  },[])
+  }, [])
 
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
@@ -143,7 +144,9 @@ export default function Penalties() {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
-                  <div className="viewform" onClick={viewPdf}>View Form</div>
+                  <div className="viewform" onClick={() => {
+                    dispatch(GetExpPdf(authDetails?.accountHolderId));
+                  }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                     {GethelpData && GethelpData[5].id === 7 ? (
@@ -302,7 +305,7 @@ export default function Penalties() {
                                 <Link
                                   href="#"
                                   underline="none"
-                                  style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
+                                  style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                                   onClick={() => {
                                     setToolInfo("");
                                   }}
@@ -395,7 +398,7 @@ export default function Penalties() {
                                 <Link
                                   href="#"
                                   underline="none"
-                                  style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
+                                  style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                                   onClick={() => {
                                     setToolInfo("");
                                   }}
@@ -721,7 +724,7 @@ export default function Penalties() {
                       <Typography
                         align="center"
                         style={{
-                          color: "#505E50",  
+                          color: "#505E50",
                           justifyContent: "center",
                           alignItems: "center",
                           marginTop: "20px",
