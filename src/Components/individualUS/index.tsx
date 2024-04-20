@@ -202,7 +202,7 @@ export default function IndividualUs() {
     dob: "",
     nameOfDisregarded: "",
     entityName: "",
-    taxpayerIdTypeID: 0,
+    taxpayerIdTypeID: 1,
     usTin: "",
     userType: userType,
     foreignTINCountryId: 0,
@@ -893,7 +893,7 @@ useEffect(()=>{
                   dob: values?.dob,
                   nameOfDisregarded: values?.nameOfDisregarded,
                   entityName: values?.entityName,
-                  taxpayerIdTypeID: +values?.taxpayerIdTypeID,
+                  taxpayerIdTypeID: userType== "SC" ? 1 :  +values?.taxpayerIdTypeID,
                   usTin: values?.usTin,
                   foreignTINCountryId: values?.foreignTINCountryId,
                   foreignTIN: values?.foreignTIN,
@@ -976,6 +976,9 @@ useEffect(()=>{
                   usTinTypeId: +values?.taxpayerIdTypeID,
                   permanentresidentialzippostalcode: values?.permanentResidentialZipPostalCode,
                 };
+
+                console.log("Payload",payload);
+                
                 dispatch(postOnboarding(payload, (data: any) => {
                   console.log(data)
                   if (data.accountHolderID) {
@@ -1216,7 +1219,7 @@ useEffect(()=>{
                     ""
                   )}
 
-                  <>{console.log(values, "hbd", errors, "errors")}</>
+                  {/* <>{console.log(values, "hbd", errors, "errors")}</> */}
                   <CardHeader
                     className="flex-row-reverse"
                     title={
