@@ -142,11 +142,13 @@ export default function Backup_witholding(props: any) {
           enableReinitialize
           validationSchema={secondStepSchema} // Uncomment after testing ,this is validation Schema
           onSubmit={(values, { setSubmitting }) => {
+            history("/US_Purposes/Back/Exemption")
             setSubmitting(true);
             console.log(selectedValue,"selectedValue")
-            const addSelectedValue={...PrevStepData,excemptionGuide:selectedValue}
+            const addSelectedValue={...PrevStepData}
+         
             const new_obj = { ...addSelectedValue, stepName: `/${urlValue}` };
-            const result = { ...new_obj, ...values };
+            const result = { ...new_obj, ...values , excemptionGuide: String(true) };
             // history("/US_Purposes/Back/Exemption")
             const submitPromise = new Promise((resolve, reject) => {
               dispatch(
@@ -976,7 +978,7 @@ export default function Backup_witholding(props: any) {
                 >
                   View Form
                 </Button>
-                {values.isExemptionfromBackup == 2 ? (<Button
+                {/* {values.isExemptionfromBackup == 2 ? (<Button
                   disabled={isSubmitting}
                   //type="submit"
                   variant="contained"
@@ -990,9 +992,11 @@ export default function Backup_witholding(props: any) {
                   }}
                 >
                   Continue
-                </Button>) : (<Button
-                  // disabled={!isRadioSelected}
-                  //type="submit"
+                </Button>) : ( */}
+                
+                
+                <Button
+                
                   disabled={isSubmitting}
                   variant="contained"
                   style={{ color: "white", marginLeft: "15px" }}
@@ -1005,7 +1009,9 @@ export default function Backup_witholding(props: any) {
                   }}
                 >
                   Continue
-                </Button>)}
+                </Button>
+              
+              
               </div>
               <Typography
                 align="center"

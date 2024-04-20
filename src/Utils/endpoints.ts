@@ -25,6 +25,7 @@ const EndPoint = {
   GetAllHelpVideosDetails:"/HelpVideo/GetAllHelpVideos",
   GetAllLanguage:"/Language/GetAllLanguage",
   GetIGA:"/Countries/GetIGA",
+  GetFederalTaxClassification:"/W9Common/GetFederalTaxClassification",
   GetAllUSFormTypes:"/FormTypes/GetAllUSFormTypes",
 
   //
