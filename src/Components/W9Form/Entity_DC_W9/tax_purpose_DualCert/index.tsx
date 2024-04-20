@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useState, useEffect } from "react";
 import {
   FormControl,
@@ -210,24 +206,24 @@ export default function Fedral_tax(props: any) {
                       accountHolderBasicDetailId: authDetails?.accountHolderId,
                     };
                     setSubmitting(true);
-                    const returnPromise = new Promise((resolve, reject) => {
-                      dispatch(
-                        postW8ECI_EForm(
-                          temp,
-                          (data: any) => {
-                            resolve(data);
-                            localStorage.setItem(
-                              "PrevStepData",
-                              JSON.stringify(temp)
-                            );
-                          },
-                          (err: any) => {
-                            reject(err);
-                          }
-                        )
-                      );
-                    });
-                    return returnPromise;
+                    // const returnPromise = new Promise((resolve, reject) => {
+                    //   dispatch(
+                    //     postW8ECI_EForm(
+                    //       temp,
+                    //       (data: any) => {
+                    //         resolve(data);
+                    //         localStorage.setItem(
+                    //           "PrevStepData",
+                    //           JSON.stringify(temp)
+                    //         );
+                    //       },
+                    //       (err: any) => {
+                    //         reject(err);
+                    //       }
+                    //     )
+                    //   );
+                    // });
+                    // return returnPromise;
                   }}
                 >
                   {({
@@ -1907,14 +1903,14 @@ export default function Fedral_tax(props: any) {
                           </Button>
                           <Button
                             //type="submit"
-                            disabled={!isValid}
+                            // disabled={!isValid}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
                             onClick={() => {
-                              submitForm().then((data) => {
-                                console.log(data)
-                                history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC/Fatca_DC");
-                              })
+                              // submitForm().then((data) => {
+                              //   console.log(data)
+                                history("/CRS_W9_DC");
+                              // })
                             }}
                           >
                             Continue

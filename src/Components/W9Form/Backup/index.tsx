@@ -142,10 +142,11 @@ export default function Backup_witholding(props: any) {
           enableReinitialize
           validationSchema={secondStepSchema} // Uncomment after testing ,this is validation Schema
           onSubmit={(values, { setSubmitting }) => {
+            history("/US_Purposes/Back/Exemption")
             setSubmitting(true);
             console.log(selectedValue,"selectedValue")
             const addSelectedValue={...PrevStepData}
-
+         
             const new_obj = { ...addSelectedValue, stepName: `/${urlValue}` };
             const result = { ...new_obj, ...values , excemptionGuide: String(true) };
             // history("/US_Purposes/Back/Exemption")
@@ -995,8 +996,7 @@ export default function Backup_witholding(props: any) {
                 
                 
                 <Button
-                  // disabled={!isRadioSelected}
-                  //type="submit"
+                
                   disabled={isSubmitting}
                   variant="contained"
                   style={{ color: "white", marginLeft: "15px" }}
