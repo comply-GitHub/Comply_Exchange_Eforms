@@ -81,7 +81,6 @@ export default function Tin(props: any) {
 
   const getCountriesReducer = useSelector((state:any) => state.getCountriesReducer);
   const [toolInfo, setToolInfo] = useState("");
-  console.log(getCountriesReducer)
   return (
     <>
       <Formik

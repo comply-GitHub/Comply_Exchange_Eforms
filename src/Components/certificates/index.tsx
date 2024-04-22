@@ -762,7 +762,7 @@ useEffect(()=>{
         >
           {userType === 'SC' && (<>
             {cards.map((card, index1) => ( 
-              card.userType === 'SC' ? <>
+              card.userType == 'SC' ? <>
                 <Card
               key={card?.id}
               className={card.enabled.includes(diableForm) ? "mx-3 mt-3" : "mx-3 mt-3 disabled"}
@@ -827,7 +827,7 @@ useEffect(()=>{
 
             {userType !== 'SC' ? <>
               { cards.map((card, index1) => (
-
+                card.userType !== 'SC' ? <>
                   <Card
                   key={card?.id}
                   className={card.enabled.includes(diableForm) ? "mx-3 mt-3" : "mx-3 mt-3 disabled"}
@@ -885,6 +885,7 @@ useEffect(()=>{
                   </div>
 
                   </Card>
+                  </> : ""
                 ))}
                 </> : ""}
           

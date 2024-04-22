@@ -25,7 +25,8 @@ import {
   W8_state,
   getAllCountries,
   postW8BENForm,
-  GetHelpVideoDetails
+  GetHelpVideoDetails,
+  postSCIndividualEForm
 } from "../../../../Redux/Actions";
 import { StatusSchema } from "../../../../schemas/w8Ben";
 import Accordion from "@mui/material/Accordion";
@@ -42,7 +43,9 @@ import useAuth from "../../../../customHooks/useAuth";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { StartSchema } from "../../../../schemas/cayman";
-
+import DatePicker from 'react-date-picker';
+import "react-date-picker/dist/DatePicker.css";
+import "react-calendar/dist/Calendar.css";
 
 interface FormValues {
   accountHolderBasicDetailId: number,
@@ -68,6 +71,10 @@ interface FormValues {
     taxReferenceNumber: string,
     isTINFormatNotAvailable: boolean,
   }[];
+}
+
+interface FormErrors {
+  permanentResidentialCountryId?: string; // Optional because it might not exist if there are no errors
 }
 
 export default function Index() {
@@ -134,17 +141,18 @@ export default function Index() {
     formTypeSelectionId: obValues.businessTypeId,
     formTypeId: FormTypeId.CaymanIndividual,
     accountHolderBasicDetailId:authDetails?.accountHolderId,
-    isHeldUSCitizenship: false,
+    isHeldUSCitizenship: PrevStepData?.isHeldUSCitizenship ? PrevStepData.isHeldUSCitizenship : false,
     countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "0",
-    isTaxationUSCitizenOrResident: false,
-    isPermamnentResidentCardHolder: false,
-    isHoldDualCitizenshipStatus: false,
-    isHoldDualCitizenshipIncludeUSCitizenship: false,
-    isRenouncedCitizenship: false,
-    dateRenouncedUSCitizenship: "",
-    renouncementProof: "",
+    isTaxationUSCitizenOrResident: PrevStepData?.isTaxationUSCitizenOrResident ? PrevStepData.isTaxationUSCitizenOrResident :  false,
+    isPermamnentResidentCardHolder: PrevStepData?.isPermamnentResidentCardHolder ? PrevStepData.isPermamnentResidentCardHolder : false,
+    isHoldDualCitizenshipStatus: PrevStepData?.isHoldDualCitizenshipStatus ? PrevStepData.isHoldDualCitizenshipStatus:false,
+    isHoldDualCitizenshipIncludeUSCitizenship: PrevStepData?.isHoldDualCitizenshipIncludeUSCitizenship ? PrevStepData.isHoldDualCitizenshipIncludeUSCitizenship:false,
+    isRenouncedCitizenship: PrevStepData?.isRenouncedCitizenship ? PrevStepData.isRenouncedCitizenship: false,
+    dateRenouncedUSCitizenship:PrevStepData?.dateRenouncedUSCitizenship ? PrevStepData.dateRenouncedUSCitizenship: "",
+    renouncementProof: PrevStepData?.renouncementProof ? PrevStepData.renouncementProof:"",
     items: itemsData,
-    countryTaxLiability: "",IsPresentAtleast31Days: false,
+    countryTaxLiability: PrevStepData?.countryTaxLiability ? PrevStepData.countryTaxLiability:"",
+    IsPresentAtleast31Days: PrevStepData?.IsPresentAtleast31Days ? PrevStepData.IsPresentAtleast31Days:false,
     statusId: 1,
     stepName: `/${urlValue}`,
   };
@@ -284,13 +292,13 @@ export default function Index() {
 
                 initialValues={initialValues}
                 enableReinitialize
-                validationSchema={StartSchema}
+                //validationSchema={StartSchema}
                 onSubmit={(values, { setSubmitting }) => {
                   const temp = {
                     ...values,
+                    ...PrevStepData,
                     stepName: `/${urlValue}`
                   };
-                  console.log(temp)
 
                   // if (clickCount === 0) {
                   //   setClickCount(clickCount + 1);
@@ -299,22 +307,22 @@ export default function Index() {
                     const new_obj = { ...PrevStepData, citizenshipCountry: getNameById(PrevStepData.citizenshipCountry) }
                     const result = { ...new_obj, ...values };
                     // console.log(result,"FINAL RESULT")
-                    // dispatch(
-                    //   postW8BENForm(values, () => {
-                    //     // history("/W-8BEN/Declaration/US_Tin");
-                    //     if (values?.IsPresentAtleast31Days=== "Yes") {
-                    //       history('/Susbtantial_BEN')
-                    //     } else {
-                    //       history(
-                    //         "/W-8BEN/Declaration/US_Tin"
-                    //       );
-                    //     }
-                    //     localStorage.setItem(
-                    //       "PrevStepData",
-                    //       JSON.stringify(result)
-                    //     );
-                    //   })
-                    // );
+                    dispatch(
+                      postSCIndividualEForm(values, () => {
+                        // history("/W-8BEN/Declaration/US_Tin");
+                        if (values?.IsPresentAtleast31Days=== true) {
+                          history('/Cayman/Individual/start/SustantialPresence')
+                        } else {
+                          history(
+                            "/Cayman/Individual/start/US_Tin"
+                          );
+                        }
+                        localStorage.setItem(
+                          "PrevStepData",
+                          JSON.stringify(result)
+                        );
+                      })
+                    );
 
                   }
                 }
@@ -331,8 +339,8 @@ export default function Index() {
                   submitForm,
                 }) => (
                   <Form onSubmit={handleSubmit}>
-                    <>{console.log(errors, values, "errorsssss")}</>
-
+                   
+                    
                     {values.isHeldUSCitizenship === true &&
                       obValues?.isUSIndividual == false ? (
                       <div
@@ -1118,8 +1126,56 @@ export default function Index() {
                                 renounced:{" "}
                                 <span style={{ color: "red" }}>*</span>
                               </Typography>
-                              <FormControl>
-                                <input
+                              <Typography>
+                              <DatePicker
+                                  className="dateclass"
+                                  onBlur={handleBlur}
+                                  name="dateRenouncedUSCitizenship"
+                                  onChange={(date:any) => { 
+                                    setTimeout(() => { 
+                                      const inputDate = new Date(date);
+                                      const year = inputDate.getFullYear();
+                                      const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+                                      const day = String(inputDate.getDate()).padStart(2, '0');
+                                      const formattedDate = `${year}-${month}-${day}`;
+                                      setFieldValue("dateRenouncedUSCitizenship", formattedDate);
+                                    }, 200);
+                                  }}
+                                  value={values.dateRenouncedUSCitizenship}
+                                  clearIcon={null}
+                                  format="yyyy-MM-dd"
+                                  dayPlaceholder="dd"
+                                  monthPlaceholder="mm"
+                                  yearPlaceholder="yy"
+                                />
+                              {/* <DatePicker
+                    
+                                    className="dateclass"
+                                    onBlur={handleBlur}
+                                    name="dateRenouncedUSCitizenship"
+                                    onChange={(date:any) => { 
+                                      setTimeout(() => { 
+                                        const inputDate = new Date(date);
+
+                                      const year = inputDate.getFullYear();
+                                      const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+                                      const day = String(inputDate.getDate()).padStart(2, '0');
+
+                                      const formattedDate = `${year}-${month}-${day}`;
+                                        
+                                        setFieldValue("dateRenouncedUSCitizenship", formattedDate); }, 200)
+                                    }
+                                  }
+                                    
+                                    //maxDate={moment().toDate()}
+                                    value={values.dateRenouncedUSCitizenship}
+                                    clearIcon={null}
+                                    format="yyyy-MM-dd"
+                                    dayPlaceholder="dd"
+                                    monthPlaceholder="mm"
+                                    yearPlaceholder="yy"
+                                  /> */}
+                                {/* <input
                                   className="my-2"
                                   style={{ fontSize: "15px", width: "100%" }}
                                   type="date"
@@ -1127,14 +1183,14 @@ export default function Index() {
                                   onBlur={handleBlur}
                                   name="dateRenouncedUSCitizenship"
                                   value={values.dateRenouncedUSCitizenship}
-                                />
+                                /> */}
 
                                 <p className="error"> {errors?.dateRenouncedUSCitizenship}</p>
                                  {(errors?.dateRenouncedUSCitizenship && touched?.dateRenouncedUSCitizenship && typeof errors.dateRenouncedUSCitizenship !== 'string') && (
                                     <p className="error"> {errors?.dateRenouncedUSCitizenship}</p>
                                   )}
                                 
-                              </FormControl>
+                              </Typography>
                               <Divider className="dividr" />
                               <Typography
                                 style={{
@@ -1231,6 +1287,7 @@ export default function Index() {
                                     <Divider className="dividr" />
                                     {values.items[index].isTaxLiabilityJurisdictions == true ? (
                                         <>
+
                                         <DeleteOutline type="button" onClick={() => remove(index)}/>
                                           <Typography>
                                             Please select the country where the individual
@@ -1251,7 +1308,7 @@ export default function Index() {
                                               onChange={handleChange}
                                               value={values.items[index].permanentResidentialCountryId}
                                             >
-                                              <option value={""}>---select---</option>
+                                              <option value={0}>---select---</option>
                                               <option value={45}>-canada-</option>
                                               <option value={257}>United Kingdom</option>
                                               <option value={258}>United States</option>
@@ -1264,7 +1321,72 @@ export default function Index() {
                                                 )
                                               )}
                                             </select>
+                                            
+                                            {/* {(typeof errors === 'object' && 'permanentResidentialCountryId' in errors.items) && (
+                                                      <p className="error">Please select Country</p>
+                                                    )} */}
+                                            {/* {errors?.permanentResidentialCountryId && typeof errors?.permanentResidentialCountryId === 'string' && (
+                                              <p className="error">{errors?.permanentResidentialCountryId}</p>
+                                            )} */}
                                           </FormControl>
+                                          {/* {Array.isArray(errors?.items) && (
+                                          <div>
+                                           {errors.items
+                                              .filter(error => error !== null) // Filter out null values
+                                              .map((error, index) => (
+                                                <div key={index}>
+                                                  {error && (
+                                                    <>
+                                                      {(typeof error !== 'string' &&  error?.permanentResidentialCountryId) && (
+                                                        <p className="error">{error.permanentResidentialCountryId}</p>
+                                                      )}
+                                                      
+                                                    </>
+                                                  )}
+                                                </div>
+                                              ))}
+                                          </div>
+                                        )} */}
+
+                                          {/* {Array.isArray(errors?.items) && errors.items.length > 0 && (
+                                            <div>
+                                              {errors.items.map((error, index) => (
+                                                <div key={index}>
+                                                  {error && (
+                                                    <>
+                                                      {(typeof error !== 'string' &&  error?.permanentResidentialCountryId) && (
+                                                        <p className="error">{error.permanentResidentialCountryId}</p>
+                                                      )}
+                                                      
+                                                    </>
+                                                  )}
+                                                </div>
+                                              ))}
+                                            </div>
+                                          )} */}
+
+
+                                          {/* {Array.isArray(errors?.items) && errors.items.length > 0 && (
+                                              <div>
+                                                  {errors.items.map((error, index) => (
+                                                        
+                                                        (error !== undefined ? <>
+                                                          <p className="error" key={index}>
+                                                          {(typeof error !== 'string' && error?.permanentResidentialCountryId) ? error.permanentResidentialCountryId : ""}
+                                                          
+                                                          </p>
+                                                            </> : "")
+                                                      //   <p className="error" key={index}>
+                                                      //   {(typeof error !== 'string' && error?.permanentResidentialCountryId) ? error.permanentResidentialCountryId : ""}
+                                                      
+                                                      // </p>
+
+                                                    
+
+
+                                                  ))}
+                                              </div>
+                                          )} */}
                                           <Divider className="dividr" />
 
                                           <Typography>
@@ -1374,6 +1496,42 @@ export default function Index() {
                                                   className="number"
                                                 />
                                               )}
+                                              {/* {Array.isArray(errors?.items) && errors.items.length > 0 && (
+                                                <div>
+                                                  {errors.items.map((error, index) => (
+                                                    <div key={index}>
+                                                      {error && (
+                                                        <>
+                                                          {(typeof error !== 'string' && error?.taxReferenceNumber) && (
+                                                            <p className="error">{error.taxReferenceNumber}</p>
+                                                          )}
+                                                          
+                                                        </>
+                                                      )}
+                                                    </div>
+                                                  ))}
+                                                </div>
+                                              )} */}
+                                              {/* {Array.isArray(errors?.items) && errors.items.length > 0 && (
+                                              <div>
+                                                  {errors.items.map((error, index) => (
+
+                                                      (error ? <>
+                                                      <p className="error" key={index}>
+                                                      {(typeof error !== 'string' && error?.taxReferenceNumber) ? error.taxReferenceNumber : ""}
+                                                      
+                                                      </p>
+                                                        </> : "")
+                                                      
+
+                                                     
+
+                                                    
+
+
+                                                  ))}
+                                              </div>
+                                          )} */}
                                             </FormControl>
                                             {/* {values.permanentResidentialCountryId == 257?( */}
                                             <div className="d-flex">
@@ -1398,12 +1556,7 @@ export default function Index() {
                                       ) : (
                                         ""
                                     )}
-
-
-
-
-
-                                </div>
+                              </div>
                               ))}
 
                             </div>
@@ -1477,7 +1630,7 @@ export default function Index() {
                         submitForm().then((data: any) => {
                           const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                           const urlValue = window.location.pathname.substring(1);
-                          dispatch(postW8BENForm(
+                          dispatch(postSCIndividualEForm(
                             {
                               ...prevStepData,
                               stepName: `/${urlValue}`
@@ -1487,7 +1640,7 @@ export default function Index() {
                         }).catch((err: any) => {
                           console.log(err);
                         })
-                      }} formTypeId={FormTypeId.BEN} />
+                      }} formTypeId={FormTypeId.CaymanIndividual} />
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
