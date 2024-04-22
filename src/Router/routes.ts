@@ -196,6 +196,13 @@ const Submit_IMY = React.lazy(() => import("../Components/W-8IMY/Sumit_imy"));
 const ThankYou_IMY = React.lazy(() => import("../Components/W-8IMY/Thankyou_imy"));
 
 const CaymanIndividualStart = React.lazy(() => import("../Components/Cayman/Individual/Start"));
+const CaymanIndividualStartSustantialPresence= React.lazy(() => import("../Components/Cayman/Individual/Start/SustantialPresence"));
+const CaymanIndividualStartUSTin= React.lazy(() => import("../Components/Cayman/Individual/Start/USTin"));
+const CaymanIndividualStartCertification= React.lazy(() => import("../Components/Cayman/Individual/Start/Certification"));
+const CaymanIndividualStartSubmission= React.lazy(() => import("../Components/Cayman/Individual/Start/Submission"));
+const CaymanIndividualStartESConfirmation= React.lazy(() => import("../Components/Cayman/Individual/Start/ESConfirmation"));
+const CaymanIndividualStartThankyou= React.lazy(() => import("../Components/Cayman/Individual/Start/Thankyou"));
+
 
 
 const ROUTES: Array<RouteType> = [
@@ -651,6 +658,47 @@ const ROUTES: Array<RouteType> = [
     path: "Cayman/Individual/Start",
     id: 7,
     Component: CaymanIndividualStart,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualStartUSTin",
+    path: "/Cayman/Individual/Start/US_Tin",
+    id: 7,
+    Component: CaymanIndividualStartUSTin,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualStartSustantialPresence",
+    path: "/Cayman/Individual/Start/SustantialPresence",
+    id: 7,
+    Component: CaymanIndividualStartSustantialPresence,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualStartCertification",
+    path: "/Cayman/Individual/Start/Certification",
+    id: 7,
+    Component: CaymanIndividualStartCertification,
+    isPrivate: true,
+  },{
+    name: "CaymanIndividualStartSubmission",
+    path: "/Cayman/Individual/Start/Submission",
+    id: 7,
+    Component: CaymanIndividualStartSubmission,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualStartESConfirmation",
+    path: "/Cayman/Individual/Start/ESConfirmation",
+    id: 7,
+    Component: CaymanIndividualStartESConfirmation,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualStartThankyou",
+    path: "/Cayman/Individual/Start/Thankyou",
+    id: 7,
+    Component: CaymanIndividualStartThankyou,
     isPrivate: true,
   },
   {

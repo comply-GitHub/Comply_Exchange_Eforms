@@ -87,7 +87,10 @@ const ActionName = {
     UpdateError:"UpdateError",
     GetIGA:"GetIGA",
     GetAllUSFormTypes:"GetAllUSFormTypes",
-    getAllAccountStatement:"getAllAccountStatement"
+    getAllAccountStatement:"getAllAccountStatement",
+    InsertCaymanIndividualNonUS:"InsertCaymanIndividualNonUS",
+    GetByCaymanIndividualNonUSId:"GetByCaymanIndividualNonUSId",
+
   };
 
   export default ActionName;

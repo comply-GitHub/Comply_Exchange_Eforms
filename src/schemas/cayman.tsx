@@ -3,8 +3,31 @@ const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
 
 
 const itemSchema = Yup.object().shape({
-    permanentResidentialCountryId: Yup.number().required('Please select country'),
-    taxReferenceNumber: Yup.string().required('Please enter Tax Reference Number'),
+    isTaxLiabilityJurisdictions: Yup.boolean(),
+    permanentResidentialCountryId: Yup.number().when("isTaxLiabilityJurisdictions",{
+      is :true,
+      then : () => Yup.number().notOneOf([0], 'Please select a country'),
+      otherwise:()=> Yup.number().notRequired()
+    }),
+    isTINFormatNotAvailable: Yup.boolean().when("isTaxLiabilityJurisdictions", {
+      is: true,
+      then: () => Yup.boolean().required("Please select checkbox"),
+    }),
+    taxReferenceNumber: Yup.string().when(["isTaxLiabilityJurisdictions","isTINFormatNotAvailable"],{
+      is:(isTaxLiabilityJurisdictions: boolean, isTINFormatNotAvailable: boolean) => isTaxLiabilityJurisdictions && isTINFormatNotAvailable,
+      then:()=>Yup.string().required('Please enter Tax Refrense Number'),
+      otherwise:()=>Yup.string().notRequired()
+    }),
+
+    // taxReferenceNumber: Yup.number().when(["isTaxLiabilityJurisdictions","isTINFormatNotAvailable"], {
+    //   is: "yes",
+    //   then: () =>
+    //     Yup.number()
+    //       // .required("Please select a country")
+    //       .notOneOf([0], "Please select a valid country"),
+    // }),
+   
+    //taxReferenceNumber: Yup.string().required('Please enter Tax Reference Number'),
     
   });
 
@@ -55,17 +78,17 @@ export const StartSchema = () => {
           //   .required("Please select a country")
           .notOneOf([0], "Please select a valid country"),
     }),
-    taxReferenceNumber: Yup.number().when("isTaxLiabilityJurisdictions", {
-      is: "yes",
-      then: () =>
-        Yup.number()
-          // .required("Please select a country")
-          .notOneOf([0], "Please select a valid country"),
-    }),
-    isTINFormatNotAvailable: Yup.boolean().when("isTaxLiabilityJurisdictions", {
-      is: "yes",
-      then: () => Yup.boolean().oneOf([true], "Message"),
-    }),
+    // taxReferenceNumber: Yup.number().when("isTaxLiabilityJurisdictions", {
+    //   is: "yes",
+    //   then: () =>
+    //     Yup.number()
+    //       // .required("Please select a country")
+    //       .notOneOf([0], "Please select a valid country"),
+    // }),
+    // isTINFormatNotAvailable: Yup.boolean().when("isTaxLiabilityJurisdictions", {
+    //   is: "yes",
+    //   then: () => Yup.boolean().oneOf([true], "Message"),
+    // }),
     // IsPresentAtleast31Days: Yup.boolean().required(
     //   "Please select one of the options"
     // ),

@@ -61,6 +61,7 @@ const EndPoint = {
  UpsertDualCertW9:"/DualCert/UpsertDualCertDetails",
  UpsertAccountHolderWithholdingStatement:"/AccountHolderDetail/UpsertAccountHolderWithholdingStatement",
  InserDualCert:"/DualCert/UpsertDualCert",
+ InsertCaymanIndividualNonUS:"/CaymanIndividualNonUS/InsertCaymanIndividualNonUS",
 
 // Form GetApis:
 GetDual:"/DualCert/GetDualCert",
@@ -72,7 +73,7 @@ GetByForm8233IndividualNonUSFormId:"/Form8233Individual/GetByForm8233IndividualN
 GetByW8IMYEntityNonForm :"/W8IMYEntity/GetByW8IMYEntityNonForm",
 GetSupportingDocumentation:"/AccountHolderDetail/GetSupportingDocumentation",
 getSupportedFile:"/FileUpload/GetFileBase64",
-
+GetByCaymanIndividualNonUSId: "/CaymanIndividualNonUS/GetByCaymanIndividualNonUSId",
 
 
 

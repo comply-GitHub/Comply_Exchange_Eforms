@@ -284,6 +284,9 @@ export const LoadExistingFormData = (formTypeId: any, AccountHolderId: any, call
     case FormTypeId.FW81MY:
       Endpoint = Utils.EndPoint.GetByW8IMYEntityNonForm + `?AccountHolderBasicDetailId=${AccountHolderId}`
       break;
+    case FormTypeId.CaymanIndividual:
+      Endpoint = Utils.EndPoint.GetByCaymanIndividualNonUSId + `?AccountHolderBasicDetailId=${AccountHolderId}`
+      break;
     default:
       return;
   }
@@ -2510,6 +2513,53 @@ export const getAllAccountStatement = (accountHolderId: number, formTypeId: numb
       (error: any) => {
         console.log(error)
       }
+    );
+  };
+};
+
+export const postSCIndividualEForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.InsertCaymanIndividualNonUS,
+    convertToFormData(value),
+      // value,
+      (responseData) => {
+        let { data } = responseData;
+        dispatch({
+          type: Utils.actionName.InsertCaymanIndividualNonUS,
+          payload: { ...value, Response: data },
+        });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback({ message: "Internal server error occured", payload: responseData })
+          } else {
+            if (callback) {
+              callback();
+            }
+          }
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(error)
+      },
+      "multi"
     );
   };
 };

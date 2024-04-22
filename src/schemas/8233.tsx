@@ -11,16 +11,13 @@ export const SubstantialSchema = () => {
 
 export const US_TINSchema = () => {
   return Yup.object().shape({
-    // usTinTypeId: Yup.string().notOneOf(['0'], 'Please select a valid option').when('$isRequired', {
-    //   is: true,
-    //   then: Yup.string().required('Selection is required when value is 0'),
-    // }),
+    usTinTypeId: Yup.string().notOneOf(['0'], 'Please select a valid option'),
 
-    usTinTypeId: Yup.string().notOneOf(['0'], 'please select a valid value').when('$isRequired',{
-      is:true,
-      then: () => Yup.string().required('Selection is required when value is 0')
-    }),
-    //usTinTypeId: Yup.string().required("Field Cannot be Empty"),
+    // usTinTypeId: Yup.string().notOneOf(['0'], 'please select a valid value').when('$isRequired',{
+    //   is:true,
+    //   then: () => Yup.string().required('Selection is required when value is 0')
+    // }),
+    // usTinTypeId: Yup.string().required("Field Cannot be Empty"),
     //usTin: Yup.string().required("Field Cannot be Empty"),
     notAvailable: Yup.boolean(),
     usTin:Yup.string().when("notAvailable" ,{
@@ -226,7 +223,7 @@ export const partCertiSchema = () => {
     //   is: "no",
     //   then: () => Yup.string().required("Please select owner"),
     // }),
-  date: Yup.date(),
+    date: Yup.date().typeError('Please enter a valid date').required('Please enter date'),
   isAgreeWithDeclaration: Yup.boolean().oneOf(
     [true],
     "Please mark the checkbox"
