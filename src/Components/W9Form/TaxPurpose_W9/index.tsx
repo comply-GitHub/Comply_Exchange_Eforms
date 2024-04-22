@@ -36,7 +36,7 @@ import {
     getAllCountriesCode,
     getAllCountriesIncomeCode,
     getAllStateByCountryId,
-    postW8ECI_EForm,
+    postW9Form,
     getFederalTax,
 } from "../../../Redux/Actions";
 import { FederalTaxSchema } from "../../../schemas/w8ECI";
@@ -63,21 +63,14 @@ export default function Fedral_tax(props: any) {
     const [selectedfile, setSelectedFile] = useState<any>(null);
 
     const initialValue = {
-        businessName: W9?.entityName ?? obValues?.entityName,
-        businessDisgradedEntity:
-            W9?.businessDisgradedEntity ?? obValues?.businessDisgradedEntity,
+        BusinessName: W9?.entityName ?? obValues?.entityName,
+        BusinessDisregardedEntityName:
+            W9?.BusinessDisregardedEntityName ?? obValues?.BusinessDisregardedEntityName,
         countryOfIncorporation:
             W9?.countryOfIncorporation ?? obValues?.foreignTINCountryId,
-        FederalTaxStatus: W9?.FederalTaxStatus ?? 0,
-        EntityType:W9?.EntityType ?? 0,
-        firstName: W9?.firstName ?? obValues?.firstName ?? "",
-        lastName: W9?.lastName ?? obValues?.lastName ?? "",
-        isSubmissionSingleUSOwner: W9?.isSubmissionSingleUSOwner === true ? "yes" : "no" ?? "",
-        descriptionHybridStatus: W9?.descriptionHybridStatus ?? "",
-        attachSupportingDocument: W9?.attachSupportingDocument ?? "",
-        attachSupportingDocumentFile: W9?.attachSupportingDocumentFile ?? "",
-        isDisRegardedSection1446: W9?.isDisRegardedSection1446 === true ? "yes" : "no" ?? "",
-        classification: W9?.classification ?? "",
+        FederalTaxClassificationId: W9?.FederalTaxClassificationId ?? 0,
+        LLCOwnerEntityType:W9?.LLCOwnerEntityType ?? 0,
+        USFederalTaxClassification: W9?.USFederalTaxClassification ?? "",
         OtherType: W9?.OtherType ?? "",
     };
 
@@ -146,7 +139,7 @@ export default function Fedral_tax(props: any) {
         };
 
     const confirmFunction = (value: any, setFieldValue: any) => {
-        setExpandedState(""); setFieldValue("FederalTaxStatus", value); setSelectedTaxClassification(value)
+        setExpandedState(""); setFieldValue("FederalTaxClassificationId", value); setSelectedTaxClassification(value)
     }
     const W9Data = useSelector((state: any) => state.w9Data);
     return (
@@ -202,33 +195,34 @@ export default function Fedral_tax(props: any) {
                                         let temp = {
                                             ...PrevStepData,
                                             ...values,
-                                            isSubmissionSingleUSOwner: values.isSubmissionSingleUSOwner === "yes",
-                                            isDisRegardedSection1446: values.isDisRegardedSection1446 === "yes",
-                                            attachSupportingDocumentFile: selectedfile,
-                                            classification: Number.parseInt(values.classification) ?? 3,
+                                            AccountHolderBasicDetailsId:authDetails?.accountHolderId ??
+                                            obValues?.AccountHolderBasicDetailsId,
+                                            FormTypeSelectionId:obValues.businessTypeId,
+                                           
+                                           
                                             agentId: authDetails?.agentId,
                                             accountHolderBasicDetailId: authDetails?.accountHolderId,
                                         };
                                         setSubmitting(true);
-                                        // const returnPromise = new Promise((resolve, reject) => {
-                                        //     // dispatch(
-                                        //     //     postW8ECI_EForm(
-                                        //             // temp,
-                                        //             // (data: any) => {
-                                        //                 resolve(data);
-                                        //                 localStorage.setItem(
-                                        //                     "PrevStepData",
-                                        //                     JSON.stringify(temp)
-                                        //                 );
-                                        //             },
-                                        //             (err: any) => {
-                                        //                 reject(err);
-                                        //             }
-                                            //     )
-                                            // );
-                                        // }
-                                    // );
-                                    //     return returnPromise;
+                                        const returnPromise = new Promise((resolve, reject) => {
+                                            dispatch(
+                                                postW9Form(
+                                                    temp,
+                                                    (data: any) => {
+                                                        resolve(data);
+                                                        localStorage.setItem(
+                                                            "PrevStepData",
+                                                            JSON.stringify(temp)
+                                                        );
+                                                    },
+                                                    (err: any) => {
+                                                        reject(err);
+                                                    }
+                                                )
+                                            );
+                                        }
+                                    );
+                                        return returnPromise;
                                     }}
                                 >
                                     {({
@@ -284,7 +278,7 @@ export default function Fedral_tax(props: any) {
                                                                 ) : (
                                                                     ""
                                                                 )}
-                                                        {values.classification == "Not" &&
+                                                        {values.USFederalTaxClassification == "Not" &&
                                                             clickCount === 1 ? (
                                                             <div
                                                                 style={{
@@ -399,7 +393,7 @@ export default function Fedral_tax(props: any) {
                                                                             }}
                                                                         >
                                                                             <Typography>
-                                                                                EH008:  Please make a selection from the drop down list provided. The selection must represent the chapter 3 classification, under U.S. tax principles of the individual, business or organization the certificate will represent.
+                                                                                EH008:  Please make a selection from the drop down list provided. The selection must represent the chapter 3 USFederalTaxClassification, under U.S. tax principles of the individual, business or organization the certificate will represent.
                                                                             </Typography>
                                                                             <Typography style={{ marginTop: "10px" }}>
                                                                                 Complete this line or use the Chapter 3 Classification Guide to establish your entity status for purposes of chapter 3. Check the one appropriate box that applies.
@@ -429,10 +423,10 @@ export default function Fedral_tax(props: any) {
 
                                                                 <FormControl className="w-50">
                                                                     <select
-                                                                        name="FederalTaxStatus"
-                                                                        value={values.FederalTaxStatus}
+                                                                        name="FederalTaxClassificationId"
+                                                                        value={values.FederalTaxClassificationId}
                                                                         onChange={handleChange}
-                                                                        autoComplete="FederalTaxStatus"
+                                                                        autoComplete="FederalTaxClassificationId"
                                                                         // onBlur={handleBlur}
                                                                         style={{
                                                                             padding: " 0 10px",
@@ -451,7 +445,7 @@ export default function Fedral_tax(props: any) {
 })}
                                                                     </select>
                                                                     <p className="error">
-                                                                        {touched.FederalTaxStatus ? errors.FederalTaxStatus?.toString() : ""}
+                                                                        {touched.FederalTaxClassificationId ? errors.FederalTaxClassificationId?.toString() : ""}
                                                                     </p>
                                                                 </FormControl>
                                                             </div>
@@ -460,7 +454,7 @@ export default function Fedral_tax(props: any) {
                                                       
 
                                                         {
-                                                            values.FederalTaxStatus == 5 || values.FederalTaxStatus == 6 || values.FederalTaxStatus == 8 || values.FederalTaxStatus == 9 || values.FederalTaxStatus == 10 ? (
+                                                            values.FederalTaxClassificationId == 5 || values.FederalTaxClassificationId == 6 || values.FederalTaxClassificationId == 8 || values.FederalTaxClassificationId == 9 || values.FederalTaxClassificationId == 10 ? (
                                                             <>
                                                                 <>
                                                                     <div
@@ -484,20 +478,20 @@ export default function Fedral_tax(props: any) {
 
                                                                             <FormControl className="w-100">
                                                                                 <TextField
-                                                                                    autoComplete="businessName"
+                                                                                    autoComplete="BusinessName"
                                                                                     type="text"
                                                                                     onChange={handleChange}
                                                                                     // onBlur={handleBlur}
                                                                                     // helperText={
-                                                                                    //   touched.businessName && errors.businessName
+                                                                                    //   touched.BusinessName && errors.BusinessName
                                                                                     // }
                                                                                     error={Boolean(
-                                                                                        touched.businessName &&
-                                                                                        errors.businessName
+                                                                                        touched.BusinessName &&
+                                                                                        errors.BusinessName
                                                                                     )}
-                                                                                    name="businessName"
+                                                                                    name="BusinessName"
                                                                                     className="inputClassFull"
-                                                                                    value={values.businessName}
+                                                                                    value={values.BusinessName}
                                                                                 />
                                                                             </FormControl>
                                                                         </div>
@@ -516,19 +510,19 @@ export default function Fedral_tax(props: any) {
 
                                                                             <FormControl className="w-100">
                                                                                 <TextField
-                                                                                    autoComplete="businessDisgradedEntity"
+                                                                                    autoComplete="BusinessDisregardedEntityName"
                                                                                     type="text"
                                                                                     onChange={handleChange}
                                                                                     // onBlur={handleBlur}
                                                                                     // helperText={
-                                                                                    //   touched.businessDisgradedEntity && errors.businessDisgradedEntity
+                                                                                    //   touched.BusinessDisregardedEntityName && errors.BusinessDisregardedEntityName
                                                                                     // }
                                                                                     error={Boolean(
-                                                                                        touched.businessDisgradedEntity &&
-                                                                                        errors.businessDisgradedEntity
+                                                                                        touched.BusinessDisregardedEntityName &&
+                                                                                        errors.BusinessDisregardedEntityName
                                                                                     )}
-                                                                                    name="businessDisgradedEntity"
-                                                                                    value={values.businessDisgradedEntity}
+                                                                                    name="BusinessDisregardedEntityName"
+                                                                                    value={values.BusinessDisregardedEntityName}
                                                                                     className="inputClass"
                                                                                 />
                                                                             </FormControl>
@@ -594,7 +588,7 @@ export default function Fedral_tax(props: any) {
                                                                     </>
                                                                 </>
 
-                                                               {values.FederalTaxStatus == 5 || values.FederalTaxStatus == 8 ?( <div style={{marginLeft:"6px"}}>
+                                                               {values.FederalTaxClassificationId == 5 || values.FederalTaxClassificationId == 8 ?( <div style={{marginLeft:"6px"}}>
                                                                     <Typography
                                                                         className="mt-3"
                                                                         style={{
@@ -608,27 +602,27 @@ export default function Fedral_tax(props: any) {
                                                                             row
                                                                            
                                                                             aria-labelledby="demo-row-radio-buttons-group-label"
-                                                                            name="classification"
-                                                                            value={values.classification}
+                                                                            name="USFederalTaxClassification"
+                                                                            value={values.USFederalTaxClassification}
                                                                             onChange={handleChange}
-                                                                            id="classification"
+                                                                            id="USFederalTaxClassification"
                                                                         >
                                                                             <FormControlLabel
                                                                                 control={<Radio />}
-                                                                                value="1"
-                                                                                name="classification"
+                                                                                value="SCorporation"
+                                                                                name="USFederalTaxClassification"
                                                                                 label="S-Corporation"
                                                                             />
                                                                             <FormControlLabel
                                                                                 control={<Radio />}
-                                                                                value="2"
-                                                                                name="classification"
+                                                                                value="CCorporation"
+                                                                                name="USFederalTaxClassification"
                                                                                 label="C-Corporation"
                                                                             />
                                                                            
                                                                         </RadioGroup>
                                                                         <p className="error">
-                                                                            {errors.classification?.toString()}
+                                                                            {errors.USFederalTaxClassification?.toString()}
                                                                         </p>
                                                                     </FormControl>
                                                                 </div>):""}
@@ -640,7 +634,7 @@ export default function Fedral_tax(props: any) {
                                                         )}
 
 
-                                                        {values.FederalTaxStatus == 7 ?(
+                                                        {values.FederalTaxClassificationId == 7 ?(
                                                             <>
                                                             <div>
                                                             <Typography >
@@ -788,17 +782,17 @@ export default function Fedral_tax(props: any) {
 
                                                                             <FormControl className="w-100">
                                                                                 <TextField
-                                                                                    autoComplete="businessDisgradedEntity"
+                                                                                    autoComplete="BusinessDisregardedEntityName"
                                                                                     type="text"
                                                                                     onChange={handleChange}
                                                                                     onBlur={handleBlur}
                                                                                    
                                                                                     error={Boolean(
-                                                                                        touched.businessDisgradedEntity &&
-                                                                                        errors.businessDisgradedEntity
+                                                                                        touched.BusinessDisregardedEntityName &&
+                                                                                        errors.BusinessDisregardedEntityName
                                                                                     )}
-                                                                                    name="businessDisgradedEntity"
-                                                                                    value={values.businessDisgradedEntity}
+                                                                                    name="BusinessDisregardedEntityName"
+                                                                                    value={values.BusinessDisregardedEntityName}
                                                                                     className="inputClass"
                                                                                 />
                                                                             </FormControl>
@@ -817,20 +811,20 @@ export default function Fedral_tax(props: any) {
 
                                                                             <FormControl className="w-100">
                                                                                 <TextField
-                                                                                    autoComplete="businessName"
+                                                                                    autoComplete="BusinessName"
                                                                                     type="text"
                                                                                     onChange={handleChange}
                                                                                     // onBlur={handleBlur}
                                                                                     // helperText={
-                                                                                    //   touched.businessName && errors.businessName
+                                                                                    //   touched.BusinessName && errors.BusinessName
                                                                                     // }
                                                                                     error={Boolean(
-                                                                                        touched.businessName &&
-                                                                                        errors.businessName
+                                                                                        touched.BusinessName &&
+                                                                                        errors.BusinessName
                                                                                     )}
-                                                                                    name="businessName"
+                                                                                    name="BusinessName"
                                                                                     className="inputClassFull"
-                                                                                    value={values.businessName}
+                                                                                    value={values.BusinessName}
                                                                                 />
                                                                             </FormControl>
                                                                         </div>
@@ -852,10 +846,10 @@ Entity type for U.S. tax purposes:
                                                               
                                                                 <FormControl className="w-50">
                                                                     <select
-                                                                        name="EntityType"
-                                                                        value={values.EntityType}
+                                                                        name="LLCOwnerEntityType"
+                                                                        value={values.LLCOwnerEntityType}
                                                                         onChange={handleChange}
-                                                                        autoComplete="EntityType"
+                                                                        autoComplete="LLCOwnerEntityType"
                                                                         // onBlur={handleBlur}
                                                                         style={{
                                                                             padding: " 0 10px",
@@ -874,7 +868,7 @@ Entity type for U.S. tax purposes:
 })}
                                                                     </select>
                                                                     <p className="error">
-                                                                        {touched.EntityType ? errors.EntityType?.toString() : ""}
+                                                                        {touched.LLCOwnerEntityType ? errors.LLCOwnerEntityType?.toString() : ""}
                                                                     </p>
                                                                 </FormControl>
                                                             </div>
@@ -936,7 +930,7 @@ Entity type for U.S. tax purposes:
                                                             </div>
                                                             </>
                                                         ):""}
-                                                        {values.FederalTaxStatus == 11 ?(<>
+                                                        {values.FederalTaxClassificationId == 11 ?(<>
                                                         <div>
 
                                                             <Typography
@@ -1025,7 +1019,7 @@ Entity type for U.S. tax purposes:
                                                                         }}
                                                                     >
                                                                         This guide is provided to help you determine
-                                                                        the classification of the entity the
+                                                                        the USFederalTaxClassification of the entity the
                                                                         submission represents.
                                                                     </Typography>
 
@@ -1037,7 +1031,7 @@ Entity type for U.S. tax purposes:
                                                                         }}
                                                                     >
                                                                         In the left hand menu you will see several
-                                                                        different classification types. Please
+                                                                        different USFederalTaxClassification types. Please
                                                                         select each in turn reading the definition
                                                                         provided. When you are satisfied the
                                                                         description matches the entity type select
@@ -1793,7 +1787,7 @@ Entity type for U.S. tax purposes:
                                   const urlValue =
                                     window.location.pathname.substring(1);
                                   dispatch(
-                                    postW8ECI_EForm(
+                                    postW9Form(
                                       {
                                         ...prevStepData,
                                         stepName: `/${urlValue}`,

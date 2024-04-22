@@ -1187,7 +1187,7 @@ useEffect(()=>{
                   {toolInfo === "identity" ? (
                     <div className="mt-5">
                       <Paper
-                        style={{ backgroundColor: "#d1ecf1", padding: "15px" }}
+                        style={{ backgroundColor: "#d1ecf1", padding: "15px" ,marginLeft:"23px"}}
                       >
                         <div
                           className="d-flex"
@@ -6868,7 +6868,8 @@ useEffect(()=>{
                                   ""
                                 )}
                                 {values.accountBankBranchLocationId == 257 ? (
-                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                   <div className="d-flex col-12">
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2 d-flex">
                                     <FormControl className="w-100">
                                       <Typography align="left">
                                         IBAN
@@ -6884,6 +6885,7 @@ useEffect(()=>{
                                           color: " #000 ",
                                           fontStyle: "normal",
                                           borderRadius: "1px",
+                                          width:"96%",
                                           padding: " 0 10px ",
                                         }}
                                         id="outlined"
@@ -6896,8 +6898,10 @@ useEffect(()=>{
                                       />
                                       {/* <p className='error'>{errors.iban}</p> */}
                                     </FormControl>
+                                    </div>
+                                    <div className="col-lg-3 col-6 col-md-3 mt-2 d-flex">
                                     <FormControl className="w-100">
-                                      <Typography align="left">
+                                      <Typography align="left" style={{marginLeft:"5px"}}>
                                         Swift code
                                         {/* <span style={{ color: 'red' }}>*</span> */}
                                       </Typography>
@@ -6908,10 +6912,12 @@ useEffect(()=>{
                                           lineHeight: "36px ",
                                           background: "#fff ",
                                           fontSize: "13px",
+                                          marginLeft:"5px",
                                           color: " #000 ",
                                           fontStyle: "normal",
                                           borderRadius: "1px",
                                           padding: " 0 10px ",
+                                          width:"96%"
                                         }}
                                         id="outlined"
                                         name="swiftCode"
@@ -6923,6 +6929,7 @@ useEffect(()=>{
                                       />
                                       {/* <p className='error'>{errors.swiftCode}</p> */}
                                     </FormControl>
+                                    </div>
                                   </div>
                                 ) : (
                                   ""
