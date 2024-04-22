@@ -2392,7 +2392,7 @@ export const postW81MY_EForm = (value: any, callback: Function, errorCallback: F
     );
   };
 };
-
+//GetFederalTaxClassification
 export const getIGA = (callback: any = () => { console.log("") }): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
@@ -2419,25 +2419,25 @@ export const getIGA = (callback: any = () => { console.log("") }): any => {
   };
 };
 
-
-export const getAllUSFormTypes =  (num: any, callback: Function): any => {
+export const getFederalTax = (callback: any = () => { console.log("") }): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
-      Utils.EndPoint.GetAllUSFormTypes,
+      Utils.EndPoint.GetFederalTaxClassification,
       "",
       (resData) => {
-        const { data } = resData;
         if (resData.status === 200) {
           if (callback) {
             callback(resData.data)
           }
           dispatch({
-            type: Utils.actionName.GetAllUSFormTypes,
+            type: Utils.actionName.GetFederalTaxClassification,
             payload: {
-              allUSFormTypeData: resData.data,
+              FederalData: resData.data,
             },
           });
-        } 
+
+        } else {
+        }
       },
       (error: any) => {
       }
@@ -2505,7 +2505,7 @@ export const getAllAccountStatement = (accountHolderId: number, formTypeId: numb
           dispatch({
             type: Utils.actionName.getAllAccountStatement,
             payload: {
-              getAllAccountStatement: resData.data,
+              getAllAccountStatementdata: resData.data,
             },
           });
         }

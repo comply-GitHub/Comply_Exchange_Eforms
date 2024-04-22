@@ -20,6 +20,7 @@ const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType
   GetChapter4Statuses,
   GetLimitationBenefits,
   GetIncomeTypes,
+  GetFederalTaxClassification,
   GetAllHelpVideosDetails,
   GetAgentIncomeTypeHiddenAllowAnoymo,
   SendOTPMail,GetByW9IndividualEntityUSFormId,
@@ -40,6 +41,15 @@ let initialState: any = [];
 export const GetAllLanguageReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case GetAllLanguage:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}
+
+export const GetAllFederalTaxReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case GetFederalTaxClassification:
       return { ...state, ...action.payload };
     default:
       return state;

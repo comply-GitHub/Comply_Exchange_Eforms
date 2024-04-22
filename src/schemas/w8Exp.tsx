@@ -242,7 +242,7 @@ export const certificateSchema_w9 = () => {
       "Please mark the checkbox"
     ),
     certification_IRS: Yup.boolean()
-      .when('isAmountCertificationUS', (certification_IRSBackupWithHolding, schema) => {
+      .when('certification_IRSBackupWithHolding', (certification_IRSBackupWithHolding, schema) => {
         return certification_IRSBackupWithHolding[0] ? schema.isFalse("") : schema.isTrue("");
       })
     ,
@@ -255,6 +255,13 @@ export const certificateSchema_w9 = () => {
     isElectronicForm: Yup.boolean().oneOf([true], "Please mark the checkbox"),
   });
 };
+
+// certification_CorrectTaxpayerIdentification: getReducerData?.certification_CorrectTaxpayerIdentification ?? false,
+//     certification_IRSBackupWithHolding: getReducerData?.certification_IRSBackupWithHolding ?? false,
+//     certification_FATCACode: getReducerData?.certification_FATCACode ?? false,
+//     certification_IRS: getReducerData?.certification_IRS ?? false,
+//     certification_ElectronicForm: getReducerData?.certification_ElectronicForm ?? false,
+//     certification_USCitizenPerson: getReducerData?.certification_USCitizenPerson ?? false,
 export const certificateSchema_w8Ben = () => {
   return Yup.object().shape({
     isBeneficialOwnerIncome: Yup.boolean().oneOf(

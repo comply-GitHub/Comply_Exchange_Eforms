@@ -86,6 +86,7 @@ const ActionName = {
     //errors
     UpdateError:"UpdateError",
     GetIGA:"GetIGA",
+    GetFederalTaxClassification:"GetFederalTaxClassification",
     GetAllUSFormTypes:"GetAllUSFormTypes",
     getAllAccountStatement:"getAllAccountStatement",
     InsertCaymanIndividualNonUS:"InsertCaymanIndividualNonUS",
