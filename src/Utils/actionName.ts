@@ -88,7 +88,10 @@ const ActionName = {
     GetIGA:"GetIGA",
     GetFederalTaxClassification:"GetFederalTaxClassification",
     GetAllUSFormTypes:"GetAllUSFormTypes",
-    getAllAccountStatement:"getAllAccountStatement"
+    getAllAccountStatement:"getAllAccountStatement",
+    InsertCaymanIndividualNonUS:"InsertCaymanIndividualNonUS",
+    GetByCaymanIndividualNonUSId:"GetByCaymanIndividualNonUSId",
+
   };
 
   export default ActionName;
