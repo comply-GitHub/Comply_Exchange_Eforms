@@ -49,6 +49,11 @@ export default function Tin(props: any) {
   const onBoardingFormValues = JSON.parse(
     localStorage.getItem("agentDetails") ?? "null"
   );
+
+  const AgentDeatilsId = localStorage.getItem("agentDetails") || "{}";
+
+  const authentication = JSON.parse(AgentDeatilsId);
+  const businessType = authentication?.businessTypeId;
   const urlValue = location.pathname.substring(1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const [payload, setPayload] = useState({
@@ -234,7 +239,7 @@ export default function Tin(props: any) {
 
 
                     <div style={{ backgroundColor: "#ffff", }}>
-                      {values.Tin && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                      {values.Tin && businessType === 1 && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                         <Typography>
                           TIN 100
                           <span className="mx-1">
@@ -259,7 +264,31 @@ export default function Tin(props: any) {
 
 
                       </div>) : ""}
+                      {values.Tin &&  businessType === 2 && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                        <Typography>
+                          TIN 100
+                          <span className="mx-1">
+                            <img src={Infoicon} style={{
+                              color: "#ffc107", height: "22px",
+                              width: "20px",
+                              boxShadow: "inherit",
 
+
+
+                              cursor: "pointer",
+                              marginBottom: "3px"
+
+                            }} />
+
+
+                          </span>
+                          You have selected an entity type that would normally expect to supply an EIN
+
+                        </Typography>
+
+
+
+                      </div>) : ""}
                       {values.Tin == "" && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                         <Typography>
                           TIN

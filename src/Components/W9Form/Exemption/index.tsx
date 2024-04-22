@@ -133,14 +133,14 @@ export default function FCTA_Reporting(props: any) {
         validateOnBlur={true}
         initialValues={initialValue}
         enableReinitialize
-        validationSchema={fctaSchema} // Uncomment after testing ,this is validation Schema
+        validationSchema={fctaSchema} 
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
           const new_obj = { ...PrevStepData, stepName: `/${urlValue}`
-          ,AccountHolderBasicDetailsId: AccountHolder.accountHolderId,AgentId:AccountHolder.agentId,FormTypeSelectionId:BusinessId.businessTypeId,partnershipTrustAuthority:true,IsAgreeWithDeclaration:true
+          ,AccountHolderBasicDetailsId: AccountHolder.accountHolderId,AgentId:AccountHolder.agentId,FormTypeSelectionId:BusinessId.businessTypeId,
         }
           let result = { ...new_obj, ...values };
-          // result = { ...result, isExemptionFATCAReportings:  result.isExemptionFATCAReportings=="true" };
+          
           console.log(result, "values ex", PrevStepData)
 
           const submitPromise = new Promise((resolve, reject) => {

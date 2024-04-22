@@ -117,39 +117,8 @@ export default function Declaration (props: any){
                 isValid
               }) => (
                 <form onSubmit={handleSubmit}>
-                 {!isAccordionVisible && ( <>
-                   <div style={{justifyContent:"space-between",display:"flex",marginTop:"10px"}}>
-                  <Typography
-                      align="left"
-                      style={{
-                        fontSize: "27px",
-                        color: "black",
-                        fontWeight: "bold",
-                        marginLeft:'10px'
-                      
-                      }}
-                    >
-                    CRS Classification:
-                    </Typography>
-                    <Button
-                     onClick={() => setIsAccordionVisible(!isAccordionVisible)}
-                      style={{ backgroundColor: "#d3ae33",cursor:"pointer",color: "black", fontSize: "12px", fontWeight: "bold" }}
-                    >
-                    CRS Classification Guide
-                    </Button>
-                  </div>
-                
-                   <div style={{marginLeft:"10px",marginTop:"10px",backgroundColor:"#fff"}}>
-                 
-                  <div className="d-flex mt-3">
-                    <Typography style={{fontSize:"19px"}}>Select CRS Classification:</Typography>
-                    <Link className="mx-2"  onClick={() => setIsAccordionVisible(!isAccordionVisible)}style={{fontSize:"19px",textDecorationLine:"none",color:"#1149c4",cursor:"pointer"}}>Click Here to start Process</Link>
-                  </div>
-                   </div>
-                  
-                 </>)}
-              {isAccordionVisible && (
-              <div style={{ backgroundColor: "#fff", padding: "5px" }}>
+               
+                   <div style={{ backgroundColor: "#fff", padding: "5px" }}>
               <Typography
                 className="my-2 mx-2"
                 style={{ fontSize: "20px", color: "#1976d2", fontWeight: "bold" }}
@@ -170,16 +139,16 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Introduction
+                    Financial Institution Review
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography
                     align="left"
-                    style={{ fontSize: "17px", color: "#1976d2", fontWeight: "bold" }}
+                    style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                    FATCA & CRS Classification Guide- CRS Introduction
+                    CRS Classification - Financial Institution Review
                   </Typography>
                  
                 </AccordionDetails>
@@ -196,7 +165,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Financial Institution CRS
+                   Reporting Financial Institution Under CRS
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -205,7 +174,7 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                    Chapter 4 Classification - Financial Entity Overview
+                   CRS Classification - Reporting Financial Institution Under CRS
                   </Typography>
                   
                 </AccordionDetails>
@@ -222,7 +191,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Active Non Financial Entity{" "}
+                     Non Reporting Financial Institution Under CRS
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -231,7 +200,7 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                   CRS Classification - Active Non-Financial Entity
+                  CRS Classification - Non Reporting Financial Institution Under CRS
                   </Typography>
                   
                 </AccordionDetails>
@@ -248,7 +217,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Passive Non Financial Entity{" "}
+                    Financial Institution resident in a Non-Participating Juridiction Under CRS
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -257,171 +226,7 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                   CRS Classification - Passive Non-Financial Entity
-                  </Typography>
-                  
-                </AccordionDetails>
-              </Accordion>
-
-              
-
-
-              <Typography align="center">
-                <Button
-                 onClick={() => setIsAccordionVisible(false)}
-                  variant="outlined"
-                  style={{
-                    color: "#1976E2",
-             
-                    marginTop: "10px",
-                    marginBottom: "20px",
-                  }}
-                >
-                  Close
-                </Button>
-                <Button
-                 disabled={!isContinueEnabled} 
-                 onClick={() => {
-                  if (expandedState === "panel2") {
-                    history("/Financial_W9_DC");
-                  } else if (expandedState === "panel3") {
-                    history("/Active_Non_Financial_W9_DC");
-                  }
-                  else if(expandedState === "panel4"){
-                    history("/Passive_Non_Financial_W9_DC")
-                  }
-                }}
-                  variant="contained"
-                 
-                  style={{
-
-                 
-                    marginTop: "10px",
-                    marginBottom: "20px",
-                    marginLeft: "10px"
-
-                  }}
-                >
-                  Confirm
-                </Button>
-
-                
-              </Typography>
-
-            </div>
-            )}
-
-                  
-              {/* Third accodion
-              <div style={{ backgroundColor: "#fff", padding: "5px" }}>
-              <Typography
-                className="my-2 mx-2"
-                style={{ fontSize: "20px", color: "#1976d2", fontWeight: "bold" }}
-              >
-               CRS Classification Guide
-              </Typography>
-
-
-              <Accordion
-                expanded={expandedState === "panel1"}
-                onChange={handleChangeAccodionState("panel1")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  aria-controls="panel1d-content"
-                  id="panel1d-header"
-                >
-                  <Typography
-                    style={{ fontSize: "18px",color: "black" }}
-                  >
-                    Active Non-Financial Entity Overview
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography
-                    align="left"
-                    style={{ fontSize: "14px",color: "black" }}
-                    
-                  >
-                    CRS Classification - Active Non-Financial Entity Overview
-                  </Typography>
-                 
-                </AccordionDetails>
-              </Accordion>
-              <Accordion
-                expanded={expandedState === "panel2"}
-                onChange={handleChangeAccodionState("panel2")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  aria-controls="panel2d-content"
-                  id="panel2d-header"
-                >
-                  <Typography
-                    style={{ fontSize: "18px",color: "black" }}
-                  >
-                   Corporation that is regularly traded or a related entity of a regularly traded corporation
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography
-                    align="left"
-                    style={{ fontSize: "14px",color: "black" }}
-                    
-                  >
-                  CRS Classification - Corporation that is regularly traded or a related entity of a regularly traded corporation
-                  </Typography>
-                  
-                </AccordionDetails>
-              </Accordion>
-              <Accordion
-                expanded={expandedState === "panel3"}
-                onChange={handleChangeAccodionState("panel3")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  aria-controls="panel2d-content"
-                  id="panel2d-header"
-                >
-                  <Typography
-                    style={{ fontSize: "18px",color: "black" }}
-                  >
-                    Governmental Entity, International Organization, a Central Bank, or an Entity wholly
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography
-                    align="left"
-                    style={{ fontSize: "14px",color: "black" }}
-                    
-                  >
-                 CRS Classification - Governmental Entity, International Organization, a Central Bank, or an Entity wholly
-                  </Typography>
-                  
-                </AccordionDetails>
-              </Accordion>
-              <Accordion
-                expanded={expandedState === "panel4"}
-                onChange={handleChangeAccodionState("panel4")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  aria-controls="panel2d-content"
-                  id="panel2d-header"
-                >
-                  <Typography
-                    style={{ fontSize: "18px",color: "black" }}
-                  >
-                    Other Active Non-Financial Entity
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography
-                    align="left"
-                    style={{ fontSize: "14px",color: "black" }}
-                    
-                  >
-                 CRS Classification - Other Active Non-Financial Entity
+                  CRS Classification - Financial Institution resident in a Non-Participating Jurisdiction under CRS
                   </Typography>
                   
                 </AccordionDetails>
@@ -464,35 +269,8 @@ export default function Declaration (props: any){
 
             </div>
 
-              Fourth accodion
-              <div style={{ backgroundColor: "#fff", padding: "5px" }}>
-               <>Page</>
-            </div> */}
             
 
-{!isAccordionVisible && (<div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      marginTop: "40px",
-                    }}
-                  >
-                   
-                    <Button
-                      variant="contained"
-                      style={{ color: "white", marginLeft: "15px" }}
-                    >
-                      View Form
-                    </Button>
-
-                    <Button    
-                      disabled           
-                      variant="contained"
-                      style={{ color: "white", marginLeft: "15px" }}
-                    >
-                      Confirm
-                    </Button>
-                  </div>)}
                 
                 </form>
            

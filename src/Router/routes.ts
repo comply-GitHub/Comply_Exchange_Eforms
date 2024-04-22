@@ -45,6 +45,17 @@ const TaxPurpose_entity_W9_DC = React.lazy(
 const CRS_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert")
 );
+
+const Financial_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Financial")
+);
+const Active_Non_Financial_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Active_Non_financial")
+);
+
+const Passive_Non_Financial_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Passive")
+);
 const TaxPurpose_W9 = React.lazy(
   () => import("../Components/W9Form/TaxPurpose_W9/index")
 );
@@ -305,7 +316,13 @@ const ROUTES: Array<RouteType> = [
     Component: TaxPurpose_entity_W9_DC,
     isPrivate: true,
   },
-
+  {
+    name: "Financial_W9_DC",
+    path: "/Financial_W9_DC",
+    id: 2,
+    Component: Financial_W9_DC,
+    isPrivate: true,
+  },
   {
     name: "CRS_W9_DC",
     path: "/CRS_W9_DC",
@@ -313,7 +330,21 @@ const ROUTES: Array<RouteType> = [
     Component: CRS_W9_DC,
     isPrivate: true,
   },
-  //CRS_W9_DC
+  {
+    name: "Active_Non_Financial_W9_DC",
+    path: "/Active_Non_Financial_W9_DC",
+    id: 2,
+    Component: Active_Non_Financial_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Passive_Non_Financial_W9_DC",
+    path: "/Passive_Non_Financial_W9_DC",
+    id: 2,
+    Component: Passive_Non_Financial_W9_DC,
+    isPrivate: true,
+  },
+  //Active_Non_Financial_W9_DC
   {
     name: "TaxPurpose_W9",
     path: "/TaxPurpose_W9",

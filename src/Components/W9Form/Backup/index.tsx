@@ -140,21 +140,21 @@ export default function Backup_witholding(props: any) {
           validateOnBlur={false}
           initialValues={initialValue}
           enableReinitialize
-          validationSchema={secondStepSchema} // Uncomment after testing ,this is validation Schema
+          validationSchema={secondStepSchema} 
           onSubmit={(values, { setSubmitting }) => {
-            history("/US_Purposes/Back/Exemption")
+           
             setSubmitting(true);
             console.log(selectedValue,"selectedValue")
             const addSelectedValue={...PrevStepData}
          
             const new_obj = { ...addSelectedValue, stepName: `/${urlValue}` };
-            const result = { ...new_obj, ...values , excemptionGuide: String(true) };
-            // history("/US_Purposes/Back/Exemption")
+            const result = { ...new_obj, ...values , excemptionGuide: "true" };
+           
             const submitPromise = new Promise((resolve, reject) => {
               dispatch(
                 postW9Form(result, () => {
                   localStorage.setItem("PrevStepData", JSON.stringify(result))
-                  //history("/US_Purposes/Back/Exemption")
+                  history("/US_Purposes/Back/Exemption")
                   resolve("success");
                   setSubmitting(false);
                 }, (error: any) => { reject(error) })
