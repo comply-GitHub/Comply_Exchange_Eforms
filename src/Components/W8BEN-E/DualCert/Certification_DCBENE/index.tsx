@@ -15,17 +15,17 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik } from "formik";
-import { W8_state_ECI, PostDualCert, GetHelpVideoDetails } from "../../../Redux/Actions";
-import { certificateSchema_w9_DC } from "../../../schemas/w8Exp";
+import { W8_state_ECI, PostDualCert, GetHelpVideoDetails } from "../../../../Redux/Actions";
+import { certificateSchema_w9_DC } from "../../../../schemas/w8Exp";
 import InfoIcon from "@mui/icons-material/Info";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useNavigate } from "react-router-dom";
-import BreadCrumbComponent from "../../reusables/breadCrumb";
-import View_Insructions from "../../viewInstruction";
+import BreadCrumbComponent from "../../../reusables/breadCrumb";
+import View_Insructions from "../../../viewInstruction";
 import { useLocation } from "react-router-dom";
-import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
-import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
+import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 
 export default function Certifications(props: any) {
   const location = useLocation();
@@ -311,7 +311,7 @@ export default function Certifications(props: any) {
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
                             submitForm().then((data) => {
-                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Certification_DC");
+                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_DC");
                             }).catch((error) => {
                               console.log(error);
                             })

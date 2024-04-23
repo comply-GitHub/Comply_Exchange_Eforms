@@ -1,3 +1,10 @@
+// import React, { useState, useEffect } from "react";
+
+// export default function abc(){
+//      return(<>
+//      hiiii there  Submit_DC
+//      </>)
+// }
 import React from "react";
 import { useState, useEffect } from "react";
 import {
@@ -13,17 +20,17 @@ import {
 } from "@mui/material";
 import "./index.scss"
 import { useLocation } from "react-router-dom";
-import Infoicon from "../../../assets/img/info.png";
-import { Info } from "@mui/icons-material";
+import Infoicon from "../../../../assets/img/info.png";                               
+import { Info } from "@mui/icons-material";          
 import DatePicker from "react-date-picker";
-import "react-date-picker/dist/DatePicker.css";
+import "react-date-picker/dist/DatePicker.css";     
 import "react-calendar/dist/Calendar.css";
 import InfoIcon from "@mui/icons-material/Info";
-import { GetHelpVideoDetails, PostDualCert } from "../../../Redux/Actions"
-import Declaration from "../../reusables/Declaration";
+import { GetHelpVideoDetails, PostDualCert } from "../../../../Redux/Actions"
+import Declaration from "../../../reusables/Declaration";
 import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { W8_state } from "../../../Redux/Actions";
+import { W8_state } from "../../../../Redux/Actions";
 import {  useNavigate } from "react-router";
 import { ContentCopy } from "@mui/icons-material";
 import checksolid from "../../../assets/img/check-solid.png";
@@ -31,19 +38,20 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { partCertiSchema } from "../../../schemas/w8Ben";
-import BreadCrumbComponent from "../../reusables/breadCrumb";
+import { partCertiSchema } from "../../../../schemas/w8Ben";
+import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import moment from "moment";
-import SecurityCodeRecover from "../../Reusable/SecurityCodeRecover";
-import useAuth from "../../../customHooks/useAuth";
-import SaveAndExit from "../../Reusable/SaveAndExit/Index";
-import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import SecurityCodeRecover from "../../../Reusable/SecurityCodeRecover";
+import useAuth from "../../../../customHooks/useAuth";
+import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 type ValuePiece = Date | null;
 console.log(Date, "date");
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function Penalties() {
 
   const { authDetails } = useAuth();
+  console.log("authDetails===============", authDetails?.accountHolderId);
   const [open2, setOpen2] = useState(false);
   const handleClickOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
@@ -104,10 +112,13 @@ export default function Penalties() {
         validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
           const returnPromise = new Promise((resolve, reject) => {
-
+// console.log("authDetails.accountHolderId==========", authDetails?.accountHolderId)
             const temp = [{
               ...PrevStepData[0], 
               ...values,
+               AccountHolderDetailsId:authDetails.accountHolderId,
+               agentId: authDetails?.agentId,
+               formTypeId: FormTypeId.BENE,
               date: new Date().toISOString(),
               stepName: `/${urlValue}`
             }]
@@ -161,13 +172,13 @@ export default function Penalties() {
                         target="popup"
                         onClick={() =>
                           window.open(
-                            GethelpData[3].fieldValue,
+                            GethelpData[3].fieldValue, 
                             'name',
                             `width=${GethelpData[3].width},height=${GethelpData[3].height},top=${GethelpData[3].top},left=${GethelpData[3].left}`
                           )
                         }
                       >
-                        Help Video
+                        Help Video                        
                       </a>
                     ) : (
                       ""
@@ -231,7 +242,7 @@ export default function Penalties() {
                           fontWeight: "550",
                         }}
                       >
-                       SelfCert Individual Electronic Substitute Form Statement
+                       SelfCert Entity Electronic Substitute Form Statement
                       </Typography>
                       <Typography
                         align="left"
@@ -592,7 +603,7 @@ export default function Penalties() {
                                   })
                                 }
                                 onBlur={handleBlur}
-                                readOnly={true}           
+                                readOnly={true}
                               />
 
                             </FormControl>
@@ -740,7 +751,7 @@ export default function Penalties() {
                         >
                           SAVE & EXIT
                         </Button> */}
-                        <div style={{ color: "white", marginLeft: "15px" }}>
+                        {/* <div style={{ color: "white", marginLeft: "15px" }}>
                           <SaveAndExit Callback={() => {
                             submitForm().then(() => {
                               const prevStepData = JSON.parse(
@@ -764,14 +775,14 @@ export default function Penalties() {
                             
                              
                           }} formTypeId={FormTypeId.W9} />
-                        </div>
+                        </div> */}
 
 
                         <Button
-                          //type="submit"
+                          type="submit"
                           onClick={() => {
                             submitForm().then((data: any) => {
-                              history("/Submit_W9_DC");
+                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_DC_BENE");
                             }).catch(() => {
 
                             })
@@ -800,5 +811,5 @@ export default function Penalties() {
         handleClose={handleClose2}
       />
     </>
-  )
-}                                                                
+  );
+}

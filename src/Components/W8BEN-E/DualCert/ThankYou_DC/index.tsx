@@ -1,5 +1,13 @@
+//  import React, { useState, useEffect } from "react";
+
+// export default function abc(){
+//     return(<>
+//     hiiii there  TaxPyer_DC
+//     </>)
+// }
+
 import React, { useEffect, useState } from "react";
-import FormW8BENE from "../../../../../formPDF/W8BENE";
+import FormW8ECI from "../../../../formPDF/W8ECI";
 // import Form1 from "../../formPDF/form1";
 // import Formw9 from "../../formPDF/formw9";
 // import FormEXP from "../../formPDF/formEXP";
@@ -13,17 +21,12 @@ import { useRef } from "react";
 
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../../../../customHooks/useAuth";
 import { useDispatch } from "react-redux";
-import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
-const authDetailsString = localStorage.getItem("authDetails") || "{}";
-
-const auth = JSON.parse(authDetailsString);
-
-const userType = auth?.configurations?.userType;
+import { GetEciPdf } from "../../../../Redux/Actions/PfdActions";
+import useAuth from "../../../../customHooks/useAuth";
 
 export default function Term() {
-  //States  
+  //States
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -31,10 +34,15 @@ export default function Term() {
   const pdfRefnew = useRef(null);
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
-  
+  const authDetailsString = localStorage.getItem("authDetails") || "{}";
+
+  const auth = JSON.parse(authDetailsString);
+  const userType = auth?.configurations?.userType;
+
   useEffect(()=>{
-    document.title = "Thank You";
-  })
+    document.title = "Thank You"
+  },[])
+
   const handleDownload = () => {
     if (pdfUrl) {
       const link = document.createElement("a");
@@ -56,7 +64,7 @@ export default function Term() {
     >
 
       {/* <div style={{ paddingBlockStart: "30px" }}>
-        <FormW8BENE />
+        <FormW8ECI/>
       </div> */}
 
       <div className="container-fluid">
@@ -115,16 +123,17 @@ export default function Term() {
             >
               If you are using a public computer, please clear your cookies.
             </Typography>
-          </Paper>
+        
           <Typography align="center">
             <div className="mt-5" style={{ justifyContent: "center" }}>
 
 
               <div style={{ marginTop: "25px" }}>
                 <Button
-                  // type="submit"
+                  //type="submit"
                   onClick={() => {
-                    dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                    // history("/w8Eci_pdf");
+                    dispatch(GetEciPdf(authDetails?.accountHolderId))
                   }}
                   style={{
                     border: "1px solid #0095dd",
@@ -142,7 +151,7 @@ export default function Term() {
                   }}
                   className="btn btn_submit  btn-primary-agent"
                 >
-                  Download Pdf
+                  Download PDF
                 </Button>
                 <Button
                   type="submit"
@@ -168,40 +177,12 @@ export default function Term() {
                   Exit
                 </Button>
               </div>
+            
             </div>
           </Typography>
+          </Paper>
         </div>
       </div>
-
-      {userType === "DC" ? (
-                  <div style={{ marginTop: "25px" }}>
-                    <Button
-                      type="submit"
-                      onClick={() => {
-                        //history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/TaxPayer_DC");
-                        history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC");
-                      }}
-                      style={{
-                        border: "1px solid #0095dd",
-                        background: "black",
-                        height: "45px",
-                        lineHeight: "normal",
-                        textAlign: "center",
-                        fontSize: "16px",
-                        marginLeft: "12px",
-                        textTransform: "uppercase",
-                        borderRadius: "0px",
-                        color: "#ffff",
-                        padding: "0 35px",
-                        letterSpacing: "1px",
-                      }}
-                      className="btn btn_submit  btn-primary-agent"
-                    >
-                      Continue To Self Certification Submission
-                    </Button>
-                  </div>
-                ) : ""}
-
       <div className="container-fluid">
         <footer>
           <div className="row mx-1">

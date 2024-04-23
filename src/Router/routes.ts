@@ -43,8 +43,35 @@ const Declaration = React.lazy(
 const US_Sourced = React.lazy(
   () => import("../Components/W-8BEN/Declaration/US")
 );
-
 //
+const Status_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/Status_DC")
+);
+// 
+const Fatca_DC_BENE = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/Fatca_DC_BENE")
+);
+const BENE_PASSIVE_DC  = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/BENE_PASSIVE_DC")
+);
+const TaxPayer_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/TaxPayer_DC")
+);
+
+const Certification_DCBENE = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/Certification_DCBENE")
+);
+
+const Penalties_DC_BENE = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/Penalties_DC_BENE")
+);
+
+const Submit_DC_BENE = React.lazy(
+  () =>import("../Components/W8BEN-E/DualCert/Submit_DC_BENE")
+)
+const ThankYou_DC = React.lazy(
+  () => import("../Components//W8BEN-E/DualCert/ThankYou_DC")
+)
 const Non_us_sourced = React.lazy(
   () => import("../Components/W-8BEN/Declaration/Non-US/Status")
 );
@@ -940,9 +967,63 @@ const ROUTES: Array<RouteType> = [
     id: 7,
     Component: ThankYou_IMY,
     isPrivate: true,
-  }
-
-
+  },
+  {
+    name: "Status_DC",
+    path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC",
+    id: 7,
+    Component: Status_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Fatca_DC_BENE",
+    path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC/Fatca_DC",
+    id: 7,
+    Component: Fatca_DC_BENE,
+    isPrivate: true,
+  },
+  {
+    name: "BENE-PASSIVE_DC",
+    path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/BENE_DC",
+    id: 7,
+    Component: BENE_PASSIVE_DC,
+    isPrivate: true,
+  },
+  {
+    name: "TaxPayer_DC",
+    path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/TaxPayer_DC",
+    id: 7,
+    Component: TaxPayer_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Certification_DCBENE",
+    path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Certification_DC",
+    id: 7,
+    Component: Certification_DCBENE,
+    isPrivate: true,
+  },
+  {
+     name: "Penalties_DC_BENE",
+    path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_DC",
+    id: 7,
+    Component: Penalties_DC_BENE,
+    isPrivate: true,
+  },
+  {
+    name: "Submit_DC_BENE",
+   path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_DC_BENE",
+   id: 7,
+   Component: Submit_DC_BENE,
+   isPrivate: true,
+ },
+ {
+  name: "ThankYou_DC",
+ path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/ThankYou_DC",
+ id: 7,
+ Component: ThankYou_DC,
+ isPrivate: true,
+}
 
 ];
 
