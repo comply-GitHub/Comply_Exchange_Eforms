@@ -38,7 +38,7 @@ import {
   postW81MY_EForm
 } from "../../../Redux/Actions";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
-import {  TaxPurposeSchemaW81Chapter4 } from "../../../schemas/w81my";
+import { TaxPurposeSchemaW81Chapter4 } from "../../../schemas/w81my";
 import PNFFE from "../components/PNFFE";
 import ANFEE from "../components/ANFFE";
 import TFI from "../components/TFI";
@@ -63,6 +63,7 @@ import PTNFFE from "../components/PTNFFE";
 import RD from "../components/RD";
 import SFFE from "../components/SFFI";
 import SFFI from "../components/SFFI";
+import { GetImyPdf } from "../../../Redux/Actions/PfdActions";
 export default function Fedral_tax(props: any) {
   const { authDetails } = useAuth();
 
@@ -76,79 +77,79 @@ export default function Fedral_tax(props: any) {
     setselectedContinue,
   } = props;
   const initialValue = {
-    chapter4StatusId: PrevStepData?.chapter4StatusId ? PrevStepData?.chapter4StatusId :0,
+    chapter4StatusId: PrevStepData?.chapter4StatusId ? PrevStepData?.chapter4StatusId : 0,
     //Passive NFFE
-    isPart1Nationalprincipalcontract:PrevStepData?.isPart1Nationalprincipalcontract ? PrevStepData?.isPart1Nationalprincipalcontract : false,
+    isPart1Nationalprincipalcontract: PrevStepData?.isPart1Nationalprincipalcontract ? PrevStepData?.isPart1Nationalprincipalcontract : false,
     //Active NFFE
-    lessthan50perentitygrossincome: PrevStepData?.lessthan50perentitygrossincome ? PrevStepData?.lessthan50perentitygrossincome: false ,
+    lessthan50perentitygrossincome: PrevStepData?.lessthan50perentitygrossincome ? PrevStepData?.lessthan50perentitygrossincome : false,
     //CDCFFI
-    isnotengagedprimarilyintheBusinessofInvesting:PrevStepData?.isnotengagedprimarilyintheBusinessofInvesting ? PrevStepData?.isnotengagedprimarilyintheBusinessofInvesting: false ,
+    isnotengagedprimarilyintheBusinessofInvesting: PrevStepData?.isnotengagedprimarilyintheBusinessofInvesting ? PrevStepData?.isnotengagedprimarilyintheBusinessofInvesting : false,
     //CDCLLD
-    istrustindentureorsimilaragreement:PrevStepData?.istrustindentureorsimilaragreement ? PrevStepData?.istrustindentureorsimilaragreement: false ,
+    istrustindentureorsimilaragreement: PrevStepData?.istrustindentureorsimilaragreement ? PrevStepData?.istrustindentureorsimilaragreement : false,
     //CDCNLB
-    isPart1greaterthan5perintrest:PrevStepData?.isPart1greaterthan5perintrest ? PrevStepData?.isPart1greaterthan5perintrest: false ,
+    isPart1greaterthan5perintrest: PrevStepData?.isPart1greaterthan5perintrest ? PrevStepData?.isPart1greaterthan5perintrest : false,
     //CDCSCHIV
-    sponsoringEntity:PrevStepData?.sponsoringEntity ? PrevStepData?.sponsoringEntity: "" ,
-    isPart1FFIinvestmententity:PrevStepData?.isPart1FFIinvestmententity ? PrevStepData?.isPart1FFIinvestmententity: false ,
+    sponsoringEntity: PrevStepData?.sponsoringEntity ? PrevStepData?.sponsoringEntity : "",
+    isPart1FFIinvestmententity: PrevStepData?.isPart1FFIinvestmententity ? PrevStepData?.isPart1FFIinvestmententity : false,
     //ENELB
-    isPart1entityidentified:PrevStepData?.isPart1entityidentified ? PrevStepData?.isPart1entityidentified:false,
-    planofLuquidation:PrevStepData?.planofLuquidation ? PrevStepData?.planofLuquidation:"",
+    isPart1entityidentified: PrevStepData?.isPart1entityidentified ? PrevStepData?.isPart1entityidentified : false,
+    planofLuquidation: PrevStepData?.planofLuquidation ? PrevStepData?.planofLuquidation : "",
     //ENGE
-    isPart1Companyholdingentities:PrevStepData?.isPart1Companyholdingentities ? PrevStepData?.isPart1Companyholdingentities:false,
+    isPart1Companyholdingentities: PrevStepData?.isPart1Companyholdingentities ? PrevStepData?.isPart1Companyholdingentities : false,
     //ENSUC
-    isPart1NonfinancialIdentified:PrevStepData?.isPart1NonfinancialIdentified ? PrevStepData?.isPart1NonfinancialIdentified:false,
-    dateofBoardresolution:PrevStepData?.dateofBoardresolution ? PrevStepData?.dateofBoardresolution:"",
+    isPart1NonfinancialIdentified: PrevStepData?.isPart1NonfinancialIdentified ? PrevStepData?.isPart1NonfinancialIdentified : false,
+    dateofBoardresolution: PrevStepData?.dateofBoardresolution ? PrevStepData?.dateofBoardresolution : "",
     //ETNFFE
-    isPart1bonafideresidentspossession:PrevStepData?.isPart1bonafideresidentspossession ? PrevStepData?.isPart1bonafideresidentspossession:false,
+    isPart1bonafideresidentspossession: PrevStepData?.isPart1bonafideresidentspossession ? PrevStepData?.isPart1bonafideresidentspossession : false,
     //ERP
-    isPart1Benefitsonincome:PrevStepData?.isPart1Benefitsonincome ? PrevStepData?.isPart1Benefitsonincome:false,
-    isrighttomorethan5PeroftheFFI:PrevStepData?.isrighttomorethan5PeroftheFFI ? PrevStepData?.isrighttomorethan5PeroftheFFI:false,
-    issponsoredbyoneormoreemployers:PrevStepData?.issponsoredbyoneormoreemployers ? PrevStepData?.issponsoredbyoneormoreemployers:false,
-    isformedpursuansection401a:PrevStepData?.isformedpursuansection401a ? PrevStepData?.isformedpursuansection401a:false,
-    isestablishedbenefitoneormoreRetFunds:PrevStepData?.IsestablishedbenefitoneormoreRetFunds ? PrevStepData?.IsestablishedbenefitoneormoreRetFunds:false,
-    isestablishedCentralbankofissue:PrevStepData?.isestablishedCentralbankofissue ? PrevStepData?.isestablishedCentralbankofissue:false,
+    isPart1Benefitsonincome: PrevStepData?.isPart1Benefitsonincome ? PrevStepData?.isPart1Benefitsonincome : false,
+    isrighttomorethan5PeroftheFFI: PrevStepData?.isrighttomorethan5PeroftheFFI ? PrevStepData?.isrighttomorethan5PeroftheFFI : false,
+    issponsoredbyoneormoreemployers: PrevStepData?.issponsoredbyoneormoreemployers ? PrevStepData?.issponsoredbyoneormoreemployers : false,
+    isformedpursuansection401a: PrevStepData?.isformedpursuansection401a ? PrevStepData?.isformedpursuansection401a : false,
+    isestablishedbenefitoneormoreRetFunds: PrevStepData?.IsestablishedbenefitoneormoreRetFunds ? PrevStepData?.IsestablishedbenefitoneormoreRetFunds : false,
+    isestablishedCentralbankofissue: PrevStepData?.isestablishedCentralbankofissue ? PrevStepData?.isestablishedCentralbankofissue : false,
     //FCBI
-    istreatedaspurposeofchapter4:PrevStepData?.istreatedaspurposeofchapter4 ? PrevStepData?.istreatedaspurposeofchapter4:false,
+    istreatedaspurposeofchapter4: PrevStepData?.istreatedaspurposeofchapter4 ? PrevStepData?.istreatedaspurposeofchapter4 : false,
     //NPFFI
-    isusingportionofthepaymentallocated:PrevStepData?.isusingportionofthepaymentallocated ? PrevStepData?.isusingportionofthepaymentallocated:false,
+    isusingportionofthepaymentallocated: PrevStepData?.isusingportionofthepaymentallocated ? PrevStepData?.isusingportionofthepaymentallocated : false,
     //NRIGAFFI
-    iscertifythatNonreportingIGAFFI:PrevStepData?.iscertifythatNonreportingIGAFFI ? PrevStepData?.iscertifythatNonreportingIGAFFI:false,
-    igAbetweentheUnitedStatesAnd:PrevStepData?.igAbetweentheUnitedStatesAnd ? PrevStepData?.igAbetweentheUnitedStatesAnd:"",
-    applicableIGA:PrevStepData?.applicableIGA ? PrevStepData?.applicableIGA:"",
-    istreatedAs:PrevStepData?.istreatedAs ? PrevStepData?.istreatedAs:false,
-    istreatedAsOthers:PrevStepData?.istreatedAsOthers ? PrevStepData?.istreatedAsOthers:"",
-    sponsoredEntityTrustee:PrevStepData?.sponsoredEntityTrustee ? PrevStepData?.sponsoredEntityTrustee:0,
-    nameoftheTrustee:PrevStepData?.nameoftheTrustee ? PrevStepData?.nameoftheTrustee:"",
-    thetrusteeIs:PrevStepData?.thetrusteeIs ? PrevStepData?.thetrusteeIs:"",
+    iscertifythatNonreportingIGAFFI: PrevStepData?.iscertifythatNonreportingIGAFFI ? PrevStepData?.iscertifythatNonreportingIGAFFI : false,
+    igAbetweentheUnitedStatesAnd: PrevStepData?.igAbetweentheUnitedStatesAnd ? PrevStepData?.igAbetweentheUnitedStatesAnd : "",
+    applicableIGA: PrevStepData?.applicableIGA ? PrevStepData?.applicableIGA : "",
+    istreatedAs: PrevStepData?.istreatedAs ? PrevStepData?.istreatedAs : false,
+    istreatedAsOthers: PrevStepData?.istreatedAsOthers ? PrevStepData?.istreatedAsOthers : "",
+    sponsoredEntityTrustee: PrevStepData?.sponsoredEntityTrustee ? PrevStepData?.sponsoredEntityTrustee : 0,
+    nameoftheTrustee: PrevStepData?.nameoftheTrustee ? PrevStepData?.nameoftheTrustee : "",
+    thetrusteeIs: PrevStepData?.thetrusteeIs ? PrevStepData?.thetrusteeIs : "",
     //ODFFI
-    isnotaffiliatedwithanentity:PrevStepData?.isnotaffiliatedwithanentity ? PrevStepData?.isnotaffiliatedwithanentity:false,
-    isProvidedFFIownerReportingstatement:PrevStepData?.isProvidedFFIownerReportingstatement ? PrevStepData?.isProvidedFFIownerReportingstatement:"",
-    isProvidedAuditorsLetter:PrevStepData?.isProvidedAuditorsLetter ? PrevStepData?.isProvidedAuditorsLetter:"",
+    isnotaffiliatedwithanentity: PrevStepData?.isnotaffiliatedwithanentity ? PrevStepData?.isnotaffiliatedwithanentity : false,
+    isProvidedFFIownerReportingstatement: PrevStepData?.isProvidedFFIownerReportingstatement ? PrevStepData?.isProvidedFFIownerReportingstatement : "",
+    isProvidedAuditorsLetter: PrevStepData?.isProvidedAuditorsLetter ? PrevStepData?.isProvidedAuditorsLetter : "",
     //PTNFFE
-    isnotaFinancialInstitution:PrevStepData?.isnotaFinancialInstitution ? PrevStepData?.isnotaFinancialInstitution:false,
-    oneormoreEstablishedSecurities:PrevStepData?.oneormoreEstablishedSecurities ? PrevStepData?.oneormoreEstablishedSecurities:"",
-    ismemberofthesameExpandedaffiliatedGroup:PrevStepData?.ismemberofthesameExpandedaffiliatedGroup ? PrevStepData?.ismemberofthesameExpandedaffiliatedGroup:false,
-    nameoftheEntityRegularyTraded:PrevStepData?.nameoftheEntityRegularyTraded ? PrevStepData?.nameoftheEntityRegularyTraded:"",
-    nameoftheSecuritiesMarket:PrevStepData?.nameoftheSecuritiesMarket ? PrevStepData?.nameoftheSecuritiesMarket:"",
+    isnotaFinancialInstitution: PrevStepData?.isnotaFinancialInstitution ? PrevStepData?.isnotaFinancialInstitution : false,
+    oneormoreEstablishedSecurities: PrevStepData?.oneormoreEstablishedSecurities ? PrevStepData?.oneormoreEstablishedSecurities : "",
+    ismemberofthesameExpandedaffiliatedGroup: PrevStepData?.ismemberofthesameExpandedaffiliatedGroup ? PrevStepData?.ismemberofthesameExpandedaffiliatedGroup : false,
+    nameoftheEntityRegularyTraded: PrevStepData?.nameoftheEntityRegularyTraded ? PrevStepData?.nameoftheEntityRegularyTraded : "",
+    nameoftheSecuritiesMarket: PrevStepData?.nameoftheSecuritiesMarket ? PrevStepData?.nameoftheSecuritiesMarket : "",
     //RD
-    isrequiredtoperformAML:PrevStepData?.isrequiredtoperformAML ? PrevStepData?.isrequiredtoperformAML:false,
-    hasbeenboundbyTerminatedAgreement:PrevStepData?.hasbeenboundbyTerminatedAgreement ? PrevStepData?.hasbeenboundbyTerminatedAgreement:false,
-    isprohibitiononthesaleofDebt:PrevStepData?.isprohibitiononthesaleofDebt ? PrevStepData?.isprohibitiononthesaleofDebt:false,
+    isrequiredtoperformAML: PrevStepData?.isrequiredtoperformAML ? PrevStepData?.isrequiredtoperformAML : false,
+    hasbeenboundbyTerminatedAgreement: PrevStepData?.hasbeenboundbyTerminatedAgreement ? PrevStepData?.hasbeenboundbyTerminatedAgreement : false,
+    isprohibitiononthesaleofDebt: PrevStepData?.isprohibitiononthesaleofDebt ? PrevStepData?.isprohibitiononthesaleofDebt : false,
     //SDRNFFE
-    nameofDirectSponsoringEntity:PrevStepData?.nameofDirectSponsoringEntity ? PrevStepData?.nameofDirectSponsoringEntity:"",
-    isadirectReportingNFFE:PrevStepData?.isadirectReportingNFFE ? PrevStepData?.isadirectReportingNFFE:false,
+    nameofDirectSponsoringEntity: PrevStepData?.nameofDirectSponsoringEntity ? PrevStepData?.nameofDirectSponsoringEntity : "",
+    isadirectReportingNFFE: PrevStepData?.isadirectReportingNFFE ? PrevStepData?.isadirectReportingNFFE : false,
     //SFFI
-    nameofSponsoringEntity:PrevStepData?.nameofSponsoringEntity ? PrevStepData?.nameofSponsoringEntity:"",
-    hasagreedwiththeNonparticipatingFFI:PrevStepData?.hasagreedwiththeNonparticipatingFFI ? PrevStepData?.hasagreedwiththeNonparticipatingFFI:false,
-    IswhollyownedDirectlyIndirectlybytheUS:PrevStepData?.IswhollyownedDirectlyIndirectlybytheUS ? PrevStepData?.IswhollyownedDirectlyIndirectlybytheUS:false,
+    nameofSponsoringEntity: PrevStepData?.nameofSponsoringEntity ? PrevStepData?.nameofSponsoringEntity : "",
+    hasagreedwiththeNonparticipatingFFI: PrevStepData?.hasagreedwiththeNonparticipatingFFI ? PrevStepData?.hasagreedwiththeNonparticipatingFFI : false,
+    IswhollyownedDirectlyIndirectlybytheUS: PrevStepData?.IswhollyownedDirectlyIndirectlybytheUS ? PrevStepData?.IswhollyownedDirectlyIndirectlybytheUS : false,
     //TFI
-    tFI18a:PrevStepData?.TFI18a ? PrevStepData?.TFI18a:false,
-    tFI18b:PrevStepData?.tFI18b ? PrevStepData?.tFI18b:false,
-    tFI18c:PrevStepData?.tFI18c ? PrevStepData?.tFI18c:false,
-    tFI18d:PrevStepData?.tFI18d ? PrevStepData?.tFI18d:false,
-    tFI18e:PrevStepData?.tFI18e ? PrevStepData?.tFI18e:false,
-    tFI18f:PrevStepData?.tFI18f ? PrevStepData?.tFI18f:false,
-    
+    tFI18a: PrevStepData?.TFI18a ? PrevStepData?.TFI18a : false,
+    tFI18b: PrevStepData?.tFI18b ? PrevStepData?.tFI18b : false,
+    tFI18c: PrevStepData?.tFI18c ? PrevStepData?.tFI18c : false,
+    tFI18d: PrevStepData?.tFI18d ? PrevStepData?.tFI18d : false,
+    tFI18e: PrevStepData?.tFI18e ? PrevStepData?.tFI18e : false,
+    tFI18f: PrevStepData?.tFI18f ? PrevStepData?.tFI18f : false,
+
 
     foreginTIN_CountryId: 0,
     Wholly: false,
@@ -190,7 +191,7 @@ export default function Fedral_tax(props: any) {
     dispatch(GetHelpVideoDetails());
   }, []);
 
- 
+
 
   const getCountriesReducer = useSelector(
     (state: any) => state.getCountriesReducer
@@ -226,9 +227,9 @@ export default function Fedral_tax(props: any) {
       setExpandedState(newExpanded ? panel : false);
     };
   const W9Data = useSelector((state: any) => state.w9Data);
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Chapter IV"
-  },[])
+  }, [])
 
   return (
     <>
@@ -239,7 +240,10 @@ export default function Fedral_tax(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform">View Form</div>
+            <div className="viewform"
+              onClick={() => {
+                dispatch(GetImyPdf(authDetails?.accountHolderId))
+              }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[7].id === 9 ? (
@@ -324,7 +328,7 @@ export default function Fedral_tax(props: any) {
                     submitForm
                   }) => (
                     <Form onSubmit={handleSubmit}>
-                      <>{console.log(values,errors, "errorsssss")}</>
+                      <>{console.log(values, errors, "errorsssss")}</>
                       <div style={{ width: "100%" }}>
                         <div>
                           {values.Wholly === true && clickCount === 1 ?
@@ -517,67 +521,67 @@ export default function Fedral_tax(props: any) {
                                     onChange={(e) => {
                                       handleChange(e);
                                       setTimeout(() => {
-                                        setFieldValue("isPart1Nationalprincipalcontract",false);
-                                        setFieldValue("lessthan50perentitygrossincome",false);
-                                        setFieldValue("isnotengagedprimarilyintheBusinessofInvesting",false);
-                                        setFieldValue("istrustindentureorsimilaragreement",false);
-                                        setFieldValue("isPart1greaterthan5perintrest",false);
-                                        setFieldValue("sponsoringEntity","");
-                                        setFieldValue("isPart1FFIinvestmententity",false);
-                                        
+                                        setFieldValue("isPart1Nationalprincipalcontract", false);
+                                        setFieldValue("lessthan50perentitygrossincome", false);
+                                        setFieldValue("isnotengagedprimarilyintheBusinessofInvesting", false);
+                                        setFieldValue("istrustindentureorsimilaragreement", false);
+                                        setFieldValue("isPart1greaterthan5perintrest", false);
+                                        setFieldValue("sponsoringEntity", "");
+                                        setFieldValue("isPart1FFIinvestmententity", false);
 
-                                        setFieldValue("isPart1entityidentified",false);
-                                        setFieldValue("planofLuquidation","");
-                                        setFieldValue("isPart1Companyholdingentities",false);
-                                        setFieldValue("isPart1NonfinancialIdentified",false);
-                                        setFieldValue("dateofBoardresolution","");
-                                        setFieldValue("isPart1bonafideresidentspossession",false);
-                                        setFieldValue("isPart1Benefitsonincome",false);
-                                        setFieldValue("isrighttomorethan5PeroftheFFI",false);
-                                        setFieldValue("issponsoredbyoneormoreemployers",false);
-                                        setFieldValue("isformedpursuansection401a",false);
-                                        setFieldValue("isestablishedbenefitoneormoreRetFunds",false);
-                                        setFieldValue("isestablishedCentralbankofissue",false);
-                                        
-                                        setFieldValue("istreatedaspurposeofchapter4",false);
-                                        setFieldValue("isusingportionofthepaymentallocated",false);
 
-                                        setFieldValue("iscertifythatNonreportingIGAFFI",false);
-                                        setFieldValue("igAbetweentheUnitedStatesAnd","");
-                                        setFieldValue("applicableIGA","");
-                                        setFieldValue("istreatedAs",false);
-                                        setFieldValue("istreatedAsOthers","");
-                                        setFieldValue("sponsoredEntityTrustee","");
-                                        setFieldValue("nameoftheTrustee","");
-                                        setFieldValue("thetrusteeIs","");
+                                        setFieldValue("isPart1entityidentified", false);
+                                        setFieldValue("planofLuquidation", "");
+                                        setFieldValue("isPart1Companyholdingentities", false);
+                                        setFieldValue("isPart1NonfinancialIdentified", false);
+                                        setFieldValue("dateofBoardresolution", "");
+                                        setFieldValue("isPart1bonafideresidentspossession", false);
+                                        setFieldValue("isPart1Benefitsonincome", false);
+                                        setFieldValue("isrighttomorethan5PeroftheFFI", false);
+                                        setFieldValue("issponsoredbyoneormoreemployers", false);
+                                        setFieldValue("isformedpursuansection401a", false);
+                                        setFieldValue("isestablishedbenefitoneormoreRetFunds", false);
+                                        setFieldValue("isestablishedCentralbankofissue", false);
 
-                                        setFieldValue("isnotaffiliatedwithanentity",false);
-                                        setFieldValue("isProvidedFFIownerReportingstatement","");
-                                        setFieldValue("isProvidedAuditorsLetter","");
+                                        setFieldValue("istreatedaspurposeofchapter4", false);
+                                        setFieldValue("isusingportionofthepaymentallocated", false);
 
-                                        setFieldValue("isnotaFinancialInstitution",false);
-                                        setFieldValue("oneormoreEstablishedSecurities","");
-                                        setFieldValue("nameoftheEntityRegularyTraded","");
-                                        setFieldValue("ismemberofthesameExpandedaffiliatedGroup",false);
-                                        setFieldValue("nameoftheSecuritiesMarket","");
+                                        setFieldValue("iscertifythatNonreportingIGAFFI", false);
+                                        setFieldValue("igAbetweentheUnitedStatesAnd", "");
+                                        setFieldValue("applicableIGA", "");
+                                        setFieldValue("istreatedAs", false);
+                                        setFieldValue("istreatedAsOthers", "");
+                                        setFieldValue("sponsoredEntityTrustee", "");
+                                        setFieldValue("nameoftheTrustee", "");
+                                        setFieldValue("thetrusteeIs", "");
 
-                                        setFieldValue("isrequiredtoperformAML",false);
-                                        setFieldValue("hasbeenboundbyTerminatedAgreement",false);
-                                        setFieldValue("isprohibitiononthesaleofDebt",false);
+                                        setFieldValue("isnotaffiliatedwithanentity", false);
+                                        setFieldValue("isProvidedFFIownerReportingstatement", "");
+                                        setFieldValue("isProvidedAuditorsLetter", "");
 
-                                        setFieldValue("nameofDirectSponsoringEntity","");
-                                        setFieldValue("isadirectReportingNFFE",false);
+                                        setFieldValue("isnotaFinancialInstitution", false);
+                                        setFieldValue("oneormoreEstablishedSecurities", "");
+                                        setFieldValue("nameoftheEntityRegularyTraded", "");
+                                        setFieldValue("ismemberofthesameExpandedaffiliatedGroup", false);
+                                        setFieldValue("nameoftheSecuritiesMarket", "");
 
-                                        setFieldValue("nameofSponsoringEntity","");
-                                        setFieldValue("hasagreedwiththeNonparticipatingFFI",false);
-                                        setFieldValue("IswhollyownedDirectlyIndirectlybytheUS",false);
+                                        setFieldValue("isrequiredtoperformAML", false);
+                                        setFieldValue("hasbeenboundbyTerminatedAgreement", false);
+                                        setFieldValue("isprohibitiononthesaleofDebt", false);
 
-                                        setFieldValue("tFI18a",false);
-                                        setFieldValue("tFI18b",false);
-                                        setFieldValue("tFI18c",false);
-                                        setFieldValue("tFI18d",false);
-                                        setFieldValue("tFI18e",false);
-                                        setFieldValue("tFI18f",false);
+                                        setFieldValue("nameofDirectSponsoringEntity", "");
+                                        setFieldValue("isadirectReportingNFFE", false);
+
+                                        setFieldValue("nameofSponsoringEntity", "");
+                                        setFieldValue("hasagreedwiththeNonparticipatingFFI", false);
+                                        setFieldValue("IswhollyownedDirectlyIndirectlybytheUS", false);
+
+                                        setFieldValue("tFI18a", false);
+                                        setFieldValue("tFI18b", false);
+                                        setFieldValue("tFI18c", false);
+                                        setFieldValue("tFI18d", false);
+                                        setFieldValue("tFI18e", false);
+                                        setFieldValue("tFI18f", false);
 
                                       }, 200);
                                     }}
@@ -600,86 +604,86 @@ export default function Fedral_tax(props: any) {
                                   </select>
 
                                   {errors?.chapter4StatusId && typeof errors?.chapter4StatusId === 'string' && (
-                                      <p className="error">{errors?.chapter4StatusId}</p>
-                                    )}
+                                    <p className="error">{errors?.chapter4StatusId}</p>
+                                  )}
                                 </FormControl>
                               </div>
 
                             </div>
-                            {(values.chapter4StatusId==2 || values.chapter4StatusId == 27) && (                 
-                              <PNFFE handleChange={handleChange} values={values} setFieldValue={setFieldValue}/>
+                            {(values.chapter4StatusId == 2 || values.chapter4StatusId == 27) && (
+                              <PNFFE handleChange={handleChange} values={values} setFieldValue={setFieldValue} />
                             )}
 
-                            { values.chapter4StatusId==6 && (                 
-                              <ANFEE handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
+                            {values.chapter4StatusId == 6 && (
+                              <ANFEE handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
                             )}
-                            {(values.chapter4StatusId==8) && (                 
-                              <CDCFFI handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
+                            {(values.chapter4StatusId == 8) && (
+                              <CDCFFI handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
                             )}
-                            {(values.chapter4StatusId==9) && (                 
-                              <CDCLLD handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
-                            )}
-
-                            {values.chapter4StatusId==10 && (                 
-                              <CDCNLB handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
+                            {(values.chapter4StatusId == 9) && (
+                              <CDCLLD handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
                             )}
 
-                            {values.chapter4StatusId==11 && (                 
-                              <CDCSCHIV handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
+                            {values.chapter4StatusId == 10 && (
+                              <CDCNLB handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
                             )}
 
-                            {values.chapter4StatusId==15 && (                 
-                              <ENELB handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
+                            {values.chapter4StatusId == 11 && (
+                              <CDCSCHIV handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
                             )}
 
-                            {values.chapter4StatusId==16 && (                 
-                              <ENGE handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
-                            )}
-                            {values.chapter4StatusId==17 && (                 
-                              <ENSUC handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
-                            )}
-                            {values.chapter4StatusId==18 && (                 
-                              <ETNFFE handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
+                            {values.chapter4StatusId == 15 && (
+                              <ENELB handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
                             )}
 
-                            {values.chapter4StatusId==19 && (                 
-                              <ERP handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
+                            {values.chapter4StatusId == 16 && (
+                              <ENGE handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
                             )}
-                            {values.chapter4StatusId==20 && (                 
-                              <FCBI handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
+                            {values.chapter4StatusId == 17 && (
+                              <ENSUC handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
                             )}
-                            {values.chapter4StatusId==22 && (                 
-                              <NPFFI handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
-                            )}
-                            {values.chapter4StatusId==24 && (                 
-                              <NRIGAFFI handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
-                            )}
-                            {values.chapter4StatusId==25 && (                 
-                              <ODFFI handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
-                            )}
-                            {values.chapter4StatusId==28 && (                 
-                              <PTNFFE handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur}/>
+                            {values.chapter4StatusId == 18 && (
+                              <ETNFFE handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
                             )}
 
-                            {(values.chapter4StatusId==32) && (                 
-                              <RD handleChange={handleChange} values={values} setFieldValue={setFieldValue}/>
+                            {values.chapter4StatusId == 19 && (
+                              <ERP handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
+                            )}
+                            {values.chapter4StatusId == 20 && (
+                              <FCBI handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
+                            )}
+                            {values.chapter4StatusId == 22 && (
+                              <NPFFI handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
+                            )}
+                            {values.chapter4StatusId == 24 && (
+                              <NRIGAFFI handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
+                            )}
+                            {values.chapter4StatusId == 25 && (
+                              <ODFFI handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
+                            )}
+                            {values.chapter4StatusId == 28 && (
+                              <PTNFFE handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
                             )}
 
-                            {(values.chapter4StatusId==33) && (                 
-                              <SDRNFFE handleChange={handleChange} values={values} setFieldValue={setFieldValue}/>
-                            )}
-                            {(values.chapter4StatusId==34) && (                 
-                              <SFFI handleChange={handleChange} values={values} setFieldValue={setFieldValue}/>
-                            )}
-                            {(values.chapter4StatusId==35) && (                 
-                              <TFI handleChange={handleChange} values={values} setFieldValue={setFieldValue}/>
+                            {(values.chapter4StatusId == 32) && (
+                              <RD handleChange={handleChange} values={values} setFieldValue={setFieldValue} />
                             )}
 
+                            {(values.chapter4StatusId == 33) && (
+                              <SDRNFFE handleChange={handleChange} values={values} setFieldValue={setFieldValue} />
+                            )}
+                            {(values.chapter4StatusId == 34) && (
+                              <SFFI handleChange={handleChange} values={values} setFieldValue={setFieldValue} />
+                            )}
+                            {(values.chapter4StatusId == 35) && (
+                              <TFI handleChange={handleChange} values={values} setFieldValue={setFieldValue} />
+                            )}
 
-                            
 
 
-                           
+
+
+
                             {/* {values.chapter4StatusId == 21 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
@@ -820,7 +824,7 @@ export default function Fedral_tax(props: any) {
 
                             ) : ""} */}
 
-                            
+
                             {values.chapter4StatusId == 36 ? (
                               <>
                                 <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
@@ -876,163 +880,166 @@ export default function Fedral_tax(props: any) {
 
 
                             ) : ""}
-                            
+
                           </Typography>
 
                         </div>
 
-                        {values.chapter4StatusId!==0 && (<>
+                        {values.chapter4StatusId !== 0 && (<>
                           <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            marginTop: "80px",
-                          }}
-                        >
-                          <SaveAndExit Callback={() => {
-                        submitForm().then(() => {
-                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                          const urlValue = window.location.pathname.substring(1);
-                          const temp = {
-                            agentId: authDetails.agentId,
-                            accountHolderBasicDetailId: authDetails.accountHolderId,
-                            ...PrevStepData,
-                            ...values,
-                            stepName: `/${urlValue}`
-                          };
-                          dispatch(postW81MY_EForm(
-                            temp
-                            , () => { }))
-                          history(
-                            GlobalValues.basePageRoute
-                          );
-                        })
-                      }} formTypeId={FormTypeId.FW81MY} ></SaveAndExit>
-                          <Button
-                            type="submit"
-                            disabled={isSubmitting}
-                            variant="contained"
-                            style={{ color: "white", marginLeft: "15px" }}
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              marginTop: "80px",
+                            }}
                           >
-                            View Form
-                          </Button>
-                          <Button
-                            type="submit"
-                            variant="contained"
-                            style={{ color: "white", marginLeft: "15px" }}
-                            disabled={
-                              (
-                                (values.chapter4StatusId ==2 || values.chapter4StatusId ==27) && values.isPart1Nationalprincipalcontract
-                              )
-                              ||
-                              (
-                                (values.chapter4StatusId ==3 || values.chapter4StatusId ==4 || values.chapter4StatusId ==5 || values.chapter4StatusId ==12 || values.chapter4StatusId ==21 || values.chapter4StatusId ==23 || values.chapter4StatusId ==29 || values.chapter4StatusId ==30 || values.chapter4StatusId ==31)
-                              )
-                              ||
-                              (
-                                (values.chapter4StatusId ==6 && values.lessthan50perentitygrossincome)
-                              )
-                              ||
-                              (
-                                values.chapter4StatusId ==7
-                              )
-                              ||
-                              (
-                                values.chapter4StatusId ==8 && values.isnotengagedprimarilyintheBusinessofInvesting
-                              )
-                              ||
-                              (
-                                values.chapter4StatusId ==9 && values.istrustindentureorsimilaragreement
-                              )
-                              ||
-                              (
-                                values.chapter4StatusId ==10 && values.isPart1greaterthan5perintrest
-                              )
-                              ||
-                              (
-                                values.chapter4StatusId ==11 && values.sponsoringEntity && values.isPart1FFIinvestmententity
-                              )
+                            <SaveAndExit Callback={() => {
+                              submitForm().then(() => {
+                                const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                                const urlValue = window.location.pathname.substring(1);
+                                const temp = {
+                                  agentId: authDetails.agentId,
+                                  accountHolderBasicDetailId: authDetails.accountHolderId,
+                                  ...PrevStepData,
+                                  ...values,
+                                  stepName: `/${urlValue}`
+                                };
+                                dispatch(postW81MY_EForm(
+                                  temp
+                                  , () => { }))
+                                history(
+                                  GlobalValues.basePageRoute
+                                );
+                              })
+                            }} formTypeId={FormTypeId.FW81MY} ></SaveAndExit>
+                            <Button
+                              type="submit"
+                              disabled={isSubmitting}
+                              variant="contained"
+                              style={{ color: "white", marginLeft: "15px" }}
+                              onClick={() => {
+                                dispatch(GetImyPdf(authDetails?.accountHolderId))
+                              }}
+                            >
+                              View Form
+                            </Button>
+                            <Button
+                              type="submit"
+                              variant="contained"
+                              style={{ color: "white", marginLeft: "15px" }}
+                              disabled={
+                                (
+                                  (values.chapter4StatusId == 2 || values.chapter4StatusId == 27) && values.isPart1Nationalprincipalcontract
+                                )
+                                  ||
+                                  (
+                                    (values.chapter4StatusId == 3 || values.chapter4StatusId == 4 || values.chapter4StatusId == 5 || values.chapter4StatusId == 12 || values.chapter4StatusId == 21 || values.chapter4StatusId == 23 || values.chapter4StatusId == 29 || values.chapter4StatusId == 30 || values.chapter4StatusId == 31)
+                                  )
+                                  ||
+                                  (
+                                    (values.chapter4StatusId == 6 && values.lessthan50perentitygrossincome)
+                                  )
+                                  ||
+                                  (
+                                    values.chapter4StatusId == 7
+                                  )
+                                  ||
+                                  (
+                                    values.chapter4StatusId == 8 && values.isnotengagedprimarilyintheBusinessofInvesting
+                                  )
+                                  ||
+                                  (
+                                    values.chapter4StatusId == 9 && values.istrustindentureorsimilaragreement
+                                  )
+                                  ||
+                                  (
+                                    values.chapter4StatusId == 10 && values.isPart1greaterthan5perintrest
+                                  )
+                                  ||
+                                  (
+                                    values.chapter4StatusId == 11 && values.sponsoringEntity && values.isPart1FFIinvestmententity
+                                  )
 
-                              ||
-                              (
-                                values.chapter4StatusId ==15 && values.isPart1entityidentified && values.planofLuquidation
-                              )
-                              ||
-                              (
-                                values.chapter4StatusId ==16 && values.isPart1Companyholdingentities
-                              )
-                              ||
-                              (
-                                values.chapter4StatusId ==17 && values.isPart1NonfinancialIdentified && values.dateofBoardresolution
-                              )
-                              ||
-                              (
-                                values.chapter4StatusId ==18 && values.isPart1bonafideresidentspossession 
-                              )
-                              ||
-                              (
-                                values.chapter4StatusId ==19 && (values.isPart1Benefitsonincome || values.isrighttomorethan5PeroftheFFI || values.issponsoredbyoneormoreemployers || values.isformedpursuansection401a || values.isestablishedbenefitoneormoreRetFunds || values.isestablishedCentralbankofissue) 
-                              )
-                              ||
-                              (
-                                values.chapter4StatusId ==20 && values.istreatedaspurposeofchapter4
-                              )
-                              ||
-                              (
-                                values.chapter4StatusId ==22 && values.isusingportionofthepaymentallocated
-                              )
-                              ||
-                              values.chapter4StatusId == 24 &&
-                              (
-                                (
-                                  values.iscertifythatNonreportingIGAFFI && values.igAbetweentheUnitedStatesAnd && values.applicableIGA
-                                ) &&
-                                (
-                                  values.istreatedAs &&
+                                  ||
                                   (
-                                    (values.istreatedAs ==24 && values.istreatedAsOthers) || (values.istreatedAs !=24 && !values.istreatedAsOthers)
+                                    values.chapter4StatusId == 15 && values.isPart1entityidentified && values.planofLuquidation
                                   )
-                                ) &&
-                                (
-                                  values.sponsoredEntityTrustee &&
+                                  ||
                                   (
-                                    (values.sponsoredEntityTrustee ==1) && ( values.nameoftheTrustee && values.thetrusteeIs )
-                                    ||
-                                    (values.sponsoredEntityTrustee ==2) && ( values.nameoftheTrustee )
-                                    ||
-                                    (values.sponsoredEntityTrustee ==3) 
+                                    values.chapter4StatusId == 16 && values.isPart1Companyholdingentities
                                   )
-                                ) 
-                              )
-                              ||
-                              values.chapter4StatusId == 25 && values.isnotaffiliatedwithanentity && (values.isProvidedFFIownerReportingstatement || values.isProvidedAuditorsLetter) 
-                              ||
-                              values.chapter4StatusId == 28 && 
-                              (
-                                (values.isnotaFinancialInstitution && values.oneormoreEstablishedSecurities)
-                                ||
-                                (values.ismemberofthesameExpandedaffiliatedGroup && values.nameoftheEntityRegularyTraded && values.nameoftheSecuritiesMarket)
-                              )
-                              ||
-                              values.chapter4StatusId == 32 && values.isrequiredtoperformAML && (values.hasbeenboundbyTerminatedAgreement || values.isprohibitiononthesaleofDebt)
-                              ||
-                              values.chapter4StatusId ==33 && values.nameofDirectSponsoringEntity && values.isadirectReportingNFFE
-                              ||
-                              values.chapter4StatusId ==34 && values.nameofSponsoringEntity && (values.hasagreedwiththeNonparticipatingFFI || values.IswhollyownedDirectlyIndirectlybytheUS)
-                              ||
-                              values.chapter4StatusId ==35 && values.tFI18a && (values.tFI18b || values.tFI18c)
-                              
-                              ? false : true
-                            }
-                          >
-                            Continue
-                          </Button>
-                        </div> 
+                                  ||
+                                  (
+                                    values.chapter4StatusId == 17 && values.isPart1NonfinancialIdentified && values.dateofBoardresolution
+                                  )
+                                  ||
+                                  (
+                                    values.chapter4StatusId == 18 && values.isPart1bonafideresidentspossession
+                                  )
+                                  ||
+                                  (
+                                    values.chapter4StatusId == 19 && (values.isPart1Benefitsonincome || values.isrighttomorethan5PeroftheFFI || values.issponsoredbyoneormoreemployers || values.isformedpursuansection401a || values.isestablishedbenefitoneormoreRetFunds || values.isestablishedCentralbankofissue)
+                                  )
+                                  ||
+                                  (
+                                    values.chapter4StatusId == 20 && values.istreatedaspurposeofchapter4
+                                  )
+                                  ||
+                                  (
+                                    values.chapter4StatusId == 22 && values.isusingportionofthepaymentallocated
+                                  )
+                                  ||
+                                  values.chapter4StatusId == 24 &&
+                                  (
+                                    (
+                                      values.iscertifythatNonreportingIGAFFI && values.igAbetweentheUnitedStatesAnd && values.applicableIGA
+                                    ) &&
+                                    (
+                                      values.istreatedAs &&
+                                      (
+                                        (values.istreatedAs == 24 && values.istreatedAsOthers) || (values.istreatedAs != 24 && !values.istreatedAsOthers)
+                                      )
+                                    ) &&
+                                    (
+                                      values.sponsoredEntityTrustee &&
+                                      (
+                                        (values.sponsoredEntityTrustee == 1) && (values.nameoftheTrustee && values.thetrusteeIs)
+                                        ||
+                                        (values.sponsoredEntityTrustee == 2) && (values.nameoftheTrustee)
+                                        ||
+                                        (values.sponsoredEntityTrustee == 3)
+                                      )
+                                    )
+                                  )
+                                  ||
+                                  values.chapter4StatusId == 25 && values.isnotaffiliatedwithanentity && (values.isProvidedFFIownerReportingstatement || values.isProvidedAuditorsLetter)
+                                  ||
+                                  values.chapter4StatusId == 28 &&
+                                  (
+                                    (values.isnotaFinancialInstitution && values.oneormoreEstablishedSecurities)
+                                    ||
+                                    (values.ismemberofthesameExpandedaffiliatedGroup && values.nameoftheEntityRegularyTraded && values.nameoftheSecuritiesMarket)
+                                  )
+                                  ||
+                                  values.chapter4StatusId == 32 && values.isrequiredtoperformAML && (values.hasbeenboundbyTerminatedAgreement || values.isprohibitiononthesaleofDebt)
+                                  ||
+                                  values.chapter4StatusId == 33 && values.nameofDirectSponsoringEntity && values.isadirectReportingNFFE
+                                  ||
+                                  values.chapter4StatusId == 34 && values.nameofSponsoringEntity && (values.hasagreedwiththeNonparticipatingFFI || values.IswhollyownedDirectlyIndirectlybytheUS)
+                                  ||
+                                  values.chapter4StatusId == 35 && values.tFI18a && (values.tFI18b || values.tFI18c)
+
+                                  ? false : true
+                              }
+                            >
+                              Continue
+                            </Button>
+                          </div>
                         </>)}
                         <Typography
                           align="center"
                           style={{
-                            color: "#505E50",  
+                            color: "#505E50",
                             justifyContent: "center",
                             alignItems: "center",
                             marginTop: "20px",
