@@ -90,7 +90,7 @@ export default function Fedral_tax(props: any) {
 
 
   useEffect(() => {
-    document.title = "Chapter III"
+    document.title = "Federal Tax Classification"
   }, [])
 
   useEffect(() => {

@@ -49,13 +49,27 @@ const CRS_W9_DC = React.lazy(
 const Financial_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Financial")
 );
+
+const Complete_CRS_W9 = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/CRS_Complete")
+);
 const Active_Non_Financial_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Active_Non_financial")
 );
 
-const Passive_Non_Financial_W9_DC = React.lazy(
-  () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Passive")
+
+
+const Non_Reporting_CRS_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/NonReporting")
 );
+
+const Financial_CRS_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/Financial")
+);
+const FinancialReport_CRS_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/Financial/FinancialModal")
+);
+
 const TaxPurpose_W9 = React.lazy(
   () => import("../Components/W9Form/TaxPurpose_W9/index")
 );
@@ -331,6 +345,14 @@ const ROUTES: Array<RouteType> = [
     isPrivate: true,
   },
   {
+    name: "Complete_CRS_W9",
+    path: "/Complete_CRS_W9",
+    id: 2,
+    Component: Complete_CRS_W9,
+    isPrivate: true,
+  },
+  //Complete_CRS_W9
+  {
     name: "CRS_W9_DC",
     path: "/CRS_W9_DC",
     id: 2,
@@ -344,14 +366,30 @@ const ROUTES: Array<RouteType> = [
     Component: Active_Non_Financial_W9_DC,
     isPrivate: true,
   },
+ 
   {
-    name: "Passive_Non_Financial_W9_DC",
-    path: "/Passive_Non_Financial_W9_DC",
+    name: "Non_Reporting_CRS_W9_DC",
+    path: "/Non_Reporting_CRS_W9_DC",
     id: 2,
-    Component: Passive_Non_Financial_W9_DC,
+    Component: Non_Reporting_CRS_W9_DC,
     isPrivate: true,
   },
-  //Active_Non_Financial_W9_DC
+  //Non_Reporting_CRS_W9_DC
+  {
+    name: "Financial_CRS_W9_DC",
+    path: "/Financial_CRS_W9_DC",
+    id: 2,
+    Component: Financial_CRS_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "FinancialReport_CRS_W9_DC",
+    path: "/FinancialReport_CRS_W9_DC",
+    id: 2,
+    Component: FinancialReport_CRS_W9_DC,
+    isPrivate: true,
+  },
+  //FinancialReport_CRS_W9_DC
   {
     name: "TaxPurpose_W9",
     path: "/TaxPurpose_W9",

@@ -18,7 +18,7 @@ import BreadCrumbComponent from "../../../reusables/breadCrumb";
 export default function Declaration (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
-  const navigate = useNavigate();
+
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
@@ -127,18 +127,18 @@ export default function Declaration (props: any){
               }) => (
                 <form onSubmit={handleSubmit}>
                
-               <div style={{ backgroundColor: "#fff", padding: "5px" }}>
+                   <div style={{ backgroundColor: "#fff", padding: "5px" }}>
               <Typography
-                className="my-2 mx-2"
+                className="my-3 mx-2"
                 style={{ fontSize: "20px", color: "#1976d2", fontWeight: "bold" }}
               >
-               CRS Classification Guide
+              CRS Classification Guide Financial Institution Review
               </Typography>
 
 
               <Accordion
                 expanded={expandedState === "panel1"}
-                onChange={handleChangeAccodionState("panel1","Active Non-Financial Entity Overview")}
+                onChange={handleChangeAccodionState("panel1","Financial Institution resident in a Non-Participating Jurisdiction under CRS Overview")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -148,7 +148,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Active Non-Financial Entity Overview
+                    Financial Institution resident in a Non-Participating Jurisdiction under CRS Overview
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -157,14 +157,14 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                    CRS Classification - Active Non-Financial Entity Overview
+                   CRS Classification - Financial Institution resident in a Non-Participating Jurisdiction under CRS Overview
                   </Typography>
                  
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel2"}
-                onChange={handleChangeAccodionState("panel2","Corporation that is regularly traded or a related entity of a regularly traded corporation")}
+                onChange={handleChangeAccodionState("panel2","Investment Entity managed by another Financial Institution where a controlling ownership interest is held (directly or indirectly) by a company listed on a stock exchange and subject to disclosure requirements or is a majority owned subsidiary of such a company")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -174,7 +174,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                   Corporation that is regularly traded or a related entity of a regularly traded corporation
+                   Investment Entity managed by another Financial Institution where a controlling ownership interest is held (directly or indirectly) by a company listed on a stock exchange and subject to disclosure requirements or is a majority owned subsidiary of such a company
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -183,14 +183,14 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                  CRS Classification - Corporation that is regularly traded or a related entity of a regularly traded corporation
+                  No key is specified for this content block
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel3"}
-                onChange={handleChangeAccodionState("panel3","Governmental Entity, International Organization, a Central Bank, or an Entity wholly")}
+                onChange={handleChangeAccodionState("panel3","Investment Entity managed by another Financial Institution")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -200,7 +200,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Governmental Entity, International Organization, a Central Bank, or an Entity wholly
+                     Investment Entity managed by another Financial Institution
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -209,14 +209,14 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                 CRS Classification - Governmental Entity, International Organization, a Central Bank, or an Entity wholly
+                CRS Classification - Investment Entity managed by another Financial Institution
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel4"}
-                onChange={handleChangeAccodionState("panel4","Other Active Non-Financial Entity")}
+                onChange={handleChangeAccodionState("panel4","Other Investment Entity")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -226,7 +226,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Other Active Non-Financial Entity
+                    Other Investment Entity
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -235,21 +235,45 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                 CRS Classification - Other Active Non-Financial Entity
+                 CRS Classification - Other Investment Entity
+                  </Typography>
+                  
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expandedState === "panel5"}
+                onChange={handleChangeAccodionState("panel5"," Other Financial Institution, including a Depository Institution, Custodial Institution, or Specified Insurance Company")}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMore />}
+                  aria-controls="panel2d-content"
+                  id="panel2d-header"
+                >
+                  <Typography
+                    style={{ fontSize: "18px",color: "black" }}
+                  >
+                   Other Financial Institution, including a Depository Institution, Custodial Institution, or Specified Insurance Company
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography
+                    align="left"
+                    style={{ fontSize: "14px",color: "black" }}
+                    
+                  >
+                 CRS Classification - Other Financial Institution, including a Depository Institution, Custodial Institution, or Specified Insurance Company
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
 
-              
-
-
-              <Typography align="center">
+             <div style={{marginTop:"20px"}}>
+             <Typography align="center">
                 <Button
-                 onClick={() => {
-                  // setIsAccordionVisible(false);
+                 onClick={() => {setIsAccordionVisible(false)
+
                   history(-1)
-                }}
+                 }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
@@ -269,7 +293,8 @@ export default function Declaration (props: any){
                     localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
                     history("/FinancialReport_CRS_W9_DC");
                   }
-                }}
+                 
+                  }}
                   style={{
 
                     fontSize:"12px",
@@ -284,8 +309,11 @@ export default function Declaration (props: any){
 
                 
               </Typography>
+             </div>
 
             </div>
+
+            
 
                 
                 </form>

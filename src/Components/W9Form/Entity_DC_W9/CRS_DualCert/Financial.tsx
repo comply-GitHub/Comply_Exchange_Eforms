@@ -23,10 +23,18 @@ export default function Declaration (props: any){
   const dispatch = useDispatch();
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
 
-  const handleChangeAccodionState = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-    setExpandedState(newExpanded ? panel : false);
+  const handleChangeAccodionState = (panel: string, panelHeading: string) => (
+    event: React.SyntheticEvent,
+    newExpanded: boolean
+  ) => {
+    if (newExpanded) {
+      setExpandedState(panel);
+      localStorage.setItem("clickedPanelHeading", panelHeading);
+    } else {
+      setExpandedState(false);
+      localStorage.removeItem("clickedPanelHeading");
+    }
   };
-
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   
@@ -129,7 +137,7 @@ export default function Declaration (props: any){
 
               <Accordion
                 expanded={expandedState === "panel1"}
-                onChange={handleChangeAccodionState("panel1")}
+                onChange={handleChangeAccodionState("panel1","Financial Institution Review")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -155,7 +163,7 @@ export default function Declaration (props: any){
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel2"}
-                onChange={handleChangeAccodionState("panel2")}
+                onChange={handleChangeAccodionState("panel2","Reporting Financial Institution Under CRS")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -181,7 +189,7 @@ export default function Declaration (props: any){
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel3"}
-                onChange={handleChangeAccodionState("panel3")}
+                onChange={handleChangeAccodionState("panel3"," Non Reporting Financial Institution Under CRS")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -207,7 +215,7 @@ export default function Declaration (props: any){
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel4"}
-                onChange={handleChangeAccodionState("panel4")}
+                onChange={handleChangeAccodionState("panel4"," Financial Institution resident in a Non-Participating Juridiction Under CRS")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -237,11 +245,14 @@ export default function Declaration (props: any){
 
               <Typography align="center">
                 <Button
-                 onClick={() => setIsAccordionVisible(false)}
+                 onClick={() =>{setIsAccordionVisible(false)
+
+                  history(-1)
+                 }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
-             
+             fontSize:"12px",
                     marginTop: "10px",
                     marginBottom: "20px",
                   }}
@@ -251,9 +262,24 @@ export default function Declaration (props: any){
                 <Button
                  disabled={!isContinueEnabled} 
                   variant="contained"
-                 
+                  onClick={() => {
+                    const clickedPanelHeading = localStorage.getItem("clickedPanelHeading");
+                     if (clickedPanelHeading) {
+                    localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
+                    
+                  }
+                    if (expandedState === "panel2") {
+                      history("/FinancialReport_CRS_W9_DC");
+                      // history("/Reporting_CRS_W9_DC");
+                    } else if (expandedState === "panel3") {
+                      history("/Non_Reporting_CRS_W9_DC");
+                    }
+                    else if(expandedState === "panel4"){
+                      history("/Financial_CRS_W9_DC")
+                    }
+                  }}
                   style={{
-
+                    fontSize:"12px",
                  
                     marginTop: "10px",
                     marginBottom: "20px",
