@@ -34,7 +34,7 @@ export default function View_Insructions(props: any) {
           <div className="offcanvas-body pt-0">
             <div className="card mb-3 rounded-0">
               <div className="card-header p-0">
-                <h6 className="offcanvas-title w-100 text-center py-2 px-3" id="offcanvasNavbarLabel" style={{ background: "#e7e7e7" }}>IRS Form Instructions</h6>
+                <h6 className="offcanvas-title w-100 text-center py-2 px-3" id="offcanvasNavbarLabel" style={{ background: "#e7e7e7" }}>Easy Help</h6>
               </div>
               <div className="card-body">
 

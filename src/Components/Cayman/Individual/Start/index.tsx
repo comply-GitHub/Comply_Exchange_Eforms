@@ -46,6 +46,7 @@ import { StartSchema } from "../../../../schemas/cayman";
 import DatePicker from 'react-date-picker';
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
+import View_Insructions from "../../../viewInstruction";
 
 interface FormValues {
   accountHolderBasicDetailId: number,
@@ -227,10 +228,10 @@ export default function Index() {
         .GetAgentCountriesImportantForEformData
   );
 
-  const viewPdf = () => {
-    // history("/w8Ben_pdf", { replace: true });
-    //history("/w8Ben_pdf");
-  }
+  // const viewPdf = () => {
+  //   // history("/w8Ben_pdf", { replace: true });
+  //   //history("/w8Ben_pdf");
+  // }
 
   function getNameById(id: any) {
     if (!Array.isArray(allCountriesData)) {
@@ -242,15 +243,31 @@ export default function Index() {
     return foundObject ? foundObject.name : null;
   }
 
+  const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
+
+  const viewPdf=()=>{
+    history("w9_pdf");
+  }
+
   return (
     <section
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
+      <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
+      {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
+
 
       <div className="overlay-div">
         <div className="overlay-div-group">
-          <div className="viewInstructions">View Instructions</div>
+        <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
+          {/* <div className="viewform" onClick={viewPdf}>View Form</div> */}
           <div className="viewform" onClick={() => {
               dispatch(GetBenPdf(authDetails?.accountHolderId))
             }}>View Form</div>
