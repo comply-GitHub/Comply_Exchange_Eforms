@@ -35,7 +35,7 @@ export default function Nav( ) {
           className="navbar"
           src={require("../../assets/img/logo.png")}
         />
-        <div className="my-auto" style={{ height: "40px", display: "flex" }}>
+        <div className="my-auto" style={{ height: "40px", display: "flex" ,marginRight:"25px"}}>
         <GoogleTranslate />
 
           <Tooltip
@@ -48,7 +48,7 @@ export default function Nav( ) {
           >
             <Button
               className="my-auto mx-2"
-              style={{ borderRadius: "30px", minWidth: "max-content",boxShadow:"none" }}
+              style={{ borderRadius: "30px", minWidth: "max-content",boxShadow:"none",maxWidth:"30%" }}
               variant="contained"
               onClick={(e)=>{
                 e.preventDefault();

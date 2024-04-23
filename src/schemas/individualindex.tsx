@@ -21,7 +21,7 @@ export const individualSchema = (Cert: string, payment: boolean, income: boolean
       .required("Please Enter unique Identifier")
       // .min(3, "Too short")
       .max(50, "Too long"),
-    countryOfCitizenshipId: Yup.number().when("isUSIndividual", {
+    countryOfCitizenshipId: Cert==="SC" ? Yup.number() : Yup.number().when("isUSIndividual", {
       is: "no",
       then: () =>
         Yup.number()
@@ -32,9 +32,9 @@ export const individualSchema = (Cert: string, payment: boolean, income: boolean
       .required("Please select a country")
       .notOneOf([0], "Please select a valid country"),
 
-    cityOfBirth: Cert === "GEN" ? Yup.string() : Yup.string().trim().required("Please Enter city of Birth"),
+    cityOfBirth: Cert === "GEN"  ? Yup.string() : Yup.string().trim().required("Please Enter city of Birth"),
 
-    taxpayerIdTypeID: Yup.number().notOneOf([0], "Please select a valid option"),
+    taxpayerIdTypeID: Cert==="SC" ? Yup.number() : Yup.number().notOneOf([0], "Please select a valid option"),
     dob: Cert === "GEN" ? Yup.date().when("isUSIndividual", {
       is: "no",
       then: () => Yup.date().required("Please Enter DOB"),

@@ -23,6 +23,7 @@ const ActionName = {
     InsertAccountHolderDetail:"InsertAccountHolderDetail",
     InserDualCert:"InserDualCert",
     CREATE_8233:"CREATE_8233",
+    CREATE_8IMY:"CREATE_8IMY",
     postSecurutyCode:"postSecurityCode",
     GetSecurityQuestions:"GetSecurityQuestions",
     GetTinTypes:"GetTinTypes",
@@ -65,6 +66,7 @@ const ActionName = {
     InsertW8IMYEntityNonForm:"InsertW8IMYEntityNonForm",
     InsertForm8233IndividualNonUSForm:"InsertForm8233IndividualNonUSForm",
     UpsertSupportingDocumentation:"UpsertSupportingDocumentation",
+    UpsertAccountHolderWithholdingStatement:"UpsertAccountHolderWithholdingStatement",
     //Account holder
     UpsertAccountHolderIncomeAllocation:"/AccountHolderDetail/UpsertAccountHolderIncomeAllocation",
     GetAccountHolderIncomeAllocation:"/AccountHolderDetail/GetAccountHolderIncomeAllocation",
@@ -83,7 +85,13 @@ const ActionName = {
     GetByW8EXPIndividualId:"GetByW8EXPIndividualId",
     //errors
     UpdateError:"UpdateError",
-    GetIGA:"GetIGA"
+    GetIGA:"GetIGA",
+    GetFederalTaxClassification:"GetFederalTaxClassification",
+    GetAllUSFormTypes:"GetAllUSFormTypes",
+    getAllAccountStatement:"getAllAccountStatement",
+    InsertCaymanIndividualNonUS:"InsertCaymanIndividualNonUS",
+    GetByCaymanIndividualNonUSId:"GetByCaymanIndividualNonUSId",
+
   };
 
   export default ActionName;

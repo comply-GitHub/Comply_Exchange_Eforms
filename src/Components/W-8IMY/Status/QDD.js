@@ -5,14 +5,15 @@ import InfoIcon from "@mui/icons-material/Info";
 
 
 const QDD = ({handleChange, values, setFieldValue}) => {
-    console.log("QDD form",values);
+    
     const [toolInfo, setToolInfo] = useState("");
 
   return (
     <div style={{ padding: "10px", width: "100%" }}>
-        <div className="d-flex partParentDiv">
-            <h5 className="sub_title_inner"><span className="partSpan">Part III</span> Qualified Intermediary</h5>
-        </div>
+        <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
+            Part III <span style={{ fontWeight: "bold", marginLeft: "10px" }}>Qualified Intermediary</span>
+        </Typography>
+        
 
         <Typography
             align="left"
@@ -29,24 +30,11 @@ const QDD = ({handleChange, values, setFieldValue}) => {
                     style={{ backgroundColor: "black", color: "white" }}
                     title={
                         <>
+                            
                             <Typography color="inherit">
                             Line 14
                             </Typography>
-                            <a onClick={() => setToolInfo("14")}>
-                                <Typography
-                                style={{
-                                    cursor: "pointer",
-                                    textDecorationLine: "underline",
-                                }}
-                                align="center"
-                                >
-                                {" "}
-                                View More...
-                                </Typography>
-                            <Typography color="inherit">
-                            Line 14
-                            </Typography>
-                            </a>
+                            
                             <a onClick={() => setToolInfo("14")}>
                                 <Typography
                                 style={{
@@ -83,8 +71,7 @@ const QDD = ({handleChange, values, setFieldValue}) => {
                     }}
                     >
                         <Typography>
-                            Select check box if you are a Qualified Intermediary
-                            Check box 14 if you are a qualified intermediary (QI) (whether or not you assume primary withholding responsibility) for the payments for which you are providing this form. A QI that is an FFI receiving a withholdable payment must be a participating FFI, registered deemed-compliant FFI, exempt beneficial owner that is a central bank of issue that meets the requirements of and agrees to be treated as a participating FFI (including a reporting Model 2 FFI) or a registered deemed-compliant FFI (including a reporting Model 1 FFI) with respect to any account that it maintains and that is held in connection with a commercial financial activity described in Regulations section 1.1471-6(h) and for which it receives a withholdable payment, or FFI treated as a deemed-compliant FFI under an applicable IGA that is subject to due diligence and reporting requirements similar to those applicable to a registered deemed-compliant FFI. By checking the box, you are certifying to all of the statements contained on line 14.
+                            Select check box if you are a Qualified Intermediary Check box 14 if you are a qualified intermediary (QI) (whether or not you assume primary withholding responsibility) for the payments for which you are providing this form. A QI that is an FFI receiving a withholdable payment must be a participating FFI, registered deemed-compliant FFI, exempt beneficial owner that is a central bank of issue that meets the requirements of and agrees to be treated as a participating FFI (including a reporting Model 2 FFI) or a registered deemed-compliant FFI (including a reporting Model 1 FFI) with respect to any account that it maintains and that is held in connection with a commercial financial activity described in Regulations section 1.1471-6(h) and for which it receives a withholdable payment, or FFI treated as a deemed-compliant FFI under an applicable IGA that is subject to due diligence and reporting requirements similar to those applicable to a registered deemed-compliant FFI. By checking the box, you are certifying to all of the statements contained on line 14.
                         </Typography>
 
                         <Link

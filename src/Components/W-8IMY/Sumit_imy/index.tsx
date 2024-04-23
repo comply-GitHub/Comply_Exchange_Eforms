@@ -1,4 +1,4 @@
-import { Fragment,useEffect,useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { SubmitSchema } from "../../../schemas/submit";
@@ -9,10 +9,15 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
-import { W8_state_ECI } from "../../../Redux/Actions";
+import { W8_state_ECI, postW81MY_EForm } from "../../../Redux/Actions";
 import { useDispatch } from "react-redux";
+import useAuth from "../../../customHooks/useAuth";
+import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import { GetImyPdf } from "../../../Redux/Actions/PfdActions";
 
 const Declaration = (props: any) => {
+  const { authDetails } = useAuth();
   const { open, setOpen } = props;
   const handleClose = () => {
     setOpen(false);
@@ -22,25 +27,26 @@ const Declaration = (props: any) => {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsCheckboxChecked(event.target.checked);
   };
+  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
 
 
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
 
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Electronic Signature Confirmation"
-  },[])
+  }, [])
 
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
-    const initialValue = {
-      declaration:false,
-      IsSubmit:false,
-      IsSubmit_not:false
-    };
+  const initialValue = {
+    isAgreeWithDeclaration: false,
+    isConsentReceipentstatement: false,
+    isNotConsentReceipentstatement: false
+  };
   return (
     <Fragment>
       <section
@@ -51,16 +57,44 @@ const Declaration = (props: any) => {
           <Paper style={{ padding: "22px" }}>
             <Formik
               initialValues={initialValue}
-             validationSchema={SubmitSchema}
+              validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
-                console.log("values" , values)
+                console.log("values", values)
+
                 setSubmitting(true);
-                dispatch(
-                  W8_state_ECI(values, () => {
-                    history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY/Submit_IMY/ThankYou_IMY");
-                  })
-                );
-                history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY/Submit_IMY/ThankYou_IMY");
+                let temp = {
+                  ...PrevStepData,
+                  ...values,
+                  agentId: authDetails?.agentId,
+                  accountHolderBasicDetailId: authDetails?.accountHolderId,
+                };
+                const returnPromise = new Promise((resolve, reject) => {
+                  dispatch(
+                    postW81MY_EForm(
+                      temp,
+                      (res: any) => {
+                        localStorage.setItem(
+                          "PrevStepData",
+                          JSON.stringify(temp)
+                        );
+
+                        resolve(res);
+                        history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY/Submit_IMY/ThankYou_IMY");
+                      },
+                      (err: any) => {
+                        reject(err);
+                      }
+                    )
+                  );
+                });
+                return returnPromise;
+
+                // dispatch(
+                //   W8_state_ECI(values, () => {
+                //     history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY/Submit_IMY/ThankYou_IMY");
+                //   })
+                // );
+                // history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY/Submit_IMY/ThankYou_IMY");
               }}
             >
               {({
@@ -72,354 +106,374 @@ const Declaration = (props: any) => {
                 handleChange,
                 isSubmitting,
                 isValid,
-                setFieldValue
+                setFieldValue,
+                submitForm
               }) => (
                 <form onSubmit={handleSubmit}>
+                  <>{console.log(errors, values, "errorsssss")}</>
                   {/* <form> */}
-                    {
-                      <Typography
-                        align="left"
-                        style={{
-                          fontSize: "26px",
-                          color: "#04506e",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Electronic Signature Confirmation
-                      </Typography>
-                    }
-                    <Divider style={{ background: "black" }} />
+                  {
+                    <Typography
+                      align="left"
+                      style={{
+                        fontSize: "26px",
+                        color: "#04506e",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Electronic Signature Confirmation
+                    </Typography>
+                  }
+                  <Divider style={{ background: "black" }} />
 
-                    <div>
-                      <Accordion
-                        expanded={expanded === "panel1"}
-                        onChange={handleChangestatus("panel1")}
+                  <div>
+                    <Accordion
+                      expanded={expanded === "panel1"}
+                      onChange={handleChangestatus("panel1")}
+                    >
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1bh-content"
+                        id="panel1bh-header"
                       >
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon />}
-                          aria-controls="panel1bh-content"
-                          id="panel1bh-header"
+                        <Typography
+                          sx={{
+                            width: "100%",
+                            flexShrink: 0,
+                            fontSize: "20px",
+                          }}
+                        >
+                          Electronic Submission Declaration
+                        </Typography>
+                      </AccordionSummary>
+
+                      <AccordionDetails>
+                        <Paper
+                          elevation={3}
+                          style={{
+                            padding: "20px",
+                            backgroundColor: "#d4d9d4",
+                            height: "280px",
+                            overflow: "auto",
+                          }}
                         >
                           <Typography
-                            sx={{
+                            align="left"
+                            style={{
+                              color: "black",
+                              fontWeight: "bold",
+                              fontSize: "18px",
                               width: "100%",
-                              flexShrink: 0,
-                              fontSize: "20px",
                             }}
                           >
                             Electronic Submission Declaration
                           </Typography>
-                        </AccordionSummary>
 
-                        <AccordionDetails>
-                          <Paper
-                            elevation={3}
-                            style={{
-                              padding: "20px",
-                              backgroundColor: "#d4d9d4",
-                              height: "280px",
-                              overflow: "auto",
-                            }}
-                          >
-                            <Typography
-                              align="left"
-                              style={{
-                                color: "black",
-                                fontWeight: "bold",
-                                fontSize: "18px",
-                                width: "100%",
-                              }}
-                            >
-                              Electronic Submission Declaration
-                            </Typography>
-
-                            <Typography
-                              align="left"
-                              style={{ fontSize: "15px", marginTop: "13px" }}
-                            >
-                              <span
-                                style={{
-                                  color: "black",
-                                  fontWeight: "bold",
-                                  fontSize: "15px",
-                                }}
-                              >
-                                Under Penalties or Perjury
-                              </span>{" "}
-                              you hereby declare that, pursuant to the
-                              Electronic Signature in Global and National
-                              Commerce Act - the E-Sign Act - Title 15 U.S.C.
-                              §7001, you are declaring that you have examined
-                              the information you are about to electronically
-                              submit and that to the best of your knowledge and
-                              belief it is true, correct and complete.
-                            </Typography>
-
-                            <Typography
-                              align="left"
-                              style={{ fontSize: "15px", marginTop: "13px" }}
-                            >
-                              Furthermore you acknowledge that you understand
-                              your rights and obligations under Title 28 U.S.C.
-                              §1746 governing unsworn declarations made under
-                              the Penalties of Perjury.
-                            </Typography>
-                            <Typography
-                              align="left"
-                              style={{ fontSize: "15px", marginTop: "13px" }}
-                            >
-                              Additionally, you are certifying that you have
-                              read and agreed the certification statement
-                              presented through the submission process,
-                              confirming that:
-                            </Typography>
-                            <Typography
-                              align="left"
-                              style={{ fontSize: "15px", marginTop: "13px" }}
-                            >
-                              1. You are the beneficial owner (or an authorized
-                              to sign for the beneficial owner) of all the
-                              income to which the form relates,
-                            </Typography>
-                            <Typography
-                              align="left"
-                              style={{ fontSize: "15px", marginTop: "13px" }}
-                            >
-                              2. The beneficial owner is not a U.S person.
-                            </Typography>
-                            <Typography
-                              align="left"
-                              style={{ fontSize: "15px", marginTop: "13px" }}
-                            >
-                              3. You are a U.S. person submitting a Form type
-                              W-9
-                            </Typography>
-
-                            <Typography
-                              align="left"
-                              style={{
-                                fontSize: "17px",
-                                marginTop: "13px",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              To Confirm:
-                            </Typography>
-                            <Typography
-                              align="left"
-                              style={{ fontSize: "15px" }}
-                            >
-                              1. You have entered your name in the box provided
-                            </Typography>
-                            <Typography
-                              align="left"
-                              style={{ fontSize: "15px" }}
-                            >
-                              2. Checked the{" "}
-                              <span
-                                style={{
-                                  color: "black",
-                                  fontWeight: "bold",
-                                  fontSize: "15px",
-                                }}
-                              >
-                                "I agree with the above declaration"
-                              </span>
-                              and
-                            </Typography>
-                            <Typography
-                              align="left"
-                              style={{ fontSize: "15px" }}
-                            >
-                              3. By submitting this form you are providing
-                              a legally binding self certified electronic
-                              signature.
-                            </Typography>
-
-                            <Typography
-                              align="left"
-                              style={{ fontSize: "15px", marginTop: "13px" }}
-                            >
-                              On submission your details will be transmitted to
-                              your previously selected withholding agent previously selected, who
-                              may wish to contact you for further confirmation.
-                              No data is stored within the Comply Exchange
-                              Service on transfer and it is again recommended
-                              that you save a copy locally for your own records.
-                            </Typography>
-                          </Paper>
-                          <div style={{ display: "flex", marginTop: "10px" }}>
-                            <Checkbox name="declaration" value={values.declaration} onChange={handleChange} checked={values.declaration}/>
-                            <Typography style={{ marginTop: "9px" }}>
-                              I agree with the above Declarations
-                            </Typography>
-                          </div>
-                          <p className="error">{errors.declaration}</p>
-                        </AccordionDetails>
-                      </Accordion>
-                      <Accordion
-                        expanded={expanded === "panel2"}
-                        onChange={handleChangestatus("panel2")}
-                      >
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon />}
-                          aria-controls="panel2bh-content"
-                          id="panel2bh-header"
-                        >
                           <Typography
-                            sx={{
-                              width: "100%",
-                              flexShrink: 0,
-                              fontSize: "20px",
-                            }}
+                            align="left"
+                            style={{ fontSize: "15px", marginTop: "13px" }}
                           >
-                            Electronic Recipient Statement
-                          </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <Paper
-                            elevation={3}
-                            style={{
-                              padding: "20px",
-                              backgroundColor: "#d4d9d4",
-                            }}
-                          >
-                            <Divider
-                              style={{ marginTop: "10px", color: "black" }}
-                            />
-                            <Typography
+                            <span
                               style={{
                                 color: "black",
                                 fontWeight: "bold",
-                                fontSize: "16px",
-                                marginTop: "10px",
+                                fontSize: "15px",
                               }}
                             >
-                              We may be required to provide you with a Form
-                              1042-S or 1099 depending on your U.S. status. In
-                              order to receive this statement electronically, by
-                              email or accessible through our onboarding portal
-                              you must provide your consent by checking the box
-                              below. If you do not provide consent a paper copy
-                              will be provided. Furthermore: The statement will
-                              be provided in PDF format. This consent will
-                              remain in place until you withdraw your consent.
-                              You may withdraw this consent at any time by
-                              writing to our support centre requesting that a
-                              paper copy is provided to you. If you require a
-                              paper copy after giving consent you may request a
-                              copy by writing to our support centre requesting
-                              that a paper copy is provided to you. We reserve
-                              the right to change our delivery processes and
-                              should circumstances change we will contact you by
-                              written notice after which time statements will be
-                              provided by paper, until a further consent is
-                              given by you.
-                            </Typography>
-                            <Divider style={{ marginBottom: "10px" }} />
-                          </Paper>
-                          <div style={{ display: "flex", marginTop: "10px" }}>
-                            <Checkbox     name="IsSubmit" value={values.IsSubmit} 
-                            onChange={(e)=>{
-                              handleChange(e);
-                              setTimeout(()=>{setFieldValue("IsSubmit_not",false)},50)
-                            }} 
-                            checked={values.IsSubmit}/>
-                         
-                            <Typography style={{ marginTop: "9px" }}>
-                              I give consent to receiving a recipent statement
-                              electronically.
-                            </Typography>
-                           
-                          </div>
-                          <p className="error">{errors.IsSubmit}</p>
-                          <div style={{ display: "flex", marginTop: "10px" }}>
-                            <Checkbox  name="IsSubmit_not" value={values.IsSubmit_not} 
-                            onChange={(e)=>{
-                              handleChange(e);
-                              setTimeout(()=>{setFieldValue("IsSubmit",false)},50)
-                            }} 
-                            checked={values.IsSubmit_not} />
-                            <Typography style={{ marginTop: "9px" }}>
-                              {" "}
-                              I do not give consent to receiving a recipent
-                              statement electronically.
-                            </Typography>
-                          </div>
-                          <p className="error">{errors.IsSubmit_not}</p>
-                        </AccordionDetails>
-                      </Accordion>
-                    </div>
-                  
-                  
-                    <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "40px",
-          }}
-        >
-          <Button
-           
-            variant="contained"
-            style={{ color: "white" }}
-          >
-            SAVE & EXIT
-          </Button>
-          <Button
-          
-            variant="contained"
-            style={{ color: "white" ,marginLeft: "15px"}}
-          >
-            View Form
-          </Button>
+                              Under Penalties or Perjury
+                            </span>{" "}
+                            you hereby declare that, pursuant to the
+                            Electronic Signature in Global and National
+                            Commerce Act - the E-Sign Act - Title 15 U.S.C.
+                            §7001, you are declaring that you have examined
+                            the information you are about to electronically
+                            submit and that to the best of your knowledge and
+                            belief it is true, correct and complete.
+                          </Typography>
 
-          <Button
-          // onClick={()=>{
-          //   history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233")
-          // }}
-          disabled={!isValid}
-             type="submit"
-            variant="contained"
-            style={{ color: "white", marginLeft: "15px" }}
-          >
-            Submit Electronically
-          </Button>
-        </div>
-        <Typography
-          align="center"
-          style={{
-            color: "#505E50",  
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: "20px",
-          }}
-        >
-          Do you want to go back?
-        </Typography>
-        <Typography align="center">
-          <Button
-            variant="contained"
-            style={{
-              color: "white",
-              backgroundColor: "black",
-              marginTop: "10px",
-              marginBottom: "20px",
-            }}
-            onClick={()=>{
-              history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY")
-            }}
-          
-          >
-            Back
-          </Button>
-        </Typography>
-                  </form>
+                          <Typography
+                            align="left"
+                            style={{ fontSize: "15px", marginTop: "13px" }}
+                          >
+                            Furthermore you acknowledge that you understand
+                            your rights and obligations under Title 28 U.S.C.
+                            §1746 governing unsworn declarations made under
+                            the Penalties of Perjury.
+                          </Typography>
+                          <Typography
+                            align="left"
+                            style={{ fontSize: "15px", marginTop: "13px" }}
+                          >
+                            Additionally, you are certifying that you have
+                            read and agreed the certification statement
+                            presented through the submission process,
+                            confirming that:
+                          </Typography>
+                          <Typography
+                            align="left"
+                            style={{ fontSize: "15px", marginTop: "13px" }}
+                          >
+                            1. You are the beneficial owner (or an authorized
+                            to sign for the beneficial owner) of all the
+                            income to which the form relates,
+                          </Typography>
+                          <Typography
+                            align="left"
+                            style={{ fontSize: "15px", marginTop: "13px" }}
+                          >
+                            2. The beneficial owner is not a U.S person.
+                          </Typography>
+                          <Typography
+                            align="left"
+                            style={{ fontSize: "15px", marginTop: "13px" }}
+                          >
+                            3. You are a U.S. person submitting a Form type
+                            W-9
+                          </Typography>
+
+                          <Typography
+                            align="left"
+                            style={{
+                              fontSize: "17px",
+                              marginTop: "13px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            To Confirm:
+                          </Typography>
+                          <Typography
+                            align="left"
+                            style={{ fontSize: "15px" }}
+                          >
+                            1. You have entered your name in the box provided
+                          </Typography>
+                          <Typography
+                            align="left"
+                            style={{ fontSize: "15px" }}
+                          >
+                            2. Checked the{" "}
+                            <span
+                              style={{
+                                color: "black",
+                                fontWeight: "bold",
+                                fontSize: "15px",
+                              }}
+                            >
+                              "I agree with the above declaration"
+                            </span>
+                            and
+                          </Typography>
+                          <Typography
+                            align="left"
+                            style={{ fontSize: "15px" }}
+                          >
+                            3. By submitting this form you are providing
+                            a legally binding self certified electronic
+                            signature.
+                          </Typography>
+
+                          <Typography
+                            align="left"
+                            style={{ fontSize: "15px", marginTop: "13px" }}
+                          >
+                            On submission your details will be transmitted to
+                            your previously selected withholding agent previously selected, who
+                            may wish to contact you for further confirmation.
+                            No data is stored within the Comply Exchange
+                            Service on transfer and it is again recommended
+                            that you save a copy locally for your own records.
+                          </Typography>
+                        </Paper>
+                        <div style={{ display: "flex", marginTop: "10px" }}>
+                          <Checkbox name="isAgreeWithDeclaration" value={values.isAgreeWithDeclaration} onChange={handleChange} checked={values.isAgreeWithDeclaration} />
+                          <Typography style={{ marginTop: "9px" }}>
+                            I agree with the above isAgreeWithDeclarations
+                          </Typography>
+                        </div>
+                        {/* {errors?.isAgreeWithDeclaration && typeof errors?.isAgreeWithDeclaration === 'string' && (
+                                <p className="error">{errors?.isAgreeWithDeclaration}</p>
+                              )} */}
+                        <p className="error">{errors.isAgreeWithDeclaration}</p>
+                      </AccordionDetails>
+                    </Accordion>
+                    <Accordion
+                      expanded={expanded === "panel2"}
+                      onChange={handleChangestatus("panel2")}
+                    >
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel2bh-content"
+                        id="panel2bh-header"
+                      >
+                        <Typography
+                          sx={{
+                            width: "100%",
+                            flexShrink: 0,
+                            fontSize: "20px",
+                          }}
+                        >
+                          Electronic Recipient Statement
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Paper
+                          elevation={3}
+                          style={{
+                            padding: "20px",
+                            backgroundColor: "#d4d9d4",
+                          }}
+                        >
+                          <Divider
+                            style={{ marginTop: "10px", color: "black" }}
+                          />
+                          <Typography
+                            style={{
+                              color: "black",
+                              fontWeight: "bold",
+                              fontSize: "16px",
+                              marginTop: "10px",
+                            }}
+                          >
+                            We may be required to provide you with a Form
+                            1042-S or 1099 depending on your U.S. status. In
+                            order to receive this statement electronically, by
+                            email or accessible through our onboarding portal
+                            you must provide your consent by checking the box
+                            below. If you do not provide consent a paper copy
+                            will be provided. Furthermore: The statement will
+                            be provided in PDF format. This consent will
+                            remain in place until you withdraw your consent.
+                            You may withdraw this consent at any time by
+                            writing to our support centre requesting that a
+                            paper copy is provided to you. If you require a
+                            paper copy after giving consent you may request a
+                            copy by writing to our support centre requesting
+                            that a paper copy is provided to you. We reserve
+                            the right to change our delivery processes and
+                            should circumstances change we will contact you by
+                            written notice after which time statements will be
+                            provided by paper, until a further consent is
+                            given by you.
+                          </Typography>
+                          <Divider style={{ marginBottom: "10px" }} />
+                        </Paper>
+                        <div style={{ display: "flex", marginTop: "10px" }}>
+                          <Checkbox name="isConsentReceipentstatement" value={values.isConsentReceipentstatement}
+                            onChange={(e) => {
+                              handleChange(e);
+                              setTimeout(() => { setFieldValue("isNotConsentReceipentstatement", false) }, 50)
+                            }}
+                            checked={values.isConsentReceipentstatement} />
+
+                          <Typography style={{ marginTop: "9px" }}>
+                            I give consent to receiving a recipent statement
+                            electronically.
+                          </Typography>
+
+                        </div>
+                        <p className="error">{errors.isConsentReceipentstatement}</p>
+                        <div style={{ display: "flex", marginTop: "10px" }}>
+                          <Checkbox name="isNotConsentReceipentstatement" value={values.isNotConsentReceipentstatement}
+                            onChange={(e) => {
+                              handleChange(e);
+                              setTimeout(() => { setFieldValue("isConsentReceipentstatement", false) }, 50)
+                            }}
+                            checked={values.isNotConsentReceipentstatement} />
+                          <Typography style={{ marginTop: "9px" }}>
+                            {" "}
+                            I do not give consent to receiving a recipent
+                            statement electronically.
+                          </Typography>
+                        </div>
+                        <p className="error">{errors.isNotConsentReceipentstatement}</p>
+                      </AccordionDetails>
+                    </Accordion>
+                  </div>
+
+
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: "40px",
+                    }}
+                  >
+                    <SaveAndExit Callback={() => {
+                      submitForm().then(() => {
+                        const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                        const urlValue = window.location.pathname.substring(1);
+                        const temp = {
+                          agentId: authDetails.agentId,
+                          accountHolderBasicDetailId: authDetails.accountHolderId,
+                          ...prevStepData,
+                          ...values,
+                          stepName: `/${urlValue}`
+                        };
+                        dispatch(postW81MY_EForm(
+                          temp
+                          , () => { }))
+                        history(
+                          GlobalValues.basePageRoute
+                        );
+                      })
+                    }} formTypeId={FormTypeId.FW81MY} ></SaveAndExit>
+                    <Button
+
+                      variant="contained"
+                      style={{ color: "white", marginLeft: "15px" }}
+                      onClick={() => {
+                        dispatch(GetImyPdf(authDetails?.accountHolderId))
+                      }}
+                    >
+                      View Form
+                    </Button>
+
+                    <Button
+                      // onClick={()=>{
+                      //   history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233")
+                      // }}
+                      disabled={!isValid}
+                      type="submit"
+                      variant="contained"
+                      style={{ color: "white", marginLeft: "15px" }}
+                    >
+                      Submit Electronically
+                    </Button>
+                  </div>
+                  <Typography
+                    align="center"
+                    style={{
+                      color: "#505E50",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: "20px",
+                    }}
+                  >
+                    Do you want to go back?
+                  </Typography>
+                  <Typography align="center">
+                    <Button
+                      variant="contained"
+                      style={{
+                        color: "white",
+                        backgroundColor: "black",
+                        marginTop: "10px",
+                        marginBottom: "20px",
+                      }}
+                      onClick={() => {
+                        history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY")
+                      }}
+
+                    >
+                      Back
+                    </Button>
+                  </Typography>
+                </form>
                 // </Form>
               )}
             </Formik>
           </Paper>
-          
+
         </div>
       </section>
     </Fragment>

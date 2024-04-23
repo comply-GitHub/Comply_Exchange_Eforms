@@ -47,6 +47,7 @@ import useAuth from "../../../customHooks/useAuth";
 import SubstantialUsPassiveNFE from "../../W8BEN-E/Declaration_BENE/Non_US/Status/SubstantialUsPassiveNFE";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const { authDetails } = useAuth();
@@ -119,9 +120,9 @@ export default function Fedral_tax(props: any) {
     setInitialValues({ ...initialValue, ...temp });
 
   }
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Chapter IV"
-  },[])
+  }, [])
 
   useEffect(() => {
     dispatch(GetSubstantialUsPassiveNFE(authDetails?.accountHolderId,
@@ -212,7 +213,9 @@ export default function Fedral_tax(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform" onClick={viewPdf}>View Form</div>
+            <div className="viewform" onClick={() => {
+              dispatch(GetExpPdf(authDetails?.accountHolderId));
+            }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[3].id === 5 ? (
@@ -574,7 +577,7 @@ export default function Fedral_tax(props: any) {
                                     39
                                   </Typography>
                                   <Typography>
-                                    <Checkbox name="isCertify39" checked={values.isCertify39} value={values.isCertify39}  onChange={(e) => { handleChange(e); setTimeout(() => { setFieldValue("isCertify39", false) }, 100) }}/>
+                                    <Checkbox name="isCertify39" checked={values.isCertify39} value={values.isCertify39} onChange={(e) => { handleChange(e); setTimeout(() => { setFieldValue("isCertify39", false) }, 100) }} />
                                   </Typography>
                                   <Typography className="mt-2">
                                     I certify that :
@@ -2309,7 +2312,9 @@ export default function Fedral_tax(props: any) {
                             //type="submit"
                             disabled={isSubmitting}
                             variant="contained"
-                            onClick={viewPdf}
+                            onClick={() => {
+                              dispatch(GetExpPdf(authDetails?.accountHolderId));
+                            }}
                             style={{ color: "white", marginLeft: "15px" }}
                           >
                             View Form
@@ -2346,7 +2351,7 @@ export default function Fedral_tax(props: any) {
                         <Typography
                           align="center"
                           style={{
-                            color: "#505E50",  
+                            color: "#505E50",
                             justifyContent: "center",
                             alignItems: "center",
                             marginTop: "20px",

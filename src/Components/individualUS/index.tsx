@@ -202,7 +202,7 @@ export default function IndividualUs() {
     dob: "",
     nameOfDisregarded: "",
     entityName: "",
-    taxpayerIdTypeID: 0,
+    taxpayerIdTypeID: 1,
     usTin: "",
     userType: userType,
     foreignTINCountryId: 0,
@@ -340,7 +340,7 @@ export default function IndividualUs() {
       setInitialValues(temp);
     }
   }
-console.log(authDetails?.agentId,"90")
+// console.log(authDetails?.agentId,"90")
 useEffect(()=>{
   if(authDetails?.agentId){
     dispatch(GetAgentUSVisaTypeHiddenForEformAction(authDetails?.agentId));
@@ -893,7 +893,7 @@ useEffect(()=>{
                   dob: values?.dob,
                   nameOfDisregarded: values?.nameOfDisregarded,
                   entityName: values?.entityName,
-                  taxpayerIdTypeID: +values?.taxpayerIdTypeID,
+                  taxpayerIdTypeID: userType== "SC" ? 1 :  +values?.taxpayerIdTypeID,
                   usTin: values?.usTin,
                   foreignTINCountryId: values?.foreignTINCountryId,
                   foreignTIN: values?.foreignTIN,
@@ -976,6 +976,9 @@ useEffect(()=>{
                   usTinTypeId: +values?.taxpayerIdTypeID,
                   permanentresidentialzippostalcode: values?.permanentResidentialZipPostalCode,
                 };
+
+                console.log("Payload",payload);
+                
                 dispatch(postOnboarding(payload, (data: any) => {
                   console.log(data)
                   if (data.accountHolderID) {
@@ -1184,7 +1187,7 @@ useEffect(()=>{
                   {toolInfo === "identity" ? (
                     <div className="mt-5">
                       <Paper
-                        style={{ backgroundColor: "#d1ecf1", padding: "15px" }}
+                        style={{ backgroundColor: "#d1ecf1", padding: "15px" ,marginLeft:"23px"}}
                       >
                         <div
                           className="d-flex"
@@ -1216,7 +1219,7 @@ useEffect(()=>{
                     ""
                   )}
 
-                  <>{console.log(values, "hbd", errors, "errors")}</>
+                  {/* <>{console.log(values, "hbd", errors, "errors")}</> */}
                   <CardHeader
                     className="flex-row-reverse"
                     title={
@@ -1349,7 +1352,7 @@ useEffect(()=>{
                     ""
                   )}
 
-                  {userType === "DC" ? (<>
+                  {userType === "DC" || userType === "SC" ? (<>
 
                     <Collapse
                       className="px-5 mx-2"
@@ -1548,7 +1551,8 @@ useEffect(()=>{
                               {errors.lastName && touched.lastName ? <p className="error">{errors.lastName}</p> : <></>}
                             </FormControl>
                           </div>
-                          <div className="col-lg-3 col-6 col-md-3 mt-2">
+                          {userType==="DC" && (<>
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
                             <FormControl className="w-100">
                               <Typography align="left">
                                 Country Of Citizenship
@@ -1587,6 +1591,8 @@ useEffect(()=>{
 
                             </FormControl>
                           </div>
+                          </>)}
+                          
                           <div className="col-lg-3 col-6 col-md-3 mt-2">
                             <FormControl className="w-100">
                               <Typography align="left">
@@ -1617,7 +1623,7 @@ useEffect(()=>{
                             <FormControl className="w-100">
                               <Typography align="left">
                                 Country Of Birth
-                                <span style={{ color: "red" }}>*</span>
+                                <span style={{ color: "red" }}>**</span>
                               </Typography>
 
                               <select
@@ -1633,7 +1639,7 @@ useEffect(()=>{
                                   handleChange(e);
                                 }}
                                 onBlur={handleBlur}
-                                // error={Number(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
+                                //  error={Boolen(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
                                 value={values.countryOfBirthId}
                               >
                                 <option value="">---select---</option>
@@ -1648,7 +1654,11 @@ useEffect(()=>{
                                   )
                                 )}
                               </select>
-
+                              {errors.countryOfBirthId && touched.countryOfBirthId ? (<p className="error">{errors.countryOfBirthId}</p>) : ""}
+                              {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
+                                {/* {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
+                                    <p className="error">{errors?.countryOfBirthId}</p>
+                                  )} */}
                               {/* <select
                     style={{
                         padding: " 0 10px",
@@ -1678,13 +1688,16 @@ useEffect(()=>{
                     )}
                 </select> */}
                               {/* {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ?<p className="error">{errors.countryOfCitizenshipId}</p>:<></>} */}
-                              {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>}
+                              {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
+                              {/* {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
+                                    <p className="error">{errors?.countryOfBirthId}</p>
+                                  )} */}
                             </FormControl>
                           </div>
                           <div className="col-lg-3 col-6 col-md-3 mt-2">
                             <FormControl className="w-100">
                               <Typography align="left">
-                                Town/City of Birth<span style={{ color: "red" }}>*</span>
+                                Town/City of Birth<span style={{ color: "red" }}>**</span>
                               </Typography>
                               <Input
                                 style={{
@@ -1703,19 +1716,22 @@ useEffect(()=>{
                                 placeholder="Enter Town/City of Birth"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={Boolean(touched?.cityOfBirth && errors?.cityOfBirth)}
-
-                                value={values?.cityOfBirth}
-
+                                error={Boolean(
+                                  touched.cityOfBirth && errors.cityOfBirth
+                                )}
+                                value={values.cityOfBirth}
                               />
-                              {(errors?.cityOfBirth && touched?.cityOfBirth) ? <p className="error">{errors?.cityOfBirth}</p> : <></>}
 
+                              {errors.cityOfBirth && touched.cityOfBirth ? <p className="error">{errors.cityOfBirth}</p> : <></>}
+                              {/* {errors?.cityOfBirth && touched.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
+                                    <p className="error">{errors?.cityOfBirth}</p>
+                                  )} */}
                             </FormControl>
                           </div>
                         </div>
                       ) : (
                         <>
-                          <> {console.log("1123", errors)}</>
+                          {/* <> {console.log("1123", errors)}</> */}
                           <div className="row">
                             <div className="col-lg-3 col-6 col-md-3 mt-2">
                               <FormControl className="w-100">
@@ -1793,6 +1809,7 @@ useEffect(()=>{
                                     onChange(date);
                                     setFieldValue("dob", date);
                                   }}
+                                  
                                   maxDate={moment().toDate()}
                                   value={value}
                                   clearIcon={null}
@@ -1840,7 +1857,9 @@ useEffect(()=>{
                                     )
                                   )}
                                 </select>
-
+                                {/* {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
+                                    <p className="error">{errors?.countryOfBirthId}</p>
+                                  )} */}
                                 {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>}
                               </FormControl>
                             </div>
@@ -1871,7 +1890,9 @@ useEffect(()=>{
                                   value={values?.cityOfBirth}
 
                                 />
-
+                                {/* {errors?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
+                                    <p className="error">{errors?.cityOfBirth}</p>
+                                  )} */}
                                 {errors.cityOfBirth && touched.cityOfBirth ? <p className="error">{errors.cityOfBirth}</p> : <></>}
 
                               </FormControl>
@@ -2434,7 +2455,7 @@ useEffect(()=>{
                       ""
                     )}
 
-                    {userType === "DC" ? (
+                    {userType === "DC" || userType==="SC" ? (
                       <Collapse
                         className="px-5 mx-2"
                         in={open === "tax"}
@@ -2489,7 +2510,7 @@ useEffect(()=>{
                                     value={values.taxpayerIdTypeID}
                                   >
 
-                                    <>{console.log(ustinValue, "")}</>
+                                    {/* <>{console.log(ustinValue, "")}</> */}
                                     <option value={0}>---select---</option>
 
                                     {notUsIndividual?.map((ele: any) => (
@@ -2561,7 +2582,8 @@ useEffect(()=>{
                                 </FormControl>
                               </div>
 
-                              <div className="col-lg-6 col-6 col-md-3 ">
+                              <>
+                                <div className="col-lg-6 col-6 col-md-3 ">
                                 <FormControl className="w-100">
                                   <Typography align="left" className="d-flex w-100">
                                     Foreign TIN Country
@@ -2799,6 +2821,10 @@ useEffect(()=>{
                                   </FormControl>
                                 </div>
                               </div>
+                              </>
+                              
+
+                              
 
                             </div>
                           </div>
@@ -2963,7 +2989,7 @@ useEffect(()=>{
                                   value={values.taxpayerIdTypeID}
                                 >
 
-                                  <>{console.log(ustinValue, "")}</>
+                                  {/* <>{console.log(ustinValue, "")}</> */}
                                   <option value={0}>---select---</option>
 
                                   {notUsIndividual?.map((ele: any) => (
@@ -4116,164 +4142,167 @@ useEffect(()=>{
                               style={{ justifyContent: "between" }}
                             >
                               <>
+                              {userType === "DC" && (
                                 <div className="col-4">
-                                  <Typography
-                                    align="left"
-                                    style={{ marginTop: "20px" }}
-                                  >
-                                    Is this address a PO Box?
-                                    <span style={{ color: "red" }}>*</span>
-                                    <Tooltip
-                                      style={{
-                                        backgroundColor: "black",
-                                        color: "white",
-                                      }}
-                                      title={
-                                        <>
-                                          <Typography color="inherit">
-                                            PO BOX Address
+                                <Typography
+                                  align="left"
+                                  style={{ marginTop: "20px" }}
+                                >
+                                  Is this address a PO Box?
+                                  <span style={{ color: "red" }}>*</span>
+                                  <Tooltip
+                                    style={{
+                                      backgroundColor: "black",
+                                      color: "white",
+                                    }}
+                                    title={
+                                      <>
+                                        <Typography color="inherit">
+                                          PO BOX Address
+                                        </Typography>
+                                        <a onClick={() => setToolInfo("PO")}>
+                                          <Typography
+                                            style={{
+                                              cursor: "pointer",
+                                              textDecorationLine: "underline",
+                                            }}
+                                            align="center"
+                                          >
+                                            {" "}
+                                            View More...
                                           </Typography>
-                                          <a onClick={() => setToolInfo("PO")}>
-                                            <Typography
-                                              style={{
-                                                cursor: "pointer",
-                                                textDecorationLine: "underline",
-                                              }}
-                                              align="center"
-                                            >
-                                              {" "}
-                                              View More...
-                                            </Typography>
-                                          </a>
-                                        </>
-                                      }
+                                        </a>
+                                      </>
+                                    }
+                                  >
+                                    <Info
+                                      style={{
+                                        color: "#ffc107",
+                                        fontSize: "15px",
+                                        marginLeft: "5px",
+                                        cursor: "pointer",
+                                        verticalAlign: "super",
+                                      }}
+                                    />
+                                  </Tooltip>
+                                </Typography>
+                                {toolInfo === "PO" ? (
+                                  <div className="post">
+                                    <Paper
+                                      style={{
+                                        backgroundColor: "#dedcb1",
+                                        padding: "10px",
+                                      }}
                                     >
-                                      <Info
+                                      <Typography>
+                                        A Post Office Box is a mail box
+                                        located at a post office (versus at a
+                                        permanent residence).
+                                      </Typography>
+                                      <Typography
+                                        style={{ marginTop: "10px" }}
+                                      >
+                                        You should not use a P.O. Box or an
+                                        in-care-of-address (other than a
+                                        registered address). If you do, we may
+                                        need to contact you for further
+                                        information to help validate the
+                                        submission.
+                                      </Typography>
+
+                                      <Typography
+                                        style={{ marginTop: "10px" }}
+                                      >
+                                        If you reside in a country that does
+                                        not use street addresses, you may
+                                        enter a descriptive address.
+                                      </Typography>
+
+                                      <Link
+                                        underline="none"
                                         style={{
-                                          color: "#ffc107",
-                                          fontSize: "15px",
-                                          marginLeft: "5px",
+                                          marginTop: "10px",
+                                          fontSize: "16px",
                                           cursor: "pointer",
-                                          verticalAlign: "super",
+                                          color: "#0000C7"
                                         }}
-                                      />
-                                    </Tooltip>
-                                  </Typography>
-                                  {toolInfo === "PO" ? (
-                                    <div className="post">
-                                      <Paper
-                                        style={{
-                                          backgroundColor: "#dedcb1",
-                                          padding: "10px",
+                                        onClick={() => {
+                                          setToolInfo("");
                                         }}
                                       >
-                                        <Typography>
-                                          A Post Office Box is a mail box
-                                          located at a post office (versus at a
-                                          permanent residence).
-                                        </Typography>
-                                        <Typography
-                                          style={{ marginTop: "10px" }}
-                                        >
-                                          You should not use a P.O. Box or an
-                                          in-care-of-address (other than a
-                                          registered address). If you do, we may
-                                          need to contact you for further
-                                          information to help validate the
-                                          submission.
-                                        </Typography>
-
-                                        <Typography
-                                          style={{ marginTop: "10px" }}
-                                        >
-                                          If you reside in a country that does
-                                          not use street addresses, you may
-                                          enter a descriptive address.
-                                        </Typography>
-
-                                        <Link
-                                          underline="none"
-                                          style={{
-                                            marginTop: "10px",
-                                            fontSize: "16px",
-                                            cursor: "pointer",
-                                            color: "#0000C7"
-                                          }}
-                                          onClick={() => {
-                                            setToolInfo("");
-                                          }}
-                                        >
-                                          --Show Less--
-                                        </Link>
-                                      </Paper>
+                                        --Show Less--
+                                      </Link>
+                                    </Paper>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                                <FormControl
+                                  error={Boolean(
+                                    touched.isAddressPostOfficeBox &&
+                                    errors.isAddressPostOfficeBox
+                                  )}
+                                >
+                                  <RadioGroup
+                                    id="isAddressPostOfficeBox"
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    value={values.isAddressPostOfficeBox}
+                                    onChange={handleChange}
+                                  >
+                                    <FormControlLabel
+                                      control={<Radio />}
+                                      value="yes"
+                                      name="isAddressPostOfficeBox"
+                                      label="Yes"
+                                    />
+                                    <FormControlLabel
+                                      control={<Radio />}
+                                      value="no"
+                                      name="isAddressPostOfficeBox"
+                                      label="No"
+                                    />
+                                  </RadioGroup>
+                                  {errors.isAddressPostOfficeBox &&
+                                    touched.isAddressPostOfficeBox ? (
+                                    <div>
+                                      <Typography color="error">
+                                        {errors.isAddressPostOfficeBox}
+                                      </Typography>
                                     </div>
                                   ) : (
                                     ""
                                   )}
-                                  <FormControl
-                                    error={Boolean(
-                                      touched.isAddressPostOfficeBox &&
-                                      errors.isAddressPostOfficeBox
-                                    )}
-                                  >
-                                    <RadioGroup
-                                      id="isAddressPostOfficeBox"
-                                      row
-                                      aria-labelledby="demo-row-radio-buttons-group-label"
-                                      value={values.isAddressPostOfficeBox}
-                                      onChange={handleChange}
-                                    >
-                                      <FormControlLabel
-                                        control={<Radio />}
-                                        value="yes"
-                                        name="isAddressPostOfficeBox"
-                                        label="Yes"
-                                      />
-                                      <FormControlLabel
-                                        control={<Radio />}
-                                        value="no"
-                                        name="isAddressPostOfficeBox"
-                                        label="No"
-                                      />
-                                    </RadioGroup>
-                                    {errors.isAddressPostOfficeBox &&
-                                      touched.isAddressPostOfficeBox ? (
-                                      <div>
-                                        <Typography color="error">
-                                          {errors.isAddressPostOfficeBox}
-                                        </Typography>
-                                      </div>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </FormControl>
-                                  {/* <RadioGroup
-                                row
-                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                name="row-radio-buttons-group"
-                              >
-                                <FormControlLabel
-                                  value={false}
-                                  control={<Radio />}
-                                  label="No"
-                                  checked={!values.isAddressPostOfficeBox}
-                                  onChange={handleChange}
-                                />
-                                <FormControlLabel
-                                  value={true}
-                                  control={<Radio />}
-                                  label="Yes"
-                                  checked={values.isAddressPostOfficeBox}
-                                  onChange={handleChange}
-                                />
-                              </RadioGroup>
-                              <p className="error">
-                                {errors.isAddressPostOfficeBox}
-                              </p> */}
-                                </div>
+                                </FormControl>
+                                {/* <RadioGroup
+                              row
+                              aria-labelledby="demo-row-radio-buttons-group-label"
+                              name="row-radio-buttons-group"
+                            >
+                              <FormControlLabel
+                                value={false}
+                                control={<Radio />}
+                                label="No"
+                                checked={!values.isAddressPostOfficeBox}
+                                onChange={handleChange}
+                              />
+                              <FormControlLabel
+                                value={true}
+                                control={<Radio />}
+                                label="Yes"
+                                checked={values.isAddressPostOfficeBox}
+                                onChange={handleChange}
+                              />
+                            </RadioGroup>
+                            <p className="error">
+                              {errors.isAddressPostOfficeBox}
+                            </p> */}
+                              </div>
+                              )}
+                                
                               </>
-
-                              <div className="col-4">
+                              {userType === "DC" && (
+                                <div className="col-4">
                                 <Typography style={{ marginTop: "20px" }}>
                                   Is this an In Care Of address?
                                   <span style={{ color: "red" }}>*</span>
@@ -4425,6 +4454,8 @@ useEffect(()=>{
                                 </p> */}
                                 </div>
                               </div>
+                              )}
+                              
                               <div className="col-4">
                                 <Typography style={{ marginTop: "20px" }}>
                                   Is there an alternative mailing or business
@@ -5441,7 +5472,7 @@ useEffect(()=>{
                               <Typography className="d-flex w-100 pb-2">
                                 Income Type
                               </Typography>
-                              <>{console.log(incomeArr, "qqq")}</>
+                              {/* <>{console.log(incomeArr, "qqq")}</> */}
                               {incomeArr.length &&
                                 incomeArr.map((ind, i) => {
 
@@ -6837,7 +6868,8 @@ useEffect(()=>{
                                   ""
                                 )}
                                 {values.accountBankBranchLocationId == 257 ? (
-                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                   <div className="d-flex col-12">
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2 d-flex">
                                     <FormControl className="w-100">
                                       <Typography align="left">
                                         IBAN
@@ -6853,6 +6885,7 @@ useEffect(()=>{
                                           color: " #000 ",
                                           fontStyle: "normal",
                                           borderRadius: "1px",
+                                          width:"96%",
                                           padding: " 0 10px ",
                                         }}
                                         id="outlined"
@@ -6865,8 +6898,10 @@ useEffect(()=>{
                                       />
                                       {/* <p className='error'>{errors.iban}</p> */}
                                     </FormControl>
+                                    </div>
+                                    <div className="col-lg-3 col-6 col-md-3 mt-2 d-flex">
                                     <FormControl className="w-100">
-                                      <Typography align="left">
+                                      <Typography align="left" style={{marginLeft:"5px"}}>
                                         Swift code
                                         {/* <span style={{ color: 'red' }}>*</span> */}
                                       </Typography>
@@ -6877,10 +6912,12 @@ useEffect(()=>{
                                           lineHeight: "36px ",
                                           background: "#fff ",
                                           fontSize: "13px",
+                                          marginLeft:"5px",
                                           color: " #000 ",
                                           fontStyle: "normal",
                                           borderRadius: "1px",
                                           padding: " 0 10px ",
+                                          width:"96%"
                                         }}
                                         id="outlined"
                                         name="swiftCode"
@@ -6892,6 +6929,7 @@ useEffect(()=>{
                                       />
                                       {/* <p className='error'>{errors.swiftCode}</p> */}
                                     </FormControl>
+                                    </div>
                                   </div>
                                 ) : (
                                   ""

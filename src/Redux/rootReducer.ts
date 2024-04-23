@@ -30,9 +30,11 @@ import {
   SpecialRateAndConditionIncomeTypesReducer,
   formPDFFieldDataReducer,
   GetAllLanguageReducer,
+  GetAllFederalTaxReducer,
   GetDualCertW9Reducer,
   GetDualCertReducer,
-  getIGAReducer
+  getIGAReducer,
+  GetUSFormTypeReducer,
   
 } from "./Reducers";
 import w9Reducer from "./Reducers/w9Reducer";
@@ -46,6 +48,8 @@ import { AuthDetailsReducer } from "./Reducers/AuthDetailReducer";
 import { ErrorsReducer } from "./Reducers/ErrorReducer";
 import W8EXPReducer from "./Reducers/W8EXPReducer";
 import DualCertReducer from "./Reducers/DualCertReducer";
+import W8IMYReducer from "./Reducers/W8IMY";
+import AccountStatementReducer from "./Reducers/AccountStatementReducer";
 
 let reducers = {
   getCountriesReducer,
@@ -59,6 +63,7 @@ let reducers = {
   getBreadCrumsReducer,
   GetTinTypesReducer,
   getExpFormDataReducer,
+  GetAllFederalTaxReducer,
   GetAgentPaymentTypeReducer,
   GetAgentUSVisaTypeHiddenForEformReducer,
   GetAgentCountriesImportantForEformReducer,
@@ -80,7 +85,8 @@ let reducers = {
   GetAllLanguageReducer,
   GetDualCertReducer,
   getIGAReducer,
-
+  GetUSFormTypeReducer,
+  
 
 };
 const rootReducer = combineReducers({
@@ -88,6 +94,7 @@ const rootReducer = combineReducers({
   w9Data: w9Reducer,
   w8Data: w8Reducer,
   form8233: form8233Reducer,
+  W8IMY:W8IMYReducer,
   W8ECI: w8ReducerECI,
   accountHolder: AccountHolderDetailsReducer,
   W8BENE:W8BENEReducer,
@@ -95,7 +102,9 @@ const rootReducer = combineReducers({
   SubstantialUsPassiveNFE:substantialUsPassiveNFEReducer,
   AuthDetails:AuthDetailsReducer,
   Error:ErrorsReducer,
-  DualCert:DualCertReducer
+  DualCert:DualCertReducer,
+  AccountStatement:AccountStatementReducer
+  
 });
 
 export default rootReducer;

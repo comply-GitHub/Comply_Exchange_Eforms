@@ -18,6 +18,69 @@ const SDRNFFE = (props:any) => {
                                 <div className="d-flex mt-3">
                                   <Typography className="mt-2" style={{ marginTop: "10px" }}>
                                     41
+                                    <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 41
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("41")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "41" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        All sponsored direct reporting NFFEs must certify that you are not a financial institution and provide the name of your sponsoring entity.
+All sponsored direct reporting NFFEs must certify that you are not a financial institution and provide the name of your sponsoring entity. Provide your GIIN or, prior to January 1, 2016, the GIIN of your sponsor on line 9.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
                                   </Typography>
                                   <Typography className="mt-2" style={{ marginTop: "5px" }}>
                                     Name of sponsoring entity *:

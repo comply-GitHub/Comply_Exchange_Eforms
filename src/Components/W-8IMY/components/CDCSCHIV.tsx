@@ -18,7 +18,70 @@ const CDCSCHIV = (props:any) => {
                                 <div className="d-flex mt-3">
                                   <Typography className="mt-2" style={{ marginTop: "10px" }}>
                                     27a
-                                  </Typography>
+                                    <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 27a
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("27")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "27" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Select 27a to enter the name of the sponsoring entity that has agreed to fulfill your chapter 4 due diligence, reporting, and withholding obligations on your behalf.
+On line 27a , enter the name of the sponsoring entity that has agreed to fulfill your chapter 4 due diligence, reporting, and withholding obligations on your behalf. You must also enter the GIIN of your sponsoring entity on line 9.
+                         </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
+
                                   
                                   <Typography className="mt-2">
                                     Name of sponsoring entity:
@@ -42,11 +105,75 @@ const CDCSCHIV = (props:any) => {
                                       </FormControl>
                                     </span>
                                   </Typography>
+                                  </Typography>
                                 </div>
                                 <div className="d-flex mt-3">
                                   <Typography className="mt-2" style={{ marginTop: "10px" }}>
                                     27b
-                                  </Typography>
+                                    <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 27b
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("b")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "b" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Select check box 27b if you are a sponsored, closely held investment vehicle
+All sponsored, closely held investment vehicles must check box 27b to certify that you satisfy the requirements for certified deemed-compliant classification as a sponsored entity.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
+                                  
                                   <Typography>
                                     <Checkbox 
                                       onChange={props.handleChange}
@@ -59,6 +186,7 @@ const CDCSCHIV = (props:any) => {
                                   <Typography className="mt-2">
                                     I certify that the FFI identified in Part 1 :
 
+                                  </Typography>
                                   </Typography>
                                 </div>
                                 <Paper className="my-2" style={{ backgroundColor: "#e3e3e3", padding: "10px" }}>

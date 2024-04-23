@@ -17,8 +17,73 @@ const CDCFFI = (props:any) => {
         <div className="d-flex mt-3">
             <Typography className="mt-2" style={{ marginTop: "10px" }}>
                 26
+                <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            Line 26
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("26")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "26" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Select check box 26if you are an FFI with Low-value accounts
+All FFIs with only low-value accounts must check box 26to certify that you satisfy all of the requirements for this certified deemed-compliant classification.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             </Typography>
-            <Typography>
+            
+        </div>
+        <Typography>
             <Checkbox 
                 onChange={props.handleChange}
                 value={props.values.isnotengagedprimarilyintheBusinessofInvesting}
@@ -30,7 +95,6 @@ const CDCFFI = (props:any) => {
             <Typography className="mt-2">
                 I certify that the entity FFI identified in Part I 
             </Typography>
-        </div>
         <Paper style={{ backgroundColor: "#e3e3e3", padding: "10px" }}>
             <Divider style={{ backgroundColor: "black", marginBottom: "10px" }} />
             <Typography className="my-2" style={{ fontSize: "14px" }}>

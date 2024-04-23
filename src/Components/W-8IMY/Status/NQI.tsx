@@ -10,9 +10,10 @@ const NQI = (props:any) => {
 
   return (
     <div style={{ padding: "10px", width: "100%" }}>
-        <div className="d-flex partParentDiv">
-            <h5 className="sub_title_inner"><span className="partSpan">Part IV</span>  Nonqualified Intermediary</h5>
-        </div>
+        <Typography style={{ border: "2px solid black", color: "white", backgroundColor: "black" }}>
+            Part IV <span style={{ fontWeight: "bold", marginLeft: "10px" }}>Nonqualified Intermediary</span>
+        </Typography>
+        
 
         <Typography
             align="left"
@@ -107,6 +108,68 @@ const NQI = (props:any) => {
         </Typography>
         <Typography color="inherit">
             17 a
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            17a
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("17")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "17" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Select Check box 17a If you are providing form W-8IMY as a nonqualified Intermediary (NQI)
+If you are providing Form W-8IMY as a nonqualified intermediary (NQI), you must check box 17a. By checking this box, you are certifying to all of the statements on line 17a. If you are required to provide a chapter 4 status on line 5 (see specific instructions for line 5) and are acting as an intermediary for a withholdable payment, you must provide your chapter 4 status on line 5 or as otherwise permitted in these instructions to avoid withholding at the chapter 4 rate of 30% being applied to any withholdable payment you receive from the withholding agent regardless of whether you check box 17b (except for documentation provided with respect to exempt beneficial owners). See the specific instructions for Part IX.                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -132,7 +195,69 @@ const NQI = (props:any) => {
                 </Typography>
             </Typography>
 
-            b 
+            b
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            17b
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("b")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "b" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Check box 17b if you are using this form to transmit withholding certificates or other documentation along with a withholding statement that satisfies the requirements of chapters 3 and 4 (including for purposes of section 1446(a) and including if you are providing pooled information for purposes of chapter 61 under the alternative procedure for U.S. non-exempt recipients, or chapter 4 withholding rate pools (as applicable) for a withholdable payment).
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )} 
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -158,6 +283,68 @@ const NQI = (props:any) => {
             </Typography>
 
             c 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            17c
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("c")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "c" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                            Check box 17c to certify that you are permitted under Regulations section 1.6049-4(c)(4) to provide a chapter 4 withholding rate pool of U.S. payees to which a payment is allocated on a withholding statement associated with the Form W-8IMY. This checkbox does not apply to a PTP distribution. You may check this box with respect to U.S. source substitute dividends you receive as a QSL regardless of whether you act as an intermediary or principal for those amounts.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )} 
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -183,7 +370,69 @@ const NQI = (props:any) => {
                 </Typography>
             </Typography>
 
-            d 
+            d
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            17d
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("d")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "d" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        Check box 17d to certify that you are acting as a QSL with respect to the accounts identified on this line or in a withholding statement associated with this form with respect to a payment that is a U.S. source substitute divided. You may check this box with respect to U.S. source substitute dividends you receive as a QSL regardless of whether you act as an intermediary or principal for those amounts. If you are acting on behalf of another NQI or on behalf of a foreign partnership or foreign trust that is not a withholding foreign partnership or a withholding foreign trust, you must attach to your Form W-8IMY the Form W-8IMY of the other NQI, foreign partnership, or foreign trust together with the withholding certificates and other documentation attached to that Form W-8IMY that are required for both chapter 3 and chapter 4 purposes.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}  
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"
@@ -208,6 +457,68 @@ const NQI = (props:any) => {
             </Typography>
 
             e 
+            <span>
+                <Tooltip
+                    style={{ backgroundColor: "black", color: "white" }}
+                    title={
+                        <>
+                            
+                            <Typography color="inherit">
+                            17e
+                            </Typography>
+                            
+                            <a onClick={() => setToolInfo("e")}>
+                                <Typography
+                                style={{
+                                    cursor: "pointer",
+                                    textDecorationLine: "underline",
+                                }}
+                                align="center"
+                                >
+                                {" "}
+                                View More...
+                                </Typography>
+                            </a>
+                        </>
+                    }
+                    >
+                        <InfoIcon
+                        style={{
+                        color: "#ffc107",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        verticalAlign: "super",
+                        }}
+                        />
+                </Tooltip>
+            </span> 
+            {toolInfo === "e" ? (
+                <div>
+                    <Paper
+                    style={{
+                    backgroundColor: "#dedcb1",
+                    padding: "15px",
+                    marginBottom: "10px",
+                    }}
+                    >
+                        <Typography>
+                        As part of providing any alternative withholding statements that are associated with your Form W-8IMY, you may make the representation indicated on line 17e. If you check the box line 17e, you are not required to represent on each alternative withholding statement that the information on the withholding certificates provided with the alternative withholding statement is not inconsistent with any other account information you have for the beneficial owners for determining the appropriate rate of withholding.
+                        </Typography>
+
+                        <a
+                        href="#"
+                        style={{ marginTop: "10px", fontSize: "16px" }}
+                        onClick={() => {
+                        setToolInfo("");
+                        }}
+                        >
+                        --Show Less--
+                        </a>
+                    </Paper>
+                </div>
+                ) : (
+                ""
+                )}  
             <Typography style={{ display: "flex" }}>
                 <Checkbox
                 className="mx-2"

@@ -35,6 +35,30 @@ const Submit_W9_DC = React.lazy(
 const Thankyou_W9_DC = React.lazy(
   () => import("../Components/W9Form/ThankYou_DC")
 );
+
+
+const TaxPurpose_entity_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/tax_purpose_DualCert")
+);
+
+
+const CRS_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert")
+);
+
+const Financial_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Financial")
+);
+const Active_Non_Financial_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Active_Non_financial")
+);
+
+const Passive_Non_Financial_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Passive")
+);
+const TaxPurpose_W9 = React.lazy(
+  () => import("../Components/W9Form/TaxPurpose_W9/index")
+);
 //
 const Declaration = React.lazy(
   () => import("../Components/W-8BEN/Declaration")
@@ -216,11 +240,19 @@ const ThankYou_Exp = React.lazy(() => import("../Components/W-8EXP/Thankyou_exp"
 const Purpose_IMY = React.lazy(() => import("../Components/W-8IMY/Status"));
 const Chapter4_IMY = React.lazy(() => import("../Components/W-8IMY/Chapter4_IMY"));
 const TaxPayer_IMY = React.lazy(() => import("../Components/W-8IMY/TaxPayer"));
-// const Statement_IMY = React.lazy(() => import("../Components/W-8IMY/Statement"));
+const Statement_IMY = React.lazy(() => import("../Components/W-8IMY/Statement"));
 const Certificates_IMY = React.lazy(() => import("../Components/W-8IMY/Certificates"));
 const Participation_IMY = React.lazy(() => import("../Components/W-8IMY/Participation"));
 const Submit_IMY = React.lazy(() => import("../Components/W-8IMY/Sumit_imy"));
 const ThankYou_IMY = React.lazy(() => import("../Components/W-8IMY/Thankyou_imy"));
+
+const CaymanIndividualStart = React.lazy(() => import("../Components/Cayman/Individual/Start"));
+const CaymanIndividualStartSustantialPresence= React.lazy(() => import("../Components/Cayman/Individual/Start/SustantialPresence"));
+const CaymanIndividualStartUSTin= React.lazy(() => import("../Components/Cayman/Individual/Start/USTin"));
+const CaymanIndividualStartCertification= React.lazy(() => import("../Components/Cayman/Individual/Start/Certification"));
+const CaymanIndividualStartSubmission= React.lazy(() => import("../Components/Cayman/Individual/Start/Submission"));
+const CaymanIndividualStartESConfirmation= React.lazy(() => import("../Components/Cayman/Individual/Start/ESConfirmation"));
+const CaymanIndividualStartThankyou= React.lazy(() => import("../Components/Cayman/Individual/Start/Thankyou"));
 
 
 
@@ -310,6 +342,51 @@ const ROUTES: Array<RouteType> = [
     Component: Submit_dualCert_Eci,
     isPrivate: true,
   },
+
+  {
+    name: "TaxPurpose_entity_W9_DC",
+    path: "/TaxPurpose_entity_W9_DC",
+    id: 2,
+    Component: TaxPurpose_entity_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Financial_W9_DC",
+    path: "/Financial_W9_DC",
+    id: 2,
+    Component: Financial_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "CRS_W9_DC",
+    path: "/CRS_W9_DC",
+    id: 2,
+    Component: CRS_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Active_Non_Financial_W9_DC",
+    path: "/Active_Non_Financial_W9_DC",
+    id: 2,
+    Component: Active_Non_Financial_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Passive_Non_Financial_W9_DC",
+    path: "/Passive_Non_Financial_W9_DC",
+    id: 2,
+    Component: Passive_Non_Financial_W9_DC,
+    isPrivate: true,
+  },
+  //Active_Non_Financial_W9_DC
+  {
+    name: "TaxPurpose_W9",
+    path: "/TaxPurpose_W9",
+    id: 2,
+    Component: TaxPurpose_W9,
+    isPrivate: true,
+  },
+  //TaxPurpose_W9
   {
     name: "Thankyou_dualCert_Eci",
     path: "/Thankyou_dualCert_Eci",
@@ -673,6 +750,54 @@ const ROUTES: Array<RouteType> = [
     isPrivate: true,
   },
   {
+    name: "CaymanIndividualStart",
+    path: "Cayman/Individual/Start",
+    id: 7,
+    Component: CaymanIndividualStart,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualStartUSTin",
+    path: "/Cayman/Individual/Start/US_Tin",
+    id: 7,
+    Component: CaymanIndividualStartUSTin,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualStartSustantialPresence",
+    path: "/Cayman/Individual/Start/SustantialPresence",
+    id: 7,
+    Component: CaymanIndividualStartSustantialPresence,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualStartCertification",
+    path: "/Cayman/Individual/Start/Certification",
+    id: 7,
+    Component: CaymanIndividualStartCertification,
+    isPrivate: true,
+  },{
+    name: "CaymanIndividualStartSubmission",
+    path: "/Cayman/Individual/Start/Submission",
+    id: 7,
+    Component: CaymanIndividualStartSubmission,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualStartESConfirmation",
+    path: "/Cayman/Individual/Start/ESConfirmation",
+    id: 7,
+    Component: CaymanIndividualStartESConfirmation,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualStartThankyou",
+    path: "/Cayman/Individual/Start/Thankyou",
+    id: 7,
+    Component: CaymanIndividualStartThankyou,
+    isPrivate: true,
+  },
+  {
     name: "PDFViewer",
     path: "PDFViewer",
     id: 7,
@@ -933,13 +1058,13 @@ const ROUTES: Array<RouteType> = [
     Component: TaxPayer_IMY,
     isPrivate: true,
   },
-  // {
-  //   name: "Statement_IMY",
-  //   path: "/IMY/Tax_Purpose_Exp/Chapter4_IMY/Statement",
-  //   id: 7,
-  //   Component: Statement_IMY,
-  //   isPrivate: true,
-  // },
+  {
+    name: "Statement_IMY",
+    path: "/IMY/Tax_Purpose_Exp/Chapter4_IMY/Statement",
+    id: 7,
+    Component: Statement_IMY,
+    isPrivate: true,
+  },
   {
     name: "Certificates_IMY",
     path: "/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY",

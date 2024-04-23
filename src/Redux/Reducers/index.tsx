@@ -1,6 +1,5 @@
 import Utils from "../../Utils";
-import { GetHelpVideoDetails } from "../Actions";
-// import { postSecurityCode } from "../Actions";
+import { getAllAccountStatement } from "../Actions";
 
 const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType, GetTinTypes, GetSecurityQuestions, GetCountriesCode, GetAllIncomeCodes, GetStateByCountryId, W9PDF, postSecurutyCode,
   GetAgentCapacityHiddenForEform,
@@ -21,6 +20,7 @@ const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType
   GetChapter4Statuses,
   GetLimitationBenefits,
   GetIncomeTypes,
+  GetFederalTaxClassification,
   GetAllHelpVideosDetails,
   GetAgentIncomeTypeHiddenAllowAnoymo,
   SendOTPMail,GetByW9IndividualEntityUSFormId,
@@ -31,7 +31,8 @@ const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType
   GetDualCertW9,
   GetDual,
   GetSettings,
-  GetIGA
+  GetIGA,
+  GetAllUSFormTypes
 } = Utils.actionName
 
 
@@ -40,6 +41,15 @@ let initialState: any = [];
 export const GetAllLanguageReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case GetAllLanguage:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}
+
+export const GetAllFederalTaxReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case GetFederalTaxClassification:
       return { ...state, ...action.payload };
     default:
       return state;
@@ -432,4 +442,19 @@ export const getIGAReducer = (state = initialState, action: any) => {
       return state;
   }
 };
+
+
+
+export const GetUSFormTypeReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case GetAllUSFormTypes:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+};
+
+
+
+
 // 

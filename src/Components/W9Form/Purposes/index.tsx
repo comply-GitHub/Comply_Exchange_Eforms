@@ -37,6 +37,7 @@ import {
   getW9Form,
   postW9Form,
   GetHelpVideoDetails,
+  getFederalTax,
 } from "../../../Redux/Actions";
 import { useNavigate } from "react-router-dom";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
@@ -76,6 +77,7 @@ export default function Fedral_tax(props: any) {
   useEffect(() => {
     setIsFormFilling(localStorage.getItem("isFormFilling") || "");
     dispatch(GetHelpVideoDetails());
+    dispatch(getFederalTax())
     dispatch(
       getW9Form(authDetails?.accountHolderId, (data: any) => {
       })
@@ -131,24 +133,16 @@ export default function Fedral_tax(props: any) {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+
+  const FederalTaxData = useSelector(
+    (state: any) => state?.GetAllFederalTaxReducer?.FederalData
+  );
+  console.log(FederalTaxData,"op")
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
-  const arr = [
-    {
-      id: 1,
-      name: "Individual",
-    },
-    {
-      id: 3,
-      name: "Individual/Sole Proprietor",
-    },
-    {
-      id: 4,
-      name: "Limited Liability Company (Single-member)",
-    },
-  ];
+ 
 
   const [expanded, setExpanded] = React.useState<string | false>(false);
 
@@ -659,11 +653,11 @@ export default function Fedral_tax(props: any) {
                                   }}
                                 >
                                   <MenuItem value={0}>--Select--</MenuItem>
-                                  {arr.map((i, ind) => {
-                                    return (
-                                      <MenuItem value={i.id}>{i.name}</MenuItem>
-                                    );
-                                  })}
+                                  {FederalTaxData?.filter((item: any) => item.formTypeSelectionId === 1).map((i: any, ind: any) => {
+  return (
+    <MenuItem key={ind} value={i.id}>{i.name}</MenuItem>
+  );
+})}
                                 </Select>
                                 {errors.federalTaxClassificationId &&
                                   touched.federalTaxClassificationId ? (
