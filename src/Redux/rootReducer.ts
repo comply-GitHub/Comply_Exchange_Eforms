@@ -32,7 +32,8 @@ import {
   GetAllLanguageReducer,
   GetDualCertW9Reducer,
   GetDualCertReducer,
-  getIGAReducer
+  getIGAReducer,
+  GetSelfCetHiddenReducer
   
 } from "./Reducers";
 import w9Reducer from "./Reducers/w9Reducer";
@@ -81,6 +82,7 @@ let reducers = {
   GetAllLanguageReducer,
   GetDualCertReducer,
   getIGAReducer,
+  GetSelfCetHiddenReducer,
 
 
 };

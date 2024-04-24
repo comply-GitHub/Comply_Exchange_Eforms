@@ -31,7 +31,8 @@ const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType
   GetDualCertW9,
   GetDual,
   GetSettings,
-  GetIGA
+  GetIGA,
+  getSelfCetHidden
 } = Utils.actionName
 
 
@@ -40,6 +41,14 @@ let initialState: any = [];
 export const GetAllLanguageReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case GetAllLanguage:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}
+export const GetSelfCetHiddenReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case getSelfCetHidden:
       return { ...state, ...action.payload };
     default:
       return state;

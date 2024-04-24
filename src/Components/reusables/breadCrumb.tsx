@@ -20,7 +20,7 @@ export default function BreadCrumbComponent(props: any): any {
 
   const [userType, setUserType] = useState("GEN");
 
-  const [expanded, setExpanded] = React.useState<string | false>("");
+  const [expanded, setExpanded] = React.useState<string | false>("Step II");
 
   const [breadCrumb, setBreadCrumb] = useState([]);
   const [breadCrumbDisplay, setBreadCrumbDisplay] = useState([]);

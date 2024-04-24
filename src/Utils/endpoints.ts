@@ -106,5 +106,6 @@ GetBENEPdf:"/W8BENEEntity/GetBENEPdf",
  GetByW8ECIIndividualId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
  GetByW8EXPIndividualId:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
  formPDFFieldData:"/FormTypes/GetPDFFieldValuesbyFormID",
+ getSelfCetHidden:"/AgentSelfCertification/GetAgentSelfCertificationHidden",
 };
 export default EndPoint;
