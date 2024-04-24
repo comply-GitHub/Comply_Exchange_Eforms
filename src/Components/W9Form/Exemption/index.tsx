@@ -67,6 +67,8 @@ export default function FCTA_Reporting(props: any) {
   );
   const urlValue = location.pathname.substring(1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  const AccountHolder = JSON.parse(localStorage.getItem("formSelection") || "{}");
+  const BusinessId= JSON.parse(localStorage.getItem("accountHolderDetails") || "{}");
   const initialValue = {
     isExemptionFATCAReportings: getReducerData?.isExemptionFATCAReportings ?? "No",
     fatcaReportingId: getReducerData?.fatcaReportingId ?? 0
@@ -131,12 +133,14 @@ export default function FCTA_Reporting(props: any) {
         validateOnBlur={true}
         initialValues={initialValue}
         enableReinitialize
-        validationSchema={fctaSchema} // Uncomment after testing ,this is validation Schema
+        validationSchema={fctaSchema} 
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
-          const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
+          const new_obj = { ...PrevStepData, stepName: `/${urlValue}`
+          ,AccountHolderBasicDetailsId: AccountHolder.accountHolderId,AgentId:AccountHolder.agentId,FormTypeSelectionId:BusinessId.businessTypeId,
+        }
           let result = { ...new_obj, ...values };
-          // result = { ...result, isExemptionFATCAReportings:  result.isExemptionFATCAReportings=="true" };
+          
           console.log(result, "values ex", PrevStepData)
 
           const submitPromise = new Promise((resolve, reject) => {

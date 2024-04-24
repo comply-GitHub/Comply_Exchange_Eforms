@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-export const EntitySchema = () => {
+export const EntitySchema = (Cert: string, payment: boolean, income: boolean) => {
   return Yup.object().shape({
     //   firstName: Yup.string()
     //     .required('Please Enter First Name')
@@ -8,28 +8,29 @@ export const EntitySchema = () => {
     //     .max(50, 'First Name should be maximum of 50 characters'),
     isUSEntity: Yup.string(),
     entityName: Yup.string().trim().required("Please Enter Entity name"),
-    usTin : Yup.string().when("taxpayerIdTypeID", {
+    usTin :Cert==="SC" ? Yup.string() : Yup.string().when("taxpayerIdTypeID", {
       is: (taxpayerIdTypeID: any) =>
       (taxpayerIdTypeID !== 1&& taxpayerIdTypeID !== 7&& taxpayerIdTypeID !== 8),
       then: () => Yup.string()
     .required("Please Enter TIN name") }),
-    taxpayerIdTypeID: Yup.number().notOneOf([0], "Please select a valid option"),
+    taxpayerIdTypeID:  Cert==="SC" ? Yup.number() : Yup.number().notOneOf([0], "Please select a valid option"),
     uniqueIdentifier: Yup.string()
       .required("Please Enter unique Identifier")
       // .min(3, "Too short")
       .max(50, "Too long"),
-    vatId: Yup.number().when("isUSEntity", {
-      is: "no",
-      then: () =>
-        Yup.number()
-          .required("Please select an option")
-          .notOneOf([0], "Please select a valid option"),
-    }),
-    vat: Yup.string().when("vatId", {
-      is: (vatId: any) =>
-        (vatId != 0 && vatId != 2 ),
-        then: () => Yup.string()
-        .required("Please Enter Vat Id") }),
+      vatId: Cert==="SC" ? Yup.number() : Cert === "GEN" ? Yup.number().when("isUSIndividual", {
+        is: 'no',
+        then: () =>
+          Yup.number()
+            .required("Please select an option")
+            .notOneOf([0], "Please select a valid option"),
+      }) : Yup.number(),
+  
+  vat:Cert === "GEN" ? Yup.string().when("vatId", {
+    is: (vatId: any) =>
+      (vatId != 0 && vatId != 2 ),
+    then: () => Yup.string().required("Please Enter Vat Id")
+  }): Yup.string(),
      
   
     // countryOfCitizenshipId: Yup.number()
@@ -119,17 +120,16 @@ export const EntitySchema = () => {
       // .min(3, "Last Name should be minimum of 3 characters")
       .max(50, "Last Name should be maximum of 50 characters"),
     contactEmail: Yup.string().email('Invalid email address').required('Email is required'),
-    paymentTypeId: Yup.number(),
-      // .notOneOf([0], "Please select a valid option")
-      // .required("Please select an option"),
+    paymentTypeId: payment === true ? Yup.number()
+    .required("Please select an option")
+    .notOneOf([0], "Please select a valid option") : Yup.number(),
     accountHolderName: Yup.string().when("paymentTypeId", {
       is: (paymentTypeId: any) => paymentTypeId === 1 || paymentTypeId === 2,
       then: () =>
         Yup.string().trim()
         .notOneOf(["",""],"Please enter Account holder Name")
           .required("Please enter Account Holder Name")
-          // .min(3, "Name should be minimum of 3 characters")
-          //.max(50, "Name should be maximum of 50 characters"),
+        
     }),
 
     accountBankName: Yup.string().when("paymentTypeId", {

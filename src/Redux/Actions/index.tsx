@@ -284,6 +284,9 @@ export const LoadExistingFormData = (formTypeId: any, AccountHolderId: any, call
     case FormTypeId.FW81MY:
       Endpoint = Utils.EndPoint.GetByW8IMYEntityNonForm + `?AccountHolderBasicDetailId=${AccountHolderId}`
       break;
+    case FormTypeId.CaymanIndividual:
+      Endpoint = Utils.EndPoint.GetByCaymanIndividualNonUSId + `?AccountHolderBasicDetailId=${AccountHolderId}`
+      break;
     default:
       return;
   }
@@ -2411,7 +2414,7 @@ export const postW81MY_EForm = (value: any, callback: Function, errorCallback: F
     );
   };
 };
-
+//GetFederalTaxClassification
 export const getIGA = (callback: any = () => { console.log("") }): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
@@ -2434,6 +2437,151 @@ export const getIGA = (callback: any = () => { console.log("") }): any => {
       },
       (error: any) => {
       }
+    );
+  };
+};
+
+export const getFederalTax = (callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetFederalTaxClassification,
+      "",
+      (resData) => {
+        if (resData.status === 200) {
+          if (callback) {
+            callback(resData.data)
+          }
+          dispatch({
+            type: Utils.actionName.GetFederalTaxClassification,
+            payload: {
+              FederalData: resData.data,
+            },
+          });
+
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+}
+
+export const postW81MY_EForm_AccountStatement = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.UpsertAccountHolderWithholdingStatement,
+      convertToFormData(value),
+      (responseData) => {
+        let { data } = responseData;
+        //console.log("Form 8233 Response Data",responseData);
+        dispatch({
+          type: Utils.actionName.UpsertAccountHolderWithholdingStatement,
+          payload: { ...value, Response: data },
+        });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback({ message: "Internal server error occured", payload: responseData })
+          } else {
+            if (callback) {
+              callback();
+            }
+          }
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(error)
+      },
+      "multi"
+    );
+  };
+};
+
+export const getAllAccountStatement = (accountHolderId: number, formTypeId: number): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetAccountHolderWithholdingStatement,
+      `?AccountHolderId=${accountHolderId}&FormTypeId=${formTypeId}`,
+      async (resData) => {
+        const { data } = resData;
+        
+
+        if (resData.status === 200) {
+          dispatch({
+            type: Utils.actionName.getAllAccountStatement,
+            payload: {
+              getAllAccountStatementdata: resData.data,
+            },
+          });
+        }
+      },
+      (error: any) => {
+        console.log(error)
+      }
+    );
+  };
+};
+
+export const postSCIndividualEForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.InsertCaymanIndividualNonUS,
+    convertToFormData(value),
+      // value,
+      (responseData) => {
+        let { data } = responseData;
+        dispatch({
+          type: Utils.actionName.InsertCaymanIndividualNonUS,
+          payload: { ...value, Response: data },
+        });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback({ message: "Internal server error occured", payload: responseData })
+          } else {
+            if (callback) {
+              callback();
+            }
+          }
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(error)
+      },
+      "multi"
     );
   };
 };

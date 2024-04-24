@@ -26,6 +26,11 @@ export default function Term() {
 
   const auth = JSON.parse(authDetailsString);
   const userType = auth?.configurations?.userType;
+
+  const AgentDeatilsId = localStorage.getItem("agentDetails") || "{}";
+
+  const authentication = JSON.parse(AgentDeatilsId);
+  const businessType = authentication?.businessTypeId;
   const handleDownload = () => {
     if (pdfUrl) {
       const link = document.createElement("a");
@@ -158,7 +163,7 @@ export default function Term() {
                     Exit
                   </Button>
                 </div>
-                {userType === "DC" ? (
+                {userType === "DC" && businessType === 1 ? (
                   <div style={{ marginTop: "25px" }}>
                     <Button
                       type="submit"
@@ -184,7 +189,34 @@ export default function Term() {
                       Continue To Self Certification Submission
                     </Button>
                   </div>
-                ) : ""}
+                ) : 
+                <div style={{ marginTop: "25px" }}>
+                <Button
+                type="submit"
+                onClick={() => {
+                  history("/TaxPurpose_entity_W9_DC");
+                }}
+                style={{
+                  border: "1px solid #0095dd",
+                  background: "black",
+                  height: "45px",
+                  lineHeight: "normal",
+                  textAlign: "center",
+                  fontSize: "16px",
+                  marginLeft: "12px",
+                  textTransform: "uppercase",
+                  borderRadius: "0px",
+                  color: "#ffff",
+                  padding: "0 35px",
+                  letterSpacing: "1px",
+                }}
+                className="btn btn_submit  btn-primary-agent"
+              >
+                Continue To Self Certification Submission 
+              </Button>
+              </div>
+                
+                }
               </div>
             </Typography>
           </Paper>

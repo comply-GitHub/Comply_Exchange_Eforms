@@ -15,17 +15,18 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
-import { Info } from "@mui/icons-material";
+import { DeleteOutline, Info } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./index.scss";
 import checksolid from "../../../../../assets/img/check-solid.png";
-import { Formik, Form } from "formik";
+import { Formik, Form, FieldArray } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import {
   W8_state,
   getAllCountries,
   postW8BENForm,
-  GetHelpVideoDetails
+  GetHelpVideoDetails,
+  postSCIndividualEForm
 } from "../../../../Redux/Actions";
 import { StatusSchema } from "../../../../schemas/w8Ben";
 import Accordion from "@mui/material/Accordion";
@@ -41,6 +42,47 @@ import { useLocation } from "react-router-dom";
 import useAuth from "../../../../customHooks/useAuth";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
+import { StartSchema } from "../../../../schemas/cayman";
+import DatePicker from 'react-date-picker';
+import "react-date-picker/dist/DatePicker.css";
+import "react-calendar/dist/Calendar.css";
+import View_Insructions from "../../../viewInstruction";
+
+interface FormValues {
+  accountHolderBasicDetailId: number,
+  agentId: number,
+  formTypeSelectionId:number;
+  formTypeId: number,
+  isHeldUSCitizenship:string;
+  countryOfCitizenship: string;
+  isTaxationUSCitizenOrResident: string;
+  isHoldDualCitizenshipStatus: string;
+  isHoldDualCitizenshipIncludeUSCitizenship: string;
+  isRenouncedCitizenship: string;
+  dateRenouncedUSCitizenship: string,
+  countryTaxLiability:string;
+  IsPresentAtleast31Days:string;
+  renouncementProof:string;
+  statusId:number;
+  isPermamnentResidentCardHolder: string;
+  stepName:string;
+  taxLbltyOtherJurisdictions: { 
+    id: number,
+    agentId: number,
+    formTypeId: number,
+    formEntryId: number,
+    accountHolderDetailsId:number,
+    doesIndiHavTaxLbltyinOtherJurisdictions: string,
+    countryIdforTaxLiability: string,
+    taxReferenceNumber: string,
+    isTINFormatNotAvailable: boolean,
+  }[];
+}
+
+interface FormErrors {
+  countryIdforTaxLiability?: string; // Optional because it might not exist if there are no errors
+}
+
 export default function Index() {
   const { authDetails } = useAuth();
   const location = useLocation();
@@ -58,28 +100,70 @@ export default function Index() {
     return `${year}-${month}-${day}`;
   };
 
-  console.log(obValues)
+  //console.log(obValues)
   // const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
-  const initialValue = {
+
+
+  // const itemsData = accountStatementData?.map((dataItem: any, index: number) => ({
+  //   id: index, // Assuming you want to use the index as the id
+  //   agentId: authDetails?.agentId,
+  //   formTypeSelectionId: obValues.businessTypeId,
+  //   formTypeId: FormTypeId.CaymanIndividual,
+  //   accountHolderBasicDetailId:authDetails?.accountHolderId,
+  //   isHeldUSCitizenship: false,
+  //   countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "0",
+  //   isTaxationUSCitizenOrResident: false,
+  //   isPermamnentResidentCardHolder: false,
+  //   isHoldDualCitizenshipStatus: false,
+  //   isHoldDualCitizenshipIncludeUSCitizenship: false,
+  //   isRenouncedCitizenship: false,
+  //   dateRenouncedUSCitizenship: "",
+    
+  //   renouncementProof: "",
+  //   items:{
+  //     doesIndiHavTaxLbltyinOtherJurisdictions: false,
+  //     countryIdforTaxLiability: 0,
+  //     taxReferenceNumber: "",
+  //     isTINFormatNotAvailable: false,
+  //   },
+    
+  //   countryTaxLiability: "",
+    
+  //   IsPresentAtleast31Days: false,
+  //   statusId: 1,
+  //   stepName: `/${urlValue}`,
+  // }));
+
+  const itemsData = [{
+    id: 0,
+    agentId: authDetails?.agentId,
+    formTypeId: FormTypeId.CaymanIndividual,
+    formEntryId: 0,
+    accountHolderDetailsId:authDetails?.accountHolderId,
+    doesIndiHavTaxLbltyinOtherJurisdictions: "",
+    countryIdforTaxLiability: "",
+    taxReferenceNumber: "",
+    isTINFormatNotAvailable: false,
+  }];
+
+
+  const initialValues: FormValues = {
     agentId: authDetails?.agentId,
     formTypeSelectionId: obValues.businessTypeId,
     formTypeId: FormTypeId.CaymanIndividual,
     accountHolderBasicDetailId:authDetails?.accountHolderId,
-    isHeldUSCitizenship: false,
-    countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "0",
-    isTaxationUSCitizenOrResident: false,
-    isPermamnentResidentCardHolder: false,
-    isHoldDualCitizenshipStatus: false,
-    isHoldDualCitizenshipIncludeUSCitizenship: false,
-    isRenouncedCitizenship: false,
-    dateRenouncedUSCitizenship: obValues.dateRenouncedUSCitizenship,
-    permanentResidentialCountryId: 0,
-    renouncementProof: "",
-    isTaxLiabilityJurisdictions: false,
-    countryTaxLiability: "",
-    taxReferenceNumber: "",
-    isTINFormatNotAvailable: false,
-    IsPresentAtleast31Days: "Yes",
+    isHeldUSCitizenship: PrevStepData?.isHeldUSCitizenship ? PrevStepData.isHeldUSCitizenship : "",
+    countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "",
+    isTaxationUSCitizenOrResident: PrevStepData?.isTaxationUSCitizenOrResident ? PrevStepData.isTaxationUSCitizenOrResident :  "",
+    isPermamnentResidentCardHolder: PrevStepData?.isPermamnentResidentCardHolder ? PrevStepData.isPermamnentResidentCardHolder : "",
+    isHoldDualCitizenshipStatus: PrevStepData?.isHoldDualCitizenshipStatus ? PrevStepData.isHoldDualCitizenshipStatus:"",
+    isHoldDualCitizenshipIncludeUSCitizenship: PrevStepData?.isHoldDualCitizenshipIncludeUSCitizenship ? PrevStepData.isHoldDualCitizenshipIncludeUSCitizenship:"",
+    isRenouncedCitizenship: PrevStepData?.isRenouncedCitizenship ? PrevStepData.isRenouncedCitizenship: "",
+    dateRenouncedUSCitizenship:PrevStepData?.dateRenouncedUSCitizenship ? PrevStepData.dateRenouncedUSCitizenship: "",
+    renouncementProof: PrevStepData?.renouncementProof ? PrevStepData.renouncementProof:"",
+    taxLbltyOtherJurisdictions: itemsData,
+    countryTaxLiability: PrevStepData?.countryTaxLiability ? PrevStepData.countryTaxLiability:"",
+    IsPresentAtleast31Days: PrevStepData?.IsPresentAtleast31Days ? PrevStepData.IsPresentAtleast31Days:"",
     statusId: 1,
     stepName: `/${urlValue}`,
   };
@@ -154,10 +238,10 @@ export default function Index() {
         .GetAgentCountriesImportantForEformData
   );
 
-  const viewPdf = () => {
-    // history("/w8Ben_pdf", { replace: true });
-    //history("/w8Ben_pdf");
-  }
+  // const viewPdf = () => {
+  //   // history("/w8Ben_pdf", { replace: true });
+  //   //history("/w8Ben_pdf");
+  // }
 
   function getNameById(id: any) {
     if (!Array.isArray(allCountriesData)) {
@@ -169,15 +253,31 @@ export default function Index() {
     return foundObject ? foundObject.name : null;
   }
 
+  const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
+
+  const viewPdf=()=>{
+    history("w9_pdf");
+  }
+
   return (
     <section
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
+      <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
+      {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
+
 
       <div className="overlay-div">
         <div className="overlay-div-group">
-          <div className="viewInstructions">View Instructions</div>
+        <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
+          {/* <div className="viewform" onClick={viewPdf}>View Form</div> */}
           <div className="viewform" onClick={() => {
               dispatch(GetBenPdf(authDetails?.accountHolderId))
             }}>View Form</div>
@@ -206,19 +306,37 @@ export default function Index() {
       <div className="row w-100">
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>
-            <BreadCrumbComponent breadCrumbCode={1207} formName={FormTypeId.CaymanIndividual} />
+            <BreadCrumbComponent breadCrumbCode={1301} formName={FormTypeId.CaymanIndividual} />
           </div>
         </div>
         <div className="col-8 mt-3">
           <div style={{ padding: "10px" }}>
             <Paper style={{ padding: "18px" }}>
-              <Formik
-                validateOnChange={true}
-                validateOnBlur={true}
-                initialValues={initialValue}
+              <Formik<FormValues>
+               validateOnChange={false}
+               validateOnBlur={false}
+               validateOnMount={false}
+
+                initialValues={initialValues}
                 enableReinitialize
-                validationSchema={StatusSchema}
+                //validationSchema={StartSchema}
                 onSubmit={(values, { setSubmitting }) => {
+                  // var newValues = values.taxLbltyOtherJurisdictions.filter(
+                  //     (item) => item.doesIndiHavTaxLbltyinOtherJurisdictions === "Yes"
+                  //   );
+
+                  //   values.taxLbltyOtherJurisdictions = newValues;
+                  //   console.log("newValues",newValues)
+                  // console.log("values", values);
+                  
+                  const temp = {
+                   
+                    ...values,
+                    ...PrevStepData,
+                    stepName: `/${urlValue}`
+                  };
+
+                  console.log("temp", temp);
                   // if (clickCount === 0) {
                   //   setClickCount(clickCount + 1);
                   // } else {
@@ -227,13 +345,13 @@ export default function Index() {
                     const result = { ...new_obj, ...values };
                     // console.log(result,"FINAL RESULT")
                     dispatch(
-                      postW8BENForm(values, () => {
+                      postSCIndividualEForm(values, () => {
                         // history("/W-8BEN/Declaration/US_Tin");
                         if (values?.IsPresentAtleast31Days=== "Yes") {
-                          history('/Susbtantial_BEN')
+                          history('/Cayman/Individual/start/SustantialPresence')
                         } else {
                           history(
-                            "/W-8BEN/Declaration/US_Tin"
+                            "/Cayman/Individual/start/US_Tin"
                           );
                         }
                         localStorage.setItem(
@@ -258,9 +376,9 @@ export default function Index() {
                   submitForm,
                 }) => (
                   <Form onSubmit={handleSubmit}>
-                    <>{console.log("VALUESSS", values)}</>
-
-                    {values.isHeldUSCitizenship === true &&
+                   
+                    
+                    {values.isHeldUSCitizenship === "Yes" &&
                       obValues?.isUSIndividual == false ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -314,7 +432,7 @@ export default function Index() {
                       ""
                     )}
 
-                    {values.isHoldDualCitizenshipStatus === true
+                    {values.isHoldDualCitizenshipStatus === "Yes"
                      ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -362,8 +480,8 @@ export default function Index() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
-                      values.isRenouncedCitizenship === true ? (
+                    {values.isHeldUSCitizenship === "Yes" &&
+                      values.isRenouncedCitizenship === "Yes" ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -398,8 +516,8 @@ export default function Index() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
-                      values.isTaxationUSCitizenOrResident === true ? (
+                    {values.isHeldUSCitizenship === "Yes" &&
+                      values.isTaxationUSCitizenOrResident === "Yes" ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -449,8 +567,8 @@ export default function Index() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
-                      values.isPermamnentResidentCardHolder === true? (
+                    {values.isHeldUSCitizenship === "Yes" &&
+                      values.isPermamnentResidentCardHolder === "Yes" ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -502,8 +620,8 @@ export default function Index() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
-                      values.isHoldDualCitizenshipIncludeUSCitizenship === true ? (
+                    {values.isHeldUSCitizenship === "Yes" &&
+                      values.isHoldDualCitizenshipIncludeUSCitizenship === "Yes" ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -554,7 +672,7 @@ export default function Index() {
                       ""
                     )}
 
-                    {values.IsPresentAtleast31Days ==="Yes" ?
+                    {values.IsPresentAtleast31Days === "yes" ?
                       (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -589,7 +707,7 @@ export default function Index() {
                     ) : (
                       ""
                     )}
-                    {values.countryOfCitizenship == 258 ? (
+                    {values.countryOfCitizenship == '258' ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -766,26 +884,28 @@ export default function Index() {
                         Was the individual born in the United States and held
                         U.S. citizenship?<span style={{ color: "red" }}>*</span>
                       </Typography>
-
                       <FormControl>
+                      
                         <RadioGroup
                           row
                           defaultValue=""
                           aria-labelledby="demo-row-radio-buttons-group-label"
                           name="isHeldUSCitizenship"
                           value={values.isHeldUSCitizenship}
-                          onChange={handleChange}
+                          onChange={(event) => {
+                            setFieldValue("isHeldUSCitizenship", event.currentTarget.value)
+                          }}
                           id="isHeldUSCitizenship"
                         >
                           <FormControlLabel
                             control={<Radio />}
-                            value={true}
+                            value="Yes"
                             name="isHeldUSCitizenship"
                             label="Yes"
                           />
                           <FormControlLabel
                             control={<Radio />}
-                            value={false}
+                            value="No"
                             name="isHeldUSCitizenship"
                             label="No"
                           />
@@ -812,20 +932,24 @@ export default function Index() {
                           <FormControl>
                             <RadioGroup
                               row
-                              id="isTaxationUSCitizenOrResident"
+                              defaultValue=""
                               aria-labelledby="demo-row-radio-buttons-group-label"
+                              name="isTaxationUSCitizenOrResident"
                               value={values.isTaxationUSCitizenOrResident}
-                              onChange={handleChange}
+                              onChange={(event) => {
+                                setFieldValue("isTaxationUSCitizenOrResident", event.currentTarget.value)
+                              }}
+                              id="isTaxationUSCitizenOrResident"
                             >
                               <FormControlLabel
                                 control={<Radio />}
+                                value="Yes"
                                 name="isTaxationUSCitizenOrResident"
-                                value={true}
                                 label="Yes"
                               />
                               <FormControlLabel
                                 control={<Radio />}
-                                value={false}
+                                value="No"
                                 name="isTaxationUSCitizenOrResident"
                                 label="No"
                               />
@@ -850,27 +974,32 @@ export default function Index() {
 
                           <FormControl>
                             <RadioGroup
-                              row
-                              id="isPermamnentResidentCardHolder"
-                              aria-labelledby="demo-row-radio-buttons-group-label"
-                              value={values.isPermamnentResidentCardHolder}
-                              onChange={handleChange}
-                            >
-                              <FormControlLabel
-                                control={<Radio />}
-                                value={true}
+                                row
+                                defaultValue=""
+                                aria-labelledby="demo-row-radio-buttons-group-label"
                                 name="isPermamnentResidentCardHolder"
-                                label="Yes"
-                              />
-                              <FormControlLabel
-                                control={<Radio />}
-                                value={false}
-                                name="isPermamnentResidentCardHolder"
-                                label="No"
-                              />
-                            </RadioGroup>
+                                value={values.isPermamnentResidentCardHolder}
+                                onChange={(event) => {
+                                  setFieldValue("isPermamnentResidentCardHolder", event.currentTarget.value)
+                                }}
+                                id="isPermamnentResidentCardHolder"
+                              >
+                                <FormControlLabel
+                                  control={<Radio />}
+                                  value="Yes"
+                                  name="isPermamnentResidentCardHolder"
+                                  label="Yes"
+                                />
+                                <FormControlLabel
+                                  control={<Radio />}
+                                  value="No"
+                                  name="isPermamnentResidentCardHolder"
+                                  label="No"
+                                />
+                              </RadioGroup>
+                            
                             <p className="error">
-                              {errors.isPermamnentResidentCardHolder}
+                              {/* {errors.isPermamnentResidentCardHolder} */}
                             </p>
                           </FormControl>
                           <Divider className="dividr" />
@@ -887,31 +1016,36 @@ export default function Index() {
 
                           <FormControl>
                             <RadioGroup
-                              row
-                              aria-labelledby="demo-row-radio-buttons-group-label"
-                              id="isHoldDualCitizenshipStatus"
-                              value={values.isHoldDualCitizenshipStatus}
-                              onChange={handleChange}
-                            >
-                              <FormControlLabel
-                                control={<Radio />}
-                                value={true}
+                                row
+                                defaultValue=""
+                                aria-labelledby="demo-row-radio-buttons-group-label"
                                 name="isHoldDualCitizenshipStatus"
-                                label="Yes"
-                              />
-                              <FormControlLabel
-                                control={<Radio />}
-                                value={false}
-                                name="isHoldDualCitizenshipStatus"
-                                label="No"
-                              />
-                            </RadioGroup>
+                                value={values.isHoldDualCitizenshipStatus}
+                                onChange={(event) => {
+                                  setFieldValue("isHoldDualCitizenshipStatus", event.currentTarget.value)
+                                }}
+                                id="isHoldDualCitizenshipStatus"
+                              >
+                                <FormControlLabel
+                                  control={<Radio />}
+                                  value="Yes"
+                                  name="isHoldDualCitizenshipStatus"
+                                  label="Yes"
+                                />
+                                <FormControlLabel
+                                  control={<Radio />}
+                                  value="No"
+                                  name="isHoldDualCitizenshipStatus"
+                                  label="No"
+                                />
+                              </RadioGroup>
+                            
                             <p className="error">
                               {errors.isHoldDualCitizenshipStatus}
                             </p>
                           </FormControl>
                           <Divider className="dividr" />
-                          {values.isHoldDualCitizenshipStatus == true ? (
+                          {values.isHoldDualCitizenshipStatus == "Yes" ? (
                             <>
                               <Typography
                                 style={{
@@ -928,27 +1062,30 @@ export default function Index() {
 
                               <FormControl>
                                 <RadioGroup
-                                  id="isHoldDualCitizenshipIncludeUSCitizenship"
                                   row
+                                  defaultValue=""
                                   aria-labelledby="demo-row-radio-buttons-group-label"
-                                  value={
-                                    values.isHoldDualCitizenshipIncludeUSCitizenship
-                                  }
-                                  onChange={handleChange}
+                                  name="isHoldDualCitizenshipIncludeUSCitizenship"
+                                  value={values.isHoldDualCitizenshipIncludeUSCitizenship}
+                                  onChange={(event) => {
+                                    setFieldValue("isHoldDualCitizenshipIncludeUSCitizenship", event.currentTarget.value)
+                                  }}
+                                  id="isHoldDualCitizenshipIncludeUSCitizenship"
                                 >
                                   <FormControlLabel
                                     control={<Radio />}
-                                    value={true}
+                                    value="Yes"
                                     name="isHoldDualCitizenshipIncludeUSCitizenship"
                                     label="Yes"
                                   />
                                   <FormControlLabel
                                     control={<Radio />}
-                                    value={false}
+                                    value="No"
                                     name="isHoldDualCitizenshipIncludeUSCitizenship"
                                     label="No"
                                   />
                                 </RadioGroup>
+                               
                                 <p className="error">
                                   {
                                     errors.isHoldDualCitizenshipIncludeUSCitizenship
@@ -961,7 +1098,7 @@ export default function Index() {
                             ""
                           )}
 
-                          {values.isHeldUSCitizenship ===true ? (
+                          {values.isHeldUSCitizenship === "Yes" ? (
                             <>
                               <Typography
                                 style={{
@@ -978,25 +1115,30 @@ export default function Index() {
 
                               <FormControl>
                                 <RadioGroup
-                                  id="isRenouncedCitizenship"
-                                  row
-                                  aria-labelledby="demo-row-radio-buttons-group-label"
-                                  value={values.isRenouncedCitizenship}
-                                  onChange={handleChange}
-                                >
-                                  <FormControlLabel
-                                    control={<Radio />}
-                                    value={true}
+                                    row
+                                    defaultValue=""
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="isRenouncedCitizenship"
-                                    label="Yes"
-                                  />
-                                  <FormControlLabel
-                                    control={<Radio />}
-                                    value={false}
-                                    name="isRenouncedCitizenship"
-                                    label="No"
-                                  />
-                                </RadioGroup>
+                                    value={values.isRenouncedCitizenship}
+                                    onChange={(event) => {
+                                      setFieldValue("isRenouncedCitizenship", event.currentTarget.value)
+                                    }}
+                                    id="isRenouncedCitizenship"
+                                  >
+                                    <FormControlLabel
+                                      control={<Radio />}
+                                      value="Yes"
+                                      name="isRenouncedCitizenship"
+                                      label="Yes"
+                                    />
+                                    <FormControlLabel
+                                      control={<Radio />}
+                                      value="No"
+                                      name="isRenouncedCitizenship"
+                                      label="No"
+                                    />
+                                  </RadioGroup>
+                                
                                 <p className="error">
                                   {errors.isRenouncedCitizenship}
                                 </p>
@@ -1007,7 +1149,7 @@ export default function Index() {
                             ""
                           )}
 
-                          {values.isRenouncedCitizenship === true ? (
+                          {values.isRenouncedCitizenship === "Yes" ? (
                             <>
                               <Typography
                                 style={{
@@ -1021,8 +1163,56 @@ export default function Index() {
                                 renounced:{" "}
                                 <span style={{ color: "red" }}>*</span>
                               </Typography>
-                              <FormControl>
-                                <input
+                              <Typography>
+                              <DatePicker
+                                  className="dateclass"
+                                  onBlur={handleBlur}
+                                  name="dateRenouncedUSCitizenship"
+                                  onChange={(date:any) => { 
+                                    setTimeout(() => { 
+                                      const inputDate = new Date(date);
+                                      const year = inputDate.getFullYear();
+                                      const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+                                      const day = String(inputDate.getDate()).padStart(2, '0');
+                                      const formattedDate = `${year}-${month}-${day}`;
+                                      setFieldValue("dateRenouncedUSCitizenship", formattedDate);
+                                    }, 200);
+                                  }}
+                                  value={values.dateRenouncedUSCitizenship}
+                                  clearIcon={null}
+                                  format="yyyy-MM-dd"
+                                  dayPlaceholder="dd"
+                                  monthPlaceholder="mm"
+                                  yearPlaceholder="yy"
+                                />
+                              {/* <DatePicker
+                    
+                                    className="dateclass"
+                                    onBlur={handleBlur}
+                                    name="dateRenouncedUSCitizenship"
+                                    onChange={(date:any) => { 
+                                      setTimeout(() => { 
+                                        const inputDate = new Date(date);
+
+                                      const year = inputDate.getFullYear();
+                                      const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+                                      const day = String(inputDate.getDate()).padStart(2, '0');
+
+                                      const formattedDate = `${year}-${month}-${day}`;
+                                        
+                                        setFieldValue("dateRenouncedUSCitizenship", formattedDate); }, 200)
+                                    }
+                                  }
+                                    
+                                    //maxDate={moment().toDate()}
+                                    value={values.dateRenouncedUSCitizenship}
+                                    clearIcon={null}
+                                    format="yyyy-MM-dd"
+                                    dayPlaceholder="dd"
+                                    monthPlaceholder="mm"
+                                    yearPlaceholder="yy"
+                                  /> */}
+                                {/* <input
                                   className="my-2"
                                   style={{ fontSize: "15px", width: "100%" }}
                                   type="date"
@@ -1030,8 +1220,14 @@ export default function Index() {
                                   onBlur={handleBlur}
                                   name="dateRenouncedUSCitizenship"
                                   value={values.dateRenouncedUSCitizenship}
-                                />
-                              </FormControl>
+                                /> */}
+
+                                <p className="error"> {errors?.dateRenouncedUSCitizenship}</p>
+                                 {(errors?.dateRenouncedUSCitizenship && touched?.dateRenouncedUSCitizenship && typeof errors.dateRenouncedUSCitizenship !== 'string') && (
+                                    <p className="error"> {errors?.dateRenouncedUSCitizenship}</p>
+                                  )}
+                                
+                              </Typography>
                               <Divider className="dividr" />
                               <Typography
                                 style={{
@@ -1060,254 +1256,377 @@ export default function Index() {
                           ) : (
                             ""
                           )}
-
-                          <Typography
-                            style={{
-                              fontSize: "17px",
-                              marginTop: "10px",
-
-                              marginBottom: "10px",
-                            }}
-                          >
-                            Does the individual the submission represents have
-                            tax liability in any other jurisdictions?
-                          </Typography>
-
-                          <FormControl>
-                            <RadioGroup
-                              row
-                              aria-labelledby="demo-row-radio-buttons-group-label"
-                              id="isTaxLiabilityJurisdictions"
-                              value={values.isTaxLiabilityJurisdictions}
-                              onChange={handleChange}
-                            >
-                              <FormControlLabel
-                                control={<Radio />}
-                                value={true}
-                                name="isTaxLiabilityJurisdictions"
-                                label="Yes"
-                              />
-                              <FormControlLabel
-                                control={<Radio />}
-                                value={false}
-                                name="isTaxLiabilityJurisdictions"
-                                label="No"
-                              />
-                            </RadioGroup>
-                            <p className="error">
-                              {errors.isTaxLiabilityJurisdictions}
-                            </p>
-                          </FormControl>
-                          <Divider className="dividr" />
-
-                          {values.isTaxLiabilityJurisdictions == true ? (
-                            <>
-                              <Typography>
-                                Please select the country where the individual
-                                has a tax liability:
-                                <span style={{ color: "red" }}>*</span>
-                              </Typography>
-                              <FormControl className="form">
-                                <select
-                                  style={{
-                                    padding: " 0 10px",
-                                    color: "#121112",
-                                    fontStyle: "italic",
-                                    height: "36px",
-                                  }}
-                                  name="permanentResidentialCountryId"
-                                  id="Income"
-                                  defaultValue={1}
-                                  onChange={handleChange}
-                                  value={values.permanentResidentialCountryId}
-                                >
-                                  <option value={0}>---select---</option>
-                                  <option value={45}>-canada-</option>
-                                  <option value={257}>United Kingdom</option>
-                                  <option value={258}>United States</option>
-                                  <option value="">-----</option>
-                                  {GetAgentCountriesImportantForEformData?.map(
-                                    (ele: any) => (
-                                      <option key={ele?.id} value={ele?.id}>
-                                        {ele?.name}
-                                      </option>
-                                    )
-                                  )}
-                                </select>
-                              </FormControl>
-                              <Divider className="dividr" />
-
-                              <Typography>
-                                Please enter the tax reference number:
-                                {values.permanentResidentialCountryId == 257 ? (
-                                  <span>
-                                    <Tooltip
-                                      style={{
-                                        backgroundColor: "black",
-                                        color: "white",
-                                      }}
-                                      title={
-                                        <>
-                                          <Typography color="inherit"></Typography>
-                                          <a
-                                            onClick={() =>
-                                              setToolInfo("refrence")
-                                            }
-                                          >
-                                            <Typography
-                                              style={{
-                                                cursor: "pointer",
-                                                textDecorationLine: "underline",
-                                              }}
-                                              align="center"
-                                            >
-                                              {" "}
-                                              View More...
-                                            </Typography>
-                                          </a>
-                                        </>
-                                      }
-                                    >
-                                      <Info
+                          <FieldArray name="items">
+                          {({ push, remove }) => (
+                            <div>
+                              {values.taxLbltyOtherJurisdictions.map((item:any, index:any) => (
+                                <div key={index}>
+                                  
+                                  <Typography
                                         style={{
-                                          color: "#ffc107",
-                                          fontSize: "16px",
-                                          cursor: "pointer",
-                                          verticalAlign: "super",
+                                          fontSize: "17px",
+                                          marginTop: "10px",
+
+                                          marginBottom: "10px",
                                         }}
-                                      />
-                                    </Tooltip>
-                                  </span>
-                                ) : (
-                                  ""
-                                )}
-                                <span style={{ color: "red" }}>*</span>
-                              </Typography>
-                              {toolInfo === "refrence" ? (
-                                <div>
-                                  <Paper
-                                    style={{
-                                      backgroundColor: "#dedcb1",
-                                      padding: "15px",
-                                      marginBottom: "10px",
-                                    }}
-                                  >
-                                    <Typography>
-                                      United Kingdom TIN Format is 9999999999
-                                      <br />
-                                      9- Numeric value only
-                                      <br />
-                                      A- Alphabetic character only
-                                      <br />
-                                      *- Alphanumeric character only ?-
-                                      Characters optional after this
-                                      <br />
-                                      IF TIN format is not available, please
-                                      check the below box and continue
-                                    </Typography>
+                                      >
+                                        Does the individual the submission represents have
+                                        tax liability in any other jurisdictions?
+                                      </Typography>
+                                      
+                                        
+                                      
+                                      
 
-                                    <Link
-                                      href="#"
-                                      underline="none"
-                                      style={{
-                                        marginTop: "10px",
-                                        fontSize: "16px",
-                                        color: "#0000C7"
+                                      <FormControl>
+                                        
+                                      <RadioGroup
+                                          row
+                                          defaultValue=""
+                                          aria-labelledby="demo-row-radio-buttons-group-label"
+                                          name={`taxLbltyOtherJurisdictions.${index}.doesIndiHavTaxLbltyinOtherJurisdictions`}
+                                          value={values.taxLbltyOtherJurisdictions[index].doesIndiHavTaxLbltyinOtherJurisdictions}
+                                          onChange={(event) => {
+                                            const currentValue = event.currentTarget.value;
+                                            
+                                            if (currentValue === "Yes") {
+                                              // Push a new item into the array only if the selected value is "Yes"
+                                              handleChange({
+                                                target: {
+                                                  name: "taxLbltyOtherJurisdictions",
+                                                  value: [
+                                                    ...values.taxLbltyOtherJurisdictions,
+                                                    { 
+                                                      id: 0,
+                                                      agentId: authDetails?.agentId,
+                                                      formTypeId: FormTypeId.CaymanIndividual,
+                                                      formEntryId: 0,
+                                                      accountHolderDetailsId:authDetails?.accountHolderId,
+                                                      doesIndiHavTaxLbltyinOtherJurisdictions: "",
+                                                      countryIdforTaxLiability: "",
+                                                      taxReferenceNumber: "",
+                                                      isTINFormatNotAvailable: false,
+                                                    }
+                                                  ],
+                                                },
+                                              });
+                                            }
+                                            setFieldValue(`taxLbltyOtherJurisdictions.${index}.doesIndiHavTaxLbltyinOtherJurisdictions`, currentValue);
+                                          }}
+                                          
+                                          id="doesIndiHavTaxLbltyinOtherJurisdictions"
+                                        >
+                                          <FormControlLabel
+                                            control={<Radio />}
+                                            value="Yes"
+                                            name={`taxLbltyOtherJurisdictions.${index}.doesIndiHavTaxLbltyinOtherJurisdictions`}
+                                            label="Yes"
+                                          />
+                                          <FormControlLabel
+                                            control={<Radio />}
+                                            value="No"
+                                            name={`taxLbltyOtherJurisdictions.${index}.doesIndiHavTaxLbltyinOtherJurisdictions`}
+                                            label="No"
+                                          />
+                                        </RadioGroup>
+                                      
+                                      {/* <p className="error">
+                                        {errors.doesIndiHavTaxLbltyinOtherJurisdictions}
+                                      </p> */}
+                                    </FormControl>
+                                    <Divider className="dividr" />
+                                    {values.taxLbltyOtherJurisdictions[index].doesIndiHavTaxLbltyinOtherJurisdictions == 'Yes' ? (
+                                        <>
 
-                                      }}
-                                      onClick={() => {
-                                        setToolInfo("");
-                                      }}
-                                    >
-                                      --Show Less--
-                                    </Link>
-                                  </Paper>
-                                </div>
-                              ) : (
-                                ""
-                              )}
-                              <div className="d-flex">
-                                <FormControl className="form">
-                                  {values.isTINFormatNotAvailable == false ? (
-                                    <Input
-                                      name="taxReferenceNumber"
-                                      onChange={handleChange}
-                                      value={values.taxReferenceNumber}
-                                      disabled
-                                      className="input"
-                                    />
-                                  ) : (
-                                    <Input
-                                      name="taxReferenceNumber"
-                                      onChange={handleChange}
-                                      value={values.taxReferenceNumber}
-                                      className="number"
-                                    />
-                                  )}
-                                </FormControl>
-                                {/* {values.permanentResidentialCountryId == 257?( */}
-                                <div className="d-flex">
-                                  <Checkbox
-                                    name="isTINFormatNotAvailable"
-                                    onChange={(e) => {
-                                      handleChange(e);
-                                      setFieldValue("taxReferenceNumber", "");
-                                    }}
-                                    value={values.isTINFormatNotAvailable}
-                                    required
-                                  />
-                                  <div className="mt-2">
-                                    TIN format not available
-                                  </div>
-                                </div>
-                                {/* // ):<div className="d-flex">
-                              //   <Checkbox name="isTINFormatNotAvailable" onChange={handleChange} value={values.isTINFormatNotAvailable}  disabled required />
-                              //   <div className="mt-2" style={{color:"grey"}}>
-                              //     TIN format not available
-                              //   </div>
-                              // </div>} */}
+                                        <DeleteOutline type="button" onClick={() => remove(index)}/>
+                                          <Typography>
+                                            Please select the country where the individual
+                                            has a tax liability:
+                                            <span style={{ color: "red" }}>*</span>
+                                          </Typography>
+                                          <FormControl className="form">
+                                            <select
+                                              style={{
+                                                padding: " 0 10px",
+                                                color: "#121112",
+                                                fontStyle: "italic",
+                                                height: "36px",
+                                              }}
+                                              name={`taxLbltyOtherJurisdictions.${index}.countryIdforTaxLiability`}
+                                              id="Income"
+                                              defaultValue={1}
+                                              onChange={handleChange}
+                                              value={values.taxLbltyOtherJurisdictions[index].countryIdforTaxLiability}
+                                            >
+                                              <option value={0}>---select---</option>
+                                              <option value={45}>-canada-</option>
+                                              <option value={257}>United Kingdom</option>
+                                              <option value={258}>United States</option>
+                                              <option value="">-----</option>
+                                              {GetAgentCountriesImportantForEformData?.map(
+                                                (ele: any) => (
+                                                  <option key={ele?.id} value={ele?.id}>
+                                                    {ele?.name}
+                                                  </option>
+                                                )
+                                              )}
+                                            </select>
+                                            
+                                            {/* {(typeof errors === 'object' && 'countryIdforTaxLiability' in errors.taxLbltyOtherJurisdictions) && (
+                                                      <p className="error">Please select Country</p>
+                                                    )} */}
+                                            {/* {errors?.countryIdforTaxLiability && typeof errors?.countryIdforTaxLiability === 'string' && (
+                                              <p className="error">{errors?.countryIdforTaxLiability}</p>
+                                            )} */}
+                                          </FormControl>
+                                          {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && (
+                                          <div>
+                                           {errors.taxLbltyOtherJurisdictions
+                                              .filter(error => error !== null) // Filter out null values
+                                              .map((error, index) => (
+                                                <div key={index}>
+                                                  {error && (
+                                                    <>
+                                                      {(typeof error !== 'string' &&  error?.countryIdforTaxLiability) && (
+                                                        <p className="error">{error.countryIdforTaxLiability}</p>
+                                                      )}
+                                                      
+                                                    </>
+                                                  )}
+                                                </div>
+                                              ))}
+                                          </div>
+                                        )} */}
+
+                                          {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && errors.taxLbltyOtherJurisdictions.length > 0 && (
+                                            <div>
+                                              {errors.taxLbltyOtherJurisdictions.map((error, index) => (
+                                                <div key={index}>
+                                                  {error && (
+                                                    <>
+                                                      {(typeof error !== 'string' &&  error?.countryIdforTaxLiability) && (
+                                                        <p className="error">{error.countryIdforTaxLiability}</p>
+                                                      )}
+                                                      
+                                                    </>
+                                                  )}
+                                                </div>
+                                              ))}
+                                            </div>
+                                          )} */}
+
+
+                                          {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && errors.taxLbltyOtherJurisdictions.length > 0 && (
+                                              <div>
+                                                  {errors.taxLbltyOtherJurisdictions.map((error, index) => (
+                                                        
+                                                        (error !== undefined ? <>
+                                                          <p className="error" key={index}>
+                                                          {(typeof error !== 'string' && error?.countryIdforTaxLiability) ? error.countryIdforTaxLiability : ""}
+                                                          
+                                                          </p>
+                                                            </> : "")
+                                                      //   <p className="error" key={index}>
+                                                      //   {(typeof error !== 'string' && error?.countryIdforTaxLiability) ? error.countryIdforTaxLiability : ""}
+                                                      
+                                                      // </p>
+
+                                                    
+
+
+                                                  ))}
+                                              </div>
+                                          )} */}
+                                          <Divider className="dividr" />
+
+                                          <Typography>
+                                            Please enter the tax reference number:
+                                            {values.taxLbltyOtherJurisdictions[index].countryIdforTaxLiability === '257' ? (
+                                              <span>
+                                                <Tooltip
+                                                  style={{
+                                                    backgroundColor: "black",
+                                                    color: "white",
+                                                  }}
+                                                  title={
+                                                    <>
+                                                      <Typography color="inherit"></Typography>
+                                                      <a
+                                                        onClick={() =>
+                                                          setToolInfo("refrence")
+                                                        }
+                                                      >
+                                                        <Typography
+                                                          style={{
+                                                            cursor: "pointer",
+                                                            textDecorationLine: "underline",
+                                                          }}
+                                                          align="center"
+                                                        >
+                                                          {" "}
+                                                          View More...
+                                                        </Typography>
+                                                      </a>
+                                                    </>
+                                                  }
+                                                >
+                                                  <Info
+                                                    style={{
+                                                      color: "#ffc107",
+                                                      fontSize: "16px",
+                                                      cursor: "pointer",
+                                                      verticalAlign: "super",
+                                                    }}
+                                                  />
+                                                </Tooltip>
+                                              </span>
+                                            ) : (
+                                              ""
+                                            )}
+                                            <span style={{ color: "red" }}>*</span>
+                                          </Typography>
+                                          {toolInfo === "refrence" ? (
+                                            <div>
+                                              <Paper
+                                                style={{
+                                                  backgroundColor: "#dedcb1",
+                                                  padding: "15px",
+                                                  marginBottom: "10px",
+                                                }}
+                                              >
+                                                <Typography>
+                                                  United Kingdom TIN Format is 9999999999
+                                                  <br />
+                                                  9- Numeric value only
+                                                  <br />
+                                                  A- Alphabetic character only
+                                                  <br />
+                                                  *- Alphanumeric character only ?-
+                                                  Characters optional after this
+                                                  <br />
+                                                  IF TIN format is not available, please
+                                                  check the below box and continue
+                                                </Typography>
+
+                                                <Link
+                                                  href="#"
+                                                  underline="none"
+                                                  style={{
+                                                    marginTop: "10px",
+                                                    fontSize: "16px",
+                                                    color: "#0000C7"
+
+                                                  }}
+                                                  onClick={() => {
+                                                    setToolInfo("");
+                                                  }}
+                                                >
+                                                  --Show Less--
+                                                </Link>
+                                              </Paper>
+                                            </div>
+                                          ) : (
+                                            ""
+                                          )}
+                                          {/* <>{console.log("values",values)}</> */}
+                                          <div className="d-flex">
+                                            <FormControl className="form">
+                                              {values.taxLbltyOtherJurisdictions[index].isTINFormatNotAvailable === false ? (
+                                                <Input
+                                                  name={`taxLbltyOtherJurisdictions.${index}.taxReferenceNumber`}
+                                                  onChange={handleChange}
+                                                  value={values.taxLbltyOtherJurisdictions[index].taxReferenceNumber}
+                                                  disabled
+                                                  className="input"
+                                                />
+                                              ) : (
+                                                <Input
+                                                  name={`taxLbltyOtherJurisdictions.${index}.taxReferenceNumber`}
+                                                  onChange={handleChange}
+                                                  value={values.taxLbltyOtherJurisdictions[index].taxReferenceNumber}
+                                                  className="number"
+                                                />
+                                              )}
+                                              {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && errors.taxLbltyOtherJurisdictions.length > 0 && (
+                                                <div>
+                                                  {errors.taxLbltyOtherJurisdictions.map((error, index) => (
+                                                    <div key={index}>
+                                                      {error && (
+                                                        <>
+                                                          {(typeof error !== 'string' && error?.taxReferenceNumber) && (
+                                                            <p className="error">{error.taxReferenceNumber}</p>
+                                                          )}
+                                                          
+                                                        </>
+                                                      )}
+                                                    </div>
+                                                  ))}
+                                                </div>
+                                              )} */}
+                                              {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && errors.taxLbltyOtherJurisdictions.length > 0 && (
+                                              <div>
+                                                  {errors.taxLbltyOtherJurisdictions.map((error, index) => (
+
+                                                      (error ? <>
+                                                      <p className="error" key={index}>
+                                                      {(typeof error !== 'string' && error?.taxReferenceNumber) ? error.taxReferenceNumber : ""}
+                                                      
+                                                      </p>
+                                                        </> : "")
+                                                      
+
+                                                     
+
+                                                    
+
+
+                                                  ))}
+                                              </div>
+                                          )} */}
+                                            </FormControl>
+                                            {/* {values.permanentResidentialCountryId == 257?( */}
+                                            <div className="d-flex">
+                                              <Checkbox
+                                                name={`taxLbltyOtherJurisdictions.${index}.isTINFormatNotAvailable`}
+                                                onChange={(e) => {
+                                                  const isChecked = e.target.checked;
+                                                  const newValue = isChecked ? true : false; // Convert checked state to boolean
+                                                  setFieldValue(`taxLbltyOtherJurisdictions.${index}.isTINFormatNotAvailable`, newValue);
+                                                  // Optionally, reset taxReferenceNumber when the checkbox is checked
+                                                  if (isChecked) {
+                                                    setFieldValue("taxReferenceNumber", "");
+                                                  }
+                                                }}
+                                                checked={values.taxLbltyOtherJurisdictions[index].isTINFormatNotAvailable || false} // Ensure value is boolean
+                                                required
+                                              />
+                                              <div className="mt-2">
+                                                TIN format not available
+                                              </div>
+                                            </div>
+                                          
+                                          
+                                          </div>
+                                        
+                                        </>
+                                      ) : (
+                                        ""
+                                    )}
                               </div>
-                              <Typography
-                                style={{
-                                  fontSize: "17px",
-                                  marginTop: "10px",
+                              ))}
 
-                                  marginBottom: "10px",
-                                }}
-                              >
-                                Does the individual the submission represents
-                                have tax liability in any other jurisdictions?
-                              </Typography>
-
-                              <FormControl>
-                                <RadioGroup
-                                  row
-                                  aria-labelledby="demo-row-radio-buttons-group-label"
-                                  id="isTaxLiabilityJurisdictions"
-                                  value={values.isTaxLiabilityJurisdictions}
-                                  onChange={handleChange}
-                                >
-                                  <FormControlLabel
-                                    control={<Radio />}
-                                    value={true}
-                                    name="isTaxLiabilityJurisdictions"
-                                    label="Yes"
-                                  />
-                                  <FormControlLabel
-                                    control={<Radio />}
-                                    value={false}
-                                    name="isTaxLiabilityJurisdictions"
-                                    label="No"
-                                  />
-                                </RadioGroup>
-                                <p className="error">
-                                  {errors.isTaxLiabilityJurisdictions}
-                                </p>
-                              </FormControl>
-                            </>
-                          ) : (
-                            ""
+                            </div>
                           )}
+                          </FieldArray>
+                          
+                          
+
+                          
+                         
+
+                          
+
+                          {/* loop ends here */}
                           <Typography
                             style={{
                               fontSize: "17px",
@@ -1322,27 +1641,30 @@ export default function Index() {
 
                           <FormControl>
                             <RadioGroup
-                              row
-                              id="IsPresentAtleast31Days"
-                              aria-labelledby="demo-row-radio-buttons-group-label"
-                              name="IsPresentAtleast31Days"
-                              value={values.IsPresentAtleast31Days}
-                              onChange={handleChange}
-                            >
-                              <FormControlLabel
-                                value="Yes"
-                                control={<Radio />}
-                                label="Yes"
+                                row
+                                defaultValue=""
+                                aria-labelledby="demo-row-radio-buttons-group-label"
                                 name="IsPresentAtleast31Days"
-                              />
-                              <FormControlLabel
-                                className="label"
-                                value="No"
-                                control={<Radio />}
-                                label="No"
-                                name="IsPresentAtleast31Days"
-                              />
-                            </RadioGroup>
+                                value={values.IsPresentAtleast31Days}
+                                onChange={(event) => {
+                                  setFieldValue("IsPresentAtleast31Days", event.currentTarget.value)
+                                }}
+                                id="IsPresentAtleast31Days"
+                              >
+                                <FormControlLabel
+                                  control={<Radio />}
+                                  value="Yes"
+                                  name="IsPresentAtleast31Days"
+                                  label="Yes"
+                                />
+                                <FormControlLabel
+                                  control={<Radio />}
+                                  value="No"
+                                  name="IsPresentAtleast31Days"
+                                  label="No"
+                                />
+                              </RadioGroup>
+                            
                             <p className="error">
                               {errors.IsPresentAtleast31Days}
                             </p>
@@ -1364,7 +1686,7 @@ export default function Index() {
                         submitForm().then((data: any) => {
                           const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                           const urlValue = window.location.pathname.substring(1);
-                          dispatch(postW8BENForm(
+                          dispatch(postSCIndividualEForm(
                             {
                               ...prevStepData,
                               stepName: `/${urlValue}`
@@ -1374,7 +1696,7 @@ export default function Index() {
                         }).catch((err: any) => {
                           console.log(err);
                         })
-                      }} formTypeId={FormTypeId.BEN} />
+                      }} formTypeId={FormTypeId.CaymanIndividual} />
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}

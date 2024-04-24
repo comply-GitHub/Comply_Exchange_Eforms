@@ -25,6 +25,8 @@ const EndPoint = {
   GetAllHelpVideosDetails:"/HelpVideo/GetAllHelpVideos",
   GetAllLanguage:"/Language/GetAllLanguage",
   GetIGA:"/Countries/GetIGA",
+  GetFederalTaxClassification:"/W9Common/GetFederalTaxClassification",
+  GetAllUSFormTypes:"/FormTypes/GetAllUSFormTypes",
 
   //
   GetAgentCapacityHiddenForEform: "/WebAppBasic/GetAgentCapacityHiddenForEform",
@@ -58,7 +60,9 @@ const EndPoint = {
  InsertForm8233IndividualNonUSForm:"/Form8233Individual/InsertForm8233IndividualNonUSForm",
  UpsertSupportingDocumentation:"/AccountHolderDetail/UpsertSupportingDocumentation",
  UpsertDualCertW9:"/DualCert/UpsertDualCertDetails",
+ UpsertAccountHolderWithholdingStatement:"/AccountHolderDetail/UpsertAccountHolderWithholdingStatement",
  InserDualCert:"/DualCert/UpsertDualCert",
+ InsertCaymanIndividualNonUS:"/CaymanIndividualNonUS/InsertCaymanIndividualNonUS",
 
 // Form GetApis:
 GetDual:"/DualCert/GetDualCert",
@@ -70,6 +74,7 @@ GetByForm8233IndividualNonUSFormId:"/Form8233Individual/GetByForm8233IndividualN
 GetByW8IMYEntityNonForm :"/W8IMYEntity/GetByW8IMYEntityNonForm",
 GetSupportingDocumentation:"/AccountHolderDetail/GetSupportingDocumentation",
 getSupportedFile:"/FileUpload/GetFileBase64",
+GetByCaymanIndividualNonUSId: "/CaymanIndividualNonUS/GetByCaymanIndividualNonUSId",
 
 
 
@@ -79,11 +84,14 @@ GetW9Pdf:"/W9IndividualEntity/GetW9Pdf",
 GetECIPdf:"/W8ECIIndividualEntity/GetECIPdf",
 GetBENPdf:"/W8BENIndividual/GetBENPdf",
 GetBENEPdf:"/W8BENEEntity/GetBENEPdf",
+GetExpPdf:"/W8EXPEntity/GetExpPdf",
+GetIMYPdf:"/W8IMYEntity/GetIMYPdf",
+GetForm8233Pdf:"/Form8233Individual/GetForm8233Pdf",
 
  //Account Holder Endpoints
  UpsertAccountHolderIncomeAllocation:"/AccountHolderDetail/UpsertAccountHolderIncomeAllocation",
  GetAccountHolderIncomeAllocation:"/AccountHolderDetail/GetAccountHolderIncomeAllocation",
-
+ GetAccountHolderWithholdingStatement:"/AccountHolderDetail/GetAccountHolderWithholdingStatement",
  //SubstancialUsPassiveNFE
  UpsertAccountHolderSubstantialUsPassiveNFE:"/AccountHolderDetail/UpsertAHDSubstantialUsPassiveNFE",
  GetAccountHolderSubstantialUsPassiveNFE:"/AccountHolderDetail/GetAHDSubstantialUsPassiveNFE",

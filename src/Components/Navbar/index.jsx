@@ -63,8 +63,8 @@ export default function Nav() {
           // style={{ maxWidth: "65px", padding: "0px" }}
         />
         </Link>
-        <div className="my-auto" style={{ height: "40px", display: "flex" }}>
-          {returnTransale()}
+        <div className="my-auto" style={{ height: "40px", display: "flex" ,marginRight:"25px"}}>
+        <GoogleTranslate />
 
           <Tooltip
             style={{ backgroundColor: "black", color: "white" }}
@@ -76,11 +76,7 @@ export default function Nav() {
           >
             <Button
               className="my-auto mx-2"
-              style={{
-                borderRadius: "30px",
-                minWidth: "max-content",
-                boxShadow: "none",
-              }}
+              style={{ borderRadius: "30px", minWidth: "max-content",boxShadow:"none",maxWidth:"30%" }}
               variant="contained"
               onClick={(e) => {
                 e.preventDefault();
