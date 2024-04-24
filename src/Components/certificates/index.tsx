@@ -38,7 +38,7 @@ useEffect(()=>{
   const [showInfoMore, setShowInfoMore] = useState(false);
   const [diableForm, setDisableForm] = useState("usIndividual");
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
-  const isHide: any = useSelector((state: any) => state?.GetSelfCetHiddenReducer?.getSelfCetHiddenData[0]);
+  const isHide: any = useSelector((state: any) => state?.GetSelfCetHiddenReducer?.getSelfCetHiddenData?.[0]);
   const auth = JSON.parse(authDetailsString);
   const userType = auth?.configurations?.userType;
 
@@ -61,6 +61,7 @@ useEffect(()=>{
     let onboardingData;
     let isDisabledFormed;
     dispatch(GetSelfCetHidden(authDetails?.agentId));
+    
     let selectedEntity = false;
     if (onboardingStingifiedData !== null) {
       onboardingData = JSON.parse(onboardingStingifiedData);
