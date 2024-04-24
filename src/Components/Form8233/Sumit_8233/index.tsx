@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
+import { GetForm8233Pdf } from "../../../Redux/Actions/PfdActions";
 
 
 
@@ -31,9 +32,9 @@ const Declaration = (props: any) => {
     setIsCheckboxChecked(event.target.checked);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Electronic Signature Confirmation"
-  },[])
+  }, [])
 
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -78,7 +79,7 @@ const Declaration = (props: any) => {
                           "PrevStepData",
                           JSON.stringify(temp)
                         );
-                          
+
                         resolve(res);
                         history('/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233/ThankYou_8233')
                       },
@@ -378,12 +379,12 @@ const Declaration = (props: any) => {
 
 
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox name="IsSubmit_not" value={values.IsSubmit_not} 
-                          onChange={(e)=>{
-                            handleChange(e);
-                            setTimeout(()=>{setFieldValue("IsSubmit",false)},50)
-                          }}
-                          checked={values.IsSubmit_not} />
+                          <Checkbox name="IsSubmit_not" value={values.IsSubmit_not}
+                            onChange={(e) => {
+                              handleChange(e);
+                              setTimeout(() => { setFieldValue("IsSubmit", false) }, 50)
+                            }}
+                            checked={values.IsSubmit_not} />
                           <Typography style={{ marginTop: "9px" }}>
                             {" "}
                             I do not give consent to receiving a recipent
@@ -407,24 +408,26 @@ const Declaration = (props: any) => {
                     }}
                   >
                     <SaveAndExit Callback={() => {
-                        submitForm().then(() => {
-                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                          const urlValue = window.location.pathname.substring(1);
-                          dispatch(post8233_EForm(
-                            {
-                              ...prevStepData,
-                              stepName: `/${urlValue}`
-                            }
-                            , () => { }))
-                          history(
-                            GlobalValues.basePageRoute
-                          );
-                        })
-                      }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
+                      submitForm().then(() => {
+                        const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                        const urlValue = window.location.pathname.substring(1);
+                        dispatch(post8233_EForm(
+                          {
+                            ...prevStepData,
+                            stepName: `/${urlValue}`
+                          }
+                          , () => { }))
+                        history(
+                          GlobalValues.basePageRoute
+                        );
+                      })
+                    }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
                     <Button
-
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
+                      onClick={() => {
+                        dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
+                      }}
                     >
                       View Form
                     </Button>
@@ -444,7 +447,7 @@ const Declaration = (props: any) => {
                   <Typography
                     align="center"
                     style={{
-                      color: "#505E50",  
+                      color: "#505E50",
                       justifyContent: "center",
                       alignItems: "center",
                       marginTop: "20px",
