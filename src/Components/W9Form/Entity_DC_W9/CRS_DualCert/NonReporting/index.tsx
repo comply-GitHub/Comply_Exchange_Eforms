@@ -1,20 +1,20 @@
 import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { SubmitSchema } from "../../../../schemas/submit";
+import { SubmitSchema } from "../../../../../schemas/submit";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";
 import Divider from "@mui/material/Divider";
-import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
+import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import { Form, Formik } from "formik";
-import { W8_state_ECI,PostDualCert } from "../../../../Redux/Actions";
+import { W8_state_ECI,PostDualCert } from "../../../../../Redux/Actions";
 import { useDispatch } from "react-redux";
-import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
+import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import { ExpandMore } from "@mui/icons-material";
-import BreadCrumbComponent from "../../../reusables/breadCrumb";
+import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 export default function Declaration (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
@@ -35,6 +35,7 @@ export default function Declaration (props: any){
       localStorage.removeItem("clickedPanelHeading");
     }
   };
+
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   
@@ -137,7 +138,7 @@ export default function Declaration (props: any){
 
               <Accordion
                 expanded={expandedState === "panel1"}
-                onChange={handleChangeAccodionState("panel1","Financial Institution Review")}
+                onChange={handleChangeAccodionState("panel1","Non-Reporting Financial Institution under CRS Overview")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -147,7 +148,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Financial Institution Review
+                    Non-Reporting Financial Institution under CRS Overview
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -156,14 +157,14 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                    CRS Classification - Financial Institution Review
+                    No key is specified for this content block
                   </Typography>
                  
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel2"}
-                onChange={handleChangeAccodionState("panel2","Reporting Financial Institution Under CRS")}
+                onChange={handleChangeAccodionState("panel2"," Governmental Entity")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -173,7 +174,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                   Reporting Financial Institution Under CRS
+                  Governmental Entity
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -182,14 +183,14 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                   CRS Classification - Reporting Financial Institution Under CRS
+                  CRS Classification - Governmental Entity
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel3"}
-                onChange={handleChangeAccodionState("panel3"," Non Reporting Financial Institution Under CRS")}
+                onChange={handleChangeAccodionState("panel3","International Organization Under CRS")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -199,7 +200,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                     Non Reporting Financial Institution Under CRS
+                    International Organization Under CRS
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -208,14 +209,14 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                  CRS Classification - Non Reporting Financial Institution Under CRS
+                 CRS Classification - International Organization Under CRS
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel4"}
-                onChange={handleChangeAccodionState("panel4"," Financial Institution resident in a Non-Participating Juridiction Under CRS")}
+                onChange={handleChangeAccodionState("panel4","Central Bank")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -225,7 +226,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Financial Institution resident in a Non-Participating Juridiction Under CRS
+                    Central Bank
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -234,12 +235,194 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                  CRS Classification - Financial Institution resident in a Non-Participating Jurisdiction under CRS
+                 CRS Classification - Central Bank
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
-
+              <Accordion
+                expanded={expandedState === "panel5"}
+                onChange={handleChangeAccodionState("panel5","Broad Participation Retirement Fund")}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMore />}
+                  aria-controls="panel2d-content"
+                  id="panel2d-header"
+                >
+                  <Typography
+                    style={{ fontSize: "18px",color: "black" }}
+                  >
+                   Broad Participation Retirement Fund
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography
+                    align="left"
+                    style={{ fontSize: "14px",color: "black" }}
+                    
+                  >
+                CRS Classification - Broad Participation Retirement Fund
+                  </Typography>
+                  
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expandedState === "panel6"}
+                onChange={handleChangeAccodionState("panel6"," Narrow Participation Retirement Fund")}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMore />}
+                  aria-controls="panel2d-content"
+                  id="panel2d-header"
+                >
+                  <Typography
+                    style={{ fontSize: "18px",color: "black" }}
+                  >
+                    Narrow Participation Retirement Fund
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography
+                    align="left"
+                    style={{ fontSize: "14px",color: "black" }}
+                    
+                  >
+                CRS Classification - Narrow Participation Retirement Fund
+                  </Typography>
+                  
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expandedState === "panel7"}
+                onChange={handleChangeAccodionState("panel7","Pension Fund of a Governmental Entity, International Organization, or Central Bank")}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMore />}
+                  aria-controls="panel2d-content"
+                  id="panel2d-header"
+                >
+                  <Typography
+                    style={{ fontSize: "18px",color: "black" }}
+                  >
+                   Pension Fund of a Governmental Entity, International Organization, or Central Bank
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography
+                    align="left"
+                    style={{ fontSize: "14px",color: "black" }}
+                    
+                  >
+                 CRS Classification - Pension Fund of a Governmental Entity, International Organization, or Central Bank
+                  </Typography>
+                  
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expandedState === "panel8"}
+                onChange={handleChangeAccodionState("panel8","Exempt Collective Investment Vehicle")}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMore />}
+                  aria-controls="panel2d-content"
+                  id="panel2d-header"
+                >
+                  <Typography
+                    style={{ fontSize: "18px",color: "black" }}
+                  >
+                   Exempt Collective Investment Vehicle
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography
+                    align="left"
+                    style={{ fontSize: "14px",color: "black" }}
+                    
+                  >
+                 CRS Classification - Exempt Collective Investment Vehicle
+                  </Typography>
+                  
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expandedState === "panel9"}
+                onChange={handleChangeAccodionState("panel9","Trust whose trustee reports all required information with respect to all CRS Reportable Accounts")}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMore />}
+                  aria-controls="panel2d-content"
+                  id="panel2d-header"
+                >
+                  <Typography
+                    style={{ fontSize: "18px",color: "black" }}
+                  >
+                   Trust whose trustee reports all required information with respect to all CRS Reportable Accounts
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography
+                    align="left"
+                    style={{ fontSize: "14px",color: "black" }}
+                    
+                  >
+                CRS Classification - Trust whose trustee reports all required information with respect to all CRS Reportable Accounts
+                  </Typography>
+                  
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expandedState === "panel10"}
+                onChange={handleChangeAccodionState("panel10"," Qualified Credit Card Issuer")}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMore />}
+                  aria-controls="panel2d-content"
+                  id="panel2d-header"
+                >
+                  <Typography
+                    style={{ fontSize: "18px",color: "black" }}
+                  >
+                   Qualified Credit Card Issuer
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography
+                    align="left"
+                    style={{ fontSize: "14px",color: "black" }}
+                    
+                  >
+               CRS Classification - Qualified Credit Card Issuer
+                  </Typography>
+                  
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expandedState === "panel11"}
+                onChange={handleChangeAccodionState("panel11","Other Entity defined under the domestic law as low risk of being used to evade tax")}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMore />}
+                  aria-controls="panel2d-content"
+                  id="panel2d-header"
+                >
+                  <Typography
+                    style={{ fontSize: "18px",color: "black" }}
+                  >
+                   Other Entity defined under the domestic law as low risk of being used to evade tax
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography
+                    align="left"
+                    style={{ fontSize: "14px",color: "black" }}
+                    
+                  >
+                CRS Classification - Other Entity defined under the domestic law as low risk of being used to evade tax
+                  </Typography>
+                  
+                </AccordionDetails>
+              </Accordion>
+            
               
 
 
@@ -259,6 +442,7 @@ export default function Declaration (props: any){
                 >
                   Close
                 </Button>
+                
                 <Button
                  disabled={!isContinueEnabled} 
                   variant="contained"
@@ -266,20 +450,11 @@ export default function Declaration (props: any){
                     const clickedPanelHeading = localStorage.getItem("clickedPanelHeading");
                      if (clickedPanelHeading) {
                     localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
-                    
+                    history("/FinancialReport_CRS_W9_DC");
                   }
-                    if (expandedState === "panel2") {
-                      history("/FinancialReport_CRS_W9_DC");
-                      // history("/Reporting_CRS_W9_DC");
-                    } else if (expandedState === "panel3") {
-                      history("/Non_Reporting_CRS_W9_DC");
-                    }
-                    else if(expandedState === "panel4"){
-                      history("/Financial_CRS_W9_DC")
-                    }
-                  }}
+                }}
                   style={{
-                    fontSize:"12px",
+fontSize:"12px",
                  
                     marginTop: "10px",
                     marginBottom: "20px",
@@ -290,17 +465,16 @@ export default function Declaration (props: any){
                   Confirm
                 </Button>
                 <Button
-                 onClick={() =>{setIsAccordionVisible(false)
-
+                 onClick={() => {setIsAccordionVisible(false)
                   history(-1)
                  }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
-             fontSize:"12px",
-             marginLeft: "10px",
+                     fontSize:"12px",
                     marginTop: "10px",
                     marginBottom: "20px",
+                    marginLeft: "10px"
                   }}
                 >
                   Back
@@ -324,7 +498,6 @@ export default function Declaration (props: any){
       </div>
       </section>
     </Fragment>
-
   );
 };
 
