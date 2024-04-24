@@ -142,7 +142,9 @@ export default function Declaration (props: any){
                     CRS Classification:
                     </Typography>
                     <Button
-                     onClick={() => setIsAccordionVisible(!isAccordionVisible)}
+                     onClick={() =>{ setIsAccordionVisible(!isAccordionVisible)
+                      setExpandedState(false)
+                     }}
                       style={{ backgroundColor: "#d3ae33",cursor:"pointer",color: "black", fontSize: "12px", fontWeight: "bold" }}
                     >
                     CRS Classification Guide
@@ -278,13 +280,15 @@ export default function Declaration (props: any){
 
               <Typography align="center">
                 <Button
-                 onClick={() => {setIsAccordionVisible(false)
-                  history(-1)
+                 onClick={() => {
+                
+                  history("/CRS_W9_DC")
+                  setExpandedState(false)
                  }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
-             fontSize:"12px",
+                      fontSize:"12px",
                     marginTop: "10px",
                     marginBottom: "20px",
                   }}
@@ -294,6 +298,7 @@ export default function Declaration (props: any){
                 <Button
                  disabled={!isContinueEnabled} 
                  onClick={() => {
+                  setExpandedState(false)
                   const clickedPanelHeading = localStorage.getItem("clickedPanelHeading");
                   if (clickedPanelHeading) {
                  localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
@@ -322,7 +327,22 @@ export default function Declaration (props: any){
                 >
                   Confirm
                 </Button>
-
+                <Button
+                 onClick={() => { 
+                  history("/CRS_W9_DC")
+                  setExpandedState(false)
+                 }}
+                  variant="outlined"
+                  style={{
+                    color: "#1976E2",
+                     fontSize:"12px",
+                    marginTop: "10px",
+                    marginBottom: "20px",
+                    marginLeft: "10px"
+                  }}
+                >
+                  Back
+                </Button>
                 
               </Typography>
 

@@ -427,20 +427,22 @@ export default function Declaration (props: any){
 
 
               <Typography align="center">
-                <Button
-                 onClick={() => {setIsAccordionVisible(false)
-                  history(-1)
-                 }}
+              <Button
+                 onClick={() => {
+                 
+                  history("/CRS_W9_DC")
+                }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
-             fontSize:"12px",
+                    fontSize:"12px",
                     marginTop: "10px",
                     marginBottom: "20px",
                   }}
                 >
                   Close
                 </Button>
+                
                 <Button
                  disabled={!isContinueEnabled} 
                   variant="contained"
@@ -462,7 +464,21 @@ fontSize:"12px",
                 >
                   Confirm
                 </Button>
-
+                <Button
+                 onClick={() => {setIsAccordionVisible(false)
+                  history(-1)
+                 }}
+                  variant="outlined"
+                  style={{
+                    color: "#1976E2",
+                     fontSize:"12px",
+                    marginTop: "10px",
+                    marginBottom: "20px",
+                    marginLeft: "10px"
+                  }}
+                >
+                  Back
+                </Button>
                 
               </Typography>
 

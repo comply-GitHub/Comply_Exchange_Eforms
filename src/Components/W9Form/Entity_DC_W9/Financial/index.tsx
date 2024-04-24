@@ -270,9 +270,8 @@ export default function Declaration (props: any){
              <div style={{marginTop:"20px"}}>
              <Typography align="center">
                 <Button
-                 onClick={() => {setIsAccordionVisible(false)
-
-                  history(-1)
+                 onClick={() => {
+                  history("/CRS_W9_DC")
                  }}
                   variant="outlined"
                   style={{
@@ -306,7 +305,22 @@ export default function Declaration (props: any){
                 >
                   Confirm
                 </Button>
+                <Button
+                 onClick={() => {setIsAccordionVisible(false)
 
+                  history(-1)
+                 }}
+                  variant="outlined"
+                  style={{
+                    color: "#1976E2",
+                    fontSize:"12px",
+                    marginTop: "10px",
+                    marginLeft: "10px",
+                    marginBottom: "20px",
+                  }}
+                >
+                  Back
+                </Button>
                 
               </Typography>
              </div>

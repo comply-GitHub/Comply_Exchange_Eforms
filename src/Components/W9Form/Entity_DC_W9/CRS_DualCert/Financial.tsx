@@ -244,15 +244,15 @@ export default function Declaration (props: any){
 
 
               <Typography align="center">
-                <Button
-                 onClick={() =>{setIsAccordionVisible(false)
-
-                  history(-1)
-                 }}
+              <Button
+                 onClick={() => {
+                 
+                  history("/CRS_W9_DC")
+                }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
-             fontSize:"12px",
+                    fontSize:"12px",
                     marginTop: "10px",
                     marginBottom: "20px",
                   }}
@@ -289,7 +289,22 @@ export default function Declaration (props: any){
                 >
                   Confirm
                 </Button>
+                <Button
+                 onClick={() =>{setIsAccordionVisible(false)
 
+                  history(-1)
+                 }}
+                  variant="outlined"
+                  style={{
+                    color: "#1976E2",
+             fontSize:"12px",
+             marginLeft: "10px",
+                    marginTop: "10px",
+                    marginBottom: "20px",
+                  }}
+                >
+                  Back
+                </Button>
                 
               </Typography>
 
@@ -309,6 +324,7 @@ export default function Declaration (props: any){
       </div>
       </section>
     </Fragment>
+
   );
 };
 
