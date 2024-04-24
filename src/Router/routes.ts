@@ -254,6 +254,14 @@ const CaymanIndividualStartSubmission= React.lazy(() => import("../Components/Ca
 const CaymanIndividualStartESConfirmation= React.lazy(() => import("../Components/Cayman/Individual/Start/ESConfirmation"));
 const CaymanIndividualStartThankyou= React.lazy(() => import("../Components/Cayman/Individual/Start/Thankyou"));
 
+const CaymanEntityStart = React.lazy(() => import("../Components/Cayman/Entity/Start"));
+const CaymanEntityFatcaClassification= React.lazy(() => import("../Components/Cayman/Entity/Start/FATCA/Classification"));
+// const CaymanIndividualStartUSTin= React.lazy(() => import("../Components/Cayman/Individual/Start/USTin"));
+// const CaymanIndividualStartCertification= React.lazy(() => import("../Components/Cayman/Individual/Start/Certification"));
+// const CaymanIndividualStartSubmission= React.lazy(() => import("../Components/Cayman/Individual/Start/Submission"));
+// const CaymanIndividualStartESConfirmation= React.lazy(() => import("../Components/Cayman/Individual/Start/ESConfirmation"));
+// const CaymanIndividualStartThankyou= React.lazy(() => import("../Components/Cayman/Individual/Start/Thankyou"));
+
 
 
 const ROUTES: Array<RouteType> = [
@@ -797,6 +805,21 @@ const ROUTES: Array<RouteType> = [
     Component: CaymanIndividualStartThankyou,
     isPrivate: true,
   },
+  {
+    name: "CaymanEntityStart",
+    path: "/Cayman/Entity/Start",
+    id: 7,
+    Component: CaymanEntityStart,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityFatcaClassification",
+    path: "/Cayman/Entity/Start",
+    id: 7,
+    Component: CaymanEntityFatcaClassification,
+    isPrivate: true,
+  },
+  
   {
     name: "PDFViewer",
     path: "PDFViewer",
