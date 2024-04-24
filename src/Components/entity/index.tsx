@@ -108,7 +108,7 @@ export default function Entity() {
     dob: "",
     nameOfDisregarded: "",
     entityName: "",
-    taxpayerIdTypeID: 0,
+    taxpayerIdTypeID: 1,
     usTin: "",
     foreignTINCountryId: 0,
     foreignTIN: "",
@@ -182,7 +182,7 @@ export default function Entity() {
     dob: "",
     nameOfDisregarded: "",
     entityName: "",
-    taxpayerIdTypeID: 0,
+    taxpayerIdTypeID: 1,
     usTin: "",
     foreignTINCountryId: 0,
     foreignTIN: "",
@@ -755,7 +755,6 @@ export default function Entity() {
               validateOnBlur={true}
               validateOnMount={true}
               onSubmit={(values, { setSubmitting }) => {
-                console.log("e", values?.taxpayerIdTypeID);
                 const payload = {
                   id: authDetails?.accountHolderId,
                   agentId: authDetails?.agentId,
@@ -770,7 +769,7 @@ export default function Entity() {
                   dob: values?.dob,
                   nameOfDisregarded: values?.nameOfDisregarded,
                   entityName: values?.entityName,
-                  taxpayerIdTypeID: values?.taxpayerIdTypeID,
+                  taxpayerIdTypeID: userType== "SC" ? 1 :  values?.taxpayerIdTypeID,
                   usTin: values?.usTin,
                   foreignTINCountryId: values?.foreignTINCountryId,
                   foreignTIN: values?.foreignTIN,

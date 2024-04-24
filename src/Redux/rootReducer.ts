@@ -50,6 +50,7 @@ import W8EXPReducer from "./Reducers/W8EXPReducer";
 import DualCertReducer from "./Reducers/DualCertReducer";
 import W8IMYReducer from "./Reducers/W8IMY";
 import AccountStatementReducer from "./Reducers/AccountStatementReducer";
+import CaymanIndividualReducer from "./Reducers/CaymanIndividualReducer";
 
 let reducers = {
   getCountriesReducer,
@@ -103,7 +104,8 @@ const rootReducer = combineReducers({
   AuthDetails:AuthDetailsReducer,
   Error:ErrorsReducer,
   DualCert:DualCertReducer,
-  AccountStatement:AccountStatementReducer
+  AccountStatement:AccountStatementReducer,
+  CaymanIndividual:CaymanIndividualReducer
   
 });
 

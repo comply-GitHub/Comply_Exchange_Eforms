@@ -29,6 +29,7 @@ import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import CloseIcon from '@mui/icons-material/Close';
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
+import View_Insructions from "../../../viewInstruction";
 
 export default function Tin(props: any) {
 
@@ -104,6 +105,18 @@ export default function Tin(props: any) {
         .GetAgentCountriesImportantForEformData
   );
 
+  const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
+
+  const viewPdf=()=>{
+    history("w9_pdf");
+  }
+
   return (
     <>
       <Formik
@@ -171,10 +184,14 @@ export default function Tin(props: any) {
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
             >
+              <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
+              {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
+
+
               <div className="overlay-div">
             <div className="overlay-div-group">
-                <div className="viewInstructions">View Instructions</div>
-                <div className="viewform">View Form</div>
+            <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
+          <div className="viewform" onClick={viewPdf}>View Form</div>
                 <div className="helpvideo"> 
                 
                 {GethelpData && GethelpData[9].id === 12 ? (
@@ -200,7 +217,7 @@ export default function Tin(props: any) {
         <div className="row w-100">
        <div className="col-4">
           <div style={{ padding: "20px 0px",height:"100%" }}>
-          <BreadCrumbComponent breadCrumbCode={1358} formName={FormTypeId.CaymanIndividual}/>
+          <BreadCrumbComponent breadCrumbCode={1310} formName={FormTypeId.CaymanIndividual}/>
       </div>
       </div>
       <div className="col-8 mt-3">

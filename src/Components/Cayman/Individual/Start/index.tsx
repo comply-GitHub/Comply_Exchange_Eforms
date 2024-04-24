@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
-import { DeleteOutline, Info } from "@mui/icons-material";
+import { DeleteOutline, Info, Subtitles } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./index.scss";
 import checksolid from "../../../../../assets/img/check-solid.png";
@@ -26,7 +26,8 @@ import {
   getAllCountries,
   postW8BENForm,
   GetHelpVideoDetails,
-  postSCIndividualEForm
+  postSCIndividualEForm,
+  upsertTaxLiablitySCIndividual
 } from "../../../../Redux/Actions";
 import { StatusSchema } from "../../../../schemas/w8Ben";
 import Accordion from "@mui/material/Accordion";
@@ -46,46 +47,67 @@ import { StartSchema } from "../../../../schemas/cayman";
 import DatePicker from 'react-date-picker';
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
+import View_Insructions from "../../../viewInstruction";
+import Utils from "../../../../Utils";
 
 interface FormValues {
   accountHolderBasicDetailId: number,
   agentId: number,
   formTypeSelectionId:number;
   formTypeId: number,
-  isHeldUSCitizenship:boolean;
-  countryOfCitizenship: number;
-  isTaxationUSCitizenOrResident: boolean;
-  isHoldDualCitizenshipStatus: boolean;
-  isHoldDualCitizenshipIncludeUSCitizenship: boolean;
-  isRenouncedCitizenship: boolean;
+  isHeldUSCitizenship:string;
+  countryOfCitizenship: string;
+  isTaxationUSCitizenOrResident: string;
+  isHoldDualCitizenshipStatus: string;
+  isHoldDualCitizenshipIncludeUSCitizenship: string;
+  isRenouncedCitizenship: string;
   dateRenouncedUSCitizenship: string,
   countryTaxLiability:string;
-  IsPresentAtleast31Days:boolean;
-  renouncementProof:string;
+  IsPresentAtleast31Days:string;
+  renouncementProofFile:string;
   statusId:number;
-  isPermamnentResidentCardHolder: boolean;
+  isPermamnentResidentCardHolder: string;
   stepName:string;
-  items: { 
-    isTaxLiabilityJurisdictions: boolean,
-    permanentResidentialCountryId: number,
+  taxLbltyOtherJurisdictions: { 
+    id: number,
+    agentId: number,
+    formTypeId: number,
+    formEntryId: number,
+    accountHolderDetailsId:number,
+    doesIndiHavTaxLbltyinOtherJurisdictions: string,
+    countryIdforTaxLiability: string,
     taxReferenceNumber: string,
     isTINFormatNotAvailable: boolean,
   }[];
 }
 
 interface FormErrors {
-  permanentResidentialCountryId?: string; // Optional because it might not exist if there are no errors
+  countryIdforTaxLiability?: string; // Optional because it might not exist if there are no errors
 }
 
 export default function Index() {
   const { authDetails } = useAuth();
   const location = useLocation();
+  const [selectedfile, setSelectedFile] = useState<any>();
   const urlValue = location.pathname.substring(1);
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const agentDefaultDetails = JSON.parse(
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+
+  // useEffect(() => {
+  //   if((localStorage.getItem("PrevStepData") !== null) && (localStorage.getItem("PrevStepData") !== undefined)){
+  //     const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  //     dispatch({
+  //       type: Utils.actionName.InsertCaymanIndividualNonUS,
+  //       payload: PrevStepData,
+  //     });
+  //   }
+    
+   
+  // },[localStorage.getItem("PrevStepData")])
+  const CaymanIndividualData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const convertToStandardFormat = (customDateString: any) => {
     const dateObject = new Date(customDateString);
     const year = dateObject.getUTCFullYear();
@@ -94,43 +116,34 @@ export default function Index() {
     return `${year}-${month}-${day}`;
   };
 
-  //console.log(obValues)
-  // const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
+
+  
+  const itemsData = CaymanIndividualData?.taxLbltyOtherJurisdictions?.map((dataItem: any, index: number) => (
+   {
+    id: 0,
+    agentId: dataItem?.agentId,
+    formTypeId: dataItem.formTypeId,
+    formEntryId: 0,
+    accountHolderDetailsId:dataItem?.accountHolderDetailsId,
+    doesIndiHavTaxLbltyinOtherJurisdictions: dataItem?.doesIndiHavTaxLbltyinOtherJurisdictions ? dataItem?.doesIndiHavTaxLbltyinOtherJurisdictions : "",
+    countryIdforTaxLiability: dataItem.countryIdforTaxLiability,
+    taxReferenceNumber: dataItem.taxReferenceNumber,
+    isTINFormatNotAvailable: dataItem.isTINFormatNotAvailable,
+    
+   }
+    
+
+  ));
 
 
-  // const itemsData = accountStatementData?.map((dataItem: any, index: number) => ({
-  //   id: index, // Assuming you want to use the index as the id
-  //   agentId: authDetails?.agentId,
-  //   formTypeSelectionId: obValues.businessTypeId,
-  //   formTypeId: FormTypeId.CaymanIndividual,
-  //   accountHolderBasicDetailId:authDetails?.accountHolderId,
-  //   isHeldUSCitizenship: false,
-  //   countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "0",
-  //   isTaxationUSCitizenOrResident: false,
-  //   isPermamnentResidentCardHolder: false,
-  //   isHoldDualCitizenshipStatus: false,
-  //   isHoldDualCitizenshipIncludeUSCitizenship: false,
-  //   isRenouncedCitizenship: false,
-  //   dateRenouncedUSCitizenship: "",
-    
-  //   renouncementProof: "",
-  //   items:{
-  //     isTaxLiabilityJurisdictions: false,
-  //     permanentResidentialCountryId: 0,
-  //     taxReferenceNumber: "",
-  //     isTINFormatNotAvailable: false,
-  //   },
-    
-  //   countryTaxLiability: "",
-    
-  //   IsPresentAtleast31Days: false,
-  //   statusId: 1,
-  //   stepName: `/${urlValue}`,
-  // }));
-
-  const itemsData = [{
-    isTaxLiabilityJurisdictions: false,
-    permanentResidentialCountryId: 0,
+  const itemsData2 = [{
+    id: 0,
+    agentId: authDetails?.agentId,
+    formTypeId: FormTypeId.CaymanIndividual,
+    formEntryId: 0,
+    accountHolderDetailsId:authDetails?.accountHolderId,
+    doesIndiHavTaxLbltyinOtherJurisdictions: "",
+    countryIdforTaxLiability: "",
     taxReferenceNumber: "",
     isTINFormatNotAvailable: false,
   }];
@@ -141,22 +154,23 @@ export default function Index() {
     formTypeSelectionId: obValues.businessTypeId,
     formTypeId: FormTypeId.CaymanIndividual,
     accountHolderBasicDetailId:authDetails?.accountHolderId,
-    isHeldUSCitizenship: PrevStepData?.isHeldUSCitizenship ? PrevStepData.isHeldUSCitizenship : false,
-    countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "0",
-    isTaxationUSCitizenOrResident: PrevStepData?.isTaxationUSCitizenOrResident ? PrevStepData.isTaxationUSCitizenOrResident :  false,
-    isPermamnentResidentCardHolder: PrevStepData?.isPermamnentResidentCardHolder ? PrevStepData.isPermamnentResidentCardHolder : false,
-    isHoldDualCitizenshipStatus: PrevStepData?.isHoldDualCitizenshipStatus ? PrevStepData.isHoldDualCitizenshipStatus:false,
-    isHoldDualCitizenshipIncludeUSCitizenship: PrevStepData?.isHoldDualCitizenshipIncludeUSCitizenship ? PrevStepData.isHoldDualCitizenshipIncludeUSCitizenship:false,
-    isRenouncedCitizenship: PrevStepData?.isRenouncedCitizenship ? PrevStepData.isRenouncedCitizenship: false,
-    dateRenouncedUSCitizenship:PrevStepData?.dateRenouncedUSCitizenship ? PrevStepData.dateRenouncedUSCitizenship: "",
-    renouncementProof: PrevStepData?.renouncementProof ? PrevStepData.renouncementProof:"",
-    items: itemsData,
-    countryTaxLiability: PrevStepData?.countryTaxLiability ? PrevStepData.countryTaxLiability:"",
-    IsPresentAtleast31Days: PrevStepData?.IsPresentAtleast31Days ? PrevStepData.IsPresentAtleast31Days:false,
+    isHeldUSCitizenship: CaymanIndividualData?.isHeldUSCitizenship ? CaymanIndividualData.isHeldUSCitizenship : "",
+    countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "",
+    isTaxationUSCitizenOrResident: CaymanIndividualData?.isTaxationUSCitizenOrResident ? CaymanIndividualData.isTaxationUSCitizenOrResident :  "",
+    isPermamnentResidentCardHolder: CaymanIndividualData?.isPermamnentResidentCardHolder ? CaymanIndividualData.isPermamnentResidentCardHolder : "",
+    isHoldDualCitizenshipStatus: CaymanIndividualData?.isHoldDualCitizenshipStatus ? CaymanIndividualData.isHoldDualCitizenshipStatus:"",
+    isHoldDualCitizenshipIncludeUSCitizenship: CaymanIndividualData?.isHoldDualCitizenshipIncludeUSCitizenship ? CaymanIndividualData.isHoldDualCitizenshipIncludeUSCitizenship:"",
+    isRenouncedCitizenship: CaymanIndividualData?.isRenouncedCitizenship ? CaymanIndividualData.isRenouncedCitizenship: "",
+    dateRenouncedUSCitizenship:CaymanIndividualData?.dateRenouncedUSCitizenship ? CaymanIndividualData.dateRenouncedUSCitizenship: "",
+    renouncementProofFile: "",
+    taxLbltyOtherJurisdictions: (itemsData?.length > 0) ?itemsData : itemsData2,
+    countryTaxLiability: CaymanIndividualData?.countryTaxLiability ? CaymanIndividualData.countryTaxLiability:"",
+    IsPresentAtleast31Days: CaymanIndividualData?.IsPresentAtleast31Days ? CaymanIndividualData.IsPresentAtleast31Days:"",
     statusId: 1,
     stepName: `/${urlValue}`,
   };
 
+  
   const dispatch = useDispatch();
   const history = useNavigate();
   const [expanded, setExpanded] = React.useState<string | false>("");
@@ -227,10 +241,10 @@ export default function Index() {
         .GetAgentCountriesImportantForEformData
   );
 
-  const viewPdf = () => {
-    // history("/w8Ben_pdf", { replace: true });
-    //history("/w8Ben_pdf");
-  }
+  // const viewPdf = () => {
+  //   // history("/w8Ben_pdf", { replace: true });
+  //   //history("/w8Ben_pdf");
+  // }
 
   function getNameById(id: any) {
     if (!Array.isArray(allCountriesData)) {
@@ -242,15 +256,45 @@ export default function Index() {
     return foundObject ? foundObject.name : null;
   }
 
+  const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
+
+  const viewPdf=()=>{
+    history("w9_pdf");
+  }
+
+
+  const handleFileChange = (e: any) => {
+    if(localStorage.getItem("submittinSCInvidual") ===  "true"){
+      return;
+    }
+    const files = e.target.files;
+    //initialValues.renouncementProofFile = files[0];
+    //Formik.setFieldValue('renouncementProofFile', files[0]);
+    setSelectedFile(files[0]);
+  }
+  useEffect(() => {
+    localStorage.setItem("submittinSCInvidual","false")
+  },[])
+
   return (
     <section
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
+      <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
+      {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
+
 
       <div className="overlay-div">
         <div className="overlay-div-group">
-          <div className="viewInstructions">View Instructions</div>
+        <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
+          {/* <div className="viewform" onClick={viewPdf}>View Form</div> */}
           <div className="viewform" onClick={() => {
               dispatch(GetBenPdf(authDetails?.accountHolderId))
             }}>View Form</div>
@@ -279,7 +323,7 @@ export default function Index() {
       <div className="row w-100">
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>
-            <BreadCrumbComponent breadCrumbCode={1207} formName={FormTypeId.CaymanIndividual} />
+            <BreadCrumbComponent breadCrumbCode={1301} formName={FormTypeId.CaymanIndividual} />
           </div>
         </div>
         <div className="col-8 mt-3">
@@ -294,32 +338,36 @@ export default function Index() {
                 enableReinitialize
                 //validationSchema={StartSchema}
                 onSubmit={(values, { setSubmitting }) => {
+                  setSubmitting(true);
+                  localStorage.setItem("submittinSCInvidual","true");
+                  let obj ={};
+                  values?.taxLbltyOtherJurisdictions?.forEach((me:any,i)=>{
+                    Object.keys(me).forEach((key) => {
+                      const value = me[key];
+                      const objectKey = `taxLbltyOtherJurisdictions[${i}].${key}`
+                      obj ={...obj , [objectKey]:value}
+                    });
+                    
+                  })
+
+
                   const temp = {
-                    ...values,
                     ...PrevStepData,
-                    stepName: `/${urlValue}`
+                    ...values,
+                    renouncementProofFile:selectedfile
+                    
                   };
+                 
+                  
 
-                  // if (clickCount === 0) {
-                  //   setClickCount(clickCount + 1);
-                  // } else {
+                    dispatch(upsertTaxLiablitySCIndividual(obj,() => {
 
-                    const new_obj = { ...PrevStepData, citizenshipCountry: getNameById(PrevStepData.citizenshipCountry) }
-                    const result = { ...new_obj, ...values };
-                    // console.log(result,"FINAL RESULT")
+                    }))
                     dispatch(
-                      postSCIndividualEForm(values, () => {
-                        // history("/W-8BEN/Declaration/US_Tin");
-                        if (values?.IsPresentAtleast31Days=== true) {
-                          history('/Cayman/Individual/start/SustantialPresence')
-                        } else {
-                          history(
-                            "/Cayman/Individual/start/US_Tin"
-                          );
-                        }
+                      postSCIndividualEForm(temp, () => {
                         localStorage.setItem(
                           "PrevStepData",
-                          JSON.stringify(result)
+                          JSON.stringify(temp)
                         );
                       })
                     );
@@ -341,7 +389,7 @@ export default function Index() {
                   <Form onSubmit={handleSubmit}>
                    
                     
-                    {values.isHeldUSCitizenship === true &&
+                    {values.isHeldUSCitizenship === "Yes" &&
                       obValues?.isUSIndividual == false ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -395,7 +443,7 @@ export default function Index() {
                       ""
                     )}
 
-                    {values.isHoldDualCitizenshipStatus === true
+                    {values.isHoldDualCitizenshipStatus === "Yes"
                      ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -443,8 +491,8 @@ export default function Index() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
-                      values.isRenouncedCitizenship === true ? (
+                    {values.isHeldUSCitizenship === "Yes" &&
+                      values.isRenouncedCitizenship === "Yes" ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -479,8 +527,8 @@ export default function Index() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
-                      values.isTaxationUSCitizenOrResident === true ? (
+                    {values.isHeldUSCitizenship === "Yes" &&
+                      values.isTaxationUSCitizenOrResident === "Yes" ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -530,8 +578,8 @@ export default function Index() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
-                      values.isPermamnentResidentCardHolder === true? (
+                    {values.isHeldUSCitizenship === "Yes" &&
+                      values.isPermamnentResidentCardHolder === "Yes" ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -583,8 +631,8 @@ export default function Index() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
-                      values.isHoldDualCitizenshipIncludeUSCitizenship === true ? (
+                    {values.isHeldUSCitizenship === "Yes" &&
+                      values.isHoldDualCitizenshipIncludeUSCitizenship === "Yes" ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -635,7 +683,7 @@ export default function Index() {
                       ""
                     )}
 
-                    {values.IsPresentAtleast31Days === true ?
+                    {values.IsPresentAtleast31Days === "yes" ?
                       (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -670,7 +718,7 @@ export default function Index() {
                     ) : (
                       ""
                     )}
-                    {values.countryOfCitizenship == 258 ? (
+                    {values.countryOfCitizenship == '258' ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -856,19 +904,19 @@ export default function Index() {
                           name="isHeldUSCitizenship"
                           value={values.isHeldUSCitizenship}
                           onChange={(event) => {
-                            setFieldValue("isHeldUSCitizenship", event.currentTarget.value === "true" ? true : false)
+                            setFieldValue("isHeldUSCitizenship", event.currentTarget.value)
                           }}
                           id="isHeldUSCitizenship"
                         >
                           <FormControlLabel
                             control={<Radio />}
-                            value="true"
+                            value="Yes"
                             name="isHeldUSCitizenship"
                             label="Yes"
                           />
                           <FormControlLabel
                             control={<Radio />}
-                            value="false"
+                            value="No"
                             name="isHeldUSCitizenship"
                             label="No"
                           />
@@ -900,19 +948,19 @@ export default function Index() {
                               name="isTaxationUSCitizenOrResident"
                               value={values.isTaxationUSCitizenOrResident}
                               onChange={(event) => {
-                                setFieldValue("isTaxationUSCitizenOrResident", event.currentTarget.value === "true" ? true : false)
+                                setFieldValue("isTaxationUSCitizenOrResident", event.currentTarget.value)
                               }}
                               id="isTaxationUSCitizenOrResident"
                             >
                               <FormControlLabel
                                 control={<Radio />}
-                                value="true"
+                                value="Yes"
                                 name="isTaxationUSCitizenOrResident"
                                 label="Yes"
                               />
                               <FormControlLabel
                                 control={<Radio />}
-                                value="false"
+                                value="No"
                                 name="isTaxationUSCitizenOrResident"
                                 label="No"
                               />
@@ -943,19 +991,19 @@ export default function Index() {
                                 name="isPermamnentResidentCardHolder"
                                 value={values.isPermamnentResidentCardHolder}
                                 onChange={(event) => {
-                                  setFieldValue("isPermamnentResidentCardHolder", event.currentTarget.value === "true" ? true : false)
+                                  setFieldValue("isPermamnentResidentCardHolder", event.currentTarget.value)
                                 }}
                                 id="isPermamnentResidentCardHolder"
                               >
                                 <FormControlLabel
                                   control={<Radio />}
-                                  value="true"
+                                  value="Yes"
                                   name="isPermamnentResidentCardHolder"
                                   label="Yes"
                                 />
                                 <FormControlLabel
                                   control={<Radio />}
-                                  value="false"
+                                  value="No"
                                   name="isPermamnentResidentCardHolder"
                                   label="No"
                                 />
@@ -985,19 +1033,19 @@ export default function Index() {
                                 name="isHoldDualCitizenshipStatus"
                                 value={values.isHoldDualCitizenshipStatus}
                                 onChange={(event) => {
-                                  setFieldValue("isHoldDualCitizenshipStatus", event.currentTarget.value === "true" ? true : false)
+                                  setFieldValue("isHoldDualCitizenshipStatus", event.currentTarget.value)
                                 }}
                                 id="isHoldDualCitizenshipStatus"
                               >
                                 <FormControlLabel
                                   control={<Radio />}
-                                  value="true"
+                                  value="Yes"
                                   name="isHoldDualCitizenshipStatus"
                                   label="Yes"
                                 />
                                 <FormControlLabel
                                   control={<Radio />}
-                                  value="false"
+                                  value="No"
                                   name="isHoldDualCitizenshipStatus"
                                   label="No"
                                 />
@@ -1008,7 +1056,7 @@ export default function Index() {
                             </p>
                           </FormControl>
                           <Divider className="dividr" />
-                          {values.isHoldDualCitizenshipStatus == true ? (
+                          {values.isHoldDualCitizenshipStatus == "Yes" ? (
                             <>
                               <Typography
                                 style={{
@@ -1031,19 +1079,19 @@ export default function Index() {
                                   name="isHoldDualCitizenshipIncludeUSCitizenship"
                                   value={values.isHoldDualCitizenshipIncludeUSCitizenship}
                                   onChange={(event) => {
-                                    setFieldValue("isHoldDualCitizenshipIncludeUSCitizenship", event.currentTarget.value === "true" ? true : false)
+                                    setFieldValue("isHoldDualCitizenshipIncludeUSCitizenship", event.currentTarget.value)
                                   }}
                                   id="isHoldDualCitizenshipIncludeUSCitizenship"
                                 >
                                   <FormControlLabel
                                     control={<Radio />}
-                                    value="true"
+                                    value="Yes"
                                     name="isHoldDualCitizenshipIncludeUSCitizenship"
                                     label="Yes"
                                   />
                                   <FormControlLabel
                                     control={<Radio />}
-                                    value="false"
+                                    value="No"
                                     name="isHoldDualCitizenshipIncludeUSCitizenship"
                                     label="No"
                                   />
@@ -1061,7 +1109,7 @@ export default function Index() {
                             ""
                           )}
 
-                          {values.isHeldUSCitizenship ===true ? (
+                          {values.isHeldUSCitizenship === "Yes" ? (
                             <>
                               <Typography
                                 style={{
@@ -1084,19 +1132,19 @@ export default function Index() {
                                     name="isRenouncedCitizenship"
                                     value={values.isRenouncedCitizenship}
                                     onChange={(event) => {
-                                      setFieldValue("isRenouncedCitizenship", event.currentTarget.value === "true" ? true : false)
+                                      setFieldValue("isRenouncedCitizenship", event.currentTarget.value)
                                     }}
                                     id="isRenouncedCitizenship"
                                   >
                                     <FormControlLabel
                                       control={<Radio />}
-                                      value="true"
+                                      value="Yes"
                                       name="isRenouncedCitizenship"
                                       label="Yes"
                                     />
                                     <FormControlLabel
                                       control={<Radio />}
-                                      value="false"
+                                      value="No"
                                       name="isRenouncedCitizenship"
                                       label="No"
                                     />
@@ -1112,7 +1160,7 @@ export default function Index() {
                             ""
                           )}
 
-                          {values.isRenouncedCitizenship === true ? (
+                          {values.isRenouncedCitizenship === "Yes" ? (
                             <>
                               <Typography
                                 style={{
@@ -1208,21 +1256,26 @@ export default function Index() {
                                   style={{ fontSize: "12px" }}
                                   type="file"
                                   placeholder="proof of formal renouncement"
-                                  onChange={handleChange}
+                                  onChange={(e) => handleFileChange(e)}
                                   onBlur={handleBlur}
-                                  name="renouncementProof"
-                                  value={values.renouncementProof}
+                                  onSubmit={()=>{
+
+                                  }}
+                                  name="renouncementProofFile"
+                                  
                                 />
+                                {/* {selectedfile?.name} */}
                               </div>
                               <Divider className="dividr" />
                             </>
                           ) : (
                             ""
                           )}
+                          {/* <>{console.log("values",values)}</> */}
                           <FieldArray name="items">
                           {({ push, remove }) => (
                             <div>
-                              {values.items.map((item:any, index:any) => (
+                              {values?.taxLbltyOtherJurisdictions?.map((item:any, index:any) => (
                                 <div key={index}>
                                   
                                   <Typography
@@ -1247,48 +1300,73 @@ export default function Index() {
                                           row
                                           defaultValue=""
                                           aria-labelledby="demo-row-radio-buttons-group-label"
-                                          name={`items.${index}.isTaxLiabilityJurisdictions`}
-                                          value={values.items[index].isTaxLiabilityJurisdictions}
+                                          name={`taxLbltyOtherJurisdictions.${index}.doesIndiHavTaxLbltyinOtherJurisdictions`}
+                                          value={values.taxLbltyOtherJurisdictions[index].doesIndiHavTaxLbltyinOtherJurisdictions}
                                           onChange={(event) => {
-                                            handleChange({
-                                                      
-                                              target: {
-                                                  name: "items",
-                                                  value: [...values.items, { 
-                                                    isTaxLiabilityJurisdictions: false,
-                                                    permanentResidentialCountryId: 0,
-                                                    taxReferenceNumber: "",
-                                                    isTINFormatNotAvailable: false,
-                                                   }],
-                                              },
-                                              })
-                                            setFieldValue(`items.${index}.isTaxLiabilityJurisdictions`, event.currentTarget.value === "true" ? true : false)
+                                            const currentValue = event.currentTarget.value;
+                                            
+                                            if (currentValue === "Yes") {
+                                              // Push a new item into the array only if the selected value is "Yes"
+                                              handleChange({
+                                                target: {
+                                                  name: "taxLbltyOtherJurisdictions",
+                                                  value: [
+                                                    ...values.taxLbltyOtherJurisdictions,
+                                                    { 
+                                                      id: 0,
+                                                      agentId: authDetails?.agentId,
+                                                      formTypeId: FormTypeId.CaymanIndividual,
+                                                      formEntryId: 0,
+                                                      accountHolderDetailsId:authDetails?.accountHolderId,
+                                                      doesIndiHavTaxLbltyinOtherJurisdictions: "",
+                                                      countryIdforTaxLiability: "",
+                                                      taxReferenceNumber: "",
+                                                      isTINFormatNotAvailable: false,
+                                                    }
+                                                  ],
+                                                },
+                                              });
+                                            }
+                                            setFieldValue(`taxLbltyOtherJurisdictions.${index}.doesIndiHavTaxLbltyinOtherJurisdictions`, currentValue);
                                           }}
-                                          id="isTaxLiabilityJurisdictions"
+                                          
+                                          id="doesIndiHavTaxLbltyinOtherJurisdictions"
                                         >
                                           <FormControlLabel
                                             control={<Radio />}
-                                            value="true"
-                                            name={`items.${index}.isTaxLiabilityJurisdictions`}
+                                            value="Yes"
+                                            name={`taxLbltyOtherJurisdictions.${index}.doesIndiHavTaxLbltyinOtherJurisdictions`}
                                             label="Yes"
                                           />
                                           <FormControlLabel
                                             control={<Radio />}
-                                            value="false"
-                                            name={`items.${index}.isTaxLiabilityJurisdictions`}
+                                            value="No"
+                                            name={`taxLbltyOtherJurisdictions.${index}.doesIndiHavTaxLbltyinOtherJurisdictions`}
                                             label="No"
                                           />
                                         </RadioGroup>
                                       
                                       {/* <p className="error">
-                                        {errors.isTaxLiabilityJurisdictions}
+                                        {errors.doesIndiHavTaxLbltyinOtherJurisdictions}
                                       </p> */}
                                     </FormControl>
                                     <Divider className="dividr" />
-                                    {values.items[index].isTaxLiabilityJurisdictions == true ? (
+                                    {values.taxLbltyOtherJurisdictions[index].doesIndiHavTaxLbltyinOtherJurisdictions == 'Yes' ? (
                                         <>
 
-                                        <DeleteOutline type="button" onClick={() => remove(index)}/>
+                                        <DeleteOutline type="button" onClick={(e) =>  {
+                                          //remove(index);
+                                          setFieldValue(
+                                            "taxLbltyOtherJurisdictions",
+                                            values.taxLbltyOtherJurisdictions.filter((_, indexes) => indexes !== index)
+                                          );
+                                          
+                                        }
+                                          
+                                          
+                                          
+                                          
+                                          }/>
                                           <Typography>
                                             Please select the country where the individual
                                             has a tax liability:
@@ -1302,11 +1380,11 @@ export default function Index() {
                                                 fontStyle: "italic",
                                                 height: "36px",
                                               }}
-                                              name={`items.${index}.permanentResidentialCountryId`}
+                                              name={`taxLbltyOtherJurisdictions.${index}.countryIdforTaxLiability`}
                                               id="Income"
                                               defaultValue={1}
                                               onChange={handleChange}
-                                              value={values.items[index].permanentResidentialCountryId}
+                                              value={values.taxLbltyOtherJurisdictions[index].countryIdforTaxLiability}
                                             >
                                               <option value={0}>---select---</option>
                                               <option value={45}>-canada-</option>
@@ -1322,23 +1400,23 @@ export default function Index() {
                                               )}
                                             </select>
                                             
-                                            {/* {(typeof errors === 'object' && 'permanentResidentialCountryId' in errors.items) && (
+                                            {/* {(typeof errors === 'object' && 'countryIdforTaxLiability' in errors.taxLbltyOtherJurisdictions) && (
                                                       <p className="error">Please select Country</p>
                                                     )} */}
-                                            {/* {errors?.permanentResidentialCountryId && typeof errors?.permanentResidentialCountryId === 'string' && (
-                                              <p className="error">{errors?.permanentResidentialCountryId}</p>
+                                            {/* {errors?.countryIdforTaxLiability && typeof errors?.countryIdforTaxLiability === 'string' && (
+                                              <p className="error">{errors?.countryIdforTaxLiability}</p>
                                             )} */}
                                           </FormControl>
-                                          {/* {Array.isArray(errors?.items) && (
+                                          {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && (
                                           <div>
-                                           {errors.items
+                                           {errors.taxLbltyOtherJurisdictions
                                               .filter(error => error !== null) // Filter out null values
                                               .map((error, index) => (
                                                 <div key={index}>
                                                   {error && (
                                                     <>
-                                                      {(typeof error !== 'string' &&  error?.permanentResidentialCountryId) && (
-                                                        <p className="error">{error.permanentResidentialCountryId}</p>
+                                                      {(typeof error !== 'string' &&  error?.countryIdforTaxLiability) && (
+                                                        <p className="error">{error.countryIdforTaxLiability}</p>
                                                       )}
                                                       
                                                     </>
@@ -1348,14 +1426,14 @@ export default function Index() {
                                           </div>
                                         )} */}
 
-                                          {/* {Array.isArray(errors?.items) && errors.items.length > 0 && (
+                                          {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && errors.taxLbltyOtherJurisdictions.length > 0 && (
                                             <div>
-                                              {errors.items.map((error, index) => (
+                                              {errors.taxLbltyOtherJurisdictions.map((error, index) => (
                                                 <div key={index}>
                                                   {error && (
                                                     <>
-                                                      {(typeof error !== 'string' &&  error?.permanentResidentialCountryId) && (
-                                                        <p className="error">{error.permanentResidentialCountryId}</p>
+                                                      {(typeof error !== 'string' &&  error?.countryIdforTaxLiability) && (
+                                                        <p className="error">{error.countryIdforTaxLiability}</p>
                                                       )}
                                                       
                                                     </>
@@ -1366,18 +1444,18 @@ export default function Index() {
                                           )} */}
 
 
-                                          {/* {Array.isArray(errors?.items) && errors.items.length > 0 && (
+                                          {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && errors.taxLbltyOtherJurisdictions.length > 0 && (
                                               <div>
-                                                  {errors.items.map((error, index) => (
+                                                  {errors.taxLbltyOtherJurisdictions.map((error, index) => (
                                                         
                                                         (error !== undefined ? <>
                                                           <p className="error" key={index}>
-                                                          {(typeof error !== 'string' && error?.permanentResidentialCountryId) ? error.permanentResidentialCountryId : ""}
+                                                          {(typeof error !== 'string' && error?.countryIdforTaxLiability) ? error.countryIdforTaxLiability : ""}
                                                           
                                                           </p>
                                                             </> : "")
                                                       //   <p className="error" key={index}>
-                                                      //   {(typeof error !== 'string' && error?.permanentResidentialCountryId) ? error.permanentResidentialCountryId : ""}
+                                                      //   {(typeof error !== 'string' && error?.countryIdforTaxLiability) ? error.countryIdforTaxLiability : ""}
                                                       
                                                       // </p>
 
@@ -1391,7 +1469,7 @@ export default function Index() {
 
                                           <Typography>
                                             Please enter the tax reference number:
-                                            {values.items[index].permanentResidentialCountryId == 257 ? (
+                                            {values.taxLbltyOtherJurisdictions[index].countryIdforTaxLiability === '257' ? (
                                               <span>
                                                 <Tooltip
                                                   style={{
@@ -1478,27 +1556,28 @@ export default function Index() {
                                           ) : (
                                             ""
                                           )}
+                                          
                                           <div className="d-flex">
                                             <FormControl className="form">
-                                              {values.items[index].isTINFormatNotAvailable == false ? (
+                                              {values.taxLbltyOtherJurisdictions[index].isTINFormatNotAvailable === false ? (
                                                 <Input
-                                                  name={`items.${index}.taxReferenceNumber`}
+                                                  name={`taxLbltyOtherJurisdictions.${index}.taxReferenceNumber`}
                                                   onChange={handleChange}
-                                                  value={values.items[index].taxReferenceNumber}
+                                                  value={values.taxLbltyOtherJurisdictions[index].taxReferenceNumber}
                                                   disabled
                                                   className="input"
                                                 />
                                               ) : (
                                                 <Input
-                                                  name={`items.${index}.taxReferenceNumber`}
+                                                  name={`taxLbltyOtherJurisdictions.${index}.taxReferenceNumber`}
                                                   onChange={handleChange}
-                                                  value={values.items[index].taxReferenceNumber}
+                                                  value={values.taxLbltyOtherJurisdictions[index].taxReferenceNumber}
                                                   className="number"
                                                 />
                                               )}
-                                              {/* {Array.isArray(errors?.items) && errors.items.length > 0 && (
+                                              {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && errors.taxLbltyOtherJurisdictions.length > 0 && (
                                                 <div>
-                                                  {errors.items.map((error, index) => (
+                                                  {errors.taxLbltyOtherJurisdictions.map((error, index) => (
                                                     <div key={index}>
                                                       {error && (
                                                         <>
@@ -1512,9 +1591,9 @@ export default function Index() {
                                                   ))}
                                                 </div>
                                               )} */}
-                                              {/* {Array.isArray(errors?.items) && errors.items.length > 0 && (
+                                              {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && errors.taxLbltyOtherJurisdictions.length > 0 && (
                                               <div>
-                                                  {errors.items.map((error, index) => (
+                                                  {errors.taxLbltyOtherJurisdictions.map((error, index) => (
 
                                                       (error ? <>
                                                       <p className="error" key={index}>
@@ -1536,12 +1615,17 @@ export default function Index() {
                                             {/* {values.permanentResidentialCountryId == 257?( */}
                                             <div className="d-flex">
                                               <Checkbox
-                                                name={`items.${index}.isTINFormatNotAvailable`}
+                                                name={`taxLbltyOtherJurisdictions.${index}.isTINFormatNotAvailable`}
                                                 onChange={(e) => {
-                                                  handleChange(e);
-                                                  setFieldValue("taxReferenceNumber", "");
+                                                  const isChecked = e.target.checked;
+                                                  const newValue = isChecked ? true : false; // Convert checked state to boolean
+                                                  setFieldValue(`taxLbltyOtherJurisdictions.${index}.isTINFormatNotAvailable`, newValue);
+                                                  // Optionally, reset taxReferenceNumber when the checkbox is checked
+                                                  if (isChecked) {
+                                                    setFieldValue("taxReferenceNumber", "");
+                                                  }
                                                 }}
-                                                value={values.items[index].isTINFormatNotAvailable}
+                                                checked={values.taxLbltyOtherJurisdictions[index].isTINFormatNotAvailable || false} // Ensure value is boolean
                                                 required
                                               />
                                               <div className="mt-2">
@@ -1591,19 +1675,19 @@ export default function Index() {
                                 name="IsPresentAtleast31Days"
                                 value={values.IsPresentAtleast31Days}
                                 onChange={(event) => {
-                                  setFieldValue("IsPresentAtleast31Days", event.currentTarget.value === "true" ? true : false)
+                                  setFieldValue("IsPresentAtleast31Days", event.currentTarget.value)
                                 }}
                                 id="IsPresentAtleast31Days"
                               >
                                 <FormControlLabel
                                   control={<Radio />}
-                                  value="true"
+                                  value="Yes"
                                   name="IsPresentAtleast31Days"
                                   label="Yes"
                                 />
                                 <FormControlLabel
                                   control={<Radio />}
-                                  value="false"
+                                  value="No"
                                   name="IsPresentAtleast31Days"
                                   label="No"
                                 />
@@ -1627,20 +1711,43 @@ export default function Index() {
                         SAVE & EXIT
                       </Button> */}
                       <SaveAndExit Callback={() => {
-                        submitForm().then((data: any) => {
+                            submitForm().then((data) => {
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              dispatch(postSCIndividualEForm(
+                                {
+                                    ...values,
+                                  ...prevStepData,
+                                  stepName: `/${urlValue}`
+                                }
+                                , () => { }))
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          }} formTypeId={FormTypeId.CaymanIndividual}  />
+                      {/* <SaveAndExit Callback={() => {
+
+                        submitForm().then(() => {
                           const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                           const urlValue = window.location.pathname.substring(1);
                           dispatch(postSCIndividualEForm(
                             {
+                              ...values,
                               ...prevStepData,
                               stepName: `/${urlValue}`
                             }
                             , () => { }))
-                          history(GlobalValues.basePageRoute)
+                          history(
+                            GlobalValues.basePageRoute
+                          );
                         }).catch((err: any) => {
                           console.log(err);
                         })
-                      }} formTypeId={FormTypeId.CaymanIndividual} />
+
+
+                        
+                      }} formTypeId={FormTypeId.CaymanIndividual} /> */}
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
@@ -1651,7 +1758,17 @@ export default function Index() {
                         View form
                       </Button>
                       <Button
-                        type="submit"
+                      onClick={() => {
+                      submitForm().then(() => {
+                        if (values?.IsPresentAtleast31Days=== "Yes") {
+                          history('/Cayman/Individual/Start/SustantialPresence')
+                        } else {
+                          history(
+                            "/Cayman/Individual/Start/US_Tin"
+                          );
+                        }
+                      })
+                      }}
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                       >
