@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
-import { DeleteOutline, Info } from "@mui/icons-material";
+import { DeleteOutline, Info, Subtitles } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./index.scss";
 import checksolid from "../../../../../assets/img/check-solid.png";
@@ -26,7 +26,8 @@ import {
   getAllCountries,
   postW8BENForm,
   GetHelpVideoDetails,
-  postSCIndividualEForm
+  postSCIndividualEForm,
+  upsertTaxLiablitySCIndividual
 } from "../../../../Redux/Actions";
 import { StatusSchema } from "../../../../schemas/w8Ben";
 import Accordion from "@mui/material/Accordion";
@@ -47,6 +48,7 @@ import DatePicker from 'react-date-picker';
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import View_Insructions from "../../../viewInstruction";
+import Utils from "../../../../Utils";
 
 interface FormValues {
   accountHolderBasicDetailId: number,
@@ -62,7 +64,7 @@ interface FormValues {
   dateRenouncedUSCitizenship: string,
   countryTaxLiability:string;
   IsPresentAtleast31Days:string;
-  renouncementProof:string;
+  renouncementProofFile:string;
   statusId:number;
   isPermamnentResidentCardHolder: string;
   stepName:string;
@@ -86,12 +88,26 @@ interface FormErrors {
 export default function Index() {
   const { authDetails } = useAuth();
   const location = useLocation();
+  const [selectedfile, setSelectedFile] = useState<any>();
   const urlValue = location.pathname.substring(1);
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const agentDefaultDetails = JSON.parse(
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+
+  // useEffect(() => {
+  //   if((localStorage.getItem("PrevStepData") !== null) && (localStorage.getItem("PrevStepData") !== undefined)){
+  //     const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  //     dispatch({
+  //       type: Utils.actionName.InsertCaymanIndividualNonUS,
+  //       payload: PrevStepData,
+  //     });
+  //   }
+    
+   
+  // },[localStorage.getItem("PrevStepData")])
+  const CaymanIndividualData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const convertToStandardFormat = (customDateString: any) => {
     const dateObject = new Date(customDateString);
     const year = dateObject.getUTCFullYear();
@@ -100,41 +116,27 @@ export default function Index() {
     return `${year}-${month}-${day}`;
   };
 
-  //console.log(obValues)
-  // const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
+
+  
+  const itemsData = CaymanIndividualData?.taxLbltyOtherJurisdictions?.map((dataItem: any, index: number) => (
+   {
+    id: 0,
+    agentId: dataItem?.agentId,
+    formTypeId: dataItem.formTypeId,
+    formEntryId: 0,
+    accountHolderDetailsId:dataItem?.accountHolderDetailsId,
+    doesIndiHavTaxLbltyinOtherJurisdictions: dataItem?.doesIndiHavTaxLbltyinOtherJurisdictions ? dataItem?.doesIndiHavTaxLbltyinOtherJurisdictions : "",
+    countryIdforTaxLiability: dataItem.countryIdforTaxLiability,
+    taxReferenceNumber: dataItem.taxReferenceNumber,
+    isTINFormatNotAvailable: dataItem.isTINFormatNotAvailable,
+    
+   }
+    
+
+  ));
 
 
-  // const itemsData = accountStatementData?.map((dataItem: any, index: number) => ({
-  //   id: index, // Assuming you want to use the index as the id
-  //   agentId: authDetails?.agentId,
-  //   formTypeSelectionId: obValues.businessTypeId,
-  //   formTypeId: FormTypeId.CaymanIndividual,
-  //   accountHolderBasicDetailId:authDetails?.accountHolderId,
-  //   isHeldUSCitizenship: false,
-  //   countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "0",
-  //   isTaxationUSCitizenOrResident: false,
-  //   isPermamnentResidentCardHolder: false,
-  //   isHoldDualCitizenshipStatus: false,
-  //   isHoldDualCitizenshipIncludeUSCitizenship: false,
-  //   isRenouncedCitizenship: false,
-  //   dateRenouncedUSCitizenship: "",
-    
-  //   renouncementProof: "",
-  //   items:{
-  //     doesIndiHavTaxLbltyinOtherJurisdictions: false,
-  //     countryIdforTaxLiability: 0,
-  //     taxReferenceNumber: "",
-  //     isTINFormatNotAvailable: false,
-  //   },
-    
-  //   countryTaxLiability: "",
-    
-  //   IsPresentAtleast31Days: false,
-  //   statusId: 1,
-  //   stepName: `/${urlValue}`,
-  // }));
-
-  const itemsData = [{
+  const itemsData2 = [{
     id: 0,
     agentId: authDetails?.agentId,
     formTypeId: FormTypeId.CaymanIndividual,
@@ -152,22 +154,23 @@ export default function Index() {
     formTypeSelectionId: obValues.businessTypeId,
     formTypeId: FormTypeId.CaymanIndividual,
     accountHolderBasicDetailId:authDetails?.accountHolderId,
-    isHeldUSCitizenship: PrevStepData?.isHeldUSCitizenship ? PrevStepData.isHeldUSCitizenship : "",
+    isHeldUSCitizenship: CaymanIndividualData?.isHeldUSCitizenship ? CaymanIndividualData.isHeldUSCitizenship : "",
     countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "",
-    isTaxationUSCitizenOrResident: PrevStepData?.isTaxationUSCitizenOrResident ? PrevStepData.isTaxationUSCitizenOrResident :  "",
-    isPermamnentResidentCardHolder: PrevStepData?.isPermamnentResidentCardHolder ? PrevStepData.isPermamnentResidentCardHolder : "",
-    isHoldDualCitizenshipStatus: PrevStepData?.isHoldDualCitizenshipStatus ? PrevStepData.isHoldDualCitizenshipStatus:"",
-    isHoldDualCitizenshipIncludeUSCitizenship: PrevStepData?.isHoldDualCitizenshipIncludeUSCitizenship ? PrevStepData.isHoldDualCitizenshipIncludeUSCitizenship:"",
-    isRenouncedCitizenship: PrevStepData?.isRenouncedCitizenship ? PrevStepData.isRenouncedCitizenship: "",
-    dateRenouncedUSCitizenship:PrevStepData?.dateRenouncedUSCitizenship ? PrevStepData.dateRenouncedUSCitizenship: "",
-    renouncementProof: PrevStepData?.renouncementProof ? PrevStepData.renouncementProof:"",
-    taxLbltyOtherJurisdictions: itemsData,
-    countryTaxLiability: PrevStepData?.countryTaxLiability ? PrevStepData.countryTaxLiability:"",
-    IsPresentAtleast31Days: PrevStepData?.IsPresentAtleast31Days ? PrevStepData.IsPresentAtleast31Days:"",
+    isTaxationUSCitizenOrResident: CaymanIndividualData?.isTaxationUSCitizenOrResident ? CaymanIndividualData.isTaxationUSCitizenOrResident :  "",
+    isPermamnentResidentCardHolder: CaymanIndividualData?.isPermamnentResidentCardHolder ? CaymanIndividualData.isPermamnentResidentCardHolder : "",
+    isHoldDualCitizenshipStatus: CaymanIndividualData?.isHoldDualCitizenshipStatus ? CaymanIndividualData.isHoldDualCitizenshipStatus:"",
+    isHoldDualCitizenshipIncludeUSCitizenship: CaymanIndividualData?.isHoldDualCitizenshipIncludeUSCitizenship ? CaymanIndividualData.isHoldDualCitizenshipIncludeUSCitizenship:"",
+    isRenouncedCitizenship: CaymanIndividualData?.isRenouncedCitizenship ? CaymanIndividualData.isRenouncedCitizenship: "",
+    dateRenouncedUSCitizenship:CaymanIndividualData?.dateRenouncedUSCitizenship ? CaymanIndividualData.dateRenouncedUSCitizenship: "",
+    renouncementProofFile: "",
+    taxLbltyOtherJurisdictions: (itemsData?.length > 0) ?itemsData : itemsData2,
+    countryTaxLiability: CaymanIndividualData?.countryTaxLiability ? CaymanIndividualData.countryTaxLiability:"",
+    IsPresentAtleast31Days: CaymanIndividualData?.IsPresentAtleast31Days ? CaymanIndividualData.IsPresentAtleast31Days:"",
     statusId: 1,
     stepName: `/${urlValue}`,
   };
 
+  
   const dispatch = useDispatch();
   const history = useNavigate();
   const [expanded, setExpanded] = React.useState<string | false>("");
@@ -265,6 +268,20 @@ export default function Index() {
     history("w9_pdf");
   }
 
+
+  const handleFileChange = (e: any) => {
+    if(localStorage.getItem("submittinSCInvidual") ===  "true"){
+      return;
+    }
+    const files = e.target.files;
+    //initialValues.renouncementProofFile = files[0];
+    //Formik.setFieldValue('renouncementProofFile', files[0]);
+    setSelectedFile(files[0]);
+  }
+  useEffect(() => {
+    localStorage.setItem("submittinSCInvidual","false")
+  },[])
+
   return (
     <section
       className="inner_content"
@@ -321,42 +338,36 @@ export default function Index() {
                 enableReinitialize
                 //validationSchema={StartSchema}
                 onSubmit={(values, { setSubmitting }) => {
-                  // var newValues = values.taxLbltyOtherJurisdictions.filter(
-                  //     (item) => item.doesIndiHavTaxLbltyinOtherJurisdictions === "Yes"
-                  //   );
+                  setSubmitting(true);
+                  localStorage.setItem("submittinSCInvidual","true");
+                  let obj ={};
+                  values?.taxLbltyOtherJurisdictions?.forEach((me:any,i)=>{
+                    Object.keys(me).forEach((key) => {
+                      const value = me[key];
+                      const objectKey = `taxLbltyOtherJurisdictions[${i}].${key}`
+                      obj ={...obj , [objectKey]:value}
+                    });
+                    
+                  })
 
-                  //   values.taxLbltyOtherJurisdictions = newValues;
-                  //   console.log("newValues",newValues)
-                  // console.log("values", values);
-                  
+
                   const temp = {
-                   
-                    ...values,
                     ...PrevStepData,
-                    stepName: `/${urlValue}`
+                    ...values,
+                    renouncementProofFile:selectedfile
+                    
                   };
+                 
+                  
 
-                  console.log("temp", temp);
-                  // if (clickCount === 0) {
-                  //   setClickCount(clickCount + 1);
-                  // } else {
+                    dispatch(upsertTaxLiablitySCIndividual(obj,() => {
 
-                    const new_obj = { ...PrevStepData, citizenshipCountry: getNameById(PrevStepData.citizenshipCountry) }
-                    const result = { ...new_obj, ...values };
-                    // console.log(result,"FINAL RESULT")
+                    }))
                     dispatch(
-                      postSCIndividualEForm(values, () => {
-                        // history("/W-8BEN/Declaration/US_Tin");
-                        if (values?.IsPresentAtleast31Days=== "Yes") {
-                          history('/Cayman/Individual/start/SustantialPresence')
-                        } else {
-                          history(
-                            "/Cayman/Individual/start/US_Tin"
-                          );
-                        }
+                      postSCIndividualEForm(temp, () => {
                         localStorage.setItem(
                           "PrevStepData",
-                          JSON.stringify(result)
+                          JSON.stringify(temp)
                         );
                       })
                     );
@@ -1245,21 +1256,26 @@ export default function Index() {
                                   style={{ fontSize: "12px" }}
                                   type="file"
                                   placeholder="proof of formal renouncement"
-                                  onChange={handleChange}
+                                  onChange={(e) => handleFileChange(e)}
                                   onBlur={handleBlur}
-                                  name="renouncementProof"
-                                  value={values.renouncementProof}
+                                  onSubmit={()=>{
+
+                                  }}
+                                  name="renouncementProofFile"
+                                  
                                 />
+                                {/* {selectedfile?.name} */}
                               </div>
                               <Divider className="dividr" />
                             </>
                           ) : (
                             ""
                           )}
+                          {/* <>{console.log("values",values)}</> */}
                           <FieldArray name="items">
                           {({ push, remove }) => (
                             <div>
-                              {values.taxLbltyOtherJurisdictions.map((item:any, index:any) => (
+                              {values?.taxLbltyOtherJurisdictions?.map((item:any, index:any) => (
                                 <div key={index}>
                                   
                                   <Typography
@@ -1338,7 +1354,19 @@ export default function Index() {
                                     {values.taxLbltyOtherJurisdictions[index].doesIndiHavTaxLbltyinOtherJurisdictions == 'Yes' ? (
                                         <>
 
-                                        <DeleteOutline type="button" onClick={() => remove(index)}/>
+                                        <DeleteOutline type="button" onClick={(e) =>  {
+                                          //remove(index);
+                                          setFieldValue(
+                                            "taxLbltyOtherJurisdictions",
+                                            values.taxLbltyOtherJurisdictions.filter((_, indexes) => indexes !== index)
+                                          );
+                                          
+                                        }
+                                          
+                                          
+                                          
+                                          
+                                          }/>
                                           <Typography>
                                             Please select the country where the individual
                                             has a tax liability:
@@ -1528,7 +1556,7 @@ export default function Index() {
                                           ) : (
                                             ""
                                           )}
-                                          {/* <>{console.log("values",values)}</> */}
+                                          
                                           <div className="d-flex">
                                             <FormControl className="form">
                                               {values.taxLbltyOtherJurisdictions[index].isTINFormatNotAvailable === false ? (
@@ -1683,20 +1711,43 @@ export default function Index() {
                         SAVE & EXIT
                       </Button> */}
                       <SaveAndExit Callback={() => {
-                        submitForm().then((data: any) => {
+                            submitForm().then((data) => {
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              dispatch(postSCIndividualEForm(
+                                {
+                                    ...values,
+                                  ...prevStepData,
+                                  stepName: `/${urlValue}`
+                                }
+                                , () => { }))
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          }} formTypeId={FormTypeId.CaymanIndividual}  />
+                      {/* <SaveAndExit Callback={() => {
+
+                        submitForm().then(() => {
                           const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                           const urlValue = window.location.pathname.substring(1);
                           dispatch(postSCIndividualEForm(
                             {
+                              ...values,
                               ...prevStepData,
                               stepName: `/${urlValue}`
                             }
                             , () => { }))
-                          history(GlobalValues.basePageRoute)
+                          history(
+                            GlobalValues.basePageRoute
+                          );
                         }).catch((err: any) => {
                           console.log(err);
                         })
-                      }} formTypeId={FormTypeId.CaymanIndividual} />
+
+
+                        
+                      }} formTypeId={FormTypeId.CaymanIndividual} /> */}
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
@@ -1707,7 +1758,17 @@ export default function Index() {
                         View form
                       </Button>
                       <Button
-                        type="submit"
+                      onClick={() => {
+                      submitForm().then(() => {
+                        if (values?.IsPresentAtleast31Days=== "Yes") {
+                          history('/Cayman/Individual/Start/SustantialPresence')
+                        } else {
+                          history(
+                            "/Cayman/Individual/Start/US_Tin"
+                          );
+                        }
+                      })
+                      }}
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                       >
