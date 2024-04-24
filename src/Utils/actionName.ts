@@ -90,7 +90,9 @@ const ActionName = {
     GetAllUSFormTypes:"GetAllUSFormTypes",
     getAllAccountStatement:"getAllAccountStatement",
     InsertCaymanIndividualNonUS:"InsertCaymanIndividualNonUS",
+    UpsertTaxLiabilityinanyOtherJurisdictions:"UpsertTaxLiabilityinanyOtherJurisdictions",
     GetByCaymanIndividualNonUSId:"GetByCaymanIndividualNonUSId",
+
 
   };
 
