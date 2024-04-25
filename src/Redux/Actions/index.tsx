@@ -285,7 +285,7 @@ export const LoadExistingFormData = (formTypeId: any, AccountHolderId: any, call
       Endpoint = Utils.EndPoint.GetByW8IMYEntityNonForm + `?AccountHolderBasicDetailId=${AccountHolderId}`
       break;
     case FormTypeId.CaymanIndividual:
-      Endpoint = Utils.EndPoint.GetByCaymanIndividualNonUSId + `?AccountHolderBasicDetailId=${AccountHolderId}`
+      Endpoint = Utils.EndPoint.GetByCaymanIndividualNonUSId + `?AccountHolderDetailId=${AccountHolderId}`
       break;
     default:
       return;
