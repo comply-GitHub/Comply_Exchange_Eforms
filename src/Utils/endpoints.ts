@@ -27,6 +27,8 @@ const EndPoint = {
   GetIGA:"/Countries/GetIGA",
   GetFederalTaxClassification:"/W9Common/GetFederalTaxClassification",
   GetAllUSFormTypes:"/FormTypes/GetAllUSFormTypes",
+  GetTaxJusrisdictionMismatchExplaination:"/CaymanIndividualNonUS/GetTaxJurisdictionMismatchExplanation",
+
 
   //
   GetAgentCapacityHiddenForEform: "/WebAppBasic/GetAgentCapacityHiddenForEform",
