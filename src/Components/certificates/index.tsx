@@ -194,8 +194,8 @@ useEffect(()=>{
 
       <div className="overlay-div">
         <div className="overlay-div-group">
-          <div className="viewInstructions">View Instructions</div>
-          <div className="viewform">View Form</div>
+          {/* <div className="viewInstructions">View Instructions</div>
+          <div className="viewform">View Form</div> */}
           <div className="helpvideo">
 
             {GethelpData && GethelpData[2].id === 4 ? (

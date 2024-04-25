@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
-import { DeleteOutline, Info } from "@mui/icons-material";
+import { DeleteOutline, Info, Subtitles } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./index.scss";
 import checksolid from "../../../../../assets/img/check-solid.png";
@@ -26,7 +26,8 @@ import {
   getAllCountries,
   postW8BENForm,
   GetHelpVideoDetails,
-  postSCIndividualEForm
+  postSCIndividualEForm,
+  upsertTaxLiablitySCIndividual
 } from "../../../../Redux/Actions";
 import { StatusSchema } from "../../../../schemas/w8Ben";
 import Accordion from "@mui/material/Accordion";
@@ -47,6 +48,7 @@ import DatePicker from 'react-date-picker';
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import View_Insructions from "../../../viewInstruction";
+import Utils from "../../../../Utils";
 
 interface FormValues {
   accountHolderBasicDetailId: number,
@@ -62,7 +64,7 @@ interface FormValues {
   dateRenouncedUSCitizenship: string,
   countryTaxLiability:string;
   IsPresentAtleast31Days:string;
-  renouncementProof:string;
+  renouncementProofFile:string;
   statusId:number;
   isPermamnentResidentCardHolder: string;
   stepName:string;
@@ -74,7 +76,7 @@ interface FormValues {
     accountHolderDetailsId:number,
     doesIndiHavTaxLbltyinOtherJurisdictions: string,
     countryIdforTaxLiability: string,
-    taxReferenceNumber: string,
+    taxReferenceNumber: String,
     isTINFormatNotAvailable: boolean,
   }[];
 }
@@ -86,12 +88,26 @@ interface FormErrors {
 export default function Index() {
   const { authDetails } = useAuth();
   const location = useLocation();
+  const [selectedfile, setSelectedFile] = useState<any>();
   const urlValue = location.pathname.substring(1);
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const agentDefaultDetails = JSON.parse(
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+
+  // useEffect(() => {
+  //   if((localStorage.getItem("PrevStepData") !== null) && (localStorage.getItem("PrevStepData") !== undefined)){
+  //     const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  //     dispatch({
+  //       type: Utils.actionName.InsertCaymanIndividualNonUS,
+  //       payload: PrevStepData,
+  //     });
+  //   }
+    
+   
+  // },[localStorage.getItem("PrevStepData")])
+  const CaymanIndividualData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const convertToStandardFormat = (customDateString: any) => {
     const dateObject = new Date(customDateString);
     const year = dateObject.getUTCFullYear();
@@ -100,41 +116,27 @@ export default function Index() {
     return `${year}-${month}-${day}`;
   };
 
-  //console.log(obValues)
-  // const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
+
+  
+  const itemsData = CaymanIndividualData?.taxLbltyOtherJurisdictions?.map((dataItem: any, index: number) => (
+   {
+    id: 0,
+    agentId: dataItem?.agentId,
+    formTypeId: dataItem.formTypeId,
+    formEntryId: 0,
+    accountHolderDetailsId:dataItem?.accountHolderDetailsId,
+    doesIndiHavTaxLbltyinOtherJurisdictions: dataItem?.doesIndiHavTaxLbltyinOtherJurisdictions ? dataItem?.doesIndiHavTaxLbltyinOtherJurisdictions : "",
+    countryIdforTaxLiability: dataItem.countryIdforTaxLiability,
+    taxReferenceNumber: dataItem.taxReferenceNumber,
+    isTINFormatNotAvailable: dataItem.isTINFormatNotAvailable,
+    
+   }
+    
+
+  ));
 
 
-  // const itemsData = accountStatementData?.map((dataItem: any, index: number) => ({
-  //   id: index, // Assuming you want to use the index as the id
-  //   agentId: authDetails?.agentId,
-  //   formTypeSelectionId: obValues.businessTypeId,
-  //   formTypeId: FormTypeId.CaymanIndividual,
-  //   accountHolderBasicDetailId:authDetails?.accountHolderId,
-  //   isHeldUSCitizenship: false,
-  //   countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "0",
-  //   isTaxationUSCitizenOrResident: false,
-  //   isPermamnentResidentCardHolder: false,
-  //   isHoldDualCitizenshipStatus: false,
-  //   isHoldDualCitizenshipIncludeUSCitizenship: false,
-  //   isRenouncedCitizenship: false,
-  //   dateRenouncedUSCitizenship: "",
-    
-  //   renouncementProof: "",
-  //   items:{
-  //     doesIndiHavTaxLbltyinOtherJurisdictions: false,
-  //     countryIdforTaxLiability: 0,
-  //     taxReferenceNumber: "",
-  //     isTINFormatNotAvailable: false,
-  //   },
-    
-  //   countryTaxLiability: "",
-    
-  //   IsPresentAtleast31Days: false,
-  //   statusId: 1,
-  //   stepName: `/${urlValue}`,
-  // }));
-
-  const itemsData = [{
+  const itemsData2 = [{
     id: 0,
     agentId: authDetails?.agentId,
     formTypeId: FormTypeId.CaymanIndividual,
@@ -152,22 +154,23 @@ export default function Index() {
     formTypeSelectionId: obValues.businessTypeId,
     formTypeId: FormTypeId.CaymanIndividual,
     accountHolderBasicDetailId:authDetails?.accountHolderId,
-    isHeldUSCitizenship: PrevStepData?.isHeldUSCitizenship ? PrevStepData.isHeldUSCitizenship : "",
+    isHeldUSCitizenship: CaymanIndividualData?.isHeldUSCitizenship ? CaymanIndividualData.isHeldUSCitizenship : "",
     countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "",
-    isTaxationUSCitizenOrResident: PrevStepData?.isTaxationUSCitizenOrResident ? PrevStepData.isTaxationUSCitizenOrResident :  "",
-    isPermamnentResidentCardHolder: PrevStepData?.isPermamnentResidentCardHolder ? PrevStepData.isPermamnentResidentCardHolder : "",
-    isHoldDualCitizenshipStatus: PrevStepData?.isHoldDualCitizenshipStatus ? PrevStepData.isHoldDualCitizenshipStatus:"",
-    isHoldDualCitizenshipIncludeUSCitizenship: PrevStepData?.isHoldDualCitizenshipIncludeUSCitizenship ? PrevStepData.isHoldDualCitizenshipIncludeUSCitizenship:"",
-    isRenouncedCitizenship: PrevStepData?.isRenouncedCitizenship ? PrevStepData.isRenouncedCitizenship: "",
-    dateRenouncedUSCitizenship:PrevStepData?.dateRenouncedUSCitizenship ? PrevStepData.dateRenouncedUSCitizenship: "",
-    renouncementProof: PrevStepData?.renouncementProof ? PrevStepData.renouncementProof:"",
-    taxLbltyOtherJurisdictions: itemsData,
-    countryTaxLiability: PrevStepData?.countryTaxLiability ? PrevStepData.countryTaxLiability:"",
-    IsPresentAtleast31Days: PrevStepData?.IsPresentAtleast31Days ? PrevStepData.IsPresentAtleast31Days:"",
+    isTaxationUSCitizenOrResident: CaymanIndividualData?.isTaxationUSCitizenOrResident ? CaymanIndividualData.isTaxationUSCitizenOrResident :  "",
+    isPermamnentResidentCardHolder: CaymanIndividualData?.isPermamnentResidentCardHolder ? CaymanIndividualData.isPermamnentResidentCardHolder : "",
+    isHoldDualCitizenshipStatus: CaymanIndividualData?.isHoldDualCitizenshipStatus ? CaymanIndividualData.isHoldDualCitizenshipStatus:"",
+    isHoldDualCitizenshipIncludeUSCitizenship: CaymanIndividualData?.isHoldDualCitizenshipIncludeUSCitizenship ? CaymanIndividualData.isHoldDualCitizenshipIncludeUSCitizenship:"",
+    isRenouncedCitizenship: CaymanIndividualData?.isRenouncedCitizenship ? CaymanIndividualData.isRenouncedCitizenship: "",
+    dateRenouncedUSCitizenship:CaymanIndividualData?.dateRenouncedUSCitizenship ? CaymanIndividualData.dateRenouncedUSCitizenship: "",
+    renouncementProofFile: "",
+    taxLbltyOtherJurisdictions: (itemsData?.length > 0) ?itemsData : itemsData2,
+    countryTaxLiability: CaymanIndividualData?.countryTaxLiability ? CaymanIndividualData.countryTaxLiability:"",
+    IsPresentAtleast31Days: CaymanIndividualData?.IsPresentAtleast31Days ? CaymanIndividualData.IsPresentAtleast31Days:"",
     statusId: 1,
     stepName: `/${urlValue}`,
   };
 
+  
   const dispatch = useDispatch();
   const history = useNavigate();
   const [expanded, setExpanded] = React.useState<string | false>("");
@@ -265,6 +268,20 @@ export default function Index() {
     history("w9_pdf");
   }
 
+
+  const handleFileChange = (e: any) => {
+    if(localStorage.getItem("submittinSCInvidual") ===  "true"){
+      return;
+    }
+    const files = e.target.files;
+    //initialValues.renouncementProofFile = files[0];
+    //Formik.setFieldValue('renouncementProofFile', files[0]);
+    setSelectedFile(files[0]);
+  }
+  useEffect(() => {
+    localStorage.setItem("submittinSCInvidual","false")
+  },[])
+
   return (
     <section
       className="inner_content"
@@ -321,45 +338,55 @@ export default function Index() {
                 enableReinitialize
                 //validationSchema={StartSchema}
                 onSubmit={(values, { setSubmitting }) => {
-                  // var newValues = values.taxLbltyOtherJurisdictions.filter(
-                  //     (item) => item.doesIndiHavTaxLbltyinOtherJurisdictions === "Yes"
-                  //   );
-
-                  //   values.taxLbltyOtherJurisdictions = newValues;
-                  //   console.log("newValues",newValues)
-                  // console.log("values", values);
                   
+                  setSubmitting(true);
+                  let obj ={};
+                  values?.taxLbltyOtherJurisdictions?.forEach((me:any,i)=>{
+                    Object.keys(me).forEach((key) => {
+                      const value = me[key];
+                      const objectKey = `taxLbltyOtherJurisdictions[${i}].${key}`
+                      obj ={...obj , [objectKey]:value}
+                    });
+                    
+                  })
+
+
+
                   const temp = {
-                   
                     ...values,
                     ...PrevStepData,
-                    stepName: `/${urlValue}`
+                    renouncementProofFile:selectedfile
+                    
                   };
+                 
 
-                  console.log("temp", temp);
-                  // if (clickCount === 0) {
-                  //   setClickCount(clickCount + 1);
-                  // } else {
+                    
+                    // dispatch(
+                    //   postSCIndividualEForm(temp, () => {
+                    //     localStorage.setItem(
+                    //       "PrevStepData",
+                    //       JSON.stringify(temp)
+                    //     );
+                    //   })
+                    // );
 
-                    const new_obj = { ...PrevStepData, citizenshipCountry: getNameById(PrevStepData.citizenshipCountry) }
-                    const result = { ...new_obj, ...values };
-                    // console.log(result,"FINAL RESULT")
-                    dispatch(
-                      postSCIndividualEForm(values, () => {
-                        // history("/W-8BEN/Declaration/US_Tin");
-                        if (values?.IsPresentAtleast31Days=== "Yes") {
-                          history('/Cayman/Individual/start/SustantialPresence')
-                        } else {
-                          history(
-                            "/Cayman/Individual/start/US_Tin"
-                          );
-                        }
-                        localStorage.setItem(
-                          "PrevStepData",
-                          JSON.stringify(result)
-                        );
-                      })
-                    );
+                    const returnPromise = new Promise((resolve, reject) => {
+                      dispatch(
+                        postSCIndividualEForm(temp,
+                          (responseData: any) => {
+
+                            localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                            dispatch(upsertTaxLiablitySCIndividual(obj,() => {
+                              resolve("success")
+                            }))
+                          },
+                          (err: any) => {
+                            reject(err);
+                          }
+                        )
+                      );
+                    })
+                    return returnPromise;
 
                   }
                 }
@@ -1122,6 +1149,8 @@ export default function Index() {
                                     value={values.isRenouncedCitizenship}
                                     onChange={(event) => {
                                       setFieldValue("isRenouncedCitizenship", event.currentTarget.value)
+                                      
+                                      //setFieldValue("dateRenouncedUSCitizenship","")
                                     }}
                                     id="isRenouncedCitizenship"
                                   >
@@ -1148,7 +1177,7 @@ export default function Index() {
                           ) : (
                             ""
                           )}
-
+    
                           {values.isRenouncedCitizenship === "Yes" ? (
                             <>
                               <Typography
@@ -1245,22 +1274,28 @@ export default function Index() {
                                   style={{ fontSize: "12px" }}
                                   type="file"
                                   placeholder="proof of formal renouncement"
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  name="renouncementProof"
-                                  value={values.renouncementProof}
+                                  onChange={(e) => handleFileChange(e)}
+                                  onBlur={handleBlur}                                  
+                                  name="renouncementProofFile"
+                                  
                                 />
+                                {values?.renouncementProofFile ? values.renouncementProofFile: ""}
+                                {/* {selectedfile?.name} */}
                               </div>
                               <Divider className="dividr" />
                             </>
                           ) : (
                             ""
                           )}
+                          
+
                           <FieldArray name="items">
                           {({ push, remove }) => (
                             <div>
-                              {values.taxLbltyOtherJurisdictions.map((item:any, index:any) => (
+                              {values?.taxLbltyOtherJurisdictions?.map((item:any, index:any) => (
                                 <div key={index}>
+                                  
+                                    
                                   
                                   <Typography
                                         style={{
@@ -1275,7 +1310,7 @@ export default function Index() {
                                       </Typography>
                                       
                                         
-                                      
+                                     
                                       
 
                                       <FormControl>
@@ -1338,7 +1373,19 @@ export default function Index() {
                                     {values.taxLbltyOtherJurisdictions[index].doesIndiHavTaxLbltyinOtherJurisdictions == 'Yes' ? (
                                         <>
 
-                                        <DeleteOutline type="button" onClick={() => remove(index)}/>
+                                        <DeleteOutline type="button" onClick={(e) =>  {
+                                          //remove(index);
+                                          setFieldValue(
+                                            "taxLbltyOtherJurisdictions",
+                                            values.taxLbltyOtherJurisdictions.filter((_, indexes) => indexes !== index)
+                                          );
+                                          
+                                        }
+                                          
+                                          
+                                          
+                                          
+                                          }/>
                                           <Typography>
                                             Please select the country where the individual
                                             has a tax liability:
@@ -1358,7 +1405,7 @@ export default function Index() {
                                               onChange={handleChange}
                                               value={values.taxLbltyOtherJurisdictions[index].countryIdforTaxLiability}
                                             >
-                                              <option value={0}>---select---</option>
+                                              <option value="">---select---</option>
                                               <option value={45}>-canada-</option>
                                               <option value={257}>United Kingdom</option>
                                               <option value={258}>United States</option>
@@ -1371,72 +1418,18 @@ export default function Index() {
                                                 )
                                               )}
                                             </select>
-                                            
-                                            {/* {(typeof errors === 'object' && 'countryIdforTaxLiability' in errors.taxLbltyOtherJurisdictions) && (
-                                                      <p className="error">Please select Country</p>
-                                                    )} */}
-                                            {/* {errors?.countryIdforTaxLiability && typeof errors?.countryIdforTaxLiability === 'string' && (
-                                              <p className="error">{errors?.countryIdforTaxLiability}</p>
-                                            )} */}
+                                            {
+                                              values.taxLbltyOtherJurisdictions[index].doesIndiHavTaxLbltyinOtherJurisdictions === 'Yes' &&
+                                              values.taxLbltyOtherJurisdictions[index].countryIdforTaxLiability === "" || 
+                                              values.taxLbltyOtherJurisdictions[index].countryIdforTaxLiability === "0" ? 
+                                              // (setFieldValue("isValid", false), 
+                                              <p className="error">Please select Country</p>
+                                              : 
+                                              ""
+                                              // (setFieldValue("isValid", true), null)
+                                            }
                                           </FormControl>
-                                          {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && (
-                                          <div>
-                                           {errors.taxLbltyOtherJurisdictions
-                                              .filter(error => error !== null) // Filter out null values
-                                              .map((error, index) => (
-                                                <div key={index}>
-                                                  {error && (
-                                                    <>
-                                                      {(typeof error !== 'string' &&  error?.countryIdforTaxLiability) && (
-                                                        <p className="error">{error.countryIdforTaxLiability}</p>
-                                                      )}
-                                                      
-                                                    </>
-                                                  )}
-                                                </div>
-                                              ))}
-                                          </div>
-                                        )} */}
 
-                                          {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && errors.taxLbltyOtherJurisdictions.length > 0 && (
-                                            <div>
-                                              {errors.taxLbltyOtherJurisdictions.map((error, index) => (
-                                                <div key={index}>
-                                                  {error && (
-                                                    <>
-                                                      {(typeof error !== 'string' &&  error?.countryIdforTaxLiability) && (
-                                                        <p className="error">{error.countryIdforTaxLiability}</p>
-                                                      )}
-                                                      
-                                                    </>
-                                                  )}
-                                                </div>
-                                              ))}
-                                            </div>
-                                          )} */}
-
-
-                                          {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && errors.taxLbltyOtherJurisdictions.length > 0 && (
-                                              <div>
-                                                  {errors.taxLbltyOtherJurisdictions.map((error, index) => (
-                                                        
-                                                        (error !== undefined ? <>
-                                                          <p className="error" key={index}>
-                                                          {(typeof error !== 'string' && error?.countryIdforTaxLiability) ? error.countryIdforTaxLiability : ""}
-                                                          
-                                                          </p>
-                                                            </> : "")
-                                                      //   <p className="error" key={index}>
-                                                      //   {(typeof error !== 'string' && error?.countryIdforTaxLiability) ? error.countryIdforTaxLiability : ""}
-                                                      
-                                                      // </p>
-
-                                                    
-
-
-                                                  ))}
-                                              </div>
-                                          )} */}
                                           <Divider className="dividr" />
 
                                           <Typography>
@@ -1528,7 +1521,7 @@ export default function Index() {
                                           ) : (
                                             ""
                                           )}
-                                          {/* <>{console.log("values",values)}</> */}
+                                          
                                           <div className="d-flex">
                                             <FormControl className="form">
                                               {values.taxLbltyOtherJurisdictions[index].isTINFormatNotAvailable === false ? (
@@ -1547,42 +1540,15 @@ export default function Index() {
                                                   className="number"
                                                 />
                                               )}
-                                              {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && errors.taxLbltyOtherJurisdictions.length > 0 && (
-                                                <div>
-                                                  {errors.taxLbltyOtherJurisdictions.map((error, index) => (
-                                                    <div key={index}>
-                                                      {error && (
-                                                        <>
-                                                          {(typeof error !== 'string' && error?.taxReferenceNumber) && (
-                                                            <p className="error">{error.taxReferenceNumber}</p>
-                                                          )}
-                                                          
-                                                        </>
-                                                      )}
-                                                    </div>
-                                                  ))}
-                                                </div>
-                                              )} */}
-                                              {/* {Array.isArray(errors?.taxLbltyOtherJurisdictions) && errors.taxLbltyOtherJurisdictions.length > 0 && (
-                                              <div>
-                                                  {errors.taxLbltyOtherJurisdictions.map((error, index) => (
-
-                                                      (error ? <>
-                                                      <p className="error" key={index}>
-                                                      {(typeof error !== 'string' && error?.taxReferenceNumber) ? error.taxReferenceNumber : ""}
-                                                      
-                                                      </p>
-                                                        </> : "")
-                                                      
-
-                                                     
-
-                                                    
-
-
-                                                  ))}
-                                              </div>
-                                          )} */}
+                                              {/* {
+                                                values.taxLbltyOtherJurisdictions[index].doesIndiHavTaxLbltyinOtherJurisdictions === 'Yes' &&
+                                                values.taxLbltyOtherJurisdictions[index].taxReferenceNumber === "" 
+                                                ? 
+                                                (setFieldValue("isValid", false), <p className="error">Please enter Tax Reference Number</p>)
+                                                : 
+                                                (setFieldValue("isValid", true), null)
+                                              } */}
+                                              
                                             </FormControl>
                                             {/* {values.permanentResidentialCountryId == 257?( */}
                                             <div className="d-flex">
@@ -1679,24 +1645,24 @@ export default function Index() {
                         marginTop: "80px",
                       }}
                     >
-                      {/* <Button variant="contained" style={{ color: "white" }}>
-                        SAVE & EXIT
-                      </Button> */}
+                     
                       <SaveAndExit Callback={() => {
-                        submitForm().then((data: any) => {
-                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                          const urlValue = window.location.pathname.substring(1);
-                          dispatch(postSCIndividualEForm(
-                            {
-                              ...prevStepData,
-                              stepName: `/${urlValue}`
-                            }
-                            , () => { }))
-                          history(GlobalValues.basePageRoute)
-                        }).catch((err: any) => {
-                          console.log(err);
-                        })
-                      }} formTypeId={FormTypeId.CaymanIndividual} />
+                            submitForm().then((data) => {
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              dispatch(postSCIndividualEForm(
+                                {
+                                    ...values,
+                                  ...prevStepData,
+                                  stepName: `/${urlValue}`
+                                }
+                                , () => { }))
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          }} formTypeId={FormTypeId.CaymanIndividual}  />
+                      
                       <Button
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
@@ -1707,9 +1673,34 @@ export default function Index() {
                         View form
                       </Button>
                       <Button
-                        type="submit"
+                      
+                      onClick={() => {
+                      submitForm().then(() => {
+                        if (values?.IsPresentAtleast31Days=== "Yes") {
+                          history('/Cayman/Individual/Start/SustantialPresence')
+                        } else {
+                          history(
+                            "/Cayman/Individual/Start/US_Tin"
+                          );
+                        }
+                      })
+                      }}
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
+                        disabled={
+                          (values.isHeldUSCitizenship==='' || values.isTaxationUSCitizenOrResident==='')
+                         ||
+                         (values.isHoldDualCitizenshipStatus === "Yes" && values.isHoldDualCitizenshipIncludeUSCitizenship === "")
+
+                         ||
+                         (values.isHeldUSCitizenship === "Yes" && values.isRenouncedCitizenship === "")
+
+                         ||
+                         (values.isRenouncedCitizenship === "Yes" && values.dateRenouncedUSCitizenship === "")
+                        
+                          ? true : false
+                        }
+                        
                       >
                         Continue
                       </Button>

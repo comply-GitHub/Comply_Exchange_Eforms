@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { SubmitSchema } from "../../../../schemas/submit";
@@ -18,15 +18,23 @@ import BreadCrumbComponent from "../../../reusables/breadCrumb";
 export default function Declaration (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+  const CRSData = localStorage.getItem("lastClickedPanelHeading");
 
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
-
-  const handleChangeAccodionState = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-    setExpandedState(newExpanded ? panel : false);
+  const handleChangeAccodionState = (panel: string, panelHeading: string) => (
+    event: React.SyntheticEvent,
+    newExpanded: boolean
+  ) => {
+    if (newExpanded) {
+      setExpandedState(panel);
+      localStorage.setItem("clickedPanelHeading", panelHeading);
+    } else {
+      setExpandedState(false);
+      localStorage.removeItem("clickedPanelHeading");
+    }
   };
-
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   
@@ -37,6 +45,9 @@ export default function Declaration (props: any){
     };
 
 
+    useEffect(() => {
+      document.title = "CRS Classification"
+    }, [])
   return (
     <Fragment>
      <section
@@ -117,64 +128,68 @@ export default function Declaration (props: any){
                 isValid
               }) => (
                 <form onSubmit={handleSubmit}>
-               
-               <div style={{ backgroundColor: "#fff", padding: "5px" }}>
-              <Typography
-                className="my-2 mx-2"
-                style={{ fontSize: "20px", color: "#1976d2", fontWeight: "bold" }}
-              >
-               CRS Classification Guide
-              </Typography>
-
-
-            <div >
-                <Paper elevation={0} style={{backgroundColor:"#cecccd80",height:"345px",padding:"20px"}}>
-                   <div className="my-3">
-                   <Typography className="mt-3" align="center"  style={{fontSize:"13px",fontWeight:"550"}}>You have selected the below entity type for Chapter 4 purposes</Typography>
-<Typography className="mt-3" align="center" style={{fontSize:"30px",fontWeight:"bold"}}>Passive Non-Financial Entity
-</Typography>
-<Typography className="mt-3 mx-5" align="center"  style={{fontSize:"13px",fontWeight:"500"}}>If this is correct please select Confirm and you will be taken to the next stage of the submission process and will be asked questions relating to this entity type only. If this is not the correct selection please select Back which will take you back to the previous selection page, or close this help tool and make a direct selection from the drop down list.</Typography>
+               <>
+                  <div style={{marginTop:"10px",height:"210px",backgroundColor:"#fff"}}>
+                  <div style={{justifyContent:"space-between",display:"flex",marginTop:"10px"}}>
+                  <Typography
+                      align="left"
+                      style={{
+                        fontSize: "27px",
+                        color: "black",
+                        fontWeight: "bold",
+                        marginLeft:'10px'
+                      
+                      }}
+                    >
+                    CRS Classification:
+                    </Typography>
+                    <Button
+                     onClick={() => setIsAccordionVisible(!isAccordionVisible)}
+                      style={{ backgroundColor: "#d3ae33",cursor:"pointer",color: "black", fontSize: "12px", fontWeight: "bold" }}
+                    >
+                    CRS Classification Guide
+                    </Button>
+                  </div>
+                
+                   <div style={{marginLeft:"10px",marginTop:"10px",}}>
+                 
+                  <div className="d-flex mt-3">
+                    <Typography style={{fontSize:"19px"}}>Select CRS Classification:</Typography>
+                    <Link className="mx-2"  onClick={() => setIsAccordionVisible(!isAccordionVisible)}style={{fontSize:"19px",textDecorationLine:"none",color:"#1149c4",cursor:"pointer"}}>Click Here to start Process</Link>
+                  </div>
                    </div>
+                   <div className="mt-3 " style={{marginLeft:"10px"}}>
+                    <Typography style={{fontSize:"28px",fontWeight:"540"}}>{CRSData}</Typography>
+                   </div>
+                  </div>
+                  
+                 </>
+            
+                 <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: "40px",
 
-                </Paper>
-            </div>
+                    }}
+                  >
+                   
+                    <Button
+                      variant="contained"
+                      style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
+                    >
+                      View Form
+                    </Button>
 
-              
+                    <Button    
+                      variant="contained"
+                      style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
+                    >
+                      Confirm
+                    </Button>
+                  </div>
+            
 
-
-              <Typography align="center">
-                <Button
-                 onClick={() => setIsAccordionVisible(false)}
-                  variant="outlined"
-                  style={{
-                    color: "#1976E2",
-             
-                    marginTop: "10px",
-                    marginBottom: "20px",
-                  }}
-                >
-                  Close
-                </Button>
-                <Button
-                
-                  variant="contained"
-                 
-                  style={{
-
-                 
-                    marginTop: "10px",
-                    marginBottom: "20px",
-                    marginLeft: "10px"
-
-                  }}
-                >
-                  Confirm
-                </Button>
-
-                
-              </Typography>
-
-            </div>
 
                 
                 </form>

@@ -63,6 +63,7 @@ const EndPoint = {
  UpsertAccountHolderWithholdingStatement:"/AccountHolderDetail/UpsertAccountHolderWithholdingStatement",
  InserDualCert:"/DualCert/UpsertDualCert",
  InsertCaymanIndividualNonUS:"/CaymanIndividualNonUS/InsertCaymanIndividualNonUS",
+ UpsertTaxLiabilityinanyOtherJurisdictions:"/CaymanIndividualNonUS/UpsertTaxLiabilityinanyOtherJurisdictions",
 
 // Form GetApis:
 GetDual:"/DualCert/GetDualCert",
