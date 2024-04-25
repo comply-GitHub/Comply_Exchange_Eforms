@@ -45,9 +45,9 @@ const Declaration = (props: any) => {
       setExpanded(isExpanded ? panel : false);
     };
   const initialValue = {
-    declaration: PrevStepData?.isDeclaration ? PrevStepData?.isDeclaration : false,
-    IsSubmit: PrevStepData?.isConsentRecipent ? PrevStepData?.isConsentRecipent : false,
-    IsSubmit_not: PrevStepData?.isNotConsentRecipent ? PrevStepData?.isNotConsentRecipent : false,
+    IsAgreeWithDeclaration: PrevStepData?.isDeclaration ? PrevStepData?.isDeclaration : false,
+    IsConsentReceipentstatement: PrevStepData?.isConsentRecipent ? PrevStepData?.isConsentRecipent : false,
+    IsNotConsentReceipentstatement: PrevStepData?.isNotConsentRecipent ? PrevStepData?.isNotConsentRecipent : false,
   };
   return (
     <Fragment>
@@ -285,15 +285,15 @@ const Declaration = (props: any) => {
                           </Typography>
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox name="declaration" value={values.declaration} onChange={handleChange} checked={values.declaration} />
+                          <Checkbox name="IsAgreeWithDeclaration" value={values.IsAgreeWithDeclaration} onChange={handleChange} checked={values.IsAgreeWithDeclaration} />
                           <Typography style={{ marginTop: "9px" }}>
                             I agree with the above Declarations
                           </Typography>
                         </div>
-                        {errors?.declaration && typeof errors?.declaration === 'string' && (
-                          <p className="error">{errors?.declaration}</p>
+                        {errors?.IsAgreeWithDeclaration && typeof errors?.IsAgreeWithDeclaration === 'string' && (
+                          <p className="error">{errors?.IsAgreeWithDeclaration}</p>
                         )}
-                        {/* <p className="error">{errors.declaration}</p> */}
+                        {/* <p className="error">{errors.IsAgreeWithDeclaration}</p> */}
                       </AccordionDetails>
                     </Accordion>
                     <Accordion
@@ -358,13 +358,13 @@ const Declaration = (props: any) => {
                           <Divider style={{ marginBottom: "10px" }} />
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox name="IsSubmit"
-                            value={values.IsSubmit}
+                          <Checkbox name="IsConsentReceipentstatement"
+                            value={values.IsConsentReceipentstatement}
                             onChange={(e) => {
                               handleChange(e);
-                              setTimeout(() => { setFieldValue("IsSubmit_not", false) }, 50)
+                              setTimeout(() => { setFieldValue("IsNotConsentReceipentstatement", false) }, 50)
                             }}
-                            checked={values.IsSubmit} />
+                            checked={values.IsConsentReceipentstatement} />
 
                           <Typography style={{ marginTop: "9px" }}>
                             I give consent to receiving a recipent statement
@@ -372,29 +372,29 @@ const Declaration = (props: any) => {
                           </Typography>
 
                         </div>
-                        {errors?.IsSubmit && typeof errors?.IsSubmit === 'string' && (
-                          <p className="error">{errors?.IsSubmit}</p>
+                        {errors?.IsConsentReceipentstatement && typeof errors?.IsConsentReceipentstatement === 'string' && (
+                          <p className="error">{errors?.IsConsentReceipentstatement}</p>
                         )}
-                        {/* <p className="error">{errors.IsSubmit}</p> */}
+                        {/* <p className="error">{errors.IsConsentReceipentstatement}</p> */}
 
 
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox name="IsSubmit_not" value={values.IsSubmit_not}
+                          <Checkbox name="IsNotConsentReceipentstatement" value={values.IsNotConsentReceipentstatement}
                             onChange={(e) => {
                               handleChange(e);
-                              setTimeout(() => { setFieldValue("IsSubmit", false) }, 50)
+                              setTimeout(() => { setFieldValue("IsConsentReceipentstatement", false) }, 50)
                             }}
-                            checked={values.IsSubmit_not} />
+                            checked={values.IsNotConsentReceipentstatement} />
                           <Typography style={{ marginTop: "9px" }}>
                             {" "}
                             I do not give consent to receiving a recipent
                             statement electronically.
                           </Typography>
                         </div>
-                        {errors?.IsSubmit_not && typeof errors?.IsSubmit_not === 'string' && (
-                          <p className="error">{errors?.IsSubmit_not}</p>
+                        {errors?.IsNotConsentReceipentstatement && typeof errors?.IsNotConsentReceipentstatement === 'string' && (
+                          <p className="error">{errors?.IsNotConsentReceipentstatement}</p>
                         )}
-                        {/* <p className="error">{errors.IsSubmit_not}</p> */}
+                        {/* <p className="error">{errors.IsNotConsentReceipentstatement}</p> */}
                       </AccordionDetails>
                     </Accordion>
                   </div>
