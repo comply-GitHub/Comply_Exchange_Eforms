@@ -230,7 +230,7 @@ export default function Fedral_tax(props: any) {
         <div className="row w-100">
           <div className="col-4">
             <div style={{ padding: "20px 0px", height: "100%" }}>
-              <BreadCrumbComponent breadCrumbCode={1203} formName={FormTypeId.CaymanEntity} />
+              <BreadCrumbComponent breadCrumbCode={1301} formName={FormTypeId.CaymanEntity} />
             </div>
           </div>
           <div className="col-8 mt-3">
@@ -245,7 +245,7 @@ export default function Fedral_tax(props: any) {
                   validationSchema={EntityStartSchema}
                   onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
-                    //history("/Cayman/Entity/Start/FATCA/Classification")
+                    history("/Cayman/Entity/FATCA")
                     // const submitPromise = new Promise((resolve, reject) => {
                     //   if (clickCount === 0) {
                     //     setClickCount(clickCount + 1);
