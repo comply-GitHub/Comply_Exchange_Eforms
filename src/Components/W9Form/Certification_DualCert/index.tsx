@@ -26,16 +26,19 @@ import View_Insructions from "../../viewInstruction";
 import { useLocation } from "react-router-dom";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import { GetW9DCPdf } from "../../../Redux/Actions/PfdActions";
+import useAuth from "../../../customHooks/useAuth";
 
 export default function Certifications(props: any) {
+  const { authDetails } = useAuth();
   const location = useLocation();
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
-  console.log(PrevStepData,"prevv")
+  console.log(PrevStepData, "prevv")
   const urlValue = location.pathname.substring(1);
   const initialValue = {
 
     confirmThisisaTrueAndAccurate: false,
-    confirmYouhaveRewiedElectronicForm:false,
+    confirmYouhaveRewiedElectronicForm: false,
 
   };
 
@@ -50,9 +53,9 @@ export default function Certifications(props: any) {
   const handleCanvaClose = () => {
     setCanvaBx(false);
   }
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Certification I"
-  },[])
+  }, [])
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, [])
@@ -81,7 +84,7 @@ export default function Certifications(props: any) {
   const handleClose2 = () => setOpen2(false);
   const [toolInfo, setToolInfo] = useState("");
 
-  const viewPdf=()=>{
+  const viewPdf = () => {
     history("w9_pdf");
   }
   return (
@@ -95,7 +98,9 @@ export default function Certifications(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+            dispatch(GetW9DCPdf(authDetails?.accountHolderId))
+          }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
@@ -137,19 +142,19 @@ export default function Certifications(props: any) {
                 onSubmit={(values, { setSubmitting }) => {
                   const submitPromise = new Promise((resolve, reject) => {
                     setSubmitting(true);
-                     
-                    const result = [{ ...PrevStepData[0], ...values,stepName: `/${urlValue}` }];
+
+                    const result = [{ ...PrevStepData[0], ...values, stepName: `/${urlValue}` }];
                     dispatch(
                       PostDualCert(result, () => {
                         localStorage.setItem("DualCertData", JSON.stringify(result))
                         history("/Participation_W9_DC")
-                      
+
                         resolve("");
                       },
-                      (err:any)=>{
-                        reject(err);
-                        setSubmitting(false);
-                      })
+                        (err: any) => {
+                          reject(err);
+                          setSubmitting(false);
+                        })
                     );
                   });
 
@@ -180,20 +185,20 @@ export default function Certifications(props: any) {
                           marginLeft: "10px",
                         }}
                       >
-                        Certification 
-                       
+                        Certification
+
                       </Typography>
-                      <Typography   align="left"
+                      <Typography align="left"
                         style={{
                           margin: "10px",
                           fontSize: "15px",
-                        
+
                           marginLeft: "10px",
                         }}>
-Section 4: Declaration and Undertaking
+                        Section 4: Declaration and Undertaking
                       </Typography>
-                      <Divider style={{borderWidth:"thin"}}/>
-                     
+                      <Divider style={{ borderWidth: "thin" }} />
+
                       <Typography
                         style={{
                           margin: "10px",
@@ -202,15 +207,15 @@ Section 4: Declaration and Undertaking
                           marginLeft: "10px",
                         }}
                       >
-                       I certify that the information provided in this form is, to the best of my knowledge and belief, accurate and complete. I undertake to advise the recipient promptly and <strong>provide an updated Self-Certification form within 30 days where any change in circumstances occurs which causes any of the information contained in this form to be Inaccurate or incomplete.</strong> Where legally obliged to do so, I hereby consent to the recipient sharing this information with the relevant tax information authorities.
+                        I certify that the information provided in this form is, to the best of my knowledge and belief, accurate and complete. I undertake to advise the recipient promptly and <strong>provide an updated Self-Certification form within 30 days where any change in circumstances occurs which causes any of the information contained in this form to be Inaccurate or incomplete.</strong> Where legally obliged to do so, I hereby consent to the recipient sharing this information with the relevant tax information authorities.
                       </Typography>
-                      <Typography  style={{
-                          margin: "10px",
-                          fontSize: "14px",
-                          color: "grey",
-                          marginLeft: "10px",
-                        }}>
-                      I acknowledge that it is an offence to make a self-certification that is false in a material particular.
+                      <Typography style={{
+                        margin: "10px",
+                        fontSize: "14px",
+                        color: "grey",
+                        marginLeft: "10px",
+                      }}>
+                        I acknowledge that it is an offence to make a self-certification that is false in a material particular.
                       </Typography>
 
                       <Paper
@@ -223,11 +228,11 @@ Section 4: Declaration and Undertaking
                               checked={values.confirmThisisaTrueAndAccurate}
                               onChange={handleChange}
                               size="medium"
-                              style={{ fontSize: "2rem",marginTop: "6px" }} />
+                              style={{ fontSize: "2rem", marginTop: "6px" }} />
                             <Typography className="mx-2"
                               style={{ fontSize: "14px", color: "black", marginTop: "15px", textAlign: "justify" }}
                             >
-                            Check to confirm this is a true and accurate statement
+                              Check to confirm this is a true and accurate statement
                             </Typography>
                           </Typography>
                           <p className="error">{errors.confirmThisisaTrueAndAccurate}</p>
@@ -238,23 +243,23 @@ Section 4: Declaration and Undertaking
                               checked={values.confirmYouhaveRewiedElectronicForm}
                               onChange={(e) => {
                                 handleChange(e);
-                                
+
                               }}
                               size="medium"
                               style={{ fontSize: "2rem" }} />
                             <Typography className="mx-2"
-                              style={{ fontSize: "14px", color: "black",marginTop: "10px", textAlign: "justify" }}
+                              style={{ fontSize: "14px", color: "black", marginTop: "10px", textAlign: "justify" }}
                             >
-                             Check to confirm you have reviewed the Electronic Form  <span
-                                style={{ color: "blue", fontSize: "14px", marginLeft: "5px",cursor:"pointer" }}
+                              Check to confirm you have reviewed the Electronic Form  <span
+                                style={{ color: "blue", fontSize: "14px", marginLeft: "5px", cursor: "pointer" }}
                               >
                                 (View Electronic Form)
                               </span>
                             </Typography>
                           </Typography>
                           <p className="error">{errors.confirmYouhaveRewiedElectronicForm}</p>
-                         
-                        
+
+
                         </div>
                       </Paper>
 
@@ -276,42 +281,44 @@ Section 4: Declaration and Undertaking
                         >
                           SAVE & EXIT
                         </Button> */}
-                          <SaveAndExit Callback={() => {
-                            submitForm().then((data) => {
-                              const prevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
-                              const urlValue = window.location.pathname.substring(1);
-                              dispatch(PostDualCert(
-                                {
-                                    ...prevStepData,
-                                    ...values,
-                                    stepName: `/${urlValue}`
-                                }
-                                , () => { }, 
-                                () => { }) 
+                        <SaveAndExit Callback={() => {
+                          submitForm().then((data) => {
+                            const prevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+                            const urlValue = window.location.pathname.substring(1);
+                            dispatch(PostDualCert(
+                              {
+                                ...prevStepData,
+                                ...values,
+                                stepName: `/${urlValue}`
+                              }
+                              , () => { },
+                              () => { })
                             );
-                              history(GlobalValues.basePageRoute)
-                            }).catch((err) => {
-                              console.log(err);
-                            })
-                              
-                          }} formTypeId={FormTypeId.W9} />
+                            history(GlobalValues.basePageRoute)
+                          }).catch((err) => {
+                            console.log(err);
+                          })
+
+                        }} formTypeId={FormTypeId.W9} />
                         <Button
 
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
-                          onClick={viewPdf}
+                          onClick={() => {
+                            dispatch(GetW9DCPdf(authDetails?.accountHolderId))
+                          }}
                         >
                           View form
                         </Button>
                         <Button
-                        type="submit"
-                        //   disabled={!isValid}
+                          type="submit"
+                          //   disabled={!isValid}
 
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
                             submitForm().then((data) => {
-                            //   history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
+                              //   history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
                             }).catch((error) => {
                               console.log(error);
                             })
@@ -320,7 +327,7 @@ Section 4: Declaration and Undertaking
                           Continue
                         </Button>
                       </div>
-                     
+
                     </Paper>
                   </Form>
                 )}

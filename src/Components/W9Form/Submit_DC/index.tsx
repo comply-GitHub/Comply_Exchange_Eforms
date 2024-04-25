@@ -10,11 +10,14 @@ import { Button, Typography, Paper, Checkbox } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { Form, Formik } from "formik";
-import { W8_state_ECI,PostDualCert } from "../../../Redux/Actions";
+import { W8_state_ECI, PostDualCert } from "../../../Redux/Actions";
 import { useDispatch } from "react-redux";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import { GetW9DCPdf } from "../../../Redux/Actions/PfdActions";
+import useAuth from "../../../customHooks/useAuth";
 
 const Declaration = (props: any) => {
+  const { authDetails } = useAuth();
   const { open, setOpen } = props;
   const handleClose = () => {
     setOpen(false);
@@ -54,26 +57,26 @@ const Declaration = (props: any) => {
                 console.log("values", values)
                 setSubmitting(true);
                 const result = {
-                  ...PrevStepData, 
+                  ...PrevStepData,
                   ...values,
-                 
+
                   statusId: 1,
                 };
                 const returnPromise = new Promise((resolve, reject) => {
-                dispatch(
-                  PostDualCert(result, (data: any) => {
-                    localStorage.setItem("DualCertData", JSON.stringify(result))
-                    resolve(data);
-                  }
-                    , (err: any) => {
-                      reject(err);
+                  dispatch(
+                    PostDualCert(result, (data: any) => {
+                      localStorage.setItem("DualCertData", JSON.stringify(result))
+                      resolve(data);
                     }
-                  )
-                );
-              })
+                      , (err: any) => {
+                        reject(err);
+                      }
+                    )
+                  );
+                })
 
 
-            }}
+              }}
             >
               {({
                 errors,
@@ -331,14 +334,14 @@ const Declaration = (props: any) => {
                           <Divider style={{ marginBottom: "10px" }} />
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox 
-                          name="isConsentReceipentstatement" 
-                          value={values.isConsentReceipentstatement} 
-                          onChange={(e)=>{
-                            handleChange(e);
-                            setTimeout(()=>{setFieldValue("isConsentReceipentstatement_not",false)},50)
-                          }} 
-                          checked={values.isConsentReceipentstatement}                           
+                          <Checkbox
+                            name="isConsentReceipentstatement"
+                            value={values.isConsentReceipentstatement}
+                            onChange={(e) => {
+                              handleChange(e);
+                              setTimeout(() => { setFieldValue("isConsentReceipentstatement_not", false) }, 50)
+                            }}
+                            checked={values.isConsentReceipentstatement}
                           />
 
                           <Typography style={{ marginTop: "9px", fontSize: "17px" }}>
@@ -349,13 +352,13 @@ const Declaration = (props: any) => {
                         </div>
                         <p className="error">{errors.isConsentReceipentstatement}</p>
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox name="isNotConsentReceipentstatement" 
-                          value={values.isNotConsentReceipentstatement} 
-                          onChange={(e)=>{
-                            handleChange(e);
-                            setTimeout(()=>{setFieldValue("isConsentReceipentstatement",false)},50)
-                          }}
-                          checked={values.isNotConsentReceipentstatement} />
+                          <Checkbox name="isNotConsentReceipentstatement"
+                            value={values.isNotConsentReceipentstatement}
+                            onChange={(e) => {
+                              handleChange(e);
+                              setTimeout(() => { setFieldValue("isConsentReceipentstatement", false) }, 50)
+                            }}
+                            checked={values.isNotConsentReceipentstatement} />
                           <Typography style={{ marginTop: "9px", fontSize: "17px" }}>
                             {" "}
                             I do not give consent to receiving a recipent
@@ -375,45 +378,47 @@ const Declaration = (props: any) => {
                       marginTop: "40px",
                     }}
                   >
-                   <SaveAndExit Callback={() => {
-                            submitForm().then(() => {
-                              const prevStepData = JSON.parse(
-                                localStorage.getItem("DualCertData") || "{}"
-                              );
-                              const urlValue =
-                                window.location.pathname.substring(1);
-                                dispatch(PostDualCert(
-                                  {
-                                      ...prevStepData,
-                                      ...values,
-                                      stepName: `/${urlValue}`
-                                  }
-                                  , () => { }, 
-                                  () => { }) 
-                              );
-                                history(GlobalValues.basePageRoute)
-                              }).catch((err) => {
-                                console.log(err);
-                              })
-                            
-                             
-                          }} formTypeId={FormTypeId.W9} />
-                    <Button
+                    <SaveAndExit Callback={() => {
+                      submitForm().then(() => {
+                        const prevStepData = JSON.parse(
+                          localStorage.getItem("DualCertData") || "{}"
+                        );
+                        const urlValue =
+                          window.location.pathname.substring(1);
+                        dispatch(PostDualCert(
+                          {
+                            ...prevStepData,
+                            ...values,
+                            stepName: `/${urlValue}`
+                          }
+                          , () => { },
+                          () => { })
+                        );
+                        history(GlobalValues.basePageRoute)
+                      }).catch((err) => {
+                        console.log(err);
+                      })
 
+
+                    }} formTypeId={FormTypeId.W9} />
+                    <Button
+                      onClick={() => {
+                        dispatch(GetW9DCPdf(authDetails?.accountHolderId))
+                      }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >
                       View Form
                     </Button>
 
-                    <Button               
-                     onClick={() => {
-                      submitForm().then((data: any) => {
-                        history("/Thankyou_W9_DC");
-                      }).catch(() => {
+                    <Button
+                      onClick={() => {
+                        submitForm().then((data: any) => {
+                          history("/Thankyou_W9_DC");
+                        }).catch(() => {
 
-                      })
-                    }}       
+                        })
+                      }}
                       disabled={!isValid}
                       // type="submit"
                       variant="contained"
@@ -422,7 +427,7 @@ const Declaration = (props: any) => {
                       Submit Electronically
                     </Button>
                   </div>
-                
+
                 </form>
                 // </Form>
               )}
