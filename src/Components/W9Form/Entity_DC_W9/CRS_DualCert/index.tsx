@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { SubmitSchema } from "../../../../schemas/submit";
@@ -22,11 +22,18 @@ export default function Declaration (props: any){
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
-
-  const handleChangeAccodionState = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-    setExpandedState(newExpanded ? panel : false);
+  const handleChangeAccodionState = (panel: string, panelHeading: string) => (
+    event: React.SyntheticEvent,
+    newExpanded: boolean
+  ) => {
+    if (newExpanded) {
+      setExpandedState(panel);
+      localStorage.setItem("clickedPanelHeading", panelHeading);
+    } else {
+      setExpandedState(false);
+      localStorage.removeItem("clickedPanelHeading");
+    }
   };
-
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   
@@ -37,6 +44,9 @@ export default function Declaration (props: any){
     };
 
 
+    useEffect(() => {
+      document.title = "CRS Classification"
+    }, [])
   return (
     <Fragment>
      <section
@@ -132,7 +142,9 @@ export default function Declaration (props: any){
                     CRS Classification:
                     </Typography>
                     <Button
-                     onClick={() => setIsAccordionVisible(!isAccordionVisible)}
+                     onClick={() =>{ setIsAccordionVisible(!isAccordionVisible)
+                      setExpandedState(false)
+                     }}
                       style={{ backgroundColor: "#d3ae33",cursor:"pointer",color: "black", fontSize: "12px", fontWeight: "bold" }}
                     >
                     CRS Classification Guide
@@ -160,7 +172,7 @@ export default function Declaration (props: any){
 
               <Accordion
                 expanded={expandedState === "panel1"}
-                onChange={handleChangeAccodionState("panel1")}
+                onChange={handleChangeAccodionState("panel1","Introduction")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -186,7 +198,7 @@ export default function Declaration (props: any){
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel2"}
-                onChange={handleChangeAccodionState("panel2")}
+                onChange={handleChangeAccodionState("panel2","Financial Institution CRS")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -212,7 +224,7 @@ export default function Declaration (props: any){
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel3"}
-                onChange={handleChangeAccodionState("panel3")}
+                onChange={handleChangeAccodionState("panel3","Active Non Financial Entity")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -238,7 +250,7 @@ export default function Declaration (props: any){
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel4"}
-                onChange={handleChangeAccodionState("panel4")}
+                onChange={handleChangeAccodionState("panel4","Passive Non Financial Entity")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -268,11 +280,15 @@ export default function Declaration (props: any){
 
               <Typography align="center">
                 <Button
-                 onClick={() => setIsAccordionVisible(false)}
+                 onClick={() => {
+                
+                  history("/CRS_W9_DC")
+                  setExpandedState(false)
+                 }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
-             
+                      fontSize:"12px",
                     marginTop: "10px",
                     marginBottom: "20px",
                   }}
@@ -282,20 +298,27 @@ export default function Declaration (props: any){
                 <Button
                  disabled={!isContinueEnabled} 
                  onClick={() => {
+                  setExpandedState(false)
+                  const clickedPanelHeading = localStorage.getItem("clickedPanelHeading");
+                  if (clickedPanelHeading) {
+                 localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
+                 
+               }
                   if (expandedState === "panel2") {
                     history("/Financial_W9_DC");
                   } else if (expandedState === "panel3") {
                     history("/Active_Non_Financial_W9_DC");
                   }
                   else if(expandedState === "panel4"){
-                    history("/Passive_Non_Financial_W9_DC")
+                    history("/FinancialReport_CRS_W9_DC");
+                    // history("/Passive_Non_Financial_W9_DC")
                   }
                 }}
                   variant="contained"
                  
                   style={{
 
-                 
+                    fontSize:"12px",
                     marginTop: "10px",
                     marginBottom: "20px",
                     marginLeft: "10px"
@@ -304,170 +327,29 @@ export default function Declaration (props: any){
                 >
                   Confirm
                 </Button>
-
+                <Button
+                 onClick={() => { 
+                  history("/CRS_W9_DC")
+                  setExpandedState(false)
+                 }}
+                  variant="outlined"
+                  style={{
+                    color: "#1976E2",
+                     fontSize:"12px",
+                    marginTop: "10px",
+                    marginBottom: "20px",
+                    marginLeft: "10px"
+                  }}
+                >
+                  Back
+                </Button>
                 
               </Typography>
 
             </div>
             )}
 
-                  
-              {/* Third accodion
-              <div style={{ backgroundColor: "#fff", padding: "5px" }}>
-              <Typography
-                className="my-2 mx-2"
-                style={{ fontSize: "20px", color: "#1976d2", fontWeight: "bold" }}
-              >
-               CRS Classification Guide
-              </Typography>
-
-
-              <Accordion
-                expanded={expandedState === "panel1"}
-                onChange={handleChangeAccodionState("panel1")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  aria-controls="panel1d-content"
-                  id="panel1d-header"
-                >
-                  <Typography
-                    style={{ fontSize: "18px",color: "black" }}
-                  >
-                    Active Non-Financial Entity Overview
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography
-                    align="left"
-                    style={{ fontSize: "14px",color: "black" }}
-                    
-                  >
-                    CRS Classification - Active Non-Financial Entity Overview
-                  </Typography>
-                 
-                </AccordionDetails>
-              </Accordion>
-              <Accordion
-                expanded={expandedState === "panel2"}
-                onChange={handleChangeAccodionState("panel2")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  aria-controls="panel2d-content"
-                  id="panel2d-header"
-                >
-                  <Typography
-                    style={{ fontSize: "18px",color: "black" }}
-                  >
-                   Corporation that is regularly traded or a related entity of a regularly traded corporation
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography
-                    align="left"
-                    style={{ fontSize: "14px",color: "black" }}
-                    
-                  >
-                  CRS Classification - Corporation that is regularly traded or a related entity of a regularly traded corporation
-                  </Typography>
-                  
-                </AccordionDetails>
-              </Accordion>
-              <Accordion
-                expanded={expandedState === "panel3"}
-                onChange={handleChangeAccodionState("panel3")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  aria-controls="panel2d-content"
-                  id="panel2d-header"
-                >
-                  <Typography
-                    style={{ fontSize: "18px",color: "black" }}
-                  >
-                    Governmental Entity, International Organization, a Central Bank, or an Entity wholly
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography
-                    align="left"
-                    style={{ fontSize: "14px",color: "black" }}
-                    
-                  >
-                 CRS Classification - Governmental Entity, International Organization, a Central Bank, or an Entity wholly
-                  </Typography>
-                  
-                </AccordionDetails>
-              </Accordion>
-              <Accordion
-                expanded={expandedState === "panel4"}
-                onChange={handleChangeAccodionState("panel4")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  aria-controls="panel2d-content"
-                  id="panel2d-header"
-                >
-                  <Typography
-                    style={{ fontSize: "18px",color: "black" }}
-                  >
-                    Other Active Non-Financial Entity
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography
-                    align="left"
-                    style={{ fontSize: "14px",color: "black" }}
-                    
-                  >
-                 CRS Classification - Other Active Non-Financial Entity
-                  </Typography>
-                  
-                </AccordionDetails>
-              </Accordion>
-
-              
-
-
-              <Typography align="center">
-                <Button
-                 onClick={() => setIsAccordionVisible(false)}
-                  variant="outlined"
-                  style={{
-                    color: "#1976E2",
-             
-                    marginTop: "10px",
-                    marginBottom: "20px",
-                  }}
-                >
-                  Close
-                </Button>
-                <Button
-                 disabled={!isContinueEnabled} 
-                  variant="contained"
-                 
-                  style={{
-
-                 
-                    marginTop: "10px",
-                    marginBottom: "20px",
-                    marginLeft: "10px"
-
-                  }}
-                >
-                  Confirm
-                </Button>
-
-                
-              </Typography>
-
-            </div>
-
-              Fourth accodion
-              <div style={{ backgroundColor: "#fff", padding: "5px" }}>
-               <>Page</>
-            </div> */}
+            
             
 
 {!isAccordionVisible && (<div
@@ -475,20 +357,22 @@ export default function Declaration (props: any){
                       display: "flex",
                       justifyContent: "center",
                       marginTop: "40px",
+
                     }}
                   >
                    
                     <Button
                       variant="contained"
-                      style={{ color: "white", marginLeft: "15px" }}
+                      style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
                     >
                       View Form
                     </Button>
 
                     <Button    
+
                       disabled           
                       variant="contained"
-                      style={{ color: "white", marginLeft: "15px" }}
+                      style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
                     >
                       Confirm
                     </Button>
