@@ -61,11 +61,11 @@ export const fctaSchema = () => {
     isExemptionFATCAReportings: Yup.string().required(
       "Please select one of the options"
     ),
-    fatcaReportingId: Yup.boolean().when('isExemptionFATCAReportings', {
+    fatcaReportingId: Yup.number().when('isExemptionFATCAReportings', {
       is: "Yes",
       then: () =>
-        Yup.string()
-          .required("Please select options"),
+        Yup.number().notOneOf([0],"Please select options")
+         
     }),
   });
 };

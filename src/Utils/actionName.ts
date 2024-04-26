@@ -22,6 +22,7 @@ const ActionName = {
     GetConfirmationCode:"GetConfirmationCode",
     InsertAccountHolderDetail:"InsertAccountHolderDetail",
     InserDualCert:"InserDualCert",
+    UpsertEntityW9DualCert:"UpsertEntityW9DualCert",
     UpsertCRSandFATCAClassification: "UpsertCRSandFATCAClassification",
     CREATE_8233:"CREATE_8233",
     CREATE_8IMY:"CREATE_8IMY",
@@ -35,6 +36,7 @@ const ActionName = {
     W9PDF:"W9PDF",
     GetAllLanguage:"GetAllLanguage",
     //
+    GetAgentExemptionCodeHidden:"GetAgentExemptionCodeHidden",
     GetAgentCapacityHiddenForEform: "GetAgentCapacityHiddenForEform",
     GetAgentChapter4EntityTypeHiddenForEform: "GetAgentChapter4EntityTypeHiddenForEform",
     GetAgentChapter3EntityTypeHiddenForEform: "GetAgentChapter3EntityTypeHiddenForEform",

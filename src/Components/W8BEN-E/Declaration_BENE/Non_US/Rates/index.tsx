@@ -93,9 +93,9 @@ export default function Factors() {
   }, [authDetails])
 
   useEffect(() => {
-    // Id 3 to be changed with ResidenceCountryId when correct data is filled
+   
     dispatch(GetCountryArticleByID(ResidenceCountryId, (data: any) => {
-      //console.log(data,"GetCountryArticleByID")
+     
     }))
   }, [ResidenceCountryId])
 

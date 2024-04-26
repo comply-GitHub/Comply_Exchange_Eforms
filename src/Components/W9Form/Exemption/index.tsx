@@ -152,9 +152,10 @@ export default function FCTA_Reporting(props: any) {
               dispatch(
                 postW9Form(result, () => {
                   localStorage.setItem("PrevStepData", JSON.stringify(result));
-                  history("/US_Purposes/Back/Exemption/Tax")
+                 
                   resolve("success");
                   setSubmitting(true);
+                  history("/US_Purposes/Back/Exemption/Tax")
                 },
                   (error: any) => {
                     reject(error);
