@@ -23,6 +23,7 @@ const ActionName = {
     InsertAccountHolderDetail:"InsertAccountHolderDetail",
     InserDualCert:"InserDualCert",
     UpsertEntityW9DualCert:"UpsertEntityW9DualCert",
+    UpsertCRSandFATCAClassification: "UpsertCRSandFATCAClassification",
     CREATE_8233:"CREATE_8233",
     CREATE_8IMY:"CREATE_8IMY",
     postSecurutyCode:"postSecurityCode",
@@ -94,7 +95,9 @@ const ActionName = {
     InsertCaymanIndividualNonUS:"InsertCaymanIndividualNonUS",
     UpsertTaxLiabilityinanyOtherJurisdictions:"UpsertTaxLiabilityinanyOtherJurisdictions",
     GetByCaymanIndividualNonUSId:"GetByCaymanIndividualNonUSId",
-
+    GetTaxJusrisdictionMismatchExplaination:"GetTaxJusrisdictionMismatchExplaination",
+    InsertCaymanEntityNonUSChapter3Data:"InsertCaymanEntityNonUSChapter3Data",
+    InsertCaymanEntityNonUSFATCAClassification:"InsertCaymanEntityNonUSFATCAClassification",
 
   };
 

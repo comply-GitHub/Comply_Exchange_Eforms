@@ -30,7 +30,7 @@ export default function Certifications(props: any) {
   const location = useLocation();
   const { authDetails } = useAuth();
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
-  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+  const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
   const urlValue = location.pathname.substring(1);
   const initialValue = {
     agentId: authDetails?.agentId,
@@ -142,7 +142,7 @@ export default function Certifications(props: any) {
                     const result = { ...new_obj, ...values };
                     dispatch(
                         postSCIndividualEForm([result], () => {
-                        localStorage.setItem("DualCertData", JSON.stringify(result))
+                        localStorage.setItem("SelfCertData", JSON.stringify(result))
                         history("/Cayman/Individual/start/submission")
                         setSubmitting(true);
                         resolve("");
