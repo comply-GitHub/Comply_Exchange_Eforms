@@ -14,10 +14,13 @@ import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import { FormTypeId } from "../../../../Utils/constVals";
 import { SubmitSchema } from "../../../../schemas/submit";
 import { PostDualCert } from "../../../../Redux/Actions";
+import Utils from "../../../../Utils";
+
+
 
 export default function Classification (props: any){
 
-  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+  const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
 
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -31,6 +34,14 @@ export default function Classification (props: any){
   ) => {
     if (newExpanded) {
       setExpandedState(panel);
+      dispatch({
+        type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
+        payload: {
+          heading1: panelHeading,
+          subheading1:'FATCA Classification -'+ panelHeading+' Cayman'
+        },
+      });
+
       localStorage.setItem("clickedPanelHeading", panelHeading);
       localStorage.setItem("Heading1",panelHeading)
       localStorage.setItem("SubHeading1",'FATCA Classification -'+ panelHeading+' Cayman')
@@ -67,6 +78,18 @@ export default function Classification (props: any){
     useEffect(() => {
       document.title = "FATCA Classification"
     }, [])
+    useEffect(() => {
+      if(isAccordionVisible===false){
+        dispatch({
+          type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
+          payload: []
+        });
+      }
+     
+
+
+    }, [isAccordionVisible])
+
   return (
     <Fragment>
      <section
@@ -110,27 +133,27 @@ export default function Classification (props: any){
               initialValues={initialValue}
               validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
-                console.log("values", values)
-                setSubmitting(true);
-                const result = {
-                  ...PrevStepData, 
-                  ...values,
+                // console.log("values", values)
+                // setSubmitting(true);
+                // const result = {
+                //   ...PrevStepData, 
+                //   ...values,
                  
-                  statusId: 1,
-                };
-                const returnPromise = new Promise((resolve, reject) => {
-                dispatch(
-                  PostDualCert(result, (data: any) => {
-                    localStorage.setItem("DualCertData", JSON.stringify(result))
-                    resolve(data);
-                  }
-                    , (err: any) => {
-                      reject(err);
-                    }
-                  )
-                );
-              })
-              return returnPromise;
+                //   statusId: 1,
+                // };
+              //   const returnPromise = new Promise((resolve, reject) => {
+              //   dispatch(
+              //     PostDualCert(result, (data: any) => {
+              //       localStorage.setItem("SelfCertData", JSON.stringify(result))
+              //       resolve(data);
+              //     }
+              //       , (err: any) => {
+              //         reject(err);
+              //       }
+              //     )
+              //   );
+              // })
+              // return returnPromise;
 
             }}
             >
@@ -434,7 +457,8 @@ export default function Classification (props: any){
                 </Button>
                 <Button
                  onClick={() => { 
-                  history("/CRS_W9_DC")
+                  history("/Cayman/Entity/FATCA")
+                  setIsAccordionVisible(false)
                   setExpandedState(false)
                  }}
                   variant="outlined"
