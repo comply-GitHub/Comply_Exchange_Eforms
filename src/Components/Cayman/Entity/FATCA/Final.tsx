@@ -32,9 +32,26 @@ export default function Final (props: any){
 
   
     const initialValue = {
+        heading1:FATCAClassificationData?.heading1 ? FATCAClassificationData?.heading1 : "",
+        subHeading1:FATCAClassificationData?.subheading1 ? FATCAClassificationData?.subheading1 : "",
+        heading2:FATCAClassificationData?.heading2 ? FATCAClassificationData?.heading2 : "",
+        subHeading2:FATCAClassificationData?.subheading2 ? FATCAClassificationData?.subheading2 : "",
+        heading3:FATCAClassificationData?.heading3 ? FATCAClassificationData?.heading3 : "",
+        subHeading3:FATCAClassificationData?.subheading3 ? FATCAClassificationData?.subheading3 : "",
+        heading4:FATCAClassificationData?.heading4 ? FATCAClassificationData?.heading4 : "",
+        subHeading4:FATCAClassificationData?.subheading4 ? FATCAClassificationData?.subheading4 : "",
+        heading5:FATCAClassificationData?.heading5 ? FATCAClassificationData?.heading5 : "",
+        subHeading5:FATCAClassificationData?.subheading5 ? FATCAClassificationData?.subheading5 : "",
         selectedHeading: FATCAClassificationData?.selectedHeading ? FATCAClassificationData?.selectedHeading : "",
         selectedSubHeading: FATCAClassificationData?.selectedSubHeading ? FATCAClassificationData?.selectedSubHeading : "",
-        GIIN:""
+        GIIN:"",
+        fullnameofsponsorsntity:"",
+        sponsorentitygiin:"",
+        trusteegiin:"",
+        exemption:"",
+        status:"",
+        qualifyingcriteria:"",
+        directreportinggiin:""
     };
 
 
@@ -148,7 +165,11 @@ export default function Final (props: any){
                  
                   <div className="d-flex mt-3">
                     <Typography style={{fontSize:"19px"}}>Select FATCA Classification:</Typography>
-                    <Link className="mx-2"  onClick={() => setIsAccordionVisible(!isAccordionVisible)}style={{fontSize:"19px",textDecorationLine:"none",color:"#1149c4",cursor:"pointer"}}>Click Here to start Process</Link>
+                    <Link className="mx-2"  onClick={() => {
+                
+                history("/Cayman/Entity/FATCA")
+               }}
+                    style={{fontSize:"19px",textDecorationLine:"none",color:"#1149c4",cursor:"pointer"}}>Click Here to start Process</Link>
                   </div>
                    </div>
                   
@@ -221,8 +242,8 @@ export default function Final (props: any){
             </div>
             )}
 
-            
-                <Typography>
+                { values.heading2 === 'GIIN available' && (<>
+                    <Typography>
                     Select Status:
                 </Typography>
                 <Input
@@ -270,6 +291,367 @@ export default function Final (props: any){
                     width: "100%",
                     }}
                 />  
+                </>)}
+                
+                { values.selectedHeading === 'Sponsored FI in a Model 1 IGA jurisdiction' && (<>
+                    <Typography>
+                    Select Status:
+                </Typography>
+                <Typography>
+                {values.selectedHeading}
+                </Typography>
+                   
+                    
+                
+
+                <Typography>
+                    Please enter the full legal name of the sponsoring entity here:
+                </Typography>
+                <Input
+                    name="fullnameofsponsorsntity"
+                    value={
+                    values.fullnameofsponsorsntity
+                    }
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={Boolean(
+                    touched.fullnameofsponsorsntity &&
+                    errors.fullnameofsponsorsntity
+                    )}
+                    style={{
+                    border: " 1px solid #d9d9d9 ",
+                    padding: " 0 10px",
+                    color: "#121112",
+                    fontStyle: "italic",
+                    height: "50px",
+                    width: "100%",
+                    }}
+                />  
+                <Typography>
+                Please provide the sponsoring entity's GIIN here:
+
+                </Typography>
+                <Input
+                    name="sponsorentitygiin"
+                    value={
+                    values.sponsorentitygiin
+                    }
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={Boolean(
+                    touched.sponsorentitygiin &&
+                    errors.sponsorentitygiin
+                    )}
+                    style={{
+                    border: " 1px solid #d9d9d9 ",
+                    padding: " 0 10px",
+                    color: "#121112",
+                    fontStyle: "italic",
+                    height: "50px",
+                    width: "100%",
+                    }}
+                />  
+                </>)}
+
+
+
+                { values.selectedHeading === 'Sponsor has obtained a Sponsored Entity GIIN on its behalf' && (<>
+                    <Typography>
+                    Select Status:
+                </Typography>
+                <Typography>
+                {values.selectedHeading}
+                </Typography>
+                   
+                    
+                
+
+                <Typography>
+                    Please enter the full legal name of the sponsoring entity here:
+                </Typography>
+                <Input
+                    name="fullnameofsponsorsntity"
+                    value={
+                    values.fullnameofsponsorsntity
+                    }
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={Boolean(
+                    touched.fullnameofsponsorsntity &&
+                    errors.fullnameofsponsorsntity
+                    )}
+                    style={{
+                    border: " 1px solid #d9d9d9 ",
+                    padding: " 0 10px",
+                    color: "#121112",
+                    fontStyle: "italic",
+                    height: "50px",
+                    width: "100%",
+                    }}
+                />  
+                <Typography>
+                Please provide the sponsoring entity's GIIN here:
+
+                </Typography>
+                <Input
+                    name="sponsorentitygiin"
+                    value={
+                    values.sponsorentitygiin
+                    }
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={Boolean(
+                    touched.sponsorentitygiin &&
+                    errors.sponsorentitygiin
+                    )}
+                    style={{
+                    border: " 1px solid #d9d9d9 ",
+                    padding: " 0 10px",
+                    color: "#121112",
+                    fontStyle: "italic",
+                    height: "50px",
+                    width: "100%",
+                    }}
+                /> 
+
+                 <Typography>
+                Please provide the sponsoring entity's GIIN here:
+
+                </Typography>
+                <Input
+                    name="sponsorentitygiin"
+                    value={
+                    values.sponsorentitygiin
+                    }
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={Boolean(
+                    touched.sponsorentitygiin &&
+                    errors.sponsorentitygiin
+                    )}
+                    style={{
+                    border: " 1px solid #d9d9d9 ",
+                    padding: " 0 10px",
+                    color: "#121112",
+                    fontStyle: "italic",
+                    height: "50px",
+                    width: "100%",
+                    }}
+                /> 
+
+
+                </>)}
+
+                { values.selectedHeading === 'Trustee documented trust' && (<>
+                    <Typography>
+                    Select Status:
+                </Typography>
+                <Typography>
+                {values.selectedHeading}
+                </Typography>
+                   
+                    
+                
+
+                <Typography>
+                    Please enter the full legal name of the sponsoring entity here:
+                </Typography>
+                <Input
+                    name="fullnameofsponsorsntity"
+                    value={
+                    values.fullnameofsponsorsntity
+                    }
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={Boolean(
+                    touched.fullnameofsponsorsntity &&
+                    errors.fullnameofsponsorsntity
+                    )}
+                    style={{
+                    border: " 1px solid #d9d9d9 ",
+                    padding: " 0 10px",
+                    color: "#121112",
+                    fontStyle: "italic",
+                    height: "50px",
+                    width: "100%",
+                    }}
+                />  
+                <Typography>
+                Please provide the trustee GIIN here:
+
+                </Typography>
+                <Input
+                    name="trusteegiin"
+                    value={
+                    values.trusteegiin
+                    }
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={Boolean(
+                    touched.trusteegiin &&
+                    errors.trusteegiin
+                    )}
+                    style={{
+                    border: " 1px solid #d9d9d9 ",
+                    padding: " 0 10px",
+                    color: "#121112",
+                    fontStyle: "italic",
+                    height: "50px",
+                    width: "100%",
+                    }}
+                /> 
+
+                 
+
+                </>)}
+
+                { values.selectedHeading === 'Non Reporting/Certified Deemed Compliant Financial Institution Cayman** ' && (<>
+                    <Typography>
+                    Select Status:
+                </Typography>
+                <Typography>
+                {values.selectedHeading}
+                </Typography>
+                <Typography>
+                Please indicate exemption here:
+
+                </Typography>
+                <Input
+                    name="exemption"
+                    value={
+                    values.exemption
+                    }
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={Boolean(
+                    touched.exemption &&
+                    errors.exemption
+                    )}
+                    style={{
+                    border: " 1px solid #d9d9d9 ",
+                    padding: " 0 10px",
+                    color: "#121112",
+                    fontStyle: "italic",
+                    height: "50px",
+                    width: "100%",
+                    }}
+                /> 
+
+                 
+
+                </>)}
+
+                { values.selectedHeading === 'Exempt Beneficial Owner' && (<>
+                    <Typography>
+                    Select Status:
+                </Typography>
+                <Typography>
+                {values.selectedHeading}
+                </Typography>
+                <Typography>
+                Please indicate status here:<span style={{ color: "red" }}>*</span>
+
+                </Typography>
+                <Input
+                    name="status"
+                    value={
+                    values.status
+                    }
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={Boolean(
+                    touched.status &&
+                    errors.status
+                    )}
+                    style={{
+                    border: " 1px solid #d9d9d9 ",
+                    padding: " 0 10px",
+                    color: "#121112",
+                    fontStyle: "italic",
+                    height: "50px",
+                    width: "100%",
+                    }}
+                /> 
+
+                 
+
+                </>)}
+
+                { values.selectedHeading === 'Active NFFE' && (<>
+                    <Typography>
+                    Select Status:
+                </Typography>
+                <Typography>
+                {values.selectedHeading}
+                </Typography>
+                <Typography>
+                Please indicate qualifying criteria here:
+                {/* <span style={{ color: "red" }}>*</span> */}
+
+                </Typography>
+                <Input
+                    name="qualifyingcriteria"
+                    value={
+                    values.qualifyingcriteria
+                    }
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={Boolean(
+                    touched.qualifyingcriteria &&
+                    errors.qualifyingcriteria
+                    )}
+                    style={{
+                    border: " 1px solid #d9d9d9 ",
+                    padding: " 0 10px",
+                    color: "#121112",
+                    fontStyle: "italic",
+                    height: "50px",
+                    width: "100%",
+                    }}
+                /> 
+
+                 
+
+                </>)}
+
+                { values.selectedHeading === 'Direct Reporting NFFE' && (<>
+                    <Typography>
+                    Select Status:
+                </Typography>
+                <Typography>
+                {values.selectedHeading}
+                </Typography>
+                <Typography>
+                Please provide the Direct Reporting NFFE's GIIN here:
+                {/* <span style={{ color: "red" }}>*</span> */}
+
+                </Typography>
+                <Input
+                    name="directreportinggiin"
+                    value={
+                    values.directreportinggiin
+                    }
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={Boolean(
+                    touched.directreportinggiin &&
+                    errors.directreportinggiin
+                    )}
+                    style={{
+                    border: " 1px solid #d9d9d9 ",
+                    padding: " 0 10px",
+                    color: "#121112",
+                    fontStyle: "italic",
+                    height: "50px",
+                    width: "100%",
+                    }}
+                /> 
+
+                 
+
+                </>)}
+
+
 
 {!isAccordionVisible && (<div
                     style={{
