@@ -49,7 +49,13 @@ const CRS_W9_DC = React.lazy(
 const Financial_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Financial")
 );
+const SelfCert_Passive_W9_DC = React.lazy(
+  () => import("../Components/W9Form/SelfCertPassive")
+);
 
+const US_Determination_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/USDetermination")
+);
 const Complete_CRS_W9 = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_Complete")
 );
@@ -401,7 +407,21 @@ const ROUTES: Array<RouteType> = [
     Component: FinancialReport_CRS_W9_DC,
     isPrivate: true,
   },
-  //FinancialReport_CRS_W9_DC
+  {
+    name: "SelfCert_Passive_W9_DC",
+    path: "/SelfCert_Passive_W9_DC",
+    id: 2,
+    Component: SelfCert_Passive_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "US_Determination_W9_DC",
+    path: "/US_Determination_W9_DC",
+    id: 2,
+    Component: US_Determination_W9_DC,
+    isPrivate: true,
+  },
+  //US_Determination_W9_DC
   {
     name: "TaxPurpose_W9",
     path: "/TaxPurpose_W9",
