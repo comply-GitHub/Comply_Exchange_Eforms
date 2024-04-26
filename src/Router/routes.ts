@@ -254,7 +254,7 @@ const CaymanEntityFatcaClassificationGIINAvailable = React.lazy(() => import("..
 const CaymanEntityFatcaClassificationGIINNotAvailable = React.lazy(() => import("../Components/Cayman/Entity/FATCA/GIINNotAvailable"));
 const CaymanEntityFatcaClassificationSponsoredFinancialInstitution = React.lazy(() => import("../Components/Cayman/Entity/FATCA/SponsoredFinanceInstitution"));
 const CaymanIndividualFatcaClassificationComplete= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Complete"));
-// const CaymanIndividualStartCertification= React.lazy(() => import("../Components/Cayman/Individual/Start/Certification"));
+const CaymanIndividualFatcaClassificationFinal= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Final"));
 // const CaymanIndividualStartSubmission= React.lazy(() => import("../Components/Cayman/Individual/Start/Submission"));
 // const CaymanIndividualStartESConfirmation= React.lazy(() => import("../Components/Cayman/Individual/Start/ESConfirmation"));
 // const CaymanIndividualStartThankyou= React.lazy(() => import("../Components/Cayman/Individual/Start/Thankyou"));
@@ -882,12 +882,18 @@ const ROUTES: Array<RouteType> = [
     Component: CaymanEntityFatcaClassificationSponsoredFinancialInstitution,
     isPrivate: true,
   },
-  
   {
     name: "CaymanIndividualFatcaClassificationComplete",
     path: "/Cayman/Entity/FATCA/Complete",
     id: 7,
     Component: CaymanIndividualFatcaClassificationComplete,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualFatcaClassificationFinal",
+    path: "/Cayman/Entity/FATCA/Final",
+    id: 7,
+    Component: CaymanIndividualFatcaClassificationFinal,
     isPrivate: true,
   },
   {
