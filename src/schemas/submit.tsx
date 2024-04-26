@@ -27,6 +27,17 @@ export const SubmitSchema = () => {
 };
 
 
+
+export const SelfCertSchema_DC = () => {
+  return Yup.object().shape({
+    USSpecifiedPerson:Yup.string().required("Field cannot be empty") ,
+    FatcaExemption:Yup.number().when(["USSpecifiedPerson"],{
+      is: (USSpecifiedPerson: any) =>"No".includes(USSpecifiedPerson),
+      then: () => Yup.number().notOneOf([0 ,undefined,null],"Please Select one of the options"),
+     }),
+  });
+};
+
 export const SubmitSchema_BEN = () => {
 return Yup.object().shape({
   isSubmit: Yup.boolean().test(
