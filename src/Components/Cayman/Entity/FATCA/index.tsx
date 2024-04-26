@@ -38,7 +38,10 @@ export default function Classification (props: any){
         type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
         payload: {
           heading1: panelHeading,
-          subheading1:'FATCA Classification -'+ panelHeading+' Cayman'
+          subheading1:'FATCA Classification -'+ panelHeading+' Cayman',
+          selectedHeading : panelHeading,
+          selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
+        
         },
       });
 
