@@ -58,17 +58,17 @@ export default function Declaration (props: any){
       formTypeId: FormTypeId.CaymanEntity,
       formEntryId:0,
       classificationType : "FATCA",
-      userType:"Agent",
+      userType:"SC",
       heading1:FATCAClassificationData?.heading1 ? FATCAClassificationData?.heading1 : "",
-      subheading1:FATCAClassificationData?.subheading1 ? FATCAClassificationData?.subheading1 : "",
+      subHeading1:FATCAClassificationData?.subheading1 ? FATCAClassificationData?.subheading1 : "",
       heading2:FATCAClassificationData?.heading2 ? FATCAClassificationData?.heading2 : "",
-      subheading2:FATCAClassificationData?.subheading2 ? FATCAClassificationData?.subheading2 : "",
+      subHeading2:FATCAClassificationData?.subheading2 ? FATCAClassificationData?.subheading2 : "",
       heading3:FATCAClassificationData?.heading3 ? FATCAClassificationData?.heading3 : "",
-      subheading3:FATCAClassificationData?.subheading3 ? FATCAClassificationData?.subheading3 : "",
+      subHeading3:FATCAClassificationData?.subheading3 ? FATCAClassificationData?.subheading3 : "",
       heading4:FATCAClassificationData?.heading4 ? FATCAClassificationData?.heading4 : "",
-      subheading4:FATCAClassificationData?.subheading4 ? FATCAClassificationData?.subheading4 : "",
+      subHeading4:FATCAClassificationData?.subheading4 ? FATCAClassificationData?.subheading4 : "",
       heading5:FATCAClassificationData?.heading5 ? FATCAClassificationData?.heading5 : "",
-      subheading5:FATCAClassificationData?.subheading5 ? FATCAClassificationData?.subheading5 : "",
+      subHeading5:FATCAClassificationData?.subheading5 ? FATCAClassificationData?.subheading5 : "",
       selectedHeading: FATCAClassificationData?.selectedHeading ? FATCAClassificationData?.selectedHeading : "",
       selectedSubHeading: FATCAClassificationData?.selectedSubHeading ? FATCAClassificationData?.selectedSubHeading : "",
     };
@@ -125,7 +125,6 @@ export default function Declaration (props: any){
                   accountHolderDetailsId: authDetails.accountHolderId,
                   ...PrevStepData,
                   ...values,
-                  stepName: null
                 };
 
 
@@ -141,7 +140,9 @@ export default function Declaration (props: any){
                       reject(err);
                     }
                   )
+                  
                 );
+                history("/Cayman/Entity/FATCA/Final")
               })
               return returnPromise;
 

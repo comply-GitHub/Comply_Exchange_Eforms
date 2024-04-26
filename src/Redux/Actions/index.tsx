@@ -2687,7 +2687,7 @@ export const postSCFATCAClassification = (value: any,successCallback:Function,er
         errorCallback(err);
 
       },
-      // "multi"
+       "multi"
     );
   };
 };
