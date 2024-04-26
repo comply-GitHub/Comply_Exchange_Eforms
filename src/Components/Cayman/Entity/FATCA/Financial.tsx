@@ -33,7 +33,9 @@ export default function Financial (props: any){
         type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
         payload: {
           heading2: panelHeading,
-          subheading2:'FATCA Classification -'+ panelHeading+' Cayman'
+          subheading2:'FATCA Classification -'+ panelHeading+' Cayman',
+          selectedHeading : panelHeading,
+          selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
         },
       });
       localStorage.setItem("clickedPanelHeading", panelHeading);
