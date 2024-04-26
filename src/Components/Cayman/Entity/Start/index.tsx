@@ -37,6 +37,7 @@ import DatePicker from 'react-date-picker';
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { EntityStartSchema } from "../../../../schemas/cayman";
+import Utils from "../../../../Utils";
 
 export default function Fedral_tax(props: any) {
   const { authDetails } = useAuth();
@@ -245,6 +246,10 @@ export default function Fedral_tax(props: any) {
                   validationSchema={EntityStartSchema}
                   onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
+                    dispatch({
+                      type: Utils.actionName.InsertCaymanEntityNonUSChapter3Data,
+                      payload: values,
+                    });
                     history("/Cayman/Entity/FATCA")
                     // const submitPromise = new Promise((resolve, reject) => {
                     //   if (clickCount === 0) {

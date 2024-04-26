@@ -66,6 +66,7 @@ const EndPoint = {
  InserDualCert:"/DualCert/UpsertDualCert",
  InsertCaymanIndividualNonUS:"/CaymanIndividualNonUS/InsertCaymanIndividualNonUS",
  UpsertTaxLiabilityinanyOtherJurisdictions:"/CaymanIndividualNonUS/UpsertTaxLiabilityinanyOtherJurisdictions",
+ UpsertCRSandFATCAClassification:"/DualCert/UpsertCRSandFATCAClassification",
 
 // Form GetApis:
 GetDual:"/DualCert/GetDualCert",
