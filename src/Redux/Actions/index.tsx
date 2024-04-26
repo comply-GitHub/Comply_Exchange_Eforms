@@ -2616,3 +2616,33 @@ export const upsertTaxLiablitySCIndividual = (value: any, callback: Function, er
     );
   };
 };
+
+export const GetTaxJusrisdictionMismatchExplaination = (callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetTaxJusrisdictionMismatchExplaination,
+      "",
+      (resData) => {
+        const { data } = resData;
+        if (resData.status === 200) {
+          if (callback) {
+            callback(data);
+          }
+          dispatch({
+            type: Utils.actionName.GetTaxJusrisdictionMismatchExplaination,
+            payload: {
+              GetTaxJurisdictionMismatchData: resData.data,
+            },
+          });
+        } else {
+          if (callback) {
+            callback();
+          }
+        }
+      },
+      (error: any) => {
+        
+      }
+    );
+  };
+}

@@ -24,7 +24,7 @@ import Declaration from "../../reusables/Declaration";
 import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { W8_state } from "../../../Redux/Actions";
-import {  useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { ContentCopy } from "@mui/icons-material";
 import checksolid from "../../../assets/img/check-solid.png";
 import Accordion from "@mui/material/Accordion";
@@ -38,6 +38,7 @@ import SecurityCodeRecover from "../../Reusable/SecurityCodeRecover";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
+import { GetW9DCPdf } from "../../../Redux/Actions/PfdActions";
 type ValuePiece = Date | null;
 console.log(Date, "date");
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
@@ -57,9 +58,9 @@ export default function Penalties() {
 
     setSecurityWordError("");
   };
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Certifications II"
-  },[])
+  }, [])
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, [])
@@ -70,7 +71,7 @@ export default function Penalties() {
   const [toolInfo, setToolInfo] = useState("");
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
-  console.log(PrevStepData,";;")
+  console.log(PrevStepData, ";;")
   const W9Data = useSelector((state: any) => state.W9Data);
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
   const initialValue = {
@@ -106,7 +107,7 @@ export default function Penalties() {
           const returnPromise = new Promise((resolve, reject) => {
 
             const temp = [{
-              ...PrevStepData[0], 
+              ...PrevStepData[0],
               ...values,
               date: new Date().toISOString(),
               stepName: `/${urlValue}`
@@ -115,8 +116,8 @@ export default function Penalties() {
               PostDualCert(temp, () => {
                 setSubmitting(true);
                 localStorage.setItem("DualCertData", JSON.stringify(temp))
-              
-                
+
+
                 resolve("success")
               }, (err: any) => {
                 reject(err);
@@ -152,7 +153,11 @@ export default function Penalties() {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
-                  <div className="viewform">View Form</div>
+                  <div className="viewform"
+                    onClick={() => {
+                      dispatch(GetW9DCPdf(authDetails?.accountHolderId))
+                    }}
+                  >View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                     {GethelpData && GethelpData[3].id === 5 ? (
@@ -221,7 +226,7 @@ export default function Penalties() {
                           fontWeight: "550",
                         }}
                       >
-                         Certification<span style={{ color: "red" }}>*</span>
+                        Certification<span style={{ color: "red" }}>*</span>
                       </Typography>
                       <Typography
                         align="left"
@@ -231,7 +236,7 @@ export default function Penalties() {
                           fontWeight: "550",
                         }}
                       >
-                       SelfCert Individual Electronic Substitute Form Statement
+                        SelfCert Individual Electronic Substitute Form Statement
                       </Typography>
                       <Typography
                         align="left"
@@ -725,7 +730,9 @@ export default function Penalties() {
                         }}
                       >
                         <Button
-
+                          onClick={() => {
+                            dispatch(GetW9DCPdf(authDetails?.accountHolderId))
+                          }}
                           variant="contained"
                           style={{ color: "white" }}
                         >
@@ -748,21 +755,21 @@ export default function Penalties() {
                               );
                               const urlValue =
                                 window.location.pathname.substring(1);
-                                dispatch(PostDualCert(
-                                  {
-                                      ...prevStepData,
-                                      ...values,
-                                      stepName: `/${urlValue}`
-                                  }
-                                  , () => { }, 
-                                  () => { }) 
+                              dispatch(PostDualCert(
+                                {
+                                  ...prevStepData,
+                                  ...values,
+                                  stepName: `/${urlValue}`
+                                }
+                                , () => { },
+                                () => { })
                               );
-                                history(GlobalValues.basePageRoute)
-                              }).catch((err) => {
-                                console.log(err);
-                              })
-                            
-                             
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+
+
                           }} formTypeId={FormTypeId.W9} />
                         </div>
 
@@ -783,7 +790,7 @@ export default function Penalties() {
                           Submit Electronically
                         </Button>
                       </div>
-                    
+
                     </Paper>
                   </div>
                 </div>

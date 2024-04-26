@@ -81,6 +81,40 @@ export const StartSchema = () => {
 };
 
 
+export const EntityStartSchema = () => {
+  return Yup.object().shape({
+    chapter3Status: Yup.number()
+      .min(1, "")
+      .required(""),
+    businessName: Yup.string().required("Field Cannot be Empty"),
+    countryOfIncorporation: Yup.number().notOneOf([0], "Field Cannot be Empty"),
+    dateOfIncorporation: Yup.string().required("Date of Incorporation Cannot be Empty"),
+    jurisdictionForTaxPurposes:Yup.boolean(),
+    countryOfTaxesPaid : Yup.number().when("jurisdictionForTaxPurposes",{
+      is:true,
+      then:() => Yup.number().notOneOf([0], "Country of Taxes Paid Cannot be Empty"),
+      otherwise:()=> Yup.number().notRequired()
+    }),
+    taxJuridictionListItemSelectedId : Yup.number().when("jurisdictionForTaxPurposes",{
+      is:true,
+      then:() => Yup.number().notOneOf([0], "Please select at least one option"),
+      otherwise:()=> Yup.number().notRequired()
+    }),
+    explainationForNone: Yup.string().when("taxJuridictionListItemSelectedId",{
+      is:15,
+      then:() =>  Yup.string().required("Please provide and Explaination"),
+      otherwise:()=> Yup.string().notRequired()
+    }),
+    confirmThisisaTrueAndAccurate: Yup.boolean().when("taxJuridictionListItemSelectedId",{
+      is:15,
+      then: ()=> Yup.boolean().test('is-true', 'Please check the confirmation box', value => value === true),
+      otherwise:()=> Yup.boolean().notRequired()
+    })
+    
+
+  });
+};
+
 
 
 

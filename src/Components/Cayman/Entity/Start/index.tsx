@@ -14,6 +14,7 @@ import {
   TextField,
   Select,
   MenuItem,
+  Checkbox,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "@mui/material/Link";
@@ -27,15 +28,15 @@ import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../../../customHooks/useAuth";
-import { GetChapter3Status, GetHelpVideoDetails, getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode, postW8BEN_EForm } from "../../../../Redux/Actions";
+import { GetChapter3Status, GetHelpVideoDetails, GetTaxJusrisdictionMismatchExplaination, getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode,  postW8BEN_EForm } from "../../../../Redux/Actions";
 import GlobalValues, { FormTypeId, FormTypeSelection } from "../../../../Utils/constVals";
 import { GetBenEPdf } from "../../../../Redux/Actions/PfdActions";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
-import { TaxPurposeSchema } from "../../../../schemas/w8BenE";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import DatePicker from 'react-date-picker';
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
+import { EntityStartSchema } from "../../../../schemas/cayman";
 
 export default function Fedral_tax(props: any) {
   const { authDetails } = useAuth();
@@ -55,6 +56,7 @@ export default function Fedral_tax(props: any) {
   const agentDefaultDetails = JSON.parse(
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
+  const [taxJuridictionListItemArray, setTaxJuridictionListItemArray] = useState<any>([]);
 
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
 
@@ -70,11 +72,15 @@ export default function Fedral_tax(props: any) {
     jurisdictionForTaxPurposes : false,
     isPrimaryResidenceJusrisdiction:false,
     countryOfTaxesPaid:0,
+    taxJuridictionListItem:[],
+    taxJuridictionListItemSelectedId:0,
+    explainationForNone:"",
+    confirmThisisaTrueAndAccurate:false,
     chapter3Status: 0,
     attachSupportingDocumentFile: null,
     attachSupportingDocument: null,
     descriptionHybridStatus: "",
-    isHybridStatus: 0,
+    isHybridStatus: 3,
     isSubmissionSingleUSOwner: "",
     isDisRegardedSection1446: "",
     statusId: 1,
@@ -92,39 +98,52 @@ export default function Fedral_tax(props: any) {
 
   const W8BENEData = useSelector((state: any) => (state?.W8BENE?.chapter3Status !== 0) ? state?.W8BENE : JSON.parse(localStorage.getItem("PrevStepData") || "{}"));
 
-
-  const LoadPageData = () => {
-    if (W8BENEData !== null && W8BENEData !== undefined) {
-      const tempData = {
-        ...W8BENEData,
-        chapter3Status: Number.parseInt(W8BENEData.chapter3Status ?? 0),
-        countryOfIncorporation: Number.parseInt(W8BENEData.countryOfIncorporation),
-        dateOfIncorporation:"",
-        jurisdictionForTaxPurposes : false,
-        isPrimaryResidenceJusrisdiction:false,
-        countryOfTaxesPaid:0,
-        isHybridStatus: Number.parseInt(W8BENEData.isHybridStatus),
-        businessName: W8BENEData.entityName && W8BENEData.entityName !== null && W8BENEData.entityName !== "" ? W8BENEData.entityName : obValues.entityName,
-        isSubmissionSingleUSOwner: W8BENEData.isSubmissionSingleUSOwner === true ? "yes" : "no",
-        isDisRegardedSection1446: W8BENEData.isDisRegardedSection1446 === true ? "yes" : "no",
-        stepName: `/${urlValue}`,
-      };
-      setInitialValue(tempData);
-    }
-  }
+  //   console.log("W8BENEData", W8BENEData)
+  // const LoadPageData = () => {
+  //   if (W8BENEData !== null && W8BENEData !== undefined) {
+  //     const tempData = {
+  //       ...W8BENEData,
+  //       chapter3Status: Number.parseInt(W8BENEData.chapter3Status ?? 0),
+  //       countryOfIncorporation: Number.parseInt(W8BENEData.countryOfIncorporation),
+  //       dateOfIncorporation:"",
+  //       jurisdictionForTaxPurposes : false,
+  //       isPrimaryResidenceJusrisdiction:false,
+  //       countryOfTaxesPaid:0,
+  //       taxJuridictionListItem : taxJuridictionListItem ? taxJuridictionListItem : [],
+  //       isHybridStatus: Number.parseInt(W8BENEData.isHybridStatus),
+  //       businessName: W8BENEData.entityName && W8BENEData.entityName !== null && W8BENEData.entityName !== "" ? W8BENEData.entityName : obValues.entityName,
+  //       isSubmissionSingleUSOwner: W8BENEData.isSubmissionSingleUSOwner === true ? "yes" : "no",
+  //       isDisRegardedSection1446: W8BENEData.isDisRegardedSection1446 === true ? "yes" : "no",
+  //       stepName: `/${urlValue}`,
+  //     };
+  //     setInitialValue(tempData);
+  //   }
+  // }
   useEffect(() => {
     document.title = "Chapter III"
   }, [])
+
 
   useEffect(() => {
     dispatch(getAllCountries());
     dispatch(getAllCountriesCode());
     dispatch(getAllCountriesIncomeCode());
     dispatch(GetHelpVideoDetails());
-    // dispatch(getAllStateByCountryId(258));
+    dispatch(GetTaxJusrisdictionMismatchExplaination((data:any) => {
+      setTaxJuridictionListItemArray(data)
+    }));
     dispatch(GetChapter3Status(FormTypeId.BENE));
-    LoadPageData();
+    //LoadPageData();
   }, []);
+  useEffect(() => {
+    setInitialValue((preV) => {
+      return {
+        ...preV,
+        "taxJuridictionListItem":taxJuridictionListItemArray 
+      }
+    })
+    //taxJuridictionListItemArray ? taxJuridictionListItemArray : 
+  },[taxJuridictionListItemArray])
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
@@ -211,7 +230,7 @@ export default function Fedral_tax(props: any) {
         <div className="row w-100">
           <div className="col-4">
             <div style={{ padding: "20px 0px", height: "100%" }}>
-              <BreadCrumbComponent breadCrumbCode={1203} formName={FormTypeId.CaymanEntity} />
+              <BreadCrumbComponent breadCrumbCode={1301} formName={FormTypeId.CaymanEntity} />
             </div>
           </div>
           <div className="col-8 mt-3">
@@ -223,10 +242,10 @@ export default function Fedral_tax(props: any) {
                   validateOnBlur={false}
                   validateOnMount={true}
                   initialValues={initialValue}
-                  validationSchema={TaxPurposeSchema}
+                  validationSchema={EntityStartSchema}
                   onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
-                    history("/Cayman/Entity/Start/FATCA/Classification")
+                    history("/Cayman/Entity/FATCA")
                     // const submitPromise = new Promise((resolve, reject) => {
                     //   if (clickCount === 0) {
                     //     setClickCount(clickCount + 1);
@@ -276,7 +295,7 @@ export default function Fedral_tax(props: any) {
                     validateForm
                   }) => (
                     <Form onSubmit={handleSubmit}>
-                        {/* <>{console.log("values",values)}</> */}
+                        <>{console.log("values",values, errors)}</>
                       <div style={{ width: "100%" }}>
                         {
                           //touched.countryOfIncorporation &&
@@ -1039,27 +1058,65 @@ export default function Fedral_tax(props: any) {
                                       </Typography>
                                       
                                                       {/* This is going to be dynamic data for radio group */}
-                                      {/*
+                                      
                                       
                                       <FormControl className="w-100">
                                           <RadioGroup
                                               aria-labelledby="demo-controlled-radio-buttons-group"
-                                              name="jus"
-                                              value={values.isPrimaryResidenceJusrisdiction}
+                                              name="taxJuridictionListItemSelectedId"
+                                              value={values?.taxJuridictionListItemSelectedId}
                                               onChange={(event) => {
-                                                  setFieldValue("isPrimaryResidenceJusrisdiction", event.currentTarget.value === "true" ? true : false)
+                                                  setFieldValue("taxJuridictionListItemSelectedId", event.currentTarget.value )
                                                 }}  
                                               style={{ flexDirection: "row" }}
                                           >
+                                            {values?.taxJuridictionListItem?.map((item: any, index: any) => (
+                                              <FormControlLabel
+                                                key={index}
+                                                name="taxJuridictionListItemSelectedId"
+                                                value={item.id}
+                                                control={<Radio />}
+                                                label={item.mismatchExplanation}
+                                              />
+                                            ))}
                                               
-                                              <FormControlLabel name="isPrimaryResidenceJusrisdiction" value="true" control={<Radio />} label="Yes" />
-                                              <FormControlLabel name="isPrimaryResidenceJusrisdiction" value="false" control={<Radio />} label="No" />
                                           </RadioGroup>
-                                      </FormControl> */}
-                                      {/* <p className="error">
-                                        {typeof (errors.businessName) == "string" && touched.businessName ? errors.businessName : <></>}
-                                      </p> */}
+                                      </FormControl> 
+                                      
+                                      {values.taxJuridictionListItemSelectedId == 15 && (<>
+                                      <div className="col-6">
+                                      <FormControl className="w-100 textfield1">
+                                        <TextField 
+                                        className="textfield1"
+                                         name="explainationForNone" 
+                                         value={values.explainationForNone} 
+                                         placeholder="Please provide an explanation here:"
+                                         onChange={handleChange} />
+                                      </FormControl>
+                                      
+                                      
+                                      
+                                      <FormControl className="w-100">
+                                          
+                                      <Checkbox name="confirmThisisaTrueAndAccurate"
+                                          value={values.confirmThisisaTrueAndAccurate}
+                                          checked={values.confirmThisisaTrueAndAccurate}
+                                          onChange={handleChange}
+                                          size="medium"
+                                          style={{ fontSize: "2rem",marginTop: "6px" }} />
+                                        <Typography className="mx-2"
+                                          style={{ fontSize: "14px", color: "black", marginTop: "15px", textAlign: "justify" }}
+                                        >
+                                        Check to confirm this is a true and accurate statement
+                                        </Typography>
+                                      </FormControl> 
+                                      
                                     </div>
+                                    </>)}
+                                    
+                                    </div>
+
+                                    
 
 
 
@@ -1072,6 +1129,8 @@ export default function Fedral_tax(props: any) {
                             ) : (
                               ""
                             )}
+
+
 
                             {values.chapter3Status == 2 ||
                               values.chapter3Status == 3 ||
@@ -1346,7 +1405,7 @@ export default function Fedral_tax(props: any) {
                                 <div>
 
                                 <div
-                                        className="col-3  "
+                                        className="col-3"
                                         style={{ marginLeft: "0px" }}
                                     >
                                         <Typography
@@ -1450,6 +1509,7 @@ export default function Fedral_tax(props: any) {
                                       style={{
                                         fontSize: "15px",
                                       }}
+                                      
                                     >
                                       Attach supporting documentation:
                                     </Typography>
@@ -1476,7 +1536,7 @@ export default function Fedral_tax(props: any) {
                                         <FormControl>
                                           <RadioGroup
                                             row
-                                            defaultValue="no"
+                                            defaultValue="No"
                                             aria-labelledby="demo-row-radio-buttons-group-label"
                                             name="isSubmissionSingleUSOwner"
                                             value={values.isSubmissionSingleUSOwner}
@@ -1484,13 +1544,13 @@ export default function Fedral_tax(props: any) {
                                           >
                                             <FormControlLabel
                                               control={<Radio />}
-                                              value="yes"
+                                              value="Yes"
                                               name="isSubmissionSingleUSOwner"
                                               label="Yes"
                                             />
                                             <FormControlLabel
                                               control={<Radio />}
-                                              value="no"
+                                              value="No"
                                               name="isSubmissionSingleUSOwner"
                                               label="No"
                                             />
@@ -1670,27 +1730,74 @@ export default function Fedral_tax(props: any) {
                                         
                                       </Typography>
                                       
+                                      <div className="col-6">
+                                      <Typography
+                                        align="left"
+                                        className="d-flex w-60 "
+                                        style={{ fontSize: "13px" }}
+                                      >
+                                        Content block for tax jurisdiction mismatch explanation 
+                                        <span style={{ color: "red" }}>*</span>
+                                        
+                                      </Typography>
+                                      
                                                       {/* This is going to be dynamic data for radio group */}
-                                      {/*
+                                      
                                       
                                       <FormControl className="w-100">
                                           <RadioGroup
                                               aria-labelledby="demo-controlled-radio-buttons-group"
-                                              name="jus"
-                                              value={values.isPrimaryResidenceJusrisdiction}
+                                              name="taxJuridictionListItemSelectedId"
+                                              value={values?.taxJuridictionListItemSelectedId}
                                               onChange={(event) => {
-                                                  setFieldValue("isPrimaryResidenceJusrisdiction", event.currentTarget.value === "true" ? true : false)
+                                                  setFieldValue("taxJuridictionListItemSelectedId", event.currentTarget.value )
                                                 }}  
                                               style={{ flexDirection: "row" }}
                                           >
+                                            {values?.taxJuridictionListItem?.map((item: any, index: any) => (
+                                              <FormControlLabel
+                                                key={index}
+                                                name="taxJuridictionListItemSelectedId"
+                                                value={item.id}
+                                                control={<Radio />}
+                                                label={item.mismatchExplanation}
+                                              />
+                                            ))}
                                               
-                                              <FormControlLabel name="isPrimaryResidenceJusrisdiction" value="true" control={<Radio />} label="Yes" />
-                                              <FormControlLabel name="isPrimaryResidenceJusrisdiction" value="false" control={<Radio />} label="No" />
                                           </RadioGroup>
-                                      </FormControl> */}
-                                      {/* <p className="error">
-                                        {typeof (errors.businessName) == "string" && touched.businessName ? errors.businessName : <></>}
-                                      </p> */}
+                                      </FormControl> 
+                                      {values.taxJuridictionListItemSelectedId == 15 && (<>
+                                      <div className="col-6">
+                                      <FormControl className="w-100 textfield1">
+                                        <TextField 
+                                        className="textfield1"
+                                         name="explainationForNone" 
+                                         value={values.explainationForNone} 
+                                         placeholder="Please provide an explanation here:"
+                                         onChange={handleChange} />
+                                      </FormControl>
+                                      
+                                      
+                                      
+                                      <FormControl className="w-100">
+                                          
+                                      <Checkbox name="confirmThisisaTrueAndAccurate"
+                                          value={values.confirmThisisaTrueAndAccurate}
+                                          checked={values.confirmThisisaTrueAndAccurate}
+                                          onChange={handleChange}
+                                          size="medium"
+                                          style={{ fontSize: "2rem",marginTop: "6px" }} />
+                                        <Typography className="mx-2"
+                                          style={{ fontSize: "14px", color: "black", marginTop: "15px", textAlign: "justify" }}
+                                        >
+                                        Check to confirm this is a true and accurate statement
+                                        </Typography>
+                                      </FormControl> 
+                                      
+                                    </div>
+                                    </>)}
+                                    
+                                    </div>
                                     </div>
 
 

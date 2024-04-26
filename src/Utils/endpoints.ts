@@ -27,6 +27,8 @@ const EndPoint = {
   GetIGA:"/Countries/GetIGA",
   GetFederalTaxClassification:"/W9Common/GetFederalTaxClassification",
   GetAllUSFormTypes:"/FormTypes/GetAllUSFormTypes",
+  GetTaxJusrisdictionMismatchExplaination:"/CaymanIndividualNonUS/GetTaxJurisdictionMismatchExplanation",
+
 
   //
   GetAgentCapacityHiddenForEform: "/WebAppBasic/GetAgentCapacityHiddenForEform",
@@ -88,6 +90,8 @@ GetBENEPdf:"/W8BENEEntity/GetBENEPdf",
 GetExpPdf:"/W8EXPEntity/GetExpPdf",
 GetIMYPdf:"/W8IMYEntity/GetIMYPdf",
 GetForm8233Pdf:"/Form8233Individual/GetForm8233Pdf",
+GetW9DCPdf:"/W9IndividualEntity/GetW9DCPdf",
+
 
  //Account Holder Endpoints
  UpsertAccountHolderIncomeAllocation:"/AccountHolderDetail/UpsertAccountHolderIncomeAllocation",

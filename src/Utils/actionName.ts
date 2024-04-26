@@ -92,6 +92,7 @@ const ActionName = {
     InsertCaymanIndividualNonUS:"InsertCaymanIndividualNonUS",
     UpsertTaxLiabilityinanyOtherJurisdictions:"UpsertTaxLiabilityinanyOtherJurisdictions",
     GetByCaymanIndividualNonUSId:"GetByCaymanIndividualNonUSId",
+    GetTaxJusrisdictionMismatchExplaination:"GetTaxJusrisdictionMismatchExplaination",
 
 
   };
