@@ -31,6 +31,9 @@ export default function Certificates(props: any) {
   useEffect(() => {
     dispatch(GetHelpVideoDetails())
   }, [])
+  const isHide: any = useSelector(
+    (state: any) => state?.GetSelfCetHiddenReducer?.getSelfCetHiddenData?.[0]
+  );
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -122,12 +125,15 @@ export default function Certificates(props: any) {
       title: "W-9",
       userType: "gen",
       enabled: ["usIndividual", "usEntity"],
-      description: "Used by individuals and entities to certify US Tax ID number",
+      isHide: isHide?.enableW9,
+      description:
+        "Used by individuals and entities to certify US Tax ID number",
     },
     {
       id: "W-8BEN",
       title: "W-8BEN",
       userType: "gen",
+      isHide: isHide?.enableW8BEN,
       enabled: ["usNonIndividual"],
       description:
         "Used by individuals to certify beneficial owner, or account holder of financial institution, and claim treaty benefits",
@@ -136,6 +142,7 @@ export default function Certificates(props: any) {
       id: "W-8BEN-E",
       title: "W-8BEN-E",
       userType: "gen",
+      isHide: isHide?.enableW8BENE,
       enabled: ["usNonEntity"],
       description:
         "Used by entities to certify beneficial owner, or account holder of financial institution, and claim treaty benefits",
@@ -144,6 +151,7 @@ export default function Certificates(props: any) {
       id: "W-8ECI",
       title: "W-8ECI",
       userType: "gen",
+      isHide: isHide?.enableW8ECI,
       enabled: ["usNonIndividual", "usNonEntity"],
       description:
         "Used by individuals, or entities, to certify beneficial owner receiving U.S. sourced income that is effectively connected with a U.S. trade or business ",
@@ -152,6 +160,7 @@ export default function Certificates(props: any) {
       id: "W-8EXP",
       title: "W-8EXP",
       userType: "gen",
+      isHide: isHide?.enableW8EXP,
       enabled: ["usNonEntity"],
       description:
         "Used by governments, or other tax exempt entities, to certify beneficial owner, or account holder of financial institution",
@@ -160,6 +169,7 @@ export default function Certificates(props: any) {
       id: "W-8IMY",
       title: "W-8IMY",
       userType: "gen",
+      isHide: isHide?.enableW8IMY,
       enabled: ["usNonEntity"],
       description:
         "Used by entities to certify intermediary, or flow through entity, receiving payments on behalf of another person",
@@ -168,6 +178,7 @@ export default function Certificates(props: any) {
       id: "form 8233",
       title: "Form 8233",
       userType: "gen",
+      isHide: isHide?.visibilty8233,
       enabled: ["usNonIndividual"],
       description:
         "Used by individuals to certify beneficial owner claiming treaty exemption on compensation for personal services",
@@ -177,8 +188,7 @@ export default function Certificates(props: any) {
       title: "Cayman Individual 2018",
       userType: "SC",
       enabled: ["usNonIndividual"],
-      description:
-        "Used by individuals to declare any/all tax residencies",
+      description: "Used by individuals to declare any/all tax residencies",
     },
     {
       id: "cayman-entity",

@@ -474,6 +474,28 @@ export const GetAllLanguage = (): any => {
   };
 };
 
+export const GetSelfCetHidden = (id:any): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.getSelfCetHidden, `?id=${id}`,
+      (resData) => {
+        const { data } = resData;
+        if (resData.status === 200) {
+          dispatch({
+            type: Utils.actionName.getSelfCetHidden,
+            payload: {
+              getSelfCetHiddenData: resData.data,
+            },
+          });
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
+
 export const getBreadCrums = (FormId: Number, callback: Function): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
