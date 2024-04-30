@@ -285,7 +285,7 @@ export default function IndividualUs() {
     if (e.target.value.length === 2) {
       setPayload({ ...payload, sortCode: payload.sortCode + "-" });
       values.sortCode = values.sortCode + "-";
-    } 
+    }
     if (e.target.value.length === 5) {
       setPayload({ ...payload, sortCode: payload.sortCode + "-" });
       values.sortCode = values.sortCode + "-";

@@ -11,7 +11,11 @@ import Form from "../reusables/Formguide";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../Redux/store";
-import { postFormSelection, GetHelpVideoDetails, GetSelfCetHidden } from "../../Redux/Actions";
+import {
+  postFormSelection,
+  GetHelpVideoDetails,
+  GetSelfCetHidden,
+} from "../../Redux/Actions";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import checksolid from "../../assets/img/check-solid.png";
 import agreement from "../../assets/img/agreement.png";
@@ -26,9 +30,9 @@ export default function Certificates(props: any) {
       "Instructor Identifier Format is ?*********************** \n 9- Numeric Value Only \n A - Alphabetical Character Only \n* = Alphanumeric Character only \n ? - Characters optional after this"
     );
   };
-useEffect(()=>{
-  dispatch(GetHelpVideoDetails())
-},[])
+  useEffect(() => {
+    dispatch(GetHelpVideoDetails());
+  }, []);
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -38,7 +42,9 @@ useEffect(()=>{
   const [showInfoMore, setShowInfoMore] = useState(false);
   const [diableForm, setDisableForm] = useState("usIndividual");
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
-  const isHide: any = useSelector((state: any) => state?.GetSelfCetHiddenReducer?.getSelfCetHiddenData?.[0]);
+  const isHide: any = useSelector(
+    (state: any) => state?.GetSelfCetHiddenReducer?.getSelfCetHiddenData?.[0]
+  );
   const auth = JSON.parse(authDetailsString);
   const userType = auth?.configurations?.userType;
 
@@ -52,7 +58,7 @@ useEffect(()=>{
   const handleCardSelect = (card: any) => {
     if (card.enabled.includes(diableForm)) {
       setSelectedCard(card.id);
-    };
+    }
   };
 
   useEffect(() => {
@@ -61,7 +67,7 @@ useEffect(()=>{
     let onboardingData;
     let isDisabledFormed;
     dispatch(GetSelfCetHidden(authDetails?.agentId));
-    
+
     let selectedEntity = false;
     if (onboardingStingifiedData !== null) {
       onboardingData = JSON.parse(onboardingStingifiedData);
@@ -92,7 +98,7 @@ useEffect(()=>{
     let formSelection = JSON.parse(
       localStorage.getItem("formSelection") || "{}"
     );
-    
+
     const componentPaths: ComponentPaths = {
       "W-9": "/W9/purposes",
       "W-8BEN": "/W-8BEN/Declaration",
@@ -107,13 +113,11 @@ useEffect(()=>{
 
     if (businessType === 1) {
       componentPaths["W-9"] = "/W9/purposes";
-    }
-    else{
+    } else {
       componentPaths["W-9"] = "/TaxPurpose_W9";
     }
-   
+
     history(componentPaths[cardId]);
- 
   };
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
@@ -178,7 +182,7 @@ useEffect(()=>{
       id: "form 8233",
       title: "Form 8233",
       userType: "gen",
-      isHide: isHide?.enable8233,
+      isHide: isHide?.visibilty8233,
       enabled: ["usNonIndividual"],
       description:
         "Used by individuals to certify beneficial owner claiming treaty exemption on compensation for personal services",
@@ -723,7 +727,7 @@ useEffect(()=>{
                 // setOpen(true);
               }}
               style={{
-                marginRight : "22px",
+                marginRight: "22px",
                 backgroundColor: "#ffc107",
                 color: "black",
                 fontSize: "10px",
@@ -786,72 +790,94 @@ useEffect(()=>{
           ""
         )}
 
-        <div
-          className="d-flex row forms-card-data"
-        >
-          {userType === 'SC' && (<>
-            {cards.map((card, index1) => ( 
-              card.userType == 'SC' ? <>
-                <Card
-              key={card?.id}
-              className={card.enabled.includes(diableForm) ? "mx-3 mt-3" : "mx-3 mt-3 disabled"}
-              sx={{
-                width: "310px",
-                border:
-                  selectedCard === card.id
-                    ? "7px solid #ffc107"
-                    : "7px solid transparent",
-              }}
-              onClick={() => handleCardSelect(card)}
-            >
-              <div
-                tabIndex={index1}
-                onFocus={() => handleCardSelect(card)}
-                onKeyDown={(e: any) => {
-                  if (e.code.toLowerCase() === "enter" && e?.target?.tagName?.toUpperCase() === "DIV") {
-                    redirectToComponent(selectedCard)
-                  }
-                }}
-              >
-                <CardContent>
-                  <div className="iconBox text-center" >
-                    <img src={docIcon} alt="" className="img-fluid mb-2" />
-                  </div>
-                  <div className="check-div">
-                    {card.enabled.includes(diableForm) ? (<img src={checksolid} />) : ""}
-                    disabled
-                  </div>
-                  <Typography align="center" variant="h6" component="div">
-                    {card?.title}
-                  </Typography>
-
-                  <Typography
-                    align="center"
-                    style={{ fontSize: "13px", marginTop: "14px" }}
-                  >
-                    {card?.description}
-                    <br />
-                  </Typography>
-                  <Typography align="center">
-                    <Button
-                      onClick={() => {
-                        setInfoMore(card?.id);
-                        setShowInfoMore(!showInfoMore);
+        <div className="d-flex row forms-card-data">
+          {userType === "SC" && (
+            <>
+              {cards.map((card, index1) =>
+                card.userType == "SC" ? (
+                  <>
+                    <Card
+                      key={card?.id}
+                      className={
+                        card.enabled.includes(diableForm)
+                          ? "mx-3 mt-3"
+                          : "mx-3 mt-3 disabled"
+                      }
+                      sx={{
+                        width: "310px",
+                        border:
+                          selectedCard === card.id
+                            ? "7px solid #ffc107"
+                            : "7px solid transparent",
                       }}
-                      className="mt-4"
-                      size="small"
-                      style={{ fontWeight: "bold" }}
+                      onClick={() => handleCardSelect(card)}
                     >
-                      Read More
-                    </Button>
-                  </Typography>
-                </CardContent>
-              </div>
+                      <div
+                        tabIndex={index1}
+                        onFocus={() => handleCardSelect(card)}
+                        onKeyDown={(e: any) => {
+                          if (
+                            e.code.toLowerCase() === "enter" &&
+                            e?.target?.tagName?.toUpperCase() === "DIV"
+                          ) {
+                            redirectToComponent(selectedCard);
+                          }
+                        }}
+                      >
+                        <CardContent>
+                          <div className="iconBox text-center">
+                            <img
+                              src={docIcon}
+                              alt=""
+                              className="img-fluid mb-2"
+                            />
+                          </div>
+                          <div className="check-div">
+                            {selectedCard === card.id ? (
+                              <img src={checksolid} />
+                            ) : (
+                              ""
+                            )}
+                            disabled
+                          </div>
+                          <Typography
+                            align="center"
+                            variant="h6"
+                            component="div"
+                          >
+                            {card?.title}
+                          </Typography>
 
-            </Card>
-              </> : "" 
-            ))}
-          </>) }
+                          <Typography
+                            align="center"
+                            style={{ fontSize: "13px", marginTop: "14px" }}
+                          >
+                            {card?.description}
+                            <br />
+                          </Typography>
+                          <Typography align="center">
+                            <Button
+                              onClick={() => {
+                                setInfoMore(card?.id);
+                                setShowInfoMore(!showInfoMore);
+                              }}
+                              className="mt-4"
+                              size="small"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              Read More
+                            </Button>
+                          </Typography>
+                        </CardContent>
+                      </div>
+                    </Card>
+                  </>
+                ) : (
+                  ""
+                )
+              )}
+            </>
+          )}
 
           {userType !== "SC" ? (
             <>
@@ -895,7 +921,7 @@ useEffect(()=>{
                             />
                           </div>
                           <div className="check-div">
-                            {card.enabled.includes(diableForm) ? (
+                            {selectedCard === card.id ? (
                               <img src={checksolid} />
                             ) : (
                               ""
