@@ -99,6 +99,9 @@ const ActionName = {
     InsertCaymanEntityNonUSChapter3Data:"InsertCaymanEntityNonUSChapter3Data",
     InsertCaymanEntityNonUSFATCAClassification:"InsertCaymanEntityNonUSFATCAClassification",
 
+    // skipped steps
+    UpdateSkippedSteps:"UpdateSkippedSteps"
+
   };
 
   export default ActionName;
