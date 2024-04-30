@@ -35,6 +35,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { partCertiSchema8IMY } from "../../../schemas/w81my";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetImyPdf } from "../../../Redux/Actions/PfdActions";
+import SecurityCodeRecover from "../../Reusable/SecurityCodeRecover";
 export default function Penalties() {
   const { authDetails } = useAuth();
   const [open2, setOpen2] = useState(false);
@@ -57,6 +58,9 @@ export default function Penalties() {
     document.title = "Certification II"
   }, [])
 
+  const showHideRecoverSection = (data: boolean) => {
+    setShowRecoverSection(data);
+  }
   const toggleRecoverSection = () => {
     setShowRecoverSection(true);
 
@@ -80,8 +84,6 @@ export default function Penalties() {
     }),
     isAgreeWithDeclaration: false,
     isAcceptanceDeclarations: W8IMYData?.isAcceptanceDeclarations ?? false,
-    question: "",
-    word: ""
   });
 
   const dispatch = useDispatch();
@@ -483,7 +485,7 @@ export default function Penalties() {
                           To recover your Confirmation Code, please type in your security word below. Select the 'Hint?' if you need a reminder of your security word.
                         </Typography>
 
-                        <div className="d-flex my-3 col-8">
+                        {/* <div className="d-flex my-3 col-8">
                           <Typography className="my-2 col-4" style={{ fontWeight: "bold" }}>Security Word</Typography>
                           <Input className=" col-4 inputTextField"
 
@@ -506,8 +508,8 @@ export default function Penalties() {
 
                         </div>
                         {securityWordError && <p className="error">{securityWordError}</p>}
-                        <div className="d-flex my-3 col-8">
-                          <Link className="my-2 col-4" onClick={() => { setFieldValue("question", obValues.securityQuestion.question) }}>Hint?</Link>
+                        <div className="d-flex my-3 col-8"> */}
+                          {/* <Link className="my-2 col-4" onClick={() => { setFieldValue("question", obValues.securityQuestion.question) }}>Hint?</Link>
                           <Input className=" col-4 inputTextField"
                             style={{
                               color: "black",
@@ -570,7 +572,8 @@ export default function Penalties() {
                           }} style={{ justifyContent: "center" }} variant="contained" size="small">
                             OK
                           </Button>
-                        </Typography>
+                        </Typography> */}
+                        <SecurityCodeRecover setRecoverPassword={showHideRecoverSection} hideBack={true}></SecurityCodeRecover>
                       </div>)}
 
 

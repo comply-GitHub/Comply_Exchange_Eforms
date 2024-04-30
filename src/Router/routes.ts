@@ -49,13 +49,33 @@ const CRS_W9_DC = React.lazy(
 const Financial_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Financial")
 );
+const SelfCert_Passive_W9_DC = React.lazy(
+  () => import("../Components/W9Form/SelfCertPassive")
+);
+
+const US_Determination_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/USDetermination")
+);
+const Complete_CRS_W9 = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/CRS_Complete")
+);
 const Active_Non_Financial_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Active_Non_financial")
 );
 
-const Passive_Non_Financial_W9_DC = React.lazy(
-  () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Passive")
+
+
+const Non_Reporting_CRS_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/NonReporting")
 );
+
+const Financial_CRS_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/Financial")
+);
+const FinancialReport_CRS_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/Financial/FinancialModal")
+);
+
 const TaxPurpose_W9 = React.lazy(
   () => import("../Components/W9Form/TaxPurpose_W9/index")
 );
@@ -228,9 +248,13 @@ const CaymanIndividualStartESConfirmation= React.lazy(() => import("../Component
 const CaymanIndividualStartThankyou= React.lazy(() => import("../Components/Cayman/Individual/Start/Thankyou"));
 
 const CaymanEntityStart = React.lazy(() => import("../Components/Cayman/Entity/Start"));
-const CaymanEntityFatcaClassification= React.lazy(() => import("../Components/Cayman/Entity/Start/FATCA/Classification"));
-// const CaymanIndividualStartUSTin= React.lazy(() => import("../Components/Cayman/Individual/Start/USTin"));
-// const CaymanIndividualStartCertification= React.lazy(() => import("../Components/Cayman/Individual/Start/Certification"));
+const CaymanEntityFatcaClassification= React.lazy(() => import("../Components/Cayman/Entity/FATCA"));
+const CaymanEntityFatcaClassificationFinancial = React.lazy(() => import("../Components/Cayman/Entity/FATCA/Financial"));
+const CaymanEntityFatcaClassificationGIINAvailable = React.lazy(() => import("../Components/Cayman/Entity/FATCA/GIINAvailable"));
+const CaymanEntityFatcaClassificationGIINNotAvailable = React.lazy(() => import("../Components/Cayman/Entity/FATCA/GIINNotAvailable"));
+const CaymanEntityFatcaClassificationSponsoredFinancialInstitution = React.lazy(() => import("../Components/Cayman/Entity/FATCA/SponsoredFinanceInstitution"));
+const CaymanIndividualFatcaClassificationComplete= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Complete"));
+const CaymanIndividualFatcaClassificationFinal= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Final"));
 // const CaymanIndividualStartSubmission= React.lazy(() => import("../Components/Cayman/Individual/Start/Submission"));
 // const CaymanIndividualStartESConfirmation= React.lazy(() => import("../Components/Cayman/Individual/Start/ESConfirmation"));
 // const CaymanIndividualStartThankyou= React.lazy(() => import("../Components/Cayman/Individual/Start/Thankyou"));
@@ -339,6 +363,14 @@ const ROUTES: Array<RouteType> = [
     isPrivate: true,
   },
   {
+    name: "Complete_CRS_W9",
+    path: "/Complete_CRS_W9",
+    id: 2,
+    Component: Complete_CRS_W9,
+    isPrivate: true,
+  },
+  //Complete_CRS_W9
+  {
     name: "CRS_W9_DC",
     path: "/CRS_W9_DC",
     id: 2,
@@ -352,14 +384,44 @@ const ROUTES: Array<RouteType> = [
     Component: Active_Non_Financial_W9_DC,
     isPrivate: true,
   },
+ 
   {
-    name: "Passive_Non_Financial_W9_DC",
-    path: "/Passive_Non_Financial_W9_DC",
+    name: "Non_Reporting_CRS_W9_DC",
+    path: "/Non_Reporting_CRS_W9_DC",
     id: 2,
-    Component: Passive_Non_Financial_W9_DC,
+    Component: Non_Reporting_CRS_W9_DC,
     isPrivate: true,
   },
-  //Active_Non_Financial_W9_DC
+  //Non_Reporting_CRS_W9_DC
+  {
+    name: "Financial_CRS_W9_DC",
+    path: "/Financial_CRS_W9_DC",
+    id: 2,
+    Component: Financial_CRS_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "FinancialReport_CRS_W9_DC",
+    path: "/FinancialReport_CRS_W9_DC",
+    id: 2,
+    Component: FinancialReport_CRS_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "SelfCert_Passive_W9_DC",
+    path: "/SelfCert_Passive_W9_DC",
+    id: 2,
+    Component: SelfCert_Passive_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "US_Determination_W9_DC",
+    path: "/US_Determination_W9_DC",
+    id: 2,
+    Component: US_Determination_W9_DC,
+    isPrivate: true,
+  },
+  //US_Determination_W9_DC
   {
     name: "TaxPurpose_W9",
     path: "/TaxPurpose_W9",
@@ -787,12 +849,53 @@ const ROUTES: Array<RouteType> = [
   },
   {
     name: "CaymanEntityFatcaClassification",
-    path: "/Cayman/Entity/Start",
+    path: "/Cayman/Entity/FATCA",
     id: 7,
     Component: CaymanEntityFatcaClassification,
     isPrivate: true,
   },
-  
+  {
+    name: "CaymanEntityFatcaClassificationFinancial",
+    path: "/Cayman/Entity/FATCA/Financial",
+    id: 7,
+    Component: CaymanEntityFatcaClassificationFinancial,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityFatcaClassificationGIINAvailable",
+    path: "/Cayman/Entity/FATCA/GIINAvailable",
+    id: 7,
+    Component: CaymanEntityFatcaClassificationGIINAvailable,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityFatcaClassificationGIINNotAvailable",
+    path: "/Cayman/Entity/FATCA/GIINNotAvailable",
+    id: 7,
+    Component: CaymanEntityFatcaClassificationGIINNotAvailable,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityFatcaClassificationSponsoredFinancialInstitution",
+    path: "/Cayman/Entity/FATCA/SponsoredFinanceInstitution",
+    id: 7,
+    Component: CaymanEntityFatcaClassificationSponsoredFinancialInstitution,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualFatcaClassificationComplete",
+    path: "/Cayman/Entity/FATCA/Complete",
+    id: 7,
+    Component: CaymanIndividualFatcaClassificationComplete,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualFatcaClassificationFinal",
+    path: "/Cayman/Entity/FATCA/Final",
+    id: 7,
+    Component: CaymanIndividualFatcaClassificationFinal,
+    isPrivate: true,
+  },
   {
     name: "PDFViewer",
     path: "PDFViewer",

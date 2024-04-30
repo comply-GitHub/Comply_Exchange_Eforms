@@ -35,6 +35,7 @@ export default function Declaration (props: any){
       localStorage.removeItem("clickedPanelHeading");
     }
   };
+
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   
@@ -128,16 +129,16 @@ export default function Declaration (props: any){
                
                    <div style={{ backgroundColor: "#fff", padding: "5px" }}>
               <Typography
-                className="my-2 mx-2"
+                className="my-3 mx-2"
                 style={{ fontSize: "20px", color: "#1976d2", fontWeight: "bold" }}
               >
-               CRS Classification Guide
+              CRS Classification Guide Financial Institution Review
               </Typography>
 
 
               <Accordion
                 expanded={expandedState === "panel1"}
-                onChange={handleChangeAccodionState("panel1","Financial Institution Review")}
+                onChange={handleChangeAccodionState("panel1","Financial Institution resident in a Non-Participating Jurisdiction under CRS Overview")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -147,7 +148,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Financial Institution Review
+                    Financial Institution resident in a Non-Participating Jurisdiction under CRS Overview
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -156,14 +157,14 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                    CRS Classification - Financial Institution Review
+                   CRS Classification - Financial Institution resident in a Non-Participating Jurisdiction under CRS Overview
                   </Typography>
                  
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel2"}
-                onChange={handleChangeAccodionState("panel2","Reporting Financial Institution Under CRS")}
+                onChange={handleChangeAccodionState("panel2","Investment Entity managed by another Financial Institution where a controlling ownership interest is held (directly or indirectly) by a company listed on a stock exchange and subject to disclosure requirements or is a majority owned subsidiary of such a company")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -173,7 +174,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                   Reporting Financial Institution Under CRS
+                   Investment Entity managed by another Financial Institution where a controlling ownership interest is held (directly or indirectly) by a company listed on a stock exchange and subject to disclosure requirements or is a majority owned subsidiary of such a company
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -182,14 +183,14 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                   CRS Classification - Reporting Financial Institution Under CRS
+                  No key is specified for this content block
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel3"}
-                onChange={handleChangeAccodionState("panel3"," Non Reporting Financial Institution Under CRS")}
+                onChange={handleChangeAccodionState("panel3","Investment Entity managed by another Financial Institution")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -199,7 +200,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                     Non Reporting Financial Institution Under CRS
+                     Investment Entity managed by another Financial Institution
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -208,14 +209,14 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                  CRS Classification - Non Reporting Financial Institution Under CRS
+                CRS Classification - Investment Entity managed by another Financial Institution
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel4"}
-                onChange={handleChangeAccodionState("panel4"," Financial Institution resident in a Non-Participating Juridiction Under CRS")}
+                onChange={handleChangeAccodionState("panel4","Other Investment Entity")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -225,7 +226,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Financial Institution resident in a Non-Participating Juridiction Under CRS
+                    Other Investment Entity
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -234,21 +235,44 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                  CRS Classification - Financial Institution resident in a Non-Participating Jurisdiction under CRS
+                 CRS Classification - Other Investment Entity
+                  </Typography>
+                  
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expandedState === "panel5"}
+                onChange={handleChangeAccodionState("panel5"," Other Financial Institution, including a Depository Institution, Custodial Institution, or Specified Insurance Company")}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMore />}
+                  aria-controls="panel2d-content"
+                  id="panel2d-header"
+                >
+                  <Typography
+                    style={{ fontSize: "18px",color: "black" }}
+                  >
+                   Other Financial Institution, including a Depository Institution, Custodial Institution, or Specified Insurance Company
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography
+                    align="left"
+                    style={{ fontSize: "14px",color: "black" }}
+                    
+                  >
+                 CRS Classification - Other Financial Institution, including a Depository Institution, Custodial Institution, or Specified Insurance Company
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
 
-              
-
-
-              <Typography align="center">
-              <Button
+             <div style={{marginTop:"20px"}}>
+             <Typography align="center">
+                <Button
                  onClick={() => {
-                 
                   history("/CRS_W9_DC")
-                }}
+                 }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
@@ -266,21 +290,13 @@ export default function Declaration (props: any){
                     const clickedPanelHeading = localStorage.getItem("clickedPanelHeading");
                      if (clickedPanelHeading) {
                     localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
-                    
+                    history("/FinancialReport_CRS_W9_DC");
                   }
-                    if (expandedState === "panel2") {
-                      history("/FinancialReport_CRS_W9_DC");
-                      // history("/Reporting_CRS_W9_DC");
-                    } else if (expandedState === "panel3") {
-                      history("/Non_Reporting_CRS_W9_DC");
-                    }
-                    else if(expandedState === "panel4"){
-                      history("/Financial_CRS_W9_DC")
-                    }
+                 
                   }}
                   style={{
+
                     fontSize:"12px",
-                 
                     marginTop: "10px",
                     marginBottom: "20px",
                     marginLeft: "10px"
@@ -290,16 +306,16 @@ export default function Declaration (props: any){
                   Confirm
                 </Button>
                 <Button
-                 onClick={() =>{setIsAccordionVisible(false)
+                 onClick={() => {setIsAccordionVisible(false)
 
                   history(-1)
                  }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
-             fontSize:"12px",
-             marginLeft: "10px",
+                    fontSize:"12px",
                     marginTop: "10px",
+                    marginLeft: "10px",
                     marginBottom: "20px",
                   }}
                 >
@@ -307,6 +323,7 @@ export default function Declaration (props: any){
                 </Button>
                 
               </Typography>
+             </div>
 
             </div>
 
@@ -324,7 +341,6 @@ export default function Declaration (props: any){
       </div>
       </section>
     </Fragment>
-
   );
 };
 

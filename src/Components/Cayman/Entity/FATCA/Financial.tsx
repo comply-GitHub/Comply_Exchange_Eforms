@@ -1,23 +1,23 @@
 import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { SubmitSchema } from "../../../../schemas/submit";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";
 import Divider from "@mui/material/Divider";
-import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { Form, Formik } from "formik";
-import { W8_state_ECI,PostDualCert } from "../../../../Redux/Actions";
 import { useDispatch } from "react-redux";
-import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
-export default function Declaration (props: any){
+import { SubmitSchema } from "../../../../schemas/submit";
+import { PostDualCert } from "../../../../Redux/Actions";
+import { FormTypeId } from "../../../../Utils/constVals";
+import Utils from "../../../../Utils";
+export default function Financial (props: any){
 
-  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+  const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
 
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -29,7 +29,18 @@ export default function Declaration (props: any){
   ) => {
     if (newExpanded) {
       setExpandedState(panel);
+      dispatch({
+        type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
+        payload: {
+          heading2: panelHeading,
+          subheading2:'FATCA Classification -'+ panelHeading+' Cayman',
+          selectedHeading : panelHeading,
+          selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
+        },
+      });
       localStorage.setItem("clickedPanelHeading", panelHeading);
+      localStorage.setItem("Heading2",panelHeading)
+      localStorage.setItem("SubHeading2",'FATCA Classification -'+ panelHeading+' Cayman')
     } else {
       setExpandedState(false);
       localStorage.removeItem("clickedPanelHeading");
@@ -75,7 +86,7 @@ export default function Declaration (props: any){
       <div className="row w-100">
         <div className="col-4 mt-3">
 
-          <BreadCrumbComponent breadCrumbCode={1210} formName={3} />
+          <BreadCrumbComponent breadCrumbCode={1210} formName={FormTypeId.CaymanEntity} />
         </div>
 
         <div className="col-8 mt-3">
@@ -88,27 +99,27 @@ export default function Declaration (props: any){
               initialValues={initialValue}
               validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
-                console.log("values", values)
-                setSubmitting(true);
-                const result = {
-                  ...PrevStepData, 
-                  ...values,
+              //   console.log("values", values)
+              //   setSubmitting(true);
+              //   const result = {
+              //     ...PrevStepData, 
+              //     ...values,
                  
-                  statusId: 1,
-                };
-                const returnPromise = new Promise((resolve, reject) => {
-                dispatch(
-                  PostDualCert(result, (data: any) => {
-                    localStorage.setItem("DualCertData", JSON.stringify(result))
-                    resolve(data);
-                  }
-                    , (err: any) => {
-                      reject(err);
-                    }
-                  )
-                );
-              })
-              return returnPromise;
+              //     statusId: 1,
+              //   };
+              //   const returnPromise = new Promise((resolve, reject) => {
+              //   dispatch(
+              //     PostDualCert(result, (data: any) => {
+              //       localStorage.setItem("SelfCertData", JSON.stringify(result))
+              //       resolve(data);
+              //     }
+              //       , (err: any) => {
+              //         reject(err);
+              //       }
+              //     )
+              //   );
+              // })
+              // return returnPromise;
 
             }}
             >
@@ -131,7 +142,7 @@ export default function Declaration (props: any){
                 className="my-2 mx-2"
                 style={{ fontSize: "20px", color: "#1976d2", fontWeight: "bold" }}
               >
-               CRS Classification Guide
+               FATCA Classification GUIDE
               </Typography>
 
 
@@ -156,14 +167,14 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                    CRS Classification - Financial Institution Review
+                    FATCA Classification - Financial Institution Overview Cayman
                   </Typography>
                  
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel2"}
-                onChange={handleChangeAccodionState("panel2","Reporting Financial Institution Under CRS")}
+                onChange={handleChangeAccodionState("panel2","GIIN available")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -173,7 +184,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                   Reporting Financial Institution Under CRS
+                   GIIN available
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -182,14 +193,15 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                   CRS Classification - Reporting Financial Institution Under CRS
+                   FATCA Classification - GIIN available Cayman
+
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel3"}
-                onChange={handleChangeAccodionState("panel3"," Non Reporting Financial Institution Under CRS")}
+                onChange={handleChangeAccodionState("panel3","GIIN not available ")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -199,7 +211,7 @@ export default function Declaration (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                     Non Reporting Financial Institution Under CRS
+                     GIIN not available 
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -208,12 +220,12 @@ export default function Declaration (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                  CRS Classification - Non Reporting Financial Institution Under CRS
+                  FATCA Classification - GIIN not available Cayman
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
-              <Accordion
+              {/* <Accordion
                 expanded={expandedState === "panel4"}
                 onChange={handleChangeAccodionState("panel4"," Financial Institution resident in a Non-Participating Juridiction Under CRS")}
               >
@@ -238,7 +250,7 @@ export default function Declaration (props: any){
                   </Typography>
                   
                 </AccordionDetails>
-              </Accordion>
+              </Accordion> */}
 
               
 
@@ -247,7 +259,7 @@ export default function Declaration (props: any){
               <Button
                  onClick={() => {
                  
-                  history("/CRS_W9_DC")
+                  history("/Cayman/Entity/FATCA")
                 }}
                   variant="outlined"
                   style={{
@@ -269,13 +281,9 @@ export default function Declaration (props: any){
                     
                   }
                     if (expandedState === "panel2") {
-                      history("/FinancialReport_CRS_W9_DC");
-                      // history("/Reporting_CRS_W9_DC");
-                    } else if (expandedState === "panel3") {
-                      history("/Non_Reporting_CRS_W9_DC");
-                    }
-                    else if(expandedState === "panel4"){
-                      history("/Financial_CRS_W9_DC")
+                      history("/Cayman/Entity/FATCA/GIINAvailable");
+                    } else  {
+                      history("/Cayman/Entity/FATCA/GIINNotAvailable");
                     }
                   }}
                   style={{

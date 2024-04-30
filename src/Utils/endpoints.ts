@@ -27,8 +27,11 @@ const EndPoint = {
   GetIGA:"/Countries/GetIGA",
   GetFederalTaxClassification:"/W9Common/GetFederalTaxClassification",
   GetAllUSFormTypes:"/FormTypes/GetAllUSFormTypes",
+  GetTaxJusrisdictionMismatchExplaination:"/CaymanIndividualNonUS/GetTaxJurisdictionMismatchExplanation",
+
 
   //
+  GetAgentExemptionCodeHidden:"/AgentEditList/GetAgentFATCAExemptionCodeHidden",
   GetAgentCapacityHiddenForEform: "/WebAppBasic/GetAgentCapacityHiddenForEform",
   GetAgentChapter4EntityTypeHiddenForEform: "/WebAppBasic/GetAgentChapter4EntityTypeHiddenForEform",
   GetAgentChapter3EntityTypeHiddenForEform: "/WebAppBasic/GetAgentChapter3EntityTypeHiddenForEform",
@@ -63,6 +66,9 @@ const EndPoint = {
  UpsertAccountHolderWithholdingStatement:"/AccountHolderDetail/UpsertAccountHolderWithholdingStatement",
  InserDualCert:"/DualCert/UpsertDualCert",
  InsertCaymanIndividualNonUS:"/CaymanIndividualNonUS/InsertCaymanIndividualNonUS",
+ UpsertTaxLiabilityinanyOtherJurisdictions:"/CaymanIndividualNonUS/UpsertTaxLiabilityinanyOtherJurisdictions",
+ UpsertEntityW9DualCert:"/W9IndividualEntity/UpdateW9IndividualEntityDetails",
+ UpsertCRSandFATCAClassification:"/DualCert/UpsertCRSandFATCAClassification",
 
 // Form GetApis:
 GetDual:"/DualCert/GetDualCert",
@@ -87,6 +93,8 @@ GetBENEPdf:"/W8BENEEntity/GetBENEPdf",
 GetExpPdf:"/W8EXPEntity/GetExpPdf",
 GetIMYPdf:"/W8IMYEntity/GetIMYPdf",
 GetForm8233Pdf:"/Form8233Individual/GetForm8233Pdf",
+GetW9DCPdf:"/W9IndividualEntity/GetW9DCPdf",
+
 
  //Account Holder Endpoints
  UpsertAccountHolderIncomeAllocation:"/AccountHolderDetail/UpsertAccountHolderIncomeAllocation",

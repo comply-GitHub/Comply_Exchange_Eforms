@@ -18,13 +18,22 @@ import BreadCrumbComponent from "../../../reusables/breadCrumb";
 export default function Declaration (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
-
+  const navigate = useNavigate();
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
 
-  const handleChangeAccodionState = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-    setExpandedState(newExpanded ? panel : false);
+  const handleChangeAccodionState = (panel: string, panelHeading: string) => (
+    event: React.SyntheticEvent,
+    newExpanded: boolean
+  ) => {
+    if (newExpanded) {
+      setExpandedState(panel);
+      localStorage.setItem("clickedPanelHeading", panelHeading);
+    } else {
+      setExpandedState(false);
+      localStorage.removeItem("clickedPanelHeading");
+    }
   };
 
   const isContinueEnabled = expandedState !== "panel1";
@@ -129,7 +138,7 @@ export default function Declaration (props: any){
 
               <Accordion
                 expanded={expandedState === "panel1"}
-                onChange={handleChangeAccodionState("panel1")}
+                onChange={handleChangeAccodionState("panel1","Active Non-Financial Entity Overview")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -155,7 +164,7 @@ export default function Declaration (props: any){
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel2"}
-                onChange={handleChangeAccodionState("panel2")}
+                onChange={handleChangeAccodionState("panel2","Corporation that is regularly traded or a related entity of a regularly traded corporation")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -181,7 +190,7 @@ export default function Declaration (props: any){
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel3"}
-                onChange={handleChangeAccodionState("panel3")}
+                onChange={handleChangeAccodionState("panel3","Governmental Entity, International Organization, a Central Bank, or an Entity wholly")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -207,7 +216,7 @@ export default function Declaration (props: any){
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel4"}
-                onChange={handleChangeAccodionState("panel4")}
+                onChange={handleChangeAccodionState("panel4","Other Active Non-Financial Entity")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -237,11 +246,14 @@ export default function Declaration (props: any){
 
               <Typography align="center">
                 <Button
-                 onClick={() => setIsAccordionVisible(false)}
+                 onClick={() => {
+                 
+                  history("/CRS_W9_DC")
+                }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
-             
+                    fontSize:"12px",
                     marginTop: "10px",
                     marginBottom: "20px",
                   }}
@@ -251,10 +263,16 @@ export default function Declaration (props: any){
                 <Button
                  disabled={!isContinueEnabled} 
                   variant="contained"
-                 
+                  onClick={() => {
+                    const clickedPanelHeading = localStorage.getItem("clickedPanelHeading");
+                     if (clickedPanelHeading) {
+                    localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
+                    history("/FinancialReport_CRS_W9_DC");
+                  }
+                }}
                   style={{
 
-                 
+                    fontSize:"12px",
                     marginTop: "10px",
                     marginBottom: "20px",
                     marginLeft: "10px"
@@ -263,7 +281,22 @@ export default function Declaration (props: any){
                 >
                   Confirm
                 </Button>
-
+                <Button
+                 onClick={() => {
+                  // setIsAccordionVisible(false);
+                  history(-1)
+                }}
+                  variant="outlined"
+                  style={{
+                    color: "#1976E2",
+                    fontSize:"12px",
+                    marginTop: "10px",
+                    marginBottom: "20px",
+                    marginLeft: "10px"
+                  }}
+                >
+                  Back
+                </Button>
                 
               </Typography>
 

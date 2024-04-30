@@ -84,7 +84,7 @@ const SaveAndExit = ({ Callback, formTypeId }: any) => {
   }, [authDetails])
 
   useEffect(() => {
-    console.log("from valid", formValid)
+    // console.log("from valid", formValid)
   }, [formValid])
 
   useEffect(() => {

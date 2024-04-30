@@ -755,7 +755,6 @@ export default function Entity() {
               validateOnBlur={true}
               validateOnMount={true}
               onSubmit={(values, { setSubmitting }) => {
-                console.log("e", values?.taxpayerIdTypeID);
                 const payload = {
                   id: authDetails?.accountHolderId,
                   agentId: authDetails?.agentId,

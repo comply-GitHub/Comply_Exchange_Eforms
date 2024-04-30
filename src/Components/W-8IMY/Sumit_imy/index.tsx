@@ -57,7 +57,7 @@ const Declaration = (props: any) => {
           <Paper style={{ padding: "22px" }}>
             <Formik
               initialValues={initialValue}
-              validationSchema={SubmitSchema}
+              // validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
                 console.log("values", values)
 
@@ -432,7 +432,10 @@ const Declaration = (props: any) => {
                       // onClick={()=>{
                       //   history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233")
                       // }}
-                      disabled={!isValid}
+                      disabled={
+                        (values.isAgreeWithDeclaration && (values.isConsentReceipentstatement || values.isNotConsentReceipentstatement)) 
+                        ? false: true
+                      }
                       type="submit"
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}

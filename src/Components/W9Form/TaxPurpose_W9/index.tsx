@@ -145,7 +145,7 @@ export default function Fedral_tax(props: any) {
     return (
         <>
             <section
-
+                 className="inner_content"
                 style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
             >
                 <div className="overlay-div">
@@ -1777,7 +1777,7 @@ Entity type for U.S. tax purposes:
                                                         marginTop: "80px",
                                                     }}
                                                 >
-                                                    {/* <SaveAndExit
+                                                    <SaveAndExit
                             Callback={
                               () => {
                                 submitForm().then((data) => {
@@ -1804,7 +1804,7 @@ Entity type for U.S. tax purposes:
                             }
                             formTypeId={FormTypeId.W9}
                           >
-                          </SaveAndExit> */}
+                          </SaveAndExit>
                                                     <Button
                                                         type="submit"
                                                         disabled={isSubmitting}

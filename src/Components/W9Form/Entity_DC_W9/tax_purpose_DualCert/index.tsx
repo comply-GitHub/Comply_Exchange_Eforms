@@ -13,15 +13,17 @@ import {
   TextField,
   Select,
   MenuItem,
+  Input,
+  Checkbox,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "@mui/material/Link";
 import Tooltip from "@mui/material/Tooltip";
-import { ExpandMore, Info } from "@mui/icons-material";
+import { CheckBox, ExpandMore, Info } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import "./index.scss";
 import Infoicon from "../../../../assets/img/info.png";
-// import { Info } from "@mui/icons-material";
+
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
@@ -32,10 +34,10 @@ import {
   getAllCountriesCode,
   getAllCountriesIncomeCode,
   getAllStateByCountryId,
-  postW8ECI_EForm,
+  PostDualCertW9Entity,
   getFederalTax,
 } from "../../../../Redux/Actions";
-import { TaxPurposeSchema } from "../../../../schemas/w8ECI";
+import { FederalTaxSchema_dualCert } from "../../../../schemas/w8ECI";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import useAuth from "../../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
@@ -52,27 +54,26 @@ export default function Fedral_tax(props: any) {
   } = props;
 
   const { authDetails } = useAuth();
-  const W8ECI = useSelector((state: any) => state.W8ECI);
+  const W9 = useSelector((state: any) => state.W9);
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const [IsIndividual, setIsIndividual] = useState(obValues?.businessTypeId == 1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const [selectedfile, setSelectedFile] = useState<any>(null);
 
   const initialValue = {
-    businessName: W8ECI?.entityName ?? obValues?.entityName,
-    businessDisgradedEntity:
-      W8ECI?.businessDisgradedEntity ?? obValues?.businessDisgradedEntity,
-    countryOfIncorporation:
-      W8ECI?.countryOfIncorporation ?? obValues?.foreignTINCountryId,
-    chapter3Status: W8ECI?.chapter3Status ?? 0,
-    firstName: W8ECI?.firstName ?? obValues?.firstName ?? "",
-    lastName: W8ECI?.lastName ?? obValues?.lastName ?? "",
-    isSubmissionSingleUSOwner: W8ECI?.isSubmissionSingleUSOwner === true ? "yes" : "no" ?? "",
-    descriptionHybridStatus: W8ECI?.descriptionHybridStatus ?? "",
-    attachSupportingDocument: W8ECI?.attachSupportingDocument ?? "",
-    attachSupportingDocumentFile: W8ECI?.attachSupportingDocumentFile ?? "",
-    isDisRegardedSection1446: W8ECI?.isDisRegardedSection1446 === true ? "yes" : "no" ?? "",
-    isHybridStatus: W8ECI?.isHybridStatus ?? "",
+    BusinessName: PrevStepData?.BusinessName,
+    BusinessDisregardedEntityName: PrevStepData?.BusinessDisregardedEntityName,
+    countryOfIncorporation: parseInt(PrevStepData?.countryOfIncorporation),
+    FederalTaxClassificationId: parseInt(PrevStepData?.FederalTaxClassificationId || 0),
+    LLCOwnerEntityType: parseInt(PrevStepData?.LLCOwnerEntityType),
+    USFederalTaxClassification: PrevStepData?.USFederalTaxClassification,
+    OtherType: PrevStepData?.OtherType,
+    DateOfIncorporation:"",
+    IsJurisdictionforTaxPurposes:"",
+    IsTieBreakerClauseUnderApplicableTaxTreaty:"",
+    CountryIdwhereTaxesarePaid:0,
+    ContentforTaxJurisdictionMismatchExplanation:"",
+    IsTrueandAccurateStatement:false
   };
 
   const [clickCount, setClickCount] = useState(0);
@@ -97,16 +98,14 @@ export default function Fedral_tax(props: any) {
     dispatch(getAllCountries());
     dispatch(getAllCountriesCode());
     dispatch(getAllCountriesIncomeCode());
-    dispatch(getFederalTax())
+    // dispatch(getAllStateByCountryId())
     dispatch(GetHelpVideoDetails());
-    dispatch(GetChapter3Status(FormTypeId.W8ECI));
+    dispatch(getFederalTax())
+    dispatch(GetChapter3Status(FormTypeId.W9));
   }, []);
   const viewPdf = () => {
     history("", { replace: true });
   }
-  const FederalTaxData = useSelector(
-    (state: any) => state?.GetAllFederalTaxReducer?.FederalData
-  );
 
   const getCountriesReducer = useSelector(
     (state: any) => state.getCountriesReducer
@@ -120,7 +119,9 @@ export default function Fedral_tax(props: any) {
   const GetStateByCountryIdReducer = useSelector(
     (state: any) => state.GetStateByCountryIdReducer
   );
-
+  const FederalTaxData = useSelector(
+    (state: any) => state?.GetAllFederalTaxReducer?.FederalData
+  );
   const handleChangeAccodion =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpanded(newExpanded ? panel : false);
@@ -140,13 +141,13 @@ export default function Fedral_tax(props: any) {
     };
 
   const confirmFunction = (value: any, setFieldValue: any) => {
-    setExpandedState(""); setFieldValue("chapter3Status", value); setSelectedTaxClassification(value)
+    setExpandedState(""); setFieldValue("FederalTaxClassificationId", value); setSelectedTaxClassification(value)
   }
   const W9Data = useSelector((state: any) => state.w9Data);
   return (
     <>
       <section
-
+        className="inner_content"
         style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
       >
         <div className="overlay-div">
@@ -179,7 +180,7 @@ export default function Fedral_tax(props: any) {
         <div className="row w-100">
           <div className="col-4">
             <div style={{ padding: "20px 0px", height: "100%" }}>
-              <BreadCrumbComponent breadCrumbCode={1203} formName={1} />
+              <BreadCrumbComponent breadCrumbCode={1203} formName={4} />
             </div>
           </div>
           <div className="col-8 mt-3">
@@ -191,39 +192,39 @@ export default function Fedral_tax(props: any) {
                   initialValues={initialValue}
                   enableReinitialize
                   validateOnMount={true}
-                  validationSchema={
-                    TaxPurposeSchema(IsIndividual)
-                  }
+                  validationSchema={FederalTaxSchema_dualCert}
                   onSubmit={(values, { setSubmitting }) => {
                     let temp = {
-                      ...PrevStepData,
+                   
                       ...values,
-                      isSubmissionSingleUSOwner: values.isSubmissionSingleUSOwner === "yes",
-                      isDisRegardedSection1446: values.isDisRegardedSection1446 === "yes",
-                      attachSupportingDocumentFile: selectedfile,
-                      isHybridStatus: Number.parseInt(values.isHybridStatus) ?? 3,
+                      AccountHolderBasicDetailsId: authDetails?.accountHolderId ??
+                        obValues?.AccountHolderBasicDetailsId,
+                      FormTypeSelectionId: obValues.businessTypeId,
+
+
                       agentId: authDetails?.agentId,
                       accountHolderBasicDetailId: authDetails?.accountHolderId,
                     };
                     setSubmitting(true);
-                    // const returnPromise = new Promise((resolve, reject) => {
-                    //   dispatch(
-                    //     postW8ECI_EForm(
-                    //       temp,
-                    //       (data: any) => {
-                    //         resolve(data);
-                    //         localStorage.setItem(
-                    //           "PrevStepData",
-                    //           JSON.stringify(temp)
-                    //         );
-                    //       },
-                    //       (err: any) => {
-                    //         reject(err);
-                    //       }
-                    //     )
-                    //   );
-                    // });
-                    // return returnPromise;
+                    const returnPromise = new Promise((resolve, reject) => {
+                      dispatch(
+                        PostDualCertW9Entity(
+                          temp,
+                          (data: any) => {
+                            resolve(data);
+                            localStorage.setItem(
+                              "EntityDualCertPrevStepData",
+                              JSON.stringify(temp)
+                            );
+                          },
+                          (err: any) => {
+                            reject(err);
+                          }
+                        )
+                      );
+                    }
+                    );
+                    return returnPromise;
                   }}
                 >
                   {({
@@ -246,7 +247,7 @@ export default function Fedral_tax(props: any) {
                         <div>
                           <Typography align="left" style={{ margin: "10px" }}>
                             {
-                              //touched.countryOfIncorporation &&
+
                               values?.countryOfIncorporation && values?.countryOfIncorporation?.toString() !== "0" &&
                                 values?.countryOfIncorporation !== obValues?.permanentResidentialCountryId
                                 ? (
@@ -279,7 +280,7 @@ export default function Fedral_tax(props: any) {
                                 ) : (
                                   ""
                                 )}
-                            {values.isHybridStatus == "Not" &&
+                            {values.USFederalTaxClassification == "Not" &&
                               clickCount === 1 ? (
                               <div
                                 style={{
@@ -342,7 +343,7 @@ export default function Fedral_tax(props: any) {
                                   className="d-flex w-100 "
                                   style={{ fontSize: "13px" }}
                                 >
-                                 Federal Tax Classification:
+                                  Federal Tax Classification:
                                   <span style={{ color: "red" }}>*</span>
                                   <span>
                                     <Tooltip
@@ -375,7 +376,7 @@ export default function Fedral_tax(props: any) {
                                       <Info
                                         style={{
                                           color: "#ffc107",
-                                          fontSize: "12px",
+                                          fontSize: "17px",
                                           cursor: "pointer",
                                           verticalAlign: "super",
                                         }}
@@ -394,7 +395,7 @@ export default function Fedral_tax(props: any) {
                                       }}
                                     >
                                       <Typography>
-                                        EH008:  Please make a selection from the drop down list provided. The selection must represent the chapter 3 classification, under U.S. tax principles of the individual, business or organization the certificate will represent.
+                                        EH008:  Please make a selection from the drop down list provided. The selection must represent the chapter 3 USFederalTaxClassification, under U.S. tax principles of the individual, business or organization the certificate will represent.
                                       </Typography>
                                       <Typography style={{ marginTop: "10px" }}>
                                         Complete this line or use the Chapter 3 Classification Guide to establish your entity status for purposes of chapter 3. Check the one appropriate box that applies.
@@ -424,11 +425,12 @@ export default function Fedral_tax(props: any) {
 
                                 <FormControl className="w-50">
                                   <select
-                                    name="chapter3Status"
-                                    value={values.chapter3Status}
+                                    disabled
+                                    name="FederalTaxClassificationId"
+                                    value={values.FederalTaxClassificationId}
                                     onChange={handleChange}
-                                    autoComplete="chapter3Status"
-                                    // onBlur={handleBlur}
+                                    autoComplete="FederalTaxClassificationId"
+
                                     style={{
                                       padding: " 0 10px",
                                       color: "#121112",
@@ -438,584 +440,780 @@ export default function Fedral_tax(props: any) {
                                   >
                                     <option value={0}> ---select---</option>
 
-                                    {FederalTaxData?.filter((item: any) => item.formTypeSelectionId === 1).map((i: any, ind: any) => {
-  return (
-    <option key={ind} value={i.id}>{i.name}</option>
-  );
-})}
+
+                                    {FederalTaxData?.filter((item: any) => item.formTypeSelectionId === 2).map((i: any, ind: any) => {
+                                      return (
+                                        <option key={ind} value={i.id}>{i.name}</option>
+                                      );
+                                    })}
                                   </select>
                                   <p className="error">
-                                    {touched.chapter3Status ? errors.chapter3Status?.toString() : ""}
+                                    {touched.FederalTaxClassificationId ? errors.FederalTaxClassificationId?.toString() : ""}
                                   </p>
                                 </FormControl>
                               </div>
                             </div>
-                            {values.chapter3Status == 20 ?
-                              <>
-                                <div
-                                  style={{ alignItems: "center" }}
-                                  className="row"
-                                >
-                                  <div className="col-lg-6 col-md-6 col-sm-12">
-                                    <Typography
-                                      align="left"
-                                      className="d-flex w-60 "
-                                      style={{ fontSize: "13px" }}
-                                    >
-                                      First Name:
-                                      <span style={{ color: "red" }}>*</span>
 
-                                    </Typography>
 
-                                    <FormControl className="w-100">
-                                      <TextField
-                                        autoComplete="firstName"
-                                        InputProps={{
-                                          readOnly: true,
-                                        }}
-                                        sx={{ backgroundColor: "#e9ecef" }}
-                                        type="text"
-                                        onChange={handleChange}
-                                        error={Boolean(
-                                          touched.firstName &&
-                                          errors.firstName
-                                        )}
-                                        name="firstName"
-                                        className="inputClassFull"
-                                        value={values.firstName}
-                                      />
-                                    </FormControl>
-                                  </div>
-                                  <div
-                                    className="col-lg-6 col-md-6 col-sm-12"
-                                  // style={{ marginLeft: "10px" }}
-                                  >
-                                    <Typography
-                                      align="left"
-                                      className="d-flex w-60 "
-                                      style={{ fontSize: "13px" }}
-                                    >
-                                      Last Name:
-                                      {/* <span style={{ color: "red" }}>*</span> */}
-                                    </Typography>
 
-                                    <FormControl className="w-100">
-                                      <TextField
-                                        autoComplete="lastName"
-                                        type="text"
-                                        InputProps={{
-                                          readOnly: true,
-                                        }}
-                                        sx={{ backgroundColor: "#e9ecef" }}
-                                        onChange={handleChange}
-                                        // onBlur={handleBlur}
-                                        // helperText={
-                                        //   touched.businessDisgradedEntity && errors.businessDisgradedEntity
-                                        // }
-                                        error={Boolean(
-                                          touched.lastName &&
-                                          errors.lastName
-                                        )}
-                                        name="lastName"
-                                        value={values.lastName}
-                                        className="inputClass"
-                                      />
-                                    </FormControl>
-                                  </div>
-                                </div>
-
-                                <>
-                                  <div className="row">
-                                    <div className=" col-12">
-                                      <Typography
-                                        align="left"
-                                        className="d-flex w-60 "
-                                        style={{
-                                          fontSize: "13px",
-                                          marginTop: "15px",
-                                        }}
-                                      >
-                                        Country of incorporation / organization:
-                                        <span style={{ color: "red" }}>*</span>
-                                      </Typography>
-
-                                      <FormControl className="w-50">
-                                        <select
-                                          name="countryOfIncorporation"
-                                          value={values.countryOfIncorporation}
-                                          onChange={handleChange}
-                                          autoComplete="countryOfIncorporation"
-                                          // placeholder="Business Name"
-                                          onBlur={(e) => { handleBlur(e) }}
-                                          style={{
-                                            padding: " 0 10px",
-                                            color: "#121112",
-                                            fontStyle: "italic",
-                                            height: "39px",
-                                          }}
-                                        >
-                                          <option value={0}>---select---</option>
-                                          <option value={257}>
-                                            United Kingdom
-                                          </option>
-                                          <option value={258}>
-                                            United States
-                                          </option>
-                                          <option value="">---</option>
-                                          {getCountriesReducer.allCountriesData?.map(
-                                            (ele: any) => (
-                                              <option
-                                                key={ele?.id}
-                                                value={ele?.id}
-                                              >
-                                                {ele?.name}
-                                              </option>
-                                            )
-                                          )}
-                                        </select>
-                                      </FormControl>
-                                    </div>
-                                  </div>
-                                </>
-                              </> : <></>}
                             {
-                              values.chapter3Status == 1 ||
-                                values.chapter3Status == 6 ||
-                                values.chapter3Status == 7 ||
-                                values.chapter3Status == 8 ||
-                                values.chapter3Status == 9 ||
-                                values.chapter3Status == 10 ||
-                                values.chapter3Status == 11 ||
-                                values.chapter3Status == 12 ||
-                                values.chapter3Status == 13 ? (
+                              values.FederalTaxClassificationId == 5 || values.FederalTaxClassificationId == 6 || values.FederalTaxClassificationId == 8 || values.FederalTaxClassificationId == 9 || values.FederalTaxClassificationId == 10 ? (
                                 <>
-                                  <div
-                                    style={{ alignItems: "center" }}
-                                    className="row"
-                                  >
-                                    <div className="col-lg-6 col-md-6 col-sm-12">
-                                      <Typography
-                                        align="left"
-                                        className="d-flex w-60 "
-                                        style={{ fontSize: "13px" }}
-                                      >
-                                        Business Name:
-                                        <span style={{ color: "red" }}>*</span>
-
-                                      </Typography>
-
-                                      <FormControl className="w-100">
-                                        <TextField
-                                          autoComplete="businessName"
-                                          type="text"
-                                          onChange={handleChange}
-                                          error={Boolean(
-                                            touched.businessName &&
-                                            errors.businessName
-                                          )}
-                                          name="businessName"
-                                          className="inputClassFull"
-                                          value={values.businessName}
-                                        />
-                                      </FormControl>
-                                    </div>
-                                    <div
-                                      className="col-lg-6 col-md-6 col-sm-12"
-                                    // style={{ marginLeft: "10px" }}
-                                    >
-                                      <Typography
-                                        align="left"
-                                        className="d-flex w-60 "
-                                        style={{ fontSize: "13px" }}
-                                      >
-                                        Business Name or disregarded entity name if different:
-                                        {/* <span style={{ color: "red" }}>*</span> */}
-                                      </Typography>
-
-                                      <FormControl className="w-100">
-                                        <TextField
-                                          autoComplete="businessDisgradedEntity"
-                                          type="text"
-                                          onChange={handleChange}
-                                          // onBlur={handleBlur}
-                                          // helperText={
-                                          //   touched.businessDisgradedEntity && errors.businessDisgradedEntity
-                                          // }
-                                          error={Boolean(
-                                            touched.businessDisgradedEntity &&
-                                            errors.businessDisgradedEntity
-                                          )}
-                                          name="businessDisgradedEntity"
-                                          value={values.businessDisgradedEntity}
-                                          className="inputClass"
-                                        />
-                                      </FormControl>
-                                    </div>
-                                  </div>
-
                                   <>
-                                    <div className="row">
-                                      <div className=" col-12">
+                                    <div
+                                      style={{
+                                        marginTop: "20px",
+                                        display: "flex",
+                                      }}
+                                      className="col-12"
+                                    >
+                                      <div className="col-6">
                                         <Typography
                                           align="left"
                                           className="d-flex w-60 "
-                                          style={{
-                                            fontSize: "13px",
-                                            marginTop: "15px",
-                                          }}
+                                          style={{ fontSize: "13px" }}
                                         >
-                                          Country of incorporation / organization:
+                                          Business Name:
                                           <span style={{ color: "red" }}>*</span>
+
                                         </Typography>
 
-                                        <FormControl className="w-50">
-                                          <select
-                                            name="countryOfIncorporation"
-                                            value={values.countryOfIncorporation}
+
+                                        <FormControl className="w-100">
+                                          <TextField
+                                            disabled
+                                            autoComplete="BusinessName"
+                                            type="text"
                                             onChange={handleChange}
-                                            autoComplete="countryOfIncorporation"
-                                            // placeholder="Business Name"
                                             // onBlur={handleBlur}
-                                            style={{
-                                              padding: " 0 10px",
-                                              color: "#121112",
-                                              fontStyle: "italic",
-                                              height: "39px",
-                                            }}
-                                          >
-                                            <option value={0}>---select---</option>
-                                            <option value={257}>
-                                              United Kingdom
-                                            </option>
-                                            <option value={258}>
-                                              United States
-                                            </option>
-                                            <option value="">---</option>
-                                            {getCountriesReducer.allCountriesData?.map(
-                                              (ele: any) => (
-                                                <option
-                                                  key={ele?.id}
-                                                  value={ele?.id}
-                                                >
-                                                  {ele?.name}
-                                                </option>
-                                              )
+                                            // helperText={
+                                            //   touched.BusinessName && errors.BusinessName
+                                            // }
+                                            error={Boolean(
+                                              touched.BusinessName &&
+                                              errors.BusinessName
                                             )}
-                                          </select>
+                                            name="BusinessName"
+                                            className="inputClassFull"
+                                            value={values.BusinessName}
+                                          />
+                                        </FormControl>
+                                      </div>
+                                      <div
+                                        className="col-6  "
+                                        style={{ marginLeft: "10px" }}
+                                      >
+                                        <Typography
+                                          align="left"
+                                          className="d-flex w-60 "
+                                          style={{ fontSize: "13px" }}
+                                        >
+                                          Business Name or disregarded entity name
+                                          if different:
+                                        </Typography>
+
+                                        <FormControl className="w-100">
+                                          <TextField
+                                            autoComplete="BusinessDisregardedEntityName"
+                                            type="text"
+                                            onChange={handleChange}
+                                            disabled
+                                            onBlur={handleBlur}
+                                            // helperText={
+                                            //   touched.BusinessDisregardedEntityName && errors.BusinessDisregardedEntityName
+                                            // }
+                                            error={Boolean(
+                                              touched.BusinessDisregardedEntityName &&
+                                              errors.BusinessDisregardedEntityName
+                                            )}
+                                            name="BusinessDisregardedEntityName"
+                                            value={values.BusinessDisregardedEntityName}
+                                            className="inputClass"
+                                          />
                                         </FormControl>
                                       </div>
                                     </div>
+
+                                    <>
+                                      <div className="row">
+                                        <div className=" col-12">
+                                          <Typography
+                                            align="left"
+                                            className="d-flex w-60 "
+                                            style={{
+                                              fontSize: "13px",
+                                              marginTop: "15px",
+                                            }}
+                                          >
+                                            Country of incorporation /
+                                            organization:
+                                            <span style={{ color: "red" }}>
+                                              *
+                                            </span>
+                                          </Typography>
+
+                                          <FormControl className="w-50">
+                                            <select
+                                              disabled
+                                              name="countryOfIncorporation"
+                                              value={
+                                                values.countryOfIncorporation
+                                              }
+                                              onChange={handleChange}
+                                              autoComplete="countryOfIncorporation"
+                                              onBlur={handleBlur}
+                                              style={{
+                                                padding: " 0 10px",
+                                                color: "#121112",
+                                                fontStyle: "italic",
+                                                height: "39px",
+                                              }}
+                                            >
+                                              <option value="">---select---</option>
+                                              <option value={257}>
+                                                United Kingdom
+                                              </option>
+                                              <option value={258}>
+                                                United States
+                                              </option>
+                                              <option value="">---</option>
+                                              {getCountriesReducer.allCountriesData?.map(
+                                                (ele: any) => (
+                                                  <option
+                                                    key={ele?.id}
+                                                    value={ele?.id}
+                                                  >
+                                                    {ele?.name}
+                                                  </option>
+                                                )
+                                              )}
+                                            </select>
+                                          </FormControl>
+                                        </div>
+                                      </div>
+                                    </>
                                   </>
+
+                                  {values.FederalTaxClassificationId == 5 || values.FederalTaxClassificationId == 8 ? (<div style={{ marginLeft: "6px" }}>
+                                    <Typography
+                                      className="mt-3"
+                                      style={{
+                                        fontSize: "16px",
+                                      }}
+                                    >
+                                      U.S. Federal Tax Classification:
+                                    </Typography>
+                                    <FormControl style={{ marginLeft: "2px" }}>
+                                      <RadioGroup
+                                        row
+
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        name="USFederalTaxClassification"
+                                        value={values.USFederalTaxClassification}
+
+                                        id="USFederalTaxClassification"
+                                      >
+                                        <FormControlLabel
+                                          control={<Radio />}
+                                          value="SCorporation"
+                                          name="USFederalTaxClassification"
+                                          label="S-Corporation"
+                                        />
+                                        <FormControlLabel
+                                          control={<Radio />}
+                                          value="CCorporation"
+                                          name="USFederalTaxClassification"
+                                          label="C-Corporation"
+                                        />
+
+                                      </RadioGroup>
+                                      <p className="error">
+                                        {errors.USFederalTaxClassification?.toString()}
+                                      </p>
+                                    </FormControl>
+                                  </div>) : ""}
+
+
                                 </>
                               ) : (
                                 ""
                               )}
 
-                            {values.chapter3Status == 2 ||
-                              values.chapter3Status == 3 ||
-                              values.chapter3Status == 4 ||
-                              values.chapter3Status == 5 ? (
+
+                            {values.FederalTaxClassificationId == 7 ? (
                               <>
-                                <>
+                                <div>
+                                  <Typography >
+                                    For a single-member (including foreign LLC with a domestic owner) that is disregarded as an entity separate from its owner:
+                                  </Typography>
+                                  <Typography style={{ fontWeight: "bold" }}>
+                                    1. Enter the LLC owners "Owner Name" in the place provided below.
+
+                                  </Typography>
+                                  <Typography style={{ fontWeight: "bold" }}>
+                                    2. ENTER THE LLC DISREGARDED ENTITY NAME ON THE "BUSINESS NAME" LINE
+
+                                  </Typography>
+                                  <Typography>
+                                    Note: For an LLC classified as a partnership or a corporation enter the LLC's name on the Name Line and any business, trade, or "doing business as" name on the Business Name line.
+                                  </Typography>
                                   <div
-                                    style={{
-                                      marginTop: "20px",
-                                      display: "flex",
-                                    }}
-                                    className="col-12"
+                                    className="col-6 mt-3"
+
                                   >
-                                    <div className="col-6">
-                                      <Typography
-                                        align="left"
-                                        className="d-flex w-60 "
-                                        style={{ fontSize: "13px" }}
-                                      >
-                                        Business Name:
-                                        <span style={{ color: "red" }}>*</span>
-
-                                      </Typography>
-
-
-                                      <FormControl className="w-100">
-                                        <TextField
-                                          autoComplete="businessName"
-                                          type="text"
-                                          onChange={handleChange}
-                                          // onBlur={handleBlur}
-                                          // helperText={
-                                          //   touched.businessName && errors.businessName
-                                          // }
-                                          error={Boolean(
-                                            touched.businessName &&
-                                            errors.businessName
-                                          )}
-                                          name="businessName"
-                                          className="inputClassFull"
-                                          value={values.businessName}
-                                        />
-                                      </FormControl>
-                                    </div>
-                                    <div
-                                      className="col-6  "
-                                      style={{ marginLeft: "10px" }}
+                                    <Typography
+                                      align="left"
+                                      className="d-flex w-60 "
+                                      style={{ fontSize: "15px" }}
                                     >
-                                      <Typography
-                                        align="left"
-                                        className="d-flex w-60 "
-                                        style={{ fontSize: "13px" }}
-                                      >
-                                        Business Name or disregarded entity name
-                                        if different:
-                                      </Typography>
-
-                                      <FormControl className="w-100">
-                                        <TextField
-                                          autoComplete="businessDisgradedEntity"
-                                          type="text"
-                                          onChange={handleChange}
-                                          // onBlur={handleBlur}
-                                          // helperText={
-                                          //   touched.businessDisgradedEntity && errors.businessDisgradedEntity
-                                          // }
-                                          error={Boolean(
-                                            touched.businessDisgradedEntity &&
-                                            errors.businessDisgradedEntity
-                                          )}
-                                          name="businessDisgradedEntity"
-                                          value={values.businessDisgradedEntity}
-                                          className="inputClass"
-                                        />
-                                      </FormControl>
-                                    </div>
-                                  </div>
-
-                                  <>
-                                    <div className="row">
-                                      <div className=" col-12">
-                                        <Typography
-                                          align="left"
-                                          className="d-flex w-60 "
+                                      Business Name/Disregarded Entity:
+                                      <span>
+                                        <Tooltip
                                           style={{
-                                            fontSize: "13px",
-                                            marginTop: "15px",
+                                            backgroundColor: "black",
+                                            color: "white",
+                                          }}
+                                          title={
+                                            <>
+                                              <Typography color="inherit">
+                                                Name details
+                                              </Typography>
+                                              <a
+                                                onClick={() => setToolInfo("name")}
+                                              >
+                                                <Typography
+                                                  style={{
+                                                    cursor: "pointer",
+                                                    textDecorationLine: "underline",
+                                                  }}
+                                                  align="center"
+                                                >
+                                                  {" "}
+                                                  View More...
+                                                </Typography>
+                                              </a>
+                                            </>
+                                          }
+                                        >
+                                          <Info
+                                            style={{
+                                              color: "#ffc107",
+                                              fontSize: "17px",
+                                              cursor: "pointer",
+                                              verticalAlign: "super",
+                                            }}
+                                          />
+                                        </Tooltip>
+                                      </span>
+                                    </Typography>
+                                    {toolInfo === "name" ? (
+                                      <div>
+                                        <Paper
+                                          style={{
+                                            backgroundColor: "#dedcb1",
+                                            padding: "15px",
+                                            marginBottom: "10px",
                                           }}
                                         >
-                                          Country of incorporation /
-                                          organization:
-                                          <span style={{ color: "red" }}>
-                                            *
-                                          </span>
-                                        </Typography>
-
-                                        <FormControl className="w-50">
-                                          <select
-                                            name="countryOfIncorporation"
-                                            value={
-                                              values.countryOfIncorporation
-                                            }
-                                            onChange={handleChange}
-                                            autoComplete="countryOfIncorporation"
-                                            // onBlur={handleBlur}
+                                          <Typography>
+                                            Please enter the first and last name of
+                                            the person who is required or has been
+                                            requested to submit an information
+                                            return.
+                                          </Typography>
+                                          <Typography
                                             style={{
-                                              padding: " 0 10px",
-                                              color: "#121112",
-                                              fontStyle: "italic",
-                                              height: "39px",
+                                              marginTop: "10px",
+                                              fontWeight: "550",
                                             }}
                                           >
-                                            <option value="">---select---</option>
-                                            <option value={257}>
-                                              United Kingdom
-                                            </option>
-                                            <option value={258}>
-                                              United States
-                                            </option>
-                                            <option value="">---</option>
-                                            {getCountriesReducer.allCountriesData?.map(
-                                              (ele: any) => (
-                                                <option
-                                                  key={ele?.id}
-                                                  value={ele?.id}
-                                                >
-                                                  {ele?.name}
-                                                </option>
-                                              )
-                                            )}
-                                          </select>
-                                        </FormControl>
+                                            Specific instructions for U.S.
+                                            individuals and sole proprietors: U.S.
+                                            individuals:
+                                          </Typography>
+                                          <Typography style={{ marginTop: "10px" }}>
+                                            If you are an{" "}
+                                            <span style={{ fontWeight: "550" }}>
+                                              individual
+                                            </span>
+                                            , you must enter the name shown on your
+                                            income tax return. However, if you have
+                                            changed your last name, for instance,
+                                            due to marriage without informing the
+                                            Social Security Administration of the
+                                            name change, enter your first name, the
+                                            last name shown on your social security
+                                            card, and your new last name. In certain
+                                            situations we may need to contact you
+                                            for further verification.
+                                          </Typography>
+                                          <Typography style={{ marginTop: "10px" }}>
+                                            <span style={{ fontWeight: "550" }}>
+                                              Joint names:
+                                            </span>
+                                            If the account is in joint names, both
+                                            parties will need to submit separate
+                                            submissions.
+                                          </Typography>
+                                          <Typography style={{ marginTop: "10px" }}>
+                                            <span style={{ fontWeight: "550" }}>
+                                              {" "}
+                                              Sole proprietor:
+                                            </span>
+                                            Enter your individual name as shown on
+                                            your income tax return on the 'Name'
+                                            line. You may enter your business,
+                                            trade, or 'doing business as (DBA)' name
+                                            on the 'Business name' line.
+                                          </Typography>
+
+                                          <Link
+                                            href="#"
+                                            underline="none"
+                                            style={{
+                                              marginTop: "10px",
+                                              fontSize: "16px", color: "#0000C7"
+                                            }}
+                                            onClick={() => {
+                                              setToolInfo("");
+                                            }}
+                                          >
+                                            --Show Less--
+                                          </Link>
+                                        </Paper>
                                       </div>
-                                    </div>
-                                  </>
-                                </>
+                                    ) : (
+                                      ""
+                                    )}
 
-                                <div>
-                                  <Typography
-                                    className="mt-3"
-                                    style={{
-                                      fontSize: "15px",
-                                    }}
-                                  >
-                                    Hybrid status:
-                                  </Typography>
-                                  <FormControl>
-                                    <RadioGroup
-                                      row
-                                      defaultValue="3"
-                                      aria-labelledby="demo-row-radio-buttons-group-label"
-                                      name="isHybridStatus"
-                                      value={values.isHybridStatus}
-                                      onChange={handleChange}
-                                      id="isHybridStatus"
-                                    >
-                                      <FormControlLabel
-                                        control={<Radio />}
-                                        value="1"
-                                        name="isHybridStatus"
-                                        label="Hybrid"
+                                    <FormControl className="w-100">
+                                      <TextField
+                                        autoComplete="BusinessDisregardedEntityName"
+                                        type="text"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        disabled
+                                        error={Boolean(
+                                          touched.BusinessDisregardedEntityName &&
+                                          errors.BusinessDisregardedEntityName
+                                        )}
+                                        name="BusinessDisregardedEntityName"
+                                        value={values.BusinessDisregardedEntityName}
+                                        className="inputClass"
                                       />
-                                      <FormControlLabel
-                                        control={<Radio />}
-                                        value="2"
-                                        name="isHybridStatus"
-                                        label="Reverse Hybrid"
-                                      />
-                                      <FormControlLabel
-                                        control={<Radio />}
-                                        value="3"
-                                        name="isHybridStatus"
-                                        label="Not Applicable"
-                                      />
-                                    </RadioGroup>
-                                    <p className="error">
-                                      {errors.isHybridStatus?.toString()}
-                                    </p>
-                                  </FormControl>
-                                </div>
-
-                                <div className="mt-2">
-                                  <Typography
-                                    style={{
-                                      fontSize: "15px",
-                                    }}
-                                  >
-                                    Please provide a description of your hybrid
-                                    status and if applicable attach additional
-                                    information to substantiate your statement
-                                    for United States tax purposes.
-                                  </Typography>
-                                  <FormControl className="w-100 textfield1">
-                                    <TextField
-                                      className="textfield1"
-                                      name="descriptionHybridStatus"
-                                      value={values.descriptionHybridStatus}
-                                      onChange={handleChange}
-                                    />
-                                  </FormControl>
-                                  <div className="d-flex mt-3 ">
-                                    <Typography
-                                      className="mx-2"
-                                      style={{
-                                        fontSize: "15px",
-                                      }}
-                                    >
-                                      Attach supporting documentation:
-                                    </Typography>
-                                    <input
-                                      type="file"
-                                      name="attachSupportingDocumentFile"
-                                      onChange={handleFileChange}
-                                      style={{ fontSize: "12px" }}
-                                    />
-                                    {selectedfile?.name}
+                                    </FormControl>
                                   </div>
-                                  <div className="mt-2">
+                                  <div className="col-6 mt-2">
                                     <Typography
+                                      align="left"
+                                      className="d-flex w-60 "
+                                      style={{ fontSize: "13px" }}
+                                    >
+                                      Owner Name:
+                                      <span style={{ color: "red" }}>*</span>
+
+                                    </Typography>
+
+
+                                    <FormControl className="w-100">
+                                      <TextField
+
+                                        autoComplete="BusinessName"
+                                        type="text"
+                                        disabled
+                                        onChange={handleChange}
+                                        // onBlur={handleBlur}
+                                        // helperText={
+                                        //   touched.BusinessName && errors.BusinessName
+                                        // }
+                                        error={Boolean(
+                                          touched.BusinessName &&
+                                          errors.BusinessName
+                                        )}
+                                        name="BusinessName"
+                                        className="inputClassFull"
+                                        value={values.BusinessName}
+                                      />
+                                    </FormControl>
+                                  </div>
+                                  <div
+                                    className="col-12 col-md-12 mt-3"
+                                    style={{ marginTop: "20px" }}
+                                  >
+                                    <Typography
+                                      align="left"
+                                      className="d-flex w-100 "
+                                      style={{ fontSize: "15px" }}
+                                    >
+                                      The information provided from this point forward should relate to the LLC's "OWNER".
+                                      Entity type for U.S. tax purposes:
+                                      <span style={{ color: "red" }}>*</span>
+
+                                    </Typography>
+
+
+                                    <FormControl className="w-50">
+                                      <select
+                                        disabled
+                                        name="LLCOwnerEntityType"
+                                        value={values.LLCOwnerEntityType}
+                                        onChange={handleChange}
+                                        autoComplete="LLCOwnerEntityType"
+                                        // onBlur={handleBlur}
+                                        style={{
+                                          padding: " 0 10px",
+                                          color: "#121112",
+                                          fontStyle: "italic",
+                                          height: "39px",
+                                        }}
+                                      >
+                                        <option value={0}> ---select---</option>
+
+
+                                        {FederalTaxData?.filter((item: any) => item.formTypeSelectionId === 2).map((i: any, ind: any) => {
+                                          return (
+                                            <option key={ind} value={i.id}>{i.name}</option>
+                                          );
+                                        })}
+                                      </select>
+                                      <p className="error">
+                                        {touched.LLCOwnerEntityType ? errors.LLCOwnerEntityType?.toString() : ""}
+                                      </p>
+                                    </FormControl>
+                                  </div>
+
+                                  <div className=" col-12">
+                                    <Typography
+                                      align="left"
+                                      className="d-flex w-60 "
                                       style={{
-                                        fontSize: "15px",
+                                        fontSize: "13px",
+                                        marginTop: "5px",
                                       }}
                                     >
-                                      Is this submission being made on behalf of
-                                      a disregarded entity that has a Single
-                                      U.S. Owner?
+                                      Country of incorporation /
+                                      organization:
+                                      <span style={{ color: "red" }}>
+                                        *
+                                      </span>
                                     </Typography>
-                                    <FormControl>
+
+                                    <FormControl className="w-50">
+                                      <select
+                                        disabled
+                                        name="countryOfIncorporation"
+                                        value={
+                                          values.countryOfIncorporation
+                                        }
+                                        onChange={handleChange}
+                                        autoComplete="countryOfIncorporation"
+                                        onBlur={handleBlur}
+                                        style={{
+                                          padding: " 0 10px",
+                                          color: "#121112",
+                                          fontStyle: "italic",
+                                          height: "39px",
+                                        }}
+                                      >
+                                        <option value={0}>---select---</option>
+                                        <option value={257}>
+                                          United Kingdom
+                                        </option>
+                                        <option value={258}>
+                                          United States
+                                        </option>
+                                        <option value={-1}>---</option>
+                                        {getCountriesReducer.allCountriesData?.map(
+                                          (ele: any) => (
+                                            <option
+                                              key={ele?.id}
+                                              value={ele?.id}
+                                            >
+                                              {ele?.name}
+                                            </option>
+                                          )
+                                        )}
+                                      </select>
+                                    </FormControl>
+                                  </div>
+
+                                </div>
+                              </>
+                            ) : ""}
+                            {values.FederalTaxClassificationId == 11 ? (<>
+                              <div>
+
+                                <Typography
+                                  align="left"
+                                  className="d-flex w-60 "
+                                  style={{
+                                    fontSize: "16px",
+                                    marginTop: "5px",
+                                  }}
+                                >
+                                  other Type:
+                                  <span style={{ color: "red" }}>
+                                    *
+                                  </span>
+
+                                </Typography>
+                                <FormControl className="w-50">
+                                  <TextField
+                                    disabled
+                                    multiline
+                                    autoComplete="OtherType"
+                                    type="text"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    // helperText={
+                                    //   touched.OtherType && errors.OtherType
+                                    // }
+                                    error={Boolean(
+                                      touched.OtherType &&
+                                      errors.OtherType
+                                    )}
+                                    name="OtherType"
+                                    className="othertext"
+                                    value={values.OtherType}
+                                  />
+                                </FormControl>
+                              </div>
+
+                            </>) : ""}
+
+
+                            <div style={{marginTop:"10px"}}>
+                              <div>
+
+                                <Typography
+                                  align="left"
+                                  className="d-flex w-60 "
+                                  style={{
+                                    fontSize: "16px",
+                                    marginTop: "5px",
+                                  }}
+                                >
+                                 Date of incorporation:
+                                  <span style={{ color: "red" }}>
+                                    *
+                                  </span>
+
+                                </Typography>
+                                <FormControl className="datee" style={{width:"30%"}}>
+                                  <input
+                                    style={{height:"37px"}}
+                                    
+                                    autoComplete="DateOfIncorporation"
+                                    type="date"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                  
+                                   
+                                    name="DateOfIncorporation"
+                                  
+                                    value={values.DateOfIncorporation}
+                                  />
+                                </FormControl>
+                                <p className="error">
+                                        {errors.DateOfIncorporation?.toString()}
+                                      </p>
+                              </div>
+                              <div>
+                              <Typography
+                                      className="mt-3"
+                                      style={{
+                                        fontSize: "16px",
+                                      }}
+                                    >
+                                    <span style={{fontWeight:"bold"}}>Jurisdiction for Tax Purposes:</span> Is the jurisdiction in which your organisation is resident for tax purposes different from the country of incorporation?<span className="error" style={{verticalAlign:"super",fontSize:"15px"}}>*</span>
+                                    </Typography>
+                                    <FormControl style={{ marginLeft: "2px" }}>
                                       <RadioGroup
                                         row
-                                        defaultValue="No"
+
                                         aria-labelledby="demo-row-radio-buttons-group-label"
-                                        name="isSubmissionSingleUSOwner"
-                                        value={values.isSubmissionSingleUSOwner}
+                                        name="IsJurisdictionforTaxPurposes"
+                                        value={values.IsJurisdictionforTaxPurposes}
                                         onChange={handleChange}
+                                        id="IsJurisdictionforTaxPurposes"
                                       >
                                         <FormControlLabel
                                           control={<Radio />}
-                                          value="yes"
-                                          name="isSubmissionSingleUSOwner"
+                                          value="Yes"
+                                          name="IsJurisdictionforTaxPurposes"
                                           label="Yes"
                                         />
                                         <FormControlLabel
                                           control={<Radio />}
-                                          value="no"
-                                          name="isSubmissionSingleUSOwner"
+                                          value="No"
+                                          name="IsJurisdictionforTaxPurposes"
                                           label="No"
                                         />
+
                                       </RadioGroup>
                                       <p className="error">
-                                        {/* {errors.isHybridStatus} */}
+                                        {errors.IsJurisdictionforTaxPurposes?.toString()}
                                       </p>
                                     </FormControl>
-                                  </div>
-                                  {values.isSubmissionSingleUSOwner == "yes" ? (
-                                    <div>
-                                      <Typography
+                              </div>
+
+                          {values.IsJurisdictionforTaxPurposes === "Yes" ?(  <><div className="col-12 d-flex">
+                            <div className="col-7">
+                              <Typography
+                                      className="mt-3"
+                                      style={{
+                                        fontSize: "16px",
+                                      }}
+                                    >
+                                   If you are applying a tie-breaker clause under an applicable tax treaty then please select Yes here. <span className="error" style={{verticalAlign:"super",fontSize:"15px"}}>*</span>
+                                    </Typography>
+                                    <FormControl style={{ marginLeft: "2px" }}>
+                                      <RadioGroup
+                                        row
+
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        name="IsTieBreakerClauseUnderApplicableTaxTreaty"
+                                        value={values.IsTieBreakerClauseUnderApplicableTaxTreaty}
+                                        onChange={handleChange}
+                                        id="IsTieBreakerClauseUnderApplicableTaxTreaty"
+                                      >
+                                        <FormControlLabel
+                                          control={<Radio />}
+                                          value="Yes"
+                                          name="IsTieBreakerClauseUnderApplicableTaxTreaty"
+                                          label="Yes"
+                                        />
+                                        <FormControlLabel
+                                          control={<Radio />}
+                                          value="No"
+                                          name="IsTieBreakerClauseUnderApplicableTaxTreaty"
+                                          label="No"
+                                        />
+
+                                      </RadioGroup>
+                                      <p className="error">
+                                        {errors.IsTieBreakerClauseUnderApplicableTaxTreaty?.toString()}
+                                      </p>
+                                    </FormControl>
+                              </div>
+                              <div className=" col-5" style={{marginRight:"50px"}}>
+                                    <Typography
+                                      align="right"
+                                    
+                                      style={{
+                                        fontSize: "15px",
+                                        marginTop: "15px",
+                                      }}
+                                    >
+                                      Country where taxes Are Paid:
+                                      <span style={{ color: "red" }}>
+                                        *
+                                      </span>
+                                    </Typography>
+                                    <Typography align="right">
+                                    <FormControl className="w-50">
+                                      <select
+                                        
+                                        name="CountryIdwhereTaxesarePaid"
+                                        value={
+                                          values.CountryIdwhereTaxesarePaid
+                                        }
+                                        onChange={handleChange}
+                                        autoComplete="CountryIdwhereTaxesarePaid"
+                                        onBlur={handleBlur}
                                         style={{
-                                          fontSize: "15px",
+                                          padding: " 0 10px",
+                                          color: "#121112",
+                                          fontStyle: "italic",
+                                          height: "39px",
                                         }}
                                       >
-                                        Are you considered disregarded for
-                                        purposes of Section 1446?
-                                      </Typography>
-                                      <FormControl>
-                                        <RadioGroup
-                                          row
-                                          defaultValue="No"
-                                          aria-labelledby="demo-row-radio-buttons-group-label"
-                                          name="isDisRegardedSection1446"
-                                          value={
-                                            values.isDisRegardedSection1446
-                                          }
-                                          onChange={handleChange}
-                                          id="isDisRegardedSection1446"
-                                        >
-                                          <FormControlLabel
-                                            control={<Radio />}
-                                            value="yes"
-                                            name="isDisRegardedSection1446"
-                                            label="Yes"
-                                          />
-                                          <FormControlLabel
-                                            control={<Radio />}
-                                            value="no"
-                                            name="isDisRegardedSection1446"
-                                            label="No"
-                                          />
-                                        </RadioGroup>
-                                        <p className="error">
-                                          {/* {errors.isHybridStatus} */}
-                                        </p>
-                                      </FormControl>
-                                    </div>
-                                  ) : values.isSubmissionSingleUSOwner ==
-                                    "no" ? (
-                                    ""
-                                  ) : (
-                                    ""
-                                  )}
-                                </div>
-                              </>
-                            ) : (
-                              ""
-                            )}
+                                        <option value={0}>---select---</option>
+                                        <option value={257}>
+                                          United Kingdom
+                                        </option>
+                                        <option value={258}>
+                                          United States
+                                        </option>
+                                        <option value={-1}>---</option>
+                                        {getCountriesReducer.allCountriesData?.map(
+                                          (ele: any) => (
+                                            <option
+                                              key={ele?.id}
+                                              value={ele?.id}
+                                            >
+                                              {ele?.name}
+                                            </option>
+                                          )
+                                        )}
+                                      </select>
+                                      <p className="error">
+                                        {errors.CountryIdwhereTaxesarePaid?.toString()}
+                                      </p>
+                                    </FormControl>
+                                  
+                                    </Typography>
+                                  </div>
+                              
+
+                                   
+
+                            </div>
+                            
+                             <div>
+
+                             <Typography
+                               align="left"
+                               className="d-flex w-60 "
+                               style={{
+                                 fontSize: "16px",
+                                 marginTop: "5px",
+                               }}
+                             >
+                             Content block for tax jurisdiction mismatch explanation
+                               <span style={{ color: "red" }}>
+                                 *
+                               </span>
+                             
+                             </Typography>
+                             <FormControl className="explanation">
+                               <TextField
+                                 style={{height:"78px"}}
+                                 
+                                 autoComplete="ContentforTaxJurisdictionMismatchExplanation"
+                                 type="text"
+                                 onChange={handleChange}
+                                 onBlur={handleBlur}
+                               
+                                placeholder="PLease Provide an explanation here:"
+                                 name="ContentforTaxJurisdictionMismatchExplanation"
+                                 className="othertext"
+                                 value={values.ContentforTaxJurisdictionMismatchExplanation}
+                               />
+                                 <p className="error">
+                                        {errors.ContentforTaxJurisdictionMismatchExplanation?.toString()}
+                                      </p>
+                             </FormControl>
+                           
+                             <div className="mt-1">
+                               <div className="d-flex col-6">
+                                 <Checkbox name="IsTrueandAccurateStatement" checked={values.IsTrueandAccurateStatement} onChange={handleChange}
+                                 />
+                                 <Typography className="mt-2">
+                                 Check to confirm this is a true and accurate statement:
+                                 </Typography>
+                               </div>
+                               <p className="error">
+                                        {errors.IsTrueandAccurateStatement}
+                                      </p>
+                             
+                             </div>
+                             </div>
+                             </> 
+                          
+                          ):""}
+                           
+                            </div>
                           </Typography>
                         </div>
 
@@ -1032,7 +1230,7 @@ export default function Fedral_tax(props: any) {
                               <Typography
                                 style={{ fontSize: "14px", color: "blue" }}
                               >
-                                Chapter 3 Status Guide
+                                Federal Tax Classification Guide
                               </Typography>
                             </AccordionSummary>
                             <AccordionDetails>
@@ -1066,7 +1264,7 @@ export default function Fedral_tax(props: any) {
                                     }}
                                   >
                                     This guide is provided to help you determine
-                                    the classification of the entity the
+                                    the USFederalTaxClassification of the entity the
                                     submission represents.
                                   </Typography>
 
@@ -1078,7 +1276,7 @@ export default function Fedral_tax(props: any) {
                                     }}
                                   >
                                     In the left hand menu you will see several
-                                    different classification types. Please
+                                    different USFederalTaxClassification types. Please
                                     select each in turn reading the definition
                                     provided. When you are satisfied the
                                     description matches the entity type select
@@ -1132,7 +1330,7 @@ export default function Fedral_tax(props: any) {
                                   <Typography
                                     style={{ fontSize: "18px", color: "blue" }}
                                   >
-                                    Corporation{" "}
+                                    (S or C) Corporation
                                   </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
@@ -1171,45 +1369,7 @@ export default function Fedral_tax(props: any) {
                                 </AccordionDetails>
                               </Accordion>
 
-                              <Accordion
-                                expanded={expandedState === "panel3"}
-                                onChange={handleChangeAccodionState("panel3")}
-                              >
-                                <AccordionSummary
-                                  expandIcon={<ExpandMore />}
-                                  aria-controls="panel2d-content"
-                                  id="panel2d-header"
-                                >
-                                  <Typography
-                                    style={{ fontSize: "18px", color: "blue" }}
-                                  >
-                                    Disregarded Entity{" "}
-                                  </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                  <Typography align="left">
-                                    A business entity that is not a corporation
-                                    and that has a single owner may be
-                                    disregarded as an entity separate from its
-                                    owner (a disregarded entity) for federal tax
-                                    purposes.
-                                  </Typography>
-                                  <Typography
-                                    align="left"
-                                    style={{ marginTop: "10px" }}
-                                  >
-                                    The payee of a payment made to a disregarded
-                                    entity is the owner of the entity.
-                                  </Typography>
 
-                                  <Typography
-                                    align="center"
-                                    style={{ marginTop: "30px" }}
-                                  >
-                                    <Button variant="contained" onClick={() => { confirmFunction(2, setFieldValue) }}>Confirm</Button>
-                                  </Typography>
-                                </AccordionDetails>
-                              </Accordion>
 
                               <Accordion
                                 expanded={expandedState === "panel4"}
@@ -1862,7 +2022,7 @@ export default function Fedral_tax(props: any) {
                             marginTop: "80px",
                           }}
                         >
-                          {/* <SaveAndExit
+                          <SaveAndExit
                             Callback={
                               () => {
                                 submitForm().then((data) => {
@@ -1872,26 +2032,25 @@ export default function Fedral_tax(props: any) {
                                   const urlValue =
                                     window.location.pathname.substring(1);
                                   dispatch(
-                                    postW8ECI_EForm(
+                                    PostDualCertW9Entity(
                                       {
                                         ...prevStepData,
                                         stepName: `/${urlValue}`,
+                                        
                                       },
-                                      () => {
-                                        history(GlobalValues.basePageRoute);
-                                      }
-                                    )
-                                  );
-                                }).catch((error) => {
-                                  console.log(error);
-                                })
-                              }
-                            }
-                            formTypeId={FormTypeId.W8ECI}
+                                       () => { }, 
+                                      () => { }) 
+                                    );
+                                    history(GlobalValues.basePageRoute)
+                                  }).catch((err) => {
+                                    console.log(err);
+                                  })
+                                }}
+                            formTypeId={FormTypeId.W9}
                           >
-                          </SaveAndExit> */}
+                          </SaveAndExit>
                           <Button
-                            type="submit"
+                          
                             disabled={isSubmitting}
                             variant="contained"
                             onClick={() => {
@@ -1903,14 +2062,14 @@ export default function Fedral_tax(props: any) {
                           </Button>
                           <Button
                             //type="submit"
-                            // disabled={!isValid}
+                            disabled={!isValid}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
                             onClick={() => {
-                              // submitForm().then((data) => {
-                              //   console.log(data)
+                              submitForm().then((data) => {
+                                console.log(data)
                                 history("/CRS_W9_DC");
-                              // })
+                              })
                             }}
                           >
                             Continue

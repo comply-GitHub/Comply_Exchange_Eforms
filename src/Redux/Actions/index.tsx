@@ -285,7 +285,7 @@ export const LoadExistingFormData = (formTypeId: any, AccountHolderId: any, call
       Endpoint = Utils.EndPoint.GetByW8IMYEntityNonForm + `?AccountHolderBasicDetailId=${AccountHolderId}`
       break;
     case FormTypeId.CaymanIndividual:
-      Endpoint = Utils.EndPoint.GetByCaymanIndividualNonUSId + `?AccountHolderBasicDetailId=${AccountHolderId}`
+      Endpoint = Utils.EndPoint.GetByCaymanIndividualNonUSId + `?AccountHolderDetailId=${AccountHolderId}`
       break;
     default:
       return;
@@ -328,6 +328,12 @@ export const LoadExistingFormData = (formTypeId: any, AccountHolderId: any, call
           case FormTypeId.W8EXP:
             dispatch({
               type: Utils.actionName.InsertW8EXPFormEntityNonUs,
+              payload: { ...responseData?.data },
+            });
+            break;
+          case FormTypeId.CaymanIndividual:
+            dispatch({
+              type: Utils.actionName.InsertCaymanIndividualNonUS,
               payload: { ...responseData?.data },
             });
             break;
@@ -1127,7 +1133,30 @@ export const GetAgentIncomeCodeHiddenForEformAction = (): any => {
 //     );
 //   };
 // };
+//GetAgentExemptionCodeHidden
 
+export const GetAgentExemptionCodeHidden = (id:number): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetAgentExemptionCodeHidden,
+      `?id=${id}`,
+      (resData) => {
+        const { data } = resData;
+        if (resData.status === 200) {
+          dispatch({
+            type: Utils.actionName.GetAgentExemptionCodeHidden,
+            payload: {
+              GetAgentExemptionCodeHiddenData: resData.data,
+            },
+          });
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
 
 export const GetAgentUSVisaTypeHiddenForEformAction = (id:number): any => {
   return (dispatch: any) => {
@@ -1597,16 +1626,17 @@ export const PostDualCertDetails = (value: any,successCallback:Function,errorCal
   };
 };
 
+//UpsertEntityW9DualCert
 
-export const PostDualCert = (value: any,successCallback:Function,errorCallback:Function): any => {
+export const PostDualCertW9Entity = (value: any,successCallback:Function,errorCallback:Function): any => {
   return (dispatch: any) => {
     Utils.api.postApiCall(
-      Utils.EndPoint.InserDualCert,
+      Utils.EndPoint.UpsertEntityW9DualCert,
       value,
       (responseData) => {
         let { data } = responseData;
         dispatch({
-          type: Utils.actionName.InserDualCert,
+          type: Utils.actionName.UpsertEntityW9DualCert,
           payload: { ...value, Response: data },
         });
         if (responseData) {
@@ -1642,6 +1672,80 @@ export const PostDualCert = (value: any,successCallback:Function,errorCallback:F
     );
   };
 };
+
+export const PostDualCert = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.InserDualCert,
+      value,
+      (responseData) => {
+        let { data } = responseData;
+        dispatch({
+          type: Utils.actionName.InserDualCert,
+          payload: { data: data.data },
+        });
+        if (responseData) {
+          if (responseData.status == 500) {
+            errorCallback({ message: "Some error occured", error: responseData });
+          } else {
+            if (callback) {
+              callback();
+            }
+          }
+        }
+      },
+      (error) => {
+        errorCallback({ message: "Some error occured", error: error });
+      },
+      "multi"
+    );
+  };
+};
+
+// export const PostDualCert = (value: any,successCallback:Function,errorCallback:Function): any => {
+//   return (dispatch: any) => {
+//     Utils.api.postApiCall(
+//       Utils.EndPoint.InserDualCert,
+//       value,
+//       (responseData) => {
+//         let { data } = responseData;
+//         dispatch({
+//           type: Utils.actionName.InserDualCert,
+//           payload: { ...value, Response: data },
+//         });
+//         if (responseData) {
+//           if (responseData.status == 500) {
+//             let err: ErrorModel = {
+//               statusCode: 500,
+//               message: responseData.error,
+//               payload: responseData
+//             }
+//             dispatch({
+//               type: Utils.actionName.UpdateError,
+//               payload: { ...err },
+//             });
+//             errorCallback(err);
+//           }else if(responseData.status == 200){
+//             successCallback(responseData)
+//           }
+//         }
+//       },
+//       (error: ErrorModel) => {
+//         console.log(error)
+//         let err: any = {
+//           ...error
+//         }
+//         dispatch({
+//           type: Utils.actionName.UpdateError,
+//           payload: { ...err },
+//         });
+//         errorCallback(err);
+
+//       },
+//       // "multi"
+//     );
+//   };
+// };
 // export const postW8ECIForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
 //   return (dispatch: any) => {
 //     Utils.api.postApiCall(
@@ -2549,6 +2653,53 @@ export const postSCIndividualEForm = (value: any, callback: Function, errorCallb
         let { data } = responseData;
         dispatch({
           type: Utils.actionName.InsertCaymanIndividualNonUS,
+          payload: { ...value,renouncementProofFile:"", Response: data },
+        });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback({ message: "Internal server error occured", payload: responseData })
+          } else {
+            if (callback) {
+              callback();
+            }
+          }
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(error)
+      },
+      "multi"
+    );
+  };
+};
+
+export const upsertTaxLiablitySCIndividual = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.UpsertTaxLiabilityinanyOtherJurisdictions,
+    convertToFormData(value),
+      // value,
+      (responseData) => {
+        let { data } = responseData;
+        dispatch({
+          type: Utils.actionName.UpsertTaxLiabilityinanyOtherJurisdictions,
           payload: { ...value, Response: data },
         });
         if (responseData) {
@@ -2582,6 +2733,81 @@ export const postSCIndividualEForm = (value: any, callback: Function, errorCallb
         errorCallback(error)
       },
       "multi"
+    );
+  };
+};
+
+export const GetTaxJusrisdictionMismatchExplaination = (callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetTaxJusrisdictionMismatchExplaination,
+      "",
+      (resData) => {
+        const { data } = resData;
+        if (resData.status === 200) {
+          if (callback) {
+            callback(data);
+          }
+          dispatch({
+            type: Utils.actionName.GetTaxJusrisdictionMismatchExplaination,
+            payload: {
+              GetTaxJurisdictionMismatchData: resData.data,
+            },
+          });
+        } else {
+          if (callback) {
+            callback();
+          }
+        }
+      },
+      (error: any) => {
+        
+      }
+    );
+  };
+}
+
+export const postSCFATCAClassification = (value: any,successCallback:Function,errorCallback:Function): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.UpsertCRSandFATCAClassification,
+      value,
+      (responseData) => {
+        let { data } = responseData;
+        dispatch({
+          type: Utils.actionName.UpsertCRSandFATCAClassification,
+          payload: { ...value, Response: data },
+        });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback(err);
+          }else if(responseData.status == 200){
+            successCallback(responseData)
+          }
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(err);
+
+      },
+       "multi"
     );
   };
 };
