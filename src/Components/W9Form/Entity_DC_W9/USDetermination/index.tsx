@@ -10,23 +10,21 @@ import { Button, Typography, Paper, Checkbox, Link, FormControlLabel, Radio, For
 import Divider from "@mui/material/Divider";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { Form, Formik } from "formik";
-import { W8_state_ECI,PostDualCert,GetAgentExemptionCodeHidden } from "../../../../Redux/Actions";
+import { PostDualCertW9Entity,PostDualCert,GetAgentExemptionCodeHidden } from "../../../../Redux/Actions";
 import { useDispatch ,useSelector} from "react-redux";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import useAuth from "../../../../customHooks/useAuth";
 export default function Declaration (props: any){
-   const { authDetails } = useAuth();
-  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
-  const CRSData = localStorage.getItem("lastClickedPanelHeading");
+  const { authDetails } = useAuth();
+  const PrevStepData = JSON.parse(localStorage.getItem("EntityDualCertPrevStepData") || "{}");
+  
 
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
  
- 
-  
     const initialValue = {
      USSpecifiedPerson:"",
      FatcaExemption:0
@@ -41,7 +39,7 @@ export default function Declaration (props: any){
        console.log(ExemptionData,"11")
    
       useEffect(() => {
-      document.title = "CRS Classification"
+      document.title = "Specified U.S. Person Determination"
     }, [])
   return (
     <Fragment>
@@ -96,8 +94,9 @@ export default function Declaration (props: any){
                 };
                 const returnPromise = new Promise((resolve, reject) => {
                 dispatch(
-                  PostDualCert(result, (data: any) => {
-                    localStorage.setItem("DualCertData", JSON.stringify(result))
+                  PostDualCertW9Entity(result, (data: any) => {
+                    localStorage.setItem("EntityDualCertPrevStepData", JSON.stringify(result))
+                    history("/Taxpayer_DC");
                     resolve(data);
                   }
                     , (err: any) => {
@@ -213,10 +212,7 @@ export default function Declaration (props: any){
 
 
 <FormControl 
-//   error={Number(
-//     touched.FatcaExemption &&
-//     errors.FatcaExemption
-//   )}
+
 >
   <RadioGroup
     
@@ -267,7 +263,10 @@ export default function Declaration (props: any){
                     </Button>
 
                     <Button 
-                    disabled={!isValid}   
+                    type="submit"
+
+
+                      disabled={!isValid}   
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
                     >

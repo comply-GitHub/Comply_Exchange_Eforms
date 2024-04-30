@@ -123,6 +123,12 @@ export default function Declaration (props: any){
                 dispatch(
                   postSCFATCAClassification(result, (data: any) => {
                     localStorage.setItem("DualCertData", JSON.stringify(result))
+                    if(CRSClassificationData?.selectedHeading =="Passive Non Financial Entity"){
+                      history("/SelfCert_Passive_W9_DC")
+                    }
+                    else{
+                      history("/US_Determination_W9_DC")
+                    }
                     resolve(data);
                   }
                     , (err: any) => {
