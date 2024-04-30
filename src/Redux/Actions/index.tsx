@@ -2789,3 +2789,61 @@ export const postSCFATCAClassification = (value: any,successCallback:Function,er
     );
   };
 };
+
+
+export const postSCEntityEForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.InsertCaymanEntityNonUS,
+    convertToFormData(value),
+      // value,
+      (responseData) => {
+        let { data } = responseData;
+        dispatch({
+          type: Utils.actionName.InsertCaymanEntityNonUS,
+          payload: { ...value,renouncementProofFile:"", Response: data },
+        });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback({ message: "Internal server error occured", payload: responseData })
+          } else {
+            if (callback) {
+              callback();
+            }
+          }
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(error)
+      },
+      "multi"
+    );
+  };
+};
+
+
+export const insertCaymanEntityNonUSFATCAClassificationEmpty = (payload: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    dispatch({
+      type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassificationEmpty,
+      payload
+    });
+  };
+};

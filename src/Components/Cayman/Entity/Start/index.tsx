@@ -28,9 +28,9 @@ import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../../../customHooks/useAuth";
-import { GetChapter3Status, GetHelpVideoDetails, GetTaxJusrisdictionMismatchExplaination, getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode,  postW8BEN_EForm } from "../../../../Redux/Actions";
+import { GetChapter3Status, GetHelpVideoDetails, GetTaxJusrisdictionMismatchExplaination, getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode , insertCaymanEntityNonUSFATCAClassificationEmpty,  postSCEntityEForm } from "../../../../Redux/Actions";
 import GlobalValues, { FormTypeId, FormTypeSelection } from "../../../../Utils/constVals";
-import { GetBenEPdf } from "../../../../Redux/Actions/PfdActions";
+import { GetBenEPdf, GetW9Pdf } from "../../../../Redux/Actions/PfdActions";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import DatePicker from 'react-date-picker';
@@ -38,6 +38,7 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { EntityStartSchema } from "../../../../schemas/cayman";
 import Utils from "../../../../Utils";
+import View_Insructions from "../../../viewInstruction";
 
 export default function Fedral_tax(props: any) {
   const { authDetails } = useAuth();
@@ -63,26 +64,26 @@ export default function Fedral_tax(props: any) {
 
   const [initialValue, setInitialValue] = useState({
     agentId: authDetails?.agentId,
-    formTypeSelectionId: 2,
+    formTypeSelectionId: FormTypeId.CaymanEntity,
     accountHolderBasicDetailId: authDetails?.accountHolderId,
     businessName: obValues.entityName,
     businessDisgradedEntity: "",
     other: "",
     countryOfIncorporation: 0,
     dateOfIncorporation:"",
-    jurisdictionForTaxPurposes : false,
-    isPrimaryResidenceJusrisdiction:false,
+    jurisdictionForTaxPurposes : "",
+    isApplyingTieBreakerClauseUnderApplicableTaxTreaty:"",
     countryOfTaxesPaid:0,
     taxJuridictionListItem:[],
-    taxJuridictionListItemSelectedId:0,
+    taxJurisdictionMismatchExplanationId:null,
     explainationForNone:"",
     confirmThisisaTrueAndAccurate:false,
     chapter3Status: 0,
     attachSupportingDocumentFile: null,
     attachSupportingDocument: null,
     descriptionHybridStatus: "",
-    isHybridStatus: 3,
-    isSubmissionSingleUSOwner: "",
+    hybridStatus: 3,
+    isDisRegardedSection: "",
     isDisRegardedSection1446: "",
     statusId: 1,
     stepName: `/${urlValue}`,
@@ -108,12 +109,12 @@ export default function Fedral_tax(props: any) {
   //       countryOfIncorporation: Number.parseInt(W8BENEData.countryOfIncorporation),
   //       dateOfIncorporation:"",
   //       jurisdictionForTaxPurposes : false,
-  //       isPrimaryResidenceJusrisdiction:false,
+  //       isApplyingTieBreakerClauseUnderApplicableTaxTreaty:false,
   //       countryOfTaxesPaid:0,
   //       taxJuridictionListItem : taxJuridictionListItem ? taxJuridictionListItem : [],
-  //       isHybridStatus: Number.parseInt(W8BENEData.isHybridStatus),
+  //       hybridStatus: Number.parseInt(W8BENEData.hybridStatus),
   //       businessName: W8BENEData.entityName && W8BENEData.entityName !== null && W8BENEData.entityName !== "" ? W8BENEData.entityName : obValues.entityName,
-  //       isSubmissionSingleUSOwner: W8BENEData.isSubmissionSingleUSOwner === true ? "yes" : "no",
+  //       isDisRegardedSection: W8BENEData.isDisRegardedSection === true ? "yes" : "no",
   //       isDisRegardedSection1446: W8BENEData.isDisRegardedSection1446 === true ? "yes" : "no",
   //       stepName: `/${urlValue}`,
   //     };
@@ -192,31 +193,59 @@ export default function Fedral_tax(props: any) {
     history("/w8BenE_pdf");
   }
   
+  const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  };
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  };
     // console.log("GetChapter3StatusReducer",GetChapter3StatusReducer)
+    
   return (
     <>
       <section
         className="inner_content"
         style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
       >
+        <View_Insructions
+          canvaBx={canvaBx}
+          handleCanvaClose={handleCanvaClose}
+        />
+        {canvaBx === true ? (
+          <div
+            className="offcanvas-backdrop fade show"
+            onClick={() => {
+              handleCanvaClose();
+            }}
+          ></div>
+        ) : null}
+        {/* {/ sidebar design end /} */}
         <div className="overlay-div">
           <div className="overlay-div-group">
-            <div className="viewInstructions">View Instructions</div>
-            <div className="viewform"
+            <div
+              className="viewInstructions"
               onClick={() => {
-                dispatch(GetBenEPdf(authDetails?.accountHolderId))
-              }}>View Form</div>
+                handleCanvaOpen();
+              }}
+            >
+              View Instructions
+            </div>
+            <div className="viewform" onClick={() => {
+              dispatch(GetW9Pdf(authDetails?.accountHolderId))
+            }}>
+              View Form
+            </div>
             <div className="helpvideo">
-              {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
-              {GethelpData && GethelpData[3].id === 5 ? (
+              {GethelpData && GethelpData[8].id === 10 ? (
                 <a
-                  href={GethelpData[3].fieldValue}
+                  href={GethelpData[8].fieldValue}
                   target="popup"
                   onClick={() =>
                     window.open(
-                      GethelpData[3].fieldValue,
-                      'name',
-                      `width=${GethelpData[3].width},height=${GethelpData[3].height},top=${GethelpData[3].top},left=${GethelpData[3].left}`
+                      GethelpData[8].fieldValue,
+                      "name",
+                      `width=${GethelpData[8].width},height=${GethelpData[8].height},top=${GethelpData[8].top},left=${GethelpData[8].left}`
                     )
                   }
                 >
@@ -247,44 +276,48 @@ export default function Fedral_tax(props: any) {
                   onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
                     dispatch({
-                      type: Utils.actionName.InsertCaymanEntityNonUSChapter3Data,
+                      type: Utils.actionName.InsertCaymanEntityNonUSChapter3DataRedux,
                       payload: values,
                     });
-                    history("/Cayman/Entity/FATCA")
-                    // const submitPromise = new Promise((resolve, reject) => {
-                    //   if (clickCount === 0) {
-                    //     setClickCount(clickCount + 1);
-                    //   } else {
-                    //     setSubmitting(true);
-                    //     const temp = {
-                    //       ...PrevStepData, ...values,
-                    //       agentId: authDetails?.agentId,
-                    //       accountHolderBasicDetailId: authDetails?.accountHolderId,
-                    //       isSubmissionSingleUSOwner: values.isSubmissionSingleUSOwner === "yes" ? true : false,
-                    //       isDisRegardedSection1446: values.isDisRegardedSection1446 === "yes" ? true : false,
-                    //     };
-                    //     const result = {
-                    //       ...temp,
-                    //       isHybridStatus: Number.isNaN(temp.isHybridStatus) ? 0 : temp.isHybridStatus,
-                    //       formTypeSelectionId: FormTypeSelection.Entity,
-                    //       attachSupportingDocumentFile: selectedfile,
-                    //     };
-                    //     dispatch(
-                    //       postW8BEN_EForm(result, () => {
-                    //         localStorage.setItem("PrevStepData", JSON.stringify(temp));
-                    //         resolve("success");
-                    //         setSubmitting(false);
-                    //       },
-                    //         (error: any) => {
-                    //           reject(error);
-                    //           setSubmitting(false);
-                    //         }
-                    //       )
-                    //     );
-                    //   }
-                    // })
-                    // return submitPromise;
+                    //history("/Cayman/Entity/FATCA")
+                    const submitPromise = new Promise((resolve, reject) => {
+                      // if (clickCount === 0) {
+                      //   setClickCount(clickCount + 1);
+                      // } else {
+                        setSubmitting(true);
+                        const temp = {
+                          ...PrevStepData,
+                          ...values,
+                          agentId: authDetails?.agentId,
+                          accountHolderBasicDetailId: authDetails?.accountHolderId,
+                        };
+                        const result = {
+                          ...temp,
+                          hybridStatus: Number.isNaN(temp.hybridStatus) ? 0 : temp.hybridStatus,
+                          formTypeSelectionId: FormTypeSelection.Entity,
+                          attachSupportingDocumentFile: selectedfile,
+                        };
+                        console.log("result", result);
+                        dispatch(
+                          postSCEntityEForm(result, () => {
+                            localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                            resolve("success");
+                            history("/Cayman/Entity/FATCA")
+                            setSubmitting(false);
+                          },
+                            (error: any) => {
+                              reject(error);
+                              setSubmitting(false);
+                            }
+                          )
+                        );
+                      // }
+                    })
+                    
+                    return submitPromise;
+                    
                   }}
+                  
                 >
                   {({
                     errors,
@@ -960,19 +993,20 @@ export default function Fedral_tax(props: any) {
                                             name="jurisdictionForTaxPurposes"
                                             value={values.jurisdictionForTaxPurposes}
                                             onChange={(event) => {
-                                                setFieldValue("jurisdictionForTaxPurposes", event.currentTarget.value === "true" ? true : false)
+                                                // setFieldValue("jurisdictionForTaxPurposes", event.currentTarget.value === "true" ? true : false)
+                                                setFieldValue("jurisdictionForTaxPurposes", event.currentTarget.value)
                                               }}
                                             style={{ flexDirection: "row" }}
                                         >
-                                            <FormControlLabel name="jurisdictionForTaxPurposes" value="true" control={<Radio />} label="Yes" />
-                                            <FormControlLabel name="jurisdictionForTaxPurposes" value="false" control={<Radio />} label="No" />
+                                            <FormControlLabel name="jurisdictionForTaxPurposes" value="Yes" control={<Radio />} label="Yes" />
+                                            <FormControlLabel name="jurisdictionForTaxPurposes" value="No" control={<Radio />} label="No" />
                                         </RadioGroup>
 
                                         </FormControl>
                                     </div>
                                 </div>
                                 
-                                {values.jurisdictionForTaxPurposes === true && (
+                                {values.jurisdictionForTaxPurposes === "Yes" && (
                                     <div>
                                     <div className="col-6">
                                       <Typography
@@ -989,16 +1023,18 @@ export default function Fedral_tax(props: any) {
                                       <FormControl className="w-100">
                                           <RadioGroup
                                               aria-labelledby="demo-controlled-radio-buttons-group"
-                                              name="isPrimaryResidenceJusrisdiction"
-                                              value={values.isPrimaryResidenceJusrisdiction}
+                                              name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty"
+                                              value={values.isApplyingTieBreakerClauseUnderApplicableTaxTreaty}
                                               onChange={(event) => {
-                                                  setFieldValue("isPrimaryResidenceJusrisdiction", event.currentTarget.value === "true" ? true : false)
+                                                  // setFieldValue("isApplyingTieBreakerClauseUnderApplicableTaxTreaty", event.currentTarget.value === "true" ? true : false)
+                                                  setFieldValue("isApplyingTieBreakerClauseUnderApplicableTaxTreaty", event.currentTarget.value)
+
                                                 }}  
                                               style={{ flexDirection: "row" }}
                                           >
                                               
-                                              <FormControlLabel name="isPrimaryResidenceJusrisdiction" value="true" control={<Radio />} label="Yes" />
-                                              <FormControlLabel name="isPrimaryResidenceJusrisdiction" value="false" control={<Radio />} label="No" />
+                                              <FormControlLabel name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty" value="Yes" control={<Radio />} label="Yes" />
+                                              <FormControlLabel name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty" value="No" control={<Radio />} label="No" />
                                           </RadioGroup>
                                       </FormControl>
                                       <p className="error">
@@ -1068,17 +1104,17 @@ export default function Fedral_tax(props: any) {
                                       <FormControl className="w-100">
                                           <RadioGroup
                                               aria-labelledby="demo-controlled-radio-buttons-group"
-                                              name="taxJuridictionListItemSelectedId"
-                                              value={values?.taxJuridictionListItemSelectedId}
+                                              name="taxJurisdictionMismatchExplanationId"
+                                              value={values?.taxJurisdictionMismatchExplanationId}
                                               onChange={(event) => {
-                                                  setFieldValue("taxJuridictionListItemSelectedId", event.currentTarget.value )
+                                                  setFieldValue("taxJurisdictionMismatchExplanationId", event.currentTarget.value )
                                                 }}  
                                               style={{ flexDirection: "row" }}
                                           >
                                             {values?.taxJuridictionListItem?.map((item: any, index: any) => (
                                               <FormControlLabel
                                                 key={index}
-                                                name="taxJuridictionListItemSelectedId"
+                                                name="taxJurisdictionMismatchExplanationId"
                                                 value={item.id}
                                                 control={<Radio />}
                                                 label={item.mismatchExplanation}
@@ -1088,7 +1124,7 @@ export default function Fedral_tax(props: any) {
                                           </RadioGroup>
                                       </FormControl> 
                                       
-                                      {values.taxJuridictionListItemSelectedId == 15 && (<>
+                                      {values.taxJurisdictionMismatchExplanationId == 15 && (<>
                                       <div className="col-6">
                                       <FormControl className="w-100 textfield1">
                                         <TextField 
@@ -1464,32 +1500,32 @@ export default function Fedral_tax(props: any) {
                                       row
                                       defaultValue="Not"
                                       aria-labelledby="demo-row-radio-buttons-group-label"
-                                      name="isHybridStatus"
-                                      value={values.isHybridStatus}
+                                      name="hybridStatus"
+                                      value={values.hybridStatus}
                                       onChange={handleChange}
-                                      id="isHybridStatus"
+                                      id="hybridStatus"
                                     >
                                       <FormControlLabel
                                         control={<Radio />}
                                         value="1"
-                                        name="isHybridStatus"
+                                        name="hybridStatus"
                                         label="Hybrid"
                                       />
                                       <FormControlLabel
                                         control={<Radio />}
                                         value="2"
-                                        name="isHybridStatus"
+                                        name="hybridStatus"
                                         label="Reverse Hybrid"
                                       />
                                       <FormControlLabel
                                         control={<Radio />}
                                         value="3"
-                                        name="isHybridStatus"
+                                        name="hybridStatus"
                                         label="Not Applicable"
                                       />
                                     </RadioGroup>
                                     <p className="error">
-                                      {errors.isHybridStatus}
+                                      {errors.hybridStatus}
                                     </p>
                                   </FormControl>
                                 </div>
@@ -1526,7 +1562,7 @@ export default function Fedral_tax(props: any) {
                                       style={{ fontSize: "12px" }}
                                     />
                                   </div>
-                                  {values.isHybridStatus == 3 ?
+                                  {values.hybridStatus == 3 ?
                                     (
                                       <div className="mt-2">
                                         <Typography
@@ -1543,20 +1579,20 @@ export default function Fedral_tax(props: any) {
                                             row
                                             defaultValue="No"
                                             aria-labelledby="demo-row-radio-buttons-group-label"
-                                            name="isSubmissionSingleUSOwner"
-                                            value={values.isSubmissionSingleUSOwner}
+                                            name="isDisRegardedSection"
+                                            value={values.isDisRegardedSection}
                                             onChange={handleChange}
                                           >
                                             <FormControlLabel
                                               control={<Radio />}
                                               value="Yes"
-                                              name="isSubmissionSingleUSOwner"
+                                              name="isDisRegardedSection"
                                               label="Yes"
                                             />
                                             <FormControlLabel
                                               control={<Radio />}
                                               value="No"
-                                              name="isSubmissionSingleUSOwner"
+                                              name="isDisRegardedSection"
                                               label="No"
                                             />
                                           </RadioGroup>
@@ -1569,7 +1605,7 @@ export default function Fedral_tax(props: any) {
                                     : ("")}
 
 
-                                  {values.isSubmissionSingleUSOwner == "yes" ? (
+                                  {values.isDisRegardedSection == "Yes" ? (
                                     <div>
                                       <Typography
                                         style={{
@@ -1582,22 +1618,21 @@ export default function Fedral_tax(props: any) {
                                       <FormControl>
                                         <RadioGroup
                                           row
-                                          defaultValue="no"
                                           aria-labelledby="demo-row-radio-buttons-group-label"
                                           name="isDisRegardedSection1446"
-                                          //   value={values.isDisRegardedSection1446}
+                                          value={values.isDisRegardedSection1446}
                                           onChange={handleChange}
                                           id="isDisRegardedSection1446"
                                         >
                                           <FormControlLabel
                                             control={<Radio />}
-                                            value="yes"
+                                            value="Yes"
                                             name="isDisRegardedSection1446"
                                             label="Yes"
                                           />
                                           <FormControlLabel
                                             control={<Radio />}
-                                            value="no"
+                                            value="No"
                                             name="isDisRegardedSection1446"
                                             label="No"
                                           />
@@ -1607,7 +1642,7 @@ export default function Fedral_tax(props: any) {
                                         </p>
                                       </FormControl>
                                     </div>
-                                  ) : values.isSubmissionSingleUSOwner == "no" ? (
+                                  ) : values.isDisRegardedSection == "No" ? (
                                     ""
                                   ) : (
                                     ""
@@ -1634,18 +1669,19 @@ export default function Fedral_tax(props: any) {
                                             name="jurisdictionForTaxPurposes"
                                             value={values.jurisdictionForTaxPurposes}
                                             onChange={(event) => {
-                                                setFieldValue("jurisdictionForTaxPurposes", event.currentTarget.value === "true" ? true : false)
+                                                // setFieldValue("jurisdictionForTaxPurposes", event.currentTarget.value === "true" ? true : false)
+                                                setFieldValue("jurisdictionForTaxPurposes", event.currentTarget.value)
                                               }}
                                             style={{ flexDirection: "row" }}
                                         >
-                                            <FormControlLabel name="jurisdictionForTaxPurposes" value="true" control={<Radio />} label="Yes" />
-                                            <FormControlLabel name="jurisdictionForTaxPurposes" value="false" control={<Radio />} label="No" />
+                                            <FormControlLabel name="jurisdictionForTaxPurposes" value="Yes" control={<Radio />} label="Yes" />
+                                            <FormControlLabel name="jurisdictionForTaxPurposes" value="No" control={<Radio />} label="No" />
                                         </RadioGroup>
 
                                         </FormControl>
                                     </div>
                                     </>
-                                    {values.jurisdictionForTaxPurposes === true && (
+                                    {values.jurisdictionForTaxPurposes === "Yes" && (
                                     <div>
                                     <div className="col-6">
                                       <Typography
@@ -1662,16 +1698,17 @@ export default function Fedral_tax(props: any) {
                                       <FormControl className="w-100">
                                           <RadioGroup
                                               aria-labelledby="demo-controlled-radio-buttons-group"
-                                              name="isPrimaryResidenceJusrisdiction"
-                                              value={values.isPrimaryResidenceJusrisdiction}
+                                              name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty"
+                                              value={values.isApplyingTieBreakerClauseUnderApplicableTaxTreaty}
                                               onChange={(event) => {
-                                                  setFieldValue("isPrimaryResidenceJusrisdiction", event.currentTarget.value === "true" ? true : false)
+                                                  // setFieldValue("isApplyingTieBreakerClauseUnderApplicableTaxTreaty", event.currentTarget.value === "true" ? true : false)
+                                                  setFieldValue("isApplyingTieBreakerClauseUnderApplicableTaxTreaty", event.currentTarget.value)
                                                 }}  
                                               style={{ flexDirection: "row" }}
                                           >
                                               
-                                              <FormControlLabel name="isPrimaryResidenceJusrisdiction" value="true" control={<Radio />} label="Yes" />
-                                              <FormControlLabel name="isPrimaryResidenceJusrisdiction" value="false" control={<Radio />} label="No" />
+                                              <FormControlLabel name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty" value="Yes" control={<Radio />} label="Yes" />
+                                              <FormControlLabel name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty" value="No" control={<Radio />} label="No" />
                                           </RadioGroup>
                                       </FormControl>
                                       <p className="error">
@@ -1752,17 +1789,17 @@ export default function Fedral_tax(props: any) {
                                       <FormControl className="w-100">
                                           <RadioGroup
                                               aria-labelledby="demo-controlled-radio-buttons-group"
-                                              name="taxJuridictionListItemSelectedId"
-                                              value={values?.taxJuridictionListItemSelectedId}
+                                              name="taxJurisdictionMismatchExplanationId"
+                                              value={values?.taxJurisdictionMismatchExplanationId}
                                               onChange={(event) => {
-                                                  setFieldValue("taxJuridictionListItemSelectedId", event.currentTarget.value )
+                                                  setFieldValue("taxJurisdictionMismatchExplanationId", event.currentTarget.value )
                                                 }}  
                                               style={{ flexDirection: "row" }}
                                           >
                                             {values?.taxJuridictionListItem?.map((item: any, index: any) => (
                                               <FormControlLabel
                                                 key={index}
-                                                name="taxJuridictionListItemSelectedId"
+                                                name="taxJurisdictionMismatchExplanationId"
                                                 value={item.id}
                                                 control={<Radio />}
                                                 label={item.mismatchExplanation}
@@ -1771,7 +1808,7 @@ export default function Fedral_tax(props: any) {
                                               
                                           </RadioGroup>
                                       </FormControl> 
-                                      {values.taxJuridictionListItemSelectedId == 15 && (<>
+                                      {values.taxJurisdictionMismatchExplanationId == 15 && (<>
                                       <div className="col-6">
                                       <FormControl className="w-100 textfield1">
                                         <TextField 
@@ -2681,21 +2718,55 @@ export default function Fedral_tax(props: any) {
                           >
                             SAVE & EXIT
                           </Button> */}
+
                           <SaveAndExit Callback={() => {
-                            submitForm().then(() => {
+                            submitForm().then((data) => {
                               const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                               const urlValue = window.location.pathname.substring(1);
-                              dispatch(postW8BEN_EForm(
+                              dispatch(postSCEntityEForm(
                                 {
-                                  ...prevStepData,
-                                  stepName: `/${urlValue}`
+                                    ...prevStepData,
+                                    ...values,
+                                    stepName: `/${urlValue}`
                                 }
+                                , () => { }, 
+                                () => { }) 
+                            );
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          }} formTypeId={FormTypeId.CaymanEntity} />
+
+
+                          {/* <SaveAndExit Callback={() => {
+                            submitForm().then(() => {
+
+                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                              const urlValue = window.location.pathname.substring(1);
+                              const temp = {
+                                ...prevStepData,
+                                ...values,
+                                agentId: authDetails?.agentId,
+                                accountHolderBasicDetailId: authDetails?.accountHolderId,
+                              };
+                              const result = {
+                                ...temp,
+                                formTypeSelectionId: FormTypeSelection.Entity,
+                                attachSupportingDocumentFile: selectedfile,
+                                stepName: `/${urlValue}`
+                              };
+
+
+                              
+                              dispatch(postSCEntityEForm(
+                                result
                                 , () => { }))
                               history(
                                 GlobalValues.basePageRoute
                               );
                             })
-                          }} formTypeId={FormTypeId.CaymanEntity} />
+                          }} formTypeId={FormTypeId.CaymanEntity} /> */}
 
                           <Button
                             //type="submit"

@@ -93,6 +93,15 @@ export default function Classification (props: any){
 
     }, [isAccordionVisible])
 
+    useEffect(() => {
+      console.log("calling")
+      //const payload = {};
+      dispatch({
+        type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassificationEmpty,
+      });
+
+      //dispatch(insertCaymanEntityNonUSFATCAClassificationEmpty(payload));
+    },[])
   return (
     <Fragment>
      <section
