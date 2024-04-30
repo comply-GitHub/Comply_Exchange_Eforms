@@ -318,7 +318,7 @@ export const partCertiSchema = () => {
     signedBy: Yup.string().required("Please enter name of the person signing the form"),
     confirmationCode: Yup.string()
       .required("Please enter code")
-    .test(
+      .test(
       'match',
       'Confirmation code does not match',
       function (value) {

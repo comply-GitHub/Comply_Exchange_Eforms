@@ -127,7 +127,7 @@ export default function Declaration (props: any){
                       history("/SelfCert_Passive_W9_DC")
                     }
                     else{
-                      history("/Taxpayer_DC")
+                      history("/US_Determination_W9_DC")
                     }
                     resolve(data);
                   }

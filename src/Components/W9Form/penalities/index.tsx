@@ -463,8 +463,9 @@ export default function Penalties() {
                             >
                               Recover Password
                             </span>
-                            <p className="error">{touched.confirmationCode && typeof (errors.confirmationCode) == "string" ? errors.confirmationCode : ""}</p>
+                           
                           </div>
+                          <p className="error">{touched.confirmationCode  && typeof (errors.confirmationCode) == "string" ? errors.confirmationCode : ""}</p>
                         </div>
                       </div>
                       {showRecoverSection &&
@@ -779,7 +780,7 @@ export default function Penalties() {
 
 
                         <Button
-                          //type="submit"
+                          type="submit"
                           onClick={() => {
                             submitForm().then((data: any) => {
                               history("/W9_Submit");

@@ -44,6 +44,7 @@ export default function Certifications(props: any) {
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
   console.log(PrevStepData, "prevv")
   const urlValue = location.pathname.substring(1);
+  const [IsCompDataValid,SetIsCompDataValid]=useState(false);
   const individualSelfType = {
 
     FirstName: "",
@@ -286,7 +287,7 @@ export default function Certifications(props: any) {
   const [TinTax, setTinTax] = useState(false);
 
   // useEffect(() => {
-  //   Promise.all(incomeTypeData.map(x => SelfCertSchema_w9_DC().validate(x))).then(() => {
+  //   Promise.all(incomeTypeData.map(x => SelfCertSchema_w9_DC(x.showAlternateAddress,showTin,showTin2).validate(x))).then(() => {
   //     setTinTax(true);
   //   }).catch((err) => {
   //     console.log(err, "123")
@@ -305,6 +306,7 @@ export default function Certifications(props: any) {
   }
 
   const UpdateIncomeType = (payload: any, index: number) => {
+    console.log("child data",payload)
     setIncomeTypeData((prev) => {
       let temp = [...prev];
       temp[index] = payload;
@@ -438,7 +440,8 @@ export default function Certifications(props: any) {
                     SubmitIncomeTypes().then(
                       (data) => {
                         localStorage.setItem("PrevStepData", JSON.stringify(temp));
-                        history("/Taxpayer_DC");
+                        
+                        history("/US_Determination_W9_DC")
                         resolve(data);
                       },
                       (err) => {
@@ -466,7 +469,7 @@ export default function Certifications(props: any) {
                     <Paper style={{ padding: "14px" }}>
                     <Typography style={{ fontSize: "26px", fontWeight: "550", marginLeft: "8px" }} className="mt-2 mb-3">Self Certification - Controlling Person(s) of a Passive NFE</Typography>
                     {incomeTypeData.map((_, index) => (
-                            <SelfCertType index={index} DeleteIncomeType={DeleteIncomeType} length={incomeTypeData.length} data={incomeTypeData[index]} UpdateIncomeType={UpdateIncomeType} handleSubmit={handleSubmit} />
+                            <SelfCertType index={index} DeleteIncomeType={DeleteIncomeType} length={incomeTypeData.length} data={incomeTypeData[index]} UpdateIncomeType={UpdateIncomeType} handleSubmit={handleSubmit} SetIsCompDataValid={SetIsCompDataValid} />
                           ))}
 
                       <div>
@@ -494,7 +497,8 @@ export default function Certifications(props: any) {
                         </Button>
                         <Button
 
-// disabled={!isValid || !TinTax}
+//disabled={!isValid || !TinTax}
+disabled={!IsCompDataValid}
 type="submit"
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
