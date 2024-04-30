@@ -149,7 +149,7 @@ export default function Fedral_tax(props: any) {
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
             <div className="viewform" onClick={() => {
-              dispatch(GetEciPdf(authDetails?.accountHolderId))
+              // dispatch(GetEciPdf(authDetails?.accountHolderId))
             }}>View Form</div>
             <div className="helpvideo">
               {GethelpData && GethelpData[5].id === 7 ? (
@@ -203,21 +203,21 @@ export default function Fedral_tax(props: any) {
                     };
                     setSubmitting(true);
                     const returnPromise = new Promise((resolve, reject) => {
-                      dispatch(
-                        postW8ECI_EForm(
-                          temp,
-                          (data: any) => {
-                            resolve(data);
-                            localStorage.setItem(
-                              "PrevStepData",
-                              JSON.stringify(temp)
-                            );
-                          },
-                          (err: any) => {
-                            reject(err);
-                          }
-                        )
-                      );
+                      // (
+                      //   postW8ECI_EForm(
+                      //     temp,
+                      //     (data: any) => {
+                      //       resolve(data);
+                      //       localStorage.setItem(
+                      //         "PrevStepData",
+                      //         JSON.stringify(temp)
+                      //       );dispatch
+                      //     },
+                      //     (err: any) => {
+                      //       reject(err);
+                      //     }
+                      //   )
+                      // );
                     });
                     return returnPromise;
                   }}
@@ -1869,17 +1869,17 @@ export default function Fedral_tax(props: any) {
                                   );
                                   const urlValue =
                                     window.location.pathname.substring(1);
-                                  dispatch(
-                                    postW8ECI_EForm(
-                                      {
-                                        ...prevStepData,
-                                        stepName: `/${urlValue}`,
-                                      },
-                                      () => {
-                                        history(GlobalValues.basePageRoute);
-                                      }
-                                    )
-                                  );
+                                  // dispatch(
+                                  //   postW8ECI_EForm(
+                                  //     {
+                                  //       ...prevStepData,
+                                  //       stepName: `/${urlValue}`,
+                                  //     },
+                                  //     () => {
+                                  //       history(GlobalValues.basePageRoute);
+                                  //     }
+                                  //   )
+                                  // );
                                 }).catch((error) => {
                                   console.log(error);
                                 })
@@ -1892,9 +1892,9 @@ export default function Fedral_tax(props: any) {
                             type="submit"
                             disabled={isSubmitting}
                             variant="contained"
-                            onClick={() => {
-                              dispatch(GetEciPdf(authDetails?.accountHolderId))
-                            }}
+                            // onClick={() => {
+                            //   dispatch(GetEciPdf(authDetails?.accountHolderId))
+                            // }}
                             style={{ color: "white", marginLeft: "15px" }}
                           >
                             View Form
@@ -1904,13 +1904,15 @@ export default function Fedral_tax(props: any) {
                             disabled={!isValid}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
+                            // onClick={() => {
+                            //   submitForm().then((data) => {
+                            //     console.log(data)
+                            //   history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC/Fatca_DC");
+                            //   })
+                            // }}
                             onClick={() => {
-                              submitForm().then((data) => {
-                                console.log(data)
                               history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC/Fatca_DC");
-                              
-                              })
-                            }}
+                          }}
                           >
                             Continue
                           </Button>

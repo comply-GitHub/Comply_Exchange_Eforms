@@ -122,7 +122,34 @@ const Certification_DCBENE = React.lazy(
 const Penalties_DC_BENE = React.lazy(
   () => import("../Components/W8BEN-E/DualCert/Penalties_DC_BENE")
 );
+const CRS_BENE_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/CRS_DualCert")
+);
 
+const Financial_BENE_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/CRS_DualCert/Financial")
+);
+// const SelfCert_Passive_BENE_DC = React.lazy(
+//   () => import("../Components/W8BEN-E/DualCert/")
+// );
+
+
+const Complete_CRS_BENE = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/CRS_Complete")
+);
+const Active_Non_Financial_BENE_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/CRS_DualCert/Active_Non_financial")
+);
+
+const Non_Reporting_CRS_BENE_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/CRS_DualCert/NonReporting/index")
+);
+const Financial_CRS_BENE_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/CRS_DualCert/Financial")
+);
+const FinancialReport_CRS_BEN_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/Financial/FinancialModal")
+);
 const Submit_DC_BENE = React.lazy(
   () => import("../Components/W8BEN-E/DualCert/Submit_DC_BENE")
 )
@@ -1389,6 +1416,43 @@ const ROUTES: Array<RouteType> = [
   id: 7,
   Component:  BENEIndividualFatcaClassificationFinal,
   isPrivate: true,
+},
+{
+  name : "Complete_CRS_BENE",
+  path: "/Complete_CRS_BENE",
+  id: 7,
+  Component:  Complete_CRS_BENE,
+  isPrivate: true,
+},
+{
+  name : "Active_Non_Financial_BENE_DC",
+  path: "/Active_Non_Financial_BENE_DC",
+  id: 7,
+  Component:  Active_Non_Financial_BENE_DC ,
+  isPrivate: true,
+
+},
+{
+  name : "Non_Reporting_CRS_BENE_DC",
+  path: "/Non_Reporting_CRS_BENE_DC",
+  id: 7,
+  Component:  Non_Reporting_CRS_BENE_DC  ,
+  isPrivate: true,
+},
+{
+  name : "Financial_CRS_BENE_DC",
+  path: "/Financial_CRS_BENE_DC",
+  id: 7,
+  Component:  Financial_CRS_BENE_DC   ,
+  isPrivate: true,
+},
+{
+  name : "FinancialReport_CRS_BEN_DC",
+  path: "/FinancialReport_CRS_BEN_DC",
+  id: 7,
+  Component:  FinancialReport_CRS_BEN_DC    ,
+  isPrivate: true,
+
 }
 
 ];
