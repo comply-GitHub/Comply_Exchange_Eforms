@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FormControl,
   Typography,
   Button,
-  Input,
   Paper,
   RadioGroup,
   FormControlLabel,
@@ -20,34 +19,29 @@ import Link from "@mui/material/Link";
 import Tooltip from "@mui/material/Tooltip";
 import { ExpandMore, Info } from "@mui/icons-material";
 import { Formik, Form } from "formik";
-// import "./index.scss";
-import { postW8BEN_EForm } from "../../../Redux/Actions";
+import "./index.scss";
+import Infoicon from "../../../assets/img/info.png";
+// import { Info } from "@mui/icons-material";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
 import {
+  GetHelpVideoDetails,
+  GetChapter3Status,
   getAllCountries,
   getAllCountriesCode,
   getAllCountriesIncomeCode,
   getAllStateByCountryId,
-  GetChapter3Status,
-  GetHelpVideoDetails
+  postW8ECI_EForm,
 } from "../../../Redux/Actions";
-import Infoicon from "../../../assets/img/info.png";
-import { TaxPurposeSchema } from "../../../schemas/w8BenE";
+import { TaxPurposeSchema } from "../../../schemas/w8ECI";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
-import { useLocation } from "react-router-dom";
-import GlobalValues, { FormTypeId, FormTypeSelection } from "../../../Utils/constVals";
-import Chapter3StatusGuide from "../SubComponents/Chapter3Guide";
-import { convertToFormData } from "../../../Helpers/convertToFormData";
 import useAuth from "../../../customHooks/useAuth";
+import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
-import { GetBenEPdf } from "../../../Redux/Actions/PfdActions";
+import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 export default function Fedral_tax(props: any) {
-  const { authDetails } = useAuth();
   const dispatch = useDispatch();
-  const history = useNavigate();
-  const location = useLocation();
   const {
     handleTaxClassificationChange,
     // selectedTaxClassification,
@@ -55,61 +49,45 @@ export default function Fedral_tax(props: any) {
     handleChange,
     setselectedContinue,
   } = props;
+
+  const { authDetails } = useAuth();
+  const W8ECI = useSelector((state: any) => state.W8ECI);
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
-
-  const urlValue = location.pathname.substring(1);
-  const agentDefaultDetails = JSON.parse(
-    localStorage.getItem("agentDefaultDetails") || "{}"
-  );
-
+  const [IsIndividual, setIsIndividual] = useState(obValues?.businessTypeId == 1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  const [selectedfile, setSelectedFile] = useState<any>(null);
 
-  const [initialValue, setInitialValue] = useState({
-    agentId: authDetails?.agentId,
-    formTypeSelectionId: 2,
-    accountHolderBasicDetailId: authDetails?.accountHolderId,
-    businessName: obValues.entityName,
-    businessDisgradedEntity: "",
-    other: "",
-    countryOfIncorporation: 0,
-    chapter3Status: 0,
-    attachSupportingDocumentFile: null,
-    attachSupportingDocument: null,
-    descriptionHybridStatus: "",
-    isHybridStatus: 0,
-    isSubmissionSingleUSOwner: "",
-    isDisRegardedSection1446: "",
-    statusId: 1,
-    stepName: `/${urlValue}`,
-  });
+  const initialValue = {
+    businessName: W8ECI?.entityName ?? obValues?.entityName,
+    businessDisgradedEntity:
+      W8ECI?.businessDisgradedEntity ?? obValues?.businessDisgradedEntity,
+    countryOfIncorporation:
+      W8ECI?.countryOfIncorporation ?? obValues?.foreignTINCountryId,
+    chapter3Status: W8ECI?.chapter3Status ?? 0,
+    firstName: W8ECI?.firstName ?? obValues?.firstName ?? "",
+    lastName: W8ECI?.lastName ?? obValues?.lastName ?? "",
+    isSubmissionSingleUSOwner: W8ECI?.isSubmissionSingleUSOwner === true ? "yes" : "no" ?? "",
+    descriptionHybridStatus: W8ECI?.descriptionHybridStatus ?? "",
+    attachSupportingDocument: W8ECI?.attachSupportingDocument ?? "",
+    attachSupportingDocumentFile: W8ECI?.attachSupportingDocumentFile ?? "",
+    isDisRegardedSection1446: W8ECI?.isDisRegardedSection1446 === true ? "yes" : "no" ?? "",
+    isHybridStatus: W8ECI?.isHybridStatus ?? "",
+  };
 
-  const [toolInfo, setToolInfo] = useState("");
-  const [expanded, setExpanded] = React.useState<string | false>("");
   const [clickCount, setClickCount] = useState(0);
-  const [selectedfile, setSelectedFile] = useState<any>();
+  const [toolInfo, setToolInfo] = useState("");
+  const history = useNavigate();
+  const [expanded, setExpanded] = React.useState<string | false>("");
+  const [selectedTaxClassification, setSelectedTaxClassification] = useState(0);
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
-
-  const W8BENEData = useSelector((state: any) => (state?.W8BENE?.chapter3Status !== 0) ? state?.W8BENE : JSON.parse(localStorage.getItem("PrevStepData") || "{}"));
-
-
-  const LoadPageData = () => {
-    if (W8BENEData !== null && W8BENEData !== undefined) {
-      const tempData = {
-        ...W8BENEData,
-        chapter3Status: Number.parseInt(W8BENEData.chapter3Status ?? 0),
-        countryOfIncorporation: Number.parseInt(W8BENEData.countryOfIncorporation),
-        isHybridStatus: Number.parseInt(W8BENEData.isHybridStatus),
-        businessName: W8BENEData.entityName && W8BENEData.entityName !== null && W8BENEData.entityName !== "" ? W8BENEData.entityName : obValues.entityName,
-        isSubmissionSingleUSOwner: W8BENEData.isSubmissionSingleUSOwner === true ? "yes" : "no",
-        isDisRegardedSection1446: W8BENEData.isDisRegardedSection1446 === true ? "yes" : "no",
-        stepName: `/${urlValue}`,
-      };
-      setInitialValue(tempData);
-    }
+  const handleFileChange = (e: any) => {
+    setSelectedFile(e.target.files[0]);
   }
+
+
   useEffect(() => {
     document.title = "Chapter III"
   }, [])
@@ -118,14 +96,14 @@ export default function Fedral_tax(props: any) {
     dispatch(getAllCountries());
     dispatch(getAllCountriesCode());
     dispatch(getAllCountriesIncomeCode());
+    // dispatch(getAllStateByCountryId())
     dispatch(GetHelpVideoDetails());
-    // dispatch(getAllStateByCountryId(258));
-    dispatch(GetChapter3Status(FormTypeId.BENE));
-    LoadPageData();
+    dispatch(GetChapter3Status(FormTypeId.W8ECI));
   }, []);
-  const GethelpData = useSelector(
-    (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
-  );
+  // const viewPdf = () => {
+  //   history("/w8Eci_pdf", { replace: true });
+  // }
+
   const getCountriesReducer = useSelector(
     (state: any) => state.getCountriesReducer
   );
@@ -138,20 +116,20 @@ export default function Fedral_tax(props: any) {
   const GetStateByCountryIdReducer = useSelector(
     (state: any) => state.GetStateByCountryIdReducer
   );
-  const GetChapter3StatusReducer = useSelector(
-    (state: any) => state.GetChapter3StatusReducer
-  );
 
   const handleChangeAccodion =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpanded(newExpanded ? panel : false);
     };
-
+  const GetChapter3StatusReducer = useSelector(
+    (state: any) => state.GetChapter3StatusReducer
+  );
   const [expandedState, setExpandedState] = React.useState<string | false>(
     "panel1"
   );
-  const [selectedTaxClassification, setSelectedTaxClassification] = useState(0);
-
+  const GethelpData = useSelector(
+    (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
+  );
   const handleChangeAccodionState =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpandedState(newExpanded ? panel : false);
@@ -161,39 +139,28 @@ export default function Fedral_tax(props: any) {
     setExpandedState(""); setFieldValue("chapter3Status", value); setSelectedTaxClassification(value)
   }
   const W9Data = useSelector((state: any) => state.w9Data);
-
-  const handleFileChange = (e: any) => {
-    setSelectedFile(e.target.files[0]);
-  }
-
-  const viewPdf = () => {
-    history("/w8BenE_pdf");
-  }
-
   return (
     <>
       <section
-        className="inner_content"
+
         style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
       >
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform"
-              onClick={() => {
-                dispatch(GetBenEPdf(authDetails?.accountHolderId))
-              }}>View Form</div>
+            <div className="viewform" onClick={() => {
+              // dispatch(GetEciPdf(authDetails?.accountHolderId))
+            }}>View Form</div>
             <div className="helpvideo">
-              {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
-              {GethelpData && GethelpData[3].id === 5 ? (
+              {GethelpData && GethelpData[5].id === 7 ? (
                 <a
-                  href={GethelpData[3].fieldValue}
+                  href={GethelpData[5].fieldValue}
                   target="popup"
                   onClick={() =>
                     window.open(
-                      GethelpData[3].fieldValue,
-                      'name',
-                      `width=${GethelpData[3].width},height=${GethelpData[3].height},top=${GethelpData[3].top},left=${GethelpData[3].left}`
+                      GethelpData[5].fieldValue,
+                      "name",
+                      `width=${GethelpData[5].width},height=${GethelpData[5].height},top=${GethelpData[5].top},left=${GethelpData[5].left}`
                     )
                   }
                 >
@@ -208,54 +175,51 @@ export default function Fedral_tax(props: any) {
         <div className="row w-100">
           <div className="col-4">
             <div style={{ padding: "20px 0px", height: "100%" }}>
-              <BreadCrumbComponent breadCrumbCode={1203} formName={3} />
+              <BreadCrumbComponent breadCrumbCode={1203} formName={4} />
             </div>
           </div>
           <div className="col-8 mt-3">
             <div style={{ padding: "12px" }}>
               <Paper style={{ padding: "10px" }}>
                 <Formik
-                  enableReinitialize
                   validateOnChange={true}
-                  validateOnBlur={false}
-                  validateOnMount={true}
+                  validateOnBlur={true}
                   initialValues={initialValue}
-                  validationSchema={TaxPurposeSchema}
+                  enableReinitialize
+                  validateOnMount={true}
+                  validationSchema={
+                    TaxPurposeSchema(IsIndividual)
+                  }
                   onSubmit={(values, { setSubmitting }) => {
+                    let temp = {
+                      ...PrevStepData,
+                      ...values,
+                      isSubmissionSingleUSOwner: values.isSubmissionSingleUSOwner === "yes",
+                      isDisRegardedSection1446: values.isDisRegardedSection1446 === "yes",
+                      attachSupportingDocumentFile: selectedfile,
+                      isHybridStatus: Number.parseInt(values.isHybridStatus) ?? 3,
+                      agentId: authDetails?.agentId,
+                      accountHolderBasicDetailId: authDetails?.accountHolderId,
+                    };
                     setSubmitting(true);
-                    const submitPromise = new Promise((resolve, reject) => {
-                      if (clickCount === 0) {
-                        setClickCount(clickCount + 1);
-                      } else {
-                        setSubmitting(true);
-                        const temp = {
-                          ...PrevStepData, ...values,
-                          agentId: authDetails?.agentId,
-                          accountHolderBasicDetailId: authDetails?.accountHolderId,
-                          isSubmissionSingleUSOwner: values.isSubmissionSingleUSOwner === "yes" ? true : false,
-                          isDisRegardedSection1446: values.isDisRegardedSection1446 === "yes" ? true : false,
-                        };
-                        const result = {
-                          ...temp,
-                          isHybridStatus: Number.isNaN(temp.isHybridStatus) ? 0 : temp.isHybridStatus,
-                          formTypeSelectionId: FormTypeSelection.Entity,
-                          attachSupportingDocumentFile: selectedfile,
-                        };
-                        dispatch(
-                          postW8BEN_EForm(result, () => {
-                            localStorage.setItem("PrevStepData", JSON.stringify(temp));
-                            resolve("success");
-                            setSubmitting(false);
-                          },
-                            (error: any) => {
-                              reject(error);
-                              setSubmitting(false);
-                            }
-                          )
-                        );
-                      }
-                    })
-                    return submitPromise;
+                    const returnPromise = new Promise((resolve, reject) => {
+                      // (
+                      //   postW8ECI_EForm(
+                      //     temp,
+                      //     (data: any) => {
+                      //       resolve(data);
+                      //       localStorage.setItem(
+                      //         "PrevStepData",
+                      //         JSON.stringify(temp)
+                      //       );dispatch
+                      //     },
+                      //     (err: any) => {
+                      //       reject(err);
+                      //     }
+                      //   )
+                      // );
+                    });
+                    return returnPromise;
                   }}
                 >
                   {({
@@ -266,137 +230,85 @@ export default function Fedral_tax(props: any) {
                     handleSubmit,
                     handleChange,
                     isSubmitting,
-                    submitForm,
                     isValid,
+                    submitForm,
                     setFieldValue,
-                    validateForm
                   }) => (
                     <Form onSubmit={handleSubmit}>
                       <div style={{ width: "100%" }}>
-                        {
-                          //touched.countryOfIncorporation &&
-                          values?.countryOfIncorporation && values?.countryOfIncorporation?.toString() !== "0" &&
-                            values?.countryOfIncorporation !== obValues?.permanentResidentialCountryId ? (
-                            <div
-                              style={{
-                                backgroundColor: "#e8e1e1",
-                                padding: "10px",
-                              }}
-                            >
-                              <Typography>
-                                ICOR114
-                                <span className="mx-2">
-                                  <img
-                                    src={Infoicon}
-                                    style={{
-                                      color: "#ffc107",
-                                      height: "22px",
-                                      width: "20px",
-                                      boxShadow: "inherit",
-
-                                      cursor: "pointer",
-                                      marginBottom: "3px",
-                                    }}
-                                  />
-                                  Country of incorporation is different from the
-                                  PRA country.
-                                </span>
-                              </Typography>
-                            </div>
-                          ) : values.countryOfIncorporation === 186 && clickCount === 1 ? (
-                            <div
-                              style={{
-                                backgroundColor: "#e8e1e1",
-                                padding: "10px",
-                              }}
-                            >
-                              <Typography>
-                                ICOR104
-                                <span className="mx-2">
-                                  <img
-                                    src={Infoicon}
-                                    style={{
-                                      color: "#ffc107",
-                                      height: "22px",
-                                      width: "20px",
-                                      boxShadow: "inherit",
-
-                                      cursor: "pointer",
-                                      marginBottom: "3px",
-                                    }}
-                                  />
-                                  You have selected 'other' for Country of
-                                  incorporation or organization. Your agent may
-                                  need to contact you for further information.
-                                </span>
-                              </Typography>
-                            </div>
-                          ) : values.countryOfIncorporation === 186 &&
-                            values.other === "" ? (
-                            <div
-                              style={{
-                                backgroundColor: "#e8e1e1",
-                                padding: "10px",
-                              }}
-                            >
-                              <Typography>
-                                ICOR105
-                                <span className="mx-2">
-                                  <img
-                                    src={Infoicon}
-                                    style={{
-                                      color: "#ffc107",
-                                      height: "22px",
-                                      width: "20px",
-                                      boxShadow: "inherit",
-
-                                      cursor: "pointer",
-                                      marginBottom: "3px",
-                                    }}
-                                  />
-                                  You have selected "other" for Country of
-                                  incorporation or organization, but have not
-                                  entered the country.
-                                </span>
-                              </Typography>
-                            </div>
-                          ) : obValues.isUSEntity === false &&
-                            obValues.isUSIndividual === false &&
-                            values.countryOfIncorporation && values.countryOfIncorporation === 258 ? (
-                            <div
-                              style={{
-                                backgroundColor: "#e8e1e1",
-                                padding: "10px",
-                              }}
-                            >
-                              <Typography>
-                                ICOR110
-                                <span className="mx-2">
-                                  <img
-                                    src={Infoicon}
-                                    style={{
-                                      color: "#ffc107",
-                                      height: "22px",
-                                      width: "20px",
-                                      boxShadow: "inherit",
-
-                                      cursor: "pointer",
-                                      marginBottom: "3px",
-                                    }}
-                                  />
-                                  You have identified that you are submitting a
-                                  form on behalf of a NON U.S. Entity and
-                                  indicated that the Country of Incorporation was
-                                  in the United States. The Entity may be classed
-                                  as a U.S person for U.S tax purposes. Your agent
-                                  may need to contact you for further information
-                                </span>
-                              </Typography>
-                            </div>
-                          ) : null}
-
+                        <>{console.log("values", values)}</>
+                        <>{console.log("errors", errors)}</>
+                        <>{console.log("touched", touched)}</>
                         <div>
                           <Typography align="left" style={{ margin: "10px" }}>
+                            {
+                              //touched.countryOfIncorporation &&
+                              values?.countryOfIncorporation && values?.countryOfIncorporation?.toString() !== "0" &&
+                                values?.countryOfIncorporation !== obValues?.permanentResidentialCountryId
+                                ? (
+                                  <div
+                                    style={{
+                                      backgroundColor: "#e8e1e1",
+                                      padding: "10px",
+                                    }}
+                                  >
+                                    <Typography>
+                                      ICOR114
+                                      <span>
+                                        <img
+                                          src={Infoicon}
+                                          style={{
+                                            color: "#ffc107",
+                                            height: "22px",
+                                            width: "20px",
+                                            boxShadow: "inherit",
+
+                                            cursor: "pointer",
+                                            marginBottom: "3px",
+                                          }}
+                                        />
+                                        Country of incorporation is different from
+                                        the PRA country.
+                                      </span>
+                                    </Typography>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                            {values.isHybridStatus == "Not" &&
+                              clickCount === 1 ? (
+                              <div
+                                style={{
+                                  backgroundColor: "#e8e1e1",
+                                  padding: "10px",
+                                }}
+                              >
+                                <Typography>
+                                  HYB109
+                                  <span className="mx-1">
+                                    <img
+                                      src={Infoicon}
+                                      style={{
+                                        color: "#ffc107",
+                                        height: "22px",
+                                        width: "20px",
+                                        boxShadow: "inherit",
+                                        cursor: "pointer",
+                                        marginBottom: "3px",
+                                      }}
+                                    />
+                                    You have selected the type of beneficial
+                                    owner is a Partnership, but have not
+                                    selected "Hybrid Status". The beneficial
+                                    owner may qualify for a reduced rate of
+                                    withholding under an income tax treaty when
+                                    it has Hybrid entity status.
+                                  </span>
+                                </Typography>
+                              </div>
+                            ) : (
+                              ""
+                            )}
                             <div
                               className="row"
                               style={{
@@ -437,7 +349,7 @@ export default function Fedral_tax(props: any) {
                                       title={
                                         <>
                                           <Typography color="inherit">
-                                            Classification details
+                                            TT-061 - Classification selection.
                                           </Typography>
                                           <a
                                             onClick={() => setToolInfo("basic")}
@@ -445,7 +357,7 @@ export default function Fedral_tax(props: any) {
                                             <Typography
                                               style={{
                                                 cursor: "pointer",
-                                                textDecorationLine: "underline",
+                                                textDecorationLine: "underline",                     
                                               }}
                                               align="center"
                                             >
@@ -459,7 +371,7 @@ export default function Fedral_tax(props: any) {
                                       <Info
                                         style={{
                                           color: "#ffc107",
-                                          fontSize: "16px",
+                                          fontSize: "12px",
                                           cursor: "pointer",
                                           verticalAlign: "super",
                                         }}
@@ -478,46 +390,13 @@ export default function Fedral_tax(props: any) {
                                       }}
                                     >
                                       <Typography>
-                                        Please make a selection from the
-                                        dropdown provided. The selection must
-                                        represent the Chapter 3 classification,
-                                        under U.S. tax principles, of the
-                                        individual, business, or organization
-                                        that the certificate will represent.
+                                        EH008:  Please make a selection from the drop down list provided. The selection must represent the chapter 3 classification, under U.S. tax principles of the individual, business or organization the certificate will represent.
                                       </Typography>
                                       <Typography style={{ marginTop: "10px" }}>
-                                        For more information, please review the
-                                        Chapter 3 Classification Guide to
-                                        establish your entity status for
-                                        purposes of Chapter 3.
-                                      </Typography>
-                                      <Typography
-                                        style={{
-                                          marginTop: "10px",
-                                          fontWeight: "550",
-                                        }}
-                                      >
-                                        IRS Guidance:
+                                        Complete this line or use the Chapter 3 Classification Guide to establish your entity status for purposes of chapter 3. Check the one appropriate box that applies.
                                       </Typography>
                                       <Typography style={{ marginTop: "10px" }}>
-                                        Please selection the option that
-                                        applies. By making this selection, you
-                                        are representing that you qualify for
-                                        this classification. You must select the
-                                        option that represents your
-                                        classification (for example,
-                                        corporation, partnership, trust, estate,
-                                        etc.) under U.S. tax principles. Do not
-                                        select the option that describes your
-                                        status under the law of the treaty
-                                        country. If you are a partnership or a
-                                        disregarded entity receiving a payment
-                                        for which treaty benefits are being
-                                        claimed, you must select the
-                                        'Partnership' or 'Disregarded entity'
-                                        option. If you are a sole proprietor
-                                        select the 'Individual' option, not
-                                        'Disregarded entity'.
+                                        A foreign central bank of issue (wholly owned by a foreign sovereign) should check the “Foreign government” box. If you are a foreign private foundation, you should check the “foreign private foundation” box rather than the “foreign tax-exempt organization” box.
                                       </Typography>
 
                                       <Link
@@ -544,7 +423,8 @@ export default function Fedral_tax(props: any) {
                                     name="chapter3Status"
                                     value={values.chapter3Status}
                                     onChange={handleChange}
-                                    onBlur={handleBlur}
+                                    autoComplete="chapter3Status"
+                                    // onBlur={handleBlur}
                                     style={{
                                       padding: " 0 10px",
                                       color: "#121112",
@@ -552,9 +432,9 @@ export default function Fedral_tax(props: any) {
                                       height: "39px",
                                     }}
                                   >
-                                    <option value={0}>---select---</option>
+                                    <option value={0}> ---select---</option>
 
-                                    {GetChapter3StatusReducer.GetChapter3StatusData?.map(
+                                    {GetChapter3StatusReducer.GetChapter3StatusData?.filter((x: any) => (x?.name.toLowerCase() == "individual") == IsIndividual).map(
                                       (ele: any) => (
                                         <option key={ele?.id} value={ele?.id}>
                                           {ele?.name}
@@ -563,208 +443,79 @@ export default function Fedral_tax(props: any) {
                                     )}
                                   </select>
                                   <p className="error">
-                                    {errors.chapter3Status}
+                                    {touched.chapter3Status ? errors.chapter3Status?.toString() : ""}
                                   </p>
                                 </FormControl>
                               </div>
                             </div>
-                            {values.chapter3Status == 1 ||
-                              values.chapter3Status == 6 ||
-                              values.chapter3Status == 7 ||
-                              values.chapter3Status == 8 ||
-                              values.chapter3Status == 9 ||
-                              values.chapter3Status == 10 ||
-                              values.chapter3Status == 11 ||
-                              values.chapter3Status == 12 ||
-                              values.chapter3Status == 13 ? (
+                            {values.chapter3Status == 20 ?
                               <>
                                 <div
-                                  style={{ marginTop: "20px", display: "flex" }}
-                                  className="col-12"
+                                  style={{ alignItems: "center" }}
+                                  className="row"
                                 >
-                                  <div className="col-6">
+                                  <div className="col-lg-6 col-md-6 col-sm-12">
                                     <Typography
                                       align="left"
                                       className="d-flex w-60 "
                                       style={{ fontSize: "13px" }}
                                     >
-                                      Business Name:
+                                      First Name:
                                       <span style={{ color: "red" }}>*</span>
-                                      <span>
-                                        <Tooltip
-                                          style={{
-                                            backgroundColor: "black",
-                                            color: "white",
-                                          }}
-                                          title={
-                                            <>
-                                              <Typography color="inherit">
-                                                Name details
-                                              </Typography>
-                                              <a
-                                                onClick={() =>
-                                                  setToolInfo("name")
-                                                }
-                                              >
-                                                <Typography
-                                                  style={{
-                                                    cursor: "pointer",
-                                                    textDecorationLine:
-                                                      "underline",
-                                                  }}
-                                                  align="center"
-                                                >
-                                                  {" "}
-                                                  View More...
-                                                </Typography>
-                                              </a>
-                                            </>
-                                          }
-                                        >
-                                          <Info
-                                            style={{
-                                              color: "#ffc107",
-                                              fontSize: "10px",
-                                              cursor: "pointer",
-                                              verticalAlign: "super",
-                                            }}
-                                          />
-                                        </Tooltip>
-                                      </span>
-                                    </Typography>
-                                    {toolInfo === "name" ? (
-                                      <div>
-                                        <Paper
-                                          style={{
-                                            backgroundColor: "#dedcb1",
-                                            padding: "15px",
-                                            marginBottom: "10px",
-                                          }}
-                                        >
-                                          <Typography>
-                                            Please enter the first and last name
-                                            of the person who is required or has
-                                            been requested to submit an
-                                            information return.
-                                          </Typography>
-                                          <Typography
-                                            style={{
-                                              marginTop: "10px",
-                                              fontWeight: "550",
-                                            }}
-                                          >
-                                            Specific instructions for U.S.
-                                            individuals and sole proprietors:
-                                            U.S. individuals:
-                                          </Typography>
-                                          <Typography
-                                            style={{ marginTop: "10px" }}
-                                          >
-                                            If you are an{" "}
-                                            <span style={{ fontWeight: "550" }}>
-                                              individual
-                                            </span>
-                                            , you must enter the name shown on
-                                            your income tax return. However, if
-                                            you have changed your last name, for
-                                            instance, due to marriage without
-                                            informing the Social Security
-                                            Administration of the name change,
-                                            enter your first name, the last name
-                                            shown on your social security card,
-                                            and your new last name. In certain
-                                            situations we may need to contact
-                                            you for further verification.
-                                          </Typography>
-                                          <Typography
-                                            style={{ marginTop: "10px" }}
-                                          >
-                                            <span style={{ fontWeight: "550" }}>
-                                              Joint names:
-                                            </span>
-                                            If the account is in joint names,
-                                            both parties will need to submit
-                                            separate submissions.
-                                          </Typography>
-                                          <Typography
-                                            style={{ marginTop: "10px" }}
-                                          >
-                                            <span style={{ fontWeight: "550" }}>
-                                              {" "}
-                                              Sole proprietor:
-                                            </span>
-                                            Enter your individual name as shown
-                                            on your income tax return on the
-                                            'Name' line. You may enter your
-                                            business, trade, or 'doing business
-                                            as (DBA)' name on the 'Business
-                                            name' line.
-                                          </Typography>
 
-                                          <Link
-                                            href="#"
-                                            underline="none"
-                                            style={{
-                                              marginTop: "10px",
-                                              fontSize: "16px", color: "#0000C7"
-                                            }}
-                                            onClick={() => {
-                                              setToolInfo("");
-                                            }}
-                                          >
-                                            --Show Less--
-                                          </Link>
-                                        </Paper>
-                                      </div>
-                                    ) : (
-                                      ""
-                                    )}
+                                    </Typography>
 
                                     <FormControl className="w-100">
                                       <TextField
-                                        autoComplete="businessName"
+                                        autoComplete="firstName"
+                                        InputProps={{
+                                          readOnly: true,
+                                        }}
+                                        sx={{ backgroundColor: "#e9ecef" }}
                                         type="text"
                                         onChange={handleChange}
-                                        onBlur={handleBlur}
                                         error={Boolean(
-                                          touched.businessName && errors.businessName
+                                          touched.firstName &&
+                                          errors.firstName
                                         )}
-                                        name="businessName"
-                                        // className="inputClassFull"
-                                        value={values.businessName}
+                                        name="firstName"
+                                        className="inputClassFull"
+                                        value={values.firstName}
                                       />
                                     </FormControl>
-                                    <p className="error">
-                                      {typeof (errors.businessName) == "string" && touched.businessName ? errors.businessName : <></>}
-                                    </p>
                                   </div>
                                   <div
-                                    className="col-6  "
-                                    style={{ marginLeft: "10px" }}
+                                    className="col-lg-6 col-md-6 col-sm-12"
+                                  // style={{ marginLeft: "10px" }}
                                   >
                                     <Typography
                                       align="left"
                                       className="d-flex w-60 "
                                       style={{ fontSize: "13px" }}
                                     >
-                                      Business Name or disregarded entity name
-                                      if different:
+                                      Last Name:
+                                      {/* <span style={{ color: "red" }}>*</span> */}
                                     </Typography>
 
                                     <FormControl className="w-100">
                                       <TextField
-                                        autoComplete="businessDisgradedEntity"
+                                        autoComplete="lastName"
                                         type="text"
+                                        InputProps={{
+                                          readOnly: true,
+                                        }}
+                                        sx={{ backgroundColor: "#e9ecef" }}
                                         onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        helperText={
-                                          touched.businessDisgradedEntity && errors.businessDisgradedEntity
-                                        }
+                                        // onBlur={handleBlur}
+                                        // helperText={
+                                        //   touched.businessDisgradedEntity && errors.businessDisgradedEntity
+                                        // }
                                         error={Boolean(
-                                          touched.businessDisgradedEntity && errors.businessDisgradedEntity
+                                          touched.lastName &&
+                                          errors.lastName
                                         )}
-                                        name="businessDisgradedEntity"
-                                        value={values.businessDisgradedEntity}
+                                        name="lastName"
+                                        value={values.lastName}
                                         className="inputClass"
                                       />
                                     </FormControl>
@@ -786,16 +537,14 @@ export default function Fedral_tax(props: any) {
                                         <span style={{ color: "red" }}>*</span>
                                       </Typography>
 
-                                      <FormControl className="w-50" error={Boolean(
-                                        touched.businessName && errors.businessName
-                                      )}>
+                                      <FormControl className="w-50">
                                         <select
                                           name="countryOfIncorporation"
                                           value={values.countryOfIncorporation}
                                           onChange={handleChange}
                                           autoComplete="countryOfIncorporation"
                                           // placeholder="Business Name"
-                                          onBlur={handleBlur}
+                                          onBlur={(e) => { handleBlur(e) }}
                                           style={{
                                             padding: " 0 10px",
                                             color: "#121112",
@@ -810,7 +559,7 @@ export default function Fedral_tax(props: any) {
                                           <option value={258}>
                                             United States
                                           </option>
-                                          <option value={0}>---</option>
+                                          <option value="">---</option>
                                           {getCountriesReducer.allCountriesData?.map(
                                             (ele: any) => (
                                               <option
@@ -823,12 +572,87 @@ export default function Fedral_tax(props: any) {
                                           )}
                                         </select>
                                       </FormControl>
-                                      <p className="error">
-                                        {touched.countryOfIncorporation ? errors.countryOfIncorporation : ""}
-                                      </p>
                                     </div>
+                                  </div>
+                                </>
+                              </> : <></>}
+                            {
+                              values.chapter3Status == 1 ||
+                                values.chapter3Status == 6 ||
+                                values.chapter3Status == 7 ||
+                                values.chapter3Status == 8 ||
+                                values.chapter3Status == 9 ||
+                                values.chapter3Status == 10 ||
+                                values.chapter3Status == 11 ||
+                                values.chapter3Status == 12 ||
+                                values.chapter3Status == 13 ? (
+                                <>
+                                  <div
+                                    style={{ alignItems: "center" }}
+                                    className="row"
+                                  >
+                                    <div className="col-lg-6 col-md-6 col-sm-12">
+                                      <Typography
+                                        align="left"
+                                        className="d-flex w-60 "
+                                        style={{ fontSize: "13px" }}
+                                      >
+                                        Business Name:
+                                        <span style={{ color: "red" }}>*</span>
 
-                                    {values.countryOfIncorporation == 186 ? (
+                                      </Typography>
+
+                                      <FormControl className="w-100">
+                                        <TextField
+                                          autoComplete="businessName"
+                                          type="text"
+                                          onChange={handleChange}
+                                          error={Boolean(
+                                            touched.businessName &&
+                                            errors.businessName
+                                          )}
+                                          name="businessName"
+                                          className="inputClassFull"
+                                          value={values.businessName}
+                                        />
+                                      </FormControl>
+                                    </div>
+                                    <div
+                                      className="col-lg-6 col-md-6 col-sm-12"
+                                    // style={{ marginLeft: "10px" }}
+                                    >
+                                      <Typography
+                                        align="left"
+                                        className="d-flex w-60 "
+                                        style={{ fontSize: "13px" }}
+                                      >
+                                        Business Name or disregarded entity name if different:
+                                        {/* <span style={{ color: "red" }}>*</span> */}
+                                      </Typography>
+
+                                      <FormControl className="w-100">
+                                        <TextField
+                                          autoComplete="businessDisgradedEntity"
+                                          type="text"
+                                          onChange={handleChange}
+                                          // onBlur={handleBlur}
+                                          // helperText={
+                                          //   touched.businessDisgradedEntity && errors.businessDisgradedEntity
+                                          // }
+                                          error={Boolean(
+                                            touched.businessDisgradedEntity &&
+                                            errors.businessDisgradedEntity
+                                          )}
+                                          name="businessDisgradedEntity"
+                                          value={values.businessDisgradedEntity}
+                                          className="inputClass"
+                                        />
+                                      </FormControl>
+                                    </div>
+                                  </div>
+
+                                  <>
+                                    <div className="row">
                                       <div className=" col-12">
                                         <Typography
                                           align="left"
@@ -838,35 +662,52 @@ export default function Fedral_tax(props: any) {
                                             marginTop: "15px",
                                           }}
                                         >
-                                          Other Country of incorporation /
-                                          organization:
-                                          <span style={{ color: "red" }}>
-                                            *
-                                          </span>
+                                          Country of incorporation / organization:
+                                          <span style={{ color: "red" }}>*</span>
                                         </Typography>
 
                                         <FormControl className="w-50">
-                                          <TextField
-                                            name="other"
-                                            value={values.other}
+                                          <select
+                                            name="countryOfIncorporation"
+                                            value={values.countryOfIncorporation}
                                             onChange={handleChange}
+                                            autoComplete="countryOfIncorporation"
+                                            // placeholder="Business Name"
+                                            // onBlur={handleBlur}
                                             style={{
+                                              padding: " 0 10px",
                                               color: "#121112",
                                               fontStyle: "italic",
                                               height: "39px",
                                             }}
-                                          />
+                                          >
+                                            <option value={0}>---select---</option>
+                                            <option value={257}>
+                                              United Kingdom
+                                            </option>
+                                            <option value={258}>
+                                              United States
+                                            </option>
+                                            <option value="">---</option>
+                                            {getCountriesReducer.allCountriesData?.map(
+                                              (ele: any) => (
+                                                <option
+                                                  key={ele?.id}
+                                                  value={ele?.id}
+                                                >
+                                                  {ele?.name}
+                                                </option>
+                                              )
+                                            )}
+                                          </select>
                                         </FormControl>
                                       </div>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </div>
+                                    </div>
+                                  </>
                                 </>
-                              </>
-                            ) : (
-                              ""
-                            )}
+                              ) : (
+                                ""
+                              )}
 
                             {values.chapter3Status == 2 ||
                               values.chapter3Status == 3 ||
@@ -889,149 +730,16 @@ export default function Fedral_tax(props: any) {
                                       >
                                         Business Name:
                                         <span style={{ color: "red" }}>*</span>
-                                        <span>
-                                          <Tooltip
-                                            style={{
-                                              backgroundColor: "black",
-                                              color: "white",
-                                            }}
-                                            title={
-                                              <>
-                                                <Typography color="inherit">
-                                                  Name details
-                                                </Typography>
-                                                <a
-                                                  onClick={() =>
-                                                    setToolInfo("name")
-                                                  }
-                                                >
-                                                  <Typography
-                                                    style={{
-                                                      cursor: "pointer",
-                                                      textDecorationLine:
-                                                        "underline",
-                                                    }}
-                                                    align="center"
-                                                  >
-                                                    {" "}
-                                                    View More...
-                                                  </Typography>
-                                                </a>
-                                              </>
-                                            }
-                                          >
-                                            <Info
-                                              style={{
-                                                color: "#ffc107",
-                                                fontSize: "10px",
-                                                cursor: "pointer",
-                                                verticalAlign: "super",
-                                              }}
-                                            />
-                                          </Tooltip>
-                                        </span>
-                                      </Typography>
-                                      {toolInfo === "name" ? (
-                                        <div>
-                                          <Paper
-                                            style={{
-                                              backgroundColor: "#dedcb1",
-                                              padding: "15px",
-                                              marginBottom: "10px",
-                                            }}
-                                          >
-                                            <Typography>
-                                              Please enter the first and last
-                                              name of the person who is required
-                                              or has been requested to submit an
-                                              information return.
-                                            </Typography>
-                                            <Typography
-                                              style={{
-                                                marginTop: "10px",
-                                                fontWeight: "550",
-                                              }}
-                                            >
-                                              Specific instructions for U.S.
-                                              individuals and sole proprietors:
-                                              U.S. individuals:
-                                            </Typography>
-                                            <Typography
-                                              style={{ marginTop: "10px" }}
-                                            >
-                                              If you are an{" "}
-                                              <span
-                                                style={{ fontWeight: "550" }}
-                                              >
-                                                individual
-                                              </span>
-                                              , you must enter the name shown on
-                                              your income tax return. However,
-                                              if you have changed your last
-                                              name, for instance, due to
-                                              marriage without informing the
-                                              Social Security Administration of
-                                              the name change, enter your first
-                                              name, the last name shown on your
-                                              social security card, and your new
-                                              last name. In certain situations
-                                              we may need to contact you for
-                                              further verification.
-                                            </Typography>
-                                            <Typography
-                                              style={{ marginTop: "10px" }}
-                                            >
-                                              <span
-                                                style={{ fontWeight: "550" }}
-                                              >
-                                                Joint names:
-                                              </span>
-                                              If the account is in joint names,
-                                              both parties will need to submit
-                                              separate submissions.
-                                            </Typography>
-                                            <Typography
-                                              style={{ marginTop: "10px" }}
-                                            >
-                                              <span
-                                                style={{ fontWeight: "550" }}
-                                              >
-                                                {" "}
-                                                Sole proprietor:
-                                              </span>
-                                              Enter your individual name as
-                                              shown on your income tax return on
-                                              the 'Name' line. You may enter
-                                              your business, trade, or 'doing
-                                              business as (DBA)' name on the
-                                              'Business name' line.
-                                            </Typography>
 
-                                            <Link
-                                              href="#"
-                                              underline="none"
-                                              style={{
-                                                marginTop: "10px",
-                                                fontSize: "16px", color: "#0000C7"
-                                              }}
-                                              onClick={() => {
-                                                setToolInfo("");
-                                              }}
-                                            >
-                                              --Show Less--
-                                            </Link>
-                                          </Paper>
-                                        </div>
-                                      ) : (
-                                        ""
-                                      )}
+                                      </Typography>
+
 
                                       <FormControl className="w-100">
                                         <TextField
                                           autoComplete="businessName"
                                           type="text"
                                           onChange={handleChange}
-                                          onBlur={handleBlur}
+                                          // onBlur={handleBlur}
                                           // helperText={
                                           //   touched.businessName && errors.businessName
                                           // }
@@ -1063,12 +771,13 @@ export default function Fedral_tax(props: any) {
                                           autoComplete="businessDisgradedEntity"
                                           type="text"
                                           onChange={handleChange}
-                                          onBlur={handleBlur}
-                                          helperText={
-                                            touched.businessDisgradedEntity && errors.businessDisgradedEntity
-                                          }
+                                          // onBlur={handleBlur}
+                                          // helperText={
+                                          //   touched.businessDisgradedEntity && errors.businessDisgradedEntity
+                                          // }
                                           error={Boolean(
-                                            touched.businessDisgradedEntity && errors.businessDisgradedEntity
+                                            touched.businessDisgradedEntity &&
+                                            errors.businessDisgradedEntity
                                           )}
                                           name="businessDisgradedEntity"
                                           value={values.businessDisgradedEntity}
@@ -1099,16 +808,17 @@ export default function Fedral_tax(props: any) {
                                         <FormControl className="w-50">
                                           <select
                                             name="countryOfIncorporation"
-                                            value={values.countryOfIncorporation}
+                                            value={
+                                              values.countryOfIncorporation
+                                            }
                                             onChange={handleChange}
                                             autoComplete="countryOfIncorporation"
-                                            // placeholder="Business Name"
-                                            onBlur={handleBlur}
+                                            // onBlur={handleBlur}
                                             style={{
                                               padding: " 0 10px",
                                               color: "#121112",
                                               fontStyle: "italic",
-                                              height: "36px",
+                                              height: "39px",
                                             }}
                                           >
                                             <option value="">---select---</option>
@@ -1118,7 +828,7 @@ export default function Fedral_tax(props: any) {
                                             <option value={258}>
                                               United States
                                             </option>
-                                            <option value={0}>---</option>
+                                            <option value="">---</option>
                                             {getCountriesReducer.allCountriesData?.map(
                                               (ele: any) => (
                                                 <option
@@ -1148,7 +858,7 @@ export default function Fedral_tax(props: any) {
                                   <FormControl>
                                     <RadioGroup
                                       row
-                                      defaultValue="Not"
+                                      defaultValue="3"
                                       aria-labelledby="demo-row-radio-buttons-group-label"
                                       name="isHybridStatus"
                                       value={values.isHybridStatus}
@@ -1175,7 +885,7 @@ export default function Fedral_tax(props: any) {
                                       />
                                     </RadioGroup>
                                     <p className="error">
-                                      {errors.isHybridStatus}
+                                      {errors.isHybridStatus?.toString()}
                                     </p>
                                   </FormControl>
                                 </div>
@@ -1192,7 +902,12 @@ export default function Fedral_tax(props: any) {
                                     for United States tax purposes.
                                   </Typography>
                                   <FormControl className="w-100 textfield1">
-                                    <TextField className="textfield1" name="descriptionHybridStatus" value={values.descriptionHybridStatus} onChange={handleChange} />
+                                    <TextField
+                                      className="textfield1"
+                                      name="descriptionHybridStatus"
+                                      value={values.descriptionHybridStatus}
+                                      onChange={handleChange}
+                                    />
                                   </FormControl>
                                   <div className="d-flex mt-3 ">
                                     <Typography
@@ -1207,52 +922,47 @@ export default function Fedral_tax(props: any) {
                                       type="file"
                                       name="attachSupportingDocumentFile"
                                       onChange={handleFileChange}
-                                      //defaultValue={values.attachSupportingDocumentFile}
                                       style={{ fontSize: "12px" }}
                                     />
+                                    {selectedfile?.name}
                                   </div>
-                                  {values.isHybridStatus == 3 ?
-                                    (
-                                      <div className="mt-2">
-                                        <Typography
-                                          style={{
-                                            fontSize: "15px",
-                                          }}
-                                        >
-                                          Is this submission being made on behalf of
-                                          a disregarded entity that has a Single
-                                          U.S. Owner?
-                                        </Typography>
-                                        <FormControl>
-                                          <RadioGroup
-                                            row
-                                            defaultValue="no"
-                                            aria-labelledby="demo-row-radio-buttons-group-label"
-                                            name="isSubmissionSingleUSOwner"
-                                            value={values.isSubmissionSingleUSOwner}
-                                            onChange={handleChange}
-                                          >
-                                            <FormControlLabel
-                                              control={<Radio />}
-                                              value="yes"
-                                              name="isSubmissionSingleUSOwner"
-                                              label="Yes"
-                                            />
-                                            <FormControlLabel
-                                              control={<Radio />}
-                                              value="no"
-                                              name="isSubmissionSingleUSOwner"
-                                              label="No"
-                                            />
-                                          </RadioGroup>
-                                          <p className="error">
-                                            {/* {errors.isDisRegardedSection1446} */}
-                                          </p>
-                                        </FormControl>
-                                      </div>
-                                    )
-                                    : ("")}
-
+                                  <div className="mt-2">
+                                    <Typography
+                                      style={{
+                                        fontSize: "15px",
+                                      }}
+                                    >
+                                      Is this submission being made on behalf of
+                                      a disregarded entity that has a Single
+                                      U.S. Owner?
+                                    </Typography>
+                                    <FormControl>
+                                      <RadioGroup
+                                        row
+                                        defaultValue="No"
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        name="isSubmissionSingleUSOwner"
+                                        value={values.isSubmissionSingleUSOwner}
+                                        onChange={handleChange}
+                                      >
+                                        <FormControlLabel
+                                          control={<Radio />}
+                                          value="yes"
+                                          name="isSubmissionSingleUSOwner"
+                                          label="Yes"
+                                        />
+                                        <FormControlLabel
+                                          control={<Radio />}
+                                          value="no"
+                                          name="isSubmissionSingleUSOwner"
+                                          label="No"
+                                        />
+                                      </RadioGroup>
+                                      <p className="error">
+                                        {/* {errors.isHybridStatus} */}
+                                      </p>
+                                    </FormControl>
+                                  </div>
                                   {values.isSubmissionSingleUSOwner == "yes" ? (
                                     <div>
                                       <Typography
@@ -1266,10 +976,12 @@ export default function Fedral_tax(props: any) {
                                       <FormControl>
                                         <RadioGroup
                                           row
-                                          defaultValue="no"
+                                          defaultValue="No"
                                           aria-labelledby="demo-row-radio-buttons-group-label"
                                           name="isDisRegardedSection1446"
-                                          //   value={values.isDisRegardedSection1446}
+                                          value={
+                                            values.isDisRegardedSection1446
+                                          }
                                           onChange={handleChange}
                                           id="isDisRegardedSection1446"
                                         >
@@ -1287,11 +999,12 @@ export default function Fedral_tax(props: any) {
                                           />
                                         </RadioGroup>
                                         <p className="error">
-                                          {/* {errors.isDisRegardedSection1446} */}
+                                          {/* {errors.isHybridStatus} */}
                                         </p>
                                       </FormControl>
                                     </div>
-                                  ) : values.isSubmissionSingleUSOwner == "no" ? (
+                                  ) : values.isSubmissionSingleUSOwner ==
+                                    "no" ? (
                                     ""
                                   ) : (
                                     ""
@@ -1303,6 +1016,7 @@ export default function Fedral_tax(props: any) {
                             )}
                           </Typography>
                         </div>
+
                         <div style={{ padding: "10px" }}>
                           <Accordion
                             expanded={expanded === "groupPanel"}
@@ -2139,6 +1853,11 @@ export default function Fedral_tax(props: any) {
                           </Accordion>
                         </div>
 
+
+
+
+                        
+
                         <div
                           style={{
                             display: "flex",
@@ -2146,69 +1865,59 @@ export default function Fedral_tax(props: any) {
                             marginTop: "80px",
                           }}
                         >
-                          {/* <Button
-                            variant="contained"
-                            style={{ color: "white" }}
-                            onClick={() => {
-                              validateForm().then((err) => {
-                                if (Object.keys(err).length == 0) {
-                                  submitForm().then((data) => {
-                                    history(GlobalValues.basePageRoute);
-                                  }).catch((error) => {
-                                    console.log(error);
-                                  })
-                                }
-                              });
-
-                            }}
+                          <SaveAndExit
+                            Callback={
+                              () => {
+                                submitForm().then((data) => {
+                                  const prevStepData = JSON.parse(
+                                    localStorage.getItem("PrevStepData") || "{}"
+                                  );
+                                  const urlValue =
+                                    window.location.pathname.substring(1);
+                                  // dispatch(
+                                  //   postW8ECI_EForm(
+                                  //     {
+                                  //       ...prevStepData,
+                                  //       stepName: `/${urlValue}`,
+                                  //     },
+                                  //     () => {
+                                  //       history(GlobalValues.basePageRoute);
+                                  //     }
+                                  //   )
+                                  // );
+                                }).catch((error) => {
+                                  console.log(error);
+                                })
+                              }
+                            }
+                            formTypeId={FormTypeId.W8ECI}
                           >
-                            SAVE & EXIT
-                          </Button> */}
-                          <SaveAndExit Callback={() => {
-                            submitForm().then(() => {
-                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                              const urlValue = window.location.pathname.substring(1);
-                              dispatch(postW8BEN_EForm(
-                                {
-                                  ...prevStepData,
-                                  stepName: `/${urlValue}`
-                                }
-                                , () => { }))
-                              history(
-                                GlobalValues.basePageRoute
-                              );
-                            })
-                          }} formTypeId={FormTypeId.BENE} />
-
+                          </SaveAndExit>
                           <Button
-                            //type="submit"
+                            type="submit"
                             disabled={isSubmitting}
                             variant="contained"
+                            // onClick={() => {
+                            //   dispatch(GetEciPdf(authDetails?.accountHolderId))
+                            // }}
                             style={{ color: "white", marginLeft: "15px" }}
-                            onClick={() => {
-                              dispatch(GetBenEPdf(authDetails?.accountHolderId))
-                            }}
                           >
                             View Form
                           </Button>
                           <Button
-                            type="submit"
+                            //type="submit"
                             disabled={!isValid}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
+                            // onClick={() => {
+                            //   submitForm().then((data) => {
+                            //     console.log(data)
+                            //   history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC/Fatca_DC");
+                            //   })
+                            // }}
                             onClick={() => {
-                              validateForm().then((err) => {
-                                if (Object.keys(err).length == 0) {
-                                  submitForm().then((data) => {
-                                    history("/BenE/Tax_Purpose_BenE/Declaration_BenE");
-                                  }).catch((error) => {
-                                    console.log(error);
-                                  })
-                                }
-
-                              })
-
-                            }}
+                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC/Fatca_DC");
+                          }}
                           >
                             Continue
                           </Button>
@@ -2226,9 +1935,9 @@ export default function Fedral_tax(props: any) {
                         </Typography>
                         <Typography align="center">
                           <Button
-                            onClick={() => {
-                              history("/Certificates");
-                            }}
+                            // onClick={() => {
+                            //   history("/W-8ECI/Info");
+                            // }}
                             variant="contained"
                             style={{
                               color: "white",
@@ -2248,7 +1957,11 @@ export default function Fedral_tax(props: any) {
             </div>
           </div>
         </div>
-      </section>
+      </section >
     </>
   );
 }
+
+
+
+
