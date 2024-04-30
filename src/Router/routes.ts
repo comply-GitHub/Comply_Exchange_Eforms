@@ -253,9 +253,9 @@ const CaymanEntityFatcaClassificationFinancial = React.lazy(() => import("../Com
 const CaymanEntityFatcaClassificationGIINAvailable = React.lazy(() => import("../Components/Cayman/Entity/FATCA/GIINAvailable"));
 const CaymanEntityFatcaClassificationGIINNotAvailable = React.lazy(() => import("../Components/Cayman/Entity/FATCA/GIINNotAvailable"));
 const CaymanEntityFatcaClassificationSponsoredFinancialInstitution = React.lazy(() => import("../Components/Cayman/Entity/FATCA/SponsoredFinanceInstitution"));
-const CaymanIndividualFatcaClassificationComplete= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Complete"));
-const CaymanIndividualFatcaClassificationFinal= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Final"));
-// const CaymanIndividualStartSubmission= React.lazy(() => import("../Components/Cayman/Individual/Start/Submission"));
+const CaymanEntityFatcaClassificationComplete= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Complete"));
+const CaymanEntityFatcaClassificationFinal= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Final"));
+const CaymanEntityTIN= React.lazy(() => import("../Components/Cayman/Entity/USTin"));
 // const CaymanIndividualStartESConfirmation= React.lazy(() => import("../Components/Cayman/Individual/Start/ESConfirmation"));
 // const CaymanIndividualStartThankyou= React.lazy(() => import("../Components/Cayman/Individual/Start/Thankyou"));
 
@@ -883,17 +883,24 @@ const ROUTES: Array<RouteType> = [
     isPrivate: true,
   },
   {
-    name: "CaymanIndividualFatcaClassificationComplete",
+    name: "CaymanEntityFatcaClassificationComplete",
     path: "/Cayman/Entity/FATCA/Complete",
     id: 7,
-    Component: CaymanIndividualFatcaClassificationComplete,
+    Component: CaymanEntityFatcaClassificationComplete,
     isPrivate: true,
   },
   {
-    name: "CaymanIndividualFatcaClassificationFinal",
+    name: "CaymanEntityFatcaClassificationFinal",
     path: "/Cayman/Entity/FATCA/Final",
     id: 7,
-    Component: CaymanIndividualFatcaClassificationFinal,
+    Component: CaymanEntityFatcaClassificationFinal,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityTIN",
+    path: "/Cayman/Entity/TIN",
+    id: 7,
+    Component: CaymanEntityTIN,
     isPrivate: true,
   },
   {
