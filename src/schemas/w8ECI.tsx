@@ -271,14 +271,14 @@ export const partCertiSchema = () => {
     signedBy: Yup.string().required("Please enter name of the person signing the form"),
     confirmationCode: Yup.string()
       .required("Please enter code")
-    // .test(
-    //   'match',
-    //   'Confirmation code does not match',
-    //   function (value) {
-    //     const storedConfirmationCode = obValues?.confirmationCode;
-    //     return !storedConfirmationCode || value === storedConfirmationCode;
-    //   }
-    // ), 
+    .test(
+      'match',
+      'Confirmation code does not match',
+      function (value) {
+        const storedConfirmationCode = obValues?.confirmationCode;
+        return !storedConfirmationCode || value === storedConfirmationCode;
+      }
+    )
     ,
     // word: Yup.boolean().when("EnterconfirmationCode", {
     //   is: "no",

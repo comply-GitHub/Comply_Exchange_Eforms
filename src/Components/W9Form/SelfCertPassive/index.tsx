@@ -425,30 +425,27 @@ export default function Certifications(props: any) {
                 initialValues={initialValues}
                 validateOnBlur={true}
                 enableReinitialize
-                // validationSchema={SelfCertSchema_w9_DC}
+               
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
                   let temp = {
                     ...PrevStepData,
                     agentId: authDetails?.agentId,
                     accountHolderBasicDetailId: authDetails?.accountHolderId,
-                    
                     stepName: null
-                  }
+                  };
                   const returnPromise = new Promise((resolve, reject) => {
-                    SubmitIncomeTypes().then((data: any) => {
-                      dispatch(PostDualCert([temp], (retData: any) => {
+                    SubmitIncomeTypes().then(
+                      (data) => {
                         localStorage.setItem("PrevStepData", JSON.stringify(temp));
-                        resolve(retData);
+                        history("/Taxpayer_DC");
+                        resolve(data);
                       },
-                        (err: any) => {
-                          reject(err);
-                        }
-                      ))
-                    }).catch((err: any) => {
-                      reject(err);
-                    })
-                  })
+                      (err) => {
+                        reject(err);
+                      }
+                    );
+                  });
                   return returnPromise;
                 }}
               >

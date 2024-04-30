@@ -102,7 +102,7 @@ const ActionName = {
     InsertCaymanEntityNonUSFATCAClassification:"InsertCaymanEntityNonUSFATCAClassification",
     InsertCRSEntityNonUSClassification:"InsertCRSEntityNonUSClassification",
     InsertCaymanEntityNonUSFATCAClassificationEmpty:"InsertCaymanEntityNonUSFATCAClassificationEmpty",
-
+    InsertCaymanEntityNonUSChapter3Data:"InsertCaymanEntityNonUSChapter3Data",
     // skipped steps
     UpdateSkippedSteps:"UpdateSkippedSteps"
 
