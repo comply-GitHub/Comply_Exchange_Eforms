@@ -8,25 +8,29 @@ const initialState={
 
 const CRSEntityReducer = (state = initialState, action: any) => {
     switch (action.type) {
-      case Utils.actionName.InsertCaymanEntityNonUSChapter3Data:
+      case Utils.actionName.InsertCaymanEntityNonUSChapter3DataRedux:
         return { 
             ...state,
             chapter3Data : action.payload 
         };
 
-    case Utils.actionName.InsertCRSEntityNonUSClassification:
-      const { payload } = action;
+      case Utils.actionName.InsertCRSEntityNonUSClassification:
+        const { payload } = action;
+        const mergedCRSClassificationData = {
+          ...state.CRSClassificationData,
+          ...payload
+        };
 
+      return {
+          ...state,
+          CRSClassificationData: mergedCRSClassificationData
+      };
       
-      const mergedCRSClassificationData = {
-        ...state.CRSClassificationData,
-        ...payload
-    };
-
-    return {
-        ...state,
-        CRSClassificationData: mergedCRSClassificationData
-    };
+      case Utils.actionName.InsertCRSEntityNonUSClassificationEmpty:
+        return {
+            ...state,
+            CRSClassificationData: []
+        };
       default:
         return state;
     }

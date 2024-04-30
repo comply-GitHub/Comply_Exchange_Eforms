@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Accordion from "@mui/material/Accordion";
@@ -10,15 +10,16 @@ import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { ExpandMore } from "@mui/icons-material";
-import BreadCrumbComponent from "../../../reusables/breadCrumb";
-import { SubmitSchema } from "../../../../schemas/submit";
-import { PostDualCert } from "../../../../Redux/Actions";
-import { FormTypeId } from "../../../../Utils/constVals";
-import Utils from "../../../../Utils";
-import SideBar from "../../../Reusable/SideBar";
-export default function SponsoredFinanceInstitution (props: any){
+import Utils from "../../../../../Utils";
+import SideBar from "../../../../Reusable/SideBar";
+import BreadCrumbComponent from "../../../../reusables/breadCrumb";
+import { formToJSON } from "axios";
+import { FormTypeId } from "../../../../../Utils/constVals";
+import { SubmitSchema } from "../../../../../schemas/submit";
+import { PostDualCert } from "../../../../../Redux/Actions";
+export default function Declaration (props: any){
 
-  const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
+  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
 
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -31,23 +32,35 @@ export default function SponsoredFinanceInstitution (props: any){
     if (newExpanded) {
       setExpandedState(panel);
       dispatch({
-        type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
+        type: Utils.actionName.InsertCRSEntityNonUSClassification,
         payload: {
-          heading4: panelHeading,
-          subheading4:'FATCA Classification -'+ panelHeading+' Cayman',
+          heading2: panelHeading,
+          subheading2:'CRS Classification -'+ panelHeading,
           selectedHeading : panelHeading,
-          selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
+          selectedSubHeading : 'CRS Classification -'+ panelHeading
+        
         },
-      });
-
+      })
       localStorage.setItem("clickedPanelHeading", panelHeading);
-      localStorage.setItem("Heading4",panelHeading)
-      localStorage.setItem("SubHeading4",'FATCA Classification -'+ panelHeading+' Cayman')
+      localStorage.setItem("Heading1",panelHeading)
+      localStorage.setItem("SubHeading1",'CRS Classification -'+ panelHeading)
     } else {
       setExpandedState(false);
       localStorage.removeItem("clickedPanelHeading");
     }
   };
+  useEffect(() => {
+    if(expandedState=== 'panel1'){
+      localStorage.removeItem("Heading1");
+      localStorage.removeItem("SubHeading1");
+      localStorage.removeItem("Heading2");
+      localStorage.removeItem("SubHeading2");
+      localStorage.removeItem("Heading3");
+      localStorage.removeItem("SubHeading3");
+      localStorage.removeItem("Heading4");
+      localStorage.removeItem("SubHeading4");
+    }
+  },[expandedState])
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   
@@ -68,7 +81,7 @@ export default function SponsoredFinanceInstitution (props: any){
       <div className="row w-100">
         <div className="col-4 mt-3">
 
-          <BreadCrumbComponent breadCrumbCode={1310} formName={FormTypeId.CaymanEntity} />
+          <BreadCrumbComponent breadCrumbCode={1320} formName={FormTypeId.CaymanEntity} />
         </div>
 
         <div className="col-8 mt-3">
@@ -81,27 +94,26 @@ export default function SponsoredFinanceInstitution (props: any){
               initialValues={initialValue}
               validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
-              //   console.log("values", values)
-              //   setSubmitting(true);
-              //   const result = {
-              //     ...PrevStepData, 
-              //     ...values,
+                setSubmitting(true);
+                const result = {
+                  ...PrevStepData, 
+                  ...values,
                  
-              //     statusId: 1,
-              //   };
-              //   const returnPromise = new Promise((resolve, reject) => {
-              //   dispatch(
-              //     PostDualCert(result, (data: any) => {
-              //       localStorage.setItem("SelfCertData", JSON.stringify(result))
-              //       resolve(data);
-              //     }
-              //       , (err: any) => {
-              //         reject(err);
-              //       }
-              //     )
-              //   );
-              // })
-              // return returnPromise;
+                  statusId: 1,
+                };
+                const returnPromise = new Promise((resolve, reject) => {
+                dispatch(
+                  PostDualCert(result, (data: any) => {
+                    localStorage.setItem("DualCertData", JSON.stringify(result))
+                    resolve(data);
+                  }
+                    , (err: any) => {
+                      reject(err);
+                    }
+                  )
+                );
+              })
+              return returnPromise;
 
             }}
             >
@@ -121,16 +133,16 @@ export default function SponsoredFinanceInstitution (props: any){
                
                    <div style={{ backgroundColor: "#fff", padding: "5px" }}>
               <Typography
-                className="my-2 mx-2"
+                className="my-3 mx-2"
                 style={{ fontSize: "20px", color: "#1976d2", fontWeight: "bold" }}
               >
-               FATCA Classification GUIDE GIIN Not Available
+              CRS Classification Guide Financial Institution Review
               </Typography>
 
 
               <Accordion
                 expanded={expandedState === "panel1"}
-                onChange={handleChangeAccodionState("panel1","Sponsored Financial Institution Overview")}
+                onChange={handleChangeAccodionState("panel1","Financial Institution resident in a Non-Participating Jurisdiction under CRS Overview")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -140,7 +152,7 @@ export default function SponsoredFinanceInstitution (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Sponsored Financial Institution Overview
+                    Financial Institution resident in a Non-Participating Jurisdiction under CRS Overview
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -149,15 +161,14 @@ export default function SponsoredFinanceInstitution (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                    FATCA Classification - Sponsored Financial Institution Overview Cayman
-
+                   CRS Classification - Financial Institution resident in a Non-Participating Jurisdiction under CRS Overview
                   </Typography>
                  
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel2"}
-                onChange={handleChangeAccodionState("panel2","Sponsored FI in a Model 1 IGA jurisdiction")}
+                onChange={handleChangeAccodionState("panel2","Investment Entity managed by another Financial Institution where a controlling ownership interest is held (directly or indirectly) by a company listed on a stock exchange and subject to disclosure requirements or is a majority owned subsidiary of such a company")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -167,7 +178,7 @@ export default function SponsoredFinanceInstitution (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                   Sponsored FI in a Model 1 IGA jurisdiction
+                   Investment Entity managed by another Financial Institution where a controlling ownership interest is held (directly or indirectly) by a company listed on a stock exchange and subject to disclosure requirements or is a majority owned subsidiary of such a company
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -176,14 +187,14 @@ export default function SponsoredFinanceInstitution (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                   FATCA Classification - Sponsored FI in a Model 1 IGA jurisdiction Cayman
+                  No key is specified for this content block
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel3"}
-                onChange={handleChangeAccodionState("panel3","Sponsor has obtained a Sponsored Entity GIIN on its behalf")}
+                onChange={handleChangeAccodionState("panel3","Investment Entity managed by another Financial Institution")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -193,7 +204,7 @@ export default function SponsoredFinanceInstitution (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                     Sponsor has obtained a Sponsored Entity GIIN on its behalf 
+                     Investment Entity managed by another Financial Institution
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -202,15 +213,15 @@ export default function SponsoredFinanceInstitution (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                  FATCA Classification - Sponsor has obtained a Sponsored Entity GIIN on its behalf Cayman
+                CRS Classification - Investment Entity managed by another Financial Institution
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
-              {/* <Accordion
+              <Accordion
                 expanded={expandedState === "panel4"}
-                onChange={handleChangeAccodionState("panel4","Non Reporting/Certified Deemed Compliant Financial Institution Cayman** ")}
-                >
+                onChange={handleChangeAccodionState("panel4","Other Investment Entity")}
+              >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
                   aria-controls="panel2d-content"
@@ -219,8 +230,8 @@ export default function SponsoredFinanceInstitution (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Non Reporting/Certified Deemed Compliant Financial Institution Cayman**
-                </Typography>
+                    Other Investment Entity
+                  </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography
@@ -228,15 +239,14 @@ export default function SponsoredFinanceInstitution (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                  FATCA Classification - Non Reporting/Certified Deemed Compliant Financial Institution Cayman**
+                 CRS Classification - Other Investment Entity
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
-
               <Accordion
                 expanded={expandedState === "panel5"}
-                onChange={handleChangeAccodionState("panel5","Non-Participating Foreign Financial Institution")}
+                onChange={handleChangeAccodionState("panel5"," Other Financial Institution, including a Depository Institution, Custodial Institution, or Specified Insurance Company")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -246,7 +256,7 @@ export default function SponsoredFinanceInstitution (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Non-Participating Foreign Financial Institution
+                   Other Financial Institution, including a Depository Institution, Custodial Institution, or Specified Insurance Company
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -255,19 +265,18 @@ export default function SponsoredFinanceInstitution (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                  FATCA Classification - Non-Participating Foreign Financial Institution Cayman
+                 CRS Classification - Other Financial Institution, including a Depository Institution, Custodial Institution, or Specified Insurance Company
                   </Typography>
                   
                 </AccordionDetails>
-              </Accordion> */}
+              </Accordion>
 
-
-              <Typography align="center">
-              <Button
+             <div style={{marginTop:"20px"}}>
+             <Typography align="center">
+                <Button
                  onClick={() => {
-                 
-                  history("/Cayman/Entity/FATCA")
-                }}
+                  history("/Cayman/Entity/CRS/Start")
+                 }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
@@ -285,15 +294,13 @@ export default function SponsoredFinanceInstitution (props: any){
                     const clickedPanelHeading = localStorage.getItem("clickedPanelHeading");
                      if (clickedPanelHeading) {
                     localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
-                    
+                    history("/Cayman/Entity/CRS/FinancialModal");
                   }
-                    
-                      history("/Cayman/Entity/FATCA/Complete");
-                    
+                 
                   }}
                   style={{
+
                     fontSize:"12px",
-                 
                     marginTop: "10px",
                     marginBottom: "20px",
                     marginLeft: "10px"
@@ -303,16 +310,16 @@ export default function SponsoredFinanceInstitution (props: any){
                   Confirm
                 </Button>
                 <Button
-                 onClick={() =>{setIsAccordionVisible(false)
+                 onClick={() => {setIsAccordionVisible(false)
 
                   history(-1)
                  }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
-             fontSize:"12px",
-             marginLeft: "10px",
+                    fontSize:"12px",
                     marginTop: "10px",
+                    marginLeft: "10px",
                     marginBottom: "20px",
                   }}
                 >
@@ -320,6 +327,7 @@ export default function SponsoredFinanceInstitution (props: any){
                 </Button>
                 
               </Typography>
+             </div>
 
             </div>
 
@@ -337,7 +345,6 @@ export default function SponsoredFinanceInstitution (props: any){
       </div>
       </section>
     </Fragment>
-
   );
 };
 

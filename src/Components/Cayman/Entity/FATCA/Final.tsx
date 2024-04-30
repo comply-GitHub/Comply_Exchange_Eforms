@@ -83,7 +83,7 @@ export default function Final (props: any){
               //validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
 
-                history("/Cayman/Entity/TIN")
+                history("/Cayman/Entity/CRS/Start")
                 // console.log("values", values)
                 // setSubmitting(true);
                 // const result = {
