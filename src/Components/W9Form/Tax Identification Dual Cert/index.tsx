@@ -66,7 +66,7 @@ export default function TaxPayer(props: any) {
       } else if (event.target.value === 'No' && index >= 1) {
         let temp = [...payload];
         temp?.splice(index, 1)
-        setPayload([...temp]); // Reset or handle as needed when "No" is clicked
+        setPayload([...temp]); 
       }
     }
   };
