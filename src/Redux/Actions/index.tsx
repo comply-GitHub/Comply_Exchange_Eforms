@@ -1675,7 +1675,7 @@ export const PostDualCert = (value: any, callback: Function, errorCallback: Func
       (error) => {
         errorCallback({ message: "Some error occured", error: error });
       },
-      "multi"
+      // "multi"
     );
   };
 };
@@ -2076,6 +2076,38 @@ export const GetCountryArticleByID = (id: any, callback: Function): any => {
 };
 
 // special rate and condition apis
+// UpsertDualCertDetailsControllingPerson 
+
+export const UpsertDualCertDetailsControllingPerson = (payload: any, callback: Function, errorCallback: Function = (err: any) => { console.log(err) }): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall
+      (
+        Utils.EndPoint.UpsertDualCertDetailsControllingPerson,
+        payload,
+        (response) => {
+          const { data } = response;
+          callback(data);
+          //dispatch an action here if needed
+          dispatch(
+            {
+              type: Utils.actionName.UpsertDualCertDetailsControllingPerson,
+              payload: [...payload]
+            }
+          )
+        },
+        (err) => {
+          errorCallback({ message: "Some erro occured while saving", payload: err });
+        }
+      )
+    // dispatch(
+    //   {
+    //     type:Utils.actionName.PosteSubstantialUsPassiveNFE,
+    //     payload: [...values]
+    //   }
+    // )
+    //GetDualCertDetailsControlingPerson
+  }
+}
 export const UpsertSpecialRateAndCondition = (payload: any, callback: Function, errorCallback: Function = (err: any) => { console.log(err) }): any => {
   return (dispatch: any) => {
     Utils.api.postApiCall
@@ -2103,8 +2135,36 @@ export const UpsertSpecialRateAndCondition = (payload: any, callback: Function, 
     //     payload: [...values]
     //   }
     // )
+    //GetDualCertDetailsControlingPerson
   }
 }
+
+export const GetDualCertDetailsPerson = (AccountHolderId: number, callback: Function): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetDualCertDetailsControlingPerson,
+      `?accountHolderId=${AccountHolderId}`,
+      async (resData) => {
+        const { data } = resData;
+        if (resData.status === 200) {
+          console.log(resData.data, "GetSpecialRateAndCondition from action", AccountHolderId)
+          // await dispatch({
+          //   type: Utils.actionName.GetSecurityQuestion,
+          //   payload: {
+          //     CountryArticleData: resData.data,
+          //   },
+          // });
+          if (callback) {
+            callback(resData.data);
+          }
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
 export const GetSpecialRateAndCondition = (AccountHolderId: number, callback: Function): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(

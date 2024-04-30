@@ -79,6 +79,7 @@ const ActionName = {
     UpdateSubstantialUsPassiveNFE:"UpdateSubstantialUsPassiveNFE",
     PosteSubstantialUsPassiveNFE:"PosteSubstantialUsPassiveNFE",
     formPDFFieldData:"formPDFFieldData",
+    UpsertDualCertDetailsControllingPerson:"UpsertDualCertDetailsControllingPerson",
     UpsertSpecialRateAndConditionsIncomeTypes:"UpsertSpecialRateAndConditionsIncomeTypes",
     GetByW8BENEEntityNonUSFormId:"GetByW8BENEEntityNonUSFormId",
     GetDualCertW9:"GetDualCertW9",
@@ -98,7 +99,7 @@ const ActionName = {
     GetTaxJusrisdictionMismatchExplaination:"GetTaxJusrisdictionMismatchExplaination",
     InsertCaymanEntityNonUSChapter3Data:"InsertCaymanEntityNonUSChapter3Data",
     InsertCaymanEntityNonUSFATCAClassification:"InsertCaymanEntityNonUSFATCAClassification",
-
+    InsertCRSEntityNonUSClassification:"InsertCRSEntityNonUSClassification"
   };
 
   export default ActionName;

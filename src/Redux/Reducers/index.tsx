@@ -27,6 +27,7 @@ const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType
   SendOTPMail,GetByW9IndividualEntityUSFormId,
   GetCountriesTreaty,GetCountryArticleByID,
   UpsertSpecialRateAndConditionsIncomeTypes,
+  UpsertDualCertDetailsControllingPerson,
   GetByW8EXPIndividualId,
   GetAllLanguage,
   GetDualCertW9,
@@ -438,6 +439,16 @@ export const GetIncomeTypesReducer = (state = initialState, action: any): any =>
 export const SpecialRateAndConditionIncomeTypesReducer = (state = initialState, action: any): any => {
   switch (action.type) {
     case UpsertSpecialRateAndConditionsIncomeTypes:
+      return [ ...action.payload ];
+    default:
+      return state;
+  }
+};
+
+
+export const UpsertDualCertDetailsControllingPersonReducer = (state = initialState, action: any): any => {
+  switch (action.type) {
+    case UpsertDualCertDetailsControllingPerson:
       return [ ...action.payload ];
     default:
       return state;

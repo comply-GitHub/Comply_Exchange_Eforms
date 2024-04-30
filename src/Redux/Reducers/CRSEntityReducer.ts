@@ -3,10 +3,10 @@ import Utils from "../../Utils";
 
 const initialState={
     chapter3Data : [],
-    FATCAClassificationData : []
+    CRSClassificationData : []
 }
 
-const CaymanEntityReducer = (state = initialState, action: any) => {
+const CRSEntityReducer = (state = initialState, action: any) => {
     switch (action.type) {
       case Utils.actionName.InsertCaymanEntityNonUSChapter3Data:
         return { 
@@ -14,21 +14,21 @@ const CaymanEntityReducer = (state = initialState, action: any) => {
             chapter3Data : action.payload 
         };
 
-    case Utils.actionName.InsertCaymanEntityNonUSFATCAClassification:
+    case Utils.actionName.InsertCRSEntityNonUSClassification:
       const { payload } = action;
 
       
-      const mergedFATCAClassificationData = {
-        ...state.FATCAClassificationData,
+      const mergedCRSClassificationData = {
+        ...state.CRSClassificationData,
         ...payload
     };
 
     return {
         ...state,
-        FATCAClassificationData: mergedFATCAClassificationData
+        CRSClassificationData: mergedCRSClassificationData
     };
       default:
         return state;
     }
   }
-  export default CaymanEntityReducer;
+  export default CRSEntityReducer;
