@@ -76,6 +76,17 @@ export default function Declaration (props: any){
     useEffect(() => {
       document.title = "CRS Classification"
     }, [])
+
+    useEffect(() => {
+      console.log("calling")
+      //const payload = {};
+      dispatch({
+        type: Utils.actionName.InsertCRSEntityNonUSClassificationEmpty,
+      });
+
+    },[])
+
+
   return (
     <Fragment>
      <section

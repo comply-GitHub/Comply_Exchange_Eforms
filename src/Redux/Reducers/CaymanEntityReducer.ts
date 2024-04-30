@@ -14,19 +14,26 @@ const CaymanEntityReducer = (state = initialState, action: any) => {
             chapter3Data : action.payload 
         };
 
-    case Utils.actionName.InsertCaymanEntityNonUSFATCAClassification:
-      const { payload } = action;
+      case Utils.actionName.InsertCaymanEntityNonUSFATCAClassification:
+        const { payload } = action;
+        const mergedFATCAClassificationData = {
+          ...state.FATCAClassificationData,
+          ...payload
+        };
 
-      // Construct a new FATCAClassificationData array by merging the payload into the existing data
-      const mergedFATCAClassificationData = {
-        ...state.FATCAClassificationData,
-        ...payload
-    };
+        return {
+            ...state,
+            FATCAClassificationData: mergedFATCAClassificationData
+        };
 
-    return {
-        ...state,
-        FATCAClassificationData: mergedFATCAClassificationData
-    };
+
+      case Utils.actionName.InsertCaymanEntityNonUSFATCAClassificationEmpty:
+        return {
+            ...state,
+            FATCAClassificationData: []
+        };
+
+
       default:
         return state;
     }
