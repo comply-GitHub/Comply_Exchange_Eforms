@@ -26,6 +26,11 @@ const CRSEntityReducer = (state = initialState, action: any) => {
           CRSClassificationData: mergedCRSClassificationData
       };
       
+      case Utils.actionName.InsertCRSEntityNonUSClassificationEmpty:
+        return {
+            ...state,
+            CRSClassificationData: []
+        };
       default:
         return state;
     }
