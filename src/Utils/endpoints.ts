@@ -83,6 +83,7 @@ GetByW8IMYEntityNonForm :"/W8IMYEntity/GetByW8IMYEntityNonForm",
 GetSupportingDocumentation:"/AccountHolderDetail/GetSupportingDocumentation",
 getSupportedFile:"/FileUpload/GetFileBase64",
 GetByCaymanIndividualNonUSId: "/CaymanIndividualNonUS/GetByCaymanIndividualNonUSId",
+GetByCaymanEntityNonUSId: "/CaymanEntityNonUS/GetByCaymanEntityNonUSId",
 
 
 

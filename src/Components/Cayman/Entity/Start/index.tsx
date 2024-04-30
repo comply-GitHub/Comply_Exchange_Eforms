@@ -39,6 +39,7 @@ import "react-calendar/dist/Calendar.css";
 import { EntityStartSchema } from "../../../../schemas/cayman";
 import Utils from "../../../../Utils";
 import View_Insructions from "../../../viewInstruction";
+import SideBar from "../../../Reusable/SideBar";
 
 export default function Fedral_tax(props: any) {
   const { authDetails } = useAuth();
@@ -62,29 +63,31 @@ export default function Fedral_tax(props: any) {
 
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
 
+  const chapter3DataEntity = useSelector((state:any) => state.CaymanEntity.chapter3Data);
+  console.log("chapter3DataEntity", chapter3DataEntity);
   const [initialValue, setInitialValue] = useState({
     agentId: authDetails?.agentId,
     formTypeSelectionId: FormTypeId.CaymanEntity,
     accountHolderBasicDetailId: authDetails?.accountHolderId,
     businessName: obValues.entityName,
-    businessDisgradedEntity: "",
+    businessDisgradedEntity: chapter3DataEntity?.businessDisgradedEntity ? chapter3DataEntity?.businessDisgradedEntity : obValues.businessDisgradedEntity,
     other: "",
-    countryOfIncorporation: 0,
-    dateOfIncorporation:"",
-    jurisdictionForTaxPurposes : "",
-    isApplyingTieBreakerClauseUnderApplicableTaxTreaty:"",
-    countryOfTaxesPaid:0,
+    countryOfIncorporation: chapter3DataEntity?.countryOfIncorporation ? chapter3DataEntity?.countryOfIncorporation : 0,
+    dateOfIncorporation:chapter3DataEntity?.dateOfIncorporation ? chapter3DataEntity?.dateOfIncorporation : "",
+    jurisdictionForTaxPurposes : chapter3DataEntity?.jurisdictionForTaxPurposes ? chapter3DataEntity?.jurisdictionForTaxPurposes : "",
+    isApplyingTieBreakerClauseUnderApplicableTaxTreaty:chapter3DataEntity?.isApplyingTieBreakerClauseUnderApplicableTaxTreaty ? chapter3DataEntity?.isApplyingTieBreakerClauseUnderApplicableTaxTreaty : "",
+    countryOfTaxesPaid:chapter3DataEntity?.countryOfTaxesPaid ? chapter3DataEntity?.countryOfTaxesPaid : 0,
     taxJuridictionListItem:[],
-    taxJurisdictionMismatchExplanationId:null,
-    explainationForNone:"",
-    confirmThisisaTrueAndAccurate:false,
-    chapter3Status: 0,
-    attachSupportingDocumentFile: null,
-    attachSupportingDocument: null,
-    descriptionHybridStatus: "",
-    hybridStatus: 3,
-    isDisRegardedSection: "",
-    isDisRegardedSection1446: "",
+    taxJurisdictionMismatchExplanationId:chapter3DataEntity?.taxJurisdictionMismatchExplanationId ? chapter3DataEntity?.taxJurisdictionMismatchExplanationId : null,
+    explainationForNone: chapter3DataEntity?.explainationForNone ? chapter3DataEntity?.explainationForNone :"",
+    confirmThisisaTrueAndAccurate:chapter3DataEntity?.confirmThisisaTrueAndAccurate ? chapter3DataEntity?.confirmThisisaTrueAndAccurate :false,
+    chapter3Status: chapter3DataEntity?.chapter3Status ? chapter3DataEntity?.chapter3Status : 0,
+    attachSupportingDocumentFile: chapter3DataEntity?.attachSupportingDocumentFile ? chapter3DataEntity?.attachSupportingDocumentFile : null,
+    attachSupportingDocument: chapter3DataEntity?.attachSupportingDocument ? chapter3DataEntity?.attachSupportingDocument : null,
+    descriptionHybridStatus: chapter3DataEntity?.descriptionHybridStatus ? chapter3DataEntity?.descriptionHybridStatus : "",
+    hybridStatus: chapter3DataEntity?.hybridStatus ? chapter3DataEntity?.hybridStatus : 3,
+    isDisRegardedSection: chapter3DataEntity?.isDisRegardedSection ? chapter3DataEntity?.isDisRegardedSection : "",
+    isDisRegardedSection1446: chapter3DataEntity?.isDisRegardedSection1446 ? chapter3DataEntity?.isDisRegardedSection1446 : "",
     statusId: 1,
     stepName: `/${urlValue}`,
   });
@@ -208,55 +211,7 @@ export default function Fedral_tax(props: any) {
         className="inner_content"
         style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
       >
-        <View_Insructions
-          canvaBx={canvaBx}
-          handleCanvaClose={handleCanvaClose}
-        />
-        {canvaBx === true ? (
-          <div
-            className="offcanvas-backdrop fade show"
-            onClick={() => {
-              handleCanvaClose();
-            }}
-          ></div>
-        ) : null}
-        {/* {/ sidebar design end /} */}
-        <div className="overlay-div">
-          <div className="overlay-div-group">
-            <div
-              className="viewInstructions"
-              onClick={() => {
-                handleCanvaOpen();
-              }}
-            >
-              View Instructions
-            </div>
-            <div className="viewform" onClick={() => {
-              dispatch(GetW9Pdf(authDetails?.accountHolderId))
-            }}>
-              View Form
-            </div>
-            <div className="helpvideo">
-              {GethelpData && GethelpData[8].id === 10 ? (
-                <a
-                  href={GethelpData[8].fieldValue}
-                  target="popup"
-                  onClick={() =>
-                    window.open(
-                      GethelpData[8].fieldValue,
-                      "name",
-                      `width=${GethelpData[8].width},height=${GethelpData[8].height},top=${GethelpData[8].top},left=${GethelpData[8].left}`
-                    )
-                  }
-                >
-                  Help Video
-                </a>
-              ) : (
-                ""
-              )}
-            </div>
-          </div>
-        </div>
+        <SideBar/>
         <div className="row w-100">
           <div className="col-4">
             <div style={{ padding: "20px 0px", height: "100%" }}>
@@ -624,9 +579,10 @@ export default function Fedral_tax(props: any) {
                                       )
                                     )}
                                   </select>
-                                  <p className="error">
-                                    {errors.chapter3Status}
-                                  </p>
+                                  {errors?.chapter3Status && typeof errors?.chapter3Status === 'string' && (
+                                    <p className="error">{errors?.chapter3Status}</p>
+                                  )}
+                                  
                                 </FormControl>
                               </div>
                             </div>
@@ -796,9 +752,13 @@ export default function Fedral_tax(props: any) {
                                         value={values.businessName}
                                       />
                                     </FormControl>
-                                    <p className="error">
+                                    {errors?.businessName && typeof errors?.businessName === 'string' && (
+                                      <p className="error">{errors?.businessName}</p>
+                                    )}
+
+                                    {/* <p className="error">
                                       {typeof (errors.businessName) == "string" && touched.businessName ? errors.businessName : <></>}
-                                    </p>
+                                    </p> */}
                                   </div>
                                   <div
                                     className="col-6  "
@@ -819,9 +779,6 @@ export default function Fedral_tax(props: any) {
                                         type="text"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        helperText={
-                                          touched.businessDisgradedEntity && errors.businessDisgradedEntity
-                                        }
                                         error={Boolean(
                                           touched.businessDisgradedEntity && errors.businessDisgradedEntity
                                         )}
@@ -885,9 +842,12 @@ export default function Fedral_tax(props: any) {
                                           )}
                                         </select>
                                       </FormControl>
-                                      <p className="error">
+                                      {errors?.countryOfIncorporation && typeof errors?.countryOfIncorporation === 'string' && (
+                                        <p className="error">{errors?.countryOfIncorporation}</p>
+                                      )}
+                                      {/* <p className="error">
                                         {touched.countryOfIncorporation ? errors.countryOfIncorporation : ""}
-                                      </p>
+                                      </p> */}
                                     </div>
 
                                     {values.countryOfIncorporation == 186 ? (
@@ -1369,9 +1329,7 @@ export default function Fedral_tax(props: any) {
                                           type="text"
                                           onChange={handleChange}
                                           onBlur={handleBlur}
-                                          helperText={
-                                            touched.businessDisgradedEntity && errors.businessDisgradedEntity
-                                          }
+                                          
                                           error={Boolean(
                                             touched.businessDisgradedEntity && errors.businessDisgradedEntity
                                           )}
@@ -1524,9 +1482,12 @@ export default function Fedral_tax(props: any) {
                                         label="Not Applicable"
                                       />
                                     </RadioGroup>
-                                    <p className="error">
+                                    {errors?.hybridStatus && typeof errors?.hybridStatus === 'string' && (
+                                        <p className="error">{errors?.hybridStatus}</p>
+                                      )}
+                                    {/* <p className="error">
                                       {errors.hybridStatus}
-                                    </p>
+                                    </p> */}
                                   </FormControl>
                                 </div>
 

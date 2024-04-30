@@ -287,6 +287,9 @@ export const LoadExistingFormData = (formTypeId: any, AccountHolderId: any, call
     case FormTypeId.CaymanIndividual:
       Endpoint = Utils.EndPoint.GetByCaymanIndividualNonUSId + `?AccountHolderDetailId=${AccountHolderId}`
       break;
+    case FormTypeId.CaymanEntity:
+      Endpoint = Utils.EndPoint.GetByCaymanEntityNonUSId + `?AccountHolderDetailId=${AccountHolderId}`
+      break;
     default:
       return;
   }
@@ -334,6 +337,12 @@ export const LoadExistingFormData = (formTypeId: any, AccountHolderId: any, call
           case FormTypeId.CaymanIndividual:
             dispatch({
               type: Utils.actionName.InsertCaymanIndividualNonUS,
+              payload: { ...responseData?.data },
+            });
+            break;
+          case FormTypeId.CaymanEntity:
+            dispatch({
+              type: Utils.actionName.InsertCaymanEntityNonUSChapter3DataRedux,
               payload: { ...responseData?.data },
             });
             break;
