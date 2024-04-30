@@ -101,6 +101,9 @@ const ActionName = {
     InsertCaymanEntityNonUSFATCAClassification:"InsertCaymanEntityNonUSFATCAClassification",
     InsertCaymanEntityNonUSFATCAClassificationEmpty:"InsertCaymanEntityNonUSFATCAClassificationEmpty"
 
+    // skipped steps
+    UpdateSkippedSteps:"UpdateSkippedSteps"
+
   };
 
   export default ActionName;
