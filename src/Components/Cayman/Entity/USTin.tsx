@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import { Info, DeleteOutline, Delete } from "@mui/icons-material";
 import { Formik, Form, FieldArray } from "formik";
-import "./index.scss";
+// import "./index.scss";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
@@ -1386,12 +1386,45 @@ export default function Tin(props: any) {
                                           <div className="d-flex">
                                             <FormControl className="form">
                                               {values.taxLbltyOtherJurisdictions[index].notAvailable === true ? (
+                                                //   <Input
+                                                //   fullWidth
+                                                //   type="text"
+                                                //   disabled={
+                                                //     values.isFTINNotLegallyRequired ||
+                                                //     values.ForeginTIN_CountryId == "1" ||
+                                                //     values.tinisFTINNotLegallyRequired ==="NO"
+                                                //   }
+                                                //   placeholder="ENTER FOREIGN TIN"
+                                                //   name="ForegionTIN"
+                                                //   value={values.ForegionTIN}
+                                                //   onBlur={handleBlur}
+                                                //   onChange={handleChange}
+                                                //   error={Boolean(
+                                                //     touched.ForegionTIN && errors.ForegionTIN
+                                                //   )}
+                                                //   style={{
+                                                //     border: " 1px solid #d9d9d9 ",
+                                                //     padding: " 0 10px",
+                                                //     color: "#7e7e7e",
+                                                //     fontStyle: "italic",
+                                                //     height: "40px",
+                                                //     width: "100%",
+                                                //   }}
+                                                // />
                                                 <Input
                                                   name={`taxLbltyOtherJurisdictions.${index}.tinNumber`}
                                                   onChange={handleChange}
                                                   value={values.taxLbltyOtherJurisdictions[index].tinNumber}
                                                   disabled
                                                   className="input"
+                                                  style={{
+                                                    border: " 1px solid #d9d9d9 ",
+                                                    padding: " 0 10px",
+                                                    color: "#7e7e7e",
+                                                    fontStyle: "italic",
+                                                    height: "40px",
+                                                    width: "100%",
+                                                  }}
                                                 />
                                               ) : (
                                                 <Input
@@ -1399,6 +1432,14 @@ export default function Tin(props: any) {
                                                   onChange={handleChange}
                                                   value={values.taxLbltyOtherJurisdictions[index].tinNumber}
                                                   className="number"
+                                                  style={{
+                                                    border: " 1px solid #d9d9d9 ",
+                                                    padding: " 0 10px",
+                                                    color: "#7e7e7e",
+                                                    fontStyle: "italic",
+                                                    height: "40px",
+                                                    width: "100%",
+                                                  }}
                                                 />
                                               )}
                                               {/* {
