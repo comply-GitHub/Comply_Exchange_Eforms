@@ -6,7 +6,7 @@ const { CREATE_W8_ECI, InsertW8ECIIndividualEntityNonUSForm } = Utils.actionName
 let initialState = {
   accountHolderBasicDetailId: 0,
   agentId: 0,
-  formTypeSelectionId: 0,
+  formTypeSelectionId: 1,
   // eciUsTinTypeId: 0,
   // eciUsTin: "",
   // streetNumberName: "",

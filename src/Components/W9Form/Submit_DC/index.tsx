@@ -90,7 +90,7 @@ const Declaration = (props: any) => {
                 submitForm,
                 isValid
               }) => (
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit}>                                                  
                   {/* <form> */}
                   {
                     <Typography
@@ -344,7 +344,7 @@ const Declaration = (props: any) => {
                           checked={values.IsConsentReceipentstatement}                           
                           />
 
-                          <Typography style={{ marginTop: "9px", fontSize: "17px" }}>
+                          <Typography style={{ marginTop: "9px", fontSize: "17px" }}>                        
                             I give consent to receiving a recipent statement
                             electronically.
                           </Typography>

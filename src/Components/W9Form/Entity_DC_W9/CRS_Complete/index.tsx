@@ -6,7 +6,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";
+import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";     
 import Divider from "@mui/material/Divider";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { Form, Formik } from "formik";
@@ -215,10 +215,6 @@ export default function Declaration (props: any){
                       Confirm
                     </Button>
                   </div>
-            
-
-
-                
                 </form>
            
               )}

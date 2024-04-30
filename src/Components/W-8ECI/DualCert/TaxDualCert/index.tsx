@@ -30,6 +30,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import useAuth from "../../../../customHooks/useAuth";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
+import { GetECIDCPdf } from "../../../../Redux/Actions/PfdActions";
 // import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 export default function Tin(props: any) {
 
@@ -159,9 +160,10 @@ export default function Tin(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform" onClick={() => {
-            //   dispatch(GetEciPdf(authDetails?.accountHolderId))
-            }}>View Form</div>
+            <div className="viewform"
+              onClick={() => {
+                dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+              }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[5].id === 7 ? (
@@ -207,10 +209,10 @@ export default function Tin(props: any) {
                     const temp = {
                       // ...PrevStepData,
                       ...values,
-                      id:0,
-                      FormTypeID:FormTypeId.W8ECI,
+                      id: 0,
+                      FormTypeID: FormTypeId.W8ECI,
                       agentId: authDetails?.agentId,
-                      
+
                       AccountHolderDetailsId: authDetails?.accountHolderId,
                       isNotAvailable: values.isNotAvailable === "Yes",
                       alternativeTINFormat: values.isNotAvailable === "No",
@@ -357,7 +359,7 @@ export default function Tin(props: any) {
                                       underline="none"
                                       style={{
                                         marginTop: "10px",
-                                        fontSize: "16px",color: "#0000C7"
+                                        fontSize: "16px", color: "#0000C7"
                                       }}
                                       onClick={() => {
                                         setToolInfo("");
@@ -1168,13 +1170,13 @@ export default function Tin(props: any) {
                             const urlValue = window.location.pathname.substring(1);
                             dispatch(PostDualCert(
                               {
-                                  ...prevStepData,
-                                  ...values,
-                                  stepName: `/${urlValue}`
+                                ...prevStepData,
+                                ...values,
+                                stepName: `/${urlValue}`
                               }
-                              , () => { }, 
-                              () => { }) 
-                          );
+                              , () => { },
+                              () => { })
+                            );
                             history(
                               GlobalValues.basePageRoute
                             );
@@ -1184,7 +1186,7 @@ export default function Tin(props: any) {
                         <Button
                           variant="contained"
                           onClick={() => {
-                            // dispatch(GetEciPdf(authDetails?.accountHolderId))
+                            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
                           }}
                           style={{ color: "white", marginLeft: "15px" }}
                         >
@@ -1209,7 +1211,7 @@ export default function Tin(props: any) {
                         style={{
 
                           //color: "#f5f5f5",
-                          color: "#505E50",  
+                          color: "#505E50",
                           justifyContent: "center",
                           alignItems: "center",
                           marginTop: "20px",

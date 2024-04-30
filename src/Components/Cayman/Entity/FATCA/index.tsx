@@ -403,7 +403,7 @@ export default function Classification (props: any){
                 <Button
                  onClick={() => {
                 
-                  history("/Cayman/Entity/FATCA")
+                  history("/BENEEntityFatcaClassification")
                   setExpandedState(false)
                  }}
                   variant="outlined"
@@ -425,7 +425,7 @@ export default function Classification (props: any){
                  localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
                  
                }
-                {expandedState==='panel2' ? history("/Cayman/Entity/FATCA/Financial") : history("/Cayman/Entity/FATCA/Complete") }
+                {expandedState==='panel2' ? history("/BENEEntityFatcaClassificationFinancial") : history("/BENEIndividualFatcaClassificationComplete") }
                   // if (expandedState === "panel2") {
                   //   history("/Cayman/Entity/FATCA/Financial");
                   // } else if (expandedState === "panel3") {
@@ -455,7 +455,7 @@ export default function Classification (props: any){
                 </Button>
                 <Button
                  onClick={() => { 
-                  history("/Cayman/Entity/FATCA")
+                  history("/BENEEntityFatcaClassification")
                   setIsAccordionVisible(false)
                   setExpandedState(false)
                  }}

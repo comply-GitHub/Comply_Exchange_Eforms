@@ -104,10 +104,10 @@ const ActionName = {
     InsertCRSEntityNonUSClassification:"InsertCRSEntityNonUSClassification",
     InsertCaymanEntityNonUSFATCAClassificationEmpty:"InsertCaymanEntityNonUSFATCAClassificationEmpty",
     InsertCaymanEntityNonUSChapter3Data:"InsertCaymanEntityNonUSChapter3Data",
+
     InsertCRSEntityNonUSClassificationEmpty:"InsertCRSEntityNonUSClassificationEmpty",
     // skipped steps
-    UpdateSkippedSteps:"UpdateSkippedSteps"
-
+    UpdateSkippedSteps:"UpdateSkippedSteps",
   };
 
   export default ActionName;

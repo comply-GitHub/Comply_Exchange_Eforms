@@ -2087,21 +2087,7 @@ export default function Factors() {
 
 
             </FormControl>
-            <Divider className="dividr" />
-
-            <Typography style={{ fontSize: "19px", marginTop: "10px" }}>
-              Has the individual formally renounced U.S. citizenship?<span style={{ color: "red" }}>*</span>
-            </Typography>
-            <FormControl className="form">
-              <input
-                className="input"
-                type="date"
-              />
-            </FormControl>
-            <Divider className="dividr" />
-            <Typography style={{ fontSize: "19px", marginTop: "10px" }}>
-              Does the individual the submission represents have tax liability in any other jurisdictions?<span style={{ color: "red" }}>*</span>
-            </Typography>
+           
 
 
             <FormControl >
