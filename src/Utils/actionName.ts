@@ -97,9 +97,15 @@ const ActionName = {
     UpsertTaxLiabilityinanyOtherJurisdictions:"UpsertTaxLiabilityinanyOtherJurisdictions",
     GetByCaymanIndividualNonUSId:"GetByCaymanIndividualNonUSId",
     GetTaxJusrisdictionMismatchExplaination:"GetTaxJusrisdictionMismatchExplaination",
-    InsertCaymanEntityNonUSChapter3Data:"InsertCaymanEntityNonUSChapter3Data",
+    InsertCaymanEntityNonUSChapter3DataRedux:"InsertCaymanEntityNonUSChapter3DataRedux",
+    InsertCaymanEntityNonUS:"InsertCaymanEntityNonUS",
     InsertCaymanEntityNonUSFATCAClassification:"InsertCaymanEntityNonUSFATCAClassification",
     InsertCRSEntityNonUSClassification:"InsertCRSEntityNonUSClassification"
+    InsertCaymanEntityNonUSFATCAClassificationEmpty:"InsertCaymanEntityNonUSFATCAClassificationEmpty",
+
+    // skipped steps
+    UpdateSkippedSteps:"UpdateSkippedSteps"
+
   };
 
   export default ActionName;

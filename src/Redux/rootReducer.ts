@@ -56,6 +56,7 @@ import CaymanIndividualReducer from "./Reducers/CaymanIndividualReducer";
 import CaymanEntityReducer from "./Reducers/CaymanEntityReducer";
 import CRSEntityReducer from "./Reducers/CRSEntityReducer";
 
+import SkippedStepsReducer from "./Reducers/SkippedStepsReduce";
 
 let reducers = {
   getCountriesReducer,
@@ -94,8 +95,7 @@ let reducers = {
   GetDualCertReducer,
   getIGAReducer,
   GetUSFormTypeReducer,
-  
-
+  SkippedSteps:SkippedStepsReducer,
 };
 const rootReducer = combineReducers({
   ...reducers,

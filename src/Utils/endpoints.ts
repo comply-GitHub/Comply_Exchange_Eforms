@@ -69,6 +69,8 @@ GetDualCertDetailsControlingPerson:"/DualCert/GetDualCertDetailsControllingPerso
  UpsertTaxLiabilityinanyOtherJurisdictions:"/CaymanIndividualNonUS/UpsertTaxLiabilityinanyOtherJurisdictions",
  UpsertEntityW9DualCert:"/W9IndividualEntity/UpdateW9IndividualEntityDetails",
  UpsertCRSandFATCAClassification:"/DualCert/UpsertCRSandFATCAClassification",
+ InsertCaymanEntityNonUS:"/CaymanEntityNonUS/InsertCaymanEntityNonUS",
+
 
 // Form GetApis:
 GetDual:"/DualCert/GetDualCert",
@@ -81,6 +83,7 @@ GetByW8IMYEntityNonForm :"/W8IMYEntity/GetByW8IMYEntityNonForm",
 GetSupportingDocumentation:"/AccountHolderDetail/GetSupportingDocumentation",
 getSupportedFile:"/FileUpload/GetFileBase64",
 GetByCaymanIndividualNonUSId: "/CaymanIndividualNonUS/GetByCaymanIndividualNonUSId",
+GetByCaymanEntityNonUSId: "/CaymanEntityNonUS/GetByCaymanEntityNonUSId",
 
 
 
@@ -122,5 +125,8 @@ GetW9DCPdf:"/W9IndividualEntity/GetW9DCPdf",
  GetByW8ECIIndividualId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
  GetByW8EXPIndividualId:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
  formPDFFieldData:"/FormTypes/GetPDFFieldValuesbyFormID",
+
+ // skipped steps
+ GetAgentSkippedSteps:"/Agent/GetAgentSkippedSteps",
 };
 export default EndPoint;
