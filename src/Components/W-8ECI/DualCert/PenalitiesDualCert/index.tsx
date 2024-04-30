@@ -30,7 +30,7 @@ import useAuth from "../../../../customHooks/useAuth";
 import SecurityCodeRecover from "../../../Reusable/SecurityCodeRecover";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
-import { GetEciPdf } from "../../../../Redux/Actions/PfdActions";
+import { GetECIDCPdf, GetEciPdf } from "../../../../Redux/Actions/PfdActions";
 export default function Penalties() {
   const location = useLocation();
   const { authDetails } = useAuth();
@@ -102,7 +102,7 @@ export default function Penalties() {
           let temp = {
             ...PrevStepData[0],
             ...values,
-            AccountHolderDetailsId:authDetails?.accountHolderId,
+            AccountHolderDetailsId: authDetails?.accountHolderId,
             date: new Date().toISOString(),
             stepName: `/${urlValue}`
           };
@@ -151,7 +151,7 @@ export default function Penalties() {
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
                   <div className="viewform" onClick={() => {
-                    dispatch(GetEciPdf(authDetails?.accountHolderId))
+                    dispatch(GetECIDCPdf(authDetails?.accountHolderId))
                   }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -215,7 +215,7 @@ export default function Penalties() {
                           fontWeight: "550",
                         }}
                       >
-                      Certification<span style={{ color: "red" }}>*</span>
+                        Certification<span style={{ color: "red" }}>*</span>
                       </Typography>
                       <Typography
                         align="left"
@@ -225,7 +225,7 @@ export default function Penalties() {
                           fontWeight: "550",
                         }}
                       >
-                       Self Cert Individual Electronic Substitute Form Statement
+                        Self Cert Individual Electronic Substitute Form Statement
                       </Typography>
                       <Typography
                         align="left"
@@ -316,7 +316,7 @@ export default function Penalties() {
                                 <Link
                                   href="#"
                                   underline="none"
-                                  style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7"}}
+                                  style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                                   onClick={() => {
                                     setToolInfo("");
                                   }}
@@ -712,15 +712,15 @@ export default function Penalties() {
                           submitForm().then(() => {
                             const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                             const urlValue = window.location.pathname.substring(1);
-                         
-                              dispatch(PostDualCert(
-                                {
-                                    ...prevStepData,
-                                    ...values,
-                                    stepName: `/${urlValue}`
-                                }
-                                , () => { }, 
-                                () => { }) 
+
+                            dispatch(PostDualCert(
+                              {
+                                ...prevStepData,
+                                ...values,
+                                stepName: `/${urlValue}`
+                              }
+                              , () => { },
+                              () => { })
                             );
                             history(
                               GlobalValues.basePageRoute

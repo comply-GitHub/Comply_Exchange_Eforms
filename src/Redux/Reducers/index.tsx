@@ -27,13 +27,15 @@ const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType
   SendOTPMail,GetByW9IndividualEntityUSFormId,
   GetCountriesTreaty,GetCountryArticleByID,
   UpsertSpecialRateAndConditionsIncomeTypes,
+  UpsertDualCertDetailsControllingPerson,
   GetByW8EXPIndividualId,
   GetAllLanguage,
   GetDualCertW9,
   GetDual,
   GetSettings,
   GetIGA,
-  GetAllUSFormTypes
+  getSelfCetHidden,
+  GetAllUSFormTypes,
 } = Utils.actionName
 
 
@@ -47,7 +49,13 @@ export const GetAllLanguageReducer = (state = initialState, action: any) => {
       return state;
   }
 }
-
+export const GetSelfCetHiddenReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case getSelfCetHidden:   return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}
 export const GetAllFederalTaxReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case GetFederalTaxClassification:
@@ -438,6 +446,16 @@ export const GetIncomeTypesReducer = (state = initialState, action: any): any =>
 export const SpecialRateAndConditionIncomeTypesReducer = (state = initialState, action: any): any => {
   switch (action.type) {
     case UpsertSpecialRateAndConditionsIncomeTypes:
+      return [ ...action.payload ];
+    default:
+      return state;
+  }
+};
+
+
+export const UpsertDualCertDetailsControllingPersonReducer = (state = initialState, action: any): any => {
+  switch (action.type) {
+    case UpsertDualCertDetailsControllingPerson:
       return [ ...action.payload ];
     default:
       return state;

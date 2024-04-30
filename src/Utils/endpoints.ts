@@ -28,8 +28,8 @@ const EndPoint = {
   GetFederalTaxClassification:"/W9Common/GetFederalTaxClassification",
   GetAllUSFormTypes:"/FormTypes/GetAllUSFormTypes",
   GetTaxJusrisdictionMismatchExplaination:"/CaymanIndividualNonUS/GetTaxJurisdictionMismatchExplanation",
-
-
+  UpsertDualCertDetailsControllingPerson:"/DualCert/UpsertDualCertDetailsControllingPerson",
+GetDualCertDetailsControlingPerson:"/DualCert/GetDualCertDetailsControllingPerson",
   //
   GetAgentExemptionCodeHidden:"/AgentEditList/GetAgentFATCAExemptionCodeHidden",
   GetAgentCapacityHiddenForEform: "/WebAppBasic/GetAgentCapacityHiddenForEform",
@@ -69,6 +69,8 @@ const EndPoint = {
  UpsertTaxLiabilityinanyOtherJurisdictions:"/CaymanIndividualNonUS/UpsertTaxLiabilityinanyOtherJurisdictions",
  UpsertEntityW9DualCert:"/W9IndividualEntity/UpdateW9IndividualEntityDetails",
  UpsertCRSandFATCAClassification:"/DualCert/UpsertCRSandFATCAClassification",
+ InsertCaymanEntityNonUS:"/CaymanEntityNonUS/InsertCaymanEntityNonUS",
+
 
 // Form GetApis:
 GetDual:"/DualCert/GetDualCert",
@@ -81,6 +83,7 @@ GetByW8IMYEntityNonForm :"/W8IMYEntity/GetByW8IMYEntityNonForm",
 GetSupportingDocumentation:"/AccountHolderDetail/GetSupportingDocumentation",
 getSupportedFile:"/FileUpload/GetFileBase64",
 GetByCaymanIndividualNonUSId: "/CaymanIndividualNonUS/GetByCaymanIndividualNonUSId",
+GetByCaymanEntityNonUSId: "/CaymanEntityNonUS/GetByCaymanEntityNonUSId",
 
 
 
@@ -94,6 +97,8 @@ GetExpPdf:"/W8EXPEntity/GetExpPdf",
 GetIMYPdf:"/W8IMYEntity/GetIMYPdf",
 GetForm8233Pdf:"/Form8233Individual/GetForm8233Pdf",
 GetW9DCPdf:"/W9IndividualEntity/GetW9DCPdf",
+GetECIDCPdf:"/W8ECIIndividualEntity/GetECIDCPdf",
+GetBENDCPdf:"/W8BENIndividual/GetBENDCPdf",
 
 
  //Account Holder Endpoints
@@ -122,5 +127,9 @@ GetW9DCPdf:"/W9IndividualEntity/GetW9DCPdf",
  GetByW8ECIIndividualId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
  GetByW8EXPIndividualId:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
  formPDFFieldData:"/FormTypes/GetPDFFieldValuesbyFormID",
+ getSelfCetHidden:"/AgentSelfCertification/GetAgentSelfCertificationHidden",
+
+ // skipped steps
+ GetAgentSkippedSteps:"/Agent/GetAgentSkippedSteps",
 };
 export default EndPoint;

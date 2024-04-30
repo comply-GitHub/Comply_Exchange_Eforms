@@ -20,9 +20,10 @@ const GoogleTranslate = () => {
   const googleTranslateElementInit = () => {
     console.log(allLangData, "allLangData");
     languageList = getIsoCodes(allLangData);
+    const isoCode = allLangData && allLangData[0] && allLangData[0].isoCode;
     return new window.google.translate.TranslateElement(
       {
-        pageLanguage: "en",
+        pageLanguage: isoCode,
         includedLanguages: languageList,
         layout: window.google.translate.TranslateElement.FloatPosition.TOP_LEFT,
       },

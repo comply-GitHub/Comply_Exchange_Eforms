@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Accordion from "@mui/material/Accordion";
@@ -8,15 +8,19 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import { SubmitSchema } from "../../../../schemas/submit";
-import { PostDualCert } from "../../../../Redux/Actions";
+import { GetHelpVideoDetails, PostDualCert } from "../../../../Redux/Actions";
 import { FormTypeId } from "../../../../Utils/constVals";
 import Utils from "../../../../Utils";
+import View_Insructions from "../../../viewInstruction";
+import { GetW9Pdf } from "../../../../Redux/Actions/PfdActions";
+import useAuth from "../../../../customHooks/useAuth";
+import SideBar from "../../../Reusable/SideBar";
 export default function Financial (props: any){
-
+  const {authDetails} = useAuth();
   const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
 
   const history = useNavigate();
@@ -55,6 +59,7 @@ export default function Financial (props: any){
     isNotConsentReceipentstatement: false
     };
 
+    
 
   return (
     <Fragment>
@@ -62,31 +67,11 @@ export default function Financial (props: any){
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-      <div className="overlay-div">
-        <div className="overlay-div-group">
-          <div className="viewInstructions">View Instructions</div>
-          <div className="viewform">View Form</div>
-          <div className="helpvideo">
-            <a
-              href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"
-              target="popup"
-              onClick={() =>
-                window.open(
-                  "https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-",
-                  "name",
-                  "width=600,height=400"
-                )
-              }
-            >
-              Help Video
-            </a>
-          </div>
-        </div>
-      </div>
+      <SideBar/>
       <div className="row w-100">
         <div className="col-4 mt-3">
 
-          <BreadCrumbComponent breadCrumbCode={1210} formName={FormTypeId.CaymanEntity} />
+          <BreadCrumbComponent breadCrumbCode={1310} formName={FormTypeId.CaymanEntity} />
         </div>
 
         <div className="col-8 mt-3">

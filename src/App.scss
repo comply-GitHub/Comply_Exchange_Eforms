@@ -559,6 +559,7 @@ input:-webkit-autofill:active{
 .backGround_Image, .inner_content {
   background: #052035 url(../src/assets/img/bg_login.jpg) no-repeat top center !important;
   background-size: contain !important;
+  background-attachment: fixed !important;
    min-height: 100vh;
 }
 

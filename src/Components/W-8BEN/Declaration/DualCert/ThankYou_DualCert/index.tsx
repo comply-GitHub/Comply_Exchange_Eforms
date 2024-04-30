@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import W8Ben from "../../../../../formPDF/W8BEN";
 import useAuth from "../../../../../customHooks/useAuth";
 import { useDispatch } from "react-redux";
-import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
+import { GetBENDCPdf, GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 
 export default function Term() {
   //States  
@@ -31,17 +31,17 @@ export default function Term() {
     if (pdfUrl) {
       const link = document.createElement("a");
       link.href = pdfUrl;
-      link.setAttribute("download", "generatedPDF.pdf"); 
+      link.setAttribute("download", "generatedPDF.pdf");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } else {
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Thank You"
-  },[])
- 
+  }, [])
+
 
   return (
     <section
@@ -108,61 +108,61 @@ export default function Term() {
               If you are using a public computer, please clear your cookies.
             </Typography>
             <Typography align="center">
-            <div className="mt-5" style={{ justifyContent: "center" }}>
+              <div className="mt-5" style={{ justifyContent: "center" }}>
 
 
-              <div style={{ marginTop: "25px" }}>
-                <Button
-                  //type="submit"
-                  onClick={() => {
-                    dispatch(GetBenPdf(authDetails?.accountHolderId))
-                  }}
-                  style={{
-                    border: "1px solid #0095dd",
-                    background: "black",
-                    height: "35px",
-                    lineHeight: "normal",
-                    textAlign: "center",
-                    fontSize: "16px",
-                    marginLeft: "12px",
-                    textTransform: "uppercase",
-                    borderRadius: "0px",
-                    color: "#ffff",
-                    padding: "0 35px",
-                    letterSpacing: "1px",
-                  }}
-                  className="btn btn_submit  btn-primary-agent"
-                >
-                  Download PDF
-                </Button>
-                <Button
-                  type="submit"
-                  onClick={() => {
-                    history("/login");
-                  }}
-                  style={{
-                    border: "1px solid #0095dd",
-                    background: "black",
-                    height: "35px",
-                    lineHeight: "normal",
-                    textAlign: "center",
-                    fontSize: "16px",
-                    marginLeft: "12px",
-                    textTransform: "uppercase",
-                    borderRadius: "0px",
-                    color: "#ffff",
-                    padding: "0 35px",
-                    letterSpacing: "1px",
-                  }}
-                  className="btn btn_submit  btn-primary-agent"
-                >
-                  Exit
-                </Button>
+                <div style={{ marginTop: "25px" }}>
+                  <Button
+                    //type="submit"
+                    onClick={() => {
+                      dispatch(GetBENDCPdf(authDetails?.accountHolderId))
+                    }}
+                    style={{
+                      border: "1px solid #0095dd",
+                      background: "black",
+                      height: "35px",
+                      lineHeight: "normal",
+                      textAlign: "center",
+                      fontSize: "16px",
+                      marginLeft: "12px",
+                      textTransform: "uppercase",
+                      borderRadius: "0px",
+                      color: "#ffff",
+                      padding: "0 35px",
+                      letterSpacing: "1px",
+                    }}
+                    className="btn btn_submit  btn-primary-agent"
+                  >
+                    Download PDF
+                  </Button>
+                  <Button
+                    type="submit"
+                    onClick={() => {
+                      history("/login");
+                    }}
+                    style={{
+                      border: "1px solid #0095dd",
+                      background: "black",
+                      height: "35px",
+                      lineHeight: "normal",
+                      textAlign: "center",
+                      fontSize: "16px",
+                      marginLeft: "12px",
+                      textTransform: "uppercase",
+                      borderRadius: "0px",
+                      color: "#ffff",
+                      padding: "0 35px",
+                      letterSpacing: "1px",
+                    }}
+                    className="btn btn_submit  btn-primary-agent"
+                  >
+                    Exit
+                  </Button>
+                </div>
               </div>
-            </div>
-          </Typography>
+            </Typography>
           </Paper>
-          
+
         </div>
       </div>
       <div className="container-fluid">
