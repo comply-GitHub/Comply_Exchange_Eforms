@@ -14,9 +14,10 @@ import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import { SubmitSchema } from "../../../../schemas/submit";
 import { PostDualCert } from "../../../../Redux/Actions";
 import { FormTypeId } from "../../../../Utils/constVals";
+import Utils from "../../../../Utils";
 export default function SponsoredFinanceInstitution (props: any){
 
-  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+  const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
 
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -28,6 +29,16 @@ export default function SponsoredFinanceInstitution (props: any){
   ) => {
     if (newExpanded) {
       setExpandedState(panel);
+      dispatch({
+        type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
+        payload: {
+          heading4: panelHeading,
+          subheading4:'FATCA Classification -'+ panelHeading+' Cayman',
+          selectedHeading : panelHeading,
+          selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
+        },
+      });
+
       localStorage.setItem("clickedPanelHeading", panelHeading);
       localStorage.setItem("Heading4",panelHeading)
       localStorage.setItem("SubHeading4",'FATCA Classification -'+ panelHeading+' Cayman')
@@ -89,27 +100,27 @@ export default function SponsoredFinanceInstitution (props: any){
               initialValues={initialValue}
               validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
-                console.log("values", values)
-                setSubmitting(true);
-                const result = {
-                  ...PrevStepData, 
-                  ...values,
+              //   console.log("values", values)
+              //   setSubmitting(true);
+              //   const result = {
+              //     ...PrevStepData, 
+              //     ...values,
                  
-                  statusId: 1,
-                };
-                const returnPromise = new Promise((resolve, reject) => {
-                dispatch(
-                  PostDualCert(result, (data: any) => {
-                    localStorage.setItem("DualCertData", JSON.stringify(result))
-                    resolve(data);
-                  }
-                    , (err: any) => {
-                      reject(err);
-                    }
-                  )
-                );
-              })
-              return returnPromise;
+              //     statusId: 1,
+              //   };
+              //   const returnPromise = new Promise((resolve, reject) => {
+              //   dispatch(
+              //     PostDualCert(result, (data: any) => {
+              //       localStorage.setItem("SelfCertData", JSON.stringify(result))
+              //       resolve(data);
+              //     }
+              //       , (err: any) => {
+              //         reject(err);
+              //       }
+              //     )
+              //   );
+              // })
+              // return returnPromise;
 
             }}
             >

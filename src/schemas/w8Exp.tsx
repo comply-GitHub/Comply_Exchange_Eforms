@@ -222,6 +222,45 @@ export const certificateSchema_w9_DC = () => {
 };
 
 
+export const SelfCertSchema_w9_DC = () => {
+  return Yup.object().shape({
+   FirstName:Yup.string().required("Please Enter"),
+   FamilyName:Yup.string().required("Please Enter"),
+   DateOfBirth:Yup.string(),
+   CountryOfBirth:Yup.string(),
+   CityOfBirth:Yup.string(),
+   HouseNo:Yup.string(),
+   RoadName:Yup.string(),
+   Location:Yup.string(),
+   CityNTown:Yup.string(),
+   StateNProvience:Yup.string(),
+   ZipNPostal:Yup.string(),
+   ResidentialCountry:Yup.string().required("Please Enter"),
+   Country:Yup.string(),
+   TinType:Yup.string(),
+   Tin:Yup.string(),
+   TinAvailable:Yup.boolean(),
+   Country1:Yup.string(),
+   TinType1:Yup.string(),
+   Tin1:Yup.string(),
+   TinAvailable1:Yup.boolean(),
+   Country2:Yup.string(),
+   TinType2:Yup.string(),
+   Tin2:Yup.string(),
+   TinAvailable2:Yup.boolean(),
+   ReasonNonAvailability:Yup.string(),
+   LegalEntity1:Yup.string().required("Please Enter"),
+   LegalEntity2:Yup.string(),
+   LegalEntity3:Yup.string(),
+   StatusEntity1:Yup.string().required("Please Enter"),
+   StatusEntity2:Yup.string(),
+   StatusEntity3:Yup.string(),
+   Ownership:Yup.string(),
+   EmailAdd:Yup.string(),
+   SubmissionRequest:Yup.boolean()
+  });
+};
+
 export const certificateSchema_BEN_DC = () => {
   return Yup.object().shape({
     confirmThisisaTrueAndAccurate: Yup.boolean().oneOf([true], "Please mark the checkbox"),

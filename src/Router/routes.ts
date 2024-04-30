@@ -47,7 +47,13 @@ const CRS_W9_DC = React.lazy(
 const Financial_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Financial")
 );
+const SelfCert_Passive_W9_DC = React.lazy(
+  () => import("../Components/W9Form/SelfCertPassive")
+);
 
+const US_Determination_W9_DC = React.lazy(
+  () => import("../Components/W9Form/Entity_DC_W9/USDetermination")
+);
 const Complete_CRS_W9 = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_Complete")
 );
@@ -288,8 +294,8 @@ const CaymanEntityFatcaClassificationFinancial = React.lazy(() => import("../Com
 const CaymanEntityFatcaClassificationGIINAvailable = React.lazy(() => import("../Components/Cayman/Entity/FATCA/GIINAvailable"));
 const CaymanEntityFatcaClassificationGIINNotAvailable = React.lazy(() => import("../Components/Cayman/Entity/FATCA/GIINNotAvailable"));
 const CaymanEntityFatcaClassificationSponsoredFinancialInstitution = React.lazy(() => import("../Components/Cayman/Entity/FATCA/SponsoredFinanceInstitution"));
-const CaymanIndividualFatcaClassificationComplete = React.lazy(() => import("../Components/Cayman/Entity/FATCA/Complete"));
-// const CaymanIndividualStartCertification= React.lazy(() => import("../Components/Cayman/Individual/Start/Certification"));
+const CaymanIndividualFatcaClassificationComplete= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Complete"));
+const CaymanIndividualFatcaClassificationFinal= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Final"));
 // const CaymanIndividualStartSubmission= React.lazy(() => import("../Components/Cayman/Individual/Start/Submission"));
 // const CaymanIndividualStartESConfirmation= React.lazy(() => import("../Components/Cayman/Individual/Start/ESConfirmation"));
 // const CaymanIndividualStartThankyou= React.lazy(() => import("../Components/Cayman/Individual/Start/Thankyou"));
@@ -442,7 +448,21 @@ const ROUTES: Array<RouteType> = [
     Component: FinancialReport_CRS_W9_DC,
     isPrivate: true,
   },
-  //FinancialReport_CRS_W9_DC
+  {
+    name: "SelfCert_Passive_W9_DC",
+    path: "/SelfCert_Passive_W9_DC",
+    id: 2,
+    Component: SelfCert_Passive_W9_DC,
+    isPrivate: true,
+  },
+  {
+    name: "US_Determination_W9_DC",
+    path: "/US_Determination_W9_DC",
+    id: 2,
+    Component: US_Determination_W9_DC,
+    isPrivate: true,
+  },
+  //US_Determination_W9_DC
   {
     name: "TaxPurpose_W9",
     path: "/TaxPurpose_W9",
@@ -903,12 +923,18 @@ const ROUTES: Array<RouteType> = [
     Component: CaymanEntityFatcaClassificationSponsoredFinancialInstitution,
     isPrivate: true,
   },
-
   {
     name: "CaymanIndividualFatcaClassificationComplete",
     path: "/Cayman/Entity/FATCA/Complete",
     id: 7,
     Component: CaymanIndividualFatcaClassificationComplete,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanIndividualFatcaClassificationFinal",
+    path: "/Cayman/Entity/FATCA/Final",
+    id: 7,
+    Component: CaymanIndividualFatcaClassificationFinal,
     isPrivate: true,
   },
   {

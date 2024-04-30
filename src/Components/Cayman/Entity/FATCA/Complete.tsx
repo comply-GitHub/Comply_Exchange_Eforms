@@ -1,24 +1,40 @@
 import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { SubmitSchema } from "../../../../schemas/submit";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";
-import Divider from "@mui/material/Divider";
-import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
-import { Form, Formik } from "formik";
-import { W8_state_ECI,PostDualCert } from "../../../../Redux/Actions";
-import { useDispatch } from "react-redux";
-import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
-import { ExpandMore } from "@mui/icons-material";
+import { Button, Typography, Paper} from "@mui/material";
+import { FormTypeId } from "../../../../Utils/constVals";
+import { Formik } from "formik";
+import {  postSCFATCAClassification } from "../../../../Redux/Actions";
+import { useDispatch, useSelector } from "react-redux";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
+import useAuth from "../../../../customHooks/useAuth";
 export default function Declaration (props: any){
 
-  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
-  const Headingdata = localStorage.getItem("lastClickedPanelHeading") ;
+  const { authDetails } = useAuth();
+  const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
+
+  const FATCAClassificationData = useSelector((state:any) => state?.CaymanEntity?.FATCAClassificationData);
+
+  console.log("FATCAClassificationData",FATCAClassificationData)
+  // const selectedHeading = localStorage.getItem("lastClickedPanelHeading") ;
+  // const selectedSubHeading = 'FATCA Classification -'+ selectedHeading+' Cayman';
+
+
+  // const heading1  = localStorage.getItem("Heading1") ? localStorage.getItem("Heading1") : "" ;
+  // const subheading1  = localStorage.getItem("SubHeading1")  ? localStorage.getItem("SubHeading1") : "" ;
+
+  // const heading2  = localStorage.getItem("Heading2") ? localStorage.getItem("Heading2") : "" ;
+  // const subheading2  = localStorage.getItem("SubHeading2") ? localStorage.getItem("SubHeading2")   :"";
+
+  // const heading3  = localStorage.getItem("Heading3") ? localStorage.getItem("Heading3") : "" ;
+  // const subheading3  = localStorage.getItem("SubHeading3") ? localStorage.getItem("SubHeading3") : "" ;
+
+  // const heading4  = localStorage.getItem("Heading4") ? localStorage.getItem("Heading4") : "" ;
+  // const subheading4  = localStorage.getItem("SubHeading4") ? localStorage.getItem("SubHeading4") : "" ;
+
+  // const heading5  = localStorage.getItem("Heading5") ? localStorage.getItem("Heading5")  : "" ;
+  // const subheading5  = localStorage.getItem("SubHeading5") ? localStorage.getItem("SubHeading5")  : "" ;
+ 
 
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -30,11 +46,31 @@ export default function Declaration (props: any){
 
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
+
+
   
+
+
     const initialValue = {
-    isAgreeWithDeclaration: false,
-    isConsentReceipentstatement: false,
-    isNotConsentReceipentstatement: false
+      id:0,
+      // agentId: authDetails.agentId,
+      // accountHolderBasicDetailId: authDetails.accountHolderId,
+      formTypeId: FormTypeId.CaymanEntity,
+      formEntryId:0,
+      classificationType : "FATCA",
+      userType:"SC",
+      heading1:FATCAClassificationData?.heading1 ? FATCAClassificationData?.heading1 : "",
+      subHeading1:FATCAClassificationData?.subheading1 ? FATCAClassificationData?.subheading1 : "",
+      heading2:FATCAClassificationData?.heading2 ? FATCAClassificationData?.heading2 : "",
+      subHeading2:FATCAClassificationData?.subheading2 ? FATCAClassificationData?.subheading2 : "",
+      heading3:FATCAClassificationData?.heading3 ? FATCAClassificationData?.heading3 : "",
+      subHeading3:FATCAClassificationData?.subheading3 ? FATCAClassificationData?.subheading3 : "",
+      heading4:FATCAClassificationData?.heading4 ? FATCAClassificationData?.heading4 : "",
+      subHeading4:FATCAClassificationData?.subheading4 ? FATCAClassificationData?.subheading4 : "",
+      heading5:FATCAClassificationData?.heading5 ? FATCAClassificationData?.heading5 : "",
+      subHeading5:FATCAClassificationData?.subheading5 ? FATCAClassificationData?.subheading5 : "",
+      selectedHeading: FATCAClassificationData?.selectedHeading ? FATCAClassificationData?.selectedHeading : "",
+      selectedSubHeading: FATCAClassificationData?.selectedSubHeading ? FATCAClassificationData?.selectedSubHeading : "",
     };
 
 
@@ -79,27 +115,34 @@ export default function Declaration (props: any){
             validateOnChange={true}
             validateOnBlur={true}
               initialValues={initialValue}
-              validationSchema={SubmitSchema}
+             // validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
                 console.log("values", values)
                 setSubmitting(true);
-                const result = {
-                  ...PrevStepData, 
+
+                const submitData = {
+                  agentId: authDetails.agentId,
+                  accountHolderDetailsId: authDetails.accountHolderId,
+                  ...PrevStepData,
                   ...values,
-                 
-                  statusId: 1,
                 };
+
+
+                
+                console.log("submitData", submitData)
                 const returnPromise = new Promise((resolve, reject) => {
                 dispatch(
-                  PostDualCert(result, (data: any) => {
-                    localStorage.setItem("DualCertData", JSON.stringify(result))
+                  postSCFATCAClassification(submitData, (data: any) => {
+                    localStorage.setItem("SelfCertData", JSON.stringify(submitData))
                     resolve(data);
                   }
                     , (err: any) => {
                       reject(err);
                     }
                   )
+                  
                 );
+                history("/Cayman/Entity/FATCA/Final")
               })
               return returnPromise;
 
@@ -132,7 +175,7 @@ export default function Declaration (props: any){
                 <Paper elevation={0} style={{backgroundColor:"#cecccd80",height:"300px",padding:"20px"}}>
                    <div className="my-3">
                    <Typography className="mt-3" align="center"  style={{fontSize:"13px",fontWeight:"550"}}>You have selected the below entity type for  FATCA Classification purposes</Typography>
-<Typography className="mt-3" align="center" style={{fontSize:"30px",fontWeight:"bold"}}>{Headingdata}
+<Typography className="mt-3" align="center" style={{fontSize:"30px",fontWeight:"bold"}}>{FATCAClassificationData?.selectedHeading}
 </Typography>
 <Typography className="mt-3 mx-5" align="center"  style={{fontSize:"13px",fontWeight:"500"}}>If this is correct please select Confirm and you will be taken to the next stage of the submission process and will be asked questions relating to this entity type only. If this is not the correct selection please select Back which will take you back to the previous selection page, or close this help tool and make a direct selection from the drop down list.</Typography>
                    </div>
@@ -161,9 +204,10 @@ export default function Declaration (props: any){
                   Close
                 </Button>
                 <Button
-              onClick={()=>{
-                history("/Cayman/Entity/FATCA")
-              }}
+                type="submit"
+              // onClick={()=>{
+              //   history("/Cayman/Entity/FATCA")
+              // }}
                   variant="contained"
                  
                   style={{

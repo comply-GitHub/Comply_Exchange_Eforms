@@ -31,6 +31,7 @@ const EndPoint = {
 
 
   //
+  GetAgentExemptionCodeHidden:"/AgentEditList/GetAgentFATCAExemptionCodeHidden",
   GetAgentCapacityHiddenForEform: "/WebAppBasic/GetAgentCapacityHiddenForEform",
   GetAgentChapter4EntityTypeHiddenForEform: "/WebAppBasic/GetAgentChapter4EntityTypeHiddenForEform",
   GetAgentChapter3EntityTypeHiddenForEform: "/WebAppBasic/GetAgentChapter3EntityTypeHiddenForEform",
@@ -66,6 +67,8 @@ const EndPoint = {
  InserDualCert:"/DualCert/UpsertDualCert",
  InsertCaymanIndividualNonUS:"/CaymanIndividualNonUS/InsertCaymanIndividualNonUS",
  UpsertTaxLiabilityinanyOtherJurisdictions:"/CaymanIndividualNonUS/UpsertTaxLiabilityinanyOtherJurisdictions",
+ UpsertEntityW9DualCert:"/W9IndividualEntity/UpdateW9IndividualEntityDetails",
+ UpsertCRSandFATCAClassification:"/DualCert/UpsertCRSandFATCAClassification",
 
 // Form GetApis:
 GetDual:"/DualCert/GetDualCert",
