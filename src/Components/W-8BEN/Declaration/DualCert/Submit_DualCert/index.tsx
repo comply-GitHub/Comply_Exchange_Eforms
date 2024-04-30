@@ -12,8 +12,11 @@ import { W8_state_ECI, PostDualCert } from "../../../../../Redux/Actions";
 import { useDispatch } from "react-redux";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
+import { GetBENDCPdf } from "../../../../../Redux/Actions/PfdActions";
+import useAuth from "../../../../../customHooks/useAuth";
 const Declaration = (props: any) => {
   const location = useLocation();
+  const { authDetails } = useAuth();
   const { open, setOpen } = props;
   const handleClose = () => {
     setOpen(false);
@@ -39,13 +42,13 @@ const Declaration = (props: any) => {
   );
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
-  console.log(PrevStepData,"op")
+  console.log(PrevStepData, "op")
   const initialValue = {
     isAgreeWithDeclaration: false,
     isConsentReceipentstatement: false,
     isNotConsentReceipentstatement: false,
   };
-  const viewPdf=()=>{
+  const viewPdf = () => {
     history("w8Ben_pdf");
   }
   return (
@@ -61,31 +64,31 @@ const Declaration = (props: any) => {
               validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
                 console.log("values", values);
-            
+
                 const result = {
-                  ...PrevStepData[0], 
+                  ...PrevStepData[0],
                   ...values,
-                 
+
                   statusId: 1,
                 };
                 const returnPromise = new Promise((resolve, reject) => {
-                dispatch(
-                  PostDualCert([result], (data: any) => {
-                   
-                    localStorage.setItem("DualCertData", JSON.stringify(result))
-                    resolve(data);
-                    setSubmitting(true);
-                  }
-                    , (err: any) => {
-                      reject(err);
-                    }
-                  )
-                );
-              })
+                  dispatch(
+                    PostDualCert([result], (data: any) => {
 
-              return returnPromise;
-            
-            }}
+                      localStorage.setItem("DualCertData", JSON.stringify(result))
+                      resolve(data);
+                      setSubmitting(true);
+                    }
+                      , (err: any) => {
+                        reject(err);
+                      }
+                    )
+                  );
+                })
+
+                return returnPromise;
+
+              }}
             >
               {({
                 errors,
@@ -340,9 +343,9 @@ const Declaration = (props: any) => {
                           <Checkbox
                             name="isConsentReceipentstatement"
                             value={values.isConsentReceipentstatement}
-                            onChange={(e)=>{
+                            onChange={(e) => {
                               handleChange(e);
-                              setTimeout(()=>{setFieldValue("IsSubmit_not",false)},50)
+                              setTimeout(() => { setFieldValue("IsSubmit_not", false) }, 50)
                             }}
                             checked={values.isConsentReceipentstatement}
                           />
@@ -357,9 +360,9 @@ const Declaration = (props: any) => {
                           <Checkbox
                             name="isNotConsentReceipentstatement"
                             value={values.isNotConsentReceipentstatement}
-                            onChange={(e)=>{
+                            onChange={(e) => {
                               handleChange(e);
-                              setTimeout(()=>{setFieldValue("isConsentReceipentstatement",false)},50)
+                              setTimeout(() => { setFieldValue("isConsentReceipentstatement", false) }, 50)
                             }}
                             checked={values.isNotConsentReceipentstatement}
                           />
@@ -382,27 +385,29 @@ const Declaration = (props: any) => {
                     }}
                   >
                     <SaveAndExit Callback={() => {
-                        submitForm().then(() => {
-                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                          const urlValue = window.location.pathname.substring(1);
-                          dispatch(PostDualCert(
-                            {
-                                ...prevStepData,
-                                ...values,
-                                stepName: `/${urlValue}`
-                            }
-                            , () => { }, 
-                            () => { }) 
+                      submitForm().then(() => {
+                        const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                        const urlValue = window.location.pathname.substring(1);
+                        dispatch(PostDualCert(
+                          {
+                            ...prevStepData,
+                            ...values,
+                            stepName: `/${urlValue}`
+                          }
+                          , () => { },
+                          () => { })
                         );
-                          history(GlobalValues.basePageRoute)
-                        }).catch((err) => {
-                          console.log(err);
-                        })
-                      }} formTypeId={FormTypeId.BEN} ></SaveAndExit>
+                        history(GlobalValues.basePageRoute)
+                      }).catch((err) => {
+                        console.log(err);
+                      })
+                    }} formTypeId={FormTypeId.BEN} ></SaveAndExit>
                     <Button
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
-                      onClick={viewPdf}
+                      onClick={() => {
+                        dispatch(GetBENDCPdf(authDetails?.accountHolderId))
+                      }}
                     >
                       View Form
                     </Button>
@@ -416,9 +421,9 @@ const Declaration = (props: any) => {
                         submitForm().then((data: any) => {
                           history("/ThankYou_DC_BEN");
                         }).catch(() => {
-  
+
                         })
-                      }}       
+                      }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >
