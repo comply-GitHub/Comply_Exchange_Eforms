@@ -20,7 +20,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { ExpandMore, Info } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import "./index.scss";
-import Infoicon from "../../../assets/img/info.png";
+// import Infoicon from "../../../assets/img/info.png";
 // import { Info } from "@mui/icons-material";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -33,13 +33,13 @@ import {
   getAllCountriesIncomeCode,
   getAllStateByCountryId,
   postW8ECI_EForm,
-} from "../../../Redux/Actions";
-import { TaxPurposeSchema } from "../../../schemas/w8ECI";
-import BreadCrumbComponent from "../../reusables/breadCrumb";
-import useAuth from "../../../customHooks/useAuth";
-import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
-import SaveAndExit from "../../Reusable/SaveAndExit/Index";
-import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
+} from "../../../../Redux/Actions";
+import { TaxPurposeSchema } from "../../../../schemas/w8ECI";
+import BreadCrumbComponent from "../../../reusables/breadCrumb";
+import useAuth from "../../../../customHooks/useAuth";
+import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
+import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
+import { GetEciPdf } from "../../../../Redux/Actions/PfdActions";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const {
@@ -255,7 +255,7 @@ export default function Fedral_tax(props: any) {
                                     <Typography>
                                       ICOR114
                                       <span>
-                                        <img
+                                        {/* <img
                                           src={Infoicon}
                                           style={{
                                             color: "#ffc107",
@@ -266,7 +266,7 @@ export default function Fedral_tax(props: any) {
                                             cursor: "pointer",
                                             marginBottom: "3px",
                                           }}
-                                        />
+                                        /> */}
                                         Country of incorporation is different from
                                         the PRA country.
                                       </span>
@@ -286,7 +286,7 @@ export default function Fedral_tax(props: any) {
                                 <Typography>
                                   HYB109
                                   <span className="mx-1">
-                                    <img
+                                    {/* <img
                                       src={Infoicon}
                                       style={{
                                         color: "#ffc107",
@@ -296,7 +296,7 @@ export default function Fedral_tax(props: any) {
                                         cursor: "pointer",
                                         marginBottom: "3px",
                                       }}
-                                    />
+                                    /> */}
                                     You have selected the type of beneficial
                                     owner is a Partnership, but have not
                                     selected "Hybrid Status". The beneficial
@@ -1900,16 +1900,17 @@ export default function Fedral_tax(props: any) {
                             View Form
                           </Button>
                           <Button
-                            //type="submit"
+                            type="submit"
                             disabled={!isValid}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
                             onClick={() => {
-                              submitForm().then((data) => {
-                                console.log(data)
-                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/TaxPayer_DC");
+                              // submitForm().then((data) => {
+                              //   console.log(data)
+                              // history("/IMY/ThankYou/Status_DC/Tax_DC");
                               
-                              })
+                              // })
+                              history("/IMY/ThankYou/Status_DC/Tax_DC");
                             }}
                           >
                             Continue
