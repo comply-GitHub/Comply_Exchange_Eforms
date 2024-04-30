@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Accordion from "@mui/material/Accordion";
@@ -10,44 +10,59 @@ import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { ExpandMore } from "@mui/icons-material";
-import BreadCrumbComponent from "../../../reusables/breadCrumb";
-import { SubmitSchema } from "../../../../schemas/submit";
-import { PostDualCert } from "../../../../Redux/Actions";
-import { FormTypeId } from "../../../../Utils/constVals";
-import Utils from "../../../../Utils";
-import SideBar from "../../../Reusable/SideBar";
-export default function GIINNotAvailable (props: any){
+import Utils from "../../../../../Utils";
+import SideBar from "../../../../Reusable/SideBar";
+import BreadCrumbComponent from "../../../../reusables/breadCrumb";
+import { SubmitSchema } from "../../../../../schemas/submit";
+import { formToJSON } from "axios";
+import { FormTypeId } from "../../../../../Utils/constVals";
+import { PostDualCert } from "../../../../../Redux/Actions";
 
-  const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
+export default function Declaration (props: any){
+
+  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
 
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
-
   const handleChangeAccodionState = (panel: string, panelHeading: string) => (
     event: React.SyntheticEvent,
     newExpanded: boolean
+    //CRSEntityReducer
   ) => {
     if (newExpanded) {
       setExpandedState(panel);
       dispatch({
-        type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
+        type: Utils.actionName.InsertCRSEntityNonUSClassification,
         payload: {
-          heading3: panelHeading,
-          subheading3:'FATCA Classification -'+ panelHeading+' Cayman',
+          heading1: panelHeading,
+          subheading1:'CRS Classification -'+ panelHeading,
           selectedHeading : panelHeading,
-          selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
+          selectedSubHeading : 'CRS Classification -'+ panelHeading
+        
         },
-      });
-
+      })
       localStorage.setItem("clickedPanelHeading", panelHeading);
-      localStorage.setItem("Heading3",panelHeading)
-      localStorage.setItem("SubHeading3",'FATCA Classification -'+ panelHeading+' Cayman')
+      localStorage.setItem("Heading1",panelHeading)
+      localStorage.setItem("SubHeading1",'CRS Classification -'+ panelHeading)
     } else {
       setExpandedState(false);
       localStorage.removeItem("clickedPanelHeading");
     }
   };
+
+  useEffect(() => {
+    if(expandedState=== 'panel1'){
+      localStorage.removeItem("Heading1");
+      localStorage.removeItem("SubHeading1");
+      localStorage.removeItem("Heading2");
+      localStorage.removeItem("SubHeading2");
+      localStorage.removeItem("Heading3");
+      localStorage.removeItem("SubHeading3");
+      localStorage.removeItem("Heading4");
+      localStorage.removeItem("SubHeading4");
+    }
+  },[expandedState])
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   
@@ -58,6 +73,9 @@ export default function GIINNotAvailable (props: any){
     };
 
 
+    useEffect(() => {
+      document.title = "CRS Classification"
+    }, [])
   return (
     <Fragment>
      <section
@@ -68,7 +86,7 @@ export default function GIINNotAvailable (props: any){
       <div className="row w-100">
         <div className="col-4 mt-3">
 
-          <BreadCrumbComponent breadCrumbCode={1310} formName={FormTypeId.CaymanEntity} />
+          <BreadCrumbComponent breadCrumbCode={1320} formName={FormTypeId.CaymanEntity} />
         </div>
 
         <div className="col-8 mt-3">
@@ -81,27 +99,26 @@ export default function GIINNotAvailable (props: any){
               initialValues={initialValue}
               validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
-              //   console.log("values", values)
-              //   setSubmitting(true);
-              //   const result = {
-              //     ...PrevStepData, 
-              //     ...values,
+                setSubmitting(true);
+                const result = {
+                  ...PrevStepData, 
+                  ...values,
                  
-              //     statusId: 1,
-              //   };
-              //   const returnPromise = new Promise((resolve, reject) => {
-              //   dispatch(
-              //     PostDualCert(result, (data: any) => {
-              //       localStorage.setItem("SelfCertData", JSON.stringify(result))
-              //       resolve(data);
-              //     }
-              //       , (err: any) => {
-              //         reject(err);
-              //       }
-              //     )
-              //   );
-              // })
-              // return returnPromise;
+                  statusId: 1,
+                };
+                const returnPromise = new Promise((resolve, reject) => {
+                dispatch(
+                  PostDualCert(result, (data: any) => {
+                    localStorage.setItem("DualCertData", JSON.stringify(result))
+                    resolve(data);
+                  }
+                    , (err: any) => {
+                      reject(err);
+                    }
+                  )
+                );
+              })
+              return returnPromise;
 
             }}
             >
@@ -118,19 +135,52 @@ export default function GIINNotAvailable (props: any){
                 isValid
               }) => (
                 <form onSubmit={handleSubmit}>
-               
-                   <div style={{ backgroundColor: "#fff", padding: "5px" }}>
+                 {!isAccordionVisible && ( <>
+                   <div style={{justifyContent:"space-between",display:"flex",marginTop:"10px"}}>
+                  <Typography
+                      align="left"
+                      style={{
+                        fontSize: "27px",
+                        color: "black",
+                        fontWeight: "bold",
+                        marginLeft:'10px'
+                      
+                      }}
+                    >
+                    CRS Classification:
+                    </Typography>
+                    <Button
+                     onClick={() =>{ setIsAccordionVisible(!isAccordionVisible)
+                      setExpandedState(false)
+                     }}
+                      style={{ backgroundColor: "#d3ae33",cursor:"pointer",color: "black", fontSize: "12px", fontWeight: "bold" }}
+                    >
+                    CRS Classification Guide
+                    </Button>
+                  </div>
+                
+                   <div style={{marginLeft:"10px",marginTop:"10px",backgroundColor:"#fff"}}>
+                 
+                  <div className="d-flex mt-3">
+                    <Typography style={{fontSize:"19px"}}>Select CRS Classification:</Typography>
+                    <Link className="mx-2"  onClick={() => setIsAccordionVisible(!isAccordionVisible)}style={{fontSize:"19px",textDecorationLine:"none",color:"#1149c4",cursor:"pointer"}}>Click Here to start Process</Link>
+                  </div>
+                   </div>
+                  
+                 </>)}
+              {isAccordionVisible && (
+              <div style={{ backgroundColor: "#fff", padding: "5px" }}>
               <Typography
                 className="my-2 mx-2"
                 style={{ fontSize: "20px", color: "#1976d2", fontWeight: "bold" }}
               >
-               FATCA Classification GUIDE Financial Institution
+               CRS Classification Guide
               </Typography>
 
 
               <Accordion
                 expanded={expandedState === "panel1"}
-                onChange={handleChangeAccodionState("panel1","GIIN Not Available Overview")}
+                onChange={handleChangeAccodionState("panel1","Introduction")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -140,24 +190,23 @@ export default function GIINNotAvailable (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    GIIN Not Available Overview
+                    Introduction
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography
                     align="left"
-                    style={{ fontSize: "14px",color: "black" }}
+                    style={{ fontSize: "17px", color: "#1976d2", fontWeight: "bold" }}
                     
                   >
-                    FATCA Classification - GIIN Not Available Overview Cayman
-
+                    FATCA & CRS Classification Guide- CRS Introduction
                   </Typography>
                  
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel2"}
-                onChange={handleChangeAccodionState("panel2","Sponsored Financial Institution")}
+                onChange={handleChangeAccodionState("panel2","Financial Institution CRS")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -167,7 +216,7 @@ export default function GIINNotAvailable (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                   Sponsored Financial Institution
+                    Financial Institution CRS
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -176,14 +225,14 @@ export default function GIINNotAvailable (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                   FATCA Classification - Sponsored Financial Institution Cayman
+                    Chapter 4 Classification - Financial Entity Overview
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel3"}
-                onChange={handleChangeAccodionState("panel3","Trustee documented trust")}
+                onChange={handleChangeAccodionState("panel3","Active Non Financial Entity")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -193,7 +242,7 @@ export default function GIINNotAvailable (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                     Trustee documented trust 
+                    Active Non Financial Entity{" "}
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -202,41 +251,14 @@ export default function GIINNotAvailable (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                  FATCA Classification - Trustee documented trust Cayman
+                   CRS Classification - Active Non-Financial Entity
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel4"}
-                onChange={handleChangeAccodionState("panel4","Non Reporting/Certified Deemed Compliant Financial Institution Cayman** ")}
-                >
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  aria-controls="panel2d-content"
-                  id="panel2d-header"
-                >
-                  <Typography
-                    style={{ fontSize: "18px",color: "black" }}
-                  >
-                    Non Reporting/Certified Deemed Compliant Financial Institution Cayman**
-                </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography
-                    align="left"
-                    style={{ fontSize: "14px",color: "black" }}
-                    
-                  >
-                  FATCA Classification - Non Reporting/Certified Deemed Compliant Financial Institution Cayman**
-                  </Typography>
-                  
-                </AccordionDetails>
-              </Accordion>
-
-              <Accordion
-                expanded={expandedState === "panel5"}
-                onChange={handleChangeAccodionState("panel5","Non-Participating Foreign Financial Institution")}
+                onChange={handleChangeAccodionState("panel4","Passive Non Financial Entity")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -246,7 +268,7 @@ export default function GIINNotAvailable (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Non-Participating Foreign Financial Institution
+                    Passive Non Financial Entity{" "}
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -255,23 +277,26 @@ export default function GIINNotAvailable (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                  FATCA Classification - Non-Participating Foreign Financial Institution Cayman
+                   CRS Classification - Passive Non-Financial Entity
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
 
+              
+
 
               <Typography align="center">
-              <Button
+                <Button
                  onClick={() => {
-                 
-                  history("/Cayman/Entity/FATCA")
-                }}
+                
+                  history("/Cayman/Entity/CRS/Start")
+                  setExpandedState(false)
+                 }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
-                    fontSize:"12px",
+                      fontSize:"12px",
                     marginTop: "10px",
                     marginBottom: "20px",
                   }}
@@ -280,23 +305,28 @@ export default function GIINNotAvailable (props: any){
                 </Button>
                 <Button
                  disabled={!isContinueEnabled} 
-                  variant="contained"
-                  onClick={() => {
-                    const clickedPanelHeading = localStorage.getItem("clickedPanelHeading");
-                     if (clickedPanelHeading) {
-                    localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
-                    
-                  }
-                  {expandedState === "panel2" ?  history("/Cayman/Entity/FATCA/SponsoredFinanceInstitution") : history("/Cayman/Entity/FATCA/Complete")}
-                    // if (expandedState === "panel2") {
-                    //   history("/Cayman/Entity/FATCA/SponsoredFinanceInstitution");
-                    // } else  {
-                    //   history("/Cayman/Entity/FATCA/GIINNotAvailable");
-                    // }
-                  }}
-                  style={{
-                    fontSize:"12px",
+                 onClick={() => {
+                  setExpandedState(false)
+                  const clickedPanelHeading = localStorage.getItem("clickedPanelHeading");
+                  if (clickedPanelHeading) {
+                 localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
                  
+               }
+                  if (expandedState === "panel2") {
+                    history("/Cayman/Entity/CRS/Financial");
+                  } else if (expandedState === "panel3") {
+                    history("/Cayman/Entity/CRS/ActiveNonFinancial");
+                  }
+                  else if(expandedState === "panel4"){
+                    history("/Cayman/Entity/CRS/FinancialModal");
+                    // history("/Passive_Non_Financial_W9_DC")
+                  }
+                }}
+                  variant="contained"
+                 
+                  style={{
+
+                    fontSize:"12px",
                     marginTop: "10px",
                     marginBottom: "20px",
                     marginLeft: "10px"
@@ -306,17 +336,17 @@ export default function GIINNotAvailable (props: any){
                   Confirm
                 </Button>
                 <Button
-                 onClick={() =>{setIsAccordionVisible(false)
-
-                  history(-1)
+                 onClick={() => { 
+                  history("/Cayman/Entity/CRS/Start")
+                  setExpandedState(false)
                  }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
-             fontSize:"12px",
-             marginLeft: "10px",
+                     fontSize:"12px",
                     marginTop: "10px",
                     marginBottom: "20px",
+                    marginLeft: "10px"
                   }}
                 >
                   Back
@@ -325,9 +355,36 @@ export default function GIINNotAvailable (props: any){
               </Typography>
 
             </div>
+            )}
 
             
+            
 
+{!isAccordionVisible && (<div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: "40px",
+
+                    }}
+                  >
+                   
+                    <Button
+                      variant="contained"
+                      style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
+                    >
+                      View Form
+                    </Button>
+
+                    <Button    
+
+                      disabled           
+                      variant="contained"
+                      style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
+                    >
+                      Confirm
+                    </Button>
+                  </div>)}
                 
                 </form>
            
@@ -340,7 +397,6 @@ export default function GIINNotAvailable (props: any){
       </div>
       </section>
     </Fragment>
-
   );
 };
 

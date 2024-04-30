@@ -255,9 +255,16 @@ const CaymanEntityFatcaClassificationGIINNotAvailable = React.lazy(() => import(
 const CaymanEntityFatcaClassificationSponsoredFinancialInstitution = React.lazy(() => import("../Components/Cayman/Entity/FATCA/SponsoredFinanceInstitution"));
 const CaymanEntityFatcaClassificationComplete= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Complete"));
 const CaymanEntityFatcaClassificationFinal= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Final"));
+
+const CaymanEntityCRSStart = React.lazy(() => import("../Components/Cayman/Entity/CSR/CRS_SelfCert"));
+const CaymanEntityCRSFinancial = React.lazy(() => import("../Components/Cayman/Entity/CSR/CRS_SelfCert/Financial"));
+const CaymanEntityCRSActiveNonFinancial = React.lazy(() => import("../Components/Cayman/Entity/CSR/CRS_SelfCert/Active_Non_financial"));
+const CaymanEntityCRSFinancialNModal = React.lazy(() => import("../Components/Cayman/Entity/CSR/Financial/FinancialModal"));
+const CaymanEntityCRSNonReporting = React.lazy(() => import("../Components/Cayman/Entity/CSR/CRS_SelfCert/NonReporting"));
+const CaymanEntityCRSComplete = React.lazy(() => import("../Components/Cayman/Entity/CSR/CRS_Complete"));
+const CaymanEntityCRSFinancialN = React.lazy(() => import("../Components/Cayman/Entity/CSR/Financial"));
+
 const CaymanEntityTIN= React.lazy(() => import("../Components/Cayman/Entity/USTin"));
-// const CaymanIndividualStartESConfirmation= React.lazy(() => import("../Components/Cayman/Individual/Start/ESConfirmation"));
-// const CaymanIndividualStartThankyou= React.lazy(() => import("../Components/Cayman/Individual/Start/Thankyou"));
 
 
 
@@ -894,6 +901,55 @@ const ROUTES: Array<RouteType> = [
     path: "/Cayman/Entity/FATCA/Final",
     id: 7,
     Component: CaymanEntityFatcaClassificationFinal,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityCRSStart",
+    path: "/Cayman/Entity/CRS/Start",
+    id: 7,
+    Component: CaymanEntityCRSStart,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityCRSFinancial",
+    path: "/Cayman/Entity/CRS/Financial",
+    id: 7,
+    Component: CaymanEntityCRSFinancial,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityCRSActiveNonFinancial",
+    path: "/Cayman/Entity/CRS/ActiveNonFinancial",
+    id: 7,
+    Component: CaymanEntityCRSActiveNonFinancial,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityCRSFinancialNModal",
+    path: "/Cayman/Entity/CRS/FinancialModal",
+    id: 7,
+    Component: CaymanEntityCRSFinancialNModal,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityCRSFinancialN",
+    path: "/Cayman/Entity/CRS/FinancialN",
+    id: 7,
+    Component: CaymanEntityCRSFinancialN,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityCRSNonReporting",
+    path: "/Cayman/Entity/CRS/NonReporting",
+    id: 7,
+    Component: CaymanEntityCRSNonReporting,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityCRSComplete",
+    path: "/Cayman/Entity/CRS/Complete",
+    id: 7,
+    Component: CaymanEntityCRSComplete,
     isPrivate: true,
   },
   {
