@@ -54,6 +54,7 @@ import W8IMYReducer from "./Reducers/W8IMY";
 import AccountStatementReducer from "./Reducers/AccountStatementReducer";
 import CaymanIndividualReducer from "./Reducers/CaymanIndividualReducer";
 import CaymanEntityReducer from "./Reducers/CaymanEntityReducer";
+import SkippedStepsReducer from "./Reducers/SkippedStepsReduce";
 
 let reducers = {
   getCountriesReducer,
@@ -92,8 +93,7 @@ let reducers = {
   getIGAReducer,
   GetSelfCetHiddenReducer,
   GetUSFormTypeReducer,
-  
-
+  SkippedSteps:SkippedStepsReducer,
 };
 const rootReducer = combineReducers({
   ...reducers,

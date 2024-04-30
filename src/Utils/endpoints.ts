@@ -69,6 +69,8 @@ const EndPoint = {
  UpsertTaxLiabilityinanyOtherJurisdictions:"/CaymanIndividualNonUS/UpsertTaxLiabilityinanyOtherJurisdictions",
  UpsertEntityW9DualCert:"/W9IndividualEntity/UpdateW9IndividualEntityDetails",
  UpsertCRSandFATCAClassification:"/DualCert/UpsertCRSandFATCAClassification",
+ InsertCaymanEntityNonUS:"/CaymanEntityNonUS/InsertCaymanEntityNonUS",
+
 
 // Form GetApis:
 GetDual:"/DualCert/GetDualCert",
@@ -122,6 +124,12 @@ GetW9DCPdf:"/W9IndividualEntity/GetW9DCPdf",
  GetByW8ECIIndividualId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
  GetByW8EXPIndividualId:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
  formPDFFieldData:"/FormTypes/GetPDFFieldValuesbyFormID",
+<<<<<<< HEAD
  getSelfCetHidden:"/AgentSelfCertification/GetAgentSelfCertificationHidden",
+=======
+
+ // skipped steps
+ GetAgentSkippedSteps:"/Agent/GetAgentSkippedSteps",
+>>>>>>> c05aa02955e228073c1c84b51bce240f75055905
 };
 export default EndPoint;
