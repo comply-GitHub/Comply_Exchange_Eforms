@@ -29,12 +29,14 @@ import {
   getCountriesTreatyReducer,
   GetCountryArticleByIDReducer,
   SpecialRateAndConditionIncomeTypesReducer,
+  UpsertDualCertDetailsControllingPersonReducer,
   formPDFFieldDataReducer,
   GetAllLanguageReducer,
   GetAllFederalTaxReducer,
   GetDualCertW9Reducer,
   GetDualCertReducer,
   getIGAReducer,
+  GetSelfCetHiddenReducer,
   GetUSFormTypeReducer,
   
 } from "./Reducers";
@@ -53,6 +55,8 @@ import W8IMYReducer from "./Reducers/W8IMY";
 import AccountStatementReducer from "./Reducers/AccountStatementReducer";
 import CaymanIndividualReducer from "./Reducers/CaymanIndividualReducer";
 import CaymanEntityReducer from "./Reducers/CaymanEntityReducer";
+import CRSEntityReducer from "./Reducers/CRSEntityReducer";
+
 import SkippedStepsReducer from "./Reducers/SkippedStepsReduce";
 
 let reducers = {
@@ -85,11 +89,13 @@ let reducers = {
   GetByW9FormReducer,
   CountriesTreaty:getCountriesTreatyReducer,
   CountryArticle:GetCountryArticleByIDReducer,
+  SelfCertControllingPerson:UpsertDualCertDetailsControllingPersonReducer,
   SpecialRateAndConditionIncomeTypes:SpecialRateAndConditionIncomeTypesReducer,
   formPDFFieldDataReducer,
   GetAllLanguageReducer,
   GetDualCertReducer,
   getIGAReducer,
+  GetSelfCetHiddenReducer,
   GetUSFormTypeReducer,
   SkippedSteps:SkippedStepsReducer,
 };
@@ -109,7 +115,8 @@ const rootReducer = combineReducers({
   DualCert:DualCertReducer,
   AccountStatement:AccountStatementReducer,
   CaymanIndividual:CaymanIndividualReducer,
-  CaymanEntity:CaymanEntityReducer
+  CaymanEntity:CaymanEntityReducer,
+  CRSEntityReducer:CRSEntityReducer,
   
 });
 

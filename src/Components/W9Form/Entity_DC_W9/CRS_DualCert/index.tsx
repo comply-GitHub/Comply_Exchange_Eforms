@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
+import Utils from "../../../../Utils";
 export default function Declaration (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
@@ -25,15 +26,42 @@ export default function Declaration (props: any){
   const handleChangeAccodionState = (panel: string, panelHeading: string) => (
     event: React.SyntheticEvent,
     newExpanded: boolean
+    //CRSEntityReducer
   ) => {
     if (newExpanded) {
       setExpandedState(panel);
+      dispatch({
+        type: Utils.actionName.InsertCRSEntityNonUSClassification,
+        payload: {
+          heading1: panelHeading,
+          subheading1:'CRS Classification -'+ panelHeading,
+          selectedHeading : panelHeading,
+          selectedSubHeading : 'CRS Classification -'+ panelHeading
+        
+        },
+      })
       localStorage.setItem("clickedPanelHeading", panelHeading);
+      localStorage.setItem("Heading1",panelHeading)
+      localStorage.setItem("SubHeading1",'CRS Classification -'+ panelHeading)
     } else {
       setExpandedState(false);
       localStorage.removeItem("clickedPanelHeading");
     }
   };
+
+  useEffect(() => {
+    console.log("expandedState",expandedState)
+    if(expandedState=== 'panel1'){
+      localStorage.removeItem("Heading1");
+      localStorage.removeItem("SubHeading1");
+      localStorage.removeItem("Heading2");
+      localStorage.removeItem("SubHeading2");
+      localStorage.removeItem("Heading3");
+      localStorage.removeItem("SubHeading3");
+      localStorage.removeItem("Heading4");
+      localStorage.removeItem("SubHeading4");
+    }
+  },[expandedState])
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   

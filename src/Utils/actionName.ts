@@ -79,6 +79,7 @@ const ActionName = {
     UpdateSubstantialUsPassiveNFE:"UpdateSubstantialUsPassiveNFE",
     PosteSubstantialUsPassiveNFE:"PosteSubstantialUsPassiveNFE",
     formPDFFieldData:"formPDFFieldData",
+    UpsertDualCertDetailsControllingPerson:"UpsertDualCertDetailsControllingPerson",
     UpsertSpecialRateAndConditionsIncomeTypes:"UpsertSpecialRateAndConditionsIncomeTypes",
     GetByW8BENEEntityNonUSFormId:"GetByW8BENEEntityNonUSFormId",
     GetDualCertW9:"GetDualCertW9",
@@ -89,6 +90,7 @@ const ActionName = {
     //errors
     UpdateError:"UpdateError",
     GetIGA:"GetIGA",
+    getSelfCetHidden:"getSelfCetHidden",
     GetFederalTaxClassification:"GetFederalTaxClassification",
     GetAllUSFormTypes:"GetAllUSFormTypes",
     getAllAccountStatement:"getAllAccountStatement",
@@ -99,6 +101,7 @@ const ActionName = {
     InsertCaymanEntityNonUSChapter3DataRedux:"InsertCaymanEntityNonUSChapter3DataRedux",
     InsertCaymanEntityNonUS:"InsertCaymanEntityNonUS",
     InsertCaymanEntityNonUSFATCAClassification:"InsertCaymanEntityNonUSFATCAClassification",
+    InsertCRSEntityNonUSClassification:"InsertCRSEntityNonUSClassification",
     InsertCaymanEntityNonUSFATCAClassificationEmpty:"InsertCaymanEntityNonUSFATCAClassificationEmpty",
 
     // skipped steps
