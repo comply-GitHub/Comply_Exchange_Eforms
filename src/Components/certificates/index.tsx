@@ -17,6 +17,7 @@ import checksolid from "../../assets/img/check-solid.png";
 import agreement from "../../assets/img/agreement.png";
 import docIcon from "../../assets/img/docIcon.png";
 import useAuth from "../../customHooks/useAuth";
+import Redirect from "../../Router/RouterSkip";
 export default function Certificates(props: any) {
 
   const { authDetails } = useAuth();
@@ -27,9 +28,9 @@ export default function Certificates(props: any) {
       "Instructor Identifier Format is ?*********************** \n 9- Numeric Value Only \n A - Alphabetical Character Only \n* = Alphanumeric Character only \n ? - Characters optional after this"
     );
   };
-useEffect(()=>{
-  dispatch(GetHelpVideoDetails())
-},[])
+  useEffect(() => {
+    dispatch(GetHelpVideoDetails())
+  }, [])
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -54,8 +55,8 @@ useEffect(()=>{
     if (card.enabled.includes(diableForm)) {
       setSelectedCard(card.id);
     }
-  }; 
-   
+  };
+
   useEffect(() => {
     document.title = "Form Selection"
     let onboardingStingifiedData = localStorage.getItem("agentDetails");
@@ -85,7 +86,7 @@ useEffect(()=>{
     let formSelection = JSON.parse(
       localStorage.getItem("formSelection") || "{}"
     );
-    
+
     const componentPaths: ComponentPaths = {
       "W-9": "/W9/purposes",
       "W-8BEN": "/W-8BEN/Declaration",
@@ -94,19 +95,23 @@ useEffect(()=>{
       "W-8BEN-E": "/BenE/Tax_Purpose_BenE",
       "W-8EXP": "/Exp/Tax_Purpose_Exp",
       "W-8IMY": "/IMY/Tax_Purpose_Exp",
-      "cayman-individual":"/Cayman/Individual/start",
-      "cayman-entity":"/Cayman/Entity/start"
+      "cayman-individual": "/Cayman/Individual/start",
+      "cayman-entity": "/Cayman/Entity/start"
     };
 
     if (businessType === 1) {
       componentPaths["W-9"] = "/W9/purposes";
     }
-    else{
+    else {
       componentPaths["W-9"] = "/TaxPurpose_W9";
     }
-   
-    history(componentPaths[cardId]);
- 
+    // history(componentPaths[cardId]);
+
+    let tempStepName = componentPaths[cardId];
+
+    console.log("11111111 ,calling redirect with route ", tempStepName, authDetails?.agentId)
+    Redirect(tempStepName, authDetails?.agentId, history);
+
   };
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
@@ -115,14 +120,14 @@ useEffect(()=>{
     {
       id: "W-9",
       title: "W-9",
-      userType:"gen",
+      userType: "gen",
       enabled: ["usIndividual", "usEntity"],
-      description:"Used by individuals and entities to certify US Tax ID number",
+      description: "Used by individuals and entities to certify US Tax ID number",
     },
     {
       id: "W-8BEN",
       title: "W-8BEN",
-      userType:"gen",
+      userType: "gen",
       enabled: ["usNonIndividual"],
       description:
         "Used by individuals to certify beneficial owner, or account holder of financial institution, and claim treaty benefits",
@@ -130,7 +135,7 @@ useEffect(()=>{
     {
       id: "W-8BEN-E",
       title: "W-8BEN-E",
-      userType:"gen",
+      userType: "gen",
       enabled: ["usNonEntity"],
       description:
         "Used by entities to certify beneficial owner, or account holder of financial institution, and claim treaty benefits",
@@ -138,7 +143,7 @@ useEffect(()=>{
     {
       id: "W-8ECI",
       title: "W-8ECI",
-      userType:"gen",
+      userType: "gen",
       enabled: ["usNonIndividual", "usNonEntity"],
       description:
         "Used by individuals, or entities, to certify beneficial owner receiving U.S. sourced income that is effectively connected with a U.S. trade or business ",
@@ -146,7 +151,7 @@ useEffect(()=>{
     {
       id: "W-8EXP",
       title: "W-8EXP",
-      userType:"gen",
+      userType: "gen",
       enabled: ["usNonEntity"],
       description:
         "Used by governments, or other tax exempt entities, to certify beneficial owner, or account holder of financial institution",
@@ -154,7 +159,7 @@ useEffect(()=>{
     {
       id: "W-8IMY",
       title: "W-8IMY",
-      userType:"gen",
+      userType: "gen",
       enabled: ["usNonEntity"],
       description:
         "Used by entities to certify intermediary, or flow through entity, receiving payments on behalf of another person",
@@ -162,7 +167,7 @@ useEffect(()=>{
     {
       id: "form 8233",
       title: "Form 8233",
-      userType:"gen",
+      userType: "gen",
       enabled: ["usNonIndividual"],
       description:
         "Used by individuals to certify beneficial owner claiming treaty exemption on compensation for personal services",
@@ -170,7 +175,7 @@ useEffect(()=>{
     {
       id: "cayman-individual",
       title: "Cayman Individual 2018",
-      userType:"SC",
+      userType: "SC",
       enabled: ["usNonIndividual"],
       description:
         "Used by individuals to declare any/all tax residencies",
@@ -178,7 +183,7 @@ useEffect(()=>{
     {
       id: "cayman-entity",
       title: "Cayman Entity 2018",
-      userType:"SC",
+      userType: "SC",
       enabled: ["usNonEntity"],
       description:
         "Used by an entity to declare any/all tax residencies, US FATCA Status, CRS Classification and/or Controlling Person(s)",
@@ -190,7 +195,7 @@ useEffect(()=>{
       className="inner_content backGround_Image py-4"
       style={{ marginBottom: "10px" }}
     >
-      
+
 
       <div className="overlay-div">
         <div className="overlay-div-group">
@@ -601,7 +606,7 @@ useEffect(()=>{
               >
                 FORM Cayman Individual self-certification - Certificate of Foreign Status of Beneficial Owner for U.S. Tax Withholding and Reporting (Entities) The purpose of the W-8BEN-E form is to establish that you are a non-U.S. person or entity. As the beneficial owner of the income for which, the W-8BEN-E form is being provided, completion of this form will enable you to claim a reduced rate of or exemption from withholding tax as a resident of a foreign country with which, the U.S. has an Income Treaty.
               </Typography>
-              
+
             </div>
           </Paper>
         ) : (
@@ -638,7 +643,7 @@ useEffect(()=>{
                 FORM Cayman Entity self-certification - Certificate of Foreign Status of Beneficial Owner for U.S. Tax Withholding and Reporting (Entities) The purpose of the W-8BEN-E form is to establish that you are a non-U.S. person or entity. As the beneficial owner of the income for which, the W-8BEN-E form is being provided, completion of this form will enable you to claim a reduced rate of or exemption from withholding tax as a resident of a foreign country with which, the U.S. has an Income Treaty.
 
               </Typography>
-              
+
             </div>
           </Paper>
         ) : (
@@ -698,7 +703,7 @@ useEffect(()=>{
                 // setOpen(true);
               }}
               style={{
-                marginRight : "22px",
+                marginRight: "22px",
                 backgroundColor: "#ffc107",
                 color: "black",
                 fontSize: "10px",
@@ -761,74 +766,9 @@ useEffect(()=>{
           className="d-flex row forms-card-data"
         >
           {userType === 'SC' && (<>
-            {cards.map((card, index1) => ( 
+            {cards.map((card, index1) => (
               card.userType == 'SC' ? <>
                 <Card
-              key={card?.id}
-              className={card.enabled.includes(diableForm) ? "mx-3 mt-3" : "mx-3 mt-3 disabled"}
-              sx={{
-                width: "310px",
-                border:
-                  selectedCard === card.id
-                    ? "7px solid #ffc107"
-                    : "7px solid transparent",
-              }}
-              onClick={() => handleCardSelect(card)}
-            >
-              <div
-                tabIndex={index1}
-                onFocus={() => handleCardSelect(card)}
-                onKeyDown={(e: any) => {
-                  if (e.code.toLowerCase() === "enter" && e?.target?.tagName?.toUpperCase() === "DIV") {
-                    redirectToComponent(selectedCard)
-                  }
-                }}
-              >
-                <CardContent>
-                  <div className="iconBox text-center" >
-                    <img src={docIcon} alt="" className="img-fluid mb-2" />
-                  </div>
-                  <div className="check-div">
-                    {card.enabled.includes(diableForm) ? (<img src={checksolid} />) : ""}
-                    disabled
-                  </div>
-                  <Typography align="center" variant="h6" component="div">
-                    {card?.title}
-                  </Typography>
-
-                  <Typography
-                    align="center"
-                    style={{ fontSize: "13px", marginTop: "14px" }}
-                  >
-                    {card?.description}
-                    <br />
-                  </Typography>
-                  <Typography align="center">
-                    <Button
-                      onClick={() => {
-                        setInfoMore(card?.id);
-                        setShowInfoMore(!showInfoMore);
-                      }}
-                      className="mt-4"
-                      size="small"
-                      style={{ fontWeight: "bold" }}
-                    >
-                      Read More
-                    </Button>
-                  </Typography>
-                </CardContent>
-              </div>
-
-            </Card>
-              </> : "" 
-            ))}
-          </>) }
-
-
-            {userType !== 'SC' ? <>
-              { cards.map((card, index1) => (
-                card.userType !== 'SC' ? <>
-                  <Card
                   key={card?.id}
                   className={card.enabled.includes(diableForm) ? "mx-3 mt-3" : "mx-3 mt-3 disabled"}
                   sx={{
@@ -839,7 +779,7 @@ useEffect(()=>{
                         : "7px solid transparent",
                   }}
                   onClick={() => handleCardSelect(card)}
-                  >
+                >
                   <div
                     tabIndex={index1}
                     onFocus={() => handleCardSelect(card)}
@@ -884,11 +824,76 @@ useEffect(()=>{
                     </CardContent>
                   </div>
 
-                  </Card>
-                  </> : ""
-                ))}
-                </> : ""}
-          
+                </Card>
+              </> : ""
+            ))}
+          </>)}
+
+
+          {userType !== 'SC' ? <>
+            {cards.map((card, index1) => (
+              card.userType !== 'SC' ? <>
+                <Card
+                  key={card?.id}
+                  className={card.enabled.includes(diableForm) ? "mx-3 mt-3" : "mx-3 mt-3 disabled"}
+                  sx={{
+                    width: "310px",
+                    border:
+                      selectedCard === card.id
+                        ? "7px solid #ffc107"
+                        : "7px solid transparent",
+                  }}
+                  onClick={() => handleCardSelect(card)}
+                >
+                  <div
+                    tabIndex={index1}
+                    onFocus={() => handleCardSelect(card)}
+                    onKeyDown={(e: any) => {
+                      if (e.code.toLowerCase() === "enter" && e?.target?.tagName?.toUpperCase() === "DIV") {
+                        redirectToComponent(selectedCard)
+                      }
+                    }}
+                  >
+                    <CardContent>
+                      <div className="iconBox text-center" >
+                        <img src={docIcon} alt="" className="img-fluid mb-2" />
+                      </div>
+                      <div className="check-div">
+                        {card.enabled.includes(diableForm) ? (<img src={checksolid} />) : ""}
+                        disabled
+                      </div>
+                      <Typography align="center" variant="h6" component="div">
+                        {card?.title}
+                      </Typography>
+
+                      <Typography
+                        align="center"
+                        style={{ fontSize: "13px", marginTop: "14px" }}
+                      >
+                        {card?.description}
+                        <br />
+                      </Typography>
+                      <Typography align="center">
+                        <Button
+                          onClick={() => {
+                            setInfoMore(card?.id);
+                            setShowInfoMore(!showInfoMore);
+                          }}
+                          className="mt-4"
+                          size="small"
+                          style={{ fontWeight: "bold" }}
+                        >
+                          Read More
+                        </Button>
+                      </Typography>
+                    </CardContent>
+                  </div>
+
+                </Card>
+              </> : ""
+            ))}
+          </> : ""}
+
 
           {/* <Card className="mx-3 mt-3"sx={{ width:"330px"}}>
       <CardContent>
@@ -995,7 +1000,7 @@ useEffect(()=>{
                   // border: "1px solid #0095dd",
                   // backgroundColor: "#D2D2D4",
                   // borderColor: "#d2d2d2",
-                  width:"10%",
+                  width: "10%",
                   color: "#ffff",
                   height: "44px",
                   lineHeight: "normal",
@@ -1034,7 +1039,7 @@ useEffect(()=>{
                   fontSize: "17px",
                   textTransform: "uppercase",
                   borderRadius: "3px",
-width:"10%",
+                  width: "10%",
                   padding: "0 23px",
                   letterSpacing: "1px",
                 }}
