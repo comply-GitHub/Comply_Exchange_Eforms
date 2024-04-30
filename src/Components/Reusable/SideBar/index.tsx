@@ -36,7 +36,7 @@ import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
   };
   
   
-  const SideBar = ({ Callback, formTypeId }: any) => {
+  const SideBar = (props: any) => {
     const { authDetails } = useAuth()
     const dispatch = useDispatch();
     const [canvaBx, setCanvaBx] = useState(false);
@@ -83,7 +83,7 @@ import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
             View Instructions
           </div>
           <div className="viewform" onClick={() => {
-            dispatch(GetW9Pdf(authDetails?.accountHolderId))
+            dispatch(props.getPDF(authDetails?.accountHolderId))
           }}>
             View Form
           </div>

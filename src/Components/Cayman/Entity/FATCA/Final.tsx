@@ -80,8 +80,10 @@ export default function Final (props: any){
             validateOnChange={true}
             validateOnBlur={true}
               initialValues={initialValue}
-              validationSchema={SubmitSchema}
+              //validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
+
+                history("/Cayman/Entity/CRS/Start")
                 // console.log("values", values)
                 // setSubmitting(true);
                 // const result = {
@@ -827,9 +829,8 @@ export default function Final (props: any){
                       View Form
                     </Button>
 
-                    <Button    
-
-                                 
+                    <Button  
+                      type="submit"
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
                     >

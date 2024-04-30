@@ -68,20 +68,17 @@ export default function Fedral_tax(props: any) {
   );
 
   useEffect(() => {
-    document.title = "Chapter III"
-  }, [])
+    document.title = "Chapter III";
+  }, []);
   useEffect(() => {
-    setSelectedTaxClassification(getReducerData?.federalTaxClassificationId)
-  }, [getReducerData])
+    setSelectedTaxClassification(getReducerData?.federalTaxClassificationId);
+  }, [getReducerData]);
 
   useEffect(() => {
     setIsFormFilling(localStorage.getItem("isFormFilling") || "");
     dispatch(GetHelpVideoDetails());
-    dispatch(getFederalTax())
-    dispatch(
-      getW9Form(authDetails?.accountHolderId, (data: any) => {
-      })
-    );
+    dispatch(getFederalTax());
+    dispatch(getW9Form(authDetails?.accountHolderId, (data: any) => {}));
   }, [authDetails]);
 
   const viewPdf = () => {
@@ -89,8 +86,10 @@ export default function Fedral_tax(props: any) {
   };
 
   const confirmFunction = (value: any, setFieldValue: any) => {
-    setExpandedState(""); setFieldValue("federalTaxClassificationId", value); setSelectedTaxClassification(value)
-  }
+    setExpandedState("");
+    setFieldValue("federalTaxClassificationId", value);
+    setSelectedTaxClassification(value);
+  };
 
   const getObvalues = () => {
     console.log(formFillingData, "qwerty");
@@ -109,8 +108,7 @@ export default function Fedral_tax(props: any) {
     formTypeSelectionId: 1,
     agentId: authDetails?.agentId,
     AccountHolderBasicDetailsId:
-      authDetails?.accountHolderId ??
-      obValues?.AccountHolderBasicDetailsId,
+      authDetails?.accountHolderId ?? obValues?.AccountHolderBasicDetailsId,
     firstName: getReducerData?.firstName ?? obValues?.firstName,
     lastName: getReducerData?.lastName ?? obValues?.lastName,
     businessName: getReducerData?.businessName ?? "",
@@ -137,12 +135,11 @@ export default function Fedral_tax(props: any) {
   const FederalTaxData = useSelector(
     (state: any) => state?.GetAllFederalTaxReducer?.FederalData
   );
-  console.log(FederalTaxData,"op")
+  console.log(FederalTaxData, "op");
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
- 
 
   const [expanded, setExpanded] = React.useState<string | false>(false);
 
@@ -243,9 +240,12 @@ export default function Fedral_tax(props: any) {
             >
               View Instructions
             </div>
-            <div className="viewform" onClick={() => {
-              dispatch(GetW9Pdf(authDetails?.accountHolderId))
-            }}>
+            <div
+              className="viewform"
+              onClick={() => {
+                dispatch(GetW9Pdf(authDetails?.accountHolderId));
+              }}
+            >
               View Form
             </div>
             <div className="helpvideo">
@@ -279,8 +279,8 @@ export default function Fedral_tax(props: any) {
             selectedTaxClassification == 0
               ? firstSchema
               : selectedTaxClassification == 1
-                ? firstStepSchema
-                : firstStepBusinessSchema
+              ? firstStepSchema
+              : firstStepBusinessSchema
           } // Uncomment after testing ,this is validation Schema
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(true);
@@ -290,7 +290,7 @@ export default function Fedral_tax(props: any) {
               partnershipTrustAuthority:
                 JSON.stringify(temp.partnershipTrustAuthority) == "true",
             };
-            console.log(newValue, "newValuenewValue")
+            console.log(newValue, "newValuenewValue");
             const submitPromise = new Promise((resolve, reject) => {
               dispatch(
                 postW9Form(
@@ -617,7 +617,8 @@ export default function Fedral_tax(props: any) {
                                       underline="none"
                                       style={{
                                         marginTop: "10px",
-                                        fontSize: "16px", color: "#0000C7"
+                                        fontSize: "16px",
+                                        color: "#0000C7",
                                       }}
                                       onClick={() => {
                                         setToolInfo("");
@@ -632,16 +633,16 @@ export default function Fedral_tax(props: any) {
                               )}
 
                               <FormControl className="w-100">
-                                <Select
+                                <select
                                   onChange={(e) => {
                                     handleChange(e);
                                     handleTaxClassificationChange(e);
                                   }}
                                   onBlur={handleBlur}
-                                  error={Boolean(
-                                    touched.federalTaxClassificationId &&
-                                    errors.federalTaxClassificationId
-                                  )}
+                                  // error={Boolean(
+                                  //   touched.federalTaxClassificationId &&
+                                  //   errors.federalTaxClassificationId
+                                  // )}
                                   name="federalTaxClassificationId"
                                   value={values.federalTaxClassificationId}
                                   style={{
@@ -652,20 +653,31 @@ export default function Fedral_tax(props: any) {
                                     width: "70%",
                                   }}
                                 >
-                                  <MenuItem value={0}>--Select--</MenuItem>
-                                  {FederalTaxData?.filter((item: any) => item.formTypeSelectionId === 1).map((i: any, ind: any) => {
+                                  <option value={0}>--Select--</option>
+                                  {/* {FederalTaxData?.filter((item: any) => item.formTypeSelectionId === 1).map((i: any, ind: any) => {
   return (
-    <MenuItem key={ind} value={i.id}>{i.name}</MenuItem>
+
+    <option key={ind} value={i.id}>{i.name}</option>
   );
-})}
-                                </Select>
+})} */}{console.log(FederalTaxData,"FederalTaxData")}
+                                  {FederalTaxData?.filter(
+                                    (item: any) =>
+                                      item.formTypeSelectionId === 1
+                                  ).map((i: any, ind: any) => {
+                                    return (
+                                      <option key={ind} value={i.id}>
+                                        {i.name}
+                                      </option>
+                                    );
+                                  })}
+                                </select>
                                 {errors.federalTaxClassificationId &&
-                                  touched.federalTaxClassificationId ? (
+                                touched.federalTaxClassificationId ? (
                                   <div>
                                     <Typography color="error">
                                       <p className="error">
                                         {typeof errors.federalTaxClassificationId ===
-                                          "string"
+                                        "string"
                                           ? errors.federalTaxClassificationId
                                           : ""}
                                       </p>
@@ -792,7 +804,8 @@ export default function Fedral_tax(props: any) {
                                         underline="none"
                                         style={{
                                           marginTop: "10px",
-                                          fontSize: "16px", color: "#0000C7"
+                                          fontSize: "16px",
+                                          color: "#0000C7",
                                         }}
                                         onClick={() => {
                                           setToolInfo("");
@@ -885,7 +898,7 @@ export default function Fedral_tax(props: any) {
                                       // }
                                       error={Boolean(
                                         touched.businessName &&
-                                        errors.businessName
+                                          errors.businessName
                                       )}
                                       // style={{
                                       //   width: "200%",
@@ -908,7 +921,7 @@ export default function Fedral_tax(props: any) {
                           ) : null}
                         </Typography>
                         {obValues?.isUSEntity == true &&
-                          values.federalTaxClassificationId == 4 ? (
+                        values.federalTaxClassificationId == 4 ? (
                           <div>
                             <Typography style={{ marginTop: "20px" }}>
                               Are you providing this form to a partnership,
@@ -921,7 +934,7 @@ export default function Fedral_tax(props: any) {
                               <FormControl
                                 error={Boolean(
                                   touched.partnershipTrustAuthority &&
-                                  errors.partnershipTrustAuthority
+                                    errors.partnershipTrustAuthority
                                 )}
                               >
                                 <RadioGroup
@@ -945,12 +958,12 @@ export default function Fedral_tax(props: any) {
                                   />
                                 </RadioGroup>
                                 {errors.partnershipTrustAuthority &&
-                                  touched.partnershipTrustAuthority ? (
+                                touched.partnershipTrustAuthority ? (
                                   <div>
                                     <Typography color="error">
                                       <p className="error">
                                         {typeof errors.partnershipTrustAuthority ===
-                                          "string"
+                                        "string"
                                           ? errors.partnershipTrustAuthority
                                           : ""}
                                       </p>
@@ -1094,7 +1107,14 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => { confirmFunction(1, setFieldValue) }}>Confirm</Button>
+                                    <Button
+                                      variant="contained"
+                                      onClick={() => {
+                                        confirmFunction(1, setFieldValue);
+                                      }}
+                                    >
+                                      Confirm
+                                    </Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1140,7 +1160,14 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => { confirmFunction(3, setFieldValue) }}>Confirm</Button>
+                                    <Button
+                                      variant="contained"
+                                      onClick={() => {
+                                        confirmFunction(3, setFieldValue);
+                                      }}
+                                    >
+                                      Confirm
+                                    </Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1228,7 +1255,14 @@ export default function Fedral_tax(props: any) {
                                     align="center"
                                     style={{ marginTop: "30px" }}
                                   >
-                                    <Button variant="contained" onClick={() => { confirmFunction(4, setFieldValue) }}>Confirm</Button>
+                                    <Button
+                                      variant="contained"
+                                      onClick={() => {
+                                        confirmFunction(4, setFieldValue);
+                                      }}
+                                    >
+                                      Confirm
+                                    </Button>
                                   </Typography>
                                 </AccordionDetails>
                               </Accordion>
@@ -1315,27 +1349,37 @@ export default function Fedral_tax(props: any) {
                             marginTop: "40px",
                           }}
                         >
-
-                          <SaveAndExit Callback={() => {
-                            submitForm().then((data) => {
-                              const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                              const urlValue = window.location.pathname.substring(1);
-                              dispatch(postW9Form(
-                                {
-                                  ...prevStepData,
-                                  stepName: `/${urlValue}`
-                                }
-                                , () => { }))
-                              history(GlobalValues.basePageRoute)
-                            }).catch((err) => {
-                              console.log(err);
-                            })
-                          }} formTypeId={FormTypeId.W9} />
+                          <SaveAndExit
+                            Callback={() => {
+                              submitForm()
+                                .then((data) => {
+                                  const prevStepData = JSON.parse(
+                                    localStorage.getItem("PrevStepData") || "{}"
+                                  );
+                                  const urlValue =
+                                    window.location.pathname.substring(1);
+                                  dispatch(
+                                    postW9Form(
+                                      {
+                                        ...prevStepData,
+                                        stepName: `/${urlValue}`,
+                                      },
+                                      () => {}
+                                    )
+                                  );
+                                  history(GlobalValues.basePageRoute);
+                                })
+                                .catch((err) => {
+                                  console.log(err);
+                                });
+                            }}
+                            formTypeId={FormTypeId.W9}
+                          />
                           <Button
                             type="submit"
                             // disabled={isSubmitting}
                             onClick={() => {
-                              dispatch(GetW9Pdf(authDetails?.accountHolderId))
+                              dispatch(GetW9Pdf(authDetails?.accountHolderId));
                             }}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}

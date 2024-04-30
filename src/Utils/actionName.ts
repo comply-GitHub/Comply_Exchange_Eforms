@@ -90,6 +90,7 @@ const ActionName = {
     //errors
     UpdateError:"UpdateError",
     GetIGA:"GetIGA",
+    getSelfCetHidden:"getSelfCetHidden",
     GetFederalTaxClassification:"GetFederalTaxClassification",
     GetAllUSFormTypes:"GetAllUSFormTypes",
     getAllAccountStatement:"getAllAccountStatement",

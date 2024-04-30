@@ -125,6 +125,7 @@ GetW9DCPdf:"/W9IndividualEntity/GetW9DCPdf",
  GetByW8ECIIndividualId:"/W8ECIIndividualEntity/GetByW8ECIIndividualEntityNonUSFormId",
  GetByW8EXPIndividualId:"/W8EXPEntity/GetByW8EXPFormFormEntityNonUs",
  formPDFFieldData:"/FormTypes/GetPDFFieldValuesbyFormID",
+ getSelfCetHidden:"/AgentSelfCertification/GetAgentSelfCertificationHidden",
 
  // skipped steps
  GetAgentSkippedSteps:"/Agent/GetAgentSkippedSteps",

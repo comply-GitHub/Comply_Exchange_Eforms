@@ -202,7 +202,7 @@ export default function IndividualUs() {
     dob: "",
     nameOfDisregarded: "",
     entityName: "",
-    taxpayerIdTypeID: 1,
+    taxpayerIdTypeID: 0,
     usTin: "",
     userType: userType,
     foreignTINCountryId: 0,
@@ -893,7 +893,7 @@ useEffect(()=>{
                   dob: values?.dob,
                   nameOfDisregarded: values?.nameOfDisregarded,
                   entityName: values?.entityName,
-                  taxpayerIdTypeID: userType== "SC" ? 1 :  +values?.taxpayerIdTypeID,
+                  taxpayerIdTypeID: +values?.taxpayerIdTypeID,
                   usTin: values?.usTin,
                   foreignTINCountryId: values?.foreignTINCountryId,
                   foreignTIN: values?.foreignTIN,
@@ -976,9 +976,6 @@ useEffect(()=>{
                   usTinTypeId: +values?.taxpayerIdTypeID,
                   permanentresidentialzippostalcode: values?.permanentResidentialZipPostalCode,
                 };
-
-                console.log("Payload",payload);
-                
                 dispatch(postOnboarding(payload, (data: any) => {
                   console.log(data)
                   if (data.accountHolderID) {
@@ -1187,7 +1184,7 @@ useEffect(()=>{
                   {toolInfo === "identity" ? (
                     <div className="mt-5">
                       <Paper
-                        style={{ backgroundColor: "#d1ecf1", padding: "15px" ,marginLeft:"23px"}}
+                        style={{ backgroundColor: "#d1ecf1", padding: "15px" }}
                       >
                         <div
                           className="d-flex"
@@ -1219,7 +1216,7 @@ useEffect(()=>{
                     ""
                   )}
 
-                  {/* <>{console.log(values, "hbd", errors, "errors")}</> */}
+                  <>{console.log(values, "hbd", errors, "errors")}</>
                   <CardHeader
                     className="flex-row-reverse"
                     title={
@@ -1623,7 +1620,7 @@ useEffect(()=>{
                             <FormControl className="w-100">
                               <Typography align="left">
                                 Country Of Birth
-                                <span style={{ color: "red" }}>**</span>
+                                <span style={{ color: "red" }}>*</span>
                               </Typography>
 
                               <select
@@ -1639,7 +1636,7 @@ useEffect(()=>{
                                   handleChange(e);
                                 }}
                                 onBlur={handleBlur}
-                                //  error={Boolen(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
+                                // error={Number(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
                                 value={values.countryOfBirthId}
                               >
                                 <option value="">---select---</option>
@@ -1654,11 +1651,7 @@ useEffect(()=>{
                                   )
                                 )}
                               </select>
-                              {errors.countryOfBirthId && touched.countryOfBirthId ? (<p className="error">{errors.countryOfBirthId}</p>) : ""}
-                              {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
-                                {/* {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
-                                    <p className="error">{errors?.countryOfBirthId}</p>
-                                  )} */}
+
                               {/* <select
                     style={{
                         padding: " 0 10px",
@@ -1689,15 +1682,15 @@ useEffect(()=>{
                 </select> */}
                               {/* {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ?<p className="error">{errors.countryOfCitizenshipId}</p>:<></>} */}
                               {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
-                              {/* {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
+                              {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
                                     <p className="error">{errors?.countryOfBirthId}</p>
-                                  )} */}
+                                  )}
                             </FormControl>
                           </div>
                           <div className="col-lg-3 col-6 col-md-3 mt-2">
                             <FormControl className="w-100">
                               <Typography align="left">
-                                Town/City of Birth<span style={{ color: "red" }}>**</span>
+                                Town/City of Birth<span style={{ color: "red" }}>*</span>
                               </Typography>
                               <Input
                                 style={{
@@ -1716,16 +1709,15 @@ useEffect(()=>{
                                 placeholder="Enter Town/City of Birth"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={Boolean(
-                                  touched.cityOfBirth && errors.cityOfBirth
-                                )}
-                                value={values.cityOfBirth}
-                              />
+                                error={Boolean(touched?.cityOfBirth && errors?.cityOfBirth)}
 
-                              {errors.cityOfBirth && touched.cityOfBirth ? <p className="error">{errors.cityOfBirth}</p> : <></>}
-                              {/* {errors?.cityOfBirth && touched.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
+                                value={values?.cityOfBirth}
+
+                              />
+                              {/* {(errors?.cityOfBirth && touched?.cityOfBirth) ? <p className="error">{errors?.cityOfBirth}</p> : <></>} */}
+                              {errors?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
                                     <p className="error">{errors?.cityOfBirth}</p>
-                                  )} */}
+                                  )}
                             </FormControl>
                           </div>
                         </div>
@@ -1809,7 +1801,6 @@ useEffect(()=>{
                                     onChange(date);
                                     setFieldValue("dob", date);
                                   }}
-                                  
                                   maxDate={moment().toDate()}
                                   value={value}
                                   clearIcon={null}
@@ -1857,10 +1848,10 @@ useEffect(()=>{
                                     )
                                   )}
                                 </select>
-                                {/* {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
+                                {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
                                     <p className="error">{errors?.countryOfBirthId}</p>
-                                  )} */}
-                                {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>}
+                                  )}
+                                {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
                               </FormControl>
                             </div>
                             <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -1890,10 +1881,10 @@ useEffect(()=>{
                                   value={values?.cityOfBirth}
 
                                 />
-                                {/* {errors?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
+                                {errors?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
                                     <p className="error">{errors?.cityOfBirth}</p>
-                                  )} */}
-                                {errors.cityOfBirth && touched.cityOfBirth ? <p className="error">{errors.cityOfBirth}</p> : <></>}
+                                  )}
+                                {/* {errors.cityOfBirth && touched.cityOfBirth ? <p className="error">{errors.cityOfBirth}</p> : <></>} */}
 
                               </FormControl>
                             </div>
@@ -6868,8 +6859,7 @@ useEffect(()=>{
                                   ""
                                 )}
                                 {values.accountBankBranchLocationId == 257 ? (
-                                   <div className="d-flex col-12">
-                                  <div className="col-lg-3 col-6 col-md-3 mt-2 d-flex">
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
                                     <FormControl className="w-100">
                                       <Typography align="left">
                                         IBAN
@@ -6885,7 +6875,6 @@ useEffect(()=>{
                                           color: " #000 ",
                                           fontStyle: "normal",
                                           borderRadius: "1px",
-                                          width:"96%",
                                           padding: " 0 10px ",
                                         }}
                                         id="outlined"
@@ -6898,10 +6887,8 @@ useEffect(()=>{
                                       />
                                       {/* <p className='error'>{errors.iban}</p> */}
                                     </FormControl>
-                                    </div>
-                                    <div className="col-lg-3 col-6 col-md-3 mt-2 d-flex">
                                     <FormControl className="w-100">
-                                      <Typography align="left" style={{marginLeft:"5px"}}>
+                                      <Typography align="left">
                                         Swift code
                                         {/* <span style={{ color: 'red' }}>*</span> */}
                                       </Typography>
@@ -6912,12 +6899,10 @@ useEffect(()=>{
                                           lineHeight: "36px ",
                                           background: "#fff ",
                                           fontSize: "13px",
-                                          marginLeft:"5px",
                                           color: " #000 ",
                                           fontStyle: "normal",
                                           borderRadius: "1px",
                                           padding: " 0 10px ",
-                                          width:"96%"
                                         }}
                                         id="outlined"
                                         name="swiftCode"
@@ -6929,7 +6914,6 @@ useEffect(()=>{
                                       />
                                       {/* <p className='error'>{errors.swiftCode}</p> */}
                                     </FormControl>
-                                    </div>
                                   </div>
                                 ) : (
                                   ""

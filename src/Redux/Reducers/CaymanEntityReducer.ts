@@ -8,7 +8,7 @@ const initialState={
 
 const CaymanEntityReducer = (state = initialState, action: any) => {
     switch (action.type) {
-      case Utils.actionName.InsertCaymanEntityNonUSChapter3Data:
+      case Utils.actionName.InsertCaymanEntityNonUSChapter3DataRedux:
         return { 
             ...state,
             chapter3Data : action.payload 

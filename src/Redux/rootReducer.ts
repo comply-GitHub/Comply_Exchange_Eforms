@@ -36,6 +36,7 @@ import {
   GetDualCertW9Reducer,
   GetDualCertReducer,
   getIGAReducer,
+  GetSelfCetHiddenReducer,
   GetUSFormTypeReducer,
   
 } from "./Reducers";
@@ -94,6 +95,7 @@ let reducers = {
   GetAllLanguageReducer,
   GetDualCertReducer,
   getIGAReducer,
+  GetSelfCetHiddenReducer,
   GetUSFormTypeReducer,
   SkippedSteps:SkippedStepsReducer,
 };

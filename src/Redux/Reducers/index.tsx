@@ -34,7 +34,8 @@ const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType
   GetDual,
   GetSettings,
   GetIGA,
-  GetAllUSFormTypes
+  getSelfCetHidden,
+  GetAllUSFormTypes,
 } = Utils.actionName
 
 
@@ -48,7 +49,13 @@ export const GetAllLanguageReducer = (state = initialState, action: any) => {
       return state;
   }
 }
-
+export const GetSelfCetHiddenReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case getSelfCetHidden:   return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}
 export const GetAllFederalTaxReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case GetFederalTaxClassification:
