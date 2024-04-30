@@ -37,7 +37,7 @@ export default function Term() {
     if (pdfUrl) {
       const link = document.createElement("a");
       link.href = pdfUrl;
-      link.setAttribute("download", "generatedPDF.pdf");
+      link.setAttribute("download", "generatedPDF.pdf");    
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

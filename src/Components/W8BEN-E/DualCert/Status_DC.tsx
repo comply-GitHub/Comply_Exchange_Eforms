@@ -1907,7 +1907,7 @@ export default function Fedral_tax(props: any) {
                             onClick={() => {
                               submitForm().then((data) => {
                                 console.log(data)
-                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/TaxPayer_DC");
+                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC/Fatca_DC");
                               
                               })
                             }}

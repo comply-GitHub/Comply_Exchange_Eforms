@@ -82,7 +82,6 @@ const ThankYou_IMYDC = React.lazy(
 const Non_Reporting_CRS_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/NonReporting")
 );
-
 const Financial_CRS_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/Financial")
 );
@@ -107,7 +106,7 @@ const Status_DC = React.lazy(
 );
 // 
 const Fatca_DC_BENE = React.lazy(
-  () => import("../Components/W8BEN-E/DualCert/Fatca_DC_BENE")
+  () => import("../Components/W8BEN-E/DualCert/FATCA/index")
 );
 const BENE_PASSIVE_DC = React.lazy(
   () => import("../Components/W8BEN-E/DualCert/BENE_PASSIVE_DC")
@@ -299,7 +298,14 @@ const CaymanIndividualFatcaClassificationFinal= React.lazy(() => import("../Comp
 // const CaymanIndividualStartSubmission= React.lazy(() => import("../Components/Cayman/Individual/Start/Submission"));
 // const CaymanIndividualStartESConfirmation= React.lazy(() => import("../Components/Cayman/Individual/Start/ESConfirmation"));
 // const CaymanIndividualStartThankyou= React.lazy(() => import("../Components/Cayman/Individual/Start/Thankyou"));
+const BENEEntityFatcaClassification = React.lazy(() => import("../Components/Cayman/Entity/FATCA"));
 
+const BENEEntityFatcaClassificationFinancial = React.lazy(() => import("../Components/Cayman/Entity/FATCA/Financial"));
+const BENEEntityFatcaClassificationGIINAvailable = React.lazy(() => import("../Components/Cayman/Entity/FATCA/GIINAvailable"));
+const BENEnEntityFatcaClassificationGIINNotAvailable = React.lazy(() => import("../Components/Cayman/Entity/FATCA/GIINNotAvailable"));
+const BENEEntityFatcaClassificationSponsoredFinancialInstitution = React.lazy(() => import("../Components/Cayman/Entity/FATCA/SponsoredFinanceInstitution"));
+const BENEIndividualFatcaClassificationComplete= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Complete"));
+const BENEIndividualFatcaClassificationFinal= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Final"));
 
 
 const ROUTES: Array<RouteType> = [
@@ -1334,8 +1340,56 @@ const ROUTES: Array<RouteType> = [
     Component: ThankYou_IMYDC,
     isPrivate: true,
 
-  }
-
+  },
+  {
+   name : " BENEEntityFatcaClassification",
+   path : "/BENEEntityFatcaClassification",
+   id: 7,
+   Component:  BENEEntityFatcaClassification,
+   isPrivate: true,
+  },
+{
+  name : " BENEEntityFatcaClassificationFinancial",
+    path: "/BENEEntityFatcaClassificationFinancial",
+    id: 7,
+    Component:  BENEEntityFatcaClassificationFinancial,
+    isPrivate: true,
+},
+{
+  name : " BENEEntityFatcaClassificationGIINAvailable",
+    path: "/BENEEntityFatcaClassificationGIINAvailable",
+    id: 7,
+    Component:  BENEEntityFatcaClassificationGIINAvailable,
+    isPrivate: true,
+},
+{
+  name : " BENEnEntityFatcaClassificationGIINNotAvailable",
+    path: "/BENEnEntityFatcaClassificationGIINNotAvailable",
+    id: 7,
+    Component:  BENEnEntityFatcaClassificationGIINNotAvailable,
+    isPrivate: true,
+},
+{
+  name : " BENEEntityFatcaClassificationSponsoredFinancialInstitution",
+    path: "/BENEEntityFatcaClassificationSponsoredFinancialInstitution",
+    id: 7,
+    Component:  BENEEntityFatcaClassificationSponsoredFinancialInstitution,
+    isPrivate: true, 
+},
+{
+  name : "BENEIndividualFatcaClassificationComplete",
+  path: "/BENEIndividualFatcaClassificationComplete",
+  id: 7,
+  Component:  BENEIndividualFatcaClassificationComplete,
+  isPrivate: true, 
+},
+{
+  name : "BENEIndividualFatcaClassificationFinal",
+  path: "/BENEIndividualFatcaClassificationFinal",
+  id: 7,
+  Component:  BENEIndividualFatcaClassificationFinal,
+  isPrivate: true,
+}
 
 ];
 

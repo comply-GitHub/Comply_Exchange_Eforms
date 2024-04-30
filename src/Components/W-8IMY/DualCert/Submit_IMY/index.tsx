@@ -393,7 +393,7 @@ const Declaration = (props: any) => {
                             {" "}
                             I do not give consent to receiving a recipent
                             statement electronically.
-                          </Typography>
+                          </Typography>                           
                         </div>
                         <p className="error">{touched.isNotConsentRecipent ? errors.isNotConsentRecipent?.toString() : ""}</p>
                       </AccordionDetails>
@@ -429,6 +429,7 @@ const Declaration = (props: any) => {
                     <Button
                       onClick={() => {
                         dispatch(GetEciPdf(authDetails?.accountHolderId))
+                        
                       }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
@@ -495,4 +496,4 @@ const Declaration = (props: any) => {
   );
 };
 
-export default Declaration;
+export default Declaration;  

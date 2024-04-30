@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Accordion from "@mui/material/Accordion";
@@ -11,22 +11,17 @@ import { Form, Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
-import { FormTypeId } from "../../../../Utils/constVals";
 import { SubmitSchema } from "../../../../schemas/submit";
 import { PostDualCert } from "../../../../Redux/Actions";
+import { FormTypeId } from "../../../../Utils/constVals";
 import Utils from "../../../../Utils";
-
-
-
-export default function Classification (props: any){
+export default function SponsoredFinanceInstitution (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
 
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
-
-  
 
   const handleChangeAccodionState = (panel: string, panelHeading: string) => (
     event: React.SyntheticEvent,
@@ -37,37 +32,21 @@ export default function Classification (props: any){
       dispatch({
         type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
         payload: {
-          heading1: panelHeading,
-          subheading1:'FATCA Classification -'+ panelHeading+' Cayman',
+          heading4: panelHeading,
+          subheading4:'FATCA Classification -'+ panelHeading+' Cayman',
           selectedHeading : panelHeading,
           selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
-        
         },
       });
 
       localStorage.setItem("clickedPanelHeading", panelHeading);
-      localStorage.setItem("Heading1",panelHeading)
-      localStorage.setItem("SubHeading1",'FATCA Classification -'+ panelHeading+' Cayman')
+      localStorage.setItem("Heading4",panelHeading)
+      localStorage.setItem("SubHeading4",'FATCA Classification -'+ panelHeading+' Cayman')
     } else {
       setExpandedState(false);
       localStorage.removeItem("clickedPanelHeading");
-      
-      
     }
   };
-  useEffect(() => {
-    console.log("expandedState",expandedState)
-    if(expandedState=== 'panel1'){
-      localStorage.removeItem("Heading1");
-      localStorage.removeItem("SubHeading1");
-      localStorage.removeItem("Heading2");
-      localStorage.removeItem("SubHeading2");
-      localStorage.removeItem("Heading3");
-      localStorage.removeItem("SubHeading3");
-      localStorage.removeItem("Heading4");
-      localStorage.removeItem("SubHeading4");
-    }
-  },[expandedState])
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   
@@ -77,21 +56,6 @@ export default function Classification (props: any){
     isNotConsentReceipentstatement: false
     };
 
-
-    useEffect(() => {
-      document.title = "FATCA Classification"
-    }, [])
-    useEffect(() => {
-      if(isAccordionVisible===false){
-        dispatch({
-          type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
-          payload: []
-        });
-      }
-     
-
-
-    }, [isAccordionVisible])
 
   return (
     <Fragment>
@@ -123,7 +87,7 @@ export default function Classification (props: any){
       <div className="row w-100">
         <div className="col-4 mt-3">
 
-          <BreadCrumbComponent breadCrumbCode={1310} formName={FormTypeId.CaymanEntity} />
+          <BreadCrumbComponent breadCrumbCode={1210} formName={FormTypeId.CaymanEntity} />
         </div>
 
         <div className="col-8 mt-3">
@@ -136,14 +100,14 @@ export default function Classification (props: any){
               initialValues={initialValue}
               validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
-                // console.log("values", values)
-                // setSubmitting(true);
-                // const result = {
-                //   ...PrevStepData, 
-                //   ...values,
+              //   console.log("values", values)
+              //   setSubmitting(true);
+              //   const result = {
+              //     ...PrevStepData, 
+              //     ...values,
                  
-                //   statusId: 1,
-                // };
+              //     statusId: 1,
+              //   };
               //   const returnPromise = new Promise((resolve, reject) => {
               //   dispatch(
               //     PostDualCert(result, (data: any) => {
@@ -173,52 +137,19 @@ export default function Classification (props: any){
                 isValid
               }) => (
                 <form onSubmit={handleSubmit}>
-                 {!isAccordionVisible && ( <>
-                   <div style={{justifyContent:"space-between",display:"flex",marginTop:"10px"}}>
-                  <Typography
-                      align="left"
-                      style={{
-                        fontSize: "27px",
-                        color: "black",
-                        fontWeight: "bold",
-                        marginLeft:'10px'
-                      
-                      }}
-                    >
-                    FATCA Classification:
-                    </Typography>
-                    <Button
-                     onClick={() =>{ setIsAccordionVisible(!isAccordionVisible)
-                      setExpandedState(false)
-                     }}
-                      style={{ backgroundColor: "#d3ae33",cursor:"pointer",color: "black", fontSize: "12px", fontWeight: "bold" }}
-                    >
-                    FATCA Classification Guide
-                    </Button>
-                  </div>
-                
-                   <div style={{marginLeft:"10px",marginTop:"10px",backgroundColor:"#fff"}}>
-                 
-                  <div className="d-flex mt-3">
-                    <Typography style={{fontSize:"19px"}}>Select FATCA Classification:</Typography>
-                    <Link className="mx-2"  onClick={() => setIsAccordionVisible(!isAccordionVisible)}style={{fontSize:"19px",textDecorationLine:"none",color:"#1149c4",cursor:"pointer"}}>Click Here to start Process</Link>
-                  </div>
-                   </div>
-                  
-                 </>)}
-              {isAccordionVisible && (
-              <div style={{ backgroundColor: "#fff", padding: "5px" }}>
+               
+                   <div style={{ backgroundColor: "#fff", padding: "5px" }}>
               <Typography
                 className="my-2 mx-2"
                 style={{ fontSize: "20px", color: "#1976d2", fontWeight: "bold" }}
               >
-               FATCA Classification Guide
+               FATCA Classification GUIDE GIIN Not Available
               </Typography>
 
 
               <Accordion
                 expanded={expandedState === "panel1"}
-                onChange={handleChangeAccodionState("panel1","Introduction")}
+                onChange={handleChangeAccodionState("panel1","Sponsored Financial Institution Overview")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -228,23 +159,24 @@ export default function Classification (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Introduction
+                    Sponsored Financial Institution Overview
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography
                     align="left"
-                    style={{ fontSize: "17px", color: "#1976d2", fontWeight: "bold" }}
+                    style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                    FATCA Classification - Introduction Cayman
+                    FATCA Classification - Sponsored Financial Institution Overview Cayman
+
                   </Typography>
                  
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel2"}
-                onChange={handleChangeAccodionState("panel2","Financial Institution")}
+                onChange={handleChangeAccodionState("panel2","Sponsored FI in a Model 1 IGA jurisdiction")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -254,7 +186,7 @@ export default function Classification (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Financial Institution
+                   Sponsored FI in a Model 1 IGA jurisdiction
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -263,14 +195,14 @@ export default function Classification (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                    FATCA Classification - Financial Institution Cayman
+                   FATCA Classification - Sponsored FI in a Model 1 IGA jurisdiction Cayman
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
               <Accordion
                 expanded={expandedState === "panel3"}
-                onChange={handleChangeAccodionState("panel3","Exempt Beneficial Owner")}
+                onChange={handleChangeAccodionState("panel3","Sponsor has obtained a Sponsored Entity GIIN on its behalf")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -280,7 +212,7 @@ export default function Classification (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Exempt Beneficial Owner{" "}
+                     Sponsor has obtained a Sponsored Entity GIIN on its behalf 
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -289,15 +221,15 @@ export default function Classification (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                   FATCA Classification - Exempt Beneficial Owner Cayman
+                  FATCA Classification - Sponsor has obtained a Sponsored Entity GIIN on its behalf Cayman
                   </Typography>
                   
                 </AccordionDetails>
               </Accordion>
-              <Accordion
+              {/* <Accordion
                 expanded={expandedState === "panel4"}
-                onChange={handleChangeAccodionState("panel4","Active NFFE")}
-              >
+                onChange={handleChangeAccodionState("panel4","Non Reporting/Certified Deemed Compliant Financial Institution Cayman** ")}
+                >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
                   aria-controls="panel2d-content"
@@ -306,8 +238,8 @@ export default function Classification (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Active NFFE{" "}
-                  </Typography>
+                    Non Reporting/Certified Deemed Compliant Financial Institution Cayman**
+                </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography
@@ -315,7 +247,7 @@ export default function Classification (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                   FATCA Classification - Active NFFE Cayman
+                  FATCA Classification - Non Reporting/Certified Deemed Compliant Financial Institution Cayman**
                   </Typography>
                   
                 </AccordionDetails>
@@ -323,7 +255,7 @@ export default function Classification (props: any){
 
               <Accordion
                 expanded={expandedState === "panel5"}
-                onChange={handleChangeAccodionState("panel5","Direct Reporting NFFE")}
+                onChange={handleChangeAccodionState("panel5","Non-Participating Foreign Financial Institution")}
               >
                 <AccordionSummary
                   expandIcon={<ExpandMore />}
@@ -333,7 +265,7 @@ export default function Classification (props: any){
                   <Typography
                     style={{ fontSize: "18px",color: "black" }}
                   >
-                    Direct Reporting NFFE{" "}
+                    Non-Participating Foreign Financial Institution
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -342,79 +274,23 @@ export default function Classification (props: any){
                     style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                   FATCA Classification - Direct Reporting NFFE Cayman
+                  FATCA Classification - Non-Participating Foreign Financial Institution Cayman
                   </Typography>
                   
                 </AccordionDetails>
-              </Accordion>
-
-              <Accordion
-                expanded={expandedState === "panel6"}
-                onChange={handleChangeAccodionState("panel6","Sponsored Direct Reporting")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  aria-controls="panel2d-content"
-                  id="panel2d-header"
-                >
-                  <Typography
-                    style={{ fontSize: "18px",color: "black" }}
-                  >
-                    Sponsored Direct Reporting{" "}
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography
-                    align="left"
-                    style={{ fontSize: "14px",color: "black" }}
-                    
-                  >
-                    FATCA Classification - Sponsored Direct Reporting NFFE Cayman
-                  </Typography>
-                  
-                </AccordionDetails>
-              </Accordion>
-
-              <Accordion
-                expanded={expandedState === "panel7"}
-                onChange={handleChangeAccodionState("panel7","Passive NFFE")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMore />}
-                  aria-controls="panel2d-content"
-                  id="panel2d-header"
-                >
-                  <Typography
-                    style={{ fontSize: "18px",color: "black" }}
-                  >
-                    Passive NFFE{" "}
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography
-                    align="left"
-                    style={{ fontSize: "14px",color: "black" }}
-                    
-                  >
-                    FATCA Classification - Passive NFFE Cayman
-                  </Typography>
-                  
-                </AccordionDetails>
-              </Accordion>
-              
+              </Accordion> */}
 
 
               <Typography align="center">
-                <Button
+              <Button
                  onClick={() => {
-                
-                  history("/BENEEntityFatcaClassification")
-                  setExpandedState(false)
-                 }}
+                 
+                  history("/Cayman/Entity/FATCA")
+                }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
-                      fontSize:"12px",
+                    fontSize:"12px",
                     marginTop: "10px",
                     marginBottom: "20px",
                   }}
@@ -423,33 +299,20 @@ export default function Classification (props: any){
                 </Button>
                 <Button
                  disabled={!isContinueEnabled} 
-                 onClick={() => {
-                  setExpandedState(false)
-                  const clickedPanelHeading = localStorage.getItem("clickedPanelHeading");
-                  if (clickedPanelHeading) {
-                 localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
-                 
-               }
-                {expandedState==='panel2' ? history("/BENEEntityFatcaClassificationFinancial") : history("/BENEIndividualFatcaClassificationComplete") }
-                  // if (expandedState === "panel2") {
-                  //   history("/Cayman/Entity/FATCA/Financial");
-                  // } else if (expandedState === "panel3") {
-                  //   history("/Cayman/Entity/FATCA/Complete");
-                  // }else if(expandedState === "panel4"){
-                  //   history("/Cayman/Entity/FATCA/Complete");
-                  // }else if(expandedState === "panel5"){
-                  //   history("/Cayman/Entity/FATCA/Complete");
-                  // }else if(expandedState === "panel6"){
-                  //   history("/Cayman/Entity/FATCA/Complete");
-                  // }else {
-                  //   history("/Cayman/Entity/FATCA/Complete");
-                  // }
-                }}
                   variant="contained"
-                 
+                  onClick={() => {
+                    const clickedPanelHeading = localStorage.getItem("clickedPanelHeading");
+                     if (clickedPanelHeading) {
+                    localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
+                    
+                  }
+                    
+                      history("/Cayman/Entity/FATCA/Complete");
+                    
+                  }}
                   style={{
-
                     fontSize:"12px",
+                 
                     marginTop: "10px",
                     marginBottom: "20px",
                     marginLeft: "10px"
@@ -459,18 +322,17 @@ export default function Classification (props: any){
                   Confirm
                 </Button>
                 <Button
-                 onClick={() => { 
-                  history("/BENEEntityFatcaClassification")
-                  setIsAccordionVisible(false)
-                  setExpandedState(false)
+                 onClick={() =>{setIsAccordionVisible(false)
+
+                  history(-1)
                  }}
                   variant="outlined"
                   style={{
                     color: "#1976E2",
-                     fontSize:"12px",
+             fontSize:"12px",
+             marginLeft: "10px",
                     marginTop: "10px",
                     marginBottom: "20px",
-                    marginLeft: "10px"
                   }}
                 >
                   Back
@@ -479,36 +341,9 @@ export default function Classification (props: any){
               </Typography>
 
             </div>
-            )}
 
             
-            
 
-{!isAccordionVisible && (<div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      marginTop: "40px",
-
-                    }}
-                  >
-                   
-                    <Button
-                      variant="contained"
-                      style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
-                    >
-                      View Form
-                    </Button>
-
-                    <Button    
-
-                      disabled           
-                      variant="contained"
-                      style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
-                    >
-                      Confirm
-                    </Button>
-                  </div>)}
                 
                 </form>
            
@@ -521,6 +356,7 @@ export default function Classification (props: any){
       </div>
       </section>
     </Fragment>
+
   );
 };
 
