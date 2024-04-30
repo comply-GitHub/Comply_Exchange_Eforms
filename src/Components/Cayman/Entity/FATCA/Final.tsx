@@ -5,7 +5,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Button, Typography, Paper, Checkbox, Link, Input } from "@mui/material";
+import { Button, Typography, Paper, Checkbox, Link, Input, FormControl, Tooltip } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,8 @@ import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import { FormTypeId } from "../../../../Utils/constVals";
 import { SubmitSchema } from "../../../../schemas/submit";
+import InfoIcon from "@mui/icons-material/Info";
+
 import { PostDualCert } from "../../../../Redux/Actions";
 import Utils from "../../../../Utils";
 
@@ -26,7 +28,7 @@ export default function Final (props: any){
   const dispatch = useDispatch();
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   const FATCAClassificationData = useSelector((state:any) => state?.CaymanEntity?.FATCAClassificationData);
-
+  const [toolInfo, setToolInfo] = useState("");
   console.log("FATCAClassificationData",FATCAClassificationData)
   
 
@@ -242,7 +244,7 @@ export default function Final (props: any){
             </div>
             )}
 
-                { values.heading2 === 'GIIN available' && (<>
+                { values.heading2 === 'GIIN available' && values.selectedHeading!=="Sponsored Direct Reporting" && values.selectedHeading!=="Passive NFFE" && (<>
                     <Typography>
                     Select Status:
                 </Typography>
@@ -355,7 +357,7 @@ export default function Final (props: any){
 
 
 
-                { values.selectedHeading === 'Sponsor has obtained a Sponsored Entity GIIN on its behalf' && (<>
+                { (values.selectedHeading === 'Sponsor has obtained a Sponsored Entity GIIN on its behalf' || values.selectedHeading === 'Sponsored Direct Reporting') && (<>
                     <Typography>
                     Select Status:
                 </Typography>
@@ -415,7 +417,7 @@ export default function Final (props: any){
                 /> 
 
                  <Typography>
-                Please provide the sponsoring entity's GIIN here:
+                Please provide the sponsored entity's GIIN here:
 
                 </Typography>
                 <Input
@@ -651,6 +653,181 @@ export default function Final (props: any){
 
                 </>)}
 
+                { values.selectedHeading === 'Passive NFFE' && (<>
+                    <Typography>
+                    Select Status:
+                </Typography>
+                <Typography>
+                {values.selectedHeading}
+                </Typography>
+                <Typography>
+                Please select from the options below to provide either:
+                {/* <span style={{ color: "red" }}>*</span> */}
+
+                </Typography>
+                <FormControl className="w-100">
+                                          
+                  <Checkbox 
+                      // value={values.confirmThisisaTrueAndAccurate}
+                      // checked={values.confirmThisisaTrueAndAccurate}
+                      onChange={handleChange}
+                      name="substantialUsOwnerInformation"
+                      size="medium"
+                      style={{ fontSize: "2rem",marginTop: "6px" }} />
+                    <Typography className="mx-2"
+                      style={{ fontSize: "14px", color: "black", marginTop: "15px", textAlign: "justify" }}
+                    >
+                    Substantial U.S. owner information(if you choose to use the definition of 'Substantial U.S. Owner' from the U.S. Treasury Regulation)
+                    <span>
+                          <Tooltip
+                            style={{ backgroundColor: "black", color: "white" }}
+                            title={
+                              <>
+                                <Typography color="inherit">
+                                  Passive NFFE- Substantial U.S.Owner Information
+                                </Typography>
+                                <a onClick={() => setToolInfo("basic")}>
+                                  <Typography
+                                    style={{
+                                      cursor: "pointer",
+                                      textDecorationLine: "underline",
+                                    }}
+                                    align="center"
+                                  >
+                                    {" "}
+                                    View More...
+                                  </Typography>
+                                </a>
+                              </>
+                            }
+                          >
+                            <InfoIcon
+                              style={{
+                                color: "#ffc107",
+                                fontSize: "20px",
+                                cursor: "pointer",
+                                verticalAlign: "super",
+                              }}
+                            />
+                          </Tooltip>
+                        </span>
+                        {toolInfo === "basic" ? (
+                        <div>
+                          <Paper
+                            style={{
+                              backgroundColor: "#dedcb1",
+                              padding: "15px",
+                              marginBottom: "10px",
+                              width: "70%",
+                            }}
+                          >
+                            <Typography>
+                            Passive NFFE - Substantial U.S. owner information
+                            </Typography>
+
+                            
+
+                            <Link
+                              href="#"
+                              underline="none"
+                              style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
+                              onClick={() => {
+                                setToolInfo("");
+                              }}
+                            >
+                              --Show Less--
+                            </Link>
+                          </Paper>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </Typography>
+
+                    <Checkbox 
+                      // value={values.confirmThisisaTrueAndAccurate}
+                      // checked={values.confirmThisisaTrueAndAccurate}
+                      onChange={handleChange}
+                      name="substantialUsOwnerInformation"
+                      size="medium"
+                      style={{ fontSize: "2rem",marginTop: "6px" }} />
+                    <Typography className="mx-2"
+                      style={{ fontSize: "14px", color: "black", marginTop: "15px", textAlign: "justify" }}
+                    >
+                      Controlling persons information (as per the CRS definition)
+                      <span>
+                          <Tooltip
+                            style={{ backgroundColor: "black", color: "white" }}
+                            title={
+                              <>
+                                <Typography color="inherit">
+                                  Passive NFFE- Controlling Persons Information
+                                </Typography>
+                                <a onClick={() => setToolInfo("controlling")}>
+                                  <Typography
+                                    style={{
+                                      cursor: "pointer",
+                                      textDecorationLine: "underline",
+                                    }}
+                                    align="center"
+                                  >
+                                    {" "}
+                                    View More...
+                                  </Typography>
+                                </a>
+                              </>
+                            }
+                          >
+                            <InfoIcon
+                              style={{
+                                color: "#ffc107",
+                                fontSize: "20px",
+                                cursor: "pointer",
+                                verticalAlign: "super",
+                              }}
+                            />
+                          </Tooltip>
+                        </span>
+                        {toolInfo === "controlling" ? (
+                        <div>
+                          <Paper
+                            style={{
+                              backgroundColor: "#dedcb1",
+                              padding: "15px",
+                              marginBottom: "10px",
+                              width: "70%",
+                            }}
+                          >
+                            <Typography>
+                            Passive NFFE- Controlling Persons Information
+                            </Typography>
+
+                            
+
+                            <Link
+                              href="#"
+                              underline="none"
+                              style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
+                              onClick={() => {
+                                setToolInfo("");
+                              }}
+                            >
+                              --Show Less--
+                            </Link>
+                          </Paper>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </Typography>
+
+
+                </FormControl>
+
+                 
+
+                </>)}
+
 
 
 {!isAccordionVisible && (<div
@@ -671,7 +848,7 @@ export default function Final (props: any){
 
                     <Button    
 
-                      disabled           
+                                 
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
                     >

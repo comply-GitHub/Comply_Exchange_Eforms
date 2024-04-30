@@ -69,6 +69,8 @@ const EndPoint = {
  UpsertTaxLiabilityinanyOtherJurisdictions:"/CaymanIndividualNonUS/UpsertTaxLiabilityinanyOtherJurisdictions",
  UpsertEntityW9DualCert:"/W9IndividualEntity/UpdateW9IndividualEntityDetails",
  UpsertCRSandFATCAClassification:"/DualCert/UpsertCRSandFATCAClassification",
+ InsertCaymanEntityNonUS:"/CaymanEntityNonUS/InsertCaymanEntityNonUS",
+
 
 // Form GetApis:
 GetDual:"/DualCert/GetDualCert",
