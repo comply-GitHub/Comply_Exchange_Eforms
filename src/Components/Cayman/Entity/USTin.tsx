@@ -31,6 +31,8 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import SideBar from "../../Reusable/SideBar";
 import { GetAgentCountriesImportantForEform, GetHelpVideoDetails, getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode, getTinTypes, postSCIndividualEForm } from "../../../Redux/Actions";
+import { EntityUS_TINSchema } from "../../../schemas/cayman";
+import { error } from "console";
 
 export default function Tin(props: any) {
 
@@ -50,21 +52,22 @@ export default function Tin(props: any) {
     countryIdforTaxLiability: "",
     tinNumber: "",
     alternativeTinFormat: false,
-    notAvailable:false
+    notAvailable:false,
+    countryError:false,
+    tinError:false
   }];
 
   const initialValue = {
-    usTinTypeId:  onBoardingFormValuesPrevStepData?.usTinTypeId ? onBoardingFormValuesPrevStepData?.usTinTypeId : 0,
+    usTinTypeId:  onBoardingFormValuesPrevStepData?.usTinTypeId ? onBoardingFormValuesPrevStepData?.usTinTypeId : "",
     usTin:  onBoardingFormValuesPrevStepData?.usTin ? onBoardingFormValuesPrevStepData?.usTin : "",
     notAvailable:  false,
-    ForeginTIN_CountryId: onBoardingFormValues?.foreignTINCountryId!=0 ? onBoardingFormValues?.foreignTINCountryId : onBoardingFormValuesPrevStepData?.ForeginTIN_CountryId,
-    ForegionTIN: onBoardingFormValues?.foreignTIN ? onBoardingFormValues?.foreignTIN : onBoardingFormValuesPrevStepData?.ForegionTIN ? onBoardingFormValuesPrevStepData?.ForegionTIN :"",
+    reasionForUSTIN_NotAvailable:onBoardingFormValuesPrevStepData?.reasionForUSTIN_NotAvailable ? onBoardingFormValuesPrevStepData?.reasionForUSTIN_NotAvailable : "",
+    foreginTIN_CountryId: onBoardingFormValuesPrevStepData?.foreginTIN_CountryId ? onBoardingFormValuesPrevStepData?.foreginTIN_CountryId : "",
+    foregionTIN: onBoardingFormValues?.foreignTIN ? onBoardingFormValues?.foreignTIN : onBoardingFormValuesPrevStepData?.foregionTIN ? onBoardingFormValuesPrevStepData?.foregionTIN :"",
     isFTINNotLegallyRequired: false,
     tinisFTINNotLegallyRequired: "",
-    itemList:onBoardingFormValuesPrevStepData?.items ? onBoardingFormValuesPrevStepData.items: [],
     isNotLegallyFTIN: "",
-    ReasionForForegionTIN_NotAvailable: onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable ? onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable : "",
-    // taxLbltyOtherJurisdictions: (itemsData?.length > 0) ?itemsData : itemsData2,
+    reasionForForegionTIN_NotAvailable: onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable ? onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable : "",
     taxLbltyOtherJurisdictions:itemsData2
   };
 
@@ -142,7 +145,7 @@ export default function Tin(props: any) {
        validateOnMount={false}
         initialValues={initialValue}
         enableReinitialize
-        validationSchema={US_TINSchema}
+        validationSchema={EntityUS_TINSchema}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
           const temp = {
@@ -159,21 +162,25 @@ export default function Tin(props: any) {
           //   accountHolderBasicDetailId: authDetails?.accountHolderId,
           //   stepName: null,
           // };
-          const returnPromise = new Promise((resolve, reject) => {
-            dispatch(
-                postSCIndividualEForm(temp,
-                (responseData: any) => {
-                  localStorage.setItem("PrevStepData", JSON.stringify(temp));
-                  resolve(responseData);
-                  history("/Cayman/Individual/Start/Certification");
-                },
-                (err: any) => {
-                  reject(err);
-                }
-              )
-            );
-          })
-          return returnPromise
+
+          //Working code
+          // const returnPromise = new Promise((resolve, reject) => {
+          //   dispatch(
+          //       postSCIndividualEForm(temp,
+          //       (responseData: any) => {
+          //         localStorage.setItem("PrevStepData", JSON.stringify(temp));
+          //         resolve(responseData);
+          //         history("/Cayman/Individual/Start/Certification");
+          //       },
+          //       (err: any) => {
+          //         reject(err);
+          //       }
+          //     )
+          //   );
+          // })
+          // return returnPromise
+
+
           // dispatch(
           //   CREATE_8233(values, () => {
           //     history("/Form8233/TaxPayer_Identification/Owner");
@@ -196,7 +203,8 @@ export default function Tin(props: any) {
         }) => (
           <Form onSubmit={handleSubmit}>
 
-            {/* <>{console.log(errors, values, "errorsssss")}</> */}
+            <>{console.log("errors", errors)}</>
+            <>{console.log("values", values)}</>
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
@@ -205,14 +213,14 @@ export default function Tin(props: any) {
         <div className="row w-100">
        <div className="col-4">
           <div style={{ padding: "20px 0px",height:"100%" }}>
-          <BreadCrumbComponent breadCrumbCode={1310} formName={FormTypeId.CaymanEntity}/>
+          <BreadCrumbComponent breadCrumbCode={1330} formName={FormTypeId.CaymanEntity}/>
       </div>
       </div>
       <div className="col-8 mt-3">
               <div style={{ padding: "13px" }}>
                 
                 <Paper style={{ padding: "10px" }}>
-                {toolInfo === "ForegionTIN" ? (
+                {toolInfo === "foregionTIN" ? (
                     <div className="mt-1">
                       <Paper
                       
@@ -359,7 +367,7 @@ export default function Tin(props: any) {
                             value={values.usTinTypeId}
                             onChange={(e) => {
                               handleChange(e);
-                              setTimeout(() => { setFieldValue("ReasionForForegionTIN_NotAvailable", ""); }, 200)
+                              setTimeout(() => { setFieldValue("reasionForForegionTIN_NotAvailable", ""); }, 200)
                               if (
                                 e.target.value === "1" ||
                                 e.target.value === "7"
@@ -417,7 +425,7 @@ export default function Tin(props: any) {
                             // onBlur={handleBlur}
                             onChange={(e: any) => {
                               handleChange(e);
-                              setTimeout( () => { setFieldValue("ReasionForForegionTIN_NotAvailable","");},200)
+                              setTimeout( () => { setFieldValue("reasionForForegionTIN_NotAvailable","");},200)
                             }}
                            
                             style={{
@@ -582,7 +590,7 @@ export default function Tin(props: any) {
                                   handleChange(e);
                                 }}
                               >
-                                <option value={0}>---select---</option>
+                                <option value={""}>---select---</option>
 
                                 {notUsIndividual?.map((ele: any) => (
                                   // ele?.nonUSIndividual &&
@@ -602,7 +610,9 @@ export default function Tin(props: any) {
                                   // );
                                 ))}
                               </select>
-                              {/* <p className="error">{errors.usTinTypeId}</p> */}
+                              {errors?.usTinTypeId && typeof errors?.usTinTypeId === 'string' && (
+                                <p className="error">{errors?.usTinTypeId}</p>
+                              )}
                             </div>
 
                             <div className="col-lg-5 col-12">
@@ -615,7 +625,7 @@ export default function Tin(props: any) {
                                 value={values.usTin}
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                error={Boolean(touched.usTin && errors.usTin)}
+                                //error={Boolean(touched.usTin && errors.usTin)}
                                 style={{
                                   border: " 1px solid #d9d9d9 ",
                                   padding: " 0 10px",
@@ -625,12 +635,9 @@ export default function Tin(props: any) {
                                   width: "100%",
                                 }}
                               />
-                              {values.notAvailable ? (
-                                ""
-                              ) :
-                                // <p className="error">{errors.usTin}</p>
-                                " "
-                              }
+                              {errors?.usTin && typeof errors?.usTin === 'string' && (
+                                <p className="error">{errors?.usTin}</p>
+                              )}
                             </div>
                             <div className="col-lg-2 ">
                               <div className="radio" style={{ marginTop: "17px" }}>
@@ -696,13 +703,13 @@ export default function Tin(props: any) {
                               height: "40px",
                               width: "100%",
                             }}
-                            name="ForeginTIN_CountryId"
+                            name="foreginTIN_CountryId"
                             id="Income"
                             onBlur={handleBlur}
-                            value={values.ForeginTIN_CountryId}
+                            value={values.foreginTIN_CountryId}
                             onChange={(e) => {
                               handleChange(e);
-                              //setTimeout(() => { setFieldValue("ReasionForForegionTIN_NotAvailable", ""); }, 200)
+                              //setTimeout(() => { setFieldValue("reasionForForegionTIN_NotAvailable", ""); }, 200)
                               setTimeout( () => { setFieldValue("tinisFTINNotLegallyRequired","No");},200)
                             }}
                           >
@@ -716,16 +723,16 @@ export default function Tin(props: any) {
                                   )
                                 )}
                           </select>
-                          {errors?.ForeginTIN_CountryId && typeof errors?.ForeginTIN_CountryId === 'string' && (
-                                <p className="error">{errors?.ForeginTIN_CountryId}</p>
+                          {errors?.foreginTIN_CountryId && typeof errors?.foreginTIN_CountryId === 'string' && (
+                                <p className="error">{errors?.foreginTIN_CountryId}</p>
                               )}
-                          {/* <p className="error">{errors?.ForeginTIN_CountryId}</p> */}
+                          {/* <p className="error">{errors?.foreginTIN_CountryId}</p> */}
 
                           {/* <div style={{ marginTop: "2px" }}>
                             <Checkbox
                               value={values.isFTINNotLegallyRequired}
                               checked={values.isFTINNotLegallyRequired}
-                              onChange={(e)=>{handleChange(e);{setFieldValue("tinisFTINNotLegallyRequired", "")}setFieldValue("ForegionTIN", "");
+                              onChange={(e)=>{handleChange(e);{setFieldValue("tinisFTINNotLegallyRequired", "")}setFieldValue("foregionTIN", "");
                             }}
 
                                 size="medium"
@@ -827,7 +834,7 @@ export default function Tin(props: any) {
                         <div className="col-lg-5 col-12">
                           <Typography style={{fontSize:"14px"}}>
                             Foreign TIN{" "}
-                            {values.ForeginTIN_CountryId == 257 ?(  <span>  <Tooltip
+                            {values.foreginTIN_CountryId == 257 ?(  <span>  <Tooltip
                               style={{
                                 backgroundColor: "black",
                                 color: "white",
@@ -836,14 +843,14 @@ export default function Tin(props: any) {
                               title={
                                 <>
                                  
-                                  <a onClick={() => setToolInfo("ForegionTIN")}>
+                                  <a onClick={() => setToolInfo("foregionTIN")}>
                                    
                                   </a>
                                 </>
                               }
                             >
                               <Info
-                               onClick={() => setToolInfo("ForegionTIN")}
+                               onClick={() => setToolInfo("foregionTIN")}
                                 style={{
                                   color: "#ffc107",
                                   fontSize: "15px",
@@ -861,13 +868,13 @@ export default function Tin(props: any) {
                               type="text"
                               disabled={
                                 values.isFTINNotLegallyRequired ||
-                                values.ForeginTIN_CountryId == "1" 
+                                values.foreginTIN_CountryId == "1" 
                                
                                 
                                 
                               }
-                              name="ForegionTIN"
-                              value={values.ForegionTIN}
+                              name="foregionTIN"
+                              value={values.foregionTIN}
                               onBlur={handleBlur}
                               onChange={(e)=>{
                                 const re = /^[0-9\b]+$/;
@@ -880,7 +887,7 @@ export default function Tin(props: any) {
 
                              
                               error={Boolean(
-                                touched.ForegionTIN && errors.ForegionTIN
+                                touched.foregionTIN && errors.foregionTIN
                               )}
                               style={{
                                 border: " 1px solid #d9d9d9 ",
@@ -897,17 +904,17 @@ export default function Tin(props: any) {
                               type="text"
                               disabled={
                                 values.isFTINNotLegallyRequired ||
-                                values.ForeginTIN_CountryId == "1" ||
+                                values.foreginTIN_CountryId == "" ||
                                 values.tinisFTINNotLegallyRequired ==="NO"
                               }
                               placeholder="ENTER FOREIGN TIN"
-                              name="ForegionTIN"
-                              value={values.ForegionTIN}
+                              name="foregionTIN"
+                              value={values.foregionTIN}
                               onBlur={handleBlur}
                               onChange={handleChange}
-                              error={Boolean(
-                                touched.ForegionTIN && errors.ForegionTIN
-                              )}
+                              // error={Boolean(
+                              //   touched.foregionTIN && errors.foregionTIN
+                              // )}
                               style={{
                                 border: " 1px solid #d9d9d9 ",
                                 padding: " 0 10px",
@@ -919,16 +926,16 @@ export default function Tin(props: any) {
                             />
                             
                           )}
-                           {/* {errors?.ForegionTIN && errors.ForeginTIN_CountryId && typeof errors?.ForegionTIN === 'string' && (
-                                <p className="error">{errors?.ForegionTIN}</p>
-                            )} */}
+                           {errors?.foregionTIN  && typeof errors?.foregionTIN === 'string' && (
+                                <p className="error">{errors?.foregionTIN}</p>
+                            )}
 
                         
-                          {/* {errors.ForegionTIN &&
-                            touched.ForegionTIN ? (
+                          {/* {errors.foregionTIN &&
+                            touched.foregionTIN ? (
                               <div>
                                 <Typography color="error">
-                                  {errors.ForegionTIN}
+                                  {errors.foregionTIN}
                                 </Typography>
                               </div>
                             ) : (
@@ -1006,9 +1013,10 @@ export default function Tin(props: any) {
                     value={values.tinisFTINNotLegallyRequired}
                     onChange={handleChange}
                     onClick={() => {
-                      setFieldValue("ForegionTIN","");
+                      setFieldValue("foregionTIN","");
                       setTimeout(() => {
-                        setFieldValue("ForeginTIN_CountryId","");
+                        setFieldValue("foreginTIN_CountryId","");
+                        //setFieldValue("isFTINNotLegallyRequired", true)
                       }, 200);
                     }}
 
@@ -1191,51 +1199,8 @@ export default function Tin(props: any) {
                           )}
                         </>
                       )}
-                    {values.itemList.map((item:any, index:any) => (
-                        (item.permanentResidentialCountryId!=0 && (
-                            <>
-                            <Typography>
-                                Country where you have a tax liablity
-                            </Typography>
-                            
-                            {GetAgentCountriesImportantForEformData?.map(
-                                                (ele: any) => (
-                                                  ele.id === item.permanentResidentialCountryId && (
-                                                    <Typography>
-                                                        ele.name
-                                                        </Typography>
-                                                  )
-                                                )
-                                              )}
-                            {item.permanentResidentialCountryId === '257' && (
-                                <>
-                                United Kingdom
-                                </>
-                            )}
-                            {item.permanentResidentialCountryId === '258' && (
-                                <>
-                                United States
-                                </>
-                            )}
-                            {item.permanentResidentialCountryId === '45' && (
-                                <>
-                                Canada
-                                </>
-                            )}
-                            <Typography>
-                            Enter the corresponding number:
-                            </Typography>
-                            <Typography>
-                            <input type="text" disabled value={item.taxReferenceNumber}/>
-                            </Typography>
-                            
-                        </>
-
-                        )) 
-                        
-                        
-                    ))}
-
+                   
+                   <Divider className="dividr" />
                         <FieldArray name="items">
                           {({ push, remove }) => (
                             <div>
@@ -1273,27 +1238,77 @@ export default function Tin(props: any) {
                                             
                                             if (currentValue === "Yes") {
                                               // Push a new item into the array only if the selected value is "Yes"
-                                              handleChange({
-                                                target: {
-                                                  name: "taxLbltyOtherJurisdictions",
-                                                  value: [
-                                                    ...values.taxLbltyOtherJurisdictions,
-                                                    { 
-                                                      id: 0,
-                                                      agentId: authDetails?.agentId,
-                                                      formTypeId: FormTypeId.CaymanIndividual,
-                                                      formEntryId: 0,
-                                                      accountHolderDetailsId:authDetails?.accountHolderId,
-                                                      doesIndiHavTaxLbltyinOtherJurisdictions: "",
-                                                      countryIdforTaxLiability: "",
-                                                      taxReferenceNumber: "",
-                                                      isTINFormatNotAvailable: false,
-                                                    }
-                                                  ],
-                                                },
-                                              });
+
+                                              if(index > 0){
+                                                if(values.taxLbltyOtherJurisdictions[index-1].countryIdforTaxLiability === "" && values.taxLbltyOtherJurisdictions[index-1].notAvailable === false){
+                                                  setTimeout(() => {
+                                                    setFieldValue(`taxLbltyOtherJurisdictions.${index-1}.countryError`, true)
+                                                    setFieldValue(`taxLbltyOtherJurisdictions.${index-1}.tinError`, true)
+                                                  },200)
+                                                  
+                                                }else{
+                                                  setTimeout(() => {
+                                                    setFieldValue(`taxLbltyOtherJurisdictions.${index-1}.countryError`, false)
+                                                    setFieldValue(`taxLbltyOtherJurisdictions.${index-1}.tinError`, false)
+
+                                                  },200)
+                                                }
+
+                                                if(values.taxLbltyOtherJurisdictions[index-1].countryIdforTaxLiability !== "" || values.taxLbltyOtherJurisdictions[index-1].notAvailable === true){
+                                                  handleChange({
+                                                    target: {
+                                                      name: "taxLbltyOtherJurisdictions",
+                                                      value: [
+                                                        ...values.taxLbltyOtherJurisdictions,
+                                                        { 
+                                                          id: 0,
+                                                          agentId: authDetails?.agentId,
+                                                          formTypeId: FormTypeId.CaymanIndividual,
+                                                          formEntryId: 0,
+                                                          accountHolderDetailsId:authDetails?.accountHolderId,
+                                                          doesIndiHavTaxLbltyinOtherJurisdictions: "No",
+                                                          countryIdforTaxLiability: "",
+                                                          taxReferenceNumber: "",
+                                                          isTINFormatNotAvailable: false,
+                                                          countryError:false,
+                                                          tinError:false,
+                                                          notAvailable:false
+                                                        }
+                                                      ],
+                                                    },
+                                                  });
+                                                  setFieldValue(`taxLbltyOtherJurisdictions.${index}.doesIndiHavTaxLbltyinOtherJurisdictions`, currentValue);
+                                                }
+                                              }else{
+                                                handleChange({
+                                                  target: {
+                                                    name: "taxLbltyOtherJurisdictions",
+                                                    value: [
+                                                      ...values.taxLbltyOtherJurisdictions,
+                                                      { 
+                                                        id: 0,
+                                                        agentId: authDetails?.agentId,
+                                                        formTypeId: FormTypeId.CaymanIndividual,
+                                                        formEntryId: 0,
+                                                        accountHolderDetailsId:authDetails?.accountHolderId,
+                                                        doesIndiHavTaxLbltyinOtherJurisdictions: "No",
+                                                        countryIdforTaxLiability: "",
+                                                        taxReferenceNumber: "",
+                                                        isTINFormatNotAvailable: false,
+                                                        countryError:false,
+                                                        tinError:false,
+                                                        notAvailable:false
+                                                      }
+                                                    ],
+                                                  },
+                                                });
+                                                setFieldValue(`taxLbltyOtherJurisdictions.${index}.doesIndiHavTaxLbltyinOtherJurisdictions`, currentValue);
+                                              }
+
+
+                                              
                                             }
-                                            setFieldValue(`taxLbltyOtherJurisdictions.${index}.doesIndiHavTaxLbltyinOtherJurisdictions`, currentValue);
+                                            
                                           }}
                                           
                                           id="doesIndiHavTaxLbltyinOtherJurisdictions"
@@ -1316,7 +1331,7 @@ export default function Tin(props: any) {
                                         {errors.doesIndiHavTaxLbltyinOtherJurisdictions}
                                       </p> */}
                                     </FormControl>
-                                    <Divider className="dividr" />
+                                    {/* <Divider className="dividr" /> */}
                                     {values.taxLbltyOtherJurisdictions[index].doesIndiHavTaxLbltyinOtherJurisdictions == 'Yes' ? (
                                         <>
 
@@ -1348,7 +1363,12 @@ export default function Tin(props: any) {
                                               name={`taxLbltyOtherJurisdictions.${index}.countryIdforTaxLiability`}
                                               id="Income"
                                               defaultValue={1}
-                                              onChange={handleChange}
+                                              onChange={(e) => {
+                                                handleChange(e)
+                                                setTimeout(() => {
+                                                  setFieldValue(`taxLbltyOtherJurisdictions.${index}.countryError`, false);
+                                                },200)
+                                              }}
                                               value={values.taxLbltyOtherJurisdictions[index].countryIdforTaxLiability}
                                             >
                                               <option value="">---select---</option>
@@ -1365,18 +1385,14 @@ export default function Tin(props: any) {
                                               )}
                                             </select>
                                             {
-                                              values.taxLbltyOtherJurisdictions[index].doesIndiHavTaxLbltyinOtherJurisdictions === 'Yes' &&
-                                              values.taxLbltyOtherJurisdictions[index].countryIdforTaxLiability === "" || 
-                                              values.taxLbltyOtherJurisdictions[index].countryIdforTaxLiability === "0" ? 
-                                              // (setFieldValue("isValid", false), 
+                                              values.taxLbltyOtherJurisdictions[index].countryError === true  ? 
                                               <p className="error">Please select Country</p>
                                               : 
                                               ""
-                                              // (setFieldValue("isValid", true), null)
                                             }
                                           </FormControl>
 
-                                          <Divider className="dividr" />
+                                          {/* <Divider className="dividr" /> */}
 
                                           <Typography>
                                             Enter TIN:
@@ -1386,37 +1402,19 @@ export default function Tin(props: any) {
                                           <div className="d-flex">
                                             <FormControl className="form">
                                               {values.taxLbltyOtherJurisdictions[index].notAvailable === true ? (
-                                                //   <Input
-                                                //   fullWidth
-                                                //   type="text"
-                                                //   disabled={
-                                                //     values.isFTINNotLegallyRequired ||
-                                                //     values.ForeginTIN_CountryId == "1" ||
-                                                //     values.tinisFTINNotLegallyRequired ==="NO"
-                                                //   }
-                                                //   placeholder="ENTER FOREIGN TIN"
-                                                //   name="ForegionTIN"
-                                                //   value={values.ForegionTIN}
-                                                //   onBlur={handleBlur}
-                                                //   onChange={handleChange}
-                                                //   error={Boolean(
-                                                //     touched.ForegionTIN && errors.ForegionTIN
-                                                //   )}
-                                                //   style={{
-                                                //     border: " 1px solid #d9d9d9 ",
-                                                //     padding: " 0 10px",
-                                                //     color: "#7e7e7e",
-                                                //     fontStyle: "italic",
-                                                //     height: "40px",
-                                                //     width: "100%",
-                                                //   }}
-                                                // />
+                                                
                                                 <Input
                                                   name={`taxLbltyOtherJurisdictions.${index}.tinNumber`}
-                                                  onChange={handleChange}
+                                                  onChange={(e) => {
+                                                    handleChange(e)
+                                                    setTimeout(() => {
+                                                      setFieldValue(`taxLbltyOtherJurisdictions.${index}.tinError`, false);
+                                                    },200)
+                                                  }}
                                                   value={values.taxLbltyOtherJurisdictions[index].tinNumber}
                                                   disabled
                                                   className="input"
+                                                  placeholder="ENTER TIN"
                                                   style={{
                                                     border: " 1px solid #d9d9d9 ",
                                                     padding: " 0 10px",
@@ -1429,9 +1427,15 @@ export default function Tin(props: any) {
                                               ) : (
                                                 <Input
                                                   name={`taxLbltyOtherJurisdictions.${index}.tinNumber`}
-                                                  onChange={handleChange}
+                                                  onChange={(e) => {
+                                                    handleChange(e)
+                                                    setTimeout(() => {
+                                                      setFieldValue(`taxLbltyOtherJurisdictions.${index}.tinError`, false);
+                                                    },200)
+                                                  }}
                                                   value={values.taxLbltyOtherJurisdictions[index].tinNumber}
                                                   className="number"
+                                                  placeholder="ENTER TIN"
                                                   style={{
                                                     border: " 1px solid #d9d9d9 ",
                                                     padding: " 0 10px",
@@ -1450,6 +1454,12 @@ export default function Tin(props: any) {
                                                 : 
                                                 (setFieldValue("isValid", true), null)
                                               } */}
+                                              {
+                                              values.taxLbltyOtherJurisdictions[index].tinError === true  ? 
+                                              <p className="error">Please Enter TIN</p>
+                                              : 
+                                              ""
+                                            }
                                               
                                             </FormControl>
                                             {/* {values.permanentResidentialCountryId == 257?( */}
@@ -1462,14 +1472,14 @@ export default function Tin(props: any) {
                                                   setFieldValue(`taxLbltyOtherJurisdictions.${index}.notAvailable`, newValue);
                                                   // Optionally, reset taxReferenceNumber when the checkbox is checked
                                                   if (isChecked) {
-                                                    setFieldValue("taxReferenceNumber", "");
+                                                    setFieldValue(`taxLbltyOtherJurisdictions.${index}.tinNumber`, "");
+                                                    setFieldValue(`taxLbltyOtherJurisdictions.${index}.countryIdforTaxLiability`, "");
                                                   }
                                                 }}
                                                 checked={values.taxLbltyOtherJurisdictions[index].notAvailable || false} // Ensure value is boolean
-                                                required
                                               />
                                               <div className="mt-2">
-                                                Not Avaiable
+                                                Not Available
                                               </div>
                                             </div>
                                           
@@ -1486,17 +1496,31 @@ export default function Tin(props: any) {
                             </div>
                           )}
                           </FieldArray>
-                      
+                          <Divider className="dividr" />
                       {values.notAvailable ? (<div style={{ marginLeft: "20px" }}>
                         <Typography>
                           Please specify the reason for non-availability of US TIN{" "}
                           <span style={{ color: "red" }}>*</span>
                         </Typography>
-
-                      <Input
+                        <textarea
+                            name="reasionForUSTIN_NotAvailable"
+                            value={
+                              values.reasionForUSTIN_NotAvailable
+                            }
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            style={{
+                              border: " 1px solid #d9d9d9 ",
+                              padding: " 0 10px",
+                              color: "#121112",
+                              //fontStyle: "italic",
+                              height: "8rem",
+                              width: "100%",
+                            }} />
+                      {/* <Input
                         fullWidth
-                        value={values.ReasionForForegionTIN_NotAvailable}
-                        name="ReasionForForegionTIN_NotAvailable"
+                        value={values.reasionForUSTIN_NotAvailable}
+                        name="reasionForUSTIN_NotAvailable"
                         type="text"
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -1512,7 +1536,11 @@ export default function Tin(props: any) {
                           height: "6rem",
                           width: "100%",
                         }}
-                      />
+                      /> */}
+                      {errors?.reasionForUSTIN_NotAvailable && typeof errors?.reasionForUSTIN_NotAvailable === 'string' && (
+                          <p className="error">{errors?.reasionForUSTIN_NotAvailable}</p>
+                      )}
+                      
                                      
                     </div>):""}
 
@@ -1540,14 +1568,32 @@ export default function Tin(props: any) {
                             providing we may not be able to apply treaty benefits
                             should they apply and may render the form invalid.
                           </Typography>
-                          <Input
-                            fullWidth
-                            type="text"
-                            name="ReasionForForegionTIN_NotAvailable"
-                            value={values.ReasionForForegionTIN_NotAvailable}
+
+
+                          <textarea
+                            name="reasionForForegionTIN_NotAvailable"
+                            value={
+                              values.reasionForForegionTIN_NotAvailable
+                            }
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            error={Boolean(touched.ReasionForForegionTIN_NotAvailable && errors.ReasionForForegionTIN_NotAvailable)}
+                            style={{
+                              border: " 1px solid #d9d9d9 ",
+                              padding: " 0 10px",
+                              //color: "#121112",
+                              //fontStyle: "italic",
+                              height: "8rem",
+                              width: "100%",
+                            }} />
+
+                          {/* <Input
+                            fullWidth
+                            type="text"
+                            name="reasionForForegionTIN_NotAvailable"
+                            value={values.reasionForForegionTIN_NotAvailable}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            error={Boolean(touched.reasionForForegionTIN_NotAvailable && errors.reasionForForegionTIN_NotAvailable)}
                             style={{
                               border: " 1px solid #d9d9d9 ",
                               padding: " 0 10px",
@@ -1556,14 +1602,10 @@ export default function Tin(props: any) {
                               height: "7rem",
                               width: "100%",
                             }}
-                          />
-                          {/* {errors && errors?.ReasionForForegionTIN_NotAvailable  && (
-                            <div>
-                              <Typography color="error">
-                                {errors?.ReasionForForegionTIN_NotAvailable}
-                              </Typography>
-                            </div>
-                          )} */}
+                          /> */}
+                          {errors?.reasionForForegionTIN_NotAvailable && typeof errors?.reasionForForegionTIN_NotAvailable === 'string' && (
+                          <p className="error">{errors?.reasionForForegionTIN_NotAvailable}</p>
+                          )}
                         </div>
                       ) : (
                         ""
