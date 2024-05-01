@@ -108,6 +108,7 @@ export default function Declaration (props: any){
                   )
                 );
               })
+              history("/Cayman/Entity/TIN")
               return returnPromise;
 
             }}
