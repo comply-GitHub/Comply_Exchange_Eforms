@@ -173,7 +173,7 @@ export default function Term() {
         </div>
       </div>
 
-      {userType === "DC" ? (
+      {authDetails?.configurations?.userType === "DC" ? (
                   <div style={{ marginTop: "25px" }}>
                     <Button
                       type="submit"

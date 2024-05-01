@@ -10,6 +10,7 @@ import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
 import { W8_state_ECI, postW8BENForm } from "../../../../../Redux/Actions";
 import { useDispatch } from "react-redux";
+import useAuth from "../../../../../customHooks/useAuth";
 
 const Declaration = (props: any) => {
   const location = useLocation();
@@ -22,7 +23,7 @@ const Declaration = (props: any) => {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsCheckboxChecked(event.target.checked);
   };
-
+  const { authDetails } = useAuth();
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
@@ -36,7 +37,7 @@ const Declaration = (props: any) => {
   const agentDefaultDetails = JSON.parse(
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
-
+  const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const initialValue = {
     declaration: false,
@@ -66,10 +67,11 @@ const Declaration = (props: any) => {
                 setSubmitting(true);
                 const new_obj = {
                   ...PrevStepData,
+                  FormTypeSelectionId: obValues.businessTypeId,
                   statusId: 2,
                   stepName: `/${urlValue}`,
                 };
-                const result = { ...PrevStepData, ...values };
+                const result = { ...PrevStepData, ...values , FormTypeSelectionId: obValues.businessTypeId,AgentId:authDetails.agentId,AccountHolderBasicDetailId:authDetails.accountHolderId};
                 dispatch(
                   postW8BENForm(result, () => {
                     localStorage.setItem(

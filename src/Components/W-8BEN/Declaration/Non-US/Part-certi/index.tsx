@@ -92,6 +92,7 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
     const [securityWordError, setSecurityWordError] = useState("");
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
+  const Values = JSON.parse(localStorage.getItem("agentDetails") || '{}')
   const initialValue = {
     signedBy: W8BENData?.signedBy ?? "",
     EnterconfirmationCode:"",
@@ -120,15 +121,15 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
         initialValues={initialValue}
         validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
-          history("/W-8BEN/Declaration/US_Tin/Certificates/Submit_Ben");
+         
          
           if (clickCount === 0) {
         
             setClickCount(clickCount+1);
           }else{
             setSubmitting(true)
-            const new_obj = { ...PrevStepData, stepName: `/${urlValue}`,date:moment(values.date).format() }
-            const result = { ...new_obj, ...values };
+            const new_obj = { ...PrevStepData, stepName: `/${urlValue}`,date:moment(values.date).format(), FormTypeSelectionId: obValues.businessTypeId, }
+            const result = { ...new_obj, ...values ,FormTypeSelectionId: Values.businessTypeId,AgentId:authDetails.agentId,AccountHolderBasicDetailId:authDetails.accountHolderId};
                         dispatch(
                           postW8BENForm(result, () => {
                             localStorage.setItem("PrevStepData",JSON.stringify(result))
@@ -242,14 +243,7 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                   >
                     W-8BEN Electronic Substitute Form Statement
                   </Typography>
-                  <Typography
-                    align="left"
-                    style={{ margin: "10px", fontSize: "18px", color: "grey" }}
-                  >
-                    The Internal Revenue Service does not require your consent
-                    to any provisions of this document other than the
-                    certifications required to avoid backup withholding.
-                  </Typography>
+                
 
                   <div
                     className="row"
@@ -775,6 +769,7 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                         </div>
                     <Button
                       type="submit"
+                      disabled={!isValid}
                       // onClick={() => {
                       //   history("/Submit");
                       //   //  setOpen2(true)

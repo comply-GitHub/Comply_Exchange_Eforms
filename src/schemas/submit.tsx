@@ -40,7 +40,7 @@ export const SelfCertSchema_DC = () => {
 
 export const SubmitSchema_BEN = () => {
 return Yup.object().shape({
-  isSubmit: Yup.boolean().test(
+  IsSubmit: Yup.boolean().test(
     'is-exclusive',
     '',
     function (value) {
@@ -53,8 +53,8 @@ return Yup.object().shape({
     'is-exclusive',
     '',
     function (value) {
-      const { isSubmit } = this.parent;
-      return (value && !isSubmit) || (!value && isSubmit);
+      const { IsSubmit } = this.parent;
+      return (value && !IsSubmit) || (!value && IsSubmit);
     }
   ),
   declaration: Yup.boolean().oneOf(
@@ -66,7 +66,7 @@ return Yup.object().shape({
 
 export const SubmitSchemaForm8233 = () => {
   return Yup.object().shape({
-    isSubmit: Yup.boolean().test(
+    IsSubmit: Yup.boolean().test(
       'is-exclusive',
       '',
       function (value) {
@@ -79,8 +79,8 @@ export const SubmitSchemaForm8233 = () => {
       'is-exclusive',
       '',
       function (value) {
-        const { isSubmit } = this.parent;
-        return (value && !isSubmit) || (!value && isSubmit);
+        const { IsSubmit } = this.parent;
+        return (value && !IsSubmit) || (!value && IsSubmit);
       }
     ),
     declaration: Yup.boolean().oneOf(

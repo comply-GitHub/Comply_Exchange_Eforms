@@ -330,7 +330,7 @@ export const certificateSchema_w8Ben = () => {
       [true],
       "Please mark the checkbox"
     ),
-    isBackup: Yup.boolean().oneOf([true], "Please mark the checkbox"),
+   
     isCapacityForm: Yup.boolean().oneOf([true], "Please mark the checkbox"),
     isElectronicForm: Yup.boolean().oneOf([true], "Please mark the checkbox"),
   });
