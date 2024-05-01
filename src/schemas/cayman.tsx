@@ -130,6 +130,71 @@ export const EntityStartSchema = () => {
 };
 
 
+export const EntityUS_TINSchema = () => {
+  return Yup.object().shape({
+    notAvailable: Yup.boolean(),
+    usTinTypeId: Yup.number().when("notAvailable", {
+      is: false,
+      then: () => Yup.number().required("Please select a valid option"),
+      otherwise: () => Yup.number().notRequired(),
+    }),
+    
+    usTin: Yup.string().when("notAvailable", {
+      is: false,
+      then: () =>Yup.string().required("Please enter US Tin"),
+      otherwise: () => Yup.string().notRequired()
+    }),
+    
+    reasionForUSTIN_NotAvailable:Yup.string().when("notAvailable", {
+      is: true,
+      then: () =>Yup.string().required("Please Specify Reason"),
+      otherwise:() => Yup.string().notRequired()
+    }), 
 
+
+    
+    isFTINNotLegallyRequired: Yup.boolean(),
+    
+
+    tinisFTINNotLegallyRequired: Yup.string(),
+
+    foreginTIN_CountryId:  Yup.string().when("tinisFTINNotLegallyRequired", {
+      is: (value:any) => value !== "NO",
+      then: () =>Yup.string().required("Please select Foreign Tin Country"),
+      otherwise:() => Yup.string().notRequired()
+      
+    }),
+    foregionTIN: Yup.string().when("tinisFTINNotLegallyRequired", {
+      is: (value:any) => value !== "NO",
+      then: () =>Yup.string().required("Please enter Foreign Tin"),
+      otherwise: () => Yup.string().notRequired()
+      
+    }),
+
+    reasionForForegionTIN_NotAvailable: Yup.string().when("tinisFTINNotLegallyRequired", {
+      is: "NO",
+      then: () =>
+        Yup.string()
+        .required("Please Specify Reason"),
+    }),
+  
+   
+    // isNotLegallyFTIN: Yup.string().when("isFTINNotLegallyRequired", {
+    //   is: true,
+    //   then: () =>
+    //     Yup.string()
+    //     .required("Please Select"),
+    // }),
+    // taxLbltyOtherJurisdictions: Yup.array().of(Yup.object().shape({
+    //   countryIdforTaxLiability: Yup.string().required('Please select a country'),
+    //   isTINFormatNotAvailable: Yup.string().required("Please select checkbox"),
+    //   taxReferenceNumber: Yup.string().when('isTINFormatNotAvailable', {
+    //     is: true,
+    //     then: () => Yup.string().required('Please enter the tax reference number'),
+    //     otherwise: () => Yup.string().notRequired(),
+    //   }),
+    // })),
+  });
+};
 
 

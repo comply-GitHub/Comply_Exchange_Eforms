@@ -15,7 +15,7 @@ import { FormTypeId } from "../../../../Utils/constVals";
 import { SubmitSchema } from "../../../../schemas/submit";
 import InfoIcon from "@mui/icons-material/Info";
 
-import { PostDualCert } from "../../../../Redux/Actions";
+import { PostDualCert, upsertFATCAStepsDetails } from "../../../../Redux/Actions";
 import Utils from "../../../../Utils";
 import SideBar from "../../../Reusable/SideBar";
 
@@ -35,6 +35,7 @@ export default function Final (props: any){
 
   
     const initialValue = {
+      
         heading1:FATCAClassificationData?.heading1 ? FATCAClassificationData?.heading1 : "",
         subHeading1:FATCAClassificationData?.subheading1 ? FATCAClassificationData?.subheading1 : "",
         heading2:FATCAClassificationData?.heading2 ? FATCAClassificationData?.heading2 : "",
@@ -47,14 +48,20 @@ export default function Final (props: any){
         subHeading5:FATCAClassificationData?.subheading5 ? FATCAClassificationData?.subheading5 : "",
         selectedHeading: FATCAClassificationData?.selectedHeading ? FATCAClassificationData?.selectedHeading : "",
         selectedSubHeading: FATCAClassificationData?.selectedSubHeading ? FATCAClassificationData?.selectedSubHeading : "",
-        GIIN:"",
-        fullnameofsponsorsntity:"",
-        sponsorentitygiin:"",
-        trusteegiin:"",
-        exemption:"",
-        status:"",
-        qualifyingcriteria:"",
-        directreportinggiin:""
+        
+        classificationType:"FATCA",
+        userType : "SC",
+        gIINNumber:"",
+        sponsoringEntityGIIN:"",
+        sponsoredEntityGIIN:"",
+        trusteeGIIN:"",
+        exemptionFromGIIN:"",
+        gIINStatus:"",
+        qualifyingCriteria:"",
+        directReportingNFFEsGIIN:"",
+        isSubstantialUSOwnerInformation:false,
+        isControllingPersonsInformation:false,
+        fullNameOfSponsorsEntity:"",
     };
 
 
@@ -83,28 +90,30 @@ export default function Final (props: any){
               //validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
 
-                history("/Cayman/Entity/CRS/Start")
+                
                 // console.log("values", values)
                 // setSubmitting(true);
-                // const result = {
-                //   ...PrevStepData, 
-                //   ...values,
+                const result = {
+                  ...PrevStepData, 
+                  ...values,
                  
-                //   statusId: 1,
-                // };
-              //   const returnPromise = new Promise((resolve, reject) => {
-              //   dispatch(
-              //     PostDualCert(result, (data: any) => {
-              //       localStorage.setItem("SelfCertData", JSON.stringify(result))
-              //       resolve(data);
-              //     }
-              //       , (err: any) => {
-              //         reject(err);
-              //       }
-              //     )
-              //   );
-              // })
-              // return returnPromise;
+                  statusId: 1,
+                };
+                const returnPromise = new Promise((resolve, reject) => {
+                dispatch(
+                  upsertFATCAStepsDetails(result, (data: any) => {
+                    localStorage.setItem("SelfCertData", JSON.stringify(result))
+                    resolve(data);
+                    history("/Cayman/Entity/CRS/Start")
+                  }
+                    , (err: any) => {
+                      reject(err);
+                    }
+                  )
+                );
+              })
+              
+              return returnPromise;
 
             }}
             >
@@ -121,6 +130,8 @@ export default function Final (props: any){
                 isValid
               }) => (
                 <form onSubmit={handleSubmit}>
+                  <>{console.log("values", values)}</>
+                  <>{console.log("error", errors)}</>
                  {!isAccordionVisible && ( <>
                    <div style={{justifyContent:"space-between",display:"flex",marginTop:"10px"}}>
                   <Typography
@@ -200,6 +211,7 @@ export default function Final (props: any){
                     marginLeft: "10px"
 
                   }}
+                  
                 >
                   Confirm
                 </Button>
@@ -257,15 +269,15 @@ export default function Final (props: any){
                     Please provide GIIN here:
                 </Typography>
                 <Input
-                    name="GIIN"
+                    name="gIINNumber"
                     value={
-                    values.GIIN
+                    values.gIINNumber
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.GIIN &&
-                    errors.GIIN
+                    touched.gIINNumber &&
+                    errors.gIINNumber
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -293,15 +305,15 @@ export default function Final (props: any){
                     Please enter the full legal name of the sponsoring entity here:
                 </Typography>
                 <Input
-                    name="fullnameofsponsorsntity"
+                    name="fullNameOfSponsorsEntity"
                     value={
-                    values.fullnameofsponsorsntity
+                    values.fullNameOfSponsorsEntity
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.fullnameofsponsorsntity &&
-                    errors.fullnameofsponsorsntity
+                    touched.fullNameOfSponsorsEntity &&
+                    errors.fullNameOfSponsorsEntity
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -317,15 +329,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="sponsorentitygiin"
+                    name="sponsoringEntityGIIN"
                     value={
-                    values.sponsorentitygiin
+                    values.sponsoringEntityGIIN
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.sponsorentitygiin &&
-                    errors.sponsorentitygiin
+                    touched.sponsoringEntityGIIN &&
+                    errors.sponsoringEntityGIIN
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -355,15 +367,15 @@ export default function Final (props: any){
                     Please enter the full legal name of the sponsoring entity here:
                 </Typography>
                 <Input
-                    name="fullnameofsponsorsntity"
+                    name="fullNameOfSponsorsEntity"
                     value={
-                    values.fullnameofsponsorsntity
+                    values.fullNameOfSponsorsEntity
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.fullnameofsponsorsntity &&
-                    errors.fullnameofsponsorsntity
+                    touched.fullNameOfSponsorsEntity &&
+                    errors.fullNameOfSponsorsEntity
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -379,15 +391,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="sponsorentitygiin"
+                    name="sponsoringEntityGIIN"
                     value={
-                    values.sponsorentitygiin
+                    values.sponsoringEntityGIIN
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.sponsorentitygiin &&
-                    errors.sponsorentitygiin
+                    touched.sponsoringEntityGIIN &&
+                    errors.sponsoringEntityGIIN
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -404,15 +416,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="sponsorentitygiin"
+                    name="sponsoredEntityGIIN"
                     value={
-                    values.sponsorentitygiin
+                    values.sponsoredEntityGIIN
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.sponsorentitygiin &&
-                    errors.sponsorentitygiin
+                    touched.sponsoredEntityGIIN &&
+                    errors.sponsoredEntityGIIN
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -442,15 +454,15 @@ export default function Final (props: any){
                     Please enter the full legal name of the sponsoring entity here:
                 </Typography>
                 <Input
-                    name="fullnameofsponsorsntity"
+                    name="fullNameOfSponsorsEntity"
                     value={
-                    values.fullnameofsponsorsntity
+                    values.fullNameOfSponsorsEntity
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.fullnameofsponsorsntity &&
-                    errors.fullnameofsponsorsntity
+                    touched.fullNameOfSponsorsEntity &&
+                    errors.fullNameOfSponsorsEntity
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -466,15 +478,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="trusteegiin"
+                    name="trusteeGIIN"
                     value={
-                    values.trusteegiin
+                    values.trusteeGIIN
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.trusteegiin &&
-                    errors.trusteegiin
+                    touched.trusteeGIIN &&
+                    errors.trusteeGIIN
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -502,15 +514,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="exemption"
+                    name="exemptionFromGIIN"
                     value={
-                    values.exemption
+                    values.exemptionFromGIIN
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.exemption &&
-                    errors.exemption
+                    touched.exemptionFromGIIN &&
+                    errors.exemptionFromGIIN
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -538,15 +550,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="status"
+                    name="gIINStatus"
                     value={
-                    values.status
+                    values.gIINStatus
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.status &&
-                    errors.status
+                    touched.gIINStatus &&
+                    errors.gIINStatus
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -575,15 +587,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="qualifyingcriteria"
+                    name="qualifyingCriteria"
                     value={
-                    values.qualifyingcriteria
+                    values.qualifyingCriteria
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.qualifyingcriteria &&
-                    errors.qualifyingcriteria
+                    touched.qualifyingCriteria &&
+                    errors.qualifyingCriteria
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -612,15 +624,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="directreportinggiin"
+                    name="directReportingNFFEsGIIN"
                     value={
-                    values.directreportinggiin
+                    values.directReportingNFFEsGIIN
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.directreportinggiin &&
-                    errors.directreportinggiin
+                    touched.directReportingNFFEsGIIN &&
+                    errors.directReportingNFFEsGIIN
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -651,10 +663,10 @@ export default function Final (props: any){
                 <FormControl className="w-100">
                                           
                   <Checkbox 
-                      // value={values.confirmThisisaTrueAndAccurate}
-                      // checked={values.confirmThisisaTrueAndAccurate}
+                      value={values.isSubstantialUSOwnerInformation}
+                      checked={values.isSubstantialUSOwnerInformation}
                       onChange={handleChange}
-                      name="substantialUsOwnerInformation"
+                      name="isSubstantialUSOwnerInformation"
                       size="medium"
                       style={{ fontSize: "2rem",marginTop: "6px" }} />
                     <Typography className="mx-2"
@@ -728,10 +740,10 @@ export default function Final (props: any){
                     </Typography>
 
                     <Checkbox 
-                      // value={values.confirmThisisaTrueAndAccurate}
-                      // checked={values.confirmThisisaTrueAndAccurate}
+                      value={values.isControllingPersonsInformation}
+                      checked={values.isControllingPersonsInformation}
                       onChange={handleChange}
-                      name="substantialUsOwnerInformation"
+                      name="isControllingPersonsInformation"
                       size="medium"
                       style={{ fontSize: "2rem",marginTop: "6px" }} />
                     <Typography className="mx-2"
@@ -833,6 +845,26 @@ export default function Final (props: any){
                       type="submit"
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
+                      disabled={
+                        (values.gIINStatus == "")
+                        &&
+                        (values.gIINNumber == "")
+                        &&
+                        (values.directReportingNFFEsGIIN == "")
+                        &&
+                        (values.exemptionFromGIIN == "")
+                        &&
+                        (values.fullNameOfSponsorsEntity == "" || values.sponsoringEntityGIIN == "")
+                        &&
+                        (values.qualifyingCriteria == "")
+                        &&
+                        (values.sponsoredEntityGIIN == "")
+                        
+                       
+                        
+                        ? true 
+                        : false
+                      }
                     >
                       Confirm
                     </Button>

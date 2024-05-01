@@ -108,6 +108,8 @@ const ActionName = {
     InsertCRSEntityNonUSClassificationEmpty:"InsertCRSEntityNonUSClassificationEmpty",
     // skipped steps
     UpdateSkippedSteps:"UpdateSkippedSteps",
+    UpsertFATCAStepsDetails:"UpsertFATCAStepsDetails",
+
   };
 
   export default ActionName;
