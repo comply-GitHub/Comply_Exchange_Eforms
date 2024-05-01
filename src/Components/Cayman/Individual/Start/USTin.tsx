@@ -30,6 +30,7 @@ import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import CloseIcon from '@mui/icons-material/Close';
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import View_Insructions from "../../../viewInstruction";
+import { GetCaymanIndividualPdf } from "../../../../Redux/Actions/PfdActions";
 
 export default function Tin(props: any) {
 
@@ -38,16 +39,16 @@ export default function Tin(props: any) {
   const onBoardingFormValues = JSON.parse(localStorage.getItem("agentDetails") ?? "null");
 
   const onBoardingFormValuesPrevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
- 
+
   const initialValue = {
-    usTinTypeId:  onBoardingFormValuesPrevStepData?.usTinTypeId ? onBoardingFormValuesPrevStepData?.usTinTypeId : 0,
-    usTin:  onBoardingFormValuesPrevStepData?.usTin ? onBoardingFormValuesPrevStepData?.usTin : "",
-    notAvailable:  false,
-    ForeginTIN_CountryId: onBoardingFormValues?.foreignTINCountryId!=0 ? onBoardingFormValues?.foreignTINCountryId : onBoardingFormValuesPrevStepData?.ForeginTIN_CountryId,
-    ForegionTIN: onBoardingFormValues?.foreignTIN ? onBoardingFormValues?.foreignTIN : onBoardingFormValuesPrevStepData?.ForegionTIN ? onBoardingFormValuesPrevStepData?.ForegionTIN :"",
+    usTinTypeId: onBoardingFormValuesPrevStepData?.usTinTypeId ? onBoardingFormValuesPrevStepData?.usTinTypeId : 0,
+    usTin: onBoardingFormValuesPrevStepData?.usTin ? onBoardingFormValuesPrevStepData?.usTin : "",
+    notAvailable: false,
+    ForeginTIN_CountryId: onBoardingFormValues?.foreignTINCountryId != 0 ? onBoardingFormValues?.foreignTINCountryId : onBoardingFormValuesPrevStepData?.ForeginTIN_CountryId,
+    ForegionTIN: onBoardingFormValues?.foreignTIN ? onBoardingFormValues?.foreignTIN : onBoardingFormValuesPrevStepData?.ForegionTIN ? onBoardingFormValuesPrevStepData?.ForegionTIN : "",
     isFTINNotLegallyRequired: false,
     tinisFTINNotLegallyRequired: "",
-    itemList:onBoardingFormValuesPrevStepData?.items ? onBoardingFormValuesPrevStepData.items: [],
+    itemList: onBoardingFormValuesPrevStepData?.items ? onBoardingFormValuesPrevStepData.items : [],
     isNotLegallyFTIN: "",
     ReasionForForegionTIN_NotAvailable: onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable ? onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable : "",
   };
@@ -113,16 +114,16 @@ export default function Tin(props: any) {
     setCanvaBx(false);
   }
 
-  const viewPdf=()=>{
+  const viewPdf = () => {
     history("w9_pdf");
   }
 
   return (
     <>
       <Formik
-       validateOnChange={false}
-       validateOnBlur={true}
-       validateOnMount={false}
+        validateOnChange={false}
+        validateOnBlur={true}
+        validateOnMount={false}
         initialValues={initialValue}
         enableReinitialize
         validationSchema={US_TINSchema}
@@ -144,7 +145,7 @@ export default function Tin(props: any) {
           // };
           const returnPromise = new Promise((resolve, reject) => {
             dispatch(
-                postSCIndividualEForm(temp,
+              postSCIndividualEForm(temp,
                 (responseData: any) => {
                   localStorage.setItem("PrevStepData", JSON.stringify(temp));
                   resolve(responseData);
@@ -189,51 +190,53 @@ export default function Tin(props: any) {
 
 
               <div className="overlay-div">
-            <div className="overlay-div-group">
-            <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
-                <div className="helpvideo"> 
-                
-                {GethelpData && GethelpData[9].id === 12 ? (
-  <a
-    href={GethelpData[9].fieldValue}
-    target="popup"
-    onClick={() =>
-      window.open(
-        GethelpData[9].fieldValue,
-        'name',
-        `width=${GethelpData[9].width},height=${GethelpData[9].height},top=${GethelpData[9].top},left=${GethelpData[9].left}`
-      )
-    }
-  >
-    Help Video
-  </a>
-) : (
-  ""
-)}
-                </div>
-            </div>
-        </div>
-        <div className="row w-100">
-       <div className="col-4">
-          <div style={{ padding: "20px 0px",height:"100%" }}>
-          <BreadCrumbComponent breadCrumbCode={1310} formName={FormTypeId.CaymanIndividual}/>
-      </div>
-      </div>
-      <div className="col-8 mt-3">
-              <div style={{ padding: "13px" }}>
-                
-                <Paper style={{ padding: "10px" }}>
-                {toolInfo === "ForegionTIN" ? (
-                    <div className="mt-1">
-                      <Paper
-                      
-                        style={{ backgroundColor: "#d1ecf1", padding: "15px"}}
+                <div className="overlay-div-group">
+                  <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
+                  <div className="viewform" onClick={(e) => {
+                    dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId));
+                  }}>View Form</div>
+                  <div className="helpvideo">
+
+                    {GethelpData && GethelpData[9].id === 12 ? (
+                      <a
+                        href={GethelpData[9].fieldValue}
+                        target="popup"
+                        onClick={() =>
+                          window.open(
+                            GethelpData[9].fieldValue,
+                            'name',
+                            `width=${GethelpData[9].width},height=${GethelpData[9].height},top=${GethelpData[9].top},left=${GethelpData[9].left}`
+                          )
+                        }
                       >
-                       <div className="d-flex" style={{justifyContent:"space-between"}}>
-                       <Typography style={{color: "#0c5460"}}>
-                       United Kingdom TIN Format is 9999999999 false <br/> 9- Numeric value only <br/> A- Alphabetic character only <br/> *- Alphanumeric character only <br/> ?- Characters optional after this <br/> IF TIN format is not available, please check the below box and continue
-                        </Typography>
+                        Help Video
+                      </a>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="row w-100">
+                <div className="col-4">
+                  <div style={{ padding: "20px 0px", height: "100%" }}>
+                    <BreadCrumbComponent breadCrumbCode={1310} formName={FormTypeId.CaymanIndividual} />
+                  </div>
+                </div>
+                <div className="col-8 mt-3">
+                  <div style={{ padding: "13px" }}>
+
+                    <Paper style={{ padding: "10px" }}>
+                      {toolInfo === "ForegionTIN" ? (
+                        <div className="mt-1">
+                          <Paper
+
+                            style={{ backgroundColor: "#d1ecf1", padding: "15px" }}
+                          >
+                            <div className="d-flex" style={{ justifyContent: "space-between" }}>
+                              <Typography style={{ color: "#0c5460" }}>
+                                United Kingdom TIN Format is 9999999999 false <br /> 9- Numeric value only <br /> A- Alphabetic character only <br /> *- Alphanumeric character only <br /> ?- Characters optional after this <br /> IF TIN format is not available, please check the below box and continue
+                              </Typography>
 
 
                               <Typography>
@@ -335,110 +338,110 @@ export default function Tin(props: any) {
                                       bottom of the screen.
                                     </Typography>
 
-                                <Link
-                                  href="#"
-                                  underline="none"
-                                  style={{
-                                    marginTop: "10px",
-                                    fontSize: "16px",
-                                    color: "#0000C7"
-                                  }}
-                                  onClick={() => {
-                                    setToolInfo("");
-                                  }}
-                                >
-                                  --Show Less--
-                                </Link>
-                              </Paper>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                          <select
-                            disabled
-                            style={{
-                              border: " 1px solid #d9d9d9 ",
-                              padding: " 0 10px",
-                              color: "#121112",
-                              fontStyle: "italic",
-                              height: "40px",
-                              width: "100%",
-                            }}
-                            name="usTinTypeId"
-                            id="Income"
-                            // defaultValue={getUStinValue()}
-                            onBlur={handleBlur}
-                            value={values.usTinTypeId}
-                            onChange={(e) => {
-                              handleChange(e);
-                              setTimeout(() => { setFieldValue("ReasionForForegionTIN_NotAvailable", ""); }, 200)
-                              if (
-                                e.target.value === "1" ||
-                                e.target.value === "7"
-                              ) {
-                                setTimeout(() => { setFieldValue("usTin", ""); }, 100)
-                                setTimeout(() => { setFieldValue("notAvailable", false); }, 200)
-                              } else if (
-                                e.target.value === "8"
-                              ) {
-                                setTimeout(() => { setFieldValue("usTin", ""); }, 100)
-                                setTimeout(() => { setFieldValue("notAvailable", true); }, 200)
-                              } else {
-                                setTimeout(() => { setFieldValue("notAvailable", false); }, 100)
-                              }
-                            }}
-                          >
-                            <option value={0}>---select---</option>
-                               
-                               {notUsIndividual?.map((ele: any) => (
-                                   // ele?.nonUSIndividual &&
-                                   //   values?.isUSIndividual == "no" ||
-                                   // ele?.usIndividual &&
-                                   //   values?.isUSIndividual == "Yes" ?
-                                   // (
-                                   <option
- 
-                                     key={ele?.taxpayerIdTypeID}
-                                     value={ele?.taxpayerIdTypeID}
-                                   >
-                                     {ele?.taxpayerIdTypeName}
-                                   </option>
-                                   // ) : (
-                                   //   ""
-                                   // );
-                                 ))}
-                          </select>
-                              
-
-                          
-                          
-                        </div>
-                        {errors?.usTinTypeId && typeof errors?.usTinTypeId === 'string' && (
-                                <p className="error">{errors?.usTinTypeId}</p>
+                                    <Link
+                                      href="#"
+                                      underline="none"
+                                      style={{
+                                        marginTop: "10px",
+                                        fontSize: "16px",
+                                        color: "#0000C7"
+                                      }}
+                                      onClick={() => {
+                                        setToolInfo("");
+                                      }}
+                                    >
+                                      --Show Less--
+                                    </Link>
+                                  </Paper>
+                                </div>
+                              ) : (
+                                ""
                               )}
+                              <select
+                                disabled
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  padding: " 0 10px",
+                                  color: "#121112",
+                                  fontStyle: "italic",
+                                  height: "40px",
+                                  width: "100%",
+                                }}
+                                name="usTinTypeId"
+                                id="Income"
+                                // defaultValue={getUStinValue()}
+                                onBlur={handleBlur}
+                                value={values.usTinTypeId}
+                                onChange={(e) => {
+                                  handleChange(e);
+                                  setTimeout(() => { setFieldValue("ReasionForForegionTIN_NotAvailable", ""); }, 200)
+                                  if (
+                                    e.target.value === "1" ||
+                                    e.target.value === "7"
+                                  ) {
+                                    setTimeout(() => { setFieldValue("usTin", ""); }, 100)
+                                    setTimeout(() => { setFieldValue("notAvailable", false); }, 200)
+                                  } else if (
+                                    e.target.value === "8"
+                                  ) {
+                                    setTimeout(() => { setFieldValue("usTin", ""); }, 100)
+                                    setTimeout(() => { setFieldValue("notAvailable", true); }, 200)
+                                  } else {
+                                    setTimeout(() => { setFieldValue("notAvailable", false); }, 100)
+                                  }
+                                }}
+                              >
+                                <option value={0}>---select---</option>
 
-                        <div className="col-lg-5 col-12">
-                          <Typography style={{fontSize:"14px"}}>U.S. TIN</Typography>
-                          <Input
-                            disabled
-                            fullWidth
-                            
-                            placeholder="ENTER US TIN"
-                         defaultValue="ENTER US TIN"
-                            value={values.usTin}
-                            // onBlur={handleBlur}
-                            onChange={(e: any) => {
-                              handleChange(e);
-                              setTimeout( () => { setFieldValue("ReasionForForegionTIN_NotAvailable","");},200)
-                            }}
-                           
-                            style={{
-                              border: " 1px solid #d9d9d9 ",
-                              padding: " 0 10px",
-                              color: "#7e7e7e",
-                              fontStyle: "italic",
-                              height: "40px",
-                              width: "100%",
+                                {notUsIndividual?.map((ele: any) => (
+                                  // ele?.nonUSIndividual &&
+                                  //   values?.isUSIndividual == "no" ||
+                                  // ele?.usIndividual &&
+                                  //   values?.isUSIndividual == "Yes" ?
+                                  // (
+                                  <option
+
+                                    key={ele?.taxpayerIdTypeID}
+                                    value={ele?.taxpayerIdTypeID}
+                                  >
+                                    {ele?.taxpayerIdTypeName}
+                                  </option>
+                                  // ) : (
+                                  //   ""
+                                  // );
+                                ))}
+                              </select>
+
+
+
+
+                            </div>
+                            {errors?.usTinTypeId && typeof errors?.usTinTypeId === 'string' && (
+                              <p className="error">{errors?.usTinTypeId}</p>
+                            )}
+
+                            <div className="col-lg-5 col-12">
+                              <Typography style={{ fontSize: "14px" }}>U.S. TIN</Typography>
+                              <Input
+                                disabled
+                                fullWidth
+
+                                placeholder="ENTER US TIN"
+                                defaultValue="ENTER US TIN"
+                                value={values.usTin}
+                                // onBlur={handleBlur}
+                                onChange={(e: any) => {
+                                  handleChange(e);
+                                  setTimeout(() => { setFieldValue("ReasionForForegionTIN_NotAvailable", ""); }, 200)
+                                }}
+
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  padding: " 0 10px",
+                                  color: "#7e7e7e",
+                                  fontStyle: "italic",
+                                  height: "40px",
+                                  width: "100%",
 
                                 }}
                               />
@@ -685,55 +688,55 @@ export default function Tin(props: any) {
 
 
 
-                      <div
-                        style={{
-                          margin: "10px",
-                          display: "flex",
-                          marginTop: "25px",
-                        }}
-                        className="row"
-                      >
-                        <div className="col-lg-5">
-                          <Typography style={{fontSize:"14px"}}>
-                            Foreign TIN Country
-                            <span style={{ color: "red" }}>*</span>
-                          </Typography>
-                          <select
-                          
-                            style={{
-                              border: " 1px solid #d9d9d9 ",
-                              padding: " 0 10px",
-                              color: "#121112",
-                              fontStyle: "italic",
-                              height: "40px",
-                              width: "100%",
-                            }}
-                            name="ForeginTIN_CountryId"
-                            id="Income"
-                            onBlur={handleBlur}
-                            value={values.ForeginTIN_CountryId}
-                            onChange={(e) => {
-                              handleChange(e);
-                              //setTimeout(() => { setFieldValue("ReasionForForegionTIN_NotAvailable", ""); }, 200)
-                              setTimeout( () => { setFieldValue("tinisFTINNotLegallyRequired","No");},200)
-                            }}
-                          >
-                            <option value={0}>---select---</option>
-                                <option value={257}>United Kingdom</option>
-                                {getCountriesReducer.allCountriesData?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
-                          </select>
-                          {errors?.ForeginTIN_CountryId && typeof errors?.ForeginTIN_CountryId === 'string' && (
-                                <p className="error">{errors?.ForeginTIN_CountryId}</p>
-                              )}
-                          {/* <p className="error">{errors?.ForeginTIN_CountryId}</p> */}
+                        <div
+                          style={{
+                            margin: "10px",
+                            display: "flex",
+                            marginTop: "25px",
+                          }}
+                          className="row"
+                        >
+                          <div className="col-lg-5">
+                            <Typography style={{ fontSize: "14px" }}>
+                              Foreign TIN Country
+                              <span style={{ color: "red" }}>*</span>
+                            </Typography>
+                            <select
 
-                          {/* <div style={{ marginTop: "2px" }}>
+                              style={{
+                                border: " 1px solid #d9d9d9 ",
+                                padding: " 0 10px",
+                                color: "#121112",
+                                fontStyle: "italic",
+                                height: "40px",
+                                width: "100%",
+                              }}
+                              name="ForeginTIN_CountryId"
+                              id="Income"
+                              onBlur={handleBlur}
+                              value={values.ForeginTIN_CountryId}
+                              onChange={(e) => {
+                                handleChange(e);
+                                //setTimeout(() => { setFieldValue("ReasionForForegionTIN_NotAvailable", ""); }, 200)
+                                setTimeout(() => { setFieldValue("tinisFTINNotLegallyRequired", "No"); }, 200)
+                              }}
+                            >
+                              <option value={0}>---select---</option>
+                              <option value={257}>United Kingdom</option>
+                              {getCountriesReducer.allCountriesData?.map(
+                                (ele: any) => (
+                                  <option key={ele?.id} value={ele?.id}>
+                                    {ele?.name}
+                                  </option>
+                                )
+                              )}
+                            </select>
+                            {errors?.ForeginTIN_CountryId && typeof errors?.ForeginTIN_CountryId === 'string' && (
+                              <p className="error">{errors?.ForeginTIN_CountryId}</p>
+                            )}
+                            {/* <p className="error">{errors?.ForeginTIN_CountryId}</p> */}
+
+                            {/* <div style={{ marginTop: "2px" }}>
                             <Checkbox
                               value={values.isFTINNotLegallyRequired}
                               checked={values.isFTINNotLegallyRequired}
@@ -793,7 +796,7 @@ export default function Tin(props: any) {
                               </span>
                             </div> */}
 
-                          {/* {toolInfo === "require" ? (
+                            {/* {toolInfo === "require" ? (
                             <Paper
                               style={{
                                 backgroundColor: "#dedcb1",
@@ -835,108 +838,109 @@ export default function Tin(props: any) {
                           ) : (
                             ""
                           )} */}
-                        </div>
-                        <div className="col-lg-5 col-12">
-                          <Typography style={{fontSize:"14px"}}>
-                            Foreign TIN{" "}
-                            {values.ForeginTIN_CountryId == 257 ?(  <span>  <Tooltip
-                              style={{
-                                backgroundColor: "black",
-                                color: "white",
-                  
-                              }}
-                              title={
-                                <>
-                                 
-                                  <a onClick={() => setToolInfo("ForegionTIN")}>
-                                   
-                                  </a>
-                                </>
-                              }
-                            >
-                              <Info
-                               onClick={() => setToolInfo("ForegionTIN")}
+                          </div>
+                          <div className="col-lg-5 col-12">
+                            <Typography style={{ fontSize: "14px" }}>
+                              Foreign TIN{" "}
+                              {values.ForeginTIN_CountryId == 257 ? (<span>  <Tooltip
                                 style={{
-                                  color: "#ffc107",
-                                  fontSize: "15px",
-                                  verticalAlign:"super",
-                                  marginLeft: "5px",
-                                  cursor: "pointer",
+                                  backgroundColor: "black",
+                                  color: "white",
+
+                                }}
+                                title={
+                                  <>
+
+                                    <a onClick={() => setToolInfo("ForegionTIN")}>
+
+                                    </a>
+                                  </>
+                                }
+                              >
+                                <Info
+                                  onClick={() => setToolInfo("ForegionTIN")}
+                                  style={{
+                                    color: "#ffc107",
+                                    fontSize: "15px",
+                                    verticalAlign: "super",
+                                    marginLeft: "5px",
+                                    cursor: "pointer",
+                                  }}
+                                />
+                              </Tooltip></span>) : ""}
+                            </Typography>
+
+                            {values.tinisFTINNotLegallyRequired === "No" ? (
+                              <Input
+                                fullWidth
+                                type="text"
+                                disabled={
+                                  values.isFTINNotLegallyRequired ||
+                                  values.ForeginTIN_CountryId == "1"
+
+
+
+                                }
+                                name="ForegionTIN"
+                                value={values.ForegionTIN}
+                                onBlur={handleBlur}
+                                onChange={(e) => {
+                                  const re = /^[0-9\b]+$/;
+                                  if (e.target.value === '' || re.test(e.target.value)) {
+                                    handleChange(e)
+                                  }
+                                }}
+
+                                inputProps={{ maxLength: 10 }}
+                                placeholder="ENTER FOREIGN TIN"
+
+
+                                error={Boolean(
+                                  touched.ForegionTIN && errors.ForegionTIN
+                                )}
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  padding: " 0 10px",
+                                  color: "#7e7e7e",
+                                  fontStyle: "italic",
+                                  height: "40px",
+                                  width: "100%",
                                 }}
                               />
-                            </Tooltip></span> ):""}
-                          </Typography>
+                            ) : (
+                              <Input
+                                fullWidth
+                                type="text"
+                                disabled={
+                                  values.isFTINNotLegallyRequired ||
+                                  values.ForeginTIN_CountryId == "1" ||
+                                  values.tinisFTINNotLegallyRequired === "NO"
+                                }
+                                placeholder="ENTER FOREIGN TIN"
+                                name="ForegionTIN"
+                                value={values.ForegionTIN}
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                error={Boolean(
+                                  touched.ForegionTIN && errors.ForegionTIN
+                                )}
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  padding: " 0 10px",
+                                  color: "#7e7e7e",
+                                  fontStyle: "italic",
+                                  height: "40px",
+                                  width: "100%",
+                                }}
+                              />
 
-                          {values.tinisFTINNotLegallyRequired === "No" ? (
-                            <Input
-                              fullWidth
-                              type="text"
-                              disabled={
-                                values.isFTINNotLegallyRequired ||
-                                values.ForeginTIN_CountryId == "1" 
-                               
-                                
-                                
-                              }
-                              name="ForegionTIN"
-                              value={values.ForegionTIN}
-                              onBlur={handleBlur}
-                              onChange={(e)=>{
-                                const re = /^[0-9\b]+$/;
-                                if (e.target.value === '' || re.test(e.target.value)) {
-                                  handleChange(e)
-                              }}}
-                              
-                              inputProps={{ maxLength: 10 }}
-                              placeholder="ENTER FOREIGN TIN"
-
-                             
-                              error={Boolean(
-                                touched.ForegionTIN && errors.ForegionTIN
-                              )}
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                padding: " 0 10px",
-                                color: "#7e7e7e",
-                                fontStyle: "italic",
-                                height: "40px",
-                                width: "100%",
-                              }}
-                            />
-                          ) : (
-                            <Input
-                              fullWidth
-                              type="text"
-                              disabled={
-                                values.isFTINNotLegallyRequired ||
-                                values.ForeginTIN_CountryId == "1" ||
-                                values.tinisFTINNotLegallyRequired ==="NO"
-                              }
-                              placeholder="ENTER FOREIGN TIN"
-                              name="ForegionTIN"
-                              value={values.ForegionTIN}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              error={Boolean(
-                                touched.ForegionTIN && errors.ForegionTIN
-                              )}
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                padding: " 0 10px",
-                                color: "#7e7e7e",
-                                fontStyle: "italic",
-                                height: "40px",
-                                width: "100%",
-                              }}
-                            />
-                            
-                          )}
-                           {/* {errors?.ForegionTIN && errors.ForeginTIN_CountryId && typeof errors?.ForegionTIN === 'string' && (
+                            )}
+                            {/* {errors?.ForegionTIN && errors.ForeginTIN_CountryId && typeof errors?.ForegionTIN === 'string' && (
                                 <p className="error">{errors?.ForegionTIN}</p>
                             )} */}
 
-                        
-                          {/* {errors.ForegionTIN &&
+
+                            {/* {errors.ForegionTIN &&
                             touched.ForegionTIN ? (
                               <div>
                                 <Typography color="error">
@@ -946,10 +950,10 @@ export default function Tin(props: any) {
                             ) : (
                               ""
                             )} */}
-                          
-                            
-                            
-                          
+
+
+
+
 
                             {/* <FormControl >
                             <RadioGroup
@@ -1008,21 +1012,21 @@ export default function Tin(props: any) {
                             )}
                           </FormControl> */}
 
-<div  >
-<FormControl className="col-12 radio">
+                            <div  >
+                              <FormControl className="col-12 radio">
 
-                  <RadioGroup
-                    row
-                    name="tinisFTINNotLegallyRequired"
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    value={values.tinisFTINNotLegallyRequired}
-                    onChange={handleChange}
-                    onClick={() => {
-                      setFieldValue("ForegionTIN","");
-                      setTimeout(() => {
-                        setFieldValue("ForeginTIN_CountryId","");
-                      }, 200);
-                    }}
+                                <RadioGroup
+                                  row
+                                  name="tinisFTINNotLegallyRequired"
+                                  aria-labelledby="demo-row-radio-buttons-group-label"
+                                  value={values.tinisFTINNotLegallyRequired}
+                                  onChange={handleChange}
+                                  onClick={() => {
+                                    setFieldValue("ForegionTIN", "");
+                                    setTimeout(() => {
+                                      setFieldValue("ForeginTIN_CountryId", "");
+                                    }, 200);
+                                  }}
 
                                 >
                                   <FormControlLabel
@@ -1203,54 +1207,54 @@ export default function Tin(props: any) {
                           )}
                         </>
                       )}
-                    {values.itemList.map((item:any, index:any) => (
-                        (item.permanentResidentialCountryId!=0 && (
-                            <>
+                      {values.itemList.map((item: any, index: any) => (
+                        (item.permanentResidentialCountryId != 0 && (
+                          <>
                             <Typography>
-                                Country where you have a tax liablity
+                              Country where you have a tax liablity
                             </Typography>
-                            
+
                             {GetAgentCountriesImportantForEformData?.map(
-                                                (ele: any) => (
-                                                  ele.id === item.permanentResidentialCountryId && (
-                                                    <Typography>
-                                                        ele.name
-                                                        </Typography>
-                                                  )
-                                                )
-                                              )}
+                              (ele: any) => (
+                                ele.id === item.permanentResidentialCountryId && (
+                                  <Typography>
+                                    ele.name
+                                  </Typography>
+                                )
+                              )
+                            )}
                             {item.permanentResidentialCountryId === '257' && (
-                                <>
+                              <>
                                 United Kingdom
-                                </>
+                              </>
                             )}
                             {item.permanentResidentialCountryId === '258' && (
-                                <>
+                              <>
                                 United States
-                                </>
+                              </>
                             )}
                             {item.permanentResidentialCountryId === '45' && (
-                                <>
+                              <>
                                 Canada
-                                </>
+                              </>
                             )}
                             <Typography>
-                            Enter the corresponding number:
+                              Enter the corresponding number:
                             </Typography>
                             <Typography>
-                            <input type="text" disabled value={item.taxReferenceNumber}/>
+                              <input type="text" disabled value={item.taxReferenceNumber} />
                             </Typography>
-                            
-                        </>
 
-                        )) 
-                        
-                        
-                    ))}
-        <input type="checkbox" name="isChekced"/>
-        <label>If you are not a resident in any other countries than the countries stated above, check this box</label>
+                          </>
 
-                    {/* {values.itemList?.map((item:any,index:number) => {
+                        ))
+
+
+                      ))}
+                      <input type="checkbox" name="isChekced" />
+                      <label>If you are not a resident in any other countries than the countries stated above, check this box</label>
+
+                      {/* {values.itemList?.map((item:any,index:number) => {
                         <>
                         <Typography>
                                 Country where you have a tax liablity
@@ -1263,35 +1267,35 @@ export default function Tin(props: any) {
                         
 
                     })} */}
-                      
+
                       {values.notAvailable ? (<div style={{ marginLeft: "20px" }}>
                         <Typography>
                           Please specify the reason for non-availability of US TIN{" "}
                           <span style={{ color: "red" }}>*</span>
                         </Typography>
 
-                      <Input
-                        fullWidth
-                        value={values.ReasionForForegionTIN_NotAvailable}
-                        name="ReasionForForegionTIN_NotAvailable"
-                        type="text"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        // onChange={(e: any) => {
-                        //   handleChange(e);
-                        //     setFieldValue("","");
-                        // }}
-                        style={{
-                          border: " 1px solid #d9d9d9 ",
-                          padding: " 0 10px",
-                          color: "#7e7e7e",
-                          fontStyle: "italic",
-                          height: "6rem",
-                          width: "100%",
-                        }}
-                      />
-                                     
-                    </div>):""}
+                        <Input
+                          fullWidth
+                          value={values.ReasionForForegionTIN_NotAvailable}
+                          name="ReasionForForegionTIN_NotAvailable"
+                          type="text"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          // onChange={(e: any) => {
+                          //   handleChange(e);
+                          //     setFieldValue("","");
+                          // }}
+                          style={{
+                            border: " 1px solid #d9d9d9 ",
+                            padding: " 0 10px",
+                            color: "#7e7e7e",
+                            fontStyle: "italic",
+                            height: "6rem",
+                            width: "100%",
+                          }}
+                        />
+
+                      </div>) : ""}
 
 
                       {values.tinisFTINNotLegallyRequired === "NO" ? (
@@ -1346,73 +1350,76 @@ export default function Tin(props: any) {
                         ""
                       )}
 
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      marginTop: "5rem",
-                    }}
-                  >
-                    <SaveAndExit Callback={() => {
-                        submitForm().then(() => {
-                          const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-                          const urlValue = window.location.pathname.substring(1);
-                          dispatch(postSCIndividualEForm(
-                            {
-                              ...prevStepData,
-                              stepName: `/${urlValue}`
-                            }
-                            , () => { }))
-                          history(
-                            GlobalValues.basePageRoute
-                          );
-                        })
-                      }} formTypeId={FormTypeId.CaymanIndividual} ></SaveAndExit>
-                    <Button
-                      variant="contained"
-                      style={{ color: "white", marginLeft: "15px" }}
-                    >
-                      View Form
-                    </Button>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      //disabled={!isValid}
-                      style={{ color: "white", marginLeft: "15px" }}
-                    >
-                      Continue
-                    </Button>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          marginTop: "5rem",
+                        }}
+                      >
+                        <SaveAndExit Callback={() => {
+                          submitForm().then(() => {
+                            const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                            const urlValue = window.location.pathname.substring(1);
+                            dispatch(postSCIndividualEForm(
+                              {
+                                ...prevStepData,
+                                stepName: `/${urlValue}`
+                              }
+                              , () => { }))
+                            history(
+                              GlobalValues.basePageRoute
+                            );
+                          })
+                        }} formTypeId={FormTypeId.CaymanIndividual} ></SaveAndExit>
+                        <Button
+                          variant="contained"
+                          style={{ color: "white", marginLeft: "15px" }}
+                          onClick={(e) => {
+                            dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId));
+                          }}
+                        >
+                          View Form
+                        </Button>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          //disabled={!isValid}
+                          style={{ color: "white", marginLeft: "15px" }}
+                        >
+                          Continue
+                        </Button>
+                      </div>
+                      <Typography
+                        align="center"
+                        style={{
+                          color: "#adadac",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginTop: "20px",
+                        }}
+                      >
+                        Do you want to go back?
+                      </Typography>
+                      <Typography align="center">
+                        <Button
+                          onClick={() => {
+                            history("/Cayman/Individual/start/SustantialPresence")
+                          }}
+                          variant="contained"
+                          style={{
+                            color: "white",
+                            backgroundColor: "black",
+                            marginTop: "10px",
+                            marginBottom: "20px",
+                          }}
+                        >
+                          Back
+                        </Button>
+                      </Typography>
+                    </Paper>
                   </div>
-                  <Typography
-                    align="center"
-                    style={{
-                      color: "#adadac",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: "20px",
-                    }}
-                  >
-                    Do you want to go back?
-                  </Typography>
-                  <Typography align="center">
-                    <Button
-                    onClick={()=>{
-                      history("/Cayman/Individual/start/SustantialPresence")
-                    }}
-                      variant="contained"
-                      style={{
-                        color: "white",
-                        backgroundColor: "black",
-                        marginTop: "10px",
-                        marginBottom: "20px",
-                      }}
-                    >
-                      Back
-                    </Button>
-                  </Typography>
-                </Paper>
-              </div>
-              </div>
+                </div>
               </div>
             </section>
           </Form>
