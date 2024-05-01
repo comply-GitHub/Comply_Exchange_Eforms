@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { Form, Formik } from "formik";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { W8_state_ECI, PostDualCert, GetHelpVideoDetails, getAllCountries } from "../../../Redux/Actions";
+import { W8_state_ECI, PostDualCert, GetHelpVideoDetails, getAllCountries, getAllControllingPersonEntity } from "../../../Redux/Actions";
 import { SelfCertSchema_w9_DC } from "../../../schemas/w8Exp";
 import InfoIcon from "@mui/icons-material/Info";
 import checksolid from "../../../assets/img/check-solid.png";
@@ -41,9 +41,11 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 
 
   const IncomeType = ({handleSubmit, DeleteIncomeType, index, length, data, UpdateIncomeType, CountryArticle,SetIsCompDataValid }: any) => {
-    const [initialValue, setInitialValues] = useState<any>(
-      {}
-    );
+    const SelfControllingData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
+    console.log(SelfControllingData[0],"00")
+    const [initialValue, setInitialValues] = useState<any>({
+  
+  });
     const showInDropdownArticle = CountryArticle?.filter((ele: any) => ele.showInDropDown === true);
     const [articleBeneficialOwner, setArticleBeneficialOwner] = useState<any>({});
     useEffect(() => {
@@ -76,7 +78,7 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
     }
     const handleUpdateCheckboxChange = (e: any) => {
       let temp: any = { ...data };
-      // Convert the value to boolean
+
       const isChecked = e.target.checked;
       temp[e.target.name] = isChecked;
       console.log("change", e);
@@ -112,8 +114,8 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
   const handleCanvaOpen = () => {
     setCanvaBx(true);
   }
-  const allCountriesData = useSelector(
-    (state: any) => state.getCountriesReducer
+  const ControllingData = useSelector(
+    (state: any) => state.getControllingPersonReducer
   );
   const getCountriesReducer = useSelector(
     (state: any) => state.getCountriesReducer
@@ -132,6 +134,7 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
     dispatch(getAllCountries());
+    dispatch(getAllControllingPersonEntity())
   }, [])
   const [expanded, setExpanded] = React.useState<string | false>(false);
   const handleChangestatus =
@@ -260,7 +263,7 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                                     handleChange(e);
                                     handleUpdateOnFormChange(e);
                                   }}
-                                  value={values.FirstName}
+                                  value={initialValue.FirstName}
 
                                 />
                               {errors.FirstName && touched.FirstName ? <p className="error">{typeof errors.FirstName === 'string' ? errors.FirstName : ''}</p> : <></>}
@@ -310,7 +313,7 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 
                                 </Typography>
                                 <Input
-                                type="date"
+                                    type="date"
                                   className="dateclass"
                                   onBlur={handleBlur}
                                   name="dateofBirth"
@@ -320,7 +323,17 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                                   }}
                                  
                                   value={values.dateofBirth}
-                                
+                                  style={{
+                                    border: " 1px solid #d9d9d9 ",
+                                    height: " 36px",
+                                    lineHeight: "36px ",
+                                    background: "#fff ",
+                                    fontSize: "13px",
+                                    color: " #000 ",
+                                    fontStyle: "normal",
+                                    borderRadius: "1px",
+                                    padding: " 0 10px ",
+                                  }}
                                  
                                 />
                                {errors.dateofBirth && touched.dateofBirth ? <p className="error">{typeof errors.dateofBirth === 'string' ? errors.dateofBirth : ''}</p> : <></>}
@@ -1543,13 +1556,11 @@ handleUpdateCheckboxChange(e);
                                     value={values.statusEntity1}
                                   >
                                     <option value="">---select---</option>
-                                    <option value={257}>United Kingdom</option>
-                                    <option value={258}>United States</option>
-                                    <option value={500}>---</option>
-                                    {getCountriesReducer.allCountriesData?.map(
+                                   
+                                    {ControllingData.allControllingData?.map(
                                       (ele: any) => (
                                         <option key={ele?.id} value={ele?.id}>
-                                          {ele?.name}
+                                          {ele?.statusEntity}
                                         </option>
                                       )
                                     )}
@@ -1584,13 +1595,10 @@ handleUpdateCheckboxChange(e);
                                     value={values.statusEntity2}
                                   >
                                     <option value="">---select---</option>
-                                    <option value={257}>United Kingdom</option>
-                                    <option value={258}>United States</option>
-                                    <option value={500}>---</option>
-                                    {getCountriesReducer.allCountriesData?.map(
+                                    {ControllingData.allControllingData?.map(
                                       (ele: any) => (
                                         <option key={ele?.id} value={ele?.id}>
-                                          {ele?.name}
+                                          {ele?.statusEntity}
                                         </option>
                                       )
                                     )}
@@ -1625,13 +1633,10 @@ handleUpdateCheckboxChange(e);
                                     value={values.statusEntity3}
                                   >
                                     <option value="">---select---</option>
-                                    <option value={257}>United Kingdom</option>
-                                    <option value={258}>United States</option>
-                                    <option value={500}>---</option>
-                                    {getCountriesReducer.allCountriesData?.map(
+                                    {ControllingData.allControllingData?.map(
                                       (ele: any) => (
                                         <option key={ele?.id} value={ele?.id}>
-                                          {ele?.name}
+                                          {ele?.statusEntity}
                                         </option>
                                       )
                                     )}

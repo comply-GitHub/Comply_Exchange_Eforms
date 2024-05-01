@@ -118,15 +118,12 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
       <Formik
       validateOnChange={true}
       validateOnBlur={true}
+      enableReinitialize
         initialValues={initialValue}
         validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
          
          
-          if (clickCount === 0) {
-        
-            setClickCount(clickCount+1);
-          }else{
             setSubmitting(true)
             const new_obj = { ...PrevStepData, stepName: `/${urlValue}`,date:moment(values.date).format(), FormTypeSelectionId: obValues.businessTypeId, }
             const result = { ...new_obj, ...values ,FormTypeSelectionId: Values.businessTypeId,AgentId:authDetails.agentId,AccountHolderBasicDetailId:authDetails.accountHolderId};
@@ -136,7 +133,7 @@ const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                              history("/W-8BEN/Declaration/US_Tin/Certificates/Submit_Ben")
                           })
                         );
-          }
+          
         }}
       >
         {({

@@ -224,7 +224,7 @@ export default function Declaration (props: any){
     {ExemptionData?.map((exemption:any) => (
               <FormControlLabel className="my-1" 
                 key={exemption.fatcaExemptionCodeId}
-                value={exemption.fatcaExemptionCodeId.toString()}
+                value={exemption.fatcaExemptionCodeId}
                 control={<Radio />}
                 label={exemption.name}
                 name="FatcaExemption"

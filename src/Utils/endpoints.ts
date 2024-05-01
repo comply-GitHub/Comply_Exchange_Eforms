@@ -132,5 +132,6 @@ GetBENDCPdf:"/W8BENIndividual/GetBENDCPdf",
 
  // skipped steps
  GetAgentSkippedSteps:"/Agent/GetAgentSkippedSteps",
+ GetControllingEntity:"/DualCert/GetControllingPersonLegalStatusEntity",
 };
 export default EndPoint;

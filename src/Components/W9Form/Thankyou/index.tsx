@@ -164,59 +164,59 @@ export default function Term() {
                   </Button>
                 </div>
                 {userType === "DC" && businessType === 1 ? (
-                  <div style={{ marginTop: "25px" }}>
-                    <Button
-                      type="submit"
-                      onClick={() => {
-                        history("/Taxpayer_DC");
-                      }}
-                      style={{
-                        border: "1px solid #0095dd",
-                        background: "black",
-                        height: "45px",
-                        lineHeight: "normal",
-                        textAlign: "center",
-                        fontSize: "16px",
-                        marginLeft: "12px",
-                        textTransform: "uppercase",
-                        borderRadius: "0px",
-                        color: "#ffff",
-                        padding: "0 35px",
-                        letterSpacing: "1px",
-                      }}
-                      className="btn btn_submit  btn-primary-agent"
-                    >
-                      Continue To Self Certification Submission
-                    </Button>
-                  </div>
-                ) : 
-                <div style={{ marginTop: "25px" }}>
-                <Button
-                type="submit"
-                onClick={() => {
-                  history("/TaxPurpose_entity_W9_DC");
-                }}
-                style={{
-                  border: "1px solid #0095dd",
-                  background: "black",
-                  height: "45px",
-                  lineHeight: "normal",
-                  textAlign: "center",
-                  fontSize: "16px",
-                  marginLeft: "12px",
-                  textTransform: "uppercase",
-                  borderRadius: "0px",
-                  color: "#ffff",
-                  padding: "0 35px",
-                  letterSpacing: "1px",
-                }}
-                className="btn btn_submit  btn-primary-agent"
-              >
-                Continue To Self Certification Submission 
-              </Button>
-              </div>
-                
-                }
+  <div style={{ marginTop: "25px" }}>
+    <Button
+      type="submit"
+      onClick={() => {
+        history("/Taxpayer_DC");
+      }}
+      style={{
+        border: "1px solid #0095dd",
+        background: "black",
+        height: "45px",
+        lineHeight: "normal",
+        textAlign: "center",
+        fontSize: "16px",
+        marginLeft: "12px",
+        textTransform: "uppercase",
+        borderRadius: "0px",
+        color: "#ffff",
+        padding: "0 35px",
+        letterSpacing: "1px",
+      }}
+      className="btn btn_submit btn-primary-agent"
+    >
+      Continue To Self Certification Submission
+    </Button>
+  </div>
+) : (userType === "DC" && businessType === 2 ? (
+  <div style={{ marginTop: "25px" }}>
+    <Button
+      type="submit"
+      onClick={() => {
+        history("/TaxPurpose_entity_W9_DC");
+      }}
+      style={{
+        border: "1px solid #0095dd",
+        background: "black",
+        height: "45px",
+        lineHeight: "normal",
+        textAlign: "center",
+        fontSize: "16px",
+        marginLeft: "12px",
+        textTransform: "uppercase",
+        borderRadius: "0px",
+        color: "#ffff",
+        padding: "0 35px",
+        letterSpacing: "1px",
+      }}
+      className="btn btn_submit btn-primary-agent"
+    >
+      Continue To Self Certification Submission 
+    </Button>
+  </div>
+) : null)}
+
               </div>
             </Typography>
           </Paper>

@@ -227,14 +227,7 @@ export default function Penalties() {
                       >
                         Self Cert Individual Electronic Substitute Form Statement
                       </Typography>
-                      <Typography
-                        align="left"
-                        style={{ margin: "10px", fontSize: "17px", color: "grey" }}
-                      >
-                        The Internal Revenue Service does not require your consent
-                        to any provisions of this document other than the
-                        certifications required to avoid backup withholding.
-                      </Typography>
+                     
 
                       <div
                         className="row"

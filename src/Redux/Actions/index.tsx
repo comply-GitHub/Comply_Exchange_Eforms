@@ -757,6 +757,34 @@ export const getSettings = (callback: any = () => { console.log("") }): any => {
   };
 };
 
+//GetControllingEntity
+
+export const getAllControllingPersonEntity = (callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetControllingEntity,
+      "",
+      (resData) => {
+        if (resData.status === 200) {
+          if (callback) {
+            callback(resData.data)
+          }
+          dispatch({
+            type: Utils.actionName.GetControllingEntity,
+            payload: {
+              allControllingData: resData.data,
+            },
+          });
+
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
+
 export const getAllCountries = (callback: any = () => { console.log("") }): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(

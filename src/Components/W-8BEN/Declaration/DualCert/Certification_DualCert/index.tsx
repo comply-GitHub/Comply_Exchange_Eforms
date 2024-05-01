@@ -143,7 +143,7 @@ export default function Certifications(props: any) {
                   const submitPromise = new Promise((resolve, reject) => {
                     setSubmitting(true);
                     const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
-                    const result = { ...new_obj, ...values };
+                    const result = { ...new_obj, ...values,AccountHolderDetailsId:authDetails?.accountHolderId,AgentId:authDetails?.agentId,FormTypeID:FormTypeId?.BEN };
                     dispatch(
                       PostDualCert([result], () => {
                         localStorage.setItem("DualCertData", JSON.stringify(result))
@@ -235,7 +235,7 @@ export default function Certifications(props: any) {
                               Check to confirm this is a true and accurate statement
                             </Typography>
                           </Typography>
-                          <p className="error">{errors.confirmThisisaTrueAndAccurate}</p>
+                          {errors.confirmThisisaTrueAndAccurate && touched.confirmThisisaTrueAndAccurate ?(<p className="error">{errors.confirmThisisaTrueAndAccurate}</p>):""}
                           <Typography style={{ display: "flex" }}>
 
                             <Checkbox name="confirmYouhaveRewiedElectronicForm"
@@ -260,8 +260,7 @@ export default function Certifications(props: any) {
                               </span>
                             </Typography>
                           </Typography>
-                          <p className="error">{errors.confirmYouhaveRewiedElectronicForm}</p>
-
+                          {errors.confirmYouhaveRewiedElectronicForm && touched.confirmYouhaveRewiedElectronicForm ?(<p className="error">{errors.confirmYouhaveRewiedElectronicForm}</p>):""}
 
                         </div>
                       </Paper>
@@ -313,7 +312,7 @@ export default function Certifications(props: any) {
                         </Button>
                         <Button
                           type="submit"
-                          //   disabled={!isValid}
+                         disabled={!isValid}
 
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}

@@ -42,92 +42,102 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function Certifications(props: any) {
   const location = useLocation();
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+  const SelfControllingData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
+  
   console.log(PrevStepData, "prevv")
   const urlValue = location.pathname.substring(1);
   const [IsCompDataValid,SetIsCompDataValid]=useState(false);
+ 
+// console.log(formattedDate); 
   const individualSelfType = {
-
-    FirstName: "",
-    FamilyName: "",
-    dateofBirth: "",
-    CountryofBirth: "",
-    CityofBirth: "",
-    permanentHouseNumberorName: "",
-    permanentRoadName: "",
-    permanentLocation: "",
-    permanentCityorTown: "",
-    permanentStateorProvince: "",
-    permanentZiporPostalCode: "",
-    permanentResidentialCountry: "",
-    alterHouseNumberorName: "",
-    alterRoadName: "",
-    alterLocation: "",
-    alterCityorTown: "",
-    alterStateorProvince: "",
-    alterZiporPostalCode: "",
-    alterResidentialCountry: 0,
-    primaryTaxJurisdictionCountry1: "",
-    tinType1: "",
-    tiN1: "",
-    tinUnavailable1: false,
-    primaryTaxJurisdictionCountry2: "",
-    tinType2: "",
-    tiN2: "",
-    tinUnavailable2: false,
-    PrimaryTaxJurisdictionCountry3: "",
-    tinType3: "",
-    tiN3: "",
-    tinUnavailable3: false,
-    ReasonforNonAvailabilityofTIN: "",
-    legalNameofEntity1: "",
-    legalNameofEntity2: "",
-    legalNameofEntity3: "",
-    StatusEntity1: "",
-    statusEntity2: "",
-    StatusEntity3: "",
-    ownershipPercentage: "",
-    emailAddress: "",
-    usTaxCertificateSubmissionRequest: false
+    FirstName: SelfControllingData[0].FirstName || "",
+    FamilyName: SelfControllingData[0].FamilyName || "",
+    dateofBirth: SelfControllingData[0].dateofBirth || "",
+    countryofBirth: SelfControllingData[0].CountryofBirth || "",
+    cityofBirth: SelfControllingData[0].CityofBirth || "",
+    permanentHouseNumberorName: SelfControllingData[0].permanentHouseNumberorName || "",
+    permanentRoadName: SelfControllingData[0].permanentRoadName || "",
+    permanentLocation: SelfControllingData[0].permanentLocation || "",
+    permanentCityorTown: SelfControllingData[0].permanentCityorTown || "",
+    permanentStateorProvince: SelfControllingData[0].permanentStateorProvince || "",
+    permanentZiporPostalCode: SelfControllingData[0].permanentZiporPostalCode || "",
+    permanentResidentialCountry: SelfControllingData[0].permanentResidentialCountry || "",
+    alterHouseNumberorName: SelfControllingData[0].alterHouseNumberorName || "",
+    alterRoadName: SelfControllingData[0].alterRoadName || "",
+    alterLocation: SelfControllingData[0].alterLocation || "",
+    alterCityorTown: SelfControllingData[0].alterCityorTown || "",
+    alterStateorProvince: SelfControllingData[0].alterStateorProvince || "",
+    alterZiporPostalCode: SelfControllingData[0].alterZiporPostalCode || "",
+    alterResidentialCountry: SelfControllingData[0].alterResidentialCountry || 0,
+    primaryTaxJurisdictionCountry1: SelfControllingData[0].primaryTaxJurisdictionCountry1 || "",
+    tinType1: SelfControllingData[0].tinType1 || "",
+    tiN1: SelfControllingData[0].tiN1 || "",
+    tinUnavailable1: SelfControllingData[0].tinUnavailable1 || false,
+    primaryTaxJurisdictionCountry2: SelfControllingData[0].primaryTaxJurisdictionCountry2 || "",
+    tinType2: SelfControllingData[0].tinType2 || "",
+    tiN2: SelfControllingData[0].tiN2 || "",
+    tinUnavailable2: SelfControllingData[0].tinUnavailable2 || false,
+    PrimaryTaxJurisdictionCountry3: SelfControllingData[0].PrimaryTaxJurisdictionCountry3 || "",
+    tinType3: SelfControllingData[0].tinType3 || "",
+    tiN3: SelfControllingData[0].tiN3 || "",
+    tinUnavailable3: SelfControllingData[0].tinUnavailable3 || false,
+    ReasonforNonAvailabilityofTIN: SelfControllingData[0].ReasonforNonAvailabilityofTIN || "",
+    legalNameofEntity1: SelfControllingData[0].legalNameofEntity1 || "",
+    legalNameofEntity2: SelfControllingData[0].legalNameofEntity2 || "",
+    legalNameofEntity3: SelfControllingData[0].legalNameofEntity3 || "",
+    StatusEntity1: SelfControllingData[0].StatusEntity1 || "",
+    statusEntity2: SelfControllingData[0].statusEntity2 || "",
+    StatusEntity3: SelfControllingData[0].StatusEntity3 || "",
+    ownershipPercentage: SelfControllingData[0].ownershipPercentage || "",
+    emailAddress: SelfControllingData[0].emailAddress || "",
+    usTaxCertificateSubmissionRequest: SelfControllingData[0].usTaxCertificateSubmissionRequest || false
   };
   const SelfCertControllingPerson = useSelector((state: any) => state.SelfCertControllingPerson);
 
   console.log(SelfCertControllingPerson, "SelfCertControllingPerson")
   const [initialValues, setInitialValues] = useState({
 
-    FirstName: "",
-    FamilyName: "",
-    dateofBirth: "",
-    countryofBirth: 0,
-    cityOfBirth: 0,
-    permanentHouseNumberorName: "",
-    permanentRoadName: "",
-    permanentLocation: "",
-    permanentCityorTown: "",
-    permanentStateorProvince: "",
-    permanentZiporPostalCode: "",
-    permanentResidentialCountry: "",
-    primaryTaxJurisdictionCountry1: "",
-    tinType1: "",
-    tiN1: "",
-    tinUnavailable1: false,
-    primaryTaxJurisdictionCountry2: "",
-    tinType2: "",
-    tiN2: "",
-    tinUnavailable2: false,
-    primaryTaxJurisdictionCountry3: "",
-    tinType3: "",
-    tiN3: "",
-    tinUnavailable3: false,
-    reasonforNonAvailabilityofTIN: "",
-    legalNameofEntity1: "",
-    legalNameofEntity2: "",
-    legalNameofEntity3: "",
-    statusEntity1: "",
-    statusEntity2: "",
-    statusEntity3: "",
-    ownershipPercentage: "",
-    emailAddress: "",
-    usTaxCertificateSubmissionRequest: false
+    FirstName: SelfControllingData.FirstName || "",
+    FamilyName: SelfControllingData.FamilyName || "",
+    dateofBirth: SelfControllingData.dateofBirth || "",
+    CountryofBirth: SelfControllingData.CountryofBirth || "",
+    CityofBirth: SelfControllingData.CityofBirth || "",
+    permanentHouseNumberorName: SelfControllingData.permanentHouseNumberorName || "",
+    permanentRoadName: SelfControllingData.permanentRoadName || "",
+    permanentLocation: SelfControllingData.permanentLocation || "",
+    permanentCityorTown: SelfControllingData.permanentCityorTown || "",
+    permanentStateorProvince: SelfControllingData.permanentStateorProvince || "",
+    permanentZiporPostalCode: SelfControllingData.permanentZiporPostalCode || "",
+    permanentResidentialCountry: SelfControllingData.permanentResidentialCountry || "",
+    alterHouseNumberorName: SelfControllingData.alterHouseNumberorName || "",
+    alterRoadName: SelfControllingData.alterRoadName || "",
+    alterLocation: SelfControllingData.alterLocation || "",
+    alterCityorTown: SelfControllingData.alterCityorTown || "",
+    alterStateorProvince: SelfControllingData.alterStateorProvince || "",
+    alterZiporPostalCode: SelfControllingData.alterZiporPostalCode || "",
+    alterResidentialCountry: SelfControllingData.alterResidentialCountry || 0,
+    primaryTaxJurisdictionCountry1: SelfControllingData.primaryTaxJurisdictionCountry1 || "",
+    tinType1: SelfControllingData.tinType1 || "",
+    tiN1: SelfControllingData.tiN1 || "",
+    tinUnavailable1: SelfControllingData.tinUnavailable1 || false,
+    primaryTaxJurisdictionCountry2: SelfControllingData.primaryTaxJurisdictionCountry2 || "",
+    tinType2: SelfControllingData.tinType2 || "",
+    tiN2: SelfControllingData.tiN2 || "",
+    tinUnavailable2: SelfControllingData.tinUnavailable2 || false,
+    PrimaryTaxJurisdictionCountry3: SelfControllingData.PrimaryTaxJurisdictionCountry3 || "",
+    tinType3: SelfControllingData.tinType3 || "",
+    tiN3: SelfControllingData.tiN3 || "",
+    tinUnavailable3: SelfControllingData.tinUnavailable3 || false,
+    ReasonforNonAvailabilityofTIN: SelfControllingData.ReasonforNonAvailabilityofTIN || "",
+    legalNameofEntity1: SelfControllingData.legalNameofEntity1 || "",
+    legalNameofEntity2: SelfControllingData.legalNameofEntity2 || "",
+    legalNameofEntity3: SelfControllingData.legalNameofEntity3 || "",
+    StatusEntity1: SelfControllingData.StatusEntity1 || "",
+    statusEntity2: SelfControllingData.statusEntity2 || "",
+    StatusEntity3: SelfControllingData.StatusEntity3 || "",
+    ownershipPercentage: SelfControllingData.ownershipPercentage || "",
+    emailAddress: SelfControllingData.emailAddress || "",
+    usTaxCertificateSubmissionRequest: SelfControllingData.usTaxCertificateSubmissionRequest || false
 
 
   });
@@ -161,12 +171,7 @@ export default function Certifications(props: any) {
   const handleCanvaOpen = () => {
     setCanvaBx(true);
   }
-  const allCountriesData = useSelector(
-    (state: any) => state.getCountriesReducer
-  );
-  const getCountriesReducer = useSelector(
-    (state: any) => state.getCountriesReducer
-  );
+ 
   const handleCanvaClose = () => {
     setCanvaBx(false);
   }
@@ -222,7 +227,7 @@ export default function Certifications(props: any) {
         return {
           agentId: authDetails.agentId,
           accountHolderDetailsId: authDetails?.accountHolderId,
-          formTypeId: FormTypeId.BENE,
+          formTypeId: FormTypeId.W9,
           formEntryId: ele.formEntryId,
           FirstName: ele.FirstName,
           FamilyName: ele.FamilyName,
@@ -373,9 +378,21 @@ export default function Certifications(props: any) {
         return payload;
       })
         ;
-      dispatch(UpsertDualCertDetailsControllingPerson(temp, (data: any) => resolve(data), (err: any) => { reject(err) }))
-    })
-    return returnPromise;
+        dispatch(
+          UpsertDualCertDetailsControllingPerson(
+            temp,
+            (data: any) => {
+              // Save data in localStorage after dispatch completes
+              localStorage.setItem('SelfCertData', JSON.stringify(temp));
+              resolve(data);
+            },
+            (err: any) => {
+              reject(err);
+            }
+          )
+        );
+      });
+      return returnPromise;
   }
 
   return (
