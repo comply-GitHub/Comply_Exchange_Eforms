@@ -216,6 +216,7 @@ export default function Fedral_tax(props: any) {
                               "EntityDualCertPrevStepData",
                               JSON.stringify(temp)
                             );
+                            history("/CRS_W9_DC")
                           },
                           (err: any) => {
                             reject(err);

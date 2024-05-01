@@ -20,8 +20,8 @@ import "react-calendar/dist/Calendar.css";
 import InfoIcon from "@mui/icons-material/Info";
 import Declaration from "../../../../reusables/Declaration";
 import { Formik, Form } from "formik";
-import { useDispatch ,useSelector} from "react-redux";
-import { PostDualCert ,GetHelpVideoDetails} from "../../../../../Redux/Actions";
+import { useDispatch, useSelector } from "react-redux";
+import { PostDualCert, GetHelpVideoDetails } from "../../../../../Redux/Actions";
 import { useNavigate } from "react-router";
 import checksolid from "../../../../../assets/img/check-solid.png";
 import Accordion from "@mui/material/Accordion";
@@ -37,6 +37,7 @@ import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import moment from "moment";
+import { GetBENDCPdf } from "../../../../../Redux/Actions/PfdActions";
 type ValuePiece = Date | null;
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function Penalties() {
@@ -49,87 +50,88 @@ export default function Penalties() {
   const [showRecoverSection, setShowRecoverSection] = useState(false);
   const [payload, setPayload] = useState({
     confirmationCode: "",
-    
+
   });
 
   const urlValue = location.pathname.substring(1);
- const agentDefaultDetails = JSON.parse(
+  const agentDefaultDetails = JSON.parse(
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
   const W8BENData = useSelector((state: any) => state.W8BEN);
   // const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
-const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
-    // const toggleRecoverSection = () => {
-    //   setShowRecoverSection(true);
-    // };
-    console.log(PrevStepData,";;")
+  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+  // const toggleRecoverSection = () => {
+  //   setShowRecoverSection(true);
+  // };
+  console.log(PrevStepData, ";;")
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
 
-    const toggleRecoverSection = () => {
-      setShowRecoverSection(true);
-     
-      setSecurityWordError("");
-    };
+  const toggleRecoverSection = () => {
+    setShowRecoverSection(true);
 
-    useEffect(()=>{
-      document.title = "Certification II"
-    },[])
+    setSecurityWordError("");
+  };
 
-    useEffect(() => {
-   
-      dispatch(GetHelpVideoDetails());
-  
-    }, []);
-    const GethelpData = useSelector(
-      (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
-    );
-    const { authDetails } = useAuth()
-    const [clickCount, setClickCount] = useState(0);
-    const [isSecurityWordMatched, setIsSecurityWordMatched] = useState(false);
-    const [securityWordError, setSecurityWordError] = useState("");
+  useEffect(() => {
+    document.title = "Certification II"
+  }, [])
+
+  useEffect(() => {
+
+    dispatch(GetHelpVideoDetails());
+
+  }, []);
+  const GethelpData = useSelector(
+    (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
+  );
+  const { authDetails } = useAuth()
+  const [clickCount, setClickCount] = useState(0);
+  const [isSecurityWordMatched, setIsSecurityWordMatched] = useState(false);
+  const [securityWordError, setSecurityWordError] = useState("");
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
   const initialValue = {
     signedBy: W8BENData?.signedBy ?? "",
-    EnterconfirmationCode:"",
+    EnterconfirmationCode: "",
     confirmationCode: W8BENData?.confirmationCode ?? "",
-    date:W8BENData?.date ?? new Date().toLocaleDateString('en-US', { month: '2-digit',
-    day: '2-digit',
-    year: 'numeric',
-  }),
-  isCheckAcceptance: W8BENData?.isCheckAcceptance ? true : false
-   
+    date: W8BENData?.date ?? new Date().toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+    }),
+    isCheckAcceptance: W8BENData?.isCheckAcceptance ? true : false
+
   };
- 
+
 
   const dispatch = useDispatch();
   const history = useNavigate();
 
-  const viewPdf=()=>{
+  const viewPdf = () => {
     // history("/w8Ben_pdf", { replace: true });
     history("/w8Ben_pdf");
   }
   return (
     <>
       <Formik
-      validateOnChange={true}
-      validateOnBlur={true}
+        validateOnChange={true}
+        validateOnBlur={true}
         initialValues={initialValue}
         validationSchema={partCertiSchema_DC_BEN}
         onSubmit={(values, { setSubmitting }) => {
           // history("/Submit_DC_BEN");
-         
+
           const returnPromise = new Promise((resolve, reject) => {
 
             const temp = [{
-              ...PrevStepData, 
+              ...PrevStepData,
               ...values,
-              AccountHolderDetailsId:authDetails?.accountHolderId,
-              AgentId:authDetails?.agentId,
-              FormTypeID:FormTypeId.BEN,
+              AccountHolderDetailsId: authDetails?.accountHolderId,
+              AgentId: authDetails?.agentId,
+              FormTypeID: FormTypeId.BEN,
               date: new Date().toISOString(),
               stepName: `/${urlValue}`
             }]
@@ -137,8 +139,8 @@ const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
               PostDualCert(temp, () => {
                 setSubmitting(true);
                 localStorage.setItem("DualCertData", JSON.stringify(temp))
-              
-                
+
+
                 resolve("success")
               }, (err: any) => {
                 reject(err);
@@ -153,211 +155,214 @@ const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
         }
       >
         {({
-         errors,
-         touched,
-         handleBlur,
-         values,
-         handleSubmit,
-         handleChange,
-         isSubmitting,
-         setFieldValue,
-         isValid,
-         submitForm
+          errors,
+          touched,
+          handleBlur,
+          values,
+          handleSubmit,
+          handleChange,
+          isSubmitting,
+          setFieldValue,
+          isValid,
+          submitForm
         }) => (
           <Form onSubmit={handleSubmit}>
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
             >
-<div className="overlay-div">
-            <div className="overlay-div-group">
-                <div className="viewInstructions">View Instructions</div>
-                <div className="viewform" onClick={viewPdf}>View Form</div>
-                <div className="helpvideo"> 
-                {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
-                {GethelpData && GethelpData[4].id === 6 ? (
-  <a
-    href={GethelpData[4].fieldValue}
-    target="popup"
-    onClick={() =>
-      window.open(
-        GethelpData[4].fieldValue,
-        'name',
-        `width=${GethelpData[4].width},height=${GethelpData[4].height},top=${GethelpData[4].top},left=${GethelpData[4].left}`
-      )
-    }
-  >
-    Help Video
-  </a>
-) : (
-  ""
-)}
+              <div className="overlay-div">
+                <div className="overlay-div-group">
+                  <div className="viewInstructions">View Instructions</div>
+                  <div className="viewform" onClick={() => {
+                    dispatch(GetBENDCPdf(authDetails?.accountHolderId))
+                  }}>View Form</div>
+                  <div className="helpvideo">
+                    {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
+                    {GethelpData && GethelpData[4].id === 6 ? (
+                      <a
+                        href={GethelpData[4].fieldValue}
+                        target="popup"
+                        onClick={() =>
+                          window.open(
+                            GethelpData[4].fieldValue,
+                            'name',
+                            `width=${GethelpData[4].width},height=${GethelpData[4].height},top=${GethelpData[4].top},left=${GethelpData[4].left}`
+                          )
+                        }
+                      >
+                        Help Video
+                      </a>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 </div>
-            </div>
-        </div>
-        <div className="row w-100">
-        <div className="col-4">
-          <div style={{ padding: "20px 0px",height:"100%"}}>
-            <BreadCrumbComponent breadCrumbCode={1290} formName={2}/>
-          
-      </div>
-      </div>
-      <div className="col-8 mt-3">
+              </div>
+              <div className="row w-100">
+                <div className="col-4">
+                  <div style={{ padding: "20px 0px", height: "100%" }}>
+                    <BreadCrumbComponent breadCrumbCode={1290} formName={2} />
 
-              <div style={{ padding: "10px" }}>
-
-               
-                <Paper style={{ padding: "18px" }}>
-                {obValues.uniqueIdentifier !== values.signedBy && clickCount === 1 ?(
-                  <div  style={{backgroundColor: "#e8e1e1" , padding:"10px"}}>
-                  <Typography>
-                SIG101
-                  <span className="mx-1">
-                  <img src={Infoicon} style={{color: "#ffc107",height:"22px",
-                  width:"20px",
-                  boxShadow:"inherit",
-                 
-
-                         
-                          cursor: "pointer",
-                          marginBottom:"3px"
-                         
-                        }}/>
-                    
-                    
-                    You have entered an electronic signature name that is different to the one expected
-                  </span>
-   
-                  
-                  </Typography>
-                 
+                  </div>
                 </div>
+                <div className="col-8 mt-3">
 
-                ):""}
-                  <Typography
-                    align="left"
-                    style={{
-                      margin: "10px",
-                      fontSize: "27px",
-                      fontWeight: "550",
-                    }}
-                  >
-                   Certification<span style={{ color: "red" }}>*</span>
-                  </Typography>
-                  <Typography
-                    align="left"
-                    style={{
-                      margin: "10px",
-                      fontSize: "27px",
-                      fontWeight: "550",
-                    }}
-                  >
-                    Self Cert Individual Electronic Substitute Form Statement
-                  </Typography>
-                  <Typography
-                    align="left"
-                    style={{ margin: "10px", fontSize: "18px", color: "grey" }}
-                  >
-                    The Internal Revenue Service does not require your consent
-                    to any provisions of this document other than the
-                    certifications required to avoid backup withholding. 
-                  </Typography>
+                  <div style={{ padding: "10px" }}>
 
-                  <div
-                    className="row"
-                    style={{
-                      margin: "10px",
 
-                      marginTop: "20px",
-                    }}
-                  >
-                    <div className="col-md-6 col-12 p-0">
-                      <Typography style={{ fontSize: "15px" }}>
-                        Signed by<span style={{ color: "red" }}>*</span>
-                        <span>
-                          <Tooltip
-                            style={{ backgroundColor: "black", color: "white" }}
-                            title={
-                              <>
-                                <Typography color="inherit">
-                                  Signature information
-                                </Typography>
-                                <a onClick={() => setToolInfo("basic")}>
-                                  <Typography
-                                    style={{
-                                      cursor: "pointer",
-                                      textDecorationLine: "underline",
-                                    }}
-                                    align="center"
-                                  >
-                                    {" "}
-                                    View More...
-                                  </Typography>
-                                </a>
-                              </>
-                            }
-                          >
-                            <InfoIcon
-                              style={{
-                                color: "#ffc107",
-                                fontSize: "20px",
+                    <Paper style={{ padding: "18px" }}>
+                      {obValues.uniqueIdentifier !== values.signedBy && clickCount === 1 ? (
+                        <div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                          <Typography>
+                            SIG101
+                            <span className="mx-1">
+                              <img src={Infoicon} style={{
+                                color: "#ffc107", height: "22px",
+                                width: "20px",
+                                boxShadow: "inherit",
+
+
+
                                 cursor: "pointer",
-                                verticalAlign: "super",
-                              }}
-                            />
-                          </Tooltip>
-                        </span>
-                      </Typography>
-                      {toolInfo === "basic" ? (
-                        <div>
-                          <Paper
-                            style={{
-                              backgroundColor: "#dedcb1",
-                              padding: "15px",
-                              marginBottom: "10px",
-                              width: "70%",
-                            }}
-                          >
-                            <Typography>
-                              Please enter the name of the authorized signatory.
-                            </Typography>
+                                marginBottom: "3px"
 
-                            <Typography style={{ marginTop: "10px" }}>
-                              See 'More Info' for further information on
-                              signature requirements.
-                            </Typography>
-                            <Typography style={{ marginTop: "10px" }}>
-                              On submission an electronic version of this form
-                              will be sent directly to the requester for their
-                              acceptance and further validation. After
-                              submission you will be able to save and print a
-                              copy for your own records.
-                            </Typography>
-                            <Typography style={{ marginTop: "10px" }}>
-                              We will confirm receipt of the electronic form.
-                              Please note that acceptance of the confirmation
-                              declaration for electronic signature and the
-                              certification statement are performed under
-                              penalty of perjury.
-                            </Typography>
+                              }} />
 
-                            <Link
-                              href="#"
-                              underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" }}
-                              onClick={() => {
-                                setToolInfo("");
-                              }}
-                            >
-                              --Show Less--
-                            </Link>
-                          </Paper>
+
+                              You have entered an electronic signature name that is different to the one expected
+                            </span>
+
+
+                          </Typography>
+
                         </div>
-                      ) : (
-                        ""
-                      )}
 
-<Input
+                      ) : ""}
+                      <Typography
+                        align="left"
+                        style={{
+                          margin: "10px",
+                          fontSize: "27px",
+                          fontWeight: "550",
+                        }}
+                      >
+                        Certification<span style={{ color: "red" }}>*</span>
+                      </Typography>
+                      <Typography
+                        align="left"
+                        style={{
+                          margin: "10px",
+                          fontSize: "27px",
+                          fontWeight: "550",
+                        }}
+                      >
+                        Self Cert Individual Electronic Substitute Form Statement
+                      </Typography>
+                      <Typography
+                        align="left"
+                        style={{ margin: "10px", fontSize: "18px", color: "grey" }}
+                      >
+                        The Internal Revenue Service does not require your consent
+                        to any provisions of this document other than the
+                        certifications required to avoid backup withholding.
+                      </Typography>
+
+                      <div
+                        className="row"
+                        style={{
+                          margin: "10px",
+
+                          marginTop: "20px",
+                        }}
+                      >
+                        <div className="col-md-6 col-12 p-0">
+                          <Typography style={{ fontSize: "15px" }}>
+                            Signed by<span style={{ color: "red" }}>*</span>
+                            <span>
+                              <Tooltip
+                                style={{ backgroundColor: "black", color: "white" }}
+                                title={
+                                  <>
+                                    <Typography color="inherit">
+                                      Signature information
+                                    </Typography>
+                                    <a onClick={() => setToolInfo("basic")}>
+                                      <Typography
+                                        style={{
+                                          cursor: "pointer",
+                                          textDecorationLine: "underline",
+                                        }}
+                                        align="center"
+                                      >
+                                        {" "}
+                                        View More...
+                                      </Typography>
+                                    </a>
+                                  </>
+                                }
+                              >
+                                <InfoIcon
+                                  style={{
+                                    color: "#ffc107",
+                                    fontSize: "20px",
+                                    cursor: "pointer",
+                                    verticalAlign: "super",
+                                  }}
+                                />
+                              </Tooltip>
+                            </span>
+                          </Typography>
+                          {toolInfo === "basic" ? (
+                            <div>
+                              <Paper
+                                style={{
+                                  backgroundColor: "#dedcb1",
+                                  padding: "15px",
+                                  marginBottom: "10px",
+                                  width: "70%",
+                                }}
+                              >
+                                <Typography>
+                                  Please enter the name of the authorized signatory.
+                                </Typography>
+
+                                <Typography style={{ marginTop: "10px" }}>
+                                  See 'More Info' for further information on
+                                  signature requirements.
+                                </Typography>
+                                <Typography style={{ marginTop: "10px" }}>
+                                  On submission an electronic version of this form
+                                  will be sent directly to the requester for their
+                                  acceptance and further validation. After
+                                  submission you will be able to save and print a
+                                  copy for your own records.
+                                </Typography>
+                                <Typography style={{ marginTop: "10px" }}>
+                                  We will confirm receipt of the electronic form.
+                                  Please note that acceptance of the confirmation
+                                  declaration for electronic signature and the
+                                  certification statement are performed under
+                                  penalty of perjury.
+                                </Typography>
+
+                                <Link
+                                  href="#"
+                                  underline="none"
+                                  style={{ marginTop: "10px", fontSize: "16px" }}
+                                  onClick={() => {
+                                    setToolInfo("");
+                                  }}
+                                >
+                                  --Show Less--
+                                </Link>
+                              </Paper>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+
+                          <Input
                             className="inputTextField"
                             id="outlined"
                             fullWidth
@@ -690,74 +695,76 @@ const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
                           </span>
                         </Typography>
                       </Typography>
-                  {toolInfo === "check" ? (
-                    <div>
-                      <Paper
+                      {toolInfo === "check" ? (
+                        <div>
+                          <Paper
+                            style={{
+                              backgroundColor: "#dedcb1",
+                              padding: "15px",
+                              marginBottom: "10px",
+                            }}
+                          >
+                            <Typography>
+                              This submission <span>must</span> be signed and dated
+                              by the beneficial owner of the income, or, if the
+                              beneficial owner is not an individual, by an
+                              authorized representative or officer of the beneficial
+                              owner.
+                            </Typography>
+                            <Typography>
+                              If this submission is being completed by an agent
+                              acting under a duly authorized power of attorney for
+                              the beneficial owner or account holder, the form must
+                              be accompanied by the power of attorney in proper form
+                              or a copy thereof specifically authorizing the agent
+                              to represent the principal in making, executing, and
+                              presenting the form.
+                            </Typography>
+
+                            <Typography style={{ marginTop: "10px" }}>
+                              Form 2848, Power of Attorney and Declaration of
+                              Representative, can be used for this purpose. The
+                              agent, as well as the beneficial owner or account
+                              holder, may incur liability for the penalties provided
+                              for an erroneous, false, or fraudulent form.
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              Ref: EH015
+                            </Typography>
+
+                            <Link
+                              href="#"
+                              underline="none"
+                              style={{ marginTop: "10px", fontSize: "16px" }}
+                              onClick={() => {
+                                setToolInfo("");
+                              }}
+                            >
+                              --Show Less--
+                            </Link>
+                          </Paper>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+
+                      <div
                         style={{
-                          backgroundColor: "#dedcb1",
-                          padding: "15px",
-                          marginBottom: "10px",
+                          display: "flex",
+                          justifyContent: "center",
+                          marginTop: "40px",
                         }}
                       >
-                        <Typography>
-                          This submission <span>must</span> be signed and dated
-                          by the beneficial owner of the income, or, if the
-                          beneficial owner is not an individual, by an
-                          authorized representative or officer of the beneficial
-                          owner.
-                        </Typography>
-                        <Typography>
-                          If this submission is being completed by an agent
-                          acting under a duly authorized power of attorney for
-                          the beneficial owner or account holder, the form must
-                          be accompanied by the power of attorney in proper form
-                          or a copy thereof specifically authorizing the agent
-                          to represent the principal in making, executing, and
-                          presenting the form.
-                        </Typography>
-
-                        <Typography style={{ marginTop: "10px" }}>
-                          Form 2848, Power of Attorney and Declaration of
-                          Representative, can be used for this purpose. The
-                          agent, as well as the beneficial owner or account
-                          holder, may incur liability for the penalties provided
-                          for an erroneous, false, or fraudulent form.
-                        </Typography>
-                        <Typography style={{ marginTop: "10px" }}>
-                          Ref: EH015
-                        </Typography>
-
-                        <Link
-                          href="#"
-                          underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px" }}
+                        <Button
                           onClick={() => {
-                            setToolInfo("");
+                            dispatch(GetBENDCPdf(authDetails?.accountHolderId))
                           }}
+                          variant="contained"
+                          style={{ color: "white" }}
                         >
-                          --Show Less--
-                        </Link>
-                      </Paper>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      marginTop: "40px",
-                    }}
-                  >
-                     <Button
-                     onClick={viewPdf}
-                      variant="contained"
-                      style={{ color: "white" }}
-                    >
-                    View Form
-                    </Button>
-                    <div style={{ color: "white", marginLeft: "15px" }}>
+                          View Form
+                        </Button>
+                        <div style={{ color: "white", marginLeft: "15px" }}>
                           <SaveAndExit Callback={() => {
                             submitForm().then(() => {
                               const prevStepData = JSON.parse(
@@ -765,67 +772,67 @@ const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
                               );
                               const urlValue =
                                 window.location.pathname.substring(1);
-                                dispatch(PostDualCert(
-                                  {
-                                      ...prevStepData,
-                                      ...values,
-                                      stepName: `/${urlValue}`
-                                  }
-                                  , () => { }, 
-                                  () => { }) 
+                              dispatch(PostDualCert(
+                                {
+                                  ...prevStepData,
+                                  ...values,
+                                  stepName: `/${urlValue}`
+                                }
+                                , () => { },
+                                () => { })
                               );
-                                history(GlobalValues.basePageRoute)
-                              }).catch((err) => {
-                                console.log(err);
-                              })
-                            }} formTypeId={FormTypeId.BEN}/>
+                              history(GlobalValues.basePageRoute)
+                            }).catch((err) => {
+                              console.log(err);
+                            })
+                          }} formTypeId={FormTypeId.BEN} />
                         </div>
-                    <Button
-                      type="submit"
-                      onClick={() => {
-                        submitForm().then((data: any) => {
-                          history("/Submit_DC_BEN");
-                        }).catch(() => {
+                        <Button
+                          type="submit"
+                          onClick={() => {
+                            submitForm().then((data: any) => {
+                              history("/Submit_DC_BEN");
+                            }).catch(() => {
 
-                        })
-                      }}
-                      disabled={!isValid || !values.isCheckAcceptance}
-                      variant="contained"
-                      style={{ color: "white", marginLeft: "15px" }}
-                    >
-                      Submit Electronically
-                    </Button>
+                            })
+                          }}
+                          disabled={!isValid || !values.isCheckAcceptance}
+                          variant="contained"
+                          style={{ color: "white", marginLeft: "15px" }}
+                        >
+                          Submit Electronically
+                        </Button>
+                      </div>
+                      <Typography
+                        align="center"
+                        style={{
+                          color: "#adadac",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginTop: "20px",
+                        }}
+                      >
+                        Do you want to go back?
+                      </Typography>
+                      <Typography align="center">
+                        <Button
+                          onClick={() => {
+                            history('/Certification_DC_BEN')
+                          }}
+                          variant="contained"
+                          style={{
+                            color: "white",
+                            backgroundColor: "black",
+                            marginTop: "10px",
+                            marginBottom: "20px",
+                          }}
+                        >
+                          Back
+                        </Button>
+                      </Typography>
+                    </Paper>
                   </div>
-                  <Typography
-                    align="center"
-                    style={{
-                      color: "#adadac",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: "20px",
-                    }}
-                  >
-                    Do you want to go back?
-                  </Typography>
-                  <Typography align="center">
-                    <Button
-                    onClick={()=>{
-                      history('/Certification_DC_BEN')
-                    }}
-                      variant="contained"
-                      style={{
-                        color: "white",
-                        backgroundColor: "black",
-                        marginTop: "10px",
-                        marginBottom: "20px",
-                      }}
-                    >
-                      Back
-                    </Button>
-                  </Typography>
-                </Paper>
-              </div>
-              </div>
+                </div>
               </div>
             </section>
           </Form>

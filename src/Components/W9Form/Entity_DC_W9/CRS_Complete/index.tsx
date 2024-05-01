@@ -6,7 +6,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";
+import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";     
 import Divider from "@mui/material/Divider";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { Form, Formik } from "formik";
@@ -123,6 +123,12 @@ export default function Declaration (props: any){
                 dispatch(
                   postSCFATCAClassification(result, (data: any) => {
                     localStorage.setItem("DualCertData", JSON.stringify(result))
+                    if(CRSClassificationData?.selectedHeading =="Passive Non Financial Entity"){
+                      history("/SelfCert_Passive_W9_DC")
+                    }
+                    else{
+                      history("/US_Determination_W9_DC")
+                    }
                     resolve(data);
                   }
                     , (err: any) => {
@@ -209,10 +215,6 @@ export default function Declaration (props: any){
                       Confirm
                     </Button>
                   </div>
-            
-
-
-                
                 </form>
            
               )}

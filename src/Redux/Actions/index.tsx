@@ -496,11 +496,11 @@ export const GetSelfCetHidden = (id:any): any => {
   };
 };
 
-export const getBreadCrums = (FormId: Number, callback: Function): any => {
+export const getBreadCrums = (FormId: Number,agentId: Number, callback: Function): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
       Utils.EndPoint.getBreadCrums,
-      `?FormId=${FormId}`,
+      `?FormId=${FormId}&AgentId=${agentId}`,
       (resData) => {
         const { data } = resData;
         if (resData.status === 200) {

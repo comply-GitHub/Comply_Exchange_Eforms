@@ -16,6 +16,11 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../../../../customHooks/useAuth";
 import { useDispatch } from "react-redux";
 import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
+const authDetailsString = localStorage.getItem("authDetails") || "{}";
+
+const auth = JSON.parse(authDetailsString);
+
+const userType = auth?.configurations?.userType;
 
 export default function Term() {
   //States  
@@ -167,6 +172,36 @@ export default function Term() {
           </Typography>
         </div>
       </div>
+
+      {userType === "DC" ? (
+                  <div style={{ marginTop: "25px" }}>
+                    <Button
+                      type="submit"
+                      onClick={() => {
+                        //history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/TaxPayer_DC");
+                        history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC");
+                      }}
+                      style={{
+                        border: "1px solid #0095dd",
+                        background: "black",
+                        height: "45px",
+                        lineHeight: "normal",
+                        textAlign: "center",
+                        fontSize: "16px",
+                        marginLeft: "12px",
+                        textTransform: "uppercase",
+                        borderRadius: "0px",
+                        color: "#ffff",
+                        padding: "0 35px",
+                        letterSpacing: "1px",
+                      }}
+                      className="btn btn_submit  btn-primary-agent"
+                    >
+                      Continue To Self Certification Submission
+                    </Button>
+                  </div>
+                ) : ""}
+
       <div className="container-fluid">
         <footer>
           <div className="row mx-1">

@@ -2192,7 +2192,7 @@ export default function Fedral_tax(props: any) {
                             View Form
                           </Button>
                           <Button
-                            //type="submit"
+                            type="submit"
                             disabled={!isValid}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}

@@ -10,10 +10,12 @@ import { Divider, Paper, Typography, Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../Redux/store";
 import { FormTypeId } from "../../Utils/constVals";
+import useAuth from "../../customHooks/useAuth";
 
 
 export default function BreadCrumbComponent(props: any): any {
   const { breadCrumbCode, formName } = props;
+  const { authDetails } = useAuth();
   const dispatch = useDispatch<AppDispatch>();
 
   const stepNumbers = ["I", "II", "III", "IV", "V"];
@@ -29,11 +31,38 @@ export default function BreadCrumbComponent(props: any): any {
   );
 
   useEffect(() => {
-    dispatch(getBreadCrums(formName, (data: any) => setBreadCrumb(data)));
-  }, []);
+    dispatch(getBreadCrums(formName,authDetails?.agentId, (data: any) => setBreadCrumb(data)));
+  }, [authDetails]);
   useEffect(() => {
     groupDataByBreadcrumbPart(breadCrumb);
   }, [breadCrumb]);
+
+  interface BreadcrumbItem {
+    id: number;
+    breadcrumbpart: string;
+    title: string;
+    url: string;
+    order: number;
+    formId: number;
+    createdOn: string;
+    modifiedOn: string;
+  }
+  
+  const getBreadcrumbPart = (breadcrumbItems: BreadcrumbItem[], breadCrumbCode: number): string => {
+    // Sort the array by order in ascending order
+    const sortedItems = breadcrumbItems.sort((a, b) => a.order - b.order);
+  
+    // Find the index of the first item whose order is greater than breadCrumbCode
+    const index = sortedItems.findIndex(item => item.order > breadCrumbCode);
+  
+    // If index is 0 or -1, return an empty string, else return the breadcrumbpart of the previous item
+    return index <= 0 ? "" : sortedItems[index - 1].breadcrumbpart;
+  };
+  
+  // Usage example
+  const breadcrumbItems: BreadcrumbItem[] = [ /* Your array of objects */ ];
+  const breadcrumbPart = getBreadcrumbPart(breadcrumbItems, breadCrumbCode);
+  console.log("Breadcrumb Part:", breadcrumbPart);
 
   function groupDataByBreadcrumbPart(data: any) {
     const groupedData: any = {};
@@ -96,7 +125,6 @@ export default function BreadCrumbComponent(props: any): any {
                       fontSize: "20px",
                     }}
                   >
-                    {/* {item[0]} */}
                     {
                       "Step " + stepNumbers[index]
                     }

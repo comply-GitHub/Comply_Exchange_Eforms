@@ -57,14 +57,14 @@ const Declaration = (props: any) => {
                 console.log("values", values)
                 setSubmitting(true);
                 const result = {
-                  ...PrevStepData,
+                  ...PrevStepData[0],
                   ...values,
 
                   statusId: 1,
                 };
                 const returnPromise = new Promise((resolve, reject) => {
                   dispatch(
-                    PostDualCert(result, (data: any) => {
+                    PostDualCert([result], (data: any) => {
                       localStorage.setItem("DualCertData", JSON.stringify(result))
                       resolve(data);
                     }
@@ -74,7 +74,7 @@ const Declaration = (props: any) => {
                     )
                   );
                 })
-
+                return returnPromise;
 
               }}
             >
@@ -90,7 +90,7 @@ const Declaration = (props: any) => {
                 submitForm,
                 isValid
               }) => (
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit}>                                                  
                   {/* <form> */}
                   {
                     <Typography
@@ -344,7 +344,7 @@ const Declaration = (props: any) => {
                           checked={values.IsConsentReceipentstatement}                           
                           />
 
-                          <Typography style={{ marginTop: "9px", fontSize: "17px" }}>
+                          <Typography style={{ marginTop: "9px", fontSize: "17px" }}>                        
                             I give consent to receiving a recipent statement
                             electronically.
                           </Typography>
@@ -420,7 +420,7 @@ const Declaration = (props: any) => {
                         })
                       }}
                       disabled={!isValid}
-                      // type="submit"
+                      type="submit"
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >

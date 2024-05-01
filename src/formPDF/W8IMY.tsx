@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@mui/material";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";

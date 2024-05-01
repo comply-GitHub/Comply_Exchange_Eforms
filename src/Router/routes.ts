@@ -40,8 +40,6 @@ const Thankyou_W9_DC = React.lazy(
 const TaxPurpose_entity_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/tax_purpose_DualCert")
 );
-
-
 const CRS_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert")
 );
@@ -62,13 +60,28 @@ const Complete_CRS_W9 = React.lazy(
 const Active_Non_Financial_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/Active_Non_financial")
 );
-
-
-
+// IMY 
+const Status_DC_IMY = React.lazy(
+  () => import("../Components/W-8IMY/DualCert/Status_DC")
+);
+const TaxPayer_DCIMY = React.lazy(
+  () => import("../Components/W-8IMY/DualCert/TaxPayer_DCIMY")
+);
+const Certification_IMY = React.lazy(
+  () => import("../Components/W-8IMY/DualCert/Certification_IMY")
+);
+const Penalties_IMY = React.lazy(
+  () => import("../Components/W-8IMY/DualCert/Penalties_IMY")
+)
+const Submit_IMYDC = React.lazy(
+  () => import("../Components/W-8IMY/DualCert/Submit_IMY")
+)
+const ThankYou_IMYDC = React.lazy(
+  () => import("../Components/W-8IMY/DualCert/ThankYou_IMY")
+)
 const Non_Reporting_CRS_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/NonReporting")
 );
-
 const Financial_CRS_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/Financial")
 );
@@ -87,8 +100,62 @@ const Declaration = React.lazy(
 const US_Sourced = React.lazy(
   () => import("../Components/W-8BEN/Declaration/US")
 );
-
 //
+const Status_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/Status_DC")
+);
+// 
+const Fatca_DC_BENE = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/FATCA/index")
+);
+const BENE_PASSIVE_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/BENE_PASSIVE_DC")
+);
+const TaxPayer_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/TaxPayer_DC")
+);
+
+const Certification_DCBENE = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/Certification_DCBENE")
+);
+
+const Penalties_DC_BENE = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/Penalties_DC_BENE")
+);
+const CRS_BENE_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/CRS_DualCert")
+);
+
+const Financial_BENE_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/CRS_DualCert/Financial")
+);
+// const SelfCert_Passive_BENE_DC = React.lazy(
+//   () => import("../Components/W8BEN-E/DualCert/")
+// );
+
+
+const Complete_CRS_BENE = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/CRS_Complete")
+);
+const Active_Non_Financial_BENE_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/CRS_DualCert/Active_Non_financial")
+);
+
+const Non_Reporting_CRS_BENE_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/CRS_DualCert/NonReporting/index")
+);
+const Financial_CRS_BENE_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/CRS_DualCert/Financial")
+);
+const FinancialReport_CRS_BEN_DC = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/Financial/FinancialModal")
+);
+const Submit_DC_BENE = React.lazy(
+  () => import("../Components/W8BEN-E/DualCert/Submit_DC_BENE")
+)
+const ThankYou_DC = React.lazy(
+  () => import("../Components//W8BEN-E/DualCert/ThankYou_DC")
+)
 const Non_us_sourced = React.lazy(
   () => import("../Components/W-8BEN/Declaration/Non-US/Status")
 );
@@ -130,7 +197,7 @@ const Submit_DC_BEN = React.lazy(
 const ThankYou_DC_BEN = React.lazy(
   () => import("../Components/W-8BEN/Declaration/DualCert/ThankYou_DualCert")
 );
-const Susbtantial_BEN= React.lazy(
+const Susbtantial_BEN = React.lazy(
   () => import("../Components/W-8BEN/Declaration/Non-US/SustantialPresence")
 );
 //
@@ -191,11 +258,11 @@ const W8Ben = React.lazy(
 const W8BENE = React.lazy(
   () => import("../formPDF/W8BENE")
 );
-const W8Eci= React.lazy(
+const W8Eci = React.lazy(
   () => import("../formPDF/W8ECI")
 );
 
-const W8Exp= React.lazy(
+const W8Exp = React.lazy(
   () => import("../formPDF/W8EXP")
 );
 
@@ -240,19 +307,25 @@ const Submit_IMY = React.lazy(() => import("../Components/W-8IMY/Sumit_imy"));
 const ThankYou_IMY = React.lazy(() => import("../Components/W-8IMY/Thankyou_imy"));
 
 const CaymanIndividualStart = React.lazy(() => import("../Components/Cayman/Individual/Start"));
-const CaymanIndividualStartSustantialPresence= React.lazy(() => import("../Components/Cayman/Individual/Start/SustantialPresence"));
-const CaymanIndividualStartUSTin= React.lazy(() => import("../Components/Cayman/Individual/Start/USTin"));
-const CaymanIndividualStartCertification= React.lazy(() => import("../Components/Cayman/Individual/Start/Certification"));
-const CaymanIndividualStartSubmission= React.lazy(() => import("../Components/Cayman/Individual/Start/Submission"));
-const CaymanIndividualStartESConfirmation= React.lazy(() => import("../Components/Cayman/Individual/Start/ESConfirmation"));
-const CaymanIndividualStartThankyou= React.lazy(() => import("../Components/Cayman/Individual/Start/Thankyou"));
+const CaymanIndividualStartSustantialPresence = React.lazy(() => import("../Components/Cayman/Individual/Start/SustantialPresence"));
+const CaymanIndividualStartUSTin = React.lazy(() => import("../Components/Cayman/Individual/Start/USTin"));
+const CaymanIndividualStartCertification = React.lazy(() => import("../Components/Cayman/Individual/Start/Certification"));
+const CaymanIndividualStartSubmission = React.lazy(() => import("../Components/Cayman/Individual/Start/Submission"));
+const CaymanIndividualStartESConfirmation = React.lazy(() => import("../Components/Cayman/Individual/Start/ESConfirmation"));
+const CaymanIndividualStartThankyou = React.lazy(() => import("../Components/Cayman/Individual/Start/Thankyou"));
 
 const CaymanEntityStart = React.lazy(() => import("../Components/Cayman/Entity/Start"));
-const CaymanEntityFatcaClassification= React.lazy(() => import("../Components/Cayman/Entity/FATCA"));
+const CaymanEntityFatcaClassification = React.lazy(() => import("../Components/Cayman/Entity/FATCA"));
 const CaymanEntityFatcaClassificationFinancial = React.lazy(() => import("../Components/Cayman/Entity/FATCA/Financial"));
 const CaymanEntityFatcaClassificationGIINAvailable = React.lazy(() => import("../Components/Cayman/Entity/FATCA/GIINAvailable"));
 const CaymanEntityFatcaClassificationGIINNotAvailable = React.lazy(() => import("../Components/Cayman/Entity/FATCA/GIINNotAvailable"));
 const CaymanEntityFatcaClassificationSponsoredFinancialInstitution = React.lazy(() => import("../Components/Cayman/Entity/FATCA/SponsoredFinanceInstitution"));
+const CaymanIndividualFatcaClassificationComplete= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Complete"));
+const CaymanIndividualFatcaClassificationFinal= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Final"));
+// const CaymanIndividualStartSubmission= React.lazy(() => import("../Components/Cayman/Individual/Start/Submission"));
+// const CaymanIndividualStartESConfirmation= React.lazy(() => import("../Components/Cayman/Individual/Start/ESConfirmation"));
+// const CaymanIndividualStartThankyou= React.lazy(() => import("../Components/Cayman/Individual/Start/Thankyou"));
+const BENEEntityFatcaClassification = React.lazy(() => import("../Components/Cayman/Entity/FATCA"));
 const CaymanEntityFatcaClassificationComplete= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Complete"));
 const CaymanEntityFatcaClassificationFinal= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Final"));
 
@@ -266,6 +339,12 @@ const CaymanEntityCRSFinancialN = React.lazy(() => import("../Components/Cayman/
 
 const CaymanEntityTIN= React.lazy(() => import("../Components/Cayman/Entity/USTin"));
 
+const BENEEntityFatcaClassificationFinancial = React.lazy(() => import("../Components/Cayman/Entity/FATCA/Financial"));
+const BENEEntityFatcaClassificationGIINAvailable = React.lazy(() => import("../Components/Cayman/Entity/FATCA/GIINAvailable"));
+const BENEnEntityFatcaClassificationGIINNotAvailable = React.lazy(() => import("../Components/Cayman/Entity/FATCA/GIINNotAvailable"));
+const BENEEntityFatcaClassificationSponsoredFinancialInstitution = React.lazy(() => import("../Components/Cayman/Entity/FATCA/SponsoredFinanceInstitution"));
+const BENEIndividualFatcaClassificationComplete= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Complete"));
+const BENEIndividualFatcaClassificationFinal= React.lazy(() => import("../Components/Cayman/Entity/FATCA/Final"));
 
 
 const ROUTES: Array<RouteType> = [
@@ -391,7 +470,7 @@ const ROUTES: Array<RouteType> = [
     Component: Active_Non_Financial_W9_DC,
     isPrivate: true,
   },
- 
+
   {
     name: "Non_Reporting_CRS_W9_DC",
     path: "/Non_Reporting_CRS_W9_DC",
@@ -497,7 +576,7 @@ const ROUTES: Array<RouteType> = [
     Component: Thankyou_W9_DC,
     isPrivate: true,
   },
-  
+
   {
     name: "EntityUs",
     path: "EntityUs",
@@ -540,7 +619,7 @@ const ROUTES: Array<RouteType> = [
     Component: Complete,
     isPrivate: true,
   },
-  
+
   {
     name: "form",
     path: "/form",
@@ -826,7 +905,7 @@ const ROUTES: Array<RouteType> = [
     id: 7,
     Component: CaymanIndividualStartCertification,
     isPrivate: true,
-  },{
+  }, {
     name: "CaymanIndividualStartSubmission",
     path: "/Cayman/Individual/Start/Submission",
     id: 7,
@@ -1051,8 +1130,8 @@ const ROUTES: Array<RouteType> = [
     Component: W8Exp,
     isPrivate: true,
   },
-  
-  
+
+
   {
     name: "Tax_Purpose_BenE",
     path: "BenE/Tax_Purpose_BenE",
@@ -1254,9 +1333,195 @@ const ROUTES: Array<RouteType> = [
     id: 7,
     Component: ThankYou_IMY,
     isPrivate: true,
-  }
+  },
+  {
+    name: "Status_DC",
+    path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC",
+    id: 7,
+    Component: Status_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Fatca_DC_BENE",
+    path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC/Fatca_DC",
+    id: 7,
+    Component: Fatca_DC_BENE,
+    isPrivate: true,
+  },
+  {
+    name: "BENE-PASSIVE_DC",
+    path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/BENE_DC",
+    id: 7,
+    Component: BENE_PASSIVE_DC,
+    isPrivate: true,
+  },
+  {
+    name: "TaxPayer_DC",
+    path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/TaxPayer_DC",
+    id: 7,
+    Component: TaxPayer_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Certification_DCBENE",
+    path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Certification_DC",
+    id: 7,
+    Component: Certification_DCBENE,
+    isPrivate: true,
+  },
+  {
+    name: "Penalties_DC_BENE",
+    path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_DC",
+    id: 7,
+    Component: Penalties_DC_BENE,
+    isPrivate: true,
+  },
+  {
+    name: "Submit_DC_BENE",
+    path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_DC_BENE",
+    id: 7,
+    Component: Submit_DC_BENE,
+    isPrivate: true,
+  },
+  {
+    name: "ThankYou_DC",
+    path: "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/ThankYou_DC",
+    id: 7,
+    Component: ThankYou_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Status_DC_IMY",
+    path: "/IMY/ThankYou/Status_DC",
+    id: 7,
+    Component: Status_DC_IMY,
+    isPrivate: true,
+  },
+  {
+    name: "TaxPayer_DCIMY",
+    path: "/IMY/ThankYou/Status_DC/Tax_DC",
+    id: 7,
+    Component: TaxPayer_DCIMY,
+    isPrivate: true,
+  },
+  {
 
+    name: "Certification_IMY",
+    path: "/IMY/ThankYou/Status_DC/Certfication",
+    id: 7,
+    Component: Certification_IMY,
+    isPrivate: true,
+  },
+  {
+    name: "Penalties_IMY",
+    path: "/IMY/Certfication/Penalties_DC",
+    id: 7,
+    Component: Penalties_IMY,
+    isPrivate: true,
+  },
+  {
 
+    name: "Submit_IMYDC",
+    path: "/IMY/Certfication/Submit_IMYDC",
+    id: 7,
+    Component: Submit_IMYDC,
+    isPrivate: true,
+
+  },
+  {
+    name : "ThankYou_IMYDC",
+    path: "/IMY/Submit_IMYDC/ThankYou_IMYDC",
+    id: 7,
+    Component: ThankYou_IMYDC,
+    isPrivate: true,
+
+  },
+  {
+   name : " BENEEntityFatcaClassification",
+   path : "/BENEEntityFatcaClassification",
+   id: 7,
+   Component:  BENEEntityFatcaClassification,
+   isPrivate: true,
+  },
+{
+  name : " BENEEntityFatcaClassificationFinancial",
+    path: "/BENEEntityFatcaClassificationFinancial",
+    id: 7,
+    Component:  BENEEntityFatcaClassificationFinancial,
+    isPrivate: true,
+},
+{
+  name : " BENEEntityFatcaClassificationGIINAvailable",
+    path: "/BENEEntityFatcaClassificationGIINAvailable",
+    id: 7,
+    Component:  BENEEntityFatcaClassificationGIINAvailable,
+    isPrivate: true,
+},
+{
+  name : " BENEnEntityFatcaClassificationGIINNotAvailable",
+    path: "/BENEnEntityFatcaClassificationGIINNotAvailable",
+    id: 7,
+    Component:  BENEnEntityFatcaClassificationGIINNotAvailable,
+    isPrivate: true,
+},
+{
+  name : " BENEEntityFatcaClassificationSponsoredFinancialInstitution",
+    path: "/BENEEntityFatcaClassificationSponsoredFinancialInstitution",
+    id: 7,
+    Component:  BENEEntityFatcaClassificationSponsoredFinancialInstitution,
+    isPrivate: true, 
+},
+{
+  name : "BENEIndividualFatcaClassificationComplete",
+  path: "/BENEIndividualFatcaClassificationComplete",
+  id: 7,
+  Component:  BENEIndividualFatcaClassificationComplete,
+  isPrivate: true, 
+},
+{
+  name : "BENEIndividualFatcaClassificationFinal",
+  path: "/BENEIndividualFatcaClassificationFinal",
+  id: 7,
+  Component:  BENEIndividualFatcaClassificationFinal,
+  isPrivate: true,
+},
+{
+  name : "Complete_CRS_BENE",
+  path: "/Complete_CRS_BENE",
+  id: 7,
+  Component:  Complete_CRS_BENE,
+  isPrivate: true,
+},
+{
+  name : "Active_Non_Financial_BENE_DC",
+  path: "/Active_Non_Financial_BENE_DC",
+  id: 7,
+  Component:  Active_Non_Financial_BENE_DC ,
+  isPrivate: true,
+
+},
+{
+  name : "Non_Reporting_CRS_BENE_DC",
+  path: "/Non_Reporting_CRS_BENE_DC",
+  id: 7,
+  Component:  Non_Reporting_CRS_BENE_DC  ,
+  isPrivate: true,
+},
+{
+  name : "Financial_CRS_BENE_DC",
+  path: "/Financial_CRS_BENE_DC",
+  id: 7,
+  Component:  Financial_CRS_BENE_DC   ,
+  isPrivate: true,
+},
+{
+  name : "FinancialReport_CRS_BEN_DC",
+  path: "/FinancialReport_CRS_BEN_DC",
+  id: 7,
+  Component:  FinancialReport_CRS_BEN_DC    ,
+  isPrivate: true,
+
+}
 
 ];
 

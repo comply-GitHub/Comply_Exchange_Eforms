@@ -15,7 +15,7 @@ import useAuth from "../../../../customHooks/useAuth";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { SubmitSchemaECI } from "../../../../schemas/w8ECI";
-import { GetEciPdf } from "../../../../Redux/Actions/PfdActions";
+import { GetECIDCPdf, GetEciPdf } from "../../../../Redux/Actions/PfdActions";
 
 
 
@@ -411,13 +411,13 @@ const Declaration = (props: any) => {
                         const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                         const urlValue = window.location.pathname.substring(1);
                         dispatch(PostDualCert(
-                            {
-                                ...prevStepData,
-                                ...values,
-                                stepName: `/${urlValue}`
-                            }
-                            , () => { }, 
-                            () => { }) 
+                          {
+                            ...prevStepData,
+                            ...values,
+                            stepName: `/${urlValue}`
+                          }
+                          , () => { },
+                          () => { })
                         );
                         history(
                           GlobalValues.basePageRoute
@@ -426,7 +426,7 @@ const Declaration = (props: any) => {
                     }} formTypeId={FormTypeId.W8ECI} />
                     <Button
                       onClick={() => {
-                        dispatch(GetEciPdf(authDetails?.accountHolderId))
+                        dispatch(GetECIDCPdf(authDetails?.accountHolderId))
                       }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}

@@ -40,7 +40,7 @@ type ValuePiece = Date | null;
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 
 
-  const IncomeType = ({handleSubmit, DeleteIncomeType, index, length, data, UpdateIncomeType, CountryArticle }: any) => {
+  const IncomeType = ({handleSubmit, DeleteIncomeType, index, length, data, UpdateIncomeType, CountryArticle,SetIsCompDataValid }: any) => {
     const [initialValue, setInitialValues] = useState<any>(
       {}
     );
@@ -59,12 +59,20 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
     }, [data])
   
   
+    const validateComponentData=(data:any)=>{
+      SelfCertSchema_w9_DC(showAlternateAddress,showTin,showTin2).validate(data).then(()=>{
+        SetIsCompDataValid(true);
+      }).catch(()=>{
+        SetIsCompDataValid(false);
+      });
+    }
   
     const handleUpdateOnFormChange = (e: any) => {
       let temp: any = { ...data };
       temp[e.target.name] = e.target.value;
       console.log("change", e)
       UpdateIncomeType({ ...temp }, index);
+      validateComponentData({...temp});
     }
     const handleUpdateCheckboxChange = (e: any) => {
       let temp: any = { ...data };

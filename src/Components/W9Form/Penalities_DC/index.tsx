@@ -597,7 +597,7 @@ export default function Penalties() {
                                   })
                                 }
                                 onBlur={handleBlur}
-                                readOnly={true}
+                                readOnly={true}           
                               />
 
                             </FormControl>
@@ -807,5 +807,5 @@ export default function Penalties() {
         handleClose={handleClose2}
       />
     </>
-  );
-}
+  )
+}                                                                
