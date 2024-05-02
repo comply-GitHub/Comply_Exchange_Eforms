@@ -72,7 +72,6 @@ export default function BreadCrumbComponent(props: any): any {
   // Usage example
   const breadcrumbItems: BreadcrumbItem[] = [ /* Your array of objects */ ];
   const breadcrumbPart = getBreadcrumbPart(breadcrumbItems, breadCrumbCode);
-  console.log("Breadcrumb Part:", breadcrumbPart);
 
   function groupDataByBreadcrumbPart(data: any) {
     const groupedData: any = {};
