@@ -202,7 +202,7 @@ export default function IndividualUs() {
     dob: "",
     nameOfDisregarded: "",
     entityName: "",
-    taxpayerIdTypeID: 0,
+    taxpayerIdTypeID: 1,
     usTin: "",
     userType: userType,
     foreignTINCountryId: 0,
@@ -858,6 +858,7 @@ useEffect(()=>{
           className="col-lg-12 mt-3 "
           style={{ padding: "1.5rem 8px 8px 8px" }}
         >
+        
           <Paper
             elevation={6}
             style={{ padding: "5rem 17px 17px 17px" }}
@@ -1011,7 +1012,7 @@ useEffect(()=>{
                 isValid
               }) => (
                 <Form onSubmit={handleSubmit}>
-
+<>{console.log("values", values)}</>
                   {values.permanentResidentialCountryId == 186 ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                     <Typography>
                       A111

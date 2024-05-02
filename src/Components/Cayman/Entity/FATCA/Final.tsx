@@ -665,7 +665,12 @@ export default function Final (props: any){
                   <Checkbox 
                       value={values.isSubstantialUSOwnerInformation}
                       checked={values.isSubstantialUSOwnerInformation}
-                      onChange={handleChange}
+                      onChange={(e:any) => {
+                        handleChange(e);
+                        setTimeout(() => {
+                          setFieldValue("isControllingPersonsInformation", false)
+                        },200)
+                      }}
                       name="isSubstantialUSOwnerInformation"
                       size="medium"
                       style={{ fontSize: "2rem",marginTop: "6px" }} />
@@ -742,7 +747,12 @@ export default function Final (props: any){
                     <Checkbox 
                       value={values.isControllingPersonsInformation}
                       checked={values.isControllingPersonsInformation}
-                      onChange={handleChange}
+                      onChange={(e:any) => {
+                        handleChange(e);
+                        setTimeout(() => {
+                          setFieldValue("isSubstantialUSOwnerInformation", false)
+                        },200)
+                      }}
                       name="isControllingPersonsInformation"
                       size="medium"
                       style={{ fontSize: "2rem",marginTop: "6px" }} />
@@ -859,6 +869,8 @@ export default function Final (props: any){
                         (values.qualifyingCriteria == "")
                         &&
                         (values.sponsoredEntityGIIN == "")
+                        &&
+                        ((values.isSubstantialUSOwnerInformation == false) && (values.isControllingPersonsInformation == false))
                         
                        
                         

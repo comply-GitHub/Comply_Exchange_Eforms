@@ -39,7 +39,7 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function Certifications(props: any) {
   const location = useLocation();
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
-  console.log(PrevStepData, "prevv")
+  const SelfStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
   const urlValue = location.pathname.substring(1);
   const [IsCompDataValid,SetIsCompDataValid]=useState(false);
   const individualSelfType = {
@@ -88,7 +88,7 @@ export default function Certifications(props: any) {
   };
   const SelfCertControllingPerson = useSelector((state: any) => state.SelfCertControllingPerson);
 
-  console.log(SelfCertControllingPerson, "SelfCertControllingPerson")
+  //console.log(SelfCertControllingPerson, "SelfCertControllingPerson")
   const [initialValues, setInitialValues] = useState({
 
     firstName: "",
@@ -124,7 +124,9 @@ export default function Certifications(props: any) {
     statusEntity3: "",
     ownershipPercentage: "",
     emailAddress: "",
-    usTaxCertificateSubmissionRequest: false
+    usTaxCertificateSubmissionRequest: false,
+    isControllingPersonsInformation: SelfStepData?.isControllingPersonsInformation ? true : false,
+    isSubstantialUSOwnerInformation : SelfStepData?.isSubstantialUSOwnerInformation ? true : false
 
 
   });
@@ -197,33 +199,52 @@ export default function Certifications(props: any) {
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
   const auth = JSON.parse(authDetailsString);
   const userType = auth?.configurations?.userType;
-  const LoadPageData = () => {
-    if (ahdData !== null && ahdData !== undefined) {
-      let temp = {
-        ...ahdData,
-        id: accountHolderDetails.id ?? 0,
-        isUSEntity: ahdData.isUSEntity === true ? "yes" : "no",
-        isUSIndividual: ahdData.isUSIndividual === true ? "yes" : "no",
-        isAddressRuralRoute: ahdData.isAddressRuralRoute === true ? "yes" : "no",
-        isAddressPostOfficeBox: ahdData.isAddressPostOfficeBox === true ? "yes" : "no",
-        isCareOfAddress: ahdData.isCareOfAddress === true ? "yes" : "no",
-        isalternativebusinessaddress: ahdData.isalternativebusinessaddress === true ? "yes" : "no",
-      };
-      setInitialValues(temp);
-    }
-  }
+  // const LoadPageData = () => {
+  //   if (ahdData !== null && ahdData !== undefined) {
+  //     let temp = {
+  //       ...ahdData,
+  //       id: accountHolderDetails.id ?? 0,
+  //       isUSEntity: ahdData.isUSEntity === true ? "yes" : "no",
+  //       isUSIndividual: ahdData.isUSIndividual === true ? "yes" : "no",
+  //       isAddressRuralRoute: ahdData.isAddressRuralRoute === true ? "yes" : "no",
+  //       isAddressPostOfficeBox: ahdData.isAddressPostOfficeBox === true ? "yes" : "no",
+  //       isCareOfAddress: ahdData.isCareOfAddress === true ? "yes" : "no",
+  //       isalternativebusinessaddress: ahdData.isalternativebusinessaddress === true ? "yes" : "no",
+  //     };
+  //     setInitialValues(temp);
+  //   }
+  // }
+
+  const formatDate = (inputDate:any) => {
+    // Create a new Date object from the input string
+    var date = new Date(inputDate);
+    
+    // Extract day, month, and year from the Date object
+    var day = date.getDate();
+    var month = date.getMonth() + 1; // January is 0
+    var year = date.getFullYear();
+    
+    // Add leading zeros if necessary
+    var dayStr: string = (day < 10) ? '0' + day : '' + day;
+    var monthStr: string = (month < 10) ? '0' + month : '' + month;
+    
+    // Return the formatted date string
+    return year + '-' + monthStr + '-' + dayStr
+    //return dayStr + '/' + monthStr + '/' + year;
+}
+
+
   useEffect(() => {
     dispatch(GetDualCertDetailsPerson(authDetails?.accountHolderId, FormTypeId.CaymanEntity,(res: any[]) => {
-      console.log(res, "existing data");
       let temp = res.map((ele: any) => {
         return {
           agentId: authDetails.agentId,
           accountHolderDetailsId: authDetails?.accountHolderId,
-          formTypeId: FormTypeId.BENE,
+          formTypeId: FormTypeId.CaymanEntity,
           formEntryId: ele.formEntryId,
           firstName: ele.firstName,
-          familyName: ele.FamilyName,
-          dateofBirth: ele.dateofBirth,
+          familyName: ele.familyName,
+          dateofBirth: formatDate(ele.dateofBirth),
           countryofBirth: ele.countryofBirth,
           cityofBirth: ele.cityofBirth,
           permanentHouseNumberorName: ele.permanentHouseNumberorName,
@@ -268,6 +289,7 @@ export default function Certifications(props: any) {
       setIncomeTypeData(temp);
     }))
   }, [authDetails])
+  console.log(incomeTypeData);
   // useEffect(() => {
   //   console.log(incomeTypeData, "income type data")
   //   let isLengthMore = false;
@@ -303,7 +325,6 @@ export default function Certifications(props: any) {
   }
 
   const UpdateIncomeType = (payload: any, index: number) => {
-    console.log("child data",payload)
     setIncomeTypeData((prev) => {
       let temp = [...prev];
       temp[index] = payload;
@@ -321,13 +342,13 @@ export default function Certifications(props: any) {
           id: 0,
           accountHolderDetailsId: authDetails?.accountHolderId,
           agentId: authDetails?.agentId,
-          formTypeId: 3,
+          formTypeId: FormTypeId.CaymanEntity,
           formEntryId: index + 1,
           dualCertId:index + 1,
           firstName: ele.firstName,
           familyName: ele.familyName,
         
-          dateofBirth:formattedDateOfBirth,
+          ...(formattedDateOfBirth && { dateofBirth: formattedDateOfBirth }),
           countryofBirth: ele.countryofBirth,
           cityofBirth: ele.cityofBirth,
           permanentHouseNumberorName: ele.permanentHouseNumberorName,
@@ -369,8 +390,10 @@ export default function Certifications(props: any) {
         };
         return payload;
       })
-        ;
-      dispatch(UpsertDualCertDetailsControllingPerson(temp, (data: any) => resolve(data), (err: any) => { reject(err) }))
+        ;      
+
+
+       dispatch(UpsertDualCertDetailsControllingPerson(temp, (data: any) => resolve(data), (err: any) => { reject(err) }))
     })
     return returnPromise;
   }
@@ -384,7 +407,7 @@ export default function Certifications(props: any) {
       <div className="row w-100 " >
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>
-            <BreadCrumbComponent breadCrumbCode={1500} formName={1} />
+            <BreadCrumbComponent breadCrumbCode={1330} formName={FormTypeId.CaymanEntity} />
 
           </div>
         </div>
@@ -401,6 +424,7 @@ export default function Certifications(props: any) {
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
                   let temp = {
+                    ...values,
                     ...PrevStepData,
                     agentId: authDetails?.agentId,
                     accountHolderBasicDetailId: authDetails?.accountHolderId,
@@ -411,7 +435,7 @@ export default function Certifications(props: any) {
                       (data) => {
                         localStorage.setItem("PrevStepData", JSON.stringify(temp));
                         
-                        history("/US_Determination_W9_DC")
+                        history("/Cayman/Entity/TIN")
                         resolve(data);
                       },
                       (err) => {
@@ -437,9 +461,9 @@ export default function Certifications(props: any) {
 
                   <Form onSubmit={handleSubmit}>
                     <Paper style={{ padding: "14px" }}>
-                    <Typography style={{ fontSize: "26px", fontWeight: "550", marginLeft: "8px" }} className="mt-2 mb-3">Self Certification - Controlling Person(s) of a Passive NFE</Typography>
+                    <Typography style={{ fontSize: "26px", fontWeight: "550", marginLeft: "8px" }} className="mt-2 mb-3">Self Certification - {values.isControllingPersonsInformation===true ? 'Controlling' : 'U.S.' } Person(s) of a Passive NFE</Typography>
                     {incomeTypeData.map((_, index) => (
-                            <SelfCertType index={index} DeleteIncomeType={DeleteIncomeType} length={incomeTypeData.length} data={incomeTypeData[index]} UpdateIncomeType={UpdateIncomeType} handleSubmit={handleSubmit} SetIsCompDataValid={SetIsCompDataValid} />
+                            <SelfCertType index={index} DeleteIncomeType={DeleteIncomeType} length={incomeTypeData.length} data={incomeTypeData[index]} UpdateIncomeType={UpdateIncomeType} handleSubmit={handleSubmit} setFieldValue={setFieldValue} SetIsCompDataValid={SetIsCompDataValid} />
                           ))}
 
                       <div>
@@ -467,9 +491,9 @@ export default function Certifications(props: any) {
                         </Button>
                         <Button
 
-//disabled={!isValid || !TinTax}
-disabled={!IsCompDataValid}
-type="submit"
+                          //disabled={!isValid || !TinTax}
+                          disabled={!IsCompDataValid}
+                          type="submit"
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
@@ -483,7 +507,34 @@ type="submit"
                           Continue
                         </Button>
                       </div>
+                      <Typography
+                    align="center"
+                    style={{
+                      color: "#505E50",  
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: "20px",
+                    }}
+                  >
+                    Do you want to go back?
+                  </Typography>
+                  <Typography align="center">
+                    <Button
+                      variant="contained"
+                      style={{
+                        color: "white",
+                        backgroundColor: "black",
+                        marginTop: "10px",
+                        marginBottom: "20px",
+                      }}
 
+                      onClick={() => {
+                        history(-1)
+                      }}
+                    >
+                      Back
+                    </Button>
+                  </Typography>
                     </Paper>
                   </Form>
                 )}
