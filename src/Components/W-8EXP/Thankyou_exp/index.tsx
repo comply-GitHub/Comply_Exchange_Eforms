@@ -117,7 +117,7 @@ export default function Term() {
                 <Button
                   // type="submit"
                   onClick={() => {
-                    dispatch(GetExpPdf(authDetails?.accountHolderId));
+                    dispatch(GetExpPdf(authDetails?.accountHolderId, () => { }, () => { }, true));
                   }}
                   style={{
                     border: "1px solid #0095dd",

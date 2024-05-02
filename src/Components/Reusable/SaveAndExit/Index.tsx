@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   FormControl,
+  IconButton,
   Input,
   Modal,
   Typography,
@@ -152,14 +153,20 @@ const SaveAndExit = ({ Callback, formTypeId }: any) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            color={"primary"}
-          >
-            Save & Exit - Account Registration
-          </Typography>
+          <div style={{ display: "grid", gridTemplateColumns: "7fr 1fr" }}>
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              color={"primary"}
+            >
+              Save & Exit - Account Registration
+            </Typography>
+            <IconButton onClick={() => handleClose()} color="primary">
+              x
+            </IconButton>
+          </div>
+
           <Box sx={InternalBoxStyle}>
             <div
               style={{
