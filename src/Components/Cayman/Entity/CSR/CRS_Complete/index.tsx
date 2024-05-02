@@ -108,7 +108,7 @@ export default function Declaration (props: any){
                   )
                 );
               })
-              history("/Cayman/Entity/TIN")
+              history("/Cayman/Entity/CRS/SelfCertPassive")
               return returnPromise;
 
             }}

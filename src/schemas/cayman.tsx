@@ -197,4 +197,56 @@ export const EntityUS_TINSchema = () => {
   });
 };
 
+export const EntityUSCertificationSchema = () => {
+  return Yup.object().shape({
 
+    signedBy: Yup.string().required("Please enter name of the person signing the form"),
+    confirmationCode: Yup.string()
+      .required("Please enter code")
+    .test(
+      'match',
+      'Confirmation code does not match',
+      function (value) {
+        const storedConfirmationCode = obValues?.confirmationCode;
+        return !storedConfirmationCode || value === storedConfirmationCode;
+      }
+    ), 
+    
+    // word: Yup.boolean().when("EnterconfirmationCode", {
+    //   is: "no",
+    //   then: () => Yup.string().required("Please select owner"),
+    // }),
+    date: Yup.date(),
+    isAgreeWithDeclaration: Yup.boolean().oneOf(
+      [true],
+      "Please mark the checkbox"
+    ),
+  });
+};
+
+
+export const EntityUSSubmitSchema = () => {
+  return Yup.object().shape({
+    isConsentReceipentstatement: Yup.boolean().test(
+      'is-exclusive',
+      '',
+      function (value) {
+        const { IsNotConsentReceipentstatement } = this.parent;
+        return (value && !IsNotConsentReceipentstatement) || (!value && IsNotConsentReceipentstatement);
+      }
+    ),
+
+    isNotConsentReceipentstatement: Yup.boolean().test(
+      'is-exclusive',
+      '',
+      function (value) {
+        const { IsConsentReceipentstatement } = this.parent;
+        return (value && !IsConsentReceipentstatement) || (!value && IsConsentReceipentstatement);
+      }
+    ),
+    isAgreeWithDeclaration: Yup.boolean().oneOf(
+      [true],
+      "Please mark the checkbox"
+    )
+  });
+};

@@ -17,18 +17,11 @@ import {
 } from "@mui/material";
 import SelfCertType from "./selfCert";
 import { Form, Formik } from "formik";
-import { W8_state_ECI, PostDualCert, GetHelpVideoDetails, getAllCountries, UpsertDualCertDetailsControllingPerson, GetDualCertDetailsPerson } from "../../../Redux/Actions";
-import { SelfCertSchema_w9_DC } from "../../../schemas/w8Exp";
 import InfoIcon from "@mui/icons-material/Info";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useDispatch, useSelector } from "react-redux";
-import BreadCrumbComponent from "../../reusables/breadCrumb";
-import View_Insructions from "../../viewInstruction";
-import { useLocation } from "react-router-dom";
-import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
-import SaveAndExit from "../../Reusable/SaveAndExit/Index";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ControlPointOutlined, Info, RemoveCircleOutlineOutlined } from "@mui/icons-material";
 import { CardHeader } from "reactstrap";
 import moment from "moment";
@@ -36,116 +29,109 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "./index.scss";
-import useAuth from "../../../customHooks/useAuth";
+import useAuth from "../../../../../customHooks/useAuth";
+import { FormTypeId } from "../../../../../Utils/constVals";
+import SideBar from "../../../../Reusable/SideBar";
+import BreadCrumbComponent from "../../../../reusables/breadCrumb";
+import { GetDualCertDetailsPerson, GetHelpVideoDetails, UpsertDualCertDetailsControllingPerson, getAllCountries } from "../../../../../Redux/Actions";
 type ValuePiece = Date | null;
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function Certifications(props: any) {
   const location = useLocation();
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
-  const SelfControllingData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
-  
   console.log(PrevStepData, "prevv")
   const urlValue = location.pathname.substring(1);
   const [IsCompDataValid,SetIsCompDataValid]=useState(false);
- 
-// console.log(formattedDate); 
-const individualSelfType = {
-  // firstName: SelfControllingData?.[0]?.firstName ? SelfControllingData[0].firstName : "",
-  // familyName: SelfControllingData?.[0]?.familyName ? SelfControllingData[0].familyName : "",
-  // dateOfBirth: SelfControllingData?.[0]?.dateOfBirth ? SelfControllingData[0].dateOfBirth : "",
-  // countryOfBirth: SelfControllingData?.[0]?.countryOfBirth ? SelfControllingData[0].countryOfBirth : "",
-  // cityOfBirth: SelfControllingData?.[0]?.cityOfBirth ? SelfControllingData[0].cityOfBirth : "",
-  // permanentHouseNumberOrName: SelfControllingData?.[0]?.permanentHouseNumberOrName ? SelfControllingData[0].permanentHouseNumberOrName : "",
-  // permanentRoadName: SelfControllingData?.[0]?.permanentRoadName ? SelfControllingData[0].permanentRoadName : "",
-  // permanentLocation: SelfControllingData?.[0]?.permanentLocation ? SelfControllingData[0].permanentLocation : "",
-  // permanentCityOrTown: SelfControllingData?.[0]?.permanentCityOrTown ? SelfControllingData[0].permanentCityOrTown : "",
-  // permanentStateOrProvince: SelfControllingData?.[0]?.permanentStateOrProvince ? SelfControllingData[0].permanentStateOrProvince : "",
-  // permanentZipOrPostalCode: SelfControllingData?.[0]?.permanentZipOrPostalCode ? SelfControllingData[0].permanentZipOrPostalCode : "",
-  // permanentResidentialCountry: SelfControllingData?.[0]?.permanentResidentialCountry ? SelfControllingData[0].permanentResidentialCountry : "",
-  // alterHouseNumberOrName: SelfControllingData?.[0]?.alterHouseNumberOrName ? SelfControllingData[0].alterHouseNumberOrName : "",
-  // alterRoadName: SelfControllingData?.[0]?.alterRoadName ? SelfControllingData[0].alterRoadName : "",
-  // alterLocation: SelfControllingData?.[0]?.alterLocation ? SelfControllingData[0].alterLocation : "",
-  // alterCityOrTown: SelfControllingData?.[0]?.alterCityOrTown ? SelfControllingData[0].alterCityOrTown : "",
-  // alterStateOrProvince: SelfControllingData?.[0]?.alterStateOrProvince ? SelfControllingData[0].alterStateOrProvince : "",
-  // alterZipOrPostalCode: SelfControllingData?.[0]?.alterZipOrPostalCode ? SelfControllingData[0].alterZipOrPostalCode : "",
-  // alterResidentialCountry: SelfControllingData?.[0]?.alterResidentialCountry ? SelfControllingData[0].alterResidentialCountry : "",
-  // primaryTaxJurisdictionCountry1: SelfControllingData?.[0]?.primaryTaxJurisdictionCountry1 ? SelfControllingData[0].primaryTaxJurisdictionCountry1 : "",
-  // tinType1: SelfControllingData?.[0]?.tinType1 ? SelfControllingData[0].tinType1 : "",
-  // tiN1: SelfControllingData?.[0]?.tiN1 ? SelfControllingData[0].tiN1 : "",
-  // tinUnavailable1: SelfControllingData?.[0]?.tinUnavailable1 ? SelfControllingData[0].tinUnavailable1 : false,
-  // primaryTaxJurisdictionCountry2: SelfControllingData?.[0]?.primaryTaxJurisdictionCountry2 ? SelfControllingData[0].primaryTaxJurisdictionCountry2 : "",
-  // tinType2: SelfControllingData?.[0]?.tinType2 ? SelfControllingData[0].tinType2 : "",
-  // tiN2: SelfControllingData?.[0]?.tiN2 ? SelfControllingData[0].tiN2 : "",
-  // tinUnavailable2: SelfControllingData?.[0]?.tinUnavailable2 ? SelfControllingData[0].tinUnavailable2 : false,
-  // PrimaryTaxJurisdictionCountry3: SelfControllingData?.[0]?.PrimaryTaxJurisdictionCountry3 ? SelfControllingData[0].PrimaryTaxJurisdictionCountry3 : "",
-  // tinType3: SelfControllingData?.[0]?.tinType3 ? SelfControllingData[0].tinType3 : "",
-  // tiN3: SelfControllingData?.[0]?.tiN3 ? SelfControllingData[0].tiN3 : "",
-  // tinUnavailable3: SelfControllingData?.[0]?.tinUnavailable3 ? SelfControllingData[0].tinUnavailable3 : false,
-  // ReasonforNonAvailabilityofTIN: SelfControllingData?.[0]?.ReasonforNonAvailabilityofTIN ? SelfControllingData[0].ReasonforNonAvailabilityofTIN : "",
-  // legalNameofEntity1: SelfControllingData?.[0]?.legalNameofEntity1 ? SelfControllingData[0].legalNameofEntity1 : "",
-  // legalNameofEntity2: SelfControllingData?.[0]?.legalNameofEntity2 ? SelfControllingData[0].legalNameofEntity2 : "",
-  // legalNameofEntity3: SelfControllingData?.[0]?.legalNameofEntity3 ? SelfControllingData[0].legalNameofEntity3 : "",
-  // StatusEntity1: SelfControllingData?.[0]?.StatusEntity1 ? SelfControllingData[0].StatusEntity1 : "",
-  // statusEntity2: SelfControllingData?.[0]?.statusEntity2 ? SelfControllingData[0].statusEntity2 : "",
-  // StatusEntity3: SelfControllingData?.[0]?.StatusEntity3 ? SelfControllingData[0].StatusEntity3 : "",
-  // ownershipPercentage: SelfControllingData?.[0]?.ownershipPercentage ? SelfControllingData[0].ownershipPercentage : "",
-  // emailAddress: SelfControllingData?.[0]?.emailAddress ? SelfControllingData[0].emailAddress : "",
-  // usTaxCertificateSubmissionRequest: SelfControllingData?.[0]?.usTaxCertificateSubmissionRequest ? SelfControllingData[0].usTaxCertificateSubmissionRequest : false
-};
+  const individualSelfType = {
 
+    firstName: "",
+    familyName: "",
+    dateofBirth: "",
+    CountryofBirth: "",
+    CityofBirth: "",
+    permanentHouseNumberorName: "",
+    permanentRoadName: "",
+    permanentLocation: "",
+    permanentCityorTown: "",
+    permanentStateorProvince: "",
+    permanentZiporPostalCode: "",
+    permanentResidentialCountry: "",
+    alterHouseNumberorName: "",
+    alterRoadName: "",
+    alterLocation: "",
+    alterCityorTown: "",
+    alterStateorProvince: "",
+    alterZiporPostalCode: "",
+    alterResidentialCountry: 0,
+    primaryTaxJurisdictionCountry1: "",
+    tinType1: "",
+    tiN1: "",
+    tinUnavailable1: false,
+    primaryTaxJurisdictionCountry2: "",
+    tinType2: "",
+    tiN2: "",
+    tinUnavailable2: false,
+    PrimaryTaxJurisdictionCountry3: "",
+    tinType3: "",
+    tiN3: "",
+    tinUnavailable3: false,
+    ReasonforNonAvailabilityofTIN: "",
+    legalNameofEntity1: "",
+    legalNameofEntity2: "",
+    legalNameofEntity3: "",
+    StatusEntity1: "",
+    statusEntity2: "",
+    StatusEntity3: "",
+    ownershipPercentage: "",
+    emailAddress: "",
+    usTaxCertificateSubmissionRequest: false
+  };
   const SelfCertControllingPerson = useSelector((state: any) => state.SelfCertControllingPerson);
 
   console.log(SelfCertControllingPerson, "SelfCertControllingPerson")
   const [initialValues, setInitialValues] = useState({
 
-    // firstName: SelfControllingData.firstName || "",
-    // familyName: SelfControllingData.familyName || "",
-    // dateofBirth: SelfControllingData.dateofBirth || "",
-    // CountryofBirth: SelfControllingData.CountryofBirth || "",
-    // CityofBirth: SelfControllingData.CityofBirth || "",
-    // permanentHouseNumberorName: SelfControllingData.permanentHouseNumberorName || "",
-    // permanentRoadName: SelfControllingData.permanentRoadName || "",
-    // permanentLocation: SelfControllingData.permanentLocation || "",
-    // permanentCityorTown: SelfControllingData.permanentCityorTown || "",
-    // permanentStateorProvince: SelfControllingData.permanentStateorProvince || "",
-    // permanentZiporPostalCode: SelfControllingData.permanentZiporPostalCode || "",
-    // permanentResidentialCountry: SelfControllingData.permanentResidentialCountry || "",
-    // alterHouseNumberorName: SelfControllingData.alterHouseNumberorName || "",
-    // alterRoadName: SelfControllingData.alterRoadName || "",
-    // alterLocation: SelfControllingData.alterLocation || "",
-    // alterCityorTown: SelfControllingData.alterCityorTown || "",
-    // alterStateorProvince: SelfControllingData.alterStateorProvince || "",
-    // alterZiporPostalCode: SelfControllingData.alterZiporPostalCode || "",
-    // alterResidentialCountry: SelfControllingData.alterResidentialCountry || 0,
-    // primaryTaxJurisdictionCountry1: SelfControllingData.primaryTaxJurisdictionCountry1 || "",
-    // tinType1: SelfControllingData.tinType1 || "",
-    // tiN1: SelfControllingData.tiN1 || "",
-    // tinUnavailable1: SelfControllingData.tinUnavailable1 || false,
-    // primaryTaxJurisdictionCountry2: SelfControllingData.primaryTaxJurisdictionCountry2 || "",
-    // tinType2: SelfControllingData.tinType2 || "",
-    // tiN2: SelfControllingData.tiN2 || "",
-    // tinUnavailable2: SelfControllingData.tinUnavailable2 || false,
-    // PrimaryTaxJurisdictionCountry3: SelfControllingData.PrimaryTaxJurisdictionCountry3 || "",
-    // tinType3: SelfControllingData.tinType3 || "",
-    // tiN3: SelfControllingData.tiN3 || "",
-    // tinUnavailable3: SelfControllingData.tinUnavailable3 || false,
-    // ReasonforNonAvailabilityofTIN: SelfControllingData.ReasonforNonAvailabilityofTIN || "",
-    // legalNameofEntity1: SelfControllingData.legalNameofEntity1 || "",
-    // legalNameofEntity2: SelfControllingData.legalNameofEntity2 || "",
-    // legalNameofEntity3: SelfControllingData.legalNameofEntity3 || "",
-    // StatusEntity1: SelfControllingData.StatusEntity1 || "",
-    // statusEntity2: SelfControllingData.statusEntity2 || "",
-    // StatusEntity3: SelfControllingData.StatusEntity3 || "",
-    // ownershipPercentage: SelfControllingData.ownershipPercentage || "",
-    // emailAddress: SelfControllingData.emailAddress || "",
-    // usTaxCertificateSubmissionRequest: SelfControllingData.usTaxCertificateSubmissionRequest || false
+    firstName: "",
+    familyName: "",
+    dateofBirth: "",
+    countryofBirth: 0,
+    cityOfBirth: 0,
+    permanentHouseNumberorName: "",
+    permanentRoadName: "",
+    permanentLocation: "",
+    permanentCityorTown: "",
+    permanentStateorProvince: "",
+    permanentZiporPostalCode: "",
+    permanentResidentialCountry: "",
+    primaryTaxJurisdictionCountry1: "",
+    tinType1: "",
+    tiN1: "",
+    tinUnavailable1: false,
+    primaryTaxJurisdictionCountry2: "",
+    tinType2: "",
+    tiN2: "",
+    tinUnavailable2: false,
+    primaryTaxJurisdictionCountry3: "",
+    tinType3: "",
+    tiN3: "",
+    tinUnavailable3: false,
+    reasonforNonAvailabilityofTIN: "",
+    legalNameofEntity1: "",
+    legalNameofEntity2: "",
+    legalNameofEntity3: "",
+    statusEntity1: "",
+    statusEntity2: "",
+    statusEntity3: "",
+    ownershipPercentage: "",
+    emailAddress: "",
+    usTaxCertificateSubmissionRequest: false
 
 
   });
 
   const [incomeTypeData, setIncomeTypeData] = useState(SelfCertControllingPerson?.length > 1 ? [...SelfCertControllingPerson] : [{ ...individualSelfType }]);
  
- console.log(incomeTypeData,"incomedata")
+ 
   const DeleteIncomeType = (index: number) => {
     let temp = [...incomeTypeData]
     console.log(index, "deleting box", temp?.splice(index, 1))
@@ -172,7 +158,12 @@ const individualSelfType = {
   const handleCanvaOpen = () => {
     setCanvaBx(true);
   }
- 
+  const allCountriesData = useSelector(
+    (state: any) => state.getCountriesReducer
+  );
+  const getCountriesReducer = useSelector(
+    (state: any) => state.getCountriesReducer
+  );
   const handleCanvaClose = () => {
     setCanvaBx(false);
   }
@@ -228,10 +219,10 @@ const individualSelfType = {
         return {
           agentId: authDetails.agentId,
           accountHolderDetailsId: authDetails?.accountHolderId,
-          formTypeId: FormTypeId.W9,
+          formTypeId: FormTypeId.BENE,
           formEntryId: ele.formEntryId,
           firstName: ele.firstName,
-          familyName: ele.familyName,
+          familyName: ele.FamilyName,
           dateofBirth: ele.dateofBirth,
           countryofBirth: ele.countryofBirth,
           cityofBirth: ele.cityofBirth,
@@ -304,7 +295,7 @@ const individualSelfType = {
   // }, [incomeTypeData])
   const setAccountHolder = (e: any, values: any): any => {
     if (values.accountHolderName === "") {
-      values.accountHolderName = values.firstName + values.familyName;
+      values.accountHolderName = values.firstName + values.FamilyName;
     } else values.accountHolderName = e.target.value;
   };
   const viewPdf = () => {
@@ -335,6 +326,7 @@ const individualSelfType = {
           dualCertId:index + 1,
           firstName: ele.firstName,
           familyName: ele.familyName,
+        
           dateofBirth:formattedDateOfBirth,
           countryofBirth: ele.countryofBirth,
           cityofBirth: ele.cityofBirth,
@@ -378,21 +370,9 @@ const individualSelfType = {
         return payload;
       })
         ;
-        dispatch(
-          UpsertDualCertDetailsControllingPerson(
-            temp,
-            (data: any) => {
-              // Save data in localStorage after dispatch completes
-              localStorage.setItem('SelfCertData', JSON.stringify(temp));
-              resolve(data);
-            },
-            (err: any) => {
-              reject(err);
-            }
-          )
-        );
-      });
-      return returnPromise;
+      dispatch(UpsertDualCertDetailsControllingPerson(temp, (data: any) => resolve(data), (err: any) => { reject(err) }))
+    })
+    return returnPromise;
   }
 
   return (
@@ -400,34 +380,7 @@ const individualSelfType = {
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-      <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
-      {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
-
-      <div className="overlay-div">
-        <div className="overlay-div-group">
-          <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
-          <div className="helpvideo">
-            {GethelpData && GethelpData[8].id === 10 ? (
-              <a
-                href={GethelpData[8].fieldValue}
-                target="popup"
-                onClick={() =>
-                  window.open(
-                    GethelpData[8].fieldValue,
-                    'name',
-                    `width=${GethelpData[8].width},height=${GethelpData[8].height},top=${GethelpData[8].top},left=${GethelpData[8].left}`
-                  )
-                }
-              >
-                Help Video
-              </a>
-            ) : (
-              ""
-            )}
-          </div>
-        </div>
-      </div>
+      <SideBar/>
       <div className="row w-100 " >
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>
@@ -483,7 +436,6 @@ const individualSelfType = {
                 }) => (
 
                   <Form onSubmit={handleSubmit}>
-                    <>{console.log(values,"valuess")}</>
                     <Paper style={{ padding: "14px" }}>
                     <Typography style={{ fontSize: "26px", fontWeight: "550", marginLeft: "8px" }} className="mt-2 mb-3">Self Certification - Controlling Person(s) of a Passive NFE</Typography>
                     {incomeTypeData.map((_, index) => (
