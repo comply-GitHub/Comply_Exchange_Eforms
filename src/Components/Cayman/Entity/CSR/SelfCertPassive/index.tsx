@@ -17,18 +17,11 @@ import {
 } from "@mui/material";
 import SelfCertType from "./selfCert";
 import { Form, Formik } from "formik";
-import { W8_state_ECI, PostDualCert, GetHelpVideoDetails, getAllCountries, UpsertDualCertDetailsControllingPerson, GetDualCertDetailsPerson } from "../../../Redux/Actions";
-import { SelfCertSchema_w9_DC } from "../../../schemas/w8Exp";
 import InfoIcon from "@mui/icons-material/Info";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useDispatch, useSelector } from "react-redux";
-import BreadCrumbComponent from "../../reusables/breadCrumb";
-import View_Insructions from "../../viewInstruction";
-import { useLocation } from "react-router-dom";
-import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
-import SaveAndExit from "../../Reusable/SaveAndExit/Index";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ControlPointOutlined, Info, RemoveCircleOutlineOutlined } from "@mui/icons-material";
 import { CardHeader } from "reactstrap";
 import moment from "moment";
@@ -36,7 +29,11 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "./index.scss";
-import useAuth from "../../../customHooks/useAuth";
+import useAuth from "../../../../../customHooks/useAuth";
+import { FormTypeId } from "../../../../../Utils/constVals";
+import SideBar from "../../../../Reusable/SideBar";
+import BreadCrumbComponent from "../../../../reusables/breadCrumb";
+import { GetDualCertDetailsPerson, GetHelpVideoDetails, UpsertDualCertDetailsControllingPerson, getAllCountries } from "../../../../../Redux/Actions";
 type ValuePiece = Date | null;
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function Certifications(props: any) {
@@ -47,8 +44,8 @@ export default function Certifications(props: any) {
   const [IsCompDataValid,SetIsCompDataValid]=useState(false);
   const individualSelfType = {
 
-    FirstName: "",
-    FamilyName: "",
+    firstName: "",
+    familyName: "",
     dateofBirth: "",
     CountryofBirth: "",
     CityofBirth: "",
@@ -94,8 +91,8 @@ export default function Certifications(props: any) {
   console.log(SelfCertControllingPerson, "SelfCertControllingPerson")
   const [initialValues, setInitialValues] = useState({
 
-    FirstName: "",
-    FamilyName: "",
+    firstName: "",
+    familyName: "",
     dateofBirth: "",
     countryofBirth: 0,
     cityOfBirth: 0,
@@ -224,8 +221,8 @@ export default function Certifications(props: any) {
           accountHolderDetailsId: authDetails?.accountHolderId,
           formTypeId: FormTypeId.BENE,
           formEntryId: ele.formEntryId,
-          FirstName: ele.FirstName,
-          FamilyName: ele.FamilyName,
+          firstName: ele.firstName,
+          familyName: ele.FamilyName,
           dateofBirth: ele.dateofBirth,
           countryofBirth: ele.countryofBirth,
           cityofBirth: ele.cityofBirth,
@@ -298,7 +295,7 @@ export default function Certifications(props: any) {
   // }, [incomeTypeData])
   const setAccountHolder = (e: any, values: any): any => {
     if (values.accountHolderName === "") {
-      values.accountHolderName = values.FirstName + values.FamilyName;
+      values.accountHolderName = values.firstName + values.FamilyName;
     } else values.accountHolderName = e.target.value;
   };
   const viewPdf = () => {
@@ -327,8 +324,8 @@ export default function Certifications(props: any) {
           formTypeId: 3,
           formEntryId: index + 1,
           dualCertId:index + 1,
-          FirstName: ele.FirstName,
-          FamilyName: ele.FamilyName,
+          firstName: ele.firstName,
+          familyName: ele.familyName,
         
           dateofBirth:formattedDateOfBirth,
           countryofBirth: ele.countryofBirth,
@@ -383,34 +380,7 @@ export default function Certifications(props: any) {
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-      <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
-      {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
-
-      <div className="overlay-div">
-        <div className="overlay-div-group">
-          <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
-          <div className="helpvideo">
-            {GethelpData && GethelpData[8].id === 10 ? (
-              <a
-                href={GethelpData[8].fieldValue}
-                target="popup"
-                onClick={() =>
-                  window.open(
-                    GethelpData[8].fieldValue,
-                    'name',
-                    `width=${GethelpData[8].width},height=${GethelpData[8].height},top=${GethelpData[8].top},left=${GethelpData[8].left}`
-                  )
-                }
-              >
-                Help Video
-              </a>
-            ) : (
-              ""
-            )}
-          </div>
-        </div>
-      </div>
+      <SideBar/>
       <div className="row w-100 " >
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>

@@ -71,6 +71,7 @@ GetDualCertDetailsControlingPerson:"/DualCert/GetDualCertDetailsControllingPerso
  UpsertCRSandFATCAClassification:"/DualCert/UpsertCRSandFATCAClassification",
  InsertCaymanEntityNonUS:"/CaymanEntityNonUS/InsertCaymanEntityNonUS",
  UpsertFATCAStepsDetails:"/DualCert/UpsertFATCAStepsDetails",
+ UpsertSelfCertDetails:"/DualCert/UpsertSelfCertDetails",
 
 
 // Form GetApis:
