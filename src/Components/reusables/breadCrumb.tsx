@@ -36,6 +36,16 @@ export default function BreadCrumbComponent(props: any): any {
   useEffect(() => {
     groupDataByBreadcrumbPart(breadCrumb);
   }, [breadCrumb]);
+  // useEffect(()=>{
+  //   // setExpanded("Step II")  
+  //   Object.entries(breadCrumbDisplay)?.map((item: any, index: number) => {
+  //     console.log(item[1][item[1].length - 1].order < breadCrumbCode,"asdfghjkl");
+  //   if(item[1][item[1].length - 1].order < breadCrumbCode){
+  //     setExpanded(item[1][item[1].length - 1].breadcrumbpart)
+
+  //   }
+  // })
+  // },[expanded])
 
   interface BreadcrumbItem {
     id: number;
@@ -167,3 +177,5 @@ export default function BreadCrumbComponent(props: any): any {
   </div>)
 
 }
+
+
