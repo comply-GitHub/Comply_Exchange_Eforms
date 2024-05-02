@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   FormControl,
+  IconButton,
   Input,
   Modal,
   Typography,
@@ -152,14 +153,20 @@ const SaveAndExit = ({ Callback, formTypeId }: any) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            color={"primary"}
-          >
-            Save & Exit - Account Registration
-          </Typography>
+          <div style={{ display: "grid", gridTemplateColumns: "7fr 1fr" }}>
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              color={"primary"}
+            >
+              Save & Exit - Account Registration
+            </Typography>
+            <IconButton onClick={() => handleClose()} color="primary">
+              x
+            </IconButton>
+          </div>
+
           <Box sx={InternalBoxStyle}>
             <div
               style={{
@@ -182,17 +189,10 @@ const SaveAndExit = ({ Callback, formTypeId }: any) => {
               </Typography>
 
               <Typography sx={{ color: "black", fontWeight: "500" }}>
-                Registration
+                Token
                 <Typography color={"#7b7878"}>
-                  This should be the same as one used in the form submission
-                  process
-                </Typography>
-              </Typography>
-              <Typography sx={{ color: "black", fontWeight: "500" }}>
-                Registration
-                <Typography color={"#7b7878"}>
-                  This should be the same as one used in the form submission
-                  process
+                  The Token (PIN) will have been sent to the email address used during the submission process, please enter here,
+                  if not recived please look in your spam or junk mail file.
                 </Typography>
               </Typography>
             </div>

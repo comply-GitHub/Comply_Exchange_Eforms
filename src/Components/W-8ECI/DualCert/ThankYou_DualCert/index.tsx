@@ -125,7 +125,7 @@ export default function Term() {
                     //type="submit"
                     onClick={() => {
                       // history("/w8Eci_pdf");
-                      dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                      dispatch(GetECIDCPdf(authDetails?.accountHolderId, () => { }, () => { }, true))
                     }}
                     style={{
                       border: "1px solid #0095dd",

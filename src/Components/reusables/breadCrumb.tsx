@@ -31,7 +31,8 @@ export default function BreadCrumbComponent(props: any): any {
   );
 
   useEffect(() => {
-    dispatch(getBreadCrums(formName,authDetails?.agentId, (data: any) => setBreadCrumb(data)));
+    if (authDetails?.agentId)
+      dispatch(getBreadCrums(formName, authDetails?.agentId, (data: any) => setBreadCrumb(data)));
   }, [authDetails]);
   useEffect(() => {
     groupDataByBreadcrumbPart(breadCrumb);
@@ -57,20 +58,20 @@ export default function BreadCrumbComponent(props: any): any {
     createdOn: string;
     modifiedOn: string;
   }
-  
+
   const getBreadcrumbPart = (breadcrumbItems: BreadcrumbItem[], breadCrumbCode: number): string => {
     // Sort the array by order in ascending order
     const sortedItems = breadcrumbItems.sort((a, b) => a.order - b.order);
-  
+
     // Find the index of the first item whose order is greater than breadCrumbCode
     const index = sortedItems.findIndex(item => item.order > breadCrumbCode);
-  
+
     // If index is 0 or -1, return an empty string, else return the breadcrumbpart of the previous item
     return index <= 0 ? "" : sortedItems[index - 1].breadcrumbpart;
   };
-  
+
   // Usage example
-  const breadcrumbItems: BreadcrumbItem[] = [ /* Your array of objects */ ];
+  const breadcrumbItems: BreadcrumbItem[] = [ /* Your array of objects */];
   const breadcrumbPart = getBreadcrumbPart(breadcrumbItems, breadCrumbCode);
 
   function groupDataByBreadcrumbPart(data: any) {
@@ -101,7 +102,7 @@ export default function BreadCrumbComponent(props: any): any {
       console.log(panel)
       setExpanded(isExpanded ? panel : false);
     };
-  
+
 
   return (<div
     style={{ padding: "8px 0px", height: "100%" }}

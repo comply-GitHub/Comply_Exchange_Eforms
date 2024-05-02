@@ -130,7 +130,7 @@ export default function Term() {
               <div style={{ marginTop: "25px" }}>
                 <Button
                   onClick={(e) => {
-                    dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId));
+                    dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, () => { }, () => { }, true));
                   }}
                   style={{
                     border: "1px solid #0095dd",

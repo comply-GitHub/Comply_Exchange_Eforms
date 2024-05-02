@@ -7,11 +7,12 @@ import Main from "./main";
 import WithAutoLogout from "./autoLogoutComponent";
 
 
-const AutoLogoutMain = WithAutoLogout(Main);
+// //const AutoLogoutMain = WithAutoLogout(Main);
 function App() {
   return (
     <Provider store={store}>
-      <AutoLogoutMain/>
+      <Main />
+      {/* <AutoLogoutMain /> */}
     </Provider>
   );
 }
