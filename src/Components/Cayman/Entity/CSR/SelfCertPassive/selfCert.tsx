@@ -307,7 +307,7 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                                   Date of birth:
 
                                 </Typography>
-                                <DatePicker
+                                {/* <DatePicker
                                         className="dateclass"
                                         onBlur={handleBlur}
                                         name="dateofBirth"
@@ -327,8 +327,8 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                                         dayPlaceholder="dd"
                                         monthPlaceholder="mm"
                                         yearPlaceholder="yy"
-                                />
-                                {/* <Input
+                                /> */}
+                                <Input
                                 type="date"
                                   className="dateclass"
                                   onBlur={handleBlur}
@@ -337,11 +337,11 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                                     handleChange(e);
                                     handleUpdateOnFormChange(e);
                                   }}
-                                 
+                                 defaultValue={values.dateofBirth}
                                   value={values.dateofBirth}
                                 
                                  
-                                /> */}
+                                />
                                {errors.dateofBirth && touched.dateofBirth ? <p className="error">{typeof errors.dateofBirth === 'string' ? errors.dateofBirth : ''}</p> : <></>}
 
                               </FormControl>
