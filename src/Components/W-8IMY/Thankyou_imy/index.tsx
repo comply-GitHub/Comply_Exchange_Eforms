@@ -123,7 +123,7 @@ export default function Term() {
                 <Button
                   //type="submit"
                   onClick={() => {
-                    dispatch(GetImyPdf(authDetails?.accountHolderId))
+                    dispatch(GetImyPdf(authDetails?.accountHolderId, () => { }, () => { }, true))
                   }}
                   style={{
                     border: "1px solid #0095dd",

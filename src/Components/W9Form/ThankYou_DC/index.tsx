@@ -114,7 +114,7 @@ export default function Term() {
                   <Button
                     //type="submit"
                     onClick={() => {
-                      dispatch(GetW9DCPdf(authDetails?.accountHolderId))
+                      dispatch(GetW9DCPdf(authDetails?.accountHolderId, () => { }, () => { }, true))
                     }}
                     style={{
                       border: "1px solid #0095dd",

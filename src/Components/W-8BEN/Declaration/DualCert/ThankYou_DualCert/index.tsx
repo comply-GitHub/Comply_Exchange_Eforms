@@ -115,7 +115,7 @@ export default function Term() {
                   <Button
                     //type="submit"
                     onClick={() => {
-                      dispatch(GetBENDCPdf(authDetails?.accountHolderId))
+                      dispatch(GetBENDCPdf(authDetails?.accountHolderId, () => { }, () => { }, true))
                     }}
                     style={{
                       border: "1px solid #0095dd",

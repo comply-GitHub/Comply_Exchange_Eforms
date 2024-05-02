@@ -1,8 +1,20 @@
 import Utils from "../../Utils";
 import { ErrorModel } from "./errormodel";
 
-const convertAndDownloadPdf = (base64String: string, fileName: string) => {
+
+
+const convertAndDownloadPdf = (base64String: string, fileName: string, isDownload = false) => {
     try {
+        let iframe = "<iframe width='100%' height='100%' src='" + base64String + "'></iframe>"
+        if (!isDownload) {
+            let x = window.open();
+            if (x) {
+                x.document.open();
+                x.document.write(iframe);
+                x.document.close();
+                return
+            }
+        }
         // Create a temporary link element
         const link = document.createElement('a');
         link.href = base64String;
@@ -22,7 +34,7 @@ const convertAndDownloadPdf = (base64String: string, fileName: string) => {
 
 }
 
-export const GetW9Pdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+export const GetW9Pdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }, isDownload: boolean = false): any => {
     return (dispatch: any) => {
         Utils.api.getApiCall(
             Utils.EndPoint.GetW9Pdf,
@@ -60,7 +72,7 @@ export const GetW9Pdf = (accountHolderId: number, callback: Function = (data: an
                             });
                             callback();
                         }
-                        convertAndDownloadPdf(data?.pdf, "W9.pdf")
+                        convertAndDownloadPdf(data?.pdf, "W9.pdf", isDownload)
                     }
                 }
             },
@@ -79,7 +91,7 @@ export const GetW9Pdf = (accountHolderId: number, callback: Function = (data: an
     };
 };
 
-export const GetEciPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+export const GetEciPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }, isDownload: boolean = false): any => {
     return (dispatch: any) => {
         Utils.api.getApiCall(
             Utils.EndPoint.GetECIPdf,
@@ -117,7 +129,7 @@ export const GetEciPdf = (accountHolderId: number, callback: Function = (data: a
                             });
                             callback();
                         }
-                        convertAndDownloadPdf(data?.pdf, "ECI_Pdf.pdf")
+                        convertAndDownloadPdf(data?.pdf, "ECI_Pdf.pdf", isDownload)
                     }
                 }
             },
@@ -136,7 +148,7 @@ export const GetEciPdf = (accountHolderId: number, callback: Function = (data: a
     };
 };
 
-export const GetBenPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+export const GetBenPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }, isDownload: boolean = false): any => {
     return (dispatch: any) => {
         Utils.api.getApiCall(
             Utils.EndPoint.GetBENPdf,
@@ -174,7 +186,7 @@ export const GetBenPdf = (accountHolderId: number, callback: Function = (data: a
                             });
                             callback();
                         }
-                        convertAndDownloadPdf(data?.pdf, "BEN_Pdf.pdf")
+                        convertAndDownloadPdf(data?.pdf, "BEN_Pdf.pdf", isDownload)
                     }
                 }
             },
@@ -193,7 +205,7 @@ export const GetBenPdf = (accountHolderId: number, callback: Function = (data: a
     };
 };
 
-export const GetBenEPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+export const GetBenEPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }, isDownload: boolean = false): any => {
     return (dispatch: any) => {
         Utils.api.getApiCall(
             Utils.EndPoint.GetBENEPdf,
@@ -231,7 +243,7 @@ export const GetBenEPdf = (accountHolderId: number, callback: Function = (data: 
                             });
                             callback();
                         }
-                        convertAndDownloadPdf(data?.pdf, "BENE_Pdf.pdf")
+                        convertAndDownloadPdf(data?.pdf, "BENE_Pdf.pdf", isDownload)
                     }
                 }
             },
@@ -250,7 +262,7 @@ export const GetBenEPdf = (accountHolderId: number, callback: Function = (data: 
     };
 };
 
-export const GetExpPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+export const GetExpPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }, isDownload: boolean = false): any => {
     return (dispatch: any) => {
         Utils.api.getApiCall(
             Utils.EndPoint.GetExpPdf,
@@ -288,7 +300,7 @@ export const GetExpPdf = (accountHolderId: number, callback: Function = (data: a
                             });
                             callback();
                         }
-                        convertAndDownloadPdf(data?.pdf, "EXP_Pdf.pdf")
+                        convertAndDownloadPdf(data?.pdf, "EXP_Pdf.pdf", isDownload)
                     }
                 }
             },
@@ -307,7 +319,7 @@ export const GetExpPdf = (accountHolderId: number, callback: Function = (data: a
     };
 };
 
-export const GetImyPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+export const GetImyPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }, isDownload: boolean = false): any => {
     return (dispatch: any) => {
         Utils.api.getApiCall(
             Utils.EndPoint.GetIMYPdf,
@@ -345,7 +357,7 @@ export const GetImyPdf = (accountHolderId: number, callback: Function = (data: a
                             });
                             callback();
                         }
-                        convertAndDownloadPdf(data?.pdf, "IMY_Pdf.pdf")
+                        convertAndDownloadPdf(data?.pdf, "IMY_Pdf.pdf", isDownload)
                     }
                 }
             },
@@ -364,7 +376,7 @@ export const GetImyPdf = (accountHolderId: number, callback: Function = (data: a
     };
 };
 
-export const GetForm8233Pdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+export const GetForm8233Pdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }, isDownload: boolean = false): any => {
     return (dispatch: any) => {
         Utils.api.getApiCall(
             Utils.EndPoint.GetForm8233Pdf,
@@ -402,7 +414,7 @@ export const GetForm8233Pdf = (accountHolderId: number, callback: Function = (da
                             });
                             callback();
                         }
-                        convertAndDownloadPdf(data?.pdf, "Form8233_Pdf.pdf")
+                        convertAndDownloadPdf(data?.pdf, "Form8233_Pdf.pdf", isDownload)
                     }
                 }
             },
@@ -423,7 +435,7 @@ export const GetForm8233Pdf = (accountHolderId: number, callback: Function = (da
 
 
 // dual cert Actions
-export const GetW9DCPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+export const GetW9DCPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }, isDownload: boolean = false): any => {
     return (dispatch: any) => {
         Utils.api.getApiCall(
             Utils.EndPoint.GetW9DCPdf,
@@ -461,7 +473,7 @@ export const GetW9DCPdf = (accountHolderId: number, callback: Function = (data: 
                             });
                             callback();
                         }
-                        convertAndDownloadPdf(data?.pdf, "W9DCIndividual.pdf")
+                        convertAndDownloadPdf(data?.pdf, "W9DCIndividual.pdf", isDownload)
                     }
                 }
             },
@@ -480,7 +492,7 @@ export const GetW9DCPdf = (accountHolderId: number, callback: Function = (data: 
     };
 };
 
-export const GetECIDCPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+export const GetECIDCPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }, isDownload: boolean = false): any => {
     return (dispatch: any) => {
         Utils.api.getApiCall(
             Utils.EndPoint.GetECIDCPdf,
@@ -518,7 +530,7 @@ export const GetECIDCPdf = (accountHolderId: number, callback: Function = (data:
                             });
                             callback();
                         }
-                        convertAndDownloadPdf(data?.pdf, "ECI-DC.pdf")
+                        convertAndDownloadPdf(data?.pdf, "ECI-DC.pdf", isDownload)
                     }
                 }
             },
@@ -537,7 +549,7 @@ export const GetECIDCPdf = (accountHolderId: number, callback: Function = (data:
     };
 };
 
-export const GetBENDCPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+export const GetBENDCPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }, isDownload: boolean = false): any => {
     return (dispatch: any) => {
         Utils.api.getApiCall(
             Utils.EndPoint.GetBENDCPdf,
@@ -575,7 +587,7 @@ export const GetBENDCPdf = (accountHolderId: number, callback: Function = (data:
                             });
                             callback();
                         }
-                        convertAndDownloadPdf(data?.pdf, "BEN-DC.pdf")
+                        convertAndDownloadPdf(data?.pdf, "BEN-DC.pdf", isDownload)
                     }
                 }
             },
@@ -596,7 +608,7 @@ export const GetBENDCPdf = (accountHolderId: number, callback: Function = (data:
 
 
 // self cert Actions
-export const GetCaymanIndividualPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+export const GetCaymanIndividualPdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }, isDownload: boolean = false): any => {
     return (dispatch: any) => {
         Utils.api.getApiCall(
             Utils.EndPoint.GetCaymanIndividualPdf,
@@ -634,7 +646,7 @@ export const GetCaymanIndividualPdf = (accountHolderId: number, callback: Functi
                             });
                             callback();
                         }
-                        convertAndDownloadPdf(data?.pdf, "SC-CaymanIndividual.pdf")
+                        convertAndDownloadPdf(data?.pdf, "SC-CaymanIndividual.pdf", isDownload)
                     }
                 }
             },
