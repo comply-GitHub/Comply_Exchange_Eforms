@@ -182,17 +182,10 @@ const SaveAndExit = ({ Callback, formTypeId }: any) => {
               </Typography>
 
               <Typography sx={{ color: "black", fontWeight: "500" }}>
-                Registration
+                Token
                 <Typography color={"#7b7878"}>
-                  This should be the same as one used in the form submission
-                  process
-                </Typography>
-              </Typography>
-              <Typography sx={{ color: "black", fontWeight: "500" }}>
-                Registration
-                <Typography color={"#7b7878"}>
-                  This should be the same as one used in the form submission
-                  process
+                  The Token (PIN) will have been sent to the email address used during the submission process, please enter here,
+                  if not recived please look in your spam or junk mail file.
                 </Typography>
               </Typography>
             </div>
