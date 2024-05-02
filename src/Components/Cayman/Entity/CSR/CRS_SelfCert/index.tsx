@@ -205,12 +205,12 @@ export default function Declaration (props: any){
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Typography
+                <Typography
                     align="left"
-                    style={{ fontSize: "17px", color: "#1976d2", fontWeight: "bold" }}
+                    style={{ fontSize: "14px",color: "black" }}
                     
                   >
-                    FATCA & CRS Classification Guide- CRS Introduction
+                    CRS Classification Guide- CRS Introduction
                   </Typography>
                  
                 </AccordionDetails>

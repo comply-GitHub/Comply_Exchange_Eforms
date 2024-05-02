@@ -158,7 +158,7 @@ export default function Declaration (props: any){
 
 
               <Typography align="center">
-                <Button
+                {/* <Button
                  
                  onClick={() =>{
                     history(-1)
@@ -192,12 +192,108 @@ export default function Declaration (props: any){
                   Confirm
                 </Button>
 
+                <Button
+                 
+                 onClick={() =>{
+                    history(-1)
+                    setIsAccordionVisible(false)
+                }}
+                  variant="outlined"
+                  style={{
+                    color: "#1976E2",
+                    fontSize:"10px",
+                    marginTop: "10px",
+                    marginBottom: "20px",
+                  }}
+                >
+                  Back
+                </Button> */}
+
+<Button
+                 onClick={() => {
+                
+                  history("/Cayman/Entity/CRS/Start")
+                  setExpandedState(false)
+                 }}
+                  variant="outlined"
+                  style={{
+                    color: "#1976E2",
+                      fontSize:"12px",
+                    marginTop: "10px",
+                    marginBottom: "20px",
+                  }}
+                >
+                  Close
+                </Button>
+                <Button
+                 //disabled={!isContinueEnabled} 
+                 onClick={() => {
+                  setExpandedState(false)
+                  history("/Cayman/Entity/CRS/Complete")
+                }}
+                  variant="contained"
+                 
+                  style={{
+
+                    fontSize:"12px",
+                    marginTop: "10px",
+                    marginBottom: "20px",
+                    marginLeft: "10px"
+
+                  }}
+                >
+                  Confirm
+                </Button>
+                <Button
+                 onClick={() => { 
+                  history(-1)
+                  setExpandedState(false)
+                 }}
+                  variant="outlined"
+                  style={{
+                    color: "#1976E2",
+                     fontSize:"12px",
+                    marginTop: "10px",
+                    marginBottom: "20px",
+                    marginLeft: "10px"
+                  }}
+                >
+                  Back
+                </Button>
+
                 
               </Typography>
 
             </div>
 
-                
+            {/* <Typography
+                    align="center"
+                    style={{
+                      color: "#505E50",  
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: "20px",
+                    }}
+                  >
+                    Do you want to go back?
+                  </Typography>
+                  <Typography align="center">
+                    <Button
+                      variant="contained"
+                      style={{
+                        color: "white",
+                        backgroundColor: "black",
+                        marginTop: "10px",
+                        marginBottom: "20px",
+                      }}
+
+                      onClick={() => {
+                        history(-1)
+                      }}
+                    >
+                      Back
+                    </Button>
+                  </Typography> */}
                 </form>
            
               )}
