@@ -30,7 +30,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import SideBar from "../../Reusable/SideBar";
-import { GetAgentCountriesImportantForEform, GetHelpVideoDetails, getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode, getTinTypes, postSCIndividualEForm } from "../../../Redux/Actions";
+import { GetAgentCountriesImportantForEform, GetHelpVideoDetails, UpsertSelfCertDetails, getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode, getTinTypes, postSCEntityEForm, postSCIndividualEForm } from "../../../Redux/Actions";
 import { EntityUS_TINSchema } from "../../../schemas/cayman";
 import { error } from "console";
 
@@ -42,19 +42,43 @@ export default function Tin(props: any) {
 
   const onBoardingFormValuesPrevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
   
+
+  const itemsData = onBoardingFormValuesPrevStepData?.taxLbltyOtherJurisdictions?.map((dataItem: any, index: number) => (
+    {
+      id: 0,
+      agentId: dataItem?.agentId,
+      formTypeId: dataItem.formTypeId,
+      formEntryId: 0,
+      accountHolderDetailsId:dataItem?.accountHolderDetailsId,
+      doesIndiHavTaxLbltyinOtherJurisdictions: dataItem?.doesIndiHavTaxLbltyinOtherJurisdictions ? dataItem?.doesIndiHavTaxLbltyinOtherJurisdictions : "",
+      countryId: dataItem.countryId,
+      tinNumber: dataItem.tinNumber,
+      isAlternativeTinFormat: dataItem.isAlternativeTinFormat,
+      tinNotAvailable:dataItem.tinNotAvailable,
+      countryError:dataItem.countryError,
+      tinError:dataItem.tinError,
+      selfCertId:0,
+     
+    }
+     
+ 
+   ));
+
+   
   const itemsData2 = [{
     id: 0,
     agentId: authDetails?.agentId,
-    formTypeId: FormTypeId.CaymanIndividual,
+    formTypeId: FormTypeId.CaymanEntity,
     formEntryId: 0,
     accountHolderDetailsId:authDetails?.accountHolderId,
     doesIndiHavTaxLbltyinOtherJurisdictions: "",
-    countryIdforTaxLiability: "",
+    countryId: "",
     tinNumber: "",
-    alternativeTinFormat: false,
-    notAvailable:false,
+    isAlternativeTinFormat: false,
+    tinNotAvailable:false,
     countryError:false,
-    tinError:false
+    tinError:false,
+    selfCertId:0,
   }];
 
   const initialValue = {
@@ -68,7 +92,7 @@ export default function Tin(props: any) {
     tinisFTINNotLegallyRequired: "",
     isNotLegallyFTIN: "",
     reasionForForegionTIN_NotAvailable: onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable ? onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable : "",
-    taxLbltyOtherJurisdictions:itemsData2
+    taxLbltyOtherJurisdictions: (itemsData?.length > 0) ?itemsData : itemsData2,
   };
 
   // useEffect(()=>{
@@ -155,30 +179,31 @@ export default function Tin(props: any) {
             ...values,
             stepName: null
           };
-          // const temp = {
-          //   ...values,
-          //   ...onBoardingFormValuesPrevStepData,
-          //   agentId: authDetails?.agentId,
-          //   accountHolderBasicDetailId: authDetails?.accountHolderId,
-          //   stepName: null,
-          // };
 
-          //Working code
-          // const returnPromise = new Promise((resolve, reject) => {
-          //   dispatch(
-          //       postSCIndividualEForm(temp,
-          //       (responseData: any) => {
-          //         localStorage.setItem("PrevStepData", JSON.stringify(temp));
-          //         resolve(responseData);
-          //         history("/Cayman/Individual/Start/Certification");
-          //       },
-          //       (err: any) => {
-          //         reject(err);
-          //       }
-          //     )
-          //   );
-          // })
-          // return returnPromise
+          if (values.taxLbltyOtherJurisdictions) {
+
+            dispatch(UpsertSelfCertDetails(values.taxLbltyOtherJurisdictions, () => {
+
+            }))
+
+
+          }
+
+          const returnPromise = new Promise((resolve, reject) => {
+            dispatch(
+                postSCEntityEForm(temp,
+                (responseData: any) => {
+                  localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                  resolve(responseData);
+                  history("/Cayman/Entity/Certification");
+                },
+                (err: any) => {
+                  reject(err);
+                }
+              )
+            );
+          })
+          return returnPromise
 
 
           // dispatch(
@@ -203,8 +228,8 @@ export default function Tin(props: any) {
         }) => (
           <Form onSubmit={handleSubmit}>
 
-            <>{console.log("errors", errors)}</>
-            <>{console.log("values", values)}</>
+            {/* <>{console.log("errors", errors)}</>
+            <>{console.log("values", values)}</> */}
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
@@ -1240,7 +1265,7 @@ export default function Tin(props: any) {
                                               // Push a new item into the array only if the selected value is "Yes"
 
                                               if(index > 0){
-                                                if(values.taxLbltyOtherJurisdictions[index-1].countryIdforTaxLiability === "" && values.taxLbltyOtherJurisdictions[index-1].notAvailable === false){
+                                                if(values.taxLbltyOtherJurisdictions[index-1].countryId === "" && values.taxLbltyOtherJurisdictions[index-1].tinNotAvailable === false){
                                                   setTimeout(() => {
                                                     setFieldValue(`taxLbltyOtherJurisdictions.${index-1}.countryError`, true)
                                                     setFieldValue(`taxLbltyOtherJurisdictions.${index-1}.tinError`, true)
@@ -1254,7 +1279,7 @@ export default function Tin(props: any) {
                                                   },200)
                                                 }
 
-                                                if(values.taxLbltyOtherJurisdictions[index-1].countryIdforTaxLiability !== "" || values.taxLbltyOtherJurisdictions[index-1].notAvailable === true){
+                                                if(values.taxLbltyOtherJurisdictions[index-1].countryId !== "" || values.taxLbltyOtherJurisdictions[index-1].tinNotAvailable === true){
                                                   handleChange({
                                                     target: {
                                                       name: "taxLbltyOtherJurisdictions",
@@ -1267,12 +1292,12 @@ export default function Tin(props: any) {
                                                           formEntryId: 0,
                                                           accountHolderDetailsId:authDetails?.accountHolderId,
                                                           doesIndiHavTaxLbltyinOtherJurisdictions: "No",
-                                                          countryIdforTaxLiability: "",
+                                                          countryId: "",
                                                           taxReferenceNumber: "",
                                                           isTINFormatNotAvailable: false,
                                                           countryError:false,
                                                           tinError:false,
-                                                          notAvailable:false
+                                                          tinNotAvailable:false
                                                         }
                                                       ],
                                                     },
@@ -1292,12 +1317,12 @@ export default function Tin(props: any) {
                                                         formEntryId: 0,
                                                         accountHolderDetailsId:authDetails?.accountHolderId,
                                                         doesIndiHavTaxLbltyinOtherJurisdictions: "No",
-                                                        countryIdforTaxLiability: "",
+                                                        countryId: "",
                                                         taxReferenceNumber: "",
                                                         isTINFormatNotAvailable: false,
                                                         countryError:false,
                                                         tinError:false,
-                                                        notAvailable:false
+                                                        tinNotAvailable:false
                                                       }
                                                     ],
                                                   },
@@ -1339,7 +1364,7 @@ export default function Tin(props: any) {
                                           //remove(index);
                                           setFieldValue(
                                             "taxLbltyOtherJurisdictions",
-                                            values.taxLbltyOtherJurisdictions.filter((_, indexes) => indexes !== index)
+                                            values.taxLbltyOtherJurisdictions.filter((_:any, indexes:any) => indexes !== index)
                                           );
                                           
                                         }
@@ -1360,18 +1385,26 @@ export default function Tin(props: any) {
                                                 fontStyle: "italic",
                                                 height: "36px",
                                               }}
-                                              name={`taxLbltyOtherJurisdictions.${index}.countryIdforTaxLiability`}
+                                              name={`taxLbltyOtherJurisdictions.${index}.countryId`}
                                               id="Income"
                                               defaultValue={1}
                                               onChange={(e) => {
                                                 handleChange(e)
                                                 setTimeout(() => {
                                                   setFieldValue(`taxLbltyOtherJurisdictions.${index}.countryError`, false);
+
+                                                  // if(values?.taxLbltyOtherJurisdictions?.[index]?.countryId == 0)
+                                                  //   {
+                                                  //     setFieldValue(`taxLbltyOtherJurisdictions.${index}.countryError`, true);
+                                                  //   }else{
+                                                  //     setFieldValue(`taxLbltyOtherJurisdictions.${index}.countryError`, false);
+                                                  //   }
+                                                  
                                                 },200)
                                               }}
-                                              value={values.taxLbltyOtherJurisdictions[index].countryIdforTaxLiability}
+                                              value={values?.taxLbltyOtherJurisdictions?.[index]?.countryId}
                                             >
-                                              <option value="">---select---</option>
+                                              <option value="0">---select---</option>
                                               <option value={45}>-canada-</option>
                                               <option value={257}>United Kingdom</option>
                                               <option value={258}>United States</option>
@@ -1401,7 +1434,7 @@ export default function Tin(props: any) {
                                           
                                           <div className="d-flex">
                                             <FormControl className="form">
-                                              {values.taxLbltyOtherJurisdictions[index].notAvailable === true ? (
+                                              {values.taxLbltyOtherJurisdictions[index].tinNotAvailable === true ? (
                                                 
                                                 <Input
                                                   name={`taxLbltyOtherJurisdictions.${index}.tinNumber`}
@@ -1465,21 +1498,42 @@ export default function Tin(props: any) {
                                             {/* {values.permanentResidentialCountryId == 257?( */}
                                             <div className="d-flex">
                                               <Checkbox
-                                                name={`taxLbltyOtherJurisdictions.${index}.notAvailable`}
+                                                name={`taxLbltyOtherJurisdictions.${index}.tinNotAvailable`}
                                                 onChange={(e) => {
                                                   const isChecked = e.target.checked;
                                                   const newValue = isChecked ? true : false; // Convert checked state to boolean
-                                                  setFieldValue(`taxLbltyOtherJurisdictions.${index}.notAvailable`, newValue);
+                                                  setFieldValue(`taxLbltyOtherJurisdictions.${index}.tinNotAvailable`, newValue);
                                                   // Optionally, reset taxReferenceNumber when the checkbox is checked
                                                   if (isChecked) {
                                                     setFieldValue(`taxLbltyOtherJurisdictions.${index}.tinNumber`, "");
-                                                    setFieldValue(`taxLbltyOtherJurisdictions.${index}.countryIdforTaxLiability`, "");
+                                                    setFieldValue(`taxLbltyOtherJurisdictions.${index}.countryId`, "");
                                                   }
                                                 }}
-                                                checked={values.taxLbltyOtherJurisdictions[index].notAvailable || false} // Ensure value is boolean
+                                                checked={values.taxLbltyOtherJurisdictions[index].tinNotAvailable || false} // Ensure value is boolean
                                               />
                                               <div className="mt-2">
                                                 Not Available
+                                              </div>
+                                            </div>
+
+                                            <div className="d-flex">
+                                              <Checkbox
+                                                name={`taxLbltyOtherJurisdictions.${index}.isAlternativeTinFormat`}
+                                                onChange={(e) => {
+                                                  const isChecked = e.target.checked;
+                                                  const newValue = isChecked ? true : false; // Convert checked state to boolean
+                                                  setFieldValue(`taxLbltyOtherJurisdictions.${index}.isAlternativeTinFormat`, newValue);
+                                                  // Optionally, reset taxReferenceNumber when the checkbox is checked
+                                                  //if (isChecked) {
+                                                    setFieldValue(`taxLbltyOtherJurisdictions.${index}.tinNumber`, "");
+                                                    setFieldValue(`taxLbltyOtherJurisdictions.${index}.tinError`, true)
+                                                    // setFieldValue(`taxLbltyOtherJurisdictions.${index}.countryId`, "");
+                                                  //}
+                                                }}
+                                                checked={values.taxLbltyOtherJurisdictions[index].isAlternativeTinFormat || false} // Ensure value is boolean
+                                              />
+                                              <div className="mt-2">
+                                                Alternative TIN Format
                                               </div>
                                             </div>
                                           
@@ -1662,7 +1716,7 @@ export default function Tin(props: any) {
                   <Typography align="center">
                     <Button
                     onClick={()=>{
-                      history("/Cayman/Individual/start/SustantialPresence")
+                      history("/Cayman/Entity/CRS/SelfCertPassive")
                     }}
                       variant="contained"
                       style={{

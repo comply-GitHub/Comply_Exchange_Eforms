@@ -2170,11 +2170,11 @@ export const UpsertSpecialRateAndCondition = (payload: any, callback: Function, 
   }
 }
 
-export const GetDualCertDetailsPerson = (AccountHolderId: number, callback: Function): any => {
+export const GetDualCertDetailsPerson = (AccountHolderId: number, formTypeID:number , callback: Function): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
       Utils.EndPoint.GetDualCertDetailsControlingPerson,
-      `?accountHolderId=${AccountHolderId}`,
+      `?accountHolderId=${AccountHolderId}&FormTypeId=${formTypeID}`,
       async (resData) => {
         const { data } = resData;
         if (resData.status === 200) {
@@ -3011,6 +3011,53 @@ export const upsertFATCAStepsDetails = (value: any, callback: Function, errorCal
         errorCallback(error)
       },
       "multi"
+    );
+  };
+};
+
+export const UpsertSelfCertDetails = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.UpsertSelfCertDetails,
+      value,
+      (responseData) => {
+        let { data } = responseData;
+        //console.log("Form 8233 Response Data",responseData);
+        // dispatch({
+        //   type: Utils.actionName.UpsertAccountHolderWithholdingStatement,
+        //   payload: { ...value, Response: data },
+        // });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback({ message: "Internal server error occured", payload: responseData })
+          } else {
+            if (callback) {
+              callback();
+            }
+          }
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(error)
+      },
+      ""
     );
   };
 };

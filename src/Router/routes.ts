@@ -335,9 +335,15 @@ const CaymanEntityCRSActiveNonFinancial = React.lazy(() => import("../Components
 const CaymanEntityCRSFinancialNModal = React.lazy(() => import("../Components/Cayman/Entity/CSR/Financial/FinancialModal"));
 const CaymanEntityCRSNonReporting = React.lazy(() => import("../Components/Cayman/Entity/CSR/CRS_SelfCert/NonReporting"));
 const CaymanEntityCRSComplete = React.lazy(() => import("../Components/Cayman/Entity/CSR/CRS_Complete"));
+const CaymanEntityCRSSelfCertPassive = React.lazy(() => import("../Components/Cayman/Entity/CSR/SelfCertPassive"));
 const CaymanEntityCRSFinancialN = React.lazy(() => import("../Components/Cayman/Entity/CSR/Financial"));
 
 const CaymanEntityTIN= React.lazy(() => import("../Components/Cayman/Entity/USTin"));
+const CaymanEntityCertification= React.lazy(() => import("../Components/Cayman/Entity/Certification"));
+const CaymanEntitySubmission= React.lazy(() => import("../Components/Cayman/Entity/Submission"));
+const CaymanEntityESConfirmation= React.lazy(() => import("../Components/Cayman/Entity/ESConfirmation"));
+
+
 
 const BENEEntityFatcaClassificationFinancial = React.lazy(() => import("../Components/Cayman/Entity/FATCA/Financial"));
 const BENEEntityFatcaClassificationGIINAvailable = React.lazy(() => import("../Components/Cayman/Entity/FATCA/GIINAvailable"));
@@ -1032,10 +1038,40 @@ const ROUTES: Array<RouteType> = [
     isPrivate: true,
   },
   {
+    name: "CaymanEntityCRSSelfCertPassive",
+    path: "/Cayman/Entity/CRS/SelfCertPassive",
+    id: 7,
+    Component: CaymanEntityCRSSelfCertPassive,
+    isPrivate: true,
+  },
+
+  
+  {
     name: "CaymanEntityTIN",
     path: "/Cayman/Entity/TIN",
     id: 7,
     Component: CaymanEntityTIN,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityCertification",
+    path: "/Cayman/Entity/Certification",
+    id: 7,
+    Component: CaymanEntityCertification,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntitySubmission",
+    path: "/Cayman/Entity/Submission",
+    id: 7,
+    Component: CaymanEntitySubmission,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityESConfirmation",
+    path: "/Cayman/Entity/ESConfirmation",
+    id: 7,
+    Component: CaymanEntityESConfirmation,
     isPrivate: true,
   },
   {
