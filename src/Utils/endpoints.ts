@@ -70,6 +70,7 @@ GetDualCertDetailsControlingPerson:"/DualCert/GetDualCertDetailsControllingPerso
  UpsertEntityW9DualCert:"/W9IndividualEntity/UpdateW9IndividualEntityDetails",
  UpsertCRSandFATCAClassification:"/DualCert/UpsertCRSandFATCAClassification",
  InsertCaymanEntityNonUS:"/CaymanEntityNonUS/InsertCaymanEntityNonUS",
+ UpsertFATCAStepsDetails:"/DualCert/UpsertFATCAStepsDetails",
 
 
 // Form GetApis:
@@ -99,6 +100,7 @@ GetForm8233Pdf:"/Form8233Individual/GetForm8233Pdf",
 GetW9DCPdf:"/W9IndividualEntity/GetW9DCPdf",
 GetECIDCPdf:"/W8ECIIndividualEntity/GetECIDCPdf",
 GetBENDCPdf:"/W8BENIndividual/GetBENDCPdf",
+GetCaymanIndividualPdf:"/CaymanIndividualNonUS/GetCaymanIndividualPdf",
 
 
  //Account Holder Endpoints

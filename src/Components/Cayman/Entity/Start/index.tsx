@@ -64,7 +64,6 @@ export default function Fedral_tax(props: any) {
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
 
   const chapter3DataEntity = useSelector((state:any) => state.CaymanEntity.chapter3Data);
-  console.log("chapter3DataEntity", chapter3DataEntity);
   const [initialValue, setInitialValue] = useState({
     agentId: authDetails?.agentId,
     formTypeSelectionId: FormTypeId.CaymanEntity,
@@ -92,6 +91,34 @@ export default function Fedral_tax(props: any) {
     stepName: `/${urlValue}`,
   });
 
+  useEffect(() => {
+    setInitialValue({
+      agentId: authDetails?.agentId,
+    formTypeSelectionId: FormTypeId.CaymanEntity,
+    accountHolderBasicDetailId: authDetails?.accountHolderId,
+    businessName: obValues.entityName,
+    businessDisgradedEntity: chapter3DataEntity?.businessDisgradedEntity ? chapter3DataEntity?.businessDisgradedEntity : obValues.businessDisgradedEntity,
+    other: "",
+    countryOfIncorporation: chapter3DataEntity?.countryOfIncorporation ? chapter3DataEntity?.countryOfIncorporation : 0,
+    dateOfIncorporation:chapter3DataEntity?.dateOfIncorporation ? chapter3DataEntity?.dateOfIncorporation : "",
+    jurisdictionForTaxPurposes : chapter3DataEntity?.jurisdictionForTaxPurposes ? chapter3DataEntity?.jurisdictionForTaxPurposes : "",
+    isApplyingTieBreakerClauseUnderApplicableTaxTreaty:chapter3DataEntity?.isApplyingTieBreakerClauseUnderApplicableTaxTreaty ? chapter3DataEntity?.isApplyingTieBreakerClauseUnderApplicableTaxTreaty : "",
+    countryOfTaxesPaid:chapter3DataEntity?.countryOfTaxesPaid ? chapter3DataEntity?.countryOfTaxesPaid : 0,
+    taxJuridictionListItem:[],
+    taxJurisdictionMismatchExplanationId:chapter3DataEntity?.taxJurisdictionMismatchExplanationId ? chapter3DataEntity?.taxJurisdictionMismatchExplanationId : null,
+    explainationForNone: chapter3DataEntity?.explainationForNone ? chapter3DataEntity?.explainationForNone :"",
+    confirmThisisaTrueAndAccurate:chapter3DataEntity?.confirmThisisaTrueAndAccurate ? chapter3DataEntity?.confirmThisisaTrueAndAccurate :false,
+    chapter3Status: chapter3DataEntity?.chapter3Status ? chapter3DataEntity?.chapter3Status : 0,
+    attachSupportingDocumentFile: chapter3DataEntity?.attachSupportingDocumentFile ? chapter3DataEntity?.attachSupportingDocumentFile : null,
+    attachSupportingDocument: chapter3DataEntity?.attachSupportingDocument ? chapter3DataEntity?.attachSupportingDocument : null,
+    descriptionHybridStatus: chapter3DataEntity?.descriptionHybridStatus ? chapter3DataEntity?.descriptionHybridStatus : "",
+    hybridStatus: chapter3DataEntity?.hybridStatus ? chapter3DataEntity?.hybridStatus : 3,
+    isDisRegardedSection: chapter3DataEntity?.isDisRegardedSection ? chapter3DataEntity?.isDisRegardedSection : "",
+    isDisRegardedSection1446: chapter3DataEntity?.isDisRegardedSection1446 ? chapter3DataEntity?.isDisRegardedSection1446 : "",
+    statusId: 1,
+    stepName: `/${urlValue}`,
+    })
+  },[chapter3DataEntity])
   const [toolInfo, setToolInfo] = useState("");
   const [expanded, setExpanded] = React.useState<string | false>("");
   const [clickCount, setClickCount] = useState(0);
