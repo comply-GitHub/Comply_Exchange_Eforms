@@ -157,7 +157,7 @@ const Redirect = async (
     //BenE section
     case "/BenE/Tax_Purpose_BenE":
       if (
-        mappingAvailable.filter((x) => x.id == 15 && x.agentId == agentId)  //x.id not confirmed
+        mappingAvailable.filter((x) => x.id == 15 && x.agentId == agentId) //x.id not confirmed
           .length > 0
       ) {
         //skip condition
@@ -179,88 +179,118 @@ const Redirect = async (
         navigate(stepRoute);
       }
       break;
-      case "/BenE/Tax_Purpose_BenE/Declaration_BenE":
-        if (
-          mappingAvailable.filter((x) => x.id == 16 && x.agentId == agentId)
-            .length > 0
-        ) {//x.id not confirmed
-          //skip condition
-          //redirecting to next step
-  
-          if (!isback) {
-            // going forward in forms case
-            Redirect("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Status_BenE", agentId, navigate);
-          } else {
-            // going back in forms case
-            Redirect("/BenE/Tax_Purpose_BenE", agentId, navigate);
-          }
+    case "/BenE/Tax_Purpose_BenE/Declaration_BenE":
+      if (
+        mappingAvailable.filter((x) => x.id == 16 && x.agentId == agentId)
+          .length > 0
+      ) {
+        //x.id not confirmed
+        //skip condition
+        //redirecting to next step
+
+        if (!isback) {
+          // going forward in forms case
+          Redirect(
+            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Status_BenE",
+            agentId,
+            navigate
+          );
         } else {
-          // step is not skipped
-          navigate(stepRoute);
+          // going back in forms case
+          Redirect("/BenE/Tax_Purpose_BenE", agentId, navigate);
         }
-        break;
+      } else {
+        // step is not skipped
+        navigate(stepRoute);
+      }
+      break;
     case "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Status_BenE":
-        if (
-            mappingAvailable.filter((x) => x.id == 16 && x.agentId == agentId)
-              .length > 0
-          ) {//x.id not confirmed
-            //skip condition
-            //redirecting to next step
-    
-            if (!isback) {
-              // going forward in forms case
-              Redirect("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/US_Tin_BenE", agentId, navigate);
-            } else {
-              // going back in forms case
-              Redirect("/BenE/Tax_Purpose_BenE/Declaration_BenE", agentId, navigate);
-            }
-          } else {
-            // step is not skipped
-            navigate(stepRoute);
-          }
-          break;
+      if (
+        mappingAvailable.filter((x) => x.id == 16 && x.agentId == agentId)
+          .length > 0
+      ) {
+        //x.id not confirmed
+        //skip condition
+        //redirecting to next step
+
+        if (!isback) {
+          // going forward in forms case
+          Redirect(
+            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/US_Tin_BenE",
+            agentId,
+            navigate
+          );
+        } else {
+          // going back in forms case
+          Redirect(
+            "/BenE/Tax_Purpose_BenE/Declaration_BenE",
+            agentId,
+            navigate
+          );
+        }
+      } else {
+        // step is not skipped
+        navigate(stepRoute);
+      }
+      break;
     case "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/US_Tin_BenE":
-        if (
-            mappingAvailable.filter((x) => x.id == 16 && x.agentId == agentId)
-              .length > 0
-          ) {//x.id not confirmed
-            //skip condition
-            //redirecting to next step
-    
-            if (!isback) {
-              // going forward in forms case
-              Redirect("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Status_BenE", agentId, navigate);
-            } else {
-              // going back in forms case
-              Redirect("/BenE/Tax_Purpose_BenE", agentId, navigate);
-            }
-          } else {
-            // step is not skipped
-            navigate(stepRoute);
-          }
-          break;
-        
-          case "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E":
-            if (
-                mappingAvailable.filter((x) => x.id == 52 && x.agentId == agentId)
-                  .length > 0
-              ) {
-                //skip condition
-                //redirecting to next step
-        
-                if (!isback) {
-                  // going forward in forms case
-                  Redirect("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE", agentId, navigate);
-                } else {
-                  // going back in forms case
-                  Redirect("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/US_Tin_BenE", agentId, navigate);
-                }
-              } else {
-                // step is not skipped
-                navigate(stepRoute);
-              }
-              break;
-          default:
+      if (
+        mappingAvailable.filter((x) => x.id == 16 && x.agentId == agentId)
+          .length > 0
+      ) {
+        //x.id not confirmed
+        //skip condition
+        //redirecting to next step
+
+        if (!isback) {
+          // going forward in forms case
+          Redirect(
+            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Status_BenE",
+            agentId,
+            navigate
+          );
+        } else {
+          // going back in forms case
+          Redirect("/BenE/Tax_Purpose_BenE", agentId, navigate);
+        }
+      } else {
+        // step is not skipped
+        navigate(stepRoute);
+      }
+      break;
+    case "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E":
+      if (
+        mappingAvailable.filter((x) => x.id == 52 && x.agentId == agentId)
+          .length > 0
+      ) {
+        //skip condition
+        //redirecting to next step
+
+        if (!isback) {
+          // going forward in forms case
+          Redirect(
+            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE",
+            agentId,
+            navigate
+          );
+        } else {
+          // going back in forms case
+          Redirect(
+            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/US_Tin_BenE",
+            agentId,
+            navigate
+          );
+        }
+      } else {
+        // step is not skipped
+        navigate(stepRoute);
+      }
+      break;
+   
+   
+   
+   
+      default:
       navigate(stepRoute);
   }
 };
