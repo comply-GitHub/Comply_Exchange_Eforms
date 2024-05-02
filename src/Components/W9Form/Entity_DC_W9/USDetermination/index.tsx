@@ -89,7 +89,7 @@ export default function Declaration (props: any){
                 const result = {
                   ...PrevStepData, 
                   ...values,
-                 
+           
                   statusId: 1,
                 };
                 const returnPromise = new Promise((resolve, reject) => {
@@ -224,7 +224,7 @@ export default function Declaration (props: any){
     {ExemptionData?.map((exemption:any) => (
               <FormControlLabel className="my-1" 
                 key={exemption.fatcaExemptionCodeId}
-                value={exemption.fatcaExemptionCodeId}
+                value={parseInt(exemption.fatcaExemptionCodeId, 10)}
                 control={<Radio />}
                 label={exemption.name}
                 name="FatcaExemption"

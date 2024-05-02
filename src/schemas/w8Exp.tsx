@@ -224,8 +224,8 @@ export const certificateSchema_w9_DC = () => {
 
 export const SelfCertSchema_w9_DC = (showAlternateAddress:boolean,showTin:boolean,showTin2:boolean) => {
   return Yup.object().shape({
-   FirstName:Yup.string().required("Please Enter"),
-   FamilyName:Yup.string().required("Please Enter"),
+   firstName:Yup.string().required("Please Enter"),
+   familyName:Yup.string().required("Please Enter"),
    dateofBirth:Yup.string(),
    countryofBirth:Yup.string(),
    cityOfBirth:Yup.string(),

@@ -49,102 +49,103 @@ export default function Certifications(props: any) {
   const [IsCompDataValid,SetIsCompDataValid]=useState(false);
  
 // console.log(formattedDate); 
-  const individualSelfType = {
-    FirstName: SelfControllingData[0].FirstName || "",
-    FamilyName: SelfControllingData[0].FamilyName || "",
-    dateofBirth: SelfControllingData[0].dateofBirth || "",
-    countryofBirth: SelfControllingData[0].CountryofBirth || "",
-    cityofBirth: SelfControllingData[0].CityofBirth || "",
-    permanentHouseNumberorName: SelfControllingData[0].permanentHouseNumberorName || "",
-    permanentRoadName: SelfControllingData[0].permanentRoadName || "",
-    permanentLocation: SelfControllingData[0].permanentLocation || "",
-    permanentCityorTown: SelfControllingData[0].permanentCityorTown || "",
-    permanentStateorProvince: SelfControllingData[0].permanentStateorProvince || "",
-    permanentZiporPostalCode: SelfControllingData[0].permanentZiporPostalCode || "",
-    permanentResidentialCountry: SelfControllingData[0].permanentResidentialCountry || "",
-    alterHouseNumberorName: SelfControllingData[0].alterHouseNumberorName || "",
-    alterRoadName: SelfControllingData[0].alterRoadName || "",
-    alterLocation: SelfControllingData[0].alterLocation || "",
-    alterCityorTown: SelfControllingData[0].alterCityorTown || "",
-    alterStateorProvince: SelfControllingData[0].alterStateorProvince || "",
-    alterZiporPostalCode: SelfControllingData[0].alterZiporPostalCode || "",
-    alterResidentialCountry: SelfControllingData[0].alterResidentialCountry || 0,
-    primaryTaxJurisdictionCountry1: SelfControllingData[0].primaryTaxJurisdictionCountry1 || "",
-    tinType1: SelfControllingData[0].tinType1 || "",
-    tiN1: SelfControllingData[0].tiN1 || "",
-    tinUnavailable1: SelfControllingData[0].tinUnavailable1 || false,
-    primaryTaxJurisdictionCountry2: SelfControllingData[0].primaryTaxJurisdictionCountry2 || "",
-    tinType2: SelfControllingData[0].tinType2 || "",
-    tiN2: SelfControllingData[0].tiN2 || "",
-    tinUnavailable2: SelfControllingData[0].tinUnavailable2 || false,
-    PrimaryTaxJurisdictionCountry3: SelfControllingData[0].PrimaryTaxJurisdictionCountry3 || "",
-    tinType3: SelfControllingData[0].tinType3 || "",
-    tiN3: SelfControllingData[0].tiN3 || "",
-    tinUnavailable3: SelfControllingData[0].tinUnavailable3 || false,
-    ReasonforNonAvailabilityofTIN: SelfControllingData[0].ReasonforNonAvailabilityofTIN || "",
-    legalNameofEntity1: SelfControllingData[0].legalNameofEntity1 || "",
-    legalNameofEntity2: SelfControllingData[0].legalNameofEntity2 || "",
-    legalNameofEntity3: SelfControllingData[0].legalNameofEntity3 || "",
-    StatusEntity1: SelfControllingData[0].StatusEntity1 || "",
-    statusEntity2: SelfControllingData[0].statusEntity2 || "",
-    StatusEntity3: SelfControllingData[0].StatusEntity3 || "",
-    ownershipPercentage: SelfControllingData[0].ownershipPercentage || "",
-    emailAddress: SelfControllingData[0].emailAddress || "",
-    usTaxCertificateSubmissionRequest: SelfControllingData[0].usTaxCertificateSubmissionRequest || false
-  };
+const individualSelfType = {
+  // firstName: SelfControllingData?.[0]?.firstName ? SelfControllingData[0].firstName : "",
+  // familyName: SelfControllingData?.[0]?.familyName ? SelfControllingData[0].familyName : "",
+  // dateOfBirth: SelfControllingData?.[0]?.dateOfBirth ? SelfControllingData[0].dateOfBirth : "",
+  // countryOfBirth: SelfControllingData?.[0]?.countryOfBirth ? SelfControllingData[0].countryOfBirth : "",
+  // cityOfBirth: SelfControllingData?.[0]?.cityOfBirth ? SelfControllingData[0].cityOfBirth : "",
+  // permanentHouseNumberOrName: SelfControllingData?.[0]?.permanentHouseNumberOrName ? SelfControllingData[0].permanentHouseNumberOrName : "",
+  // permanentRoadName: SelfControllingData?.[0]?.permanentRoadName ? SelfControllingData[0].permanentRoadName : "",
+  // permanentLocation: SelfControllingData?.[0]?.permanentLocation ? SelfControllingData[0].permanentLocation : "",
+  // permanentCityOrTown: SelfControllingData?.[0]?.permanentCityOrTown ? SelfControllingData[0].permanentCityOrTown : "",
+  // permanentStateOrProvince: SelfControllingData?.[0]?.permanentStateOrProvince ? SelfControllingData[0].permanentStateOrProvince : "",
+  // permanentZipOrPostalCode: SelfControllingData?.[0]?.permanentZipOrPostalCode ? SelfControllingData[0].permanentZipOrPostalCode : "",
+  // permanentResidentialCountry: SelfControllingData?.[0]?.permanentResidentialCountry ? SelfControllingData[0].permanentResidentialCountry : "",
+  // alterHouseNumberOrName: SelfControllingData?.[0]?.alterHouseNumberOrName ? SelfControllingData[0].alterHouseNumberOrName : "",
+  // alterRoadName: SelfControllingData?.[0]?.alterRoadName ? SelfControllingData[0].alterRoadName : "",
+  // alterLocation: SelfControllingData?.[0]?.alterLocation ? SelfControllingData[0].alterLocation : "",
+  // alterCityOrTown: SelfControllingData?.[0]?.alterCityOrTown ? SelfControllingData[0].alterCityOrTown : "",
+  // alterStateOrProvince: SelfControllingData?.[0]?.alterStateOrProvince ? SelfControllingData[0].alterStateOrProvince : "",
+  // alterZipOrPostalCode: SelfControllingData?.[0]?.alterZipOrPostalCode ? SelfControllingData[0].alterZipOrPostalCode : "",
+  // alterResidentialCountry: SelfControllingData?.[0]?.alterResidentialCountry ? SelfControllingData[0].alterResidentialCountry : "",
+  // primaryTaxJurisdictionCountry1: SelfControllingData?.[0]?.primaryTaxJurisdictionCountry1 ? SelfControllingData[0].primaryTaxJurisdictionCountry1 : "",
+  // tinType1: SelfControllingData?.[0]?.tinType1 ? SelfControllingData[0].tinType1 : "",
+  // tiN1: SelfControllingData?.[0]?.tiN1 ? SelfControllingData[0].tiN1 : "",
+  // tinUnavailable1: SelfControllingData?.[0]?.tinUnavailable1 ? SelfControllingData[0].tinUnavailable1 : false,
+  // primaryTaxJurisdictionCountry2: SelfControllingData?.[0]?.primaryTaxJurisdictionCountry2 ? SelfControllingData[0].primaryTaxJurisdictionCountry2 : "",
+  // tinType2: SelfControllingData?.[0]?.tinType2 ? SelfControllingData[0].tinType2 : "",
+  // tiN2: SelfControllingData?.[0]?.tiN2 ? SelfControllingData[0].tiN2 : "",
+  // tinUnavailable2: SelfControllingData?.[0]?.tinUnavailable2 ? SelfControllingData[0].tinUnavailable2 : false,
+  // PrimaryTaxJurisdictionCountry3: SelfControllingData?.[0]?.PrimaryTaxJurisdictionCountry3 ? SelfControllingData[0].PrimaryTaxJurisdictionCountry3 : "",
+  // tinType3: SelfControllingData?.[0]?.tinType3 ? SelfControllingData[0].tinType3 : "",
+  // tiN3: SelfControllingData?.[0]?.tiN3 ? SelfControllingData[0].tiN3 : "",
+  // tinUnavailable3: SelfControllingData?.[0]?.tinUnavailable3 ? SelfControllingData[0].tinUnavailable3 : false,
+  // ReasonforNonAvailabilityofTIN: SelfControllingData?.[0]?.ReasonforNonAvailabilityofTIN ? SelfControllingData[0].ReasonforNonAvailabilityofTIN : "",
+  // legalNameofEntity1: SelfControllingData?.[0]?.legalNameofEntity1 ? SelfControllingData[0].legalNameofEntity1 : "",
+  // legalNameofEntity2: SelfControllingData?.[0]?.legalNameofEntity2 ? SelfControllingData[0].legalNameofEntity2 : "",
+  // legalNameofEntity3: SelfControllingData?.[0]?.legalNameofEntity3 ? SelfControllingData[0].legalNameofEntity3 : "",
+  // StatusEntity1: SelfControllingData?.[0]?.StatusEntity1 ? SelfControllingData[0].StatusEntity1 : "",
+  // statusEntity2: SelfControllingData?.[0]?.statusEntity2 ? SelfControllingData[0].statusEntity2 : "",
+  // StatusEntity3: SelfControllingData?.[0]?.StatusEntity3 ? SelfControllingData[0].StatusEntity3 : "",
+  // ownershipPercentage: SelfControllingData?.[0]?.ownershipPercentage ? SelfControllingData[0].ownershipPercentage : "",
+  // emailAddress: SelfControllingData?.[0]?.emailAddress ? SelfControllingData[0].emailAddress : "",
+  // usTaxCertificateSubmissionRequest: SelfControllingData?.[0]?.usTaxCertificateSubmissionRequest ? SelfControllingData[0].usTaxCertificateSubmissionRequest : false
+};
+
   const SelfCertControllingPerson = useSelector((state: any) => state.SelfCertControllingPerson);
 
   console.log(SelfCertControllingPerson, "SelfCertControllingPerson")
   const [initialValues, setInitialValues] = useState({
 
-    FirstName: SelfControllingData.FirstName || "",
-    FamilyName: SelfControllingData.FamilyName || "",
-    dateofBirth: SelfControllingData.dateofBirth || "",
-    CountryofBirth: SelfControllingData.CountryofBirth || "",
-    CityofBirth: SelfControllingData.CityofBirth || "",
-    permanentHouseNumberorName: SelfControllingData.permanentHouseNumberorName || "",
-    permanentRoadName: SelfControllingData.permanentRoadName || "",
-    permanentLocation: SelfControllingData.permanentLocation || "",
-    permanentCityorTown: SelfControllingData.permanentCityorTown || "",
-    permanentStateorProvince: SelfControllingData.permanentStateorProvince || "",
-    permanentZiporPostalCode: SelfControllingData.permanentZiporPostalCode || "",
-    permanentResidentialCountry: SelfControllingData.permanentResidentialCountry || "",
-    alterHouseNumberorName: SelfControllingData.alterHouseNumberorName || "",
-    alterRoadName: SelfControllingData.alterRoadName || "",
-    alterLocation: SelfControllingData.alterLocation || "",
-    alterCityorTown: SelfControllingData.alterCityorTown || "",
-    alterStateorProvince: SelfControllingData.alterStateorProvince || "",
-    alterZiporPostalCode: SelfControllingData.alterZiporPostalCode || "",
-    alterResidentialCountry: SelfControllingData.alterResidentialCountry || 0,
-    primaryTaxJurisdictionCountry1: SelfControllingData.primaryTaxJurisdictionCountry1 || "",
-    tinType1: SelfControllingData.tinType1 || "",
-    tiN1: SelfControllingData.tiN1 || "",
-    tinUnavailable1: SelfControllingData.tinUnavailable1 || false,
-    primaryTaxJurisdictionCountry2: SelfControllingData.primaryTaxJurisdictionCountry2 || "",
-    tinType2: SelfControllingData.tinType2 || "",
-    tiN2: SelfControllingData.tiN2 || "",
-    tinUnavailable2: SelfControllingData.tinUnavailable2 || false,
-    PrimaryTaxJurisdictionCountry3: SelfControllingData.PrimaryTaxJurisdictionCountry3 || "",
-    tinType3: SelfControllingData.tinType3 || "",
-    tiN3: SelfControllingData.tiN3 || "",
-    tinUnavailable3: SelfControllingData.tinUnavailable3 || false,
-    ReasonforNonAvailabilityofTIN: SelfControllingData.ReasonforNonAvailabilityofTIN || "",
-    legalNameofEntity1: SelfControllingData.legalNameofEntity1 || "",
-    legalNameofEntity2: SelfControllingData.legalNameofEntity2 || "",
-    legalNameofEntity3: SelfControllingData.legalNameofEntity3 || "",
-    StatusEntity1: SelfControllingData.StatusEntity1 || "",
-    statusEntity2: SelfControllingData.statusEntity2 || "",
-    StatusEntity3: SelfControllingData.StatusEntity3 || "",
-    ownershipPercentage: SelfControllingData.ownershipPercentage || "",
-    emailAddress: SelfControllingData.emailAddress || "",
-    usTaxCertificateSubmissionRequest: SelfControllingData.usTaxCertificateSubmissionRequest || false
+    // firstName: SelfControllingData.firstName || "",
+    // familyName: SelfControllingData.familyName || "",
+    // dateofBirth: SelfControllingData.dateofBirth || "",
+    // CountryofBirth: SelfControllingData.CountryofBirth || "",
+    // CityofBirth: SelfControllingData.CityofBirth || "",
+    // permanentHouseNumberorName: SelfControllingData.permanentHouseNumberorName || "",
+    // permanentRoadName: SelfControllingData.permanentRoadName || "",
+    // permanentLocation: SelfControllingData.permanentLocation || "",
+    // permanentCityorTown: SelfControllingData.permanentCityorTown || "",
+    // permanentStateorProvince: SelfControllingData.permanentStateorProvince || "",
+    // permanentZiporPostalCode: SelfControllingData.permanentZiporPostalCode || "",
+    // permanentResidentialCountry: SelfControllingData.permanentResidentialCountry || "",
+    // alterHouseNumberorName: SelfControllingData.alterHouseNumberorName || "",
+    // alterRoadName: SelfControllingData.alterRoadName || "",
+    // alterLocation: SelfControllingData.alterLocation || "",
+    // alterCityorTown: SelfControllingData.alterCityorTown || "",
+    // alterStateorProvince: SelfControllingData.alterStateorProvince || "",
+    // alterZiporPostalCode: SelfControllingData.alterZiporPostalCode || "",
+    // alterResidentialCountry: SelfControllingData.alterResidentialCountry || 0,
+    // primaryTaxJurisdictionCountry1: SelfControllingData.primaryTaxJurisdictionCountry1 || "",
+    // tinType1: SelfControllingData.tinType1 || "",
+    // tiN1: SelfControllingData.tiN1 || "",
+    // tinUnavailable1: SelfControllingData.tinUnavailable1 || false,
+    // primaryTaxJurisdictionCountry2: SelfControllingData.primaryTaxJurisdictionCountry2 || "",
+    // tinType2: SelfControllingData.tinType2 || "",
+    // tiN2: SelfControllingData.tiN2 || "",
+    // tinUnavailable2: SelfControllingData.tinUnavailable2 || false,
+    // PrimaryTaxJurisdictionCountry3: SelfControllingData.PrimaryTaxJurisdictionCountry3 || "",
+    // tinType3: SelfControllingData.tinType3 || "",
+    // tiN3: SelfControllingData.tiN3 || "",
+    // tinUnavailable3: SelfControllingData.tinUnavailable3 || false,
+    // ReasonforNonAvailabilityofTIN: SelfControllingData.ReasonforNonAvailabilityofTIN || "",
+    // legalNameofEntity1: SelfControllingData.legalNameofEntity1 || "",
+    // legalNameofEntity2: SelfControllingData.legalNameofEntity2 || "",
+    // legalNameofEntity3: SelfControllingData.legalNameofEntity3 || "",
+    // StatusEntity1: SelfControllingData.StatusEntity1 || "",
+    // statusEntity2: SelfControllingData.statusEntity2 || "",
+    // StatusEntity3: SelfControllingData.StatusEntity3 || "",
+    // ownershipPercentage: SelfControllingData.ownershipPercentage || "",
+    // emailAddress: SelfControllingData.emailAddress || "",
+    // usTaxCertificateSubmissionRequest: SelfControllingData.usTaxCertificateSubmissionRequest || false
 
 
   });
 
   const [incomeTypeData, setIncomeTypeData] = useState(SelfCertControllingPerson?.length > 1 ? [...SelfCertControllingPerson] : [{ ...individualSelfType }]);
  
- 
+ console.log(incomeTypeData,"incomedata")
   const DeleteIncomeType = (index: number) => {
     let temp = [...incomeTypeData]
     console.log(index, "deleting box", temp?.splice(index, 1))
@@ -229,8 +230,8 @@ export default function Certifications(props: any) {
           accountHolderDetailsId: authDetails?.accountHolderId,
           formTypeId: FormTypeId.W9,
           formEntryId: ele.formEntryId,
-          FirstName: ele.FirstName,
-          FamilyName: ele.FamilyName,
+          firstName: ele.firstName,
+          familyName: ele.familyName,
           dateofBirth: ele.dateofBirth,
           countryofBirth: ele.countryofBirth,
           cityofBirth: ele.cityofBirth,
@@ -303,7 +304,7 @@ export default function Certifications(props: any) {
   // }, [incomeTypeData])
   const setAccountHolder = (e: any, values: any): any => {
     if (values.accountHolderName === "") {
-      values.accountHolderName = values.FirstName + values.FamilyName;
+      values.accountHolderName = values.firstName + values.familyName;
     } else values.accountHolderName = e.target.value;
   };
   const viewPdf = () => {
@@ -332,9 +333,8 @@ export default function Certifications(props: any) {
           formTypeId: 3,
           formEntryId: index + 1,
           dualCertId:index + 1,
-          FirstName: ele.FirstName,
-          FamilyName: ele.FamilyName,
-        
+          firstName: ele.firstName,
+          familyName: ele.familyName,
           dateofBirth:formattedDateOfBirth,
           countryofBirth: ele.countryofBirth,
           cityofBirth: ele.cityofBirth,
@@ -483,6 +483,7 @@ export default function Certifications(props: any) {
                 }) => (
 
                   <Form onSubmit={handleSubmit}>
+                    <>{console.log(values,"valuess")}</>
                     <Paper style={{ padding: "14px" }}>
                     <Typography style={{ fontSize: "26px", fontWeight: "550", marginLeft: "8px" }} className="mt-2 mb-3">Self Certification - Controlling Person(s) of a Passive NFE</Typography>
                     {incomeTypeData.map((_, index) => (

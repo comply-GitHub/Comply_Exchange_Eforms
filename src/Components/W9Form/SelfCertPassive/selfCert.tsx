@@ -153,31 +153,9 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
   const accountHolderDetails = JSON.parse(localStorage.getItem("accountHolderDetails") || "{}")
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
   const auth = JSON.parse(authDetailsString);
-  const userType = auth?.configurations?.userType;
-  const LoadPageData = () => {
-    if (ahdData !== null && ahdData !== undefined) {
-      let temp = {
-        ...ahdData,
-        id: accountHolderDetails.id ?? 0,
-        isUSEntity: ahdData.isUSEntity === true ? "yes" : "no",
-        isUSIndividual: ahdData.isUSIndividual === true ? "yes" : "no",
-        isAddressRuralRoute: ahdData.isAddressRuralRoute === true ? "yes" : "no",
-        isAddressPostOfficeBox: ahdData.isAddressPostOfficeBox === true ? "yes" : "no",
-        isCareOfAddress: ahdData.isCareOfAddress === true ? "yes" : "no",
-        isalternativebusinessaddress: ahdData.isalternativebusinessaddress === true ? "yes" : "no",
-      };
-      setInitialValues(temp);
-    }
-  }
-  const setAccountHolder = (e: any, values: any): any => {
-    if (values.accountHolderName === "") {
-      values.accountHolderName = values.FirstName + values.FamilyName;
-    } else values.accountHolderName = e.target.value;
-  };
-  const viewPdf = () => {
-    history("w9_pdf");
-  }
+  
 
+ 
   return (
    
             <Paper >
@@ -255,18 +233,18 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                                     padding: " 0 10px ",
                                   }}
                                   id="outlined"
-                                  name="FirstName"
+                                  name="firstName"
                                   placeholder="Enter First Name"
                                   onBlur={handleBlur}
-                                  error={Boolean(errors.FirstName && touched.FirstName)}
+                                  error={Boolean(errors.firstName && touched.firstName)}
                                   onChange={(e) => {
                                     handleChange(e);
                                     handleUpdateOnFormChange(e);
                                   }}
-                                  value={initialValue.FirstName}
+                                  value={initialValue.firstName}
 
                                 />
-                              {errors.FirstName && touched.FirstName ? <p className="error">{typeof errors.FirstName === 'string' ? errors.FirstName : ''}</p> : <></>}
+                              {errors.firstName && touched.firstName ? <p className="error">{typeof errors.firstName === 'string' ? errors.firstName : ''}</p> : <></>}
   
                               </FormControl>
                             </div>
@@ -288,7 +266,7 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                                     padding: " 0 10px ",
                                   }}
                                   id="outlined"
-                                  name="FamilyName"
+                                  name="familyName"
                                   placeholder="Enter Last Name"
                                   onChange={(e) => {
                                     handleChange(e);
@@ -296,12 +274,12 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                                   }}
                                   onBlur={handleBlur}
                                   error={Boolean(
-                                    touched.FamilyName && errors.FamilyName
+                                    touched.familyName && errors.familyName
                                   )}
-                                  value={values.FamilyName}
+                                  value={values.familyName}
                                 />
 
-{errors.FamilyName && touched.FamilyName ? <p className="error">{typeof errors.FamilyName === 'string' ? errors.FamilyName : ''}</p> : <></>}
+{errors.familyName && touched.familyName ? <p className="error">{typeof errors.familyName === 'string' ? errors.familyName : ''}</p> : <></>}
                               </FormControl>
                             </div>
 
