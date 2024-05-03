@@ -28,7 +28,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import CloseIcon from "@mui/icons-material/Close";
 import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
-import { TaxPurposeSchema } from "../../../../../schemas/w8ECI";
+import { US_TINSchemaW8BenE } from "../../../../../schemas/w8Ben";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
@@ -120,20 +120,7 @@ export default function Tin(props: any) {
     LoadData();
   }, [authDetails]);
 
-  // useEffect(() => {
-  //   console.log(authDetails,"AUTHDETAILSSSS")
 
-  //   dispatch(
-  //     getTinTypes(authDetails?.agentId, (data: any) => {
-  //       setUStinArray(data);
-  //       let datas = data.filter((ele: any) => {
-  //         return ele.usEntity === false || ele.usIndividual === true;
-  //       });
-  //       setUStinvalue(datas);
-  //     })
-  //   );
-  //   LoadData();
-  // }, [authDetails])
 
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
@@ -217,7 +204,7 @@ export default function Tin(props: any) {
                 initialValues={initialValue}
                 validateOnMount={true}
                 enableReinitialize
-                validationSchema={TaxPurposeSchema(IsIndividual)}
+                validationSchema={US_TINSchemaW8BenE}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
                   const temp = {

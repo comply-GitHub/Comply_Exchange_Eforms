@@ -276,12 +276,12 @@ const Declaration = (props: any) => {
                           </Typography>
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <Checkbox name="IsAgreeWithDeclaration" value={values.IsAgreeWithDeclaration} onChange={handleChange} checked={values.IsAgreeWithDeclaration} />
+                          <Checkbox name="IsAgreeWithDeclaration"  value={values.IsAgreeWithDeclaration} onChange={handleChange} checked={values.IsAgreeWithDeclaration} />
                           <Typography style={{ marginTop: "9px", fontSize: "17px" }}>
                             I agree with the above Declarations
                           </Typography>
                         </div>
-                        <p className="error">{errors.IsAgreeWithDeclaration}</p>
+                       {errors.IsAgreeWithDeclaration && touched.IsAgreeWithDeclaration ?( <p className="error">{errors.IsAgreeWithDeclaration}</p>):""}
                       </AccordionDetails>
                     </Accordion>
                     <Accordion

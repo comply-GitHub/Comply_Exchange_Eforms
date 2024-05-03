@@ -1,7 +1,7 @@
 import Utils from "../../Utils";
 import { getAllAccountStatement } from "../Actions";
 
-const { LOGIN, formPDFFieldData,GetCountries, getBreadCrums, GetAgentPaymentType, GetTinTypes, GetSecurityQuestions, GetCountriesCode, GetAllIncomeCodes, GetStateByCountryId, W9PDF, postSecurutyCode,
+const { LOGIN, formPDFFieldData,GetCountries, GetControllingEntity,getBreadCrums, GetAgentPaymentType, GetTinTypes, GetSecurityQuestions, GetCountriesCode, GetAllIncomeCodes, GetStateByCountryId, W9PDF, postSecurutyCode,
   GetAgentCapacityHiddenForEform,
   GetAgentExemptionCodeHidden,
   GetAgentChapter4EntityTypeHiddenForEform,
@@ -123,7 +123,15 @@ export const loginReducer = (state = initialState, action: any) => {
       return state;
   }
 }
-
+//GetControllingEntity
+export const getControllingPersonReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case GetControllingEntity:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+};
 export const getCountriesReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case GetCountries:

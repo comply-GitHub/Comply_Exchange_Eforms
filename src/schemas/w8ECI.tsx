@@ -79,36 +79,36 @@ export const FederalTaxSchema = () => {
 
 export const FederalTaxSchema_dualCert = () => {
   return Yup.object().shape({
-     FederalTaxClassificationId: Yup.number().notOneOf([0], "Field cannot be empty"),
+    //  FederalTaxClassificationId: Yup.number().notOneOf([0], "Field cannot be empty"),
  
  
-     countryOfIncorporation: Yup.number().when(["FederalTaxClassificationId"], {
-       is: (FederalTaxClassificationId: any) => [5, 6, 7,8, 9, 10].includes(FederalTaxClassificationId),
-       then: () => Yup.number().notOneOf([0,-1 ,undefined,null],"Please Select Country Of Incorporation"),
-     }),
+    //  countryOfIncorporation: Yup.number().when(["FederalTaxClassificationId"], {
+    //    is: (FederalTaxClassificationId: any) => [5, 6, 7,8, 9, 10].includes(FederalTaxClassificationId),
+    //    then: () => Yup.number().notOneOf([0,-1 ,undefined,null],"Please Select Country Of Incorporation"),
+    //  }),
      
-     LLCOwnerEntityType: Yup.number().when(["FederalTaxClassificationId"], {
-       is: (FederalTaxClassificationId: any) => [7].includes(FederalTaxClassificationId),
-       then: () => Yup.number().notOneOf([0,-1 ,undefined,null],"Please Select Country Of Incorporation"),
-     }),
+    //  LLCOwnerEntityType: Yup.number().when(["FederalTaxClassificationId"], {
+    //    is: (FederalTaxClassificationId: any) => [7].includes(FederalTaxClassificationId),
+    //    then: () => Yup.number().notOneOf([0,-1 ,undefined,null],"Please Select Country Of Incorporation"),
+    //  }),
     
-     BusinessName: Yup.string().when(["FederalTaxClassificationId"], {
-       is: (FederalTaxClassificationId: any) => [5, 6, 8, 9, 10].includes(FederalTaxClassificationId),
-       then: () => Yup.string().notOneOf(["" ,undefined,null],"Please Enter Business Name"),
-     }),
+    //  BusinessName: Yup.string().when(["FederalTaxClassificationId"], {
+    //    is: (FederalTaxClassificationId: any) => [5, 6, 8, 9, 10].includes(FederalTaxClassificationId),
+    //    then: () => Yup.string().notOneOf(["" ,undefined,null],"Please Enter Business Name"),
+    //  }),
  
-     BusinessDisregardedEntityName: Yup.string().when(["FederalTaxClassificationId"], {
-       is: (FederalTaxClassificationId: any) => [7].includes(FederalTaxClassificationId),
-       then: () => Yup.string().notOneOf(["" ,undefined,null],"Please Enter Business Name"),
-     }),
-     OtherType:Yup.string().when(["FederalTaxClassificationId"], {
-       is: (FederalTaxClassificationId: any) => [11].includes(FederalTaxClassificationId),
-       then: () => Yup.string().notOneOf(["" ,undefined,null],"Please Enter Other"),
-     }),
-     USFederalTaxClassification: Yup.string().when(["FederalTaxClassificationId"], {
-       is: (FederalTaxClassificationId: any) => [5, 8].includes(FederalTaxClassificationId),
-       then: () => Yup.string().notOneOf(["" ,undefined,null],"Please Select One Of the Option"),
-     }),
+    //  BusinessDisregardedEntityName: Yup.string().when(["FederalTaxClassificationId"], {
+    //    is: (FederalTaxClassificationId: any) => [7].includes(FederalTaxClassificationId),
+    //    then: () => Yup.string().notOneOf(["" ,undefined,null],"Please Enter Business Name"),
+    //  }),
+    //  OtherType:Yup.string().when(["FederalTaxClassificationId"], {
+    //    is: (FederalTaxClassificationId: any) => [11].includes(FederalTaxClassificationId),
+    //    then: () => Yup.string().notOneOf(["" ,undefined,null],"Please Enter Other"),
+    //  }),
+    //  USFederalTaxClassification: Yup.string().when(["FederalTaxClassificationId"], {
+    //    is: (FederalTaxClassificationId: any) => [5, 8].includes(FederalTaxClassificationId),
+    //    then: () => Yup.string().notOneOf(["" ,undefined,null],"Please Select One Of the Option"),
+    //  }),
      DateOfIncorporation:Yup.string().required( "Field cannot be empty"),
      IsJurisdictionforTaxPurposes:Yup.string().required( "Field cannot be empty"),
      IsTieBreakerClauseUnderApplicableTaxTreaty:Yup.string().when(["IsJurisdictionforTaxPurposes"],{

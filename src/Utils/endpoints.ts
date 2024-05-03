@@ -134,5 +134,6 @@ GetCaymanIndividualPdf:"/CaymanIndividualNonUS/GetCaymanIndividualPdf",
 
  // skipped steps
  GetAgentSkippedSteps:"/Agent/GetAgentSkippedSteps",
+ GetControllingEntity:"/DualCert/GetControllingPersonLegalStatusEntity",
 };
 export default EndPoint;

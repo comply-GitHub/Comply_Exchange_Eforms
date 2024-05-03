@@ -279,7 +279,7 @@ export default function Tin(props: any) {
                           fontWeight: "550",
                         }}
                       >
-                        Taxpayer Identification Number
+                        Taxpayer Identification Number SelfCert
                       </Typography>
 
                       <div>

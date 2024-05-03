@@ -222,8 +222,8 @@ export default function FCTA_Reporting(props: any) {
                         align="left"
                         style={{ margin: "10px", fontSize: "27px" }}
                       >
-                        Exemption from FATCA reporting
-                        <span style={{ color: "red" }}>*</span><span>
+                        Exemption from FATCA reporting<span style={{ color: "red" }}>*</span>
+                      <span>
                           <Tooltip
                             style={{ backgroundColor: "black", color: "white" }}
                             title={
@@ -306,7 +306,7 @@ export default function FCTA_Reporting(props: any) {
                           >
                             Please select from the list provided to apply for exemption
                             from FATCA Reporting or select confirm if no exemption
-                            applies<span style={{ color: "red" }}>*</span>
+                            applies
                             <span>
                               <Tooltip
                                 style={{ backgroundColor: "black", color: "white" }}
@@ -380,22 +380,10 @@ export default function FCTA_Reporting(props: any) {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                marginTop: "80px",
+                marginTop: "40px",
               }}
             >
-              {/* <Button
-                variant="contained"
-                style={{ color: "white" }}
-                onClick={() => {
-                  submitForm().then((data) => {
-                    history(GlobalValues.basePageRoute)
-                  }).catch((error) => {
-                    console.log(error);
-                  })
-                }}
-              >
-                SAVE & EXIT
-              </Button> */}
+             
               <SaveAndExit Callback={() => {
                 submitForm().then((data) => {
                   const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
@@ -411,6 +399,15 @@ export default function FCTA_Reporting(props: any) {
                   console.log(err);
                 })
               }} formTypeId={FormTypeId.W9} />
+               <Button
+                  variant="contained"
+                  style={{ color: "white", marginLeft: "10px" }}
+                  onClick={() => {
+                    dispatch(GetW9Pdf(authDetails?.accountHolderId))
+                  }}
+                >
+                  View Form
+                </Button>
               <Button
                 type="submit"
                 onClick={() => {

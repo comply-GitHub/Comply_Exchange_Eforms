@@ -17,7 +17,7 @@ import { Formik, Form } from "formik";
 import Infoicon from "../../../../../assets/img/info.png";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
-import { claimSchemaaa } from "../../../../../schemas/w8Ben";
+import { ClaimSchema } from "../../../../../schemas/w8Ben";
 import { W8_state, getBENformData } from "../../../../../Redux/Actions";
 import { useSelector, useDispatch } from "react-redux";
 import useAuth from "../../../../../customHooks/useAuth";
@@ -168,7 +168,7 @@ export default function FCTA_Reporting(props: any) {
                 validateOnMount={true}
                 initialValues={initialValues}
                 enableReinitialize
-                validationSchema={claimSchemaaa}
+                validationSchema={ClaimSchema}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
                   console.log(values, "valuessss");
@@ -439,7 +439,7 @@ export default function FCTA_Reporting(props: any) {
                           style={{ fontSize: "22px", marginTop: "16px" }}
                         >
                           Is this submission being made to claim treaty
-                          benefits?
+                          benefits?<span style={{color:"red"}}>*</span>
                         </Typography>
 
                         <div
@@ -629,116 +629,6 @@ export default function FCTA_Reporting(props: any) {
                               </div>
                             </div>
 
-                            {values.ownerResidentId &&
-                            values.ownerResidentId !== "" &&
-                            values.ownerResidentId !== "0" ? (
-                              <>
-                                <div
-                                  className="col-12"
-                                  style={{ padding: "0px" }}
-                                >
-                                  <Typography style={{ fontWeight: "bold" }}>
-                                    Please select type of limitations of
-                                    benefits provisions that may be include in
-                                    an applicable tax treaty (see instructions):
-                                    <span style={{ color: "red" }}>*</span>
-                                  </Typography>
-                                  <FormControl className="w-100">
-                                    <div className="row">
-                                      <div className="col-md-6 col-12 d-flex">
-                                        <select
-                                          style={{
-                                            padding: " 0 10px",
-                                            color: "#121112",
-                                            fontStyle: "italic",
-                                            height: "36px",
-                                          }}
-                                          name="limitationBenefitsId"
-                                          id="Income"
-                                          onChange={(e) => {
-                                            handleChange(e);
-                                          }}
-                                          onBlur={handleBlur}
-                                          value={values.limitationBenefitsId}
-                                        >
-                                          <option value={0}>
-                                            ---select---
-                                          </option>
-                                          {GetLimitationBenefitsData?.map(
-                                            (ele: any) => (
-                                              <option
-                                                key={ele?.id}
-                                                value={ele?.id}
-                                              >
-                                                {ele?.name}
-                                              </option>
-                                            )
-                                          )}
-                                        </select>
-                                      </div>
-                                    </div>
-
-                                    <p className="error">
-                                      {touched.limitationBenefitsId
-                                        ? errors.limitationBenefitsId
-                                        : ""}
-                                    </p>
-                                  </FormControl>
-                                </div>
-                                <div>
-                                  <Typography style={{ fontWeight: "bold" }}>
-                                    Are you claiming treaty benefits on:
-                                  </Typography>
-
-                                  <Typography
-                                    align="left"
-                                    style={{
-                                      fontSize: "18px",
-                                      marginTop: "10px",
-                                    }}
-                                  >
-                                    U.S. source dividends paid to you by another
-                                    foreign corporation?{" "}
-                                    <span style={{ color: "red" }}>*</span>
-                                  </Typography>
-
-                                  <div
-                                    style={{
-                                      marginTop: "10px",
-                                      justifyContent: "center",
-                                    }}
-                                  >
-                                    <RadioGroup
-                                      row
-                                      aria-labelledby="demo-row-radio-buttons-group-label"
-                                      value={values.isSubmissionClaimTreaty}
-                                      name="isSubmissionClaimTreaty"
-                                      onChange={handleChange}
-                                    >
-                                      <FormControlLabel
-                                        value="yes"
-                                        control={<Radio />}
-                                        label="Yes"
-                                        name="isSubmissionClaimTreaty"
-                                      />
-                                      <FormControlLabel
-                                        value="no"
-                                        control={<Radio />}
-                                        label="No"
-                                        name="isSubmissionClaimTreaty"
-                                      />
-                                    </RadioGroup>
-                                  </div>
-                                  <p className="error">
-                                    {touched.isSubmissionClaimTreaty
-                                      ? errors.isSubmissionClaimTreaty
-                                      : ""}
-                                  </p>
-                                </div>
-                              </>
-                            ) : (
-                              <></>
-                            )}
                           </>
                         ) : null}
                       </div>
