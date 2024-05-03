@@ -110,6 +110,7 @@ const ActionName = {
     // skipped steps
     UpdateSkippedSteps:"UpdateSkippedSteps",
     UpsertFATCAStepsDetails:"UpsertFATCAStepsDetails",
+    UpsertCRSStepsDetails:"UpsertCRSStepsDetails",
 
   };
 
