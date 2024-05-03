@@ -391,6 +391,7 @@ export default function FCTA_Reporting(props: any) {
                   dispatch(postW9Form(
                     {
                       ...prevStepData,
+                      AccountHolderBasicDetailsId: AccountHolder.accountHolderId,AgentId:AccountHolder.agentId,FormTypeSelectionId:BusinessId.businessTypeId,
                       stepName: `/${urlValue}`
                     }
                     , () => { }))

@@ -939,7 +939,7 @@ Entity type for U.S. tax purposes:
                                                                 marginTop: "5px",
                                                             }}
                                                         >
-                                                            other Type:
+                                                            Other Type:
                                                             <span style={{ color: "red" }}>
                                                                 *
                                                             </span>
