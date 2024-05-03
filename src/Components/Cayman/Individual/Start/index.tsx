@@ -282,6 +282,7 @@ export default function Index() {
     localStorage.setItem("submittinSCInvidual", "false")
   }, [])
 
+  console.log("allCountriesData", allCountriesData.allCountriesData);
   return (
     <section
       className="inner_content"
@@ -1345,6 +1346,11 @@ export default function Index() {
                                             ],
                                           },
                                         });
+                                      }else{
+                                        setFieldValue(
+                                          "taxLbltyOtherJurisdictions",
+                                          values.taxLbltyOtherJurisdictions.filter((_, indexes) => indexes !== index)
+                                        );
                                       }
                                       setFieldValue(`taxLbltyOtherJurisdictions.${index}.doesIndiHavTaxLbltyinOtherJurisdictions`, currentValue);
                                     }}
@@ -1410,7 +1416,7 @@ export default function Index() {
                                         <option value={257}>United Kingdom</option>
                                         <option value={258}>United States</option>
                                         <option value="">-----</option>
-                                        {GetAgentCountriesImportantForEformData?.map(
+                                        {allCountriesData?.allCountriesData?.map(
                                           (ele: any) => (
                                             <option key={ele?.id} value={ele?.id}>
                                               {ele?.name}

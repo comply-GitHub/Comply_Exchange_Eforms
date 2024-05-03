@@ -46,8 +46,7 @@ export default function Tin(props: any) {
       usTin: W8EXPData?.usTin ?? obValues?.usTin,
       notAvailable: W8EXPData?.notAvailable ? W8EXPData?.notAvailable : false,
       notAvailableReason: W8EXPData?.notAvailableReason ?? "",
-      foreignTINCountry: W8EXPData?.foreignTINCountry ?? (obValues?.foreignTINCountryId == null || obValues?.foreignTINCountryId == ""
-        || obValues?.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues?.foreignTINCountryId),
+      foreignTINCountry: W8EXPData?.foreignTINCountry ?? obValues?.foreignTINCountryId ?? obValues.permanentResidentialCountryId,
       foreignTIN: W8EXPData?.foreignTIN !== "" ? W8EXPData?.foreignTIN : "",
       isFTINLegally: W8EXPData?.isFTINLegally ? W8EXPData?.isFTINLegally : false,
       isNotAvailable: W8EXPData?.isNotAvailable ? (W8EXPData?.isNotAvailable == true && W8EXPData?.alternativeTINFormat == false ? "Yes" : "") : "",
@@ -56,6 +55,7 @@ export default function Tin(props: any) {
       isExplanationNotLegallyFTIN: W8EXPData?.isExplanationNotLegallyFTIN ?? "",
       stepName: null
     }
+    console.log(temp, "initial load data")
     setInitialValues(temp);
   }
 
@@ -221,7 +221,7 @@ export default function Tin(props: any) {
                       isNotAvailable: values.isNotAvailable === "Yes",
                       alternativeTINFormat: values.isNotAvailable === "No",
                       isExplanationNotLegallyFTIN: values.isExplanationNotLegallyFTIN,
-                      foreignTINCountry: JSON.stringify(values.foreignTINCountry),
+                      foreignTINCountry: values.foreignTINCountry,
                       stepName: null,
                     };
                     const returnPromise = new Promise((resolve, reject) => {
@@ -506,6 +506,8 @@ export default function Tin(props: any) {
                                 onChange={(e) => {
                                   setTimeout(() => {
                                     setFieldValue("usTinTypeId", "8")
+                                    setFieldValue("usTin", "")
+                                    setFieldValue("notAvailableReason", "")
                                   }, 100);
                                   handleChange(e);
                                 }}
@@ -542,7 +544,7 @@ export default function Tin(props: any) {
                               <span style={{ color: "red" }}>*</span>
                             </Typography>
                             <select
-                              disabled
+                              disabled={values.foreignTINCountry != undefined && values.foreignTINCountry != null && Number.parseInt(values.foreignTINCountry) > 0}
                               style={{
                                 border: " 1px solid #d9d9d9 ",
                                 padding: " 0 10px",
@@ -733,8 +735,7 @@ export default function Tin(props: any) {
                                 fullWidth
                                 type="text"
                                 disabled={
-                                  values.isFTINLegally ||
-                                  values.foreignTINCountry == "1"
+                                  values.isFTINLegally
                                 }
                                 name="foreignTIN"
                                 value={values.foreignTIN}
@@ -759,9 +760,8 @@ export default function Tin(props: any) {
                                 fullWidth
                                 type="text"
                                 disabled={
-                                  values.isFTINLegally ||
-                                  values.foreignTINCountry == "1" ||
-                                  values.isNotAvailable === "Yes"
+                                  values.isFTINLegally
+                                  || values.isNotAvailable == "Yes"
                                 }
                                 placeholder="ENTER FOREIGN TIN"
                                 name="foreignTIN"
@@ -821,6 +821,7 @@ export default function Tin(props: any) {
                                           handleChange(
                                             "isNotAvailable"
                                           )("");
+                                          setFieldValue("fTinNotAvailableReason", "");
                                         }}
                                         style={{
                                           color: "red",

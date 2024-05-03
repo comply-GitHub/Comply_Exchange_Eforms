@@ -31,9 +31,9 @@ export default function Term() {
   const auth = JSON.parse(authDetailsString);
   const userType = auth?.configurations?.userType;
 
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Thank You"
-  },[])
+  }, [])
 
   const handleDownload = () => {
     if (pdfUrl) {
@@ -115,89 +115,89 @@ export default function Term() {
             >
               If you are using a public computer, please clear your cookies.
             </Typography>
-        
-          <Typography align="center">
-            <div className="mt-5" style={{ justifyContent: "center" }}>
+
+            <Typography align="center">
+              <div className="mt-5" style={{ justifyContent: "center" }}>
 
 
-              <div style={{ marginTop: "25px" }}>
-                <Button
-                  //type="submit"
-                  onClick={() => {
-                    // history("/w8Eci_pdf");
-                    dispatch(GetEciPdf(authDetails?.accountHolderId))
-                  }}
-                  style={{
-                    border: "1px solid #0095dd",
-                    background: "black",
-                    height: "35px",
-                    lineHeight: "normal",
-                    textAlign: "center",
-                    fontSize: "16px",
-                    marginLeft: "12px",
-                    textTransform: "uppercase",
-                    borderRadius: "0px",
-                    color: "#ffff",
-                    padding: "0 35px",
-                    letterSpacing: "1px",
-                  }}
-                  className="btn btn_submit  btn-primary-agent"
-                >
-                  Download PDF
-                </Button>
-                <Button
-                  type="submit"
-                  onClick={() => {
-                    history("/Certificates");
-                  }}
-                  style={{
-                    border: "1px solid #0095dd",
-                    background: "black",
-                    height: "35px",
-                    lineHeight: "normal",
-                    textAlign: "center",
-                    fontSize: "16px",
-                    marginLeft: "12px",
-                    textTransform: "uppercase",
-                    borderRadius: "0px",
-                    color: "#ffff",
-                    padding: "0 35px",
-                    letterSpacing: "1px",
-                  }}
-                  className="btn btn_submit  btn-primary-agent"
-                >
-                  Exit
-                </Button>
+                <div style={{ marginTop: "25px" }}>
+                  <Button
+                    //type="submit"
+                    onClick={() => {
+                      // history("/w8Eci_pdf");
+                      dispatch(GetEciPdf(authDetails?.accountHolderId, () => { }, () => { }, true))
+                    }}
+                    style={{
+                      border: "1px solid #0095dd",
+                      background: "black",
+                      height: "35px",
+                      lineHeight: "normal",
+                      textAlign: "center",
+                      fontSize: "16px",
+                      marginLeft: "12px",
+                      textTransform: "uppercase",
+                      borderRadius: "0px",
+                      color: "#ffff",
+                      padding: "0 35px",
+                      letterSpacing: "1px",
+                    }}
+                    className="btn btn_submit  btn-primary-agent"
+                  >
+                    Download PDF
+                  </Button>
+                  <Button
+                    type="submit"
+                    onClick={() => {
+                      history("/Certificates");
+                    }}
+                    style={{
+                      border: "1px solid #0095dd",
+                      background: "black",
+                      height: "35px",
+                      lineHeight: "normal",
+                      textAlign: "center",
+                      fontSize: "16px",
+                      marginLeft: "12px",
+                      textTransform: "uppercase",
+                      borderRadius: "0px",
+                      color: "#ffff",
+                      padding: "0 35px",
+                      letterSpacing: "1px",
+                    }}
+                    className="btn btn_submit  btn-primary-agent"
+                  >
+                    Exit
+                  </Button>
+                </div>
+                {userType === "DC" ? (
+                  <div style={{ marginTop: "25px" }}>
+                    <Button
+                      type="submit"
+                      onClick={() => {
+                        history("/Tax_dualCert_Eci");
+                      }}
+                      style={{
+                        border: "1px solid #0095dd",
+                        background: "black",
+                        height: "45px",
+                        lineHeight: "normal",
+                        textAlign: "center",
+                        fontSize: "16px",
+                        marginLeft: "12px",
+                        textTransform: "uppercase",
+                        borderRadius: "0px",
+                        color: "#ffff",
+                        padding: "0 35px",
+                        letterSpacing: "1px",
+                      }}
+                      className="btn btn_submit  btn-primary-agent"
+                    >
+                      Continue To Self Certification Submission
+                    </Button>
+                  </div>
+                ) : ""}
               </div>
-              {userType === "DC" ? (
-              <div style={{ marginTop: "25px" }}>
-              <Button
-                  type="submit"
-                  onClick={() => {
-                    history("/Tax_dualCert_Eci");
-                  }}
-                  style={{
-                    border: "1px solid #0095dd",
-                    background: "black",
-                    height: "45px",
-                    lineHeight: "normal",
-                    textAlign: "center",
-                    fontSize: "16px",
-                    marginLeft: "12px",
-                    textTransform: "uppercase",
-                    borderRadius: "0px",
-                    color: "#ffff",
-                    padding: "0 35px",
-                    letterSpacing: "1px",
-                  }}
-                  className="btn btn_submit  btn-primary-agent"
-                >
-                 Continue To Self Certification Submission
-                </Button>
-              </div>
-              ):""}
-            </div>
-          </Typography>
+            </Typography>
           </Paper>
         </div>
       </div>

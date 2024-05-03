@@ -31,8 +31,8 @@ export default function Term() {
   const pdfRefnew = useRef(null);
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     document.title = "Thank You";
   })
   const handleDownload = () => {
@@ -124,7 +124,7 @@ export default function Term() {
                 <Button
                   // type="submit"
                   onClick={() => {
-                    dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                    dispatch(GetBenEPdf(authDetails?.accountHolderId, () => { }, () => { }, true))
                   }}
                   style={{
                     border: "1px solid #0095dd",

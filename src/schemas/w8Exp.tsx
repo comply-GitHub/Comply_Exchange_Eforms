@@ -7,7 +7,7 @@ export const TaxPurposeSchema = () => {
       .required("Field Cannot be Empty"),
     // lastName: Yup.string(),
     businessName: Yup.string().required("Field Cannot be Empty"),
-    countryOfIncorporation: Yup.number().notOneOf([0], "Field Cannot be Empty"),
+    countryOfIncorporationId: Yup.number().notOneOf([0], "Field Cannot be Empty"),
     isSection892: Yup.boolean().when("chapter3StatusId", {
       is: 14,
       then: () => Yup.boolean().oneOf([true], "")
@@ -222,49 +222,49 @@ export const certificateSchema_w9_DC = () => {
 };
 
 
-export const SelfCertSchema_w9_DC = (showAlternateAddress:boolean,showTin:boolean,showTin2:boolean) => {
+export const SelfCertSchema_w9_DC = (showAlternateAddress: boolean, showTin: boolean, showTin2: boolean) => {
   return Yup.object().shape({
-   firstName:Yup.string().required("Please Enter"),
-   familyName:Yup.string().required("Please Enter"),
-   dateofBirth:Yup.string(),
-   countryofBirth:Yup.string(),
-   cityOfBirth:Yup.string(),
-   permanentHouseNumberorName:Yup.string(),
-   permanentRoadName:Yup.string(),
-   permanentLocation:Yup.string(),
-   permanentCityorTown:Yup.string(),
-   permanentStateorProvince:Yup.string(),
-   permanentZiporPostalCode:Yup.string(),
-   permanentResidentialCountry:Yup.string().required("Please Enter"),
-   primaryTaxJurisdictionCountry1:Yup.string(),
-   alterHouseNumberorName: showAlternateAddress === true ? Yup.string():Yup.string(),
-   alterRoadName:showAlternateAddress === true ? Yup.string():Yup.string(),
-   alterLocation:showAlternateAddress === true ? Yup.string():Yup.string(),
-   alterCityorTown:showAlternateAddress === true ? Yup.string():Yup.string(),
-   alterStateorProvince:showAlternateAddress === true ? Yup.string():Yup.string(),
-   alterZiporPostalCode:showAlternateAddress === true ? Yup.string():Yup.string(),
-   alterResidentialCountry: showAlternateAddress === true ? Yup.number().required("Please Enter"):Yup.number(),
-   tinType1:Yup.string(),
-   tiN1:Yup.string(),
-   tinUnavailable1:Yup.boolean(),
-   primaryTaxJurisdictionCountry2:Yup.string(),
-   tinType2:Yup.string(),
-   tiN2:Yup.string(),
-   tinUnavailable2:Yup.boolean(),
-   primaryTaxJurisdictionCountry3:Yup.string(),
-   tinType3:Yup.string(),
-   tiN3:Yup.string(),
-   tinUnavailable3:Yup.boolean(),
-   reasonforNonAvailabilityofTIN:Yup.string(),
-   legalNameofEntity1:Yup.string().required("Please Enter"),
-   legalNameofEntity2:Yup.string(),
-   legalNameofEntity3:Yup.string(),
-   statusEntity1:Yup.string().required("Please Enter"),
-   statusEntity2:Yup.string(),
-   statusEntity3:Yup.string(),
-   ownershipPercentage:Yup.string(),
-   emailAddress:Yup.string(),
-   usTaxCertificateSubmissionRequest:Yup.boolean()
+    firstName: Yup.string().required("Please Enter"),
+    familyName: Yup.string().required("Please Enter"),
+    dateofBirth: Yup.string(),
+    countryofBirth: Yup.string(),
+    cityOfBirth: Yup.string(),
+    permanentHouseNumberorName: Yup.string(),
+    permanentRoadName: Yup.string(),
+    permanentLocation: Yup.string(),
+    permanentCityorTown: Yup.string(),
+    permanentStateorProvince: Yup.string(),
+    permanentZiporPostalCode: Yup.string(),
+    permanentResidentialCountry: Yup.string().required("Please Enter"),
+    primaryTaxJurisdictionCountry1: Yup.string(),
+    alterHouseNumberorName: showAlternateAddress === true ? Yup.string() : Yup.string(),
+    alterRoadName: showAlternateAddress === true ? Yup.string() : Yup.string(),
+    alterLocation: showAlternateAddress === true ? Yup.string() : Yup.string(),
+    alterCityorTown: showAlternateAddress === true ? Yup.string() : Yup.string(),
+    alterStateorProvince: showAlternateAddress === true ? Yup.string() : Yup.string(),
+    alterZiporPostalCode: showAlternateAddress === true ? Yup.string() : Yup.string(),
+    alterResidentialCountry: showAlternateAddress === true ? Yup.number().required("Please Enter") : Yup.number(),
+    tinType1: Yup.string(),
+    tiN1: Yup.string(),
+    tinUnavailable1: Yup.boolean(),
+    primaryTaxJurisdictionCountry2: Yup.string(),
+    tinType2: Yup.string(),
+    tiN2: Yup.string(),
+    tinUnavailable2: Yup.boolean(),
+    primaryTaxJurisdictionCountry3: Yup.string(),
+    tinType3: Yup.string(),
+    tiN3: Yup.string(),
+    tinUnavailable3: Yup.boolean(),
+    reasonforNonAvailabilityofTIN: Yup.string(),
+    legalNameofEntity1: Yup.string().required("Please Enter"),
+    legalNameofEntity2: Yup.string(),
+    legalNameofEntity3: Yup.string(),
+    statusEntity1: Yup.string().required("Please Enter"),
+    statusEntity2: Yup.string(),
+    statusEntity3: Yup.string(),
+    ownershipPercentage: Yup.string(),
+    emailAddress: Yup.string(),
+    usTaxCertificateSubmissionRequest: Yup.boolean()
   });
 };
 
@@ -278,7 +278,7 @@ export const certificateSchema_w9 = () => {
   return Yup.object().shape({
     certification_CorrectTaxpayerIdentification: Yup.boolean().oneOf(
       [true],
-      "Please mark the checkbox" 
+      "Please mark the checkbox"
     ),
     certification_IRSBackupWithHolding: Yup.boolean(),
 
@@ -342,15 +342,15 @@ export const partCertiSchema = () => {
     signedBy: Yup.string().required("Please enter name of the person signing the form"),
     confirmationCode: Yup.string()
       .required("Please enter code")
-    .test(
-      'match',
-      'Confirmation code does not match',
-      function (value) {
-        const storedConfirmationCode = obValues?.confirmationCode;
-        return !storedConfirmationCode || value === storedConfirmationCode;
-      }
-    ), 
-    
+      .test(
+        'match',
+        'Confirmation code does not match',
+        function (value) {
+          const storedConfirmationCode = obValues?.confirmationCode;
+          return !storedConfirmationCode || value === storedConfirmationCode;
+        }
+      ),
+
     // word: Yup.boolean().when("EnterconfirmationCode", {
     //   is: "no",
     //   then: () => Yup.string().required("Please select owner"),

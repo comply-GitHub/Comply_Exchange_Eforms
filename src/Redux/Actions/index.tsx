@@ -2202,7 +2202,7 @@ export const GetDualCertDetailsPerson = (AccountHolderId: number, formTypeID:num
   return (dispatch: any) => {
     Utils.api.getApiCall(
       Utils.EndPoint.GetDualCertDetailsControlingPerson,
-      `?accountHolderId=${AccountHolderId}&FormTypeId=${formTypeID}`,
+      `?accountHolderId=${AccountHolderId}&formTypeId=${formTypeID}`,
       async (resData) => {
         const { data } = resData;
         if (resData.status === 200) {

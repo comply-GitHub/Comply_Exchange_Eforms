@@ -620,12 +620,12 @@ export default function Fedral_tax(props: any) {
                                             height: "36px",
                                           }}
                                         >
-                                          <option value="">-Select-</option>
+                                          <option value={0}>-Select-</option>
                                           <option value={257}>
                                             United Kingdom
                                           </option>
                                           <option value={258}>United States</option>
-                                          <option value="">---</option>
+                                          <option value={-1}>---</option>
                                           {getCountriesReducer.allCountriesData?.map(
                                             (ele: any) => (
                                               <option key={ele?.id} value={ele?.id}>

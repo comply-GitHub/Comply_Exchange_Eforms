@@ -251,7 +251,7 @@ export default function Declaration (props: any){
                 <Button
                  onClick={() => {
                  
-                  history("/CRS_W9_DC")
+                  history(-1)
                 }}
                   variant="outlined"
                   style={{

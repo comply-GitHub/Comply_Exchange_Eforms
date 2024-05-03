@@ -29,7 +29,7 @@ const EndPoint = {
   GetAllUSFormTypes:"/FormTypes/GetAllUSFormTypes",
   GetTaxJusrisdictionMismatchExplaination:"/CaymanIndividualNonUS/GetTaxJurisdictionMismatchExplanation",
   UpsertDualCertDetailsControllingPerson:"/DualCert/UpsertDualCertDetailsControllingPerson",
-GetDualCertDetailsControlingPerson:"/DualCert/GetDualCertDetailsControllingPerson",
+  GetDualCertDetailsControlingPerson:"/DualCert/GetDualCertDetailsControllingPerson",
   //
   GetAgentExemptionCodeHidden:"/AgentEditList/GetAgentFATCAExemptionCodeHidden",
   GetAgentCapacityHiddenForEform: "/WebAppBasic/GetAgentCapacityHiddenForEform",
