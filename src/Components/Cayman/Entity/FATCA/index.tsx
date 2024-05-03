@@ -38,16 +38,18 @@ export default function Classification (props: any){
   ) => {
     if (newExpanded) {
       setExpandedState(panel);
+      const payload = {
+        heading1: panelHeading,
+        subheading1:'FATCA Classification -'+ panelHeading+' Cayman',
+        selectedHeading : panelHeading,
+        selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
+      
+      }
       dispatch({
         type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
-        payload: {
-          heading1: panelHeading,
-          subheading1:'FATCA Classification -'+ panelHeading+' Cayman',
-          selectedHeading : panelHeading,
-          selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
-        
-        },
+        payload,
       });
+      //localStorage.setItem("FATCASelfCertData", JSON.stringify(payload));
 
       localStorage.setItem("clickedPanelHeading", panelHeading);
       localStorage.setItem("Heading1",panelHeading)
@@ -403,7 +405,7 @@ export default function Classification (props: any){
                 <Button
                  onClick={() => {
                 
-                  history("/BENEEntityFatcaClassification")
+                  history("/Cayman/Entity/FATCA")
                   setExpandedState(false)
                  }}
                   variant="outlined"
@@ -425,7 +427,8 @@ export default function Classification (props: any){
                  localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
                  
                }
-                {expandedState==='panel2' ? history("/BENEEntityFatcaClassificationFinancial") : history("/BENEIndividualFatcaClassificationComplete") }
+               {expandedState==='panel2' ? history("/Cayman/Entity/FATCA/Financial") : history("/Cayman/Entity/FATCA/Complete") }
+
                   // if (expandedState === "panel2") {
                   //   history("/Cayman/Entity/FATCA/Financial");
                   // } else if (expandedState === "panel3") {

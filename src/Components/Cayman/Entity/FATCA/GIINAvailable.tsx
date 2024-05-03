@@ -35,15 +35,29 @@ export default function GIINAvailable (props: any){
     if (newExpanded) {
       setExpandedState(panel);
       localStorage.setItem("clickedPanelHeading", panelHeading);
+
+      const payload = {
+        heading3: panelHeading,
+        subheading3:'FATCA Classification -'+ panelHeading+' Cayman',
+        selectedHeading : panelHeading,
+        selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
+      }
       dispatch({
         type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
-        payload: {
-          heading3: panelHeading,
-          subheading3:'FATCA Classification -'+ panelHeading+' Cayman',
-          selectedHeading : panelHeading,
-          selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
-        },
+        payload,
       });
+      // localStorage.setItem("FATCASelfCertData", JSON.stringify(payload));
+
+
+      // dispatch({
+      //   type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
+      //   payload: {
+      //     heading3: panelHeading,
+      //     subheading3:'FATCA Classification -'+ panelHeading+' Cayman',
+      //     selectedHeading : panelHeading,
+      //     selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
+      //   },
+      // });
 
       localStorage.setItem("Heading3",panelHeading)
       localStorage.setItem("SubHeading3",'FATCA Classification -'+ panelHeading+' Cayman')

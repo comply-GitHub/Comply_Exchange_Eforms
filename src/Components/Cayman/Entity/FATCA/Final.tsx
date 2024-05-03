@@ -18,11 +18,12 @@ import InfoIcon from "@mui/icons-material/Info";
 import { PostDualCert, upsertFATCAStepsDetails } from "../../../../Redux/Actions";
 import Utils from "../../../../Utils";
 import SideBar from "../../../Reusable/SideBar";
+import useAuth from "../../../../customHooks/useAuth";
 
 
 
 export default function Final (props: any){
-
+  const {authDetails} = useAuth();
   const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
 
   const history = useNavigate();
@@ -94,6 +95,8 @@ export default function Final (props: any){
                 // console.log("values", values)
                 // setSubmitting(true);
                 const result = {
+                  agentId: authDetails.agentId,
+                  accountHolderDetailsId: authDetails.accountHolderId,
                   ...PrevStepData, 
                   ...values,
                  
