@@ -33,8 +33,8 @@ export const US_TINSchema = () => {
     tinisFTINNotLegallyRequired: Yup.string(),
     isFTINNotLegallyRequired: Yup.boolean(),
     ForeginTIN_CountryId: Yup.string().when(['isFTINNotLegallyRequired', 'tinisFTINNotLegallyRequired'], {
-      is: (isFTINNotLegallyRequired: boolean, tinisFTINNotLegallyRequired: any) => !isFTINNotLegallyRequired && tinisFTINNotLegallyRequired !== "NO",
-      then: () => Yup.string().required("Foreign TIN is required"),
+      is: (isFTINNotLegallyRequired: boolean, tinisFTINNotLegallyRequired: any) => !isFTINNotLegallyRequired && tinisFTINNotLegallyRequired !== "No",
+      then: () => Yup.string().required("Foreign TIN Country is required"),
       otherwise: () => Yup.string().notRequired()
     }),
     // ForeginTIN_CountryId:Yup.string().when("isFTINNotLegallyRequired",{

@@ -436,7 +436,9 @@ const Declaration = (props: any) => {
                       // onClick={()=>{
                       //   history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233")
                       // }}
-                      disabled={!isValid}
+                      disabled={
+                        values.IsSubmit && (values.IsSubmit_not || values.IsSubmit)
+                      }
                       type="submit"
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
