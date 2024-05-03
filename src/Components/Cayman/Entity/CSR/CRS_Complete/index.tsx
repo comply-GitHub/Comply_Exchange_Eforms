@@ -14,16 +14,23 @@ import useAuth from "../../../../../customHooks/useAuth";
 import { FormTypeId } from "../../../../../Utils/constVals";
 import SideBar from "../../../../Reusable/SideBar";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
-import { postSCFATCAClassification } from "../../../../../Redux/Actions";
+import { postSCFATCAClassification, postSCStepsDetails } from "../../../../../Redux/Actions";
 export default function Declaration (props: any){
 
-  const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+  const PrevStepData = JSON.parse(localStorage.getItem("FATCASelfCertData") || "{}");
+  const PrevStepData1 = JSON.parse(localStorage.getItem("CRSSelfCertData") || "{}");
   const CRSData = localStorage.getItem("lastClickedPanelHeading");
-  const FATCAClassificationData = useSelector((state:any) => state?.CaymanEntity?.FATCAClassificationData);
-  const CRSClassificationData = useSelector((state:any) => state?.CRSEntityReducer?.CRSClassificationData);
+  
+  const fatcaData = useSelector((state:any) => state?.CaymanEntity?.FATCAClassificationData); 
+  const FATCAClassificationData = (fatcaData ? fatcaData : PrevStepData);
+  
+  const crsData = useSelector((state:any) => state?.CRSEntityReducer?.CRSClassificationData);
+  console.log(crsData,"CRSDATA");
+  const CRSClassificationData = (crsData ? crsData : PrevStepData1);
   const { authDetails } = useAuth();
   const history = useNavigate();
   const dispatch = useDispatch();
+  console.log("FATCAClassificationData", FATCAClassificationData);
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
   const handleChangeAccodionState = (panel: string, panelHeading: string) => (
     event: React.SyntheticEvent,
@@ -60,12 +67,12 @@ export default function Declaration (props: any){
     subHeading5:CRSClassificationData?.subheading5 ? CRSClassificationData?.subheading5 : "",
     selectedHeading: CRSClassificationData?.selectedHeading ? CRSClassificationData?.selectedHeading : "",
     selectedSubHeading: CRSClassificationData?.selectedSubHeading ? CRSClassificationData?.selectedSubHeading : "",
-    stockExchangeNameWhereTraded : "",
-    regularlyTradedCorporationName:"",
-    nonFinancialRoreignEntityQualifyingCriteria:"",
-    selectedCRSClassification:"",
-    typeProvidedInDomesticLaw:"",
-    nonFinancialEntityQualifyingCriteria:""
+    stockExchangeNameWhereTraded : PrevStepData1?.stockExchangeNameWhereTraded ? PrevStepData1?.stockExchangeNameWhereTraded : "",
+    regularlyTradedCorporationName: PrevStepData1?.regularlyTradedCorporationName ? PrevStepData1?.regularlyTradedCorporationName : "",
+    nonFinancialRoreignEntityQualifyingCriteria:  PrevStepData1?.nonFinancialRoreignEntityQualifyingCriteria ? PrevStepData1?.nonFinancialRoreignEntityQualifyingCriteria : "",
+    selectedCRSClassification: PrevStepData1?.selectedCRSClassification ? PrevStepData1?.selectedCRSClassification : "",  
+    typeProvidedInDomesticLaw: PrevStepData1?.typeProvidedInDomesticLaw ? PrevStepData1?.typeProvidedInDomesticLaw : "",
+    nonFinancialEntityQualifyingCriteria:PrevStepData1?.nonFinancialEntityQualifyingCriteria ? PrevStepData1?.nonFinancialEntityQualifyingCriteria : "",
   };
 
 
@@ -101,14 +108,27 @@ export default function Declaration (props: any){
                   agentId: authDetails.agentId,
                   accountHolderDetailsId: authDetails.accountHolderId,
                   ...PrevStepData, 
+                  ...PrevStepData1,
                   ...values,
                  
                 };
                 const returnPromise = new Promise((resolve, reject) => {
                 dispatch(
-                  postSCFATCAClassification(result, (data: any) => {
-                    localStorage.setItem("DualCertData", JSON.stringify(result))
+                  postSCStepsDetails(result, (data: any) => {
+
+                    localStorage.setItem("CRSSelfCertData", JSON.stringify(result))
+
+
+                    
+                    if(values.fatcaSelectedHeading === 'Passive Non Financial Entity' || values.fatcaSelectedHeading === 'Passive NFFE'){
+                      history("/Cayman/Entity/CRS/SelfCertPassive")
+                    }else{
+                      history("/Cayman/Entity/TIN")
+                    }
+
                     resolve(data);
+
+
                   }
                     , (err: any) => {
                       reject(err);
@@ -116,11 +136,7 @@ export default function Declaration (props: any){
                   )
                 );
               })
-              if(values.fatcaSelectedHeading == 'Passive Non Financial Entity' || values.fatcaSelectedHeading == 'Passive NFFE'){
-                history("/Cayman/Entity/CRS/SelfCertPassive")
-              }else{
-                history("/Cayman/Entity/TIN")
-              }
+              
               
               return returnPromise;
 

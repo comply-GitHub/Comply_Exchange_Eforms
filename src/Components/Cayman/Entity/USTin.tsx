@@ -1716,7 +1716,7 @@ export default function Tin(props: any) {
                   <Typography align="center">
                     <Button
                     onClick={()=>{
-                      history("/Cayman/Entity/CRS/SelfCertPassive")
+                      history(-1)
                     }}
                       variant="contained"
                       style={{

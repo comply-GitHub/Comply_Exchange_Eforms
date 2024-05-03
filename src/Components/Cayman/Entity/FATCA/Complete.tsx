@@ -17,6 +17,7 @@ export default function Declaration (props: any){
   const FATCAClassificationData = useSelector((state:any) => state?.CaymanEntity?.FATCAClassificationData);
 
   console.log("FATCAClassificationData",FATCAClassificationData)
+  localStorage.setItem("FATCASelfCertData", JSON.stringify(FATCAClassificationData));
   // const selectedHeading = localStorage.getItem("lastClickedPanelHeading") ;
   // const selectedSubHeading = 'FATCA Classification -'+ selectedHeading+' Cayman';
 

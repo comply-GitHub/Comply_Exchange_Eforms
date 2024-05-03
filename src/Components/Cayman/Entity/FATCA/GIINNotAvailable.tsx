@@ -30,15 +30,17 @@ export default function GIINNotAvailable (props: any){
   ) => {
     if (newExpanded) {
       setExpandedState(panel);
+      const payload = {
+        heading3: panelHeading,
+        subheading3:'FATCA Classification -'+ panelHeading+' Cayman',
+        selectedHeading : panelHeading,
+        selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
+      }
       dispatch({
         type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
-        payload: {
-          heading3: panelHeading,
-          subheading3:'FATCA Classification -'+ panelHeading+' Cayman',
-          selectedHeading : panelHeading,
-          selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
-        },
+        payload,
       });
+      // localStorage.setItem("FATCASelfCertData", JSON.stringify(payload));
 
       localStorage.setItem("clickedPanelHeading", panelHeading);
       localStorage.setItem("Heading3",panelHeading)
