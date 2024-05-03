@@ -40,12 +40,12 @@ type ValuePiece = Date | null;
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 
 
-  const IncomeType = ({handleSubmit, DeleteIncomeType, index, length, data, UpdateIncomeType, CountryArticle,SetIsCompDataValid }: any) => {
+  const IncomeType = ({incomeTypeData,handleSubmit, DeleteIncomeType, index, length, data, UpdateIncomeType, CountryArticle,SetIsCompDataValid }: any) => {
     const SelfControllingData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
     console.log(SelfControllingData[0],"00")
-    const [initialValue, setInitialValues] = useState<any>({
+    const [initialValue, setInitialValues] = useState<any>([]
   
-  });
+  );
     const showInDropdownArticle = CountryArticle?.filter((ele: any) => ele.showInDropDown === true);
     const [articleBeneficialOwner, setArticleBeneficialOwner] = useState<any>({});
     useEffect(() => {
@@ -59,10 +59,23 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
         setArticleBeneficialOwner(temp[0])
       }
     }, [data])
+
+
+    useEffect(() => {
+      Promise.all(incomeTypeData.map((x:any) => SelfCertSchema_w9_DC(showAlternateAddress,showTin,showTin2).validate(x))).then(() => {
+        SetIsCompDataValid(true);
+      }).catch((err) => {
+        console.log(err, "123")
   
+        SetIsCompDataValid(false);
+      })
+    
   
-    const validateComponentData=(data:any)=>{
+    }, [incomeTypeData])
+  
+    const validateComponentData=(data:any[])=>{
       SelfCertSchema_w9_DC(showAlternateAddress,showTin,showTin2).validate(data).then(()=>{
+      
         SetIsCompDataValid(true);
       }).catch(()=>{
         SetIsCompDataValid(false);
@@ -76,6 +89,8 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
       UpdateIncomeType({ ...temp }, index);
       validateComponentData({...temp});
     }
+
+    
     const handleUpdateCheckboxChange = (e: any) => {
       let temp: any = { ...data };
 
@@ -164,6 +179,7 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                 initialValues={initialValue}
                 validateOnBlur={true}
                 enableReinitialize
+                validateOnMount={true}
                 validationSchema={SelfCertSchema_w9_DC(showAlternateAddress,showTin,showTin2)}
                 onSubmit={(values, { setSubmitting }) => {
                   handleSubmit();
@@ -195,6 +211,7 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                         <div
                           className="flex-row-reverse"
                         >
+                          
                           <div className="d-flex">
                             <IconButton
                               onClick={() => handleOpen("basics")}
@@ -212,6 +229,14 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                             <Typography style={{ fontSize: "20px", fontWeight: "540", marginTop: "3px" }}> Basics Details</Typography>
 
                           </div>
+                          <p className="error mb-0 mx-2" >
+                          {
+                            errors?.firstName  ||
+                            
+                            errors?.familyName
+                            ? "Mandatory Information Required"
+                            : ""}
+                        </p>
                         </div>
                         {open === "basics" ?
                           (<div className="row mt-3" style={{ marginLeft: "10px" }}>
@@ -236,7 +261,7 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                                   name="firstName"
                                   placeholder="Enter First Name"
                                   onBlur={handleBlur}
-                                  error={Boolean(errors.firstName && touched.firstName)}
+                                  error={Boolean(errors.firstName )}
                                   onChange={(e) => {
                                     handleChange(e);
                                     handleUpdateOnFormChange(e);
@@ -244,7 +269,7 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                                   value={initialValue.firstName}
 
                                 />
-                              {errors.firstName && touched.firstName ? <p className="error">{typeof errors.firstName === 'string' ? errors.firstName : ''}</p> : <></>}
+                              {errors.firstName  ? <p className="error">{typeof errors.firstName === 'string' ? errors.firstName : ''}</p> : <></>}
   
                               </FormControl>
                             </div>
@@ -274,12 +299,12 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                                   }}
                                   onBlur={handleBlur}
                                   error={Boolean(
-                                    touched.familyName && errors.familyName
+                                     errors.familyName
                                   )}
                                   value={values.familyName}
                                 />
 
-{errors.familyName && touched.familyName ? <p className="error">{typeof errors.familyName === 'string' ? errors.familyName : ''}</p> : <></>}
+{errors.familyName  ? <p className="error">{typeof errors.familyName === 'string' ? errors.familyName : ''}</p> : <></>}
                               </FormControl>
                             </div>
 
@@ -420,7 +445,14 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                             <Typography style={{ fontSize: "20px", fontWeight: "540", marginTop: "3px" }}>Permanent Residence Address</Typography>
                           </div>
                         </div>
-
+                        <p className="error mb-0 mx-2" >
+                          {
+                            errors?.permanentResidentialCountry ||errors?.alterResidentialCountry
+                            
+                        
+                            ? "Mandatory Information Required"
+                            : ""}
+                        </p>
                         {open === "permanant" ?
                           (
                           <div className="row mt-3" style={{ marginLeft: "10px" }}>
@@ -670,7 +702,7 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
                                     )
                                   )}
                                 </select>
-                                {errors.permanentResidentialCountry && touched.permanentResidentialCountry ? <p className="error">{typeof errors.permanentResidentialCountry === 'string' ? errors.permanentResidentialCountry : ''}</p> : <></>}
+                                {errors.permanentResidentialCountry  ? <p className="error">{typeof errors.permanentResidentialCountry === 'string' ? errors.permanentResidentialCountry : ''}</p> : <></>}
 
                               </FormControl>
                             </div>
@@ -927,7 +959,7 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
               )
             )}
           </select>
-          {errors.alterResidentialCountry && touched.alterResidentialCountry ? <p className="error">{typeof errors.alterResidentialCountry === 'string' ? errors.alterResidentialCountry : ''}</p> : <></>}
+          {errors.alterResidentialCountry ? <p className="error">{typeof errors.alterResidentialCountry === 'string' ? errors.alterResidentialCountry : ''}</p> : <></>}
         </FormControl>
       </div>
     </div>
@@ -954,6 +986,16 @@ type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 
                             <Typography style={{ fontSize: "20px", fontWeight: "540", marginTop: "3px" }}>Primary Tax jurisdiction</Typography>
                           </div>
+                          <p className="error mb-0 mx-2" >
+                          {
+                            errors?.legalNameofEntity1 ||
+                            errors?.statusEntity1 
+                            
+                            
+                        
+                            ? "Mandatory Information Required"
+                            : ""}
+                        </p>
                         </div>
 
                         {open === "jurisdiction" ?
@@ -1430,12 +1472,12 @@ handleUpdateCheckboxChange(e);
                                       }}
                                     onBlur={handleBlur}
                                     error={Boolean(
-                                      touched.legalNameofEntity1 && errors.legalNameofEntity1
+                                      errors.legalNameofEntity1
                                     )}
                                     value={values.legalNameofEntity1}
                                   />
 
-{errors.legalNameofEntity1 && touched.legalNameofEntity1 ? <p className="error">{typeof errors.legalNameofEntity1 === 'string' ? errors.legalNameofEntity1 : ''}</p> : <></>}
+{errors.legalNameofEntity1 ? <p className="error">{typeof errors.legalNameofEntity1 === 'string' ? errors.legalNameofEntity1 : ''}</p> : <></>}
 
                                 </FormControl>
                               </div>
@@ -1543,7 +1585,7 @@ handleUpdateCheckboxChange(e);
                                       )
                                     )}
                                   </select>
-                                  {errors.statusEntity1 && touched.statusEntity1 ? <p className="error">{typeof errors.statusEntity1 === 'string' ? errors.statusEntity1 : ''}</p> : <></>}
+                                  {errors.statusEntity1  ? <p className="error">{typeof errors.statusEntity1 === 'string' ? errors.statusEntity1 : ''}</p> : <></>}
 
                                 </FormControl>
                               </div>

@@ -222,7 +222,7 @@ export default function FCTA_Reporting(props: any) {
                         align="left"
                         style={{ margin: "10px", fontSize: "27px" }}
                       >
-                        Exemption from FATCA reporting
+                        Exemption from FATCA reporting<span style={{ color: "red" }}>*</span>
                       <span>
                           <Tooltip
                             style={{ backgroundColor: "black", color: "white" }}
@@ -263,7 +263,7 @@ export default function FCTA_Reporting(props: any) {
                         style={{ margin: "10px", fontSize: "17px", marginTop: "10px" }}
                       >
                         Will payments be made into an account held outside of the United
-                        States by a foreign institution?<span style={{ color: "red" }}>*</span>
+                        States by a foreign institution?
                       </Typography>
 
                       <div style={{ marginLeft: "10px", marginTop: "20px", justifyContent: "center" }}>
@@ -380,22 +380,10 @@ export default function FCTA_Reporting(props: any) {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                marginTop: "80px",
+                marginTop: "40px",
               }}
             >
-              {/* <Button
-                variant="contained"
-                style={{ color: "white" }}
-                onClick={() => {
-                  submitForm().then((data) => {
-                    history(GlobalValues.basePageRoute)
-                  }).catch((error) => {
-                    console.log(error);
-                  })
-                }}
-              >
-                SAVE & EXIT
-              </Button> */}
+             
               <SaveAndExit Callback={() => {
                 submitForm().then((data) => {
                   const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
@@ -411,6 +399,15 @@ export default function FCTA_Reporting(props: any) {
                   console.log(err);
                 })
               }} formTypeId={FormTypeId.W9} />
+               <Button
+                  variant="contained"
+                  style={{ color: "white", marginLeft: "10px" }}
+                  onClick={() => {
+                    dispatch(GetW9Pdf(authDetails?.accountHolderId))
+                  }}
+                >
+                  View Form
+                </Button>
               <Button
                 type="submit"
                 onClick={() => {

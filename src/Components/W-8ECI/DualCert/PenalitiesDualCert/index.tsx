@@ -560,7 +560,7 @@ export default function Penalties() {
                         <div className="col-6 col-md-6 p-0">
                           <Typography align="left" style={{ padding: "0px" }}>
                             <Typography style={{ fontSize: "15px" }}>
-                              Date
+                              Date  <span style={{ color: "red" }}>*</span>
                             </Typography>
                             <Input
                               className="inputTextField"

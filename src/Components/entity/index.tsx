@@ -2101,7 +2101,7 @@ export default function Entity() {
                       <div className="row">
                         <div className="col-lg-3 col-6 col-md-3 ">
                           <Typography align="left" className="d-flex w-100">
-                            Value Added Tax Number (VAT)56
+                            Value Added Tax Number (VAT)
                             <span style={{ color: "red" }}>*</span>
                           </Typography>
 
