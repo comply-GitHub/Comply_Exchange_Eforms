@@ -141,12 +141,8 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                   >
                     Enter the Paragraph of the Article being
                     claimed:
-                    <span
-                      style={{ color: "red", fontSize: "30px" }}
-                    >
-                      *
-                    </span>
-                    <span></span>
+                    
+             
                   </Typography>
                   <FormControl className="w-100">
                     <select

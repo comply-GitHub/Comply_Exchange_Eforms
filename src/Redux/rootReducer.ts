@@ -3,7 +3,9 @@ import { combineReducers } from "redux";
 import {
   getCountriesReducer,
   getSettingsReducer,
+  getControllingPersonReducer,
   getCountriesCodeReducer,
+  
   GetAllIncomeCodesReducer,
   GetStateByCountryIdReducer,
   W9PDFReducer,
@@ -87,6 +89,7 @@ let reducers = {
   GetAgentIncomeTypeHiddenAllowAnoymoReducer,
   SendOTPMailReducer,
   GetByW9FormReducer,
+  getControllingPersonReducer,
   CountriesTreaty:getCountriesTreatyReducer,
   CountryArticle:GetCountryArticleByIDReducer,
   SelfCertControllingPerson:UpsertDualCertDetailsControllingPersonReducer,
