@@ -35,6 +35,8 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
+import { TRUE } from "sass";
 export default function FCTA_Reporting(props: any) {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -155,7 +157,13 @@ export default function FCTA_Reporting(props: any) {
                  
                   resolve("success");
                   setSubmitting(true);
-                  history("/US_Purposes/Back/Exemption/Tax")
+                  Redirect(
+                    "/US_Purposes/Back/Exemption/Tax",
+                    authDetails?.agentId,
+                    history,
+                    false
+                  );
+                  // history("/US_Purposes/Back/Exemption/Tax")
                 },
                   (error: any) => {
                     reject(error);
@@ -439,7 +447,13 @@ export default function FCTA_Reporting(props: any) {
             <Typography align="center">
               <Button
                 onClick={() => {
-                  history("/US_Purposes/Back")
+                  Redirect(
+                    "/US_Purposes/Back",
+                    authDetails?.agentId,
+                    history,
+                    true
+                  ); 
+                  // history("/US_Purposes/Back")
                 }}
                 variant="contained"
                 style={{

@@ -45,6 +45,7 @@ import useAuth from "../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 export default function Fedral_tax(props: any) {
     const dispatch = useDispatch();
     const {
@@ -1824,8 +1825,14 @@ Entity type for U.S. tax purposes:
                                                         style={{ color: "white", marginLeft: "15px" }}
                                                         onClick={() => {
                                                             submitForm().then((data) => {
-                                                                console.log(data)
-                                                                history("/US_Purposes/Back");
+                                                                // console.log(data)
+                                                                // history("/US_Purposes/Back");
+                                                                Redirect(
+                                                                    "/US_Purposes/Back",
+                                                                    authDetails?.agentId,
+                                                                    history,
+                                                                    true
+                                                                  );
                                                             })
                                                         }}
                                                     >

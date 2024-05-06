@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetW9DCPdf } from "../../../Redux/Actions/PfdActions";
 import useAuth from "../../../customHooks/useAuth";
+import Redirect from "../../../Router/RouterSkip";
 
 const Declaration = (props: any) => {
   const { authDetails } = useAuth();
@@ -414,7 +415,13 @@ const Declaration = (props: any) => {
                     <Button
                       onClick={() => {
                         submitForm().then((data: any) => {
-                          history("/Thankyou_W9_DC");
+                          // history("/Thankyou_W9_DC");
+                          Redirect(
+                            "/Thankyou_W9_DC",
+                            authDetails?.agentId,
+                            history,
+                            false
+                          );
                         }).catch(() => {
 
                         })
