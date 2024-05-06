@@ -77,7 +77,7 @@ export default function Fedral_tax(props: any) {
     setselectedContinue,
   } = props;
   const initialValue = {
-    chapter4StatusId: PrevStepData?.chapter4StatusId ? PrevStepData?.chapter4StatusId : 0,
+    chapter4StatusId: PrevStepData?.chapter4StatusId ? PrevStepData?.chapter4StatusId : 1,
     //Passive NFFE
     isPart1Nationalprincipalcontract: PrevStepData?.isPart1Nationalprincipalcontract ? PrevStepData?.isPart1Nationalprincipalcontract : false,
     //Active NFFE
@@ -187,7 +187,7 @@ export default function Fedral_tax(props: any) {
     dispatch(getAllCountriesCode());
     dispatch(getAllCountriesIncomeCode());
     // dispatch(getAllStateByCountryId());
-    dispatch(GetChapter4Statuses());
+    dispatch(GetChapter4Statuses(FormTypeId.FW81MY));
     dispatch(GetHelpVideoDetails());
   }, []);
 
@@ -594,6 +594,10 @@ export default function Fedral_tax(props: any) {
                                       height: "36px",
                                     }}
                                   >
+                                    <option value={-1}>----------------------Plese select ---------------------------</option>
+                                    <option value={2}>Passive NFFE</option>
+                                    <option value={3}>Reporting Model 1 FFI</option>
+                                    <option value={4}>Reporting Model 2 FFI</option>
                                     {GetChapter4StatusesReducer.GetChapter4StatusesData?.map(
                                       (ele: any) => (
                                         <option key={ele?.id} value={ele?.id}>
@@ -649,7 +653,7 @@ export default function Fedral_tax(props: any) {
                             {values.chapter4StatusId == 19 && (
                               <ERP handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
                             )}
-                            {values.chapter4StatusId == 20 && (
+                            {values.chapter4StatusId == 39 && (
                               <FCBI handleChange={handleChange} values={values} setFieldValue={setFieldValue} handleBlur={handleBlur} />
                             )}
                             {values.chapter4StatusId == 22 && (
@@ -678,7 +682,6 @@ export default function Fedral_tax(props: any) {
                             {(values.chapter4StatusId == 35) && (
                               <TFI handleChange={handleChange} values={values} setFieldValue={setFieldValue} />
                             )}
-
 
 
 
@@ -982,7 +985,7 @@ export default function Fedral_tax(props: any) {
                                   )
                                   ||
                                   (
-                                    values.chapter4StatusId == 20 && values.istreatedaspurposeofchapter4
+                                    values.chapter4StatusId == 39 && values.istreatedaspurposeofchapter4
                                   )
                                   ||
                                   (
