@@ -38,6 +38,7 @@ import "react-calendar/dist/Calendar.css";
 import "./index.scss";
 import useAuth from "../../../customHooks/useAuth";
 import { boolean } from "yup";
+import Redirect from "../../../Router/RouterSkip";
 type ValuePiece = Date | null;
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function Certifications(props: any) {

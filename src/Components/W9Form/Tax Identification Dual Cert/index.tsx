@@ -36,6 +36,7 @@ import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import Text from "./tesxt";
 import { GetW9DCPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 
 export default function TaxPayer(props: any) {
   const dispatch = useDispatch();
