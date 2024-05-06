@@ -64,14 +64,12 @@ export default function Fedral_tax(props: any) {
 
     const initialValue = {
         BusinessName: W9?.entityName ?? obValues?.entityName,
-        BusinessDisregardedEntityName:
-            W9?.BusinessDisregardedEntityName ?? obValues?.BusinessDisregardedEntityName,
-        countryOfIncorporation:
-            W9?.countryOfIncorporation ?? obValues?.foreignTINCountryId,
-        FederalTaxClassificationId: W9?.FederalTaxClassificationId ?? 0,
-        LLCOwnerEntityType:W9?.LLCOwnerEntityType ?? 0,
-        USFederalTaxClassification: W9?.USFederalTaxClassification ?? "",
-        OtherType: W9?.OtherType ?? "",
+        BusinessDisregardedEntityName:W9?.BusinessDisregardedEntityName ?? PrevStepData?.BusinessDisregardedEntityName,
+        countryOfIncorporation:W9?.countryOfIncorporation ?? PrevStepData?.countryOfIncorporation,
+        FederalTaxClassificationId: parseInt(PrevStepData?.FederalTaxClassificationId) ?  parseInt(PrevStepData?.FederalTaxClassificationId) : 0,
+        LLCOwnerEntityType:W9?.LLCOwnerEntityType ?? PrevStepData?.LLCOwnerEntityType,
+        USFederalTaxClassification: W9?.USFederalTaxClassification ?? PrevStepData?.USFederalTaxClassification,
+        OtherType: W9?.OtherType ?? PrevStepData?.OtherType,
     };
 
     const [clickCount, setClickCount] = useState(0);
@@ -941,7 +939,7 @@ Entity type for U.S. tax purposes:
                                                                 marginTop: "5px",
                                                             }}
                                                         >
-                                                            other Type:
+                                                            Other Type:
                                                             <span style={{ color: "red" }}>
                                                                 *
                                                             </span>
@@ -1790,6 +1788,9 @@ Entity type for U.S. tax purposes:
                                     postW9Form(
                                       {
                                         ...prevStepData,
+                                        AccountHolderBasicDetailsId:authDetails?.accountHolderId,
+                                        AgentId:authDetails?.agentId,
+                                        FormTypeSelectionId:obValues?.businessTypeId,
                                         stepName: `/${urlValue}`,
                                       },
                                       () => {

@@ -1292,7 +1292,7 @@ export default function Tin(props: any) {
                                                           formEntryId: 0,
                                                           accountHolderDetailsId:authDetails?.accountHolderId,
                                                           doesIndiHavTaxLbltyinOtherJurisdictions: "No",
-                                                          countryId: "",
+                                                          countryId: "257",
                                                           taxReferenceNumber: "",
                                                           isTINFormatNotAvailable: false,
                                                           countryError:false,
@@ -1317,7 +1317,7 @@ export default function Tin(props: any) {
                                                         formEntryId: 0,
                                                         accountHolderDetailsId:authDetails?.accountHolderId,
                                                         doesIndiHavTaxLbltyinOtherJurisdictions: "No",
-                                                        countryId: "",
+                                                        countryId: "257",
                                                         taxReferenceNumber: "",
                                                         isTINFormatNotAvailable: false,
                                                         countryError:false,
@@ -1716,7 +1716,7 @@ export default function Tin(props: any) {
                   <Typography align="center">
                     <Button
                     onClick={()=>{
-                      history("/Cayman/Entity/CRS/SelfCertPassive")
+                      history(-1)
                     }}
                       variant="contained"
                       style={{

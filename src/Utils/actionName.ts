@@ -12,6 +12,7 @@ const ActionName = {
     CREATE_W8_ECI:"CREATE_W8_ECI",
     individualAccountHolder: "individualAccountHolder",
     GetCountries: "GetCountries",
+    GetControllingEntity:"GetControllingEntity",
     GetSettings:"GetSettings",
     GetCountriesTreaty: "GetCountriesTreaty",
     GetCountriesCode: "GetCountriesCode",
@@ -109,6 +110,7 @@ const ActionName = {
     // skipped steps
     UpdateSkippedSteps:"UpdateSkippedSteps",
     UpsertFATCAStepsDetails:"UpsertFATCAStepsDetails",
+    UpsertCRSStepsDetails:"UpsertCRSStepsDetails",
 
   };
 

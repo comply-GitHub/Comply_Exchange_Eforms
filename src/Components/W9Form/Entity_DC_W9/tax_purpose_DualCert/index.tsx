@@ -65,7 +65,7 @@ export default function Fedral_tax(props: any) {
     BusinessDisregardedEntityName: PrevStepData?.BusinessDisregardedEntityName,
     countryOfIncorporation: parseInt(PrevStepData?.countryOfIncorporation),
     FederalTaxClassificationId: parseInt(PrevStepData?.FederalTaxClassificationId || 0),
-    LLCOwnerEntityType: parseInt(PrevStepData?.LLCOwnerEntityType),
+    LLCOwnerEntityType:0,
     USFederalTaxClassification: PrevStepData?.USFederalTaxClassification,
     OtherType: PrevStepData?.OtherType,
     DateOfIncorporation:"",

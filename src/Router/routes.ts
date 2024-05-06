@@ -342,6 +342,7 @@ const CaymanEntityTIN= React.lazy(() => import("../Components/Cayman/Entity/USTi
 const CaymanEntityCertification= React.lazy(() => import("../Components/Cayman/Entity/Certification"));
 const CaymanEntitySubmission= React.lazy(() => import("../Components/Cayman/Entity/Submission"));
 const CaymanEntityESConfirmation= React.lazy(() => import("../Components/Cayman/Entity/ESConfirmation"));
+const CaymanEntityESThankyou= React.lazy(() => import("../Components/Cayman/Entity/Thankyou"));
 
 
 
@@ -1072,6 +1073,13 @@ const ROUTES: Array<RouteType> = [
     path: "/Cayman/Entity/ESConfirmation",
     id: 7,
     Component: CaymanEntityESConfirmation,
+    isPrivate: true,
+  },
+  {
+    name: "CaymanEntityESThankyou",
+    path: "/Cayman/Entity/Thankyou",
+    id: 7,
+    Component: CaymanEntityESThankyou,
     isPrivate: true,
   },
   {

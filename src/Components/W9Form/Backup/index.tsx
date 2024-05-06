@@ -45,7 +45,7 @@ export default function Backup_witholding(props: any) {
   } = props;
   const urlValue = location.pathname.substring(1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-
+  const StepData = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const [selectedValue, setSelectedValue] = useState("");
 
   const handleRadioChange = (value: string, setValues:any) => {
@@ -148,7 +148,7 @@ export default function Backup_witholding(props: any) {
             const addSelectedValue={...PrevStepData}
          
             const new_obj = { ...addSelectedValue, stepName: `/${urlValue}` };
-            const result = { ...new_obj, ...values , excemptionGuide: "true" };
+            const result = { ...new_obj, ...values , excemptionGuide: "true",  AccountHolderBasicDetailsId: authDetails.accountHolderId,AgentId:authDetails.agentId,FormTypeSelectionId:StepData.businessTypeId, };
            
             const submitPromise = new Promise((resolve, reject) => {
               dispatch(
@@ -194,7 +194,7 @@ export default function Backup_witholding(props: any) {
                         }}
                       >
                         Exemption from Backup Withholding for U.S. Business &
-                        Organizations <span style={{ color: "red" }}>*</span>
+                        Organizations
                         <span>
                           <Tooltip
                             style={{ backgroundColor: "black", color: "white" }}
@@ -950,7 +950,7 @@ export default function Backup_witholding(props: any) {
                 style={{
                   display: "flex",
                   justifyContent: "center",
-                  marginTop: "80px",
+                  marginTop: "40px",
                 }}
               >
 
@@ -961,6 +961,7 @@ export default function Backup_witholding(props: any) {
                     dispatch(postW9Form(
                       {
                         ...prevStepData,
+                        AccountHolderBasicDetailsId: authDetails.accountHolderId,AgentId:authDetails.agentId,FormTypeSelectionId:StepData.businessTypeId,
                         stepName: `/${urlValue}`
                       }
                       , () => { }))
@@ -1027,7 +1028,12 @@ export default function Backup_witholding(props: any) {
               <Typography align="center">
                 <Button
                   onClick={() => {
-                    history("/W9/purposes")
+                    if(StepData?.agentId === 1){
+                      history("/W9/purposes")
+                    }else{
+                      history('/TaxPurpose_W9')
+                    }
+                   
                   }}
 
                   variant="contained"

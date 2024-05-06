@@ -250,3 +250,49 @@ export const EntityUSSubmitSchema = () => {
     )
   });
 };
+
+export const SelfCertSchema= (showAlternateAddress: boolean, showTin: boolean, showTin2: boolean) => {
+  return Yup.object().shape({
+    firstName: Yup.string().required("Please Enter"),
+    familyName: Yup.string().required("Please Enter"),
+    dateofBirth: Yup.string(),
+    countryofBirth: Yup.string(),
+    cityOfBirth: Yup.string(),
+    permanentHouseNumberorName: Yup.string(),
+    permanentRoadName: Yup.string(),
+    permanentLocation: Yup.string(),
+    permanentCityorTown: Yup.string(),
+    permanentStateorProvince: Yup.string(),
+    permanentZiporPostalCode: Yup.string(),
+    permanentResidentialCountry: Yup.string().required("Please Enter"),
+    primaryTaxJurisdictionCountry1: Yup.string(),
+    alterHouseNumberorName: showAlternateAddress === true ? Yup.string().required("Required") : Yup.string().notRequired(),
+    alterRoadName: showAlternateAddress === true ? Yup.string().required("Required") : Yup.string().notRequired(),
+    alterLocation: showAlternateAddress === true ? Yup.string().required("Required") : Yup.string().notRequired(),
+    alterCityorTown: showAlternateAddress === true ? Yup.string().required("Required") : Yup.string().notRequired(),
+    alterStateorProvince: showAlternateAddress === true ? Yup.string().required("Required") : Yup.string().notRequired(),
+    alterZiporPostalCode: showAlternateAddress === true ? Yup.string().required("Required") : Yup.string().notRequired(),
+    alterResidentialCountry: showAlternateAddress === true ? Yup.number().required("Please Enter") : Yup.number().notRequired(),
+    tinType1: Yup.string(),
+    tiN1: Yup.string(),
+    tinUnavailable1: Yup.boolean(),
+    primaryTaxJurisdictionCountry2: Yup.string(),
+    tinType2: Yup.string(),
+    tiN2: Yup.string(),
+    //tinUnavailable2: Yup.boolean(),
+    primaryTaxJurisdictionCountry3: Yup.string(),
+    tinType3: Yup.string(),
+    tiN3: Yup.string(),
+    tinUnavailable3: Yup.boolean(),
+    reasonforNonAvailabilityofTIN: Yup.string(),
+    legalNameofEntity1: Yup.string().required("Please Enter"),
+    legalNameofEntity2: Yup.string(),
+    //legalNameofEntity3: Yup.string(),
+    statusEntity1: Yup.string().required("Please Enter"),
+    statusEntity2: Yup.string(),
+    statusEntity3: Yup.string(),
+    ownershipPercentage: Yup.string(),
+    emailAddress: Yup.string(),
+    usTaxCertificateSubmissionRequest: Yup.boolean()
+  });
+};

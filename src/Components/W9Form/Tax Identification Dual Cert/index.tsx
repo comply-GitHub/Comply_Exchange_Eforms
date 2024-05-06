@@ -708,7 +708,7 @@ export default function TaxPayer(props: any) {
                       </div>
                       <div style={{ marginLeft: "18px", marginTop: "20px" }} >
                         <Typography>
-                          Does the entityWithMultipleTaxJurisdictions represent an entity that has multiple tax jurisdictions?
+                          Does the entityWithMultipleTaxJurisdictions represent an entity that has multiple tax jurisdictions? <span style={{ color: "red" }}>*</span>
                         </Typography>
                         <>{console.log(typeof values.entityWithMultipleTaxJurisdictions, typeof GetDualCertData.entityWithMultipleTaxJurisdictions, "67")}</>
                         <FormControl className="col-12 radio">

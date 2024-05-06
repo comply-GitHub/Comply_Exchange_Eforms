@@ -8,7 +8,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ExpandMore } from "@mui/icons-material";
 import Utils from "../../../../../Utils";
 import SideBar from "../../../../Reusable/SideBar";
@@ -21,7 +21,9 @@ export default function Declaration (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
   const Headingdata = localStorage.getItem("lastClickedPanelHeading") ;
+  const crsData = useSelector((state:any) => state?.CRSEntityReducer?.CRSClassificationData);
 
+  localStorage.setItem("CRSSelfCertData", JSON.stringify(crsData));
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
@@ -106,6 +108,7 @@ export default function Declaration (props: any){
                 const returnPromise = new Promise((resolve, reject) => {
                 dispatch(
                   PostDualCert(result, (data: any) => {
+
                     localStorage.setItem("DualCertData", JSON.stringify(result))
                     resolve(data);
                   }

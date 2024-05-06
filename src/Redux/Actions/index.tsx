@@ -757,6 +757,34 @@ export const getSettings = (callback: any = () => { console.log("") }): any => {
   };
 };
 
+//GetControllingEntity
+
+export const getAllControllingPersonEntity = (callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetControllingEntity,
+      "",
+      (resData) => {
+        if (resData.status === 200) {
+          if (callback) {
+            callback(resData.data)
+          }
+          dispatch({
+            type: Utils.actionName.GetControllingEntity,
+            payload: {
+              allControllingData: resData.data,
+            },
+          });
+
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
+
 export const getAllCountries = (callback: any = () => { console.log("") }): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
@@ -3058,6 +3086,51 @@ export const UpsertSelfCertDetails = (value: any, callback: Function, errorCallb
         errorCallback(error)
       },
       ""
+    );
+  };
+};
+
+export const postSCStepsDetails = (value: any, successCallback: Function, errorCallback: Function): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.UpsertCRSStepsDetails,
+      value,
+      (responseData) => {
+        let { data } = responseData;
+        dispatch({
+          type: Utils.actionName.UpsertCRSStepsDetails,
+          payload: { ...value, Response: data },
+        });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback(err);
+          } else if (responseData.status == 200) {
+            successCallback(responseData)
+          }
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(err);
+
+      },
+      "multi"
     );
   };
 };

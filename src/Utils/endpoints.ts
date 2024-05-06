@@ -72,7 +72,8 @@ const EndPoint = {
  InsertCaymanEntityNonUS:"/CaymanEntityNonUS/InsertCaymanEntityNonUS",
  UpsertFATCAStepsDetails:"/DualCert/UpsertFATCAStepsDetails",
  UpsertSelfCertDetails:"/DualCert/UpsertSelfCertDetails",
-
+ UpsertCRSStepsDetails:"/DualCert/UpsertCRSStepsDetails",
+ GetCRSStepsDetails:"/DualCert/GetCRSStepsDetails",
 
 // Form GetApis:
 GetDual:"/DualCert/GetDualCert",
@@ -134,5 +135,6 @@ GetCaymanIndividualPdf:"/CaymanIndividualNonUS/GetCaymanIndividualPdf",
 
  // skipped steps
  GetAgentSkippedSteps:"/Agent/GetAgentSkippedSteps",
+ GetControllingEntity:"/DualCert/GetControllingPersonLegalStatusEntity",
 };
 export default EndPoint;

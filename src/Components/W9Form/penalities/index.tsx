@@ -68,21 +68,24 @@ export default function Penalties() {
       setExpanded(isExpanded ? panel : false);
     };
   const [toolInfo, setToolInfo] = useState("");
-
+  var getReducerData = useSelector(
+    (state: any) => state?.GetByW9FormReducer?.GetByW9FormData
+  );
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const W9Data =  useSelector(
     (state: any) => state?.GetByW9FormReducer?.GetByW9FormData
   );
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
   const initialValue = {
-    signedBy: W9Data?.signedBy ?? "",
-    confirmationCode: W9Data?.confirmationCode ?? "",
+    signedBy:  W9Data?.signedBy || PrevStepData?.signedBy ,
+    confirmationCode: W9Data?.confirmationCode || PrevStepData?.confirmationCode,
     date: W9Data?.date ?? new Date().toLocaleDateString('en-US', {
       month: '2-digit',
       day: '2-digit',
       year: 'numeric',
     }),
-    isCheckAcceptance: W9Data?.isCheckAcceptance ? true : false
+    isCheckAcceptance: (W9Data?.isCheckAcceptance ?? PrevStepData?.isCheckAcceptance) || false
+
   };
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -99,10 +102,10 @@ export default function Penalties() {
   return (
     <>
       <Formik
-        validateOnChange={false}
+        validateOnChange={true}
         validateOnBlur={false}
         initialValues={initialValue}
-        // validationSchema={partCertiSchema}
+        validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
           const returnPromise = new Promise((resolve, reject) => {
             const new_obj = { ...PrevStepData, stepName: `/${urlValue}` };
@@ -120,6 +123,7 @@ export default function Penalties() {
             dispatch(
               postW9Form(result, (data: any) => {
                 setSubmitting(true);
+                history("/W9_Submit");
                 localStorage.setItem(
                   "PrevStepData",
                   JSON.stringify(result)
@@ -465,7 +469,8 @@ export default function Penalties() {
                             </span>
                            
                           </div>
-                          <p className="error">{touched.confirmationCode  && typeof (errors.confirmationCode) == "string" ? errors.confirmationCode : ""}</p>
+                          {/* <p className="error">{errors.confirmationCode}</p> */}
+                          <p className="error">   {touched.confirmationCode  && typeof (errors.confirmationCode) == "string" ? errors.confirmationCode : ""}</p>
                         </div>
                       </div>
                       {showRecoverSection &&
@@ -584,7 +589,7 @@ export default function Penalties() {
                         <div className="col-12 col-md-6 p-0">
                           <Typography align="left" style={{ padding: "0px" }}>
                             <Typography style={{ fontSize: "15px" }}>
-                              Date
+                              Date  <span style={{ color: "red" }}>*</span>
                             </Typography>
                             {/* <TextField */}
                             <FormControl style={{ width: "100%" }}>
@@ -628,16 +633,15 @@ export default function Penalties() {
                         >
                           Please "check" box to confirm your acceptance with the
                           above declarations{" "}
-                          {errors.isCheckAcceptance &&
-                            touched.isCheckAcceptance ? (
-                            <div>
-                              <Typography color="error">
-                                {errors.isCheckAcceptance}
-                              </Typography>
-                            </div>
-                          ) : (
-                            ""
-                          )}
+                          {errors.isCheckAcceptance && touched.isCheckAcceptance ? (
+    <div>
+        <Typography color="error">
+            {typeof errors.isCheckAcceptance === 'string' ? errors.isCheckAcceptance : ''}
+        </Typography>
+    </div>
+) : (
+    ""
+)}
                           <span>
                             <Tooltip
                               style={{ backgroundColor: "black", color: "white" }}
@@ -783,12 +787,12 @@ export default function Penalties() {
                           type="submit"
                           onClick={() => {
                             submitForm().then((data: any) => {
-                              history("/W9_Submit");
+                              
                             }).catch(() => {
 
                             })
                           }}
-                          disabled={!isValid || !values.isCheckAcceptance}
+                          // disabled={!isValid}
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                         >

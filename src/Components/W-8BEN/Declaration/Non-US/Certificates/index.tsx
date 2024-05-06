@@ -61,7 +61,7 @@ export default function Certifications(props: any) {
     isBeneficialOwnerNotUSPerson: false,
     isAuthorizeWithHoldingAgent: false,
     isCapacityForm: false,
-    isBackup: false,
+  
     isElectronicForm: false,
   });
   const urlValue = location.pathname.substring(1);
@@ -127,23 +127,7 @@ export default function Certifications(props: any) {
               initialValues={initialValue}
               enableReinitialize
               validationSchema={certificateSchema_w8Ben}
-              // onSubmit={(values, { setSubmitting }) => {
-              //   setSubmitting(true);
-              //   console.log(values, "vallllll");
-              //   const new_obj = { ...PrevStepData, stepName: `/${urlValue}` };
-              //   const result = { ...new_obj, ...values };
-              //   dispatch(
-              //     postW8BENForm(result, () => {
-              //       localStorage.setItem(
-              //         "PrevStepData",
-              //         JSON.stringify(result)
-              //       );
-              //       history(
-              //         "/W-8BEN/Declaration/US_Tin/Certification_Substitute"
-              //       );
-              //     })
-              //   );
-              // }}
+              
               onSubmit={(values, { setSubmitting }) => {
                 history("/W-8BEN/Declaration/US_Tin/Certification_Substitute/participation")
                 setSubmitting(true);
@@ -571,43 +555,9 @@ export default function Certifications(props: any) {
                           }}
                         />
 
-                        <Typography
-                          style={{
-                            fontSize: "14px",
-                            color: "black",
-                            marginTop: "10px",
-                            marginBottom: "20px",
-                          }}
-                        ></Typography>
-                        <Typography style={{ display: "flex" }}>
-                          <Checkbox
-                            name="isBackup"
-                            value={values.isBackup}
-                            onChange={handleChange}
-                            size="medium"
-                            style={{ fontSize: "2rem" }}
-                            className="mx-2"
-                          />
-                          <Typography
-                            style={{
-                              fontSize: "14px",
-                              color: "black",
-                              marginTop: "7px",
-                              textAlign: "justify",
-                            }}
-                          >
-                            I have been notified by IRS that I am currently
-                            subject to backup withholding.
-                          </Typography>
-                        </Typography>
-                        <p className="error">{errors.isBackup}</p>
-                        <Divider
-                          style={{
-                            marginTop: "1rem",
-                            marginBottom: "1rem",
-                            backgroundColor: "black",
-                          }}
-                        />
+                       
+                       
+                       
                         <Typography style={{ display: "flex" }}>
                           <Checkbox
                             name="isElectronicForm"

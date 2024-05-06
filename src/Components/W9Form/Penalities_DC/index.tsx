@@ -236,7 +236,7 @@ export default function Penalties() {
                           fontWeight: "550",
                         }}
                       >
-                        SelfCert Individual Electronic Substitute Form Statement
+                        Self Cert Individual Electronic Substitute Form Statement
                       </Typography>
                       <Typography
                         align="left"
