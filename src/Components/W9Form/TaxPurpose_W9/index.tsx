@@ -1824,8 +1824,14 @@ Entity type for U.S. tax purposes:
                                                         style={{ color: "white", marginLeft: "15px" }}
                                                         onClick={() => {
                                                             submitForm().then((data) => {
-                                                                console.log(data)
-                                                                history("/US_Purposes/Back");
+                                                                // console.log(data)
+                                                                // history("/US_Purposes/Back");
+                                                                Redirect(
+                                                                    "/US_Purposes/Back",
+                                                                    authDetails?.agentId,
+                                                                    history,
+                                                                    true
+                                                                  );
                                                             })
                                                         }}
                                                     >

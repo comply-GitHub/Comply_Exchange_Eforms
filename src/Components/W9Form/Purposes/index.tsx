@@ -46,6 +46,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -300,7 +301,13 @@ export default function Fedral_tax(props: any) {
                       "PrevStepData",
                       JSON.stringify(newValue)
                     );
-                    history("/US_Purposes/Back");
+                    Redirect(
+                      "/US_Purposes/Back",
+                      authDetails?.agentId,
+                      history,
+                      false
+                    );
+                    // history("/US_Purposes/Back");
                     resolve("success");
                     setSubmitting(true);
                   },
@@ -1418,7 +1425,13 @@ export default function Fedral_tax(props: any) {
                         <Typography align="center">
                           <Button
                             onClick={() => {
-                              history("/Certificates");
+                              Redirect(
+                                "/Certificates",
+                                authDetails?.agentId,
+                                history,
+                                true
+                              );
+                              // history("/Certificates");
                             }}
                             // setOpen(true);
 

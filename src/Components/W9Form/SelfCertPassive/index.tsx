@@ -473,7 +473,13 @@ const individualSelfType = {
                       (data) => {
                         localStorage.setItem("PrevStepData", JSON.stringify(temp));
                         
-                        history("/US_Determination_W9_DC")
+                        // history("/US_Determination_W9_DC")
+                        Redirect(
+                          "/US_Determination_W9_DC",
+                          authDetails?.agentId,
+                          history,
+                          false
+                        );
                         setSubmitting(true);
                         resolve(data);
                       },

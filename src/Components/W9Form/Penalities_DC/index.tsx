@@ -778,7 +778,13 @@ export default function Penalties() {
                           //type="submit"
                           onClick={() => {
                             submitForm().then((data: any) => {
-                              history("/Submit_W9_DC");
+                              // history("/Submit_W9_DC");
+                              Redirect(
+                                "/Submit_W9_DC",
+                                authDetails?.agentId,
+                                history,
+                                false
+                              );
                             }).catch(() => {
 
                             })

@@ -25,6 +25,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../customHooks/useAuth";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 
 export default function Certifications(props: any) {
 
@@ -592,9 +593,10 @@ export default function Certifications(props: any) {
                         onClick={() => {
                           submitForm()
                             .then((data) => {
-                              history(
-                                "/W-8ECI/Certification/Participation"
-                              );
+                              Redirect("/W-8ECI/Certification/Participation",authDetails?.agentId,history,false)
+                              // history(
+                              //   "/W-8ECI/Certification/Participation"
+                              // );
                             })
                             .catch((err) => {
                               console.log(err);
@@ -620,7 +622,7 @@ export default function Certifications(props: any) {
                     <Typography align="center">
                       <Button
                         onClick={() => {
-                          history("/W-8ECI/Income")
+                          Redirect("/W-8ECI/Certification/Participation",authDetails?.agentId,history,true)
                         }}
                         variant="contained"
                         style={{

@@ -404,7 +404,13 @@ export default function TaxPayer(props: any) {
               console.log("Nooo", values.entityWithMultipleTaxJurisdictions)
 
               handleSecondPayloadSubmit(values)
-              history("/Certification_W9_DC");
+              Redirect(
+                "/Certification_W9_DC",
+                authDetails?.agentId,
+                history,
+                false
+              );
+              // history("/Certification_W9_DC");
               setSubmitting(false);
             } else {
               console.log("Yess", values.entityWithMultipleTaxJurisdictions)
@@ -412,7 +418,13 @@ export default function TaxPayer(props: any) {
                 .then(() => {
                   handlePayloadSubmit(values)
                     .then(() => {
-                      history("/Certification_W9_DC");
+                      Redirect(
+                        "/Certification_W9_DC",
+                        authDetails?.agentId,
+                        history,
+                        false
+                      );
+                      // history("/Certification_W9_DC");
                     })
                     .catch((error) => {
                       console.error("Error in first payload submission:", error);
