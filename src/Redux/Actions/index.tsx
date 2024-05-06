@@ -474,7 +474,7 @@ export const GetAllLanguage = (): any => {
   };
 };
 
-export const GetSelfCetHidden = (id:any): any => {
+export const GetSelfCetHidden = (id: any): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
       Utils.EndPoint.getSelfCetHidden, `?id=${id}`,
@@ -496,7 +496,7 @@ export const GetSelfCetHidden = (id:any): any => {
   };
 };
 
-export const getBreadCrums = (FormId: Number,agentId: Number, callback: Function): any => {
+export const getBreadCrums = (FormId: Number, agentId: Number, callback: Function): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
       Utils.EndPoint.getBreadCrums,
@@ -1379,11 +1379,11 @@ export const GetChapter3Status = (formTypeId: number = 0): any => {
   };
 }
 
-export const GetChapter4Statuses = (): any => {
+export const GetChapter4Statuses = (FormTypeId: number = 0): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
       Utils.EndPoint.GetChapter4Statuses,
-      "",
+      `?FormTypeId=${FormTypeId}`,
       (resData) => {
         const { data } = resData;
         if (resData.status === 200) {
@@ -2198,7 +2198,7 @@ export const UpsertSpecialRateAndCondition = (payload: any, callback: Function, 
   }
 }
 
-export const GetDualCertDetailsPerson = (AccountHolderId: number, formTypeID:number , callback: Function): any => {
+export const GetDualCertDetailsPerson = (AccountHolderId: number, formTypeID: number, callback: Function): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
       Utils.EndPoint.GetDualCertDetailsControlingPerson,
@@ -2914,13 +2914,13 @@ export const postSCEntityEForm = (value: any, callback: Function, errorCallback:
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.InsertCaymanEntityNonUS,
-    convertToFormData(value),
+      convertToFormData(value),
       // value,
       (responseData) => {
         let { data } = responseData;
         dispatch({
           type: Utils.actionName.InsertCaymanEntityNonUS,
-          payload: { ...value,renouncementProofFile:"", Response: data },
+          payload: { ...value, renouncementProofFile: "", Response: data },
         });
         if (responseData) {
           if (responseData.status == 500) {
@@ -3000,7 +3000,7 @@ export const upsertFATCAStepsDetails = (value: any, callback: Function, errorCal
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.UpsertFATCAStepsDetails,
-    convertToFormData(value),
+      convertToFormData(value),
       // value,
       (responseData) => {
         let { data } = responseData;

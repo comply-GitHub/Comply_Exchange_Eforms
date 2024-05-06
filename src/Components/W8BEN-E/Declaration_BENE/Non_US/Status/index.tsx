@@ -195,7 +195,7 @@ export default function Fedral_tax(props: any) {
     dispatch(GetHelpVideoDetails());
     dispatch(getAllCountriesIncomeCode());
     // dispatch(getAllStateByCountryId());
-    dispatch(GetChapter4Statuses());
+    dispatch(GetChapter4Statuses(FormTypeId.BENE));
     LoadData();
   }, []);
 
@@ -1355,10 +1355,10 @@ export default function Fedral_tax(props: any) {
                                     29 a
                                   </Typography>
                                   <Typography>
-                                    <Checkbox 
-                                    // disabled={values.isCertify29aEntity}
-                                     name="isCertify29aEntity" value={values.isCertify29aEntity} checked={values.isCertify29aEntity}
-                                     onChange={handleChange}/>
+                                    <Checkbox
+                                      // disabled={values.isCertify29aEntity}
+                                      name="isCertify29aEntity" value={values.isCertify29aEntity} checked={values.isCertify29aEntity}
+                                      onChange={handleChange} />
                                   </Typography>
                                   <Typography className="mt-2">
                                     I certify that the entity identified in Part I:
@@ -1381,10 +1381,10 @@ export default function Fedral_tax(props: any) {
                                     b
                                   </Typography>
                                   <Typography>
-                                    <Checkbox 
-                                    //  disabled={values.isCertify29bEntity} 
-                                    name="isCertify29bEntity" value={values.isCertify29bEntity} checked={values.isCertify29bEntity}
-                                    onChange= {handleChange} />
+                                    <Checkbox
+                                      //  disabled={values.isCertify29bEntity} 
+                                      name="isCertify29bEntity" value={values.isCertify29bEntity} checked={values.isCertify29bEntity}
+                                      onChange={handleChange} />
                                   </Typography>
                                   <Typography className="mt-2">
                                     I certify that the entity identified in Part I :
@@ -1426,9 +1426,9 @@ export default function Fedral_tax(props: any) {
                                   </Typography>
                                   <Typography>
                                     <Checkbox
-                                    //  disabled={values.isCertify29cEntity}
+                                      //  disabled={values.isCertify29cEntity}
                                       name="isCertify29cEntity" value={values.isCertify29cEntity} checked={values.isCertify29cEntity}
-                                     onChange = {handleChange} />
+                                      onChange={handleChange} />
                                   </Typography>
                                   <Typography className="mt-2">
                                     I certify that the entity identified in Part I :
@@ -1459,10 +1459,10 @@ export default function Fedral_tax(props: any) {
                                     d
                                   </Typography>
                                   <Typography>
-                                    <Checkbox 
-                                    // disabled={values.isCertify29dEntity} 
-                                    name="isCertify29dEntity" value={values.isCertify29dEntity} checked={values.isCertify29dEntity}
-                                     onChange = {handleChange} />
+                                    <Checkbox
+                                      // disabled={values.isCertify29dEntity} 
+                                      name="isCertify29dEntity" value={values.isCertify29dEntity} checked={values.isCertify29dEntity}
+                                      onChange={handleChange} />
                                   </Typography>
                                   <Typography className="mt-2">
                                     I certify that the entity identified in Part I :
@@ -1479,9 +1479,9 @@ export default function Fedral_tax(props: any) {
                                   </Typography>
                                   <Typography>
                                     <Checkbox
-                                    //  disabled={values.isCertify29eEntity} 
-                                     name="isCertify29eEntity" value={values.isCertify29eEntity} checked={values.isCertify29eEntity}
-                                      onChange = {handleChange} />
+                                      //  disabled={values.isCertify29eEntity} 
+                                      name="isCertify29eEntity" value={values.isCertify29eEntity} checked={values.isCertify29eEntity}
+                                      onChange={handleChange} />
                                   </Typography>
                                   <Typography className="mt-2">
                                     I certify that the entity identified in Part I :
@@ -1502,10 +1502,10 @@ export default function Fedral_tax(props: any) {
                                     f
                                   </Typography>
                                   <Typography>
-                                    <Checkbox 
-                                    // disabled={values.isCertify29fEntity} 
-                                    name="isCertify29fEntity" value={values.isCertify29fEntity} checked={values.isCertify29fEntity}
-                                      onChange = {handleChange} />
+                                    <Checkbox
+                                      // disabled={values.isCertify29fEntity} 
+                                      name="isCertify29fEntity" value={values.isCertify29fEntity} checked={values.isCertify29fEntity}
+                                      onChange={handleChange} />
                                   </Typography>
                                   <Typography className="mt-2">
                                     I certify that the entity identified in Part I :
