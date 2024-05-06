@@ -86,7 +86,7 @@ export const TaxPurposeSchema = () => {
 export const chapter4Schema = () => {
   return Yup.object().shape({
     chapter4StatusId: Yup.number()
-      .min(1, "Field Cannot be Empty")
+      .min(2, "Field Cannot be Empty")
       .required("Field Cannot be Empty"),
     isNotFinancialInsititute: Yup.boolean().when(["chapter4StatusId"], ([chapter4StatusId], schema) => {
       if (chapter4StatusId == 2) {
@@ -96,7 +96,7 @@ export const chapter4Schema = () => {
       }
     }),
     isNoSubstantialUSOwner: Yup.boolean(),
-    isPassiveNFFE40C: Yup.boolean().when(["chapter4StatusId", "isNoSubstantialUSOwner"], ([chapter4StatusId, isNoSubstantialUSOwner], schema) => {
+    isNFFE: Yup.boolean().when(["chapter4StatusId", "isNoSubstantialUSOwner"], ([chapter4StatusId, isNoSubstantialUSOwner], schema) => {
       console.log(isNoSubstantialUSOwner)
       if (chapter4StatusId == 2) {
         if (isNoSubstantialUSOwner !== true) {
@@ -107,9 +107,84 @@ export const chapter4Schema = () => {
       } else {
         return schema;
       }
-
-    })
-
+    }),
+    isSection114716: Yup.boolean(),
+    isRegulationSection114716: Yup.boolean().when(["chapter4StatusId", "isSection114716"], ([chapter4StatusId, isSection114716], schema) => {
+      if (chapter4StatusId == 37) {
+        if (isSection114716 !== true) {
+          return schema.isTrue("please check b or c checkbox");
+        } else {
+          return schema.isFalse("please check b or c checkbox")
+        }
+      } else if (chapter4StatusId == 38) {
+        return schema.isTrue("please check checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isNonReportingIGAFFI: Yup.boolean().when(["chapter4StatusId"], ([chapter4StatusId], schema) => {
+      if (chapter4StatusId == 24) {
+        return schema.isTrue("please check the checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    iGAUSCountryId: Yup.number().when(["chapter4StatusId"], ([chapter4StatusId], schema) => {
+      if (chapter4StatusId == 24) {
+        return schema.notOneOf([0, -1], "Please select a valid country");
+      } else {
+        return schema;
+      }
+    }),
+    treatedAsId: Yup.number().when(["chapter4StatusId"], ([chapter4StatusId], schema) => {
+      if (chapter4StatusId == 24) {
+        return schema.notOneOf([0, -1], "Please select a valid country");
+      } else {
+        return schema;
+      }
+    }),
+    specifyEntity: Yup.string().when(["chapter4StatusId"], ([chapter4StatusId], schema) => {
+      if (chapter4StatusId == 24) {
+        return schema.notOneOf([undefined, ""], "Please enter a valid value");
+      } else {
+        return schema;
+      }
+    }),
+    gIINNumber: Yup.string().when(["chapter4StatusId"], ([chapter4StatusId], schema) => {
+      if (chapter4StatusId == 24) {
+        return schema.notOneOf([undefined, ""], "Please enter a valid value");
+      } else {
+        return schema;
+      }
+    }),
+    nameSponsoringEntity: Yup.string().when(["chapter4StatusId"], ([chapter4StatusId], schema) => {
+      if (chapter4StatusId == 33) {
+        return schema.notOneOf([undefined, ""], "Please enter a valid value");
+      } else {
+        return schema;
+      }
+    }),
+    isNFFESponsored: Yup.boolean().when(["chapter4StatusId"], ([chapter4StatusId], schema) => {
+      if (chapter4StatusId == 33) {
+        return schema.notOneOf([undefined, false], "Please check the checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isFinancialLawUS: Yup.boolean().when(["chapter4StatusId"], ([chapter4StatusId], schema) => {
+      if (chapter4StatusId == 35) {
+        return schema.notOneOf([undefined, false], "Please check the checkbox");
+      } else {
+        return schema;
+      }
+    }),
+    isSection501NotInsuranceCompany: Yup.boolean().when(["chapter4StatusId"], ([chapter4StatusId], schema) => {
+      if (chapter4StatusId == 36) {
+        return schema.notOneOf([undefined, false], "Please check the checkbox");
+      } else {
+        return schema;
+      }
+    }),
   });
 };
 
