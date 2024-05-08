@@ -16,7 +16,7 @@ import Infoicon from "../../../assets/img/info.png";
 import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { ContentCopy } from "@mui/icons-material";
-import { useNavigate } from "react-router";
+import { redirect, useNavigate } from "react-router";
 import { partCertiSchema } from "../../../schemas/w8Exp";
 import { W8_state_ECI, GetHelpVideoDetails, postW8EXPForm } from "../../../Redux/Actions";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
@@ -25,6 +25,7 @@ import SecurityCodeRecover from "../../Reusable/SecurityCodeRecover";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 export default function Penalties() {
 
   const { authDetails } = useAuth();
@@ -710,7 +711,8 @@ export default function Penalties() {
                         <Button
                           onClick={() => {
                             submitForm().then(() => {
-                              history("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp/Participation_Exp/Submit_Exp");
+                              Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp/Participation_Exp/Submit_Exp",authDetails?.agentId,history,true)
+                              // history("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp/Participation_Exp/Submit_Exp");
                             })
                           }}
                           // type="submit"
@@ -735,7 +737,8 @@ export default function Penalties() {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history('/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp')
+                            Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp",authDetails?.agentId,history,true)
+                            // history('/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp')
                           }}
                           variant="contained"
                           style={{

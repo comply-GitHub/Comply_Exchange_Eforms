@@ -43,7 +43,7 @@ export default function Tin(props: any) {
     usTinTypeId: onBoardingFormValues?.taxpayerIdTypeID ? onBoardingFormValues?.taxpayerIdTypeID : onBoardingFormValuesPrevStepData?.usTINTypeId ? onBoardingFormValuesPrevStepData?.usTINTypeId : 0,
     usTin: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin.replace(/-/g, '') : onBoardingFormValuesPrevStepData?.usTin ? onBoardingFormValuesPrevStepData?.usTin : "",
     notAvailable: false,
-    ForeginTIN_CountryId: onBoardingFormValues?.foreignTINCountryId != 0 ? onBoardingFormValues?.foreignTINCountryId : onBoardingFormValuesPrevStepData?.ForeginTIN_CountryId,
+    ForeginTIN_CountryId: onBoardingFormValues?.countryOfCitizenshipId != 0 ? onBoardingFormValues?.countryOfCitizenshipId : onBoardingFormValuesPrevStepData?.ForeginTIN_CountryId,
     ForegionTIN: onBoardingFormValues?.foreignTIN ? onBoardingFormValues?.foreignTIN : onBoardingFormValuesPrevStepData?.ForegionTIN ? onBoardingFormValuesPrevStepData?.ForegionTIN : "",
     isFTINNotLegallyRequired: false,
     tinisFTINNotLegallyRequired: "",
@@ -162,7 +162,7 @@ export default function Tin(props: any) {
         }) => (
           <Form onSubmit={handleSubmit}>
 
-            {/* <>{console.log(errors, values, "errorsssss")}</> */}
+            <>{console.log(errors, values, "errorsssss")}</>
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
@@ -715,7 +715,7 @@ export default function Tin(props: any) {
                             )}
                             {/* <p className="error">{errors?.ForeginTIN_CountryId}</p> */}
 
-                            <div style={{ marginTop: "2px" }}>
+                            {/* <div style={{ marginTop: "2px" }}>
                               <Checkbox
                                 value={values.isFTINNotLegallyRequired}
                                 checked={values.isFTINNotLegallyRequired}
@@ -774,7 +774,7 @@ export default function Tin(props: any) {
                                   </Tooltip>
                                 </span>
                               </span>
-                            </div>
+                            </div> */}
 
                             {toolInfo === "require" ? (
                               <Paper
@@ -1002,9 +1002,7 @@ export default function Tin(props: any) {
                                   onChange={handleChange}
                                   onClick={() => {
                                     setFieldValue("ForegionTIN", "");
-                                    setTimeout(() => {
-                                      setFieldValue("ForeginTIN_CountryId", "");
-                                    }, 200);
+                                    
                                   }}
 
                                 >
@@ -1025,6 +1023,7 @@ export default function Tin(props: any) {
                                   />
 
                                   {values.tinisFTINNotLegallyRequired === "Yes" ||
+                                    values.tinisFTINNotLegallyRequired === "NO" ||
                                     values.tinisFTINNotLegallyRequired === "No" ? (
                                     <Delete
                                       onClick={() => {

@@ -1908,7 +1908,8 @@ export default function Fedral_tax(props: any) {
                             onClick={() => {
                               submitForm().then((data) => {
                                 console.log(data)
-                                history("/W-8ECI/Tax_Payer");
+                                // history("/W-8ECI/Tax_Payer");
+                                Redirect("/W-8ECI/Tax_Payer",authDetails?.agentId,history,false)
                               })
                             }}
                           >

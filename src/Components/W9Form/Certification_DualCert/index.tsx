@@ -28,6 +28,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetW9DCPdf } from "../../../Redux/Actions/PfdActions";
 import useAuth from "../../../customHooks/useAuth";
+import Redirect from "../../../Router/RouterSkip";
 
 export default function Certifications(props: any) {
   const { authDetails } = useAuth();
@@ -147,7 +148,13 @@ export default function Certifications(props: any) {
                     dispatch(
                       PostDualCert(result, () => {
                         localStorage.setItem("DualCertData", JSON.stringify(result))
-                        history("/Participation_W9_DC")
+                        // history("/Participation_W9_DC")
+                        Redirect(
+                          "/Participation_W9_DC",
+                          authDetails?.agentId,
+                          history,
+                          false
+                        );
 
                         resolve("");
                       },

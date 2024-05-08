@@ -38,6 +38,7 @@ import "react-calendar/dist/Calendar.css";
 import "./index.scss";
 import useAuth from "../../../customHooks/useAuth";
 import { boolean } from "yup";
+import Redirect from "../../../Router/RouterSkip";
 type ValuePiece = Date | null;
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function Certifications(props: any) {
@@ -473,7 +474,13 @@ const individualSelfType = {
                       (data) => {
                         localStorage.setItem("PrevStepData", JSON.stringify(temp));
                         
-                        history("/US_Determination_W9_DC")
+                        // history("/US_Determination_W9_DC")
+                        Redirect(
+                          "/US_Determination_W9_DC",
+                          authDetails?.agentId,
+                          history,
+                          false
+                        );
                         setSubmitting(true);
                         resolve(data);
                       },

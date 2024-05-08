@@ -31,6 +31,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 export default function Backup_witholding(props: any) {
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
@@ -154,7 +155,13 @@ export default function Backup_witholding(props: any) {
               dispatch(
                 postW9Form(result, () => {
                   localStorage.setItem("PrevStepData", JSON.stringify(result))
-                  history("/US_Purposes/Back/Exemption")
+                  // history("/US_Purposes/Back/Exemption")
+                  Redirect(
+                    "/US_Purposes/Back/Exemption",
+                    authDetails?.agentId,
+                    history,
+                    false
+                  );
                   resolve("success");
                   setSubmitting(false);
                 }, (error: any) => { reject(error) })
@@ -1003,7 +1010,12 @@ export default function Backup_witholding(props: any) {
                   style={{ color: "white", marginLeft: "15px" }}
                   onClick={() => {
                     submitForm().then(() => {
-                      history("/US_Purposes/Back/Exemption")
+                      Redirect(
+                        "/US_Purposes/Back/Exemption",
+                        authDetails?.agentId,
+                        history,
+                        false
+                      );
                     }).catch((errors) => {
                       console.log(errors);
                     })
@@ -1029,9 +1041,21 @@ export default function Backup_witholding(props: any) {
                 <Button
                   onClick={() => {
                     if(StepData?.agentId === 1){
-                      history("/W9/purposes")
+                      Redirect(
+                        "/W9/purposes",
+                        authDetails?.agentId,
+                        history,
+                        true
+                      );
+                      // history("/W9/purposes")
                     }else{
-                      history('/TaxPurpose_W9')
+                      Redirect(
+                        "/TaxPurpose_W9",
+                        authDetails?.agentId,
+                        history,
+                        true
+                      );
+                      // history('/TaxPurpose_W9')
                     }
                    
                   }}

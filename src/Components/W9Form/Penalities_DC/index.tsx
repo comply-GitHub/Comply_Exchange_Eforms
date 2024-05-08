@@ -39,6 +39,7 @@ import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetW9DCPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 type ValuePiece = Date | null;
 console.log(Date, "date");
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
@@ -778,7 +779,13 @@ export default function Penalties() {
                           //type="submit"
                           onClick={() => {
                             submitForm().then((data: any) => {
-                              history("/Submit_W9_DC");
+                              // history("/Submit_W9_DC");
+                              Redirect(
+                                "/Submit_W9_DC",
+                                authDetails?.agentId,
+                                history,
+                                false
+                              );
                             }).catch(() => {
 
                             })

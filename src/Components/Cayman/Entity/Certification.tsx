@@ -116,9 +116,10 @@ export default function Certifications(props: any) {
                     dispatch(
                         postSCEntityEForm([result], () => {
                         localStorage.setItem("SelfCertData", JSON.stringify(result))
-                        history("/Cayman/Entity/Submission")
+                        
                         setSubmitting(true);
-                        resolve("");
+                        //history("/Cayman/Entity/Submission")
+                        resolve("success");
                       },
                       (err:any)=>{
                         reject(err);
@@ -126,6 +127,7 @@ export default function Certifications(props: any) {
                       })
                     );
                   });
+                  return submitPromise;
 
                 }}
               >
@@ -251,11 +253,27 @@ export default function Certifications(props: any) {
                         >
                           SAVE & EXIT
                         </Button> */}
-                           <SaveAndExit Callback={() => {
+                        <SaveAndExit Callback={() => {
+                          submitForm().then(() => {
+                            const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+                            const urlValue = window.location.pathname.substring(1);
+                            dispatch(postSCEntityEForm(
+                              {
+                                ...prevStepData,
+                                stepName: `/${urlValue}`
+                              }
+                              , () => { }))
+                            history(
+                              GlobalValues.basePageRoute
+                            );
+                          })
+                        }} formTypeId={FormTypeId.CaymanEntity} ></SaveAndExit>
+
+                           {/* <SaveAndExit Callback={() => {
                             submitForm().then((data) => {
                               const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                               const urlValue = window.location.pathname.substring(1);
-                              dispatch(postSCIndividualEForm(
+                              dispatch(postSCEntityEForm(
                                 {
                                     ...prevStepData,
                                     ...values,
@@ -268,7 +286,7 @@ export default function Certifications(props: any) {
                             }).catch((err) => {
                               console.log(err);
                             })
-                          }} formTypeId={FormTypeId.BEN} />
+                          }} formTypeId={FormTypeId.CaymanEntity} /> */}
                         <Button
 
                           variant="contained"
@@ -286,7 +304,7 @@ export default function Certifications(props: any) {
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
                             submitForm().then((data) => {
-                            //   history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
+                              history("/Cayman/Entity/Submission")
                             }).catch((error) => {
                               console.log(error);
                             })

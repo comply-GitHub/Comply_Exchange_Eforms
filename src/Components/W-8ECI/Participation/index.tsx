@@ -30,6 +30,7 @@ import SecurityCodeRecover from "../../Reusable/SecurityCodeRecover";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 export default function Penalties() {
 
   const { authDetails } = useAuth();
@@ -724,7 +725,8 @@ export default function Penalties() {
                         <Button
                           onClick={() => {
                             submitForm().then(() => {
-                              history("/W-8ECI/Certification/Participation/Submit_Eci");
+                              Redirect("/W-8ECI/Certification/Participation/Submit_Eci",authDetails?.agentId,history,false)
+                              // history("/W-8ECI/Certification/Participation/Submit_Eci");
                             })
                           }}
                           // type="submit"
@@ -749,7 +751,8 @@ export default function Penalties() {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history("/W-8ECI/Certification")
+                            Redirect("/W-8ECI/Certification/Participation/Submit_Eci",authDetails?.agentId,history,true)
+                            // history("/W-8ECI/Certification")
                           }}
                           variant="contained"
                           style={{

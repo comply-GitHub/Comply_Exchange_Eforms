@@ -38,6 +38,7 @@ import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 type ValuePiece = Date | null;
 console.log(Date, "date");
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
@@ -123,7 +124,13 @@ export default function Penalties() {
             dispatch(
               postW9Form(result, (data: any) => {
                 setSubmitting(true);
-                history("/W9_Submit");
+                // history("/W9_Submit");
+                Redirect(
+                  "/W9_Submit",
+                  authDetails?.agentId,
+                  history,
+                  false
+                );
                 localStorage.setItem(
                   "PrevStepData",
                   JSON.stringify(result)
@@ -813,7 +820,13 @@ export default function Penalties() {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history('/US_Purposes/Back/Exemption/Tax/Certificates')
+                            Redirect(
+                              "/US_Purposes/Back/Exemption/Tax/Certificates",
+                              authDetails?.agentId,
+                              history,
+                              true
+                            );
+                            // history('/US_Purposes/Back/Exemption/Tax/Certificates')
                           }
 
                           }
