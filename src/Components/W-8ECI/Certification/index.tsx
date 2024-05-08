@@ -25,7 +25,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../customHooks/useAuth";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
-
+import AttachDocument from "../../AttachDocument";
 export default function Certifications(props: any) {
 
   const { authDetails } = useAuth()
@@ -592,8 +592,9 @@ export default function Certifications(props: any) {
                         onClick={() => {
                           submitForm()
                             .then((data) => {
+                             
                               history(
-                                "/W-8ECI/Certification/Participation"
+                                "/Attach_document"
                               );
                             })
                             .catch((err) => {

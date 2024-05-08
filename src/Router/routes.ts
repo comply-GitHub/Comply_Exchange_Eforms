@@ -51,6 +51,10 @@ const SelfCert_Passive_W9_DC = React.lazy(
   () => import("../Components/W9Form/SelfCertPassive")
 );
 
+const Attach_document = React.lazy(
+  () => import("../Components/AttachDocument")
+);
+
 const US_Determination_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/USDetermination")
 );
@@ -432,6 +436,15 @@ const ROUTES: Array<RouteType> = [
     Component: Perti_dualCert_Eci,
     isPrivate: true,
   },
+
+  {
+    name: "Attach_document",
+    path: "/Attach_document",
+    id: 2,
+    Component: Attach_document,
+    isPrivate: true,
+  },
+ 
   {
     name: "Submit_dualCert_Eci",
     path: "/Submit_dualCert_Eci",

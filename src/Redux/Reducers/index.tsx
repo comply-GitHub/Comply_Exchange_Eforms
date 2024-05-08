@@ -4,6 +4,8 @@ import { getAllAccountStatement } from "../Actions";
 const { LOGIN, formPDFFieldData,GetCountries, GetControllingEntity,getBreadCrums, GetAgentPaymentType, GetTinTypes, GetSecurityQuestions, GetCountriesCode, GetAllIncomeCodes, GetStateByCountryId, W9PDF, postSecurutyCode,
   GetAgentCapacityHiddenForEform,
   GetAgentExemptionCodeHidden,
+  GetDocumentList,
+  GetDocumentListType,
   GetAgentChapter4EntityTypeHiddenForEform,
   GetAgentChapter3EntityTypeHiddenForEform,
   GetAgentChapter4EntityTypeImportantForEform,
@@ -259,8 +261,25 @@ export const GetAgentPaymentTypeReducer = (state = initialState, action: any): a
       return state;
   }
 };
-//GetAgentExemptionCodeHidden
+//GetDocumentListTypeData
 
+export const GetAgentDocumentListTypesReducer = (state = initialState, action: any): any => {
+  switch (action.type) {
+    case GetDocumentListType:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+};
+
+export const GetAgentDocumentListReducer = (state = initialState, action: any): any => {
+  switch (action.type) {
+    case GetDocumentList:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+};
 export const GetAgentExemptionCodeHiddenReducer = (state = initialState, action: any): any => {
   switch (action.type) {
     case GetAgentExemptionCodeHidden:

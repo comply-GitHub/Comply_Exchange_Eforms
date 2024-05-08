@@ -31,6 +31,8 @@ const EndPoint = {
   UpsertDualCertDetailsControllingPerson:"/DualCert/UpsertDualCertDetailsControllingPerson",
   GetDualCertDetailsControlingPerson:"/DualCert/GetDualCertDetailsControllingPerson",
   //
+  GetDocumentList:"/AgentEditList/GetAgentDocumentationMandatory",
+  GetDocumentListType:"/Documentation/GetAdditionalDocumentationTypes",
   GetAgentExemptionCodeHidden:"/AgentEditList/GetAgentFATCAExemptionCodeHidden",
   GetAgentCapacityHiddenForEform: "/WebAppBasic/GetAgentCapacityHiddenForEform",
   GetAgentChapter4EntityTypeHiddenForEform: "/WebAppBasic/GetAgentChapter4EntityTypeHiddenForEform",
