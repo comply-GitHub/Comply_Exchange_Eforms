@@ -296,7 +296,8 @@ export default function Fedral_tax(props: any) {
                           (responseData: any) => {
                             localStorage.setItem("PrevStepData", JSON.stringify(temp));
                             resolve(responseData);
-                            history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY");
+                            // history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY");
+                            history("/IMY/Tax_Purpose_Exp/DisregardedImy");
                           },
                           (err: any) => {
                             reject(err);
