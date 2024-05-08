@@ -2702,7 +2702,7 @@ export default function Fedral_tax(props: any) {
                             onClick={() => {
                               submitForm().then((data) => {
                                 history(
-                                  "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/US_Tin_BenE"
+                                  "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/DisregardedBeneE"
                                 );
                               }).catch((err) => {
                                 console.log(err);

@@ -23,14 +23,15 @@ export const DisregardedEntitySchema = Yup.object().shape({
     //       return schema;
     //     }
     //   }),
-      giin:Yup.string()
+      giin:Yup.string().nullable()
       .test({
         name:"length",
         message:"GIIN lenth should be 16 character",
         test:(value,context)=>{
             let { chapter4StatusId}=context.parent;
-            if(chapter4StatusId>1)
-            return value?.length==16
+            if(chapter4StatusId>1){              
+              return value?.length==16
+            }
             else
             return true
         }
