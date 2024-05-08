@@ -50,6 +50,7 @@ const EndPoint = {
   GetAgentCountriesImportantForEform:"/WebAppBasic/GetAgentCountriesImportantForEform",
   GetChapter3Status:"/W9Common/GetChapter3Status",
   GetChapter4Statuses:"/W9Common/GetChapter4Statuses",
+  GetFATCAChapter4Status:"/W9Common/GetFATCAChapter4Status",
   GetAgentIncomeTypeHiddenAllowAnoymo:"/AgentUSSourceIncome/GetAgentIncomeTypeHiddenAllowAnoym",
   SendOTPMail:"/Mail/SendOTPMail",
   GET_AGENT_BY_ID:"/Agent/GetAgentById",
@@ -138,5 +139,11 @@ GetCaymanIndividualPdf:"/CaymanIndividualNonUS/GetCaymanIndividualPdf",
  // skipped steps
  GetAgentSkippedSteps:"/Agent/GetAgentSkippedSteps",
  GetControllingEntity:"/DualCert/GetControllingPersonLegalStatusEntity",
+
+ // disregarded Entities 
+ UpsertAccountHolderDisRegardedEntity:"/AccountHolderDetail/UpsertAccountHolderDisRegardedEntity",
+ GetDisregardedEntity:"/AccountHolderDetail/GetDisregardedEntity",
+ 
+
 };
 export default EndPoint;

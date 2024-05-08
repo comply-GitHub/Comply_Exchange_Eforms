@@ -303,6 +303,7 @@ const ThankYou_Exp = React.lazy(() => import("../Components/W-8EXP/Thankyou_exp"
 //
 const Purpose_IMY = React.lazy(() => import("../Components/W-8IMY/Status"));
 const Chapter4_IMY = React.lazy(() => import("../Components/W-8IMY/Chapter4_IMY"));
+const DisregardedEntityIMY=React.lazy(()=>import("../Components/W-8IMY/DisregardedEntityImy/index"))
 const TaxPayer_IMY = React.lazy(() => import("../Components/W-8IMY/TaxPayer"));
 const Statement_IMY = React.lazy(() => import("../Components/W-8IMY/Statement"));
 const Certificates_IMY = React.lazy(() => import("../Components/W-8IMY/Certificates"));
@@ -1347,6 +1348,13 @@ const ROUTES: Array<RouteType> = [
     path: "/IMY/Tax_Purpose_Exp/Chapter4_IMY",
     id: 7,
     Component: Chapter4_IMY,
+    isPrivate: true,
+  },  
+  {
+    name: "Chapter4_IMY",
+    path: "/IMY/Tax_Purpose_Exp/DisregardedImy",
+    id: 7,
+    Component: DisregardedEntityIMY,
     isPrivate: true,
   },
   {
