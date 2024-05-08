@@ -60,7 +60,7 @@ export default function Fedral_tax(props: any) {
   } = props;
 
   const [initialValue, setInitialValues] = useState({
-    chapter4StatusId: 0,
+    chapter4StatusId: 1,
     isNotFinancialInsititute: false,
     isNoSubstantialUSOwner: false,
     isNFFE: false,
@@ -223,6 +223,7 @@ export default function Fedral_tax(props: any) {
                   enableReinitialize
                   validateOnChange={true}
                   validateOnBlur={false}
+                  validateOnMount={true}
                   initialValues={initialValue}
                   validationSchema={chapter4Schema}
                   onSubmit={async (values, { setSubmitting }) => {
@@ -452,7 +453,7 @@ export default function Fedral_tax(props: any) {
                                       height: "36px",
                                     }}
                                   >
-                                    <option value={-1}>-----------Plese select chapter 4 status--------------------</option>
+                                    <option value={-1}>----------------------Plese select ---------------------------</option>
                                     <option value={2}>Passive NFFE</option>
                                     <option value={3}>Reporting Model 1 FFI</option>
                                     <option value={4}>Reporting Model 2 FFI</option>
