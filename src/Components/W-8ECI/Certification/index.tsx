@@ -622,9 +622,9 @@ export default function Certifications(props: any) {
                     </Typography>
                     <Typography align="center">
                       <Button
-                        // onClick={() => {
-                        //   Redirect("/W-8ECI/Certification/Participation",authDetails?.agentId,history,true)
-                        // }}
+                        onClick={() => {
+                          Redirect("/Attach_document_ECI",authDetails?.agentId,history,true)
+                        }}
                         variant="contained"
                         style={{
                           color: "white",

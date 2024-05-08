@@ -22,8 +22,29 @@ import useAuth from "../../customHooks/useAuth";
 import { GetForm8233Pdf } from "../../Redux/Actions/PfdActions";
 import Redirect from "../../Router/RouterSkip";
 
-export default function AttachDocument(props: any) {
-  const {redirectUrl,redirectBackUrl}=props;
+interface AttachDocumentProps {
+  InitialValues: any,
+  FormTypeId: number,
+  BreadCrumbOrder: number,
+  ContinueRoute: string,
+  BackRoute: string,
+  GetPdf: Function,
+  ContinueFunction: Function,
+  SaveAndExitFunction: Function
+}
+
+const AttachDocument = ({
+  InitialValues,
+  FormTypeId,
+  BreadCrumbOrder,
+  ContinueRoute,
+  BackRoute,
+  GetPdf,
+  ContinueFunction,
+  SaveAndExitFunction
+}: AttachDocumentProps) => {
+
+
   const getFirstDocData = useSelector((state: any) => state.form8233);
   const { authDetails } = useAuth();
 
@@ -144,7 +165,7 @@ export default function AttachDocument(props: any) {
       updatedDocs[index].file = files[0];
       updatedDocs[index].agentId = authDetails?.agentId;
       updatedDocs[index].accountHolderDetailsId = authDetails?.accountHolderId;
-      updatedDocs[index].formTypeId = FormTypeId.F8233;
+      updatedDocs[index].formTypeId = FormTypeId;
       updatedDocs[index].documentTypeId = documentTypeId[0]?.documentationId;
       updatedDocs[index].action = 2;
       updatedDocs[index].fileStorageName = docNam;
@@ -181,7 +202,7 @@ export default function AttachDocument(props: any) {
       // history(
       //   "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
       // );
-      Redirect(redirectUrl, authDetails?.agentId, history);
+      
     }))
 
 
@@ -196,8 +217,8 @@ export default function AttachDocument(props: any) {
       id: index + 1,
       agentId: GetDocumentData.DocumentListData[index].agentId,
       accountHolderDetailsId: authDetails?.accountHolderId,
-      formTypeId: FormTypeId.BEN,
-      formEntryId: FormTypeId.BEN,
+      formTypeId: FormTypeId,
+      formEntryId: FormTypeId,
       documentTypeId: GetDocumentData.DocumentListData[index].documentationId,
       file: file.name,
       fileStorageName: file.name,
@@ -277,7 +298,7 @@ export default function AttachDocument(props: any) {
 
   useEffect(() => {
     if (authDetails?.accountHolderId !== undefined) {
-      dispatch(getSupportingDocument(authDetails?.accountHolderId, FormTypeId.F8233))
+      dispatch(getSupportingDocument(authDetails?.accountHolderId, FormTypeId))
     }
 
   }, [authDetails])
@@ -287,8 +308,8 @@ export default function AttachDocument(props: any) {
       id: index + 1,
       agentId: GetDocumentData.DocumentListData[index].agentId,
       accountHolderDetailsId: 0,
-      formTypeId: FormTypeId.BEN,
-      formEntryId: FormTypeId.BEN,
+      formTypeId: FormTypeId,
+      formEntryId: FormTypeId,
       documentTypeId: GetDocumentData.DocumentListData[index].documentationId,
      
       file: file.name,
@@ -317,13 +338,24 @@ export default function AttachDocument(props: any) {
         validateOnMount={false}
         initialValues={initialValue}
         onSubmit={(values, { setSubmitting }) => {
-          setSubmitting(true);
-          let filteredAdditionalDocs = additionalDocs.filter(item => item.file !== null);
-          handleSubmitFileAndCallAPI()
-          // callAPI()
-          // handleSubmitFile()
+          const returnPromise = new Promise((resolve, reject) => {
+            setSubmitting(true);
+         
+            
+            ContinueFunction(handleSubmitFileAndCallAPI(),
+                () => {
+                    Redirect(ContinueRoute, authDetails?.agentId, history);
+                    resolve("success");
+                }, (err: any) => {
+                    reject(err);
+                })
+        });
+        return returnPromise;
+    }}
+         
+        
 
-        }}
+      
       >
         {({
           errors,
@@ -373,7 +405,10 @@ export default function AttachDocument(props: any) {
               <div className="row w-100">
                 <div className="col-4">
                   <div style={{ padding: "15px 0px", height: "100%" }}>
-                    <BreadCrumbComponent breadCrumbCode={1362} formName={FormTypeId.F8233} />
+                  <BreadCrumbComponent
+                                breadCrumbCode={BreadCrumbOrder}
+                                formName={FormTypeId}
+                            />
                   </div>
                 </div>
                 <div className="col-8 mt-3">
@@ -643,7 +678,7 @@ export default function AttachDocument(props: any) {
                               GlobalValues.basePageRoute
                             );
                           })
-                        }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
+                        }} formTypeId={FormTypeId} ></SaveAndExit>
                         <Button
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
@@ -665,7 +700,7 @@ export default function AttachDocument(props: any) {
                       <Typography
                         align="center"
                         style={{
-                          color: "#beb9b9",
+                          color: "bfb0b0",
                           justifyContent: "center",
                           alignItems: "center",
                           marginTop: "20px",
@@ -676,9 +711,8 @@ export default function AttachDocument(props: any) {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            Redirect(redirectBackUrl, authDetails?.agentId, history,true);
-                            
-                          }}
+                            Redirect(BackRoute, authDetails?.agentId, history, true);
+                        }}
                           variant="contained"
                           style={{
                             color: "white",
@@ -701,3 +735,4 @@ export default function AttachDocument(props: any) {
     </>
   );
 }
+export default AttachDocument;

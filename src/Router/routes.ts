@@ -51,10 +51,15 @@ const SelfCert_Passive_W9_DC = React.lazy(
   () => import("../Components/W9Form/SelfCertPassive")
 );
 
-const Attach_document = React.lazy(
-  () => import("../Components/AttachDocument")
+const Attach_document_w9 = React.lazy(
+  () => import("../Components/W9Form/AttachDocument")
 );
-
+const Attach_document_BENE = React.lazy(
+  () => import("../Components/W8BEN-E/Declaration_BENE/Non_US/AttachDocument")
+);
+const Attach_document_ECI = React.lazy(
+  () => import("../Components/W-8ECI/AttachDocument")
+);
 const US_Determination_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/USDetermination")
 );
@@ -403,6 +408,28 @@ const ROUTES: Array<RouteType> = [
     Component: Certification_W9_DC,
     isPrivate: true,
   },
+  //Attach_document_ECI
+  {
+    name: "Attach_document_ECI",
+    path: "/Attach_document_ECI",
+    id: 2,
+    Component: Attach_document_ECI,
+    isPrivate: true,
+  },
+  {
+    name: "Attach_document_BENE",
+    path: "/Attach_document_BENE",
+    id: 2,
+    Component: Attach_document_BENE,
+    isPrivate: true,
+  },
+  {
+    name: "Attach_document_w9",
+    path: "/Attach_document_w9",
+    id: 2,
+    Component: Attach_document_w9,
+    isPrivate: true,
+  },
   {
     name: "TaxPayer_DC_BEN",
     path: "/TaxPayer_DC_BEN",
@@ -439,13 +466,13 @@ const ROUTES: Array<RouteType> = [
     isPrivate: true,
   },
 
-  {
-    name: "Attach_document",
-    path: "/Attach_document",
-    id: 2,
-    Component: Attach_document,
-    isPrivate: true,
-  },
+  // {
+  //   name: "Attach_document",
+  //   path: "/Attach_document",
+  //   id: 2,
+  //   Component: Attach_document,
+  //   isPrivate: true,
+  // },
  
   {
     name: "Submit_dualCert_Eci",

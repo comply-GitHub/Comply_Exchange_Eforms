@@ -784,7 +784,7 @@ The treaty country chosen does not match the country selected earlier as the pri
                           validateForm().then(() => {
                             submitForm().then((data) => {
                               if (values?.isClaimTreaty == "no") {
-                                history('/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE')
+                                history('/Attach_document_BENE')
                               } else {
                                 history(
                                   "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE"

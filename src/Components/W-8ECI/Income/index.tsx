@@ -518,7 +518,7 @@ export default function Factors() {
                           //type="submit"
                           onClick={() => {
                             submitForm().then(() => {
-                              history("/W-8ECI/Certification");
+                              history("/Attach_document_ECI");
                             })
                           }}
                           disabled={!isValid || !incomeTypesValid}
