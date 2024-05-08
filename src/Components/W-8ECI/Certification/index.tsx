@@ -25,12 +25,9 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../customHooks/useAuth";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
-<<<<<<< HEAD
 import AttachDocument from "../../AttachDocument";
-=======
 import Redirect from "../../../Router/RouterSkip";
 
->>>>>>> d2aaaa4f0a9eaa89149c03c2de52a310300f409c
 export default function Certifications(props: any) {
 
   const { authDetails } = useAuth()
@@ -106,7 +103,7 @@ export default function Certifications(props: any) {
             }}
           >View Form</div>
           <div className="helpvideo">
-            {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
+          
             {GethelpData && GethelpData[5].id === 7 ? (
               <a
                 href={GethelpData[5].fieldValue}
@@ -597,10 +594,10 @@ export default function Certifications(props: any) {
                         onClick={() => {
                           submitForm()
                             .then((data) => {
-                              Redirect("/W-8ECI/Certification/Participation",authDetails?.agentId,history,false)
-                              // history(
-                              //   "/W-8ECI/Certification/Participation"
-                              // );
+                              // Redirect("/W-8ECI/Certification/Participation",authDetails?.agentId,history,false)
+                              history(
+                                "/W-8ECI/Certification/Participation"
+                              );
                             })
                             .catch((err) => {
                               console.log(err);
@@ -625,9 +622,9 @@ export default function Certifications(props: any) {
                     </Typography>
                     <Typography align="center">
                       <Button
-                        onClick={() => {
-                          Redirect("/W-8ECI/Certification/Participation",authDetails?.agentId,history,true)
-                        }}
+                        // onClick={() => {
+                        //   Redirect("/W-8ECI/Certification/Participation",authDetails?.agentId,history,true)
+                        // }}
                         variant="contained"
                         style={{
                           color: "white",
