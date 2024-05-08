@@ -202,7 +202,7 @@ export default function Tin(props: any) {
               <div className="row w-100">
                 <div className="col-4">
                   <div style={{ padding: "20px 0px", height: "100%" }}>
-                    <BreadCrumbComponent breadCrumbCode={1358} formName={FormTypeId.F8233} />
+                    <BreadCrumbComponent breadCrumbCode={1249} formName={FormTypeId.FW81MY} />
                   </div>
                 </div>
                 <div className="col-8 mt-3">
@@ -1331,7 +1331,7 @@ export default function Tin(props: any) {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history("/IMY/Tax_Purpose_Exp/Chapter4_IMY");
+                            history("/IMY/Tax_Purpose_Exp/DisregardedImy");
                           }}
                           variant="contained"
                           style={{

@@ -1402,6 +1402,26 @@ export const GetChapter4Statuses = (FormTypeId: number = 0): any => {
   };
 }
 
+export const GetFATCAChapter4Status = (successCallback: Function, errorCallback: Function): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetFATCAChapter4Status,
+      ``,
+      (resData) => {
+        const { data } = resData;
+        if (resData.status === 200) {
+          successCallback(data);
+        } else {
+          errorCallback();
+        }
+      },
+      (error: any) => {
+        errorCallback(error)
+      }
+    );
+  };
+}
+
 export const GetAgentIncomeTypeHiddenAllowAnoymo = (): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
@@ -3134,3 +3154,81 @@ export const postSCStepsDetails = (value: any, successCallback: Function, errorC
     );
   };
 };
+
+
+// Disregarded Entity
+export const PostAccountHolderDisregardedEntity = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  return (dispatch: any) => {
+    Utils.api.postApiCall(
+      Utils.EndPoint.UpsertAccountHolderDisRegardedEntity,
+      value,
+      (responseData) => {
+        let { data } = responseData;
+        // dispatch({
+        //   type: Utils.actionName.InsertW8BENEEntityNonUSForm,
+        //   payload: { ...value, Response: data },
+        // });
+        if (responseData) {
+          if (responseData.status == 500) {
+            let err: ErrorModel = {
+              statusCode: 500,
+              message: responseData.error,
+              payload: responseData
+            }
+            dispatch({
+              type: Utils.actionName.UpdateError,
+              payload: { ...err },
+            });
+            errorCallback({ message: "Internal server error occured", payload: responseData })
+          } else {
+            if (callback) {
+              callback();
+            }
+          }
+        }
+      },
+      (error: ErrorModel) => {
+        console.log(error)
+        let err: any = {
+          ...error
+        }
+        dispatch({
+          type: Utils.actionName.UpdateError,
+          payload: { ...err },
+        });
+        errorCallback(error)
+      },
+      "multi"
+    );
+  };
+};
+
+export const GetAccountHolderDisregardedEntity = (accountHolderId: number, formTypeId: number, callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetDisregardedEntity,
+      `?AccountHolderId=${accountHolderId}&FormTypeId=${formTypeId}`,
+      (resData) => {
+        const { data } = resData;
+        if (resData.status === 200) {
+          if (callback) {
+            callback(data);
+          }
+          // dispatch({
+          //   type: Utils.actionName.UpdateSkippedSteps,
+          //   payload: [...data],
+          // });
+        } else {
+          if (callback) {
+            callback();
+          }
+        }
+      },
+      (error: any) => {
+
+      }
+    );
+  };
+}
+
+
