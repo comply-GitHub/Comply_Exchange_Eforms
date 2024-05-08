@@ -30,6 +30,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 
 export default function Tin(props: any) {
   const dispatch = useDispatch();
@@ -199,7 +200,13 @@ export default function Tin(props: any) {
                   localStorage.setItem("PrevStepData", JSON.stringify(result))
                   if (continueId == 1) {
                     setcontinueId(0);
-                    history("/US_Purposes/Back/Exemption/Tax/Certificates")
+                    Redirect(
+                      "/US_Purposes/Back/Exemption/Tax/Certificates",
+                      authDetails?.agentId,
+                      history,
+                      false
+                    );
+                    // history("/US_Purposes/Back/Exemption/Tax/Certificates")
                   }
                   setSubmitting(false);
                   resolve("success");

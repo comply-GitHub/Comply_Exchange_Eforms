@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../../customHooks/useAuth";
 import { useDispatch } from "react-redux";
 import { GetBenPdf, GetW9Pdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 
 export default function Term() {
   //States  
@@ -168,7 +169,13 @@ export default function Term() {
     <Button
       type="submit"
       onClick={() => {
-        history("/Taxpayer_DC");
+        Redirect(
+          "/Taxpayer_DC",
+          authDetails?.agentId,
+          history,
+          false
+        );
+        // history("/Taxpayer_DC");
       }}
       style={{
         border: "1px solid #0095dd",
@@ -194,7 +201,13 @@ export default function Term() {
     <Button
       type="submit"
       onClick={() => {
-        history("/TaxPurpose_entity_W9_DC");
+        Redirect(
+          "/TaxPurpose_entity_W9_DC",
+          authDetails?.agentId,
+          history,
+          false
+        );
+        // history("/TaxPurpose_entity_W9_DC");
       }}
       style={{
         border: "1px solid #0095dd",

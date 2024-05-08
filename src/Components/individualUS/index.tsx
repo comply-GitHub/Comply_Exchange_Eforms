@@ -1574,9 +1574,9 @@ useEffect(()=>{
                                 value={values.countryOfCitizenshipId}
                               >
                                 <option value="">---select---</option>
-                                <option value={257}>United Kingdom</option>
+                                {/* <option value={257}>United Kingdom</option>
                                 <option value={258}>United States</option>
-                                <option value={500}>---</option>
+                                <option value={500}>---</option> */}
                                 {getCountriesReducer.allCountriesData?.map(
                                   (ele: any) => (
                                     <option key={ele?.id} value={ele?.id}>
@@ -1641,9 +1641,9 @@ useEffect(()=>{
                                 value={values.countryOfBirthId}
                               >
                                 <option value="">---select---</option>
-                                <option value={257}>United Kingdom</option>
+                                {/* <option value={257}>United Kingdom</option>
                                 <option value={258}>United States</option>
-                                <option value={500}>---</option>
+                                <option value={500}>---</option> */}
                                 {getCountriesReducer.allCountriesData?.map(
                                   (ele: any) => (
                                     <option key={ele?.id} value={ele?.id}>
@@ -1838,9 +1838,9 @@ useEffect(()=>{
                                   value={values.countryOfBirthId}
                                 >
                                   <option value="">---select---</option>
-                                  <option value={257}>United Kingdom</option>
+                                  {/* <option value={257}>United Kingdom</option>
                                   <option value={258}>United States</option>
-                                  <option value={500}>---</option>
+                                  <option value={500}>---</option> */}
                                   {getCountriesReducer.allCountriesData?.map(
                                     (ele: any) => (
                                       <option key={ele?.id} value={ele?.id}>
@@ -2113,9 +2113,9 @@ useEffect(()=>{
                                 value={values.countryOfCitizenshipId}
                               >
                                 <option value="">---select---</option>
-                                <option value={257}>United Kingdom</option>
+                                {/* <option value={257}>United Kingdom</option>
                                 <option value={258}>United States</option>
-                                <option value={500}>---</option>
+                                <option value={500}>---</option> */}
                                 {getCountriesReducer.allCountriesData?.map(
                                   (ele: any) => (
                                     <option key={ele?.id} value={ele?.id}>
@@ -2597,8 +2597,8 @@ useEffect(()=>{
                                     value={values.foreignTINCountryId}
                                   >
                                     <option value={0}>---select---</option>
-                                    <option value={257}>United Kingdom</option>
-                                    <option value={500}>---</option>
+                                    {/* <option value={257}>United Kingdom</option>
+                                    <option value={500}>---</option> */}
                                     {
                                       getCountriesReducer.allCountriesData?.map(
                                         (ele: any) => (
@@ -3074,8 +3074,8 @@ useEffect(()=>{
                                   value={values.foreignTINCountryId}
                                 >
                                   <option value={0}>---select---</option>
-                                  <option value={257}>United Kingdom</option>
-                                  <option value={500}>---</option>
+                                  {/* <option value={257}>United Kingdom</option>
+                                  <option value={500}>---</option> */}
                                   {
                                     getCountriesReducer.allCountriesData?.map(
                                       (ele: any) => (
@@ -3668,9 +3668,9 @@ useEffect(()=>{
                             >
                               <option value={0}>---select---</option>
 
-                              <option value={257}>United Kingdom</option>
+                              {/* <option value={257}>United Kingdom</option>
                               <option value={258}>United States</option>
-                              <option value={500}>---</option>
+                              <option value={500}>---</option> */}
                               {getCountriesReducer.allCountriesData?.map(
                                 (ele: any) => (
                                   <option key={ele?.id} value={ele?.id}>
@@ -4644,9 +4644,9 @@ useEffect(()=>{
                                 value={values.permanentResidentialCountryId1}
                               >
                                 <option value={0}>---select---</option>
-                                <option value={257}>United Kingdom</option>
+                                {/* <option value={257}>United Kingdom</option>
                                 <option value={258}>United States</option>
-                                <option value={500}>---</option>
+                                <option value={500}>---</option> */}
                                 {getCountriesReducer.allCountriesData?.map(
                                   (ele: any) => (
                                     <option key={ele?.id} value={ele?.id}>
@@ -6259,12 +6259,12 @@ useEffect(()=>{
                                       value={values.accountBankBranchLocationId}
                                     >
                                       <option value={0}>---select---</option>
-                                      <option value={16}>Australia</option>
+                                      {/* <option value={16}>Australia</option>
                                       <option value={257}>
                                         United Kingdom
                                       </option>
                                       <option value={258}>United States</option>
-                                      <option value={500}>---</option>
+                                      <option value={500}>---</option> */}
                                       {getCountriesReducer.allCountriesData?.map(
                                         (ele: any) => (
                                           <option key={ele?.id} value={ele?.id}>
@@ -6401,11 +6401,11 @@ useEffect(()=>{
                                         {errors.payResidentalCountryId}
                                       </p>
                                       <option value={0}>---select---</option>
-                                      <option value={257}>
+                                      {/* <option value={257}>
                                         United Kingdom
                                       </option>
                                       <option value={258}>United States</option>
-                                      <option value={500}>---</option>
+                                      <option value={500}>---</option> */}
                                       {getCountriesReducer.allCountriesData?.map(
                                         (ele: any) => (
                                           <option key={ele?.id} value={ele?.id}>

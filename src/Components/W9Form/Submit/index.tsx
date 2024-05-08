@@ -15,6 +15,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 import useAuth from "../../../customHooks/useAuth";
+import Redirect from "../../../Router/RouterSkip";
 
 const Declaration = (props: any) => {
   const { authDetails } = useAuth();
@@ -417,7 +418,13 @@ const Declaration = (props: any) => {
                     <Button
                       onClick={() => {
                         submitForm().then((data: any) => {
-                          history("/Thankyou_w9");
+                          // history("/Thankyou_w9");
+                          Redirect(
+                            "/Thankyou_w9",
+                            authDetails?.agentId,
+                            history,
+                            false
+                          );
                         }).catch(() => {
 
                         })
@@ -452,7 +459,13 @@ const Declaration = (props: any) => {
                       }}
 
                       onClick={() => {
-                        history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
+                        Redirect(
+                          "/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9",
+                          authDetails?.agentId,
+                          history,
+                          true
+                        );
+                        // history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
                       }}
                     >
                       Back

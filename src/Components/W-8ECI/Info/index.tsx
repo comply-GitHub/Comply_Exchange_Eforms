@@ -25,44 +25,59 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../../customHooks/useAuth";
 import { TinSchema } from "../../../schemas/w8ECI";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { getTinTypes, GetHelpVideoDetails, getAllStateByCountryId, postW8ECI_EForm } from "../../../Redux/Actions"
+import {
+  getTinTypes,
+  GetHelpVideoDetails,
+  getAllStateByCountryId,
+  postW8ECI_EForm,
+} from "../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 // import useAuth from "../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
-
+import Redirect from "../../../Router/RouterSkip";
 
 export default function Tin(props: any) {
   const { authDetails } = useAuth();
-  const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || "{}");
+  const obValues = JSON.parse(
+    localStorage.getItem("accountHolderDetails") || "{}"
+  );
   const W8ECI = useSelector((state: any) => state.W8ECI);
   const isIndividual = obValues?.businessTypeId == 1;
   const isEntity = obValues?.businessTypeId == 2;
 
   const [initialValue, setInitialValue] = useState({
     formTypeSelectionId: obValues?.businessTypeId,
-    streetNumberName: W8ECI?.streetNumberName ?? obValues.permanentResidentialStreetNumberandName,
+    streetNumberName:
+      W8ECI?.streetNumberName ??
+      obValues.permanentResidentialStreetNumberandName,
     eciUsTinTypeId: W8ECI?.eciUsTinTypeId ?? obValues.taxpayerIdTypeID,
     eciUsTin: W8ECI?.eciUsTin ?? obValues.usTin,
     aptSuite: W8ECI?.aptSuite ?? obValues.permanentResidentialAptSuite,
     cityTown: W8ECI?.cityTown ?? obValues.permanentResidentialCityorTown,
-    stateProvinceId: W8ECI?.stateProvinceId ?? obValues.permanentResidentialStateorProvince,
-    zipPostalCode: W8ECI?.zipPostalCode ?? obValues.permanentresidentialzippostalcode,
+    stateProvinceId:
+      W8ECI?.stateProvinceId ?? obValues.permanentResidentialStateorProvince,
+    zipPostalCode:
+      W8ECI?.zipPostalCode ?? obValues.permanentresidentialzippostalcode,
   });
 
   const LoadData = () => {
     setInitialValue({
       formTypeSelectionId: obValues?.businessTypeId,
-      streetNumberName: W8ECI?.streetNumberName ?? obValues.permanentResidentialStreetNumberandName,
+      streetNumberName:
+        W8ECI?.streetNumberName ??
+        obValues.permanentResidentialStreetNumberandName,
       eciUsTinTypeId: W8ECI?.eciUsTinTypeId ?? obValues.taxpayerIdTypeID,
       eciUsTin: W8ECI?.eciUsTin ?? obValues.usTin,
       aptSuite: W8ECI?.aptSuite ?? obValues.permanentResidentialAptSuite,
       cityTown: W8ECI?.cityTown ?? obValues.permanentResidentialCityorTown,
-      stateProvinceId: W8ECI?.stateProvinceId ?? obValues.permanentResidentialStateorProvince,
-      zipPostalCode: W8ECI?.zipPostalCode ?? obValues.permanentresidentialzippostalcode,
-    })
-  }
+      stateProvinceId:
+        W8ECI?.stateProvinceId ?? obValues.permanentResidentialStateorProvince,
+      zipPostalCode:
+        W8ECI?.zipPostalCode ?? obValues.permanentresidentialzippostalcode,
+    });
+  };
 
   const history = useNavigate();
   const [expanded, setExpanded] = React.useState<string | false>("");
@@ -75,41 +90,43 @@ export default function Tin(props: any) {
   const [ustinArray, setUStinArray] = useState([]);
   const [ustinValue, setUStinvalue] = useState([]);
 
-
   const GetStateByCountryIdReducer = useSelector(
     (state: any) => state.GetStateByCountryIdReducer
   );
   const onChangeSingle = (e: any, setFieldValue: any) => {
-    console.log(e.target.value)
+    console.log(e.target.value);
     if (e.target.value == 2) {
-      setFieldValue('eciUsTin', obValues.usTin)
-    }
-    else {
-      setFieldValue('eciUsTin', "")
+      setFieldValue("eciUsTin", obValues.usTin);
+    } else {
+      setFieldValue("eciUsTin", "");
     }
   };
 
   const viewPdf = () => {
     history("/w8Eci_pdf", { replace: true });
-  }
+  };
 
   useEffect(() => {
-    document.title = "Steps | ECI Mandatory Information"
-  }, [])
+    document.title = "Steps | ECI Mandatory Information";
+  }, []);
 
   useEffect(() => {
     dispatch(
       getTinTypes(authDetails?.agentId, (data: any) => {
-        console.log(data)
+        console.log(data);
         setUStinArray(data);
         let datas = data.filter((ele: any) => {
-          return (isIndividual ? ele.nonUSIndividual === true : isEntity ? ele.nonUSEntity == true : false);
+          return isIndividual
+            ? ele.nonUSIndividual === true
+            : isEntity
+            ? ele.nonUSEntity == true
+            : false;
         });
         setUStinvalue(datas);
-        LoadData()
+        LoadData();
       })
     );
-  }, [authDetails])
+  }, [authDetails]);
 
   useEffect(() => {
     dispatch(getAllStateByCountryId(258));
@@ -119,7 +136,7 @@ export default function Tin(props: any) {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
-  const [payload, setPayload] = useState({ eciUsTin: "" })
+  const [payload, setPayload] = useState({ eciUsTin: "" });
   const formatTin = (e: any, values: any): any => {
     if (e.key === "Backspace" || e.key === "Delete") return;
     if (e.target.value.length === 3) {
@@ -141,8 +158,7 @@ export default function Tin(props: any) {
         validateOnBlur={true}
         validateOnMount={true}
         onSubmit={(values, { setSubmitting }) => {
-          let temp =
-          {
+          let temp = {
             ...values,
             agentId: authDetails?.agentId,
             accountHolderBasicDetailId: authDetails?.accountHolderId,
@@ -150,16 +166,18 @@ export default function Tin(props: any) {
           setSubmitting(true);
 
           const returnPromise = new Promise((resolve, reject) => {
-            dispatch(postW8ECI_EForm(
-              temp,
-              (data: any) => {
-                resolve(data);
-                localStorage.setItem("PrevStepData", JSON.stringify(temp));
-              },
-              (err: any) => {
-                reject(err);
-              }
-            ));
+            dispatch(
+              postW8ECI_EForm(
+                temp,
+                (data: any) => {
+                  resolve(data);
+                  localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                },
+                (err: any) => {
+                  reject(err);
+                }
+              )
+            );
           });
 
           return returnPromise;
@@ -176,7 +194,6 @@ export default function Tin(props: any) {
           submitForm,
           setFieldValue,
           isValid,
-
         }) => (
           <Form onSubmit={handleSubmit}>
             <section
@@ -187,9 +204,14 @@ export default function Tin(props: any) {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
-                  <div className="viewform" onClick={() => {
-                    dispatch(GetEciPdf(authDetails?.accountHolderId))
-                  }}>View Form</div>
+                  <div
+                    className="viewform"
+                    onClick={() => {
+                      dispatch(GetEciPdf(authDetails?.accountHolderId));
+                    }}
+                  >
+                    View Form
+                  </div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                     {GethelpData && GethelpData[5].id === 7 ? (
@@ -199,7 +221,7 @@ export default function Tin(props: any) {
                         onClick={() =>
                           window.open(
                             GethelpData[5].fieldValue,
-                            'name',
+                            "name",
                             `width=${GethelpData[5].width},height=${GethelpData[5].height},top=${GethelpData[5].top},left=${GethelpData[5].left}`
                           )
                         }
@@ -215,7 +237,10 @@ export default function Tin(props: any) {
               <div className="row w-100">
                 <div className="col-4">
                   <div style={{ padding: "20px 0px", height: "100%" }}>
-                    <BreadCrumbComponent breadCrumbCode={1202} formName={FormTypeId.W8ECI} />
+                    <BreadCrumbComponent
+                      breadCrumbCode={1202}
+                      formName={FormTypeId.W8ECI}
+                    />
                   </div>
                 </div>
                 <div className="col-8 mt-3">
@@ -265,12 +290,13 @@ export default function Tin(props: any) {
                               name="eciUsTinTypeId"
                               id="Income"
                               defaultValue={0}
-
-                              onChange={(e) => { handleChange(e); onChangeSingle(e, setFieldValue) }}
+                              onChange={(e) => {
+                                handleChange(e);
+                                onChangeSingle(e, setFieldValue);
+                              }}
                               // onBlur={handleBlur}
                               value={values.eciUsTinTypeId}
                             >
-
                               <option value={0}>---select---</option>
                               {ustinValue?.map((ele: any) => (
                                 // ele?.nonUSIndividual &&
@@ -290,7 +316,9 @@ export default function Tin(props: any) {
                               ))}
                             </select>
                             <p className="error">
-                              {touched?.eciUsTinTypeId ? errors.eciUsTinTypeId?.toString() : ""}
+                              {touched?.eciUsTinTypeId
+                                ? errors.eciUsTinTypeId?.toString()
+                                : ""}
                             </p>
                           </div>
 
@@ -366,10 +394,18 @@ export default function Tin(props: any) {
                               placeholder="Enter Street Number and Name"
                               onChange={handleChange}
                               // onBlur={handleBlur}
-                              error={Boolean(touched?.streetNumberName && errors.streetNumberName)}
+                              error={Boolean(
+                                touched?.streetNumberName &&
+                                  errors.streetNumberName
+                              )}
                               value={values.streetNumberName}
                             />
-                            {touched?.streetNumberName && errors?.streetNumberName ? <p className="error">{errors.streetNumberName as string}</p> : null}
+                            {touched?.streetNumberName &&
+                            errors?.streetNumberName ? (
+                              <p className="error">
+                                {errors.streetNumberName as string}
+                              </p>
+                            ) : null}
                           </div>
 
                           <div className="col-4">
@@ -409,10 +445,16 @@ export default function Tin(props: any) {
                               placeholder="Enter City or Town"
                               onChange={handleChange}
                               // onBlur={handleBlur}
-                              error={Boolean(touched.cityTown && errors.cityTown)}
+                              error={Boolean(
+                                touched.cityTown && errors.cityTown
+                              )}
                               value={values.cityTown}
                             />
-                            {touched.cityTown && errors.cityTown ? <p className="error">{errors.cityTown as string}</p> : null}
+                            {touched.cityTown && errors.cityTown ? (
+                              <p className="error">
+                                {errors.cityTown as string}
+                              </p>
+                            ) : null}
                           </div>
                         </div>
                         <div
@@ -422,7 +464,8 @@ export default function Tin(props: any) {
                             marginTop: "25px",
                             justifyContent: "space-between",
                           }}
-                          className="row col-12" >
+                          className="row col-12"
+                        >
                           <div className="col-4">
                             <Typography>
                               State or Province:
@@ -449,20 +492,13 @@ export default function Tin(props: any) {
                                 </option>
                                 {GetStateByCountryIdReducer?.allCountriesStateIdData?.map(
                                   (ele: any) => (
-                                    <option
-                                      key={ele?.id}
-                                      value={ele?.id}
-                                    >
+                                    <option key={ele?.id} value={ele?.id}>
                                       {ele?.name}
                                     </option>
                                   )
                                 )}
                               </select>
                             </FormControl>
-
-
-
-
 
                             {/* <Input
                               // disabled={
@@ -485,7 +521,6 @@ export default function Tin(props: any) {
                               onChange={handleChange}
                               error={Boolean(errors.stateProvinceId)}
                             /> */}
-
                           </div>
 
                           <div className="col-4">
@@ -507,10 +542,16 @@ export default function Tin(props: any) {
                               placeholder="Enter Zip or Postal Code"
                               onChange={handleChange}
                               // onBlur={handleBlur}
-                              error={Boolean(touched.zipPostalCode && errors.zipPostalCode)}
+                              error={Boolean(
+                                touched.zipPostalCode && errors.zipPostalCode
+                              )}
                               value={values.zipPostalCode}
                             />
-                            {touched.zipPostalCode && errors.zipPostalCode ? <p className="error">{errors.zipPostalCode as string}</p> : null}
+                            {touched.zipPostalCode && errors.zipPostalCode ? (
+                              <p className="error">
+                                {errors.zipPostalCode as string}
+                              </p>
+                            ) : null}
                           </div>
                           <div className="col-4"></div>
                         </div>
@@ -524,9 +565,9 @@ export default function Tin(props: any) {
                         }}
                       >
                         <SaveAndExit
-                          Callback={
-                            () => {
-                              submitForm().then((data) => {
+                          Callback={() => {
+                            submitForm()
+                              .then((data) => {
                                 const prevStepData = JSON.parse(
                                   localStorage.getItem("PrevStepData") || "{}"
                                 );
@@ -544,19 +585,18 @@ export default function Tin(props: any) {
                                     }
                                   )
                                 );
-                              }).catch((error) => {
-                                console.log(error);
                               })
-                            }
-                          }
+                              .catch((error) => {
+                                console.log(error);
+                              });
+                          }}
                           formTypeId={FormTypeId.W8ECI}
-                        >
-                        </SaveAndExit>
+                        ></SaveAndExit>
                         <Button
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetEciPdf(authDetails?.accountHolderId))
+                            dispatch(GetEciPdf(authDetails?.accountHolderId));
                           }}
                         >
                           View Form
@@ -565,11 +605,20 @@ export default function Tin(props: any) {
                           // type="submit"
                           disabled={!isValid}
                           onClick={() => {
-                            submitForm().then((data) => {
-                              history("/W-8ECI/Tax_Purpose");
-                            }).catch((error) => {
-                              console.log(error);
-                            })
+                            submitForm()
+                              .then((data) => {
+                                Redirect(
+                                  "/W-8ECI/Tax_Purpose",
+                                  authDetails?.agentId,
+                                  history,
+                                  false
+                                );
+
+                                // history("/W-8ECI/Tax_Purpose");
+                              })
+                              .catch((error) => {
+                                console.log(error);
+                              });
                           }}
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
@@ -591,7 +640,12 @@ export default function Tin(props: any) {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history("/Certificates");
+                            Redirect(
+                              "/W-8ECI/Tax_Purpose",
+                              authDetails?.agentId,
+                              history,
+                              true
+                            );
                           }}
                           variant="contained"
                           style={{

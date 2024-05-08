@@ -32,6 +32,7 @@ import { TaxPayerSchema } from "../../../schemas/w8Exp";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 
 export default function Tin(props: any) {
 
@@ -1096,7 +1097,8 @@ export default function Tin(props: any) {
                           disabled={!isValid}
                           onClick={() => {
                             submitForm().then(() => {
-                              history("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp");
+                              Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp",authDetails?.agentId,history,false)
+                              // history("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp");
                             })
                           }}
                           variant="contained"
@@ -1120,7 +1122,8 @@ export default function Tin(props: any) {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history("/Exp/Tax_Purpose_Exp/Chapter4_Exp");
+                            // history("/Exp/Tax_Purpose_Exp/Chapter4_Exp");
+                            Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp",authDetails?.agentId,history,true)
                           }}
                           variant="contained"
                           style={{

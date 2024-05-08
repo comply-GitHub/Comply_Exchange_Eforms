@@ -27,6 +27,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../customHooks/useAuth";
 import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 
 export default function Certifications(props: any) {
   const location = useLocation();
@@ -146,7 +147,13 @@ export default function Certifications(props: any) {
                     dispatch(
                       postW9Form(result, () => {
                         localStorage.setItem("PrevStepData", JSON.stringify(result))
-                        history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
+                        Redirect(
+                          "/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9",
+                          authDetails?.agentId,
+                          history,
+                          false
+                        );
+                        // history("/US_Purposes/Back/Exemption/Tax/Certificates/Penlities_W9")
                         setSubmitting(false);
                         // resolve("");
                       },
@@ -583,7 +590,13 @@ export default function Certifications(props: any) {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history("/US_Purposes/Back/Exemption/Tax")
+                            // history("/US_Purposes/Back/Exemption/Tax")
+                            Redirect(
+                              "/US_Purposes/Back/Exemption/Tax",
+                              authDetails?.agentId,
+                              history,
+                              true
+                            );
                           }}
                           variant="contained"
                           style={{
