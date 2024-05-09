@@ -232,6 +232,36 @@ const Redirect = async (
     //     navigate(stepRoute);
     //   }
     //   break;
+
+    case "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/DisregardedBeneE":
+      if (
+        mappingAvailable.filter((x) => x.id == 22 && x.agentId == agentId)
+          .length > 0
+      ) {
+        //skip condition
+        //redirecting to next step
+
+        if (!isback) {
+          // going forward in forms case
+          Redirect(
+            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/US_Tin_BenE",
+            agentId,
+            navigate
+          );
+        } else {
+          // going back in forms case
+          Redirect(
+            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Status_BenE",
+            agentId,
+            navigate
+          );
+        }
+      } else {
+        // step is not skipped
+        navigate(stepRoute);
+      }
+      break;
+
     // case "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/US_Tin_BenE":
     //   if (
     //     mappingAvailable.filter((x) => x.id == 16 && x.agentId == agentId)
@@ -442,6 +472,35 @@ const Redirect = async (
       break;
 
     //IMY section
+
+    case "/IMY/Tax_Purpose_Exp/DisregardedImy":
+      if (
+        mappingAvailable.filter((x) => x.id == 22 && x.agentId == agentId)
+          .length > 0
+      ) {
+        //skip condition
+        //redirecting to next step
+
+        if (!isback) {
+          // going forward in forms case
+          Redirect(
+            "/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY",
+            agentId,
+            navigate
+          );
+        } else {
+          // going back in forms case
+          Redirect(
+            "/IMY/Tax_Purpose_Exp/Chapter4_IMY",
+            agentId,
+            navigate
+          );
+        }
+      } else {
+        // step is not skipped
+        navigate(stepRoute);
+      }
+      break;
 
     // case "/IMY/Tax_Purpose_Exp":
     //   if (

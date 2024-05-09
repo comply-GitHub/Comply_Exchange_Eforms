@@ -31,6 +31,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { US_TINSchema8IMY } from "../../../schemas/w81my";
 import { GetImyPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 export default function Tin(props: any) {
 
   const { authDetails } = useAuth();
@@ -132,7 +133,7 @@ export default function Tin(props: any) {
                 (responseData: any) => {
                   localStorage.setItem("PrevStepData", JSON.stringify(temp));
                   resolve(responseData);
-                  history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/Statement")
+                  Redirect("/IMY/Tax_Purpose_Exp/Chapter4_IMY/Statement", authDetails?.agentId, history);
                   //history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY")
                 },
                 (err: any) => {
@@ -1331,7 +1332,7 @@ export default function Tin(props: any) {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history("/IMY/Tax_Purpose_Exp/DisregardedImy");
+                            Redirect("/IMY/Tax_Purpose_Exp/DisregardedImy", authDetails?.agentId, history, true);
                           }}
                           variant="contained"
                           style={{

@@ -33,6 +33,7 @@ import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
+import Redirect from "../../../../../Router/RouterSkip";
 export default function Tin(props: any) {
   const history = useNavigate();
   const { authDetails } = useAuth();
@@ -1118,8 +1119,10 @@ export default function Tin(props: any) {
                         //type="submit"
                         onClick={() => {
                           submitForm().then(() => {
-                            history(
-                              "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E"
+                            Redirect(
+                              "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E",
+                              authDetails?.agentId,
+                              history
                             );
                           })
                         }}
@@ -1143,8 +1146,11 @@ export default function Tin(props: any) {
                     <Typography align="center">
                       <Button
                         onClick={() => {
-                          history(
-                            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/DisregardedBeneE"
+                          Redirect(
+                            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/DisregardedBeneE",
+                            authDetails?.agentId,
+                            history,
+                            true
                           );
                         }}
                         variant="contained"
