@@ -672,7 +672,7 @@ export default function Certifications(props: any) {
                       {" "}
                       <Button
                         onClick={() => {
-                          history("/W-8BEN/Declaration/US_Tin/Rates");
+                          history("/Attach_document_BEN");
                         }}
                         variant="contained"
                         style={{

@@ -60,6 +60,18 @@ const Attach_document_BENE = React.lazy(
 const Attach_document_ECI = React.lazy(
   () => import("../Components/W-8ECI/AttachDocument")
 );
+
+const Attach_document_EXP = React.lazy(
+  () => import("../Components/W-8EXP/AttachDocument")
+);
+
+const Attach_document_IMY = React.lazy(
+  () => import("../Components/W-8IMY/AttachDocument")
+);
+
+const Attach_document_BEN = React.lazy(
+  () => import("../Components/W-8BEN/Declaration/Non-US/AttachDocument")
+);
 const US_Determination_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/USDetermination")
 );
@@ -408,7 +420,28 @@ const ROUTES: Array<RouteType> = [
     Component: Certification_W9_DC,
     isPrivate: true,
   },
-  //Attach_document_ECI
+  //Attach_document_BEN
+  {
+    name: "Attach_document_BEN",
+    path: "/Attach_document_BEN",
+    id: 2,
+    Component: Attach_document_BEN,
+    isPrivate: true,
+  },
+  {
+    name: "Attach_document_IMY",
+    path: "/Attach_document_IMY",
+    id: 2,
+    Component: Attach_document_IMY,
+    isPrivate: true,
+  },
+  {
+    name: "Attach_document_EXP",
+    path: "/Attach_document_EXP",
+    id: 2,
+    Component: Attach_document_EXP,
+    isPrivate: true,
+  },
   {
     name: "Attach_document_ECI",
     path: "/Attach_document_ECI",

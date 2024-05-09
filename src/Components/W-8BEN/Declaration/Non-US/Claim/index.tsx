@@ -689,7 +689,7 @@ export default function FCTA_Reporting(props: any) {
                           validateForm().then(() => {
                             submitForm().then((data) => {
                               if (values?.isClaimTreaty == "no") {
-                                history('/W-8BEN/Declaration/US_Tin/Certificates')
+                                history('/Attach_document_BEN')
                               } else {
                                 history(
                                   "/W-8BEN/Declaration/US_Tin/Rates"

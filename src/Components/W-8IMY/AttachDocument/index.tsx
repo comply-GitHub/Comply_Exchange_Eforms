@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import AttachDocument from '../../../../AttachDocument';
-import useAuth from '../../../../../customHooks/useAuth';
+import AttachDocument from '../../AttachDocument';
+import useAuth from '../../../customHooks/useAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { GetBenEPdf } from '../../../../../Redux/Actions/PfdActions';
-import GlobalValues, { FormTypeId } from '../../../../../Utils/constVals';
-import { post8233_EForm_Documentation,postW8BEN_EForm } from '../../../../../Redux/Actions';
+import { GetImyPdf } from '../../../Redux/Actions/PfdActions';
+import GlobalValues, { FormTypeId } from '../../../Utils/constVals';
+import { GetAccountHolderDisregardedEntity, PostAccountHolderDisregardedEntity, post8233_EForm_Documentation,postW81MY_EForm } from '../../../Redux/Actions';
 
-const AttachDocumentW9 = () => {
+const AttachDocumentIMY = () => {
 
     const { authDetails } = useAuth();
     const dispatch = useDispatch();
@@ -15,14 +15,21 @@ const AttachDocumentW9 = () => {
    
     const [initialValues, setInitialValues] = useState({});
 
-   
+    // useEffect(() => {
+    //     if (authDetails?.accountHolderId) {
+    //         dispatch(GetAccountHolderDisregardedEntity(authDetails?.accountHolderId, FormTypeId.FW81MY, (data: any) => {
+    //             console.log(data)
+    //             setInitialValues({ ...data[0] });
+    //         }))
+    //     }
+    // }, [authDetails])
 
     const continueFunction = (values: any, successCallback: Function, errorCallback: Function) => {
         const temp = {
            
             accountHolderDetailsId: authDetails?.accountHolderId,
             agentId: authDetails?.agentId,
-            formTypeId: FormTypeId.BENE,
+            formTypeId: FormTypeId.FW81MY,
             formEntryId: 0,
             userType: authDetails?.configurations?.userType ?? "GEN",
             ...values
@@ -40,20 +47,11 @@ const AttachDocumentW9 = () => {
             }
         ))
     }
-    const handleBackRoute = () => {
-        const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-        if (PrevStepData?.isClaimTreaty === "no" || PrevStepData?.isClaimTreaty === false) {
-            return "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E"
-            
-        } else {
-           return "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE"
-            
-        }
-    }
+
     const saveAndExitFunction = (values: any, successCallback: Function, errorCallback: Function) => {
         const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
         const urlValue = window.location.pathname.substring(1);
-        dispatch(postW8BEN_EForm(
+        dispatch(postW81MY_EForm(
             {
                 ...prevStepData,
                 stepName: `/${urlValue}`
@@ -74,17 +72,14 @@ const AttachDocumentW9 = () => {
     return (
         <div>
 
-                      
-                    
-<AttachDocument
+            <AttachDocument
                 InitialValues={initialValues}
-                FormTypeId={FormTypeId.BENE}
+                FormTypeId={FormTypeId.FW81MY}
                 BreadCrumbOrder={1214}
-                ContinueRoute='/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE'
-                BackRoute={handleBackRoute()}
-                
+                ContinueRoute='/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY'
+                BackRoute='/IMY/Tax_Purpose_Exp/Chapter4_IMY/Statement'
                 GetPdf={() => {
-                    dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                    dispatch(GetImyPdf(authDetails?.accountHolderId))
                 }}
                 ContinueFunction={continueFunction}
                 SaveAndExitFunction={saveAndExitFunction}
@@ -93,4 +88,4 @@ const AttachDocumentW9 = () => {
     )
 }
 
-export default AttachDocumentW9
+export default AttachDocumentIMY
