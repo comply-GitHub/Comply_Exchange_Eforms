@@ -321,7 +321,7 @@ export default function AddMoreForm(props: any) {
               (responseData: any) => {
                 localStorage.setItem("PrevStepData", JSON.stringify(temp));
                 resolve(responseData);
-                history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY")
+                history("/Attach_document_IMY")
               },
               (err: any) => {
                 reject(err);

@@ -628,7 +628,8 @@ const GetAllIncomeCodesReducer = useSelector(
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() =>
                           submitForm().then((data) => {
-                            history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE")
+                              history("/W-8BEN/Declaration/US_Tin/Certificates")
+                             
                           }).catch((err) => {
                             console.log(err);
                           })
@@ -640,7 +641,7 @@ const GetAllIncomeCodesReducer = useSelector(
                           disabled={(!incomeTypesValid || !isValid) && values.isSubmissionSpecialRates !== "no"}
                           onClick={() =>
                             submitForm().then((data) => {
-                              history("/W-8BEN/Declaration/US_Tin/Certificates")
+                              history("/Attach_document_BEN")
                             }).catch((err) => {
                               console.log(err);
                             })

@@ -754,25 +754,10 @@ export default function Certifications(props: any) {
                     </Typography>
                     <Typography align="center">
                       <Button
-                        onClick={() => {
-                          if (PrevStepData?.isClaimTreaty === "no" || PrevStepData?.isClaimTreaty === false) {
-                            history(
-                              "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E"
-                            );
-
-                          } else {
-                            history(
-                              "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE"
-                            );
-                          }
-                        }}
-                        variant="contained"
-                        style={{
-                          color: "white",
-                          backgroundColor: "black",
-                          marginTop: "10px",
-                          marginBottom: "20px",
-                        }}
+                      onClick={()=>{
+                        history('/Attach_document_BENE')
+                      }}
+                        
                       >
                         Back
                       </Button>

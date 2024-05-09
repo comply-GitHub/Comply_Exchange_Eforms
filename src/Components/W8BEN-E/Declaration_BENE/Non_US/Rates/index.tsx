@@ -626,7 +626,7 @@ export default function Factors() {
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() =>
                           submitForm().then((data) => {
-                            history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE")
+                            history("/Attach_document_BENE")
                           }).catch((err) => {
                             console.log(err);
                           })
@@ -638,7 +638,7 @@ export default function Factors() {
                           disabled={(!incomeTypesValid || !isValid) && values.isSubmissionSpecialRates !== "no"}
                           onClick={() =>
                             submitForm().then((data) => {
-                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE")
+                              history("/Attach_document_BENE")
                             }).catch((err) => {
                               console.log(err);
                             })

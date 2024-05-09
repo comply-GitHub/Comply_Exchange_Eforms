@@ -51,6 +51,27 @@ const SelfCert_Passive_W9_DC = React.lazy(
   () => import("../Components/W9Form/SelfCertPassive")
 );
 
+const Attach_document_w9 = React.lazy(
+  () => import("../Components/W9Form/AttachDocument")
+);
+const Attach_document_BENE = React.lazy(
+  () => import("../Components/W8BEN-E/Declaration_BENE/Non_US/AttachDocument")
+);
+const Attach_document_ECI = React.lazy(
+  () => import("../Components/W-8ECI/AttachDocument")
+);
+
+const Attach_document_EXP = React.lazy(
+  () => import("../Components/W-8EXP/AttachDocument")
+);
+
+const Attach_document_IMY = React.lazy(
+  () => import("../Components/W-8IMY/AttachDocument")
+);
+
+const Attach_document_BEN = React.lazy(
+  () => import("../Components/W-8BEN/Declaration/Non-US/AttachDocument")
+);
 const US_Determination_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/USDetermination")
 );
@@ -400,6 +421,49 @@ const ROUTES: Array<RouteType> = [
     Component: Certification_W9_DC,
     isPrivate: true,
   },
+  //Attach_document_BEN
+  {
+    name: "Attach_document_BEN",
+    path: "/Attach_document_BEN",
+    id: 2,
+    Component: Attach_document_BEN,
+    isPrivate: true,
+  },
+  {
+    name: "Attach_document_IMY",
+    path: "/Attach_document_IMY",
+    id: 2,
+    Component: Attach_document_IMY,
+    isPrivate: true,
+  },
+  {
+    name: "Attach_document_EXP",
+    path: "/Attach_document_EXP",
+    id: 2,
+    Component: Attach_document_EXP,
+    isPrivate: true,
+  },
+  {
+    name: "Attach_document_ECI",
+    path: "/Attach_document_ECI",
+    id: 2,
+    Component: Attach_document_ECI,
+    isPrivate: true,
+  },
+  {
+    name: "Attach_document_BENE",
+    path: "/Attach_document_BENE",
+    id: 2,
+    Component: Attach_document_BENE,
+    isPrivate: true,
+  },
+  {
+    name: "Attach_document_w9",
+    path: "/Attach_document_w9",
+    id: 2,
+    Component: Attach_document_w9,
+    isPrivate: true,
+  },
   {
     name: "TaxPayer_DC_BEN",
     path: "/TaxPayer_DC_BEN",
@@ -435,6 +499,15 @@ const ROUTES: Array<RouteType> = [
     Component: Perti_dualCert_Eci,
     isPrivate: true,
   },
+
+  // {
+  //   name: "Attach_document",
+  //   path: "/Attach_document",
+  //   id: 2,
+  //   Component: Attach_document,
+  //   isPrivate: true,
+  // },
+ 
   {
     name: "Submit_dualCert_Eci",
     path: "/Submit_dualCert_Eci",

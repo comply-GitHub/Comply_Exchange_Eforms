@@ -50,6 +50,8 @@ export default function Factors() {
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  const PrevData = JSON.parse(localStorage.getItem("Formvalues") || "{}");
+  console.log(PrevData.IsUsSourcedIncome,"12333")
   const convertToStandardFormat = (customDateString: any) => {
     const dateObject = new Date(customDateString);
     const year = dateObject.getUTCFullYear();
@@ -2212,9 +2214,15 @@ export default function Factors() {
                     </Typography>
                     <Typography align="center">
                       <Button
-                        onClick={() => {
-                          history("/W-8BEN/Declaration");
-                        }}
+                      // if (PrevData){
+                      //   onClick={() => {
+                      //     history("/W-8BEN/Declaration");
+                      //     history("/W-8BEN/Declaration/US_Sourced")
+                      //   }}
+                      // }else{
+
+                      // }
+                       
                         variant="contained"
                         size="small"
                         style={{

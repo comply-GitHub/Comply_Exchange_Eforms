@@ -267,8 +267,7 @@ export default function Tin(props: any) {
           submitForm
         }) => (
           <Form onSubmit={handleSubmit}>
-            {/* <>{console.log(values,errors, "errorsssss")}</> */}
-
+          
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}

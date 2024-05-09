@@ -37,7 +37,8 @@ export default function Factors() {
   const [allocation, setAllocation] = useState(0); // State to track allocation input
   const [formList, setFormList] = useState<FormData[]>([]);
   const dispatch = useDispatch();
-
+  const PrevData = JSON.parse(localStorage.getItem("Formvalues") || "{}");
+  console.log(PrevData,"12333")
   const IncomeTypes = ["Others", "Goods", "Services"]
 
   const handleAllocationChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -383,7 +384,7 @@ export default function Factors() {
                     marginBottom: "20px",
                   }}
                   onClick={() => {
-                    history("/W-8BEN/Declaration/Non_US_Sorced/Status");
+                    history("/W-8BEN/Declaration");
                   }}
                 >
 
