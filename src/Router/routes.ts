@@ -301,6 +301,7 @@ const Tax_Purpose_BenE = React.lazy(() => import("../Components/W8BEN-E/Tax-Purp
 const Factors_BenE = React.lazy(() => import("../Components/W8BEN-E/Declaration_BENE/US/Factors"));
 const Declaration_BenE = React.lazy(() => import("../Components/W8BEN-E/Declaration_BENE"));
 const Status_BenE = React.lazy(() => import("../Components/W8BEN-E/Declaration_BENE/Non_US/Status"));
+const DisregardedBeneE = React.lazy(() => import("../Components/W8BEN-E/DisregardedEntityBENE"));
 const US_Tin_BenE = React.lazy(() => import("../Components/W8BEN-E/Declaration_BENE/Non_US/US_Tin"));
 const Claim_BenE = React.lazy(() => import("../Components/W8BEN-E/Declaration_BENE/Non_US/Claim_Non_US"));
 const Rates_BenE = React.lazy(() => import("../Components/W8BEN-E/Declaration_BENE/Non_US/Rates"));
@@ -1270,6 +1271,13 @@ const ROUTES: Array<RouteType> = [
     id: 7,
     Component: Status_BenE,
     isPrivate: true,
+  },  
+  {
+    name: "DisregardedBeneE",
+    path: "BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/DisregardedBeneE",
+    id: 7,
+    Component: DisregardedBeneE,
+    isPrivate: true,
   },
   {
     name: "US_Tin_BenE",
@@ -1411,7 +1419,7 @@ const ROUTES: Array<RouteType> = [
     isPrivate: true,
   },  
   {
-    name: "Chapter4_IMY",
+    name: "DisregardedImy",
     path: "/IMY/Tax_Purpose_Exp/DisregardedImy",
     id: 7,
     Component: DisregardedEntityIMY,

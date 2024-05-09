@@ -23,14 +23,15 @@ export const DisregardedEntitySchema = Yup.object().shape({
     //       return schema;
     //     }
     //   }),
-      giin:Yup.string()
+      giin:Yup.string().nullable()
       .test({
         name:"length",
         message:"GIIN lenth should be 16 character",
         test:(value,context)=>{
             let { chapter4StatusId}=context.parent;
-            if(chapter4StatusId>1)
-            return value?.length==16
+            if(chapter4StatusId>1){              
+              return value?.length==16
+            }
             else
             return true
         }
@@ -46,24 +47,24 @@ export const DisregardedEntitySchema = Yup.object().shape({
                 }
                 let case1=isAlphaNumeric(value?.slice(0,6));
                 if(!case1){
-                    console.log("case1")
+                    //console.log("case1")
                     return false;
                 }
                 let case2=isAlphaNumeric(value?.slice(6,11));
                 if(!case2){
-                    console.log("case2")
+                    //console.log("case2")
                     return false;
                 }
-                let case3Data=["LE","SL","ME","BR"];
+                let case3Data=["LE","SL","ME","BR","SP"];
                 let case3=case3Data.includes(value?.slice(11,13));
                 if(!case3){
-                    console.log("case3")
+                    //console.log("case3")
                     return false;
                 }
 
                 let case4=Number.parseInt(value?.slice(13,16));
                 if(Number.isNaN(case4)){
-                    console.log("case4")
+                    //console.log("case4")
                     return false;
                 }
 

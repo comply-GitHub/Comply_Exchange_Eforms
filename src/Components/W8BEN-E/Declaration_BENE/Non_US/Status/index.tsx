@@ -48,6 +48,7 @@ import SubstantialUsPassiveNFE from "./SubstantialUsPassiveNFE";
 import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
+import Redirect from "../../../../../Router/RouterSkip";
 const handleChange = (event: { target: { name: string; }; }) => {
   setSelectedValue(event.target.name);
   // Simulate some async operation that affects fields
@@ -2701,8 +2702,10 @@ export default function Fedral_tax(props: any) {
                             // type="submit"
                             onClick={() => {
                               submitForm().then((data) => {
-                                history(
-                                  "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/US_Tin_BenE"
+                                Redirect(
+                                  "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/DisregardedBeneE",
+                                  authDetails?.agentId,
+                                  history
                                 );
                               }).catch((err) => {
                                 console.log(err);
@@ -2740,10 +2743,10 @@ export default function Fedral_tax(props: any) {
                           <Button
                             onClick={() => {
                               if (PrevStepData?.isUsSourcedIncome == true) {
-                                history("/BenE/Tax_Purpose_BenE/Declaration_BenE/US/Factors_BenE");
+                                Redirect("/BenE/Tax_Purpose_BenE/Declaration_BenE/US/Factors_BenE", authDetails?.agentId, history, true);
                               }
                               else {
-                                history("/BenE/Tax_Purpose_BenE/Declaration_BenE");
+                                Redirect("/BenE/Tax_Purpose_BenE/Declaration_BenE", authDetails?.agentId, history, true);
                               }
                             }}
                             variant="contained"

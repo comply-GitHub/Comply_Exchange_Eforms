@@ -64,6 +64,7 @@ import RD from "../components/RD";
 import SFFE from "../components/SFFI";
 import SFFI from "../components/SFFI";
 import { GetImyPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 export default function Fedral_tax(props: any) {
   const { authDetails } = useAuth();
 
@@ -297,7 +298,7 @@ export default function Fedral_tax(props: any) {
                             localStorage.setItem("PrevStepData", JSON.stringify(temp));
                             resolve(responseData);
                             // history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY");
-                            history("/IMY/Tax_Purpose_Exp/DisregardedImy");
+                            Redirect("/IMY/Tax_Purpose_Exp/DisregardedImy", authDetails?.agentId, history);
                           },
                           (err: any) => {
                             reject(err);
@@ -1055,7 +1056,7 @@ export default function Fedral_tax(props: any) {
                           <Button
                             type="submit"
                             onClick={() => {
-                              history("/IMY/Tax_Purpose_Exp")
+                              Redirect("/IMY/Tax_Purpose_Exp", authDetails?.agentId, history, true);
                             }}
                             variant="contained"
                             style={{
