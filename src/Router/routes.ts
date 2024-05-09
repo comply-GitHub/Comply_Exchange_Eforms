@@ -280,6 +280,7 @@ const Tax_Purpose_BenE = React.lazy(() => import("../Components/W8BEN-E/Tax-Purp
 const Factors_BenE = React.lazy(() => import("../Components/W8BEN-E/Declaration_BENE/US/Factors"));
 const Declaration_BenE = React.lazy(() => import("../Components/W8BEN-E/Declaration_BENE"));
 const Status_BenE = React.lazy(() => import("../Components/W8BEN-E/Declaration_BENE/Non_US/Status"));
+const DisregardedBeneE = React.lazy(() => import("../Components/W8BEN-E/DisregardedEntityBENE"));
 const US_Tin_BenE = React.lazy(() => import("../Components/W8BEN-E/Declaration_BENE/Non_US/US_Tin"));
 const Claim_BenE = React.lazy(() => import("../Components/W8BEN-E/Declaration_BENE/Non_US/Claim_Non_US"));
 const Rates_BenE = React.lazy(() => import("../Components/W8BEN-E/Declaration_BENE/Non_US/Rates"));
@@ -299,6 +300,7 @@ const ThankYou_Exp = React.lazy(() => import("../Components/W-8EXP/Thankyou_exp"
 //
 const Purpose_IMY = React.lazy(() => import("../Components/W-8IMY/Status"));
 const Chapter4_IMY = React.lazy(() => import("../Components/W-8IMY/Chapter4_IMY"));
+const DisregardedEntityIMY=React.lazy(()=>import("../Components/W-8IMY/DisregardedEntityImy/index"))
 const TaxPayer_IMY = React.lazy(() => import("../Components/W-8IMY/TaxPayer"));
 const Statement_IMY = React.lazy(() => import("../Components/W-8IMY/Statement"));
 const Certificates_IMY = React.lazy(() => import("../Components/W-8IMY/Certificates"));
@@ -1196,6 +1198,13 @@ const ROUTES: Array<RouteType> = [
     id: 7,
     Component: Status_BenE,
     isPrivate: true,
+  },  
+  {
+    name: "DisregardedBeneE",
+    path: "BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/DisregardedBeneE",
+    id: 7,
+    Component: DisregardedBeneE,
+    isPrivate: true,
   },
   {
     name: "US_Tin_BenE",
@@ -1334,6 +1343,13 @@ const ROUTES: Array<RouteType> = [
     path: "/IMY/Tax_Purpose_Exp/Chapter4_IMY",
     id: 7,
     Component: Chapter4_IMY,
+    isPrivate: true,
+  },  
+  {
+    name: "DisregardedImy",
+    path: "/IMY/Tax_Purpose_Exp/DisregardedImy",
+    id: 7,
+    Component: DisregardedEntityIMY,
     isPrivate: true,
   },
   {
