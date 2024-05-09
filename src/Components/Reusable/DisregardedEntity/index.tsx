@@ -39,7 +39,10 @@ const DisregardedEntity = ({
     const { authDetails } = useAuth();
     const dispatch = useDispatch();
     const history = useNavigate();
-    const [initialValue, setInitialValue] = useState({ ...InitialValues });
+    const [initialValue, setInitialValue] = useState({
+        ...InitialValues,
+        giin: ""
+    });
     const [toolInfo, setToolInfo] = useState("")
     const [fatcaChapter4Status, setFatcaChapter4status] = useState<any[]>([]);
 
@@ -48,7 +51,7 @@ const DisregardedEntity = ({
     );
     useEffect(() => {
         //console.log(InitialValues)
-        setInitialValue({ ...InitialValues })
+        setInitialValue({ ...initialValue, ...InitialValues })
     }, [InitialValues])
 
     useEffect(() => {
@@ -415,7 +418,7 @@ const DisregardedEntity = ({
                                                                     }}
                                                                 />
 
-                                                                {errors?.giin ? <span className="error" style={{ marginTop: "10px" }}>Please enter a valid GIIN</span> : <></>}
+                                                                {errors?.giin ? <span className="error" style={{ marginTop: "15px" }}>Please enter a valid GIIN</span> : <></>}
 
                                                             </FormControl>
                                                         </div>
