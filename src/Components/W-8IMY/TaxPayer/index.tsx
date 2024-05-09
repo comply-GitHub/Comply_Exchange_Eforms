@@ -62,7 +62,7 @@ export default function Tin(props: any) {
   const [notUsIndividual, setNonUsIndividual] = useState([]);
 
   useEffect(() => {
-    document.title = "Tax-Payer"
+    document.title = "Steps | Forms | W-8IMY June 2018"
   }, [])
 
   useEffect(() => {
