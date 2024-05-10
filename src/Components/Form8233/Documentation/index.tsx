@@ -20,6 +20,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import { GetForm8233Pdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 
 export default function Tin(props: any) {
   const getFirstDocData = useSelector((state: any) => state.form8233);
@@ -171,8 +172,8 @@ export default function Tin(props: any) {
     };
 
     dispatch(post8233_EForm_Documentation(obj, () => {
-      history(
-        "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
+      Redirect(
+        "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification",authDetails?.agentId,history
       );
     }))
 
@@ -663,7 +664,7 @@ export default function Tin(props: any) {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history("/Form8233/TaxPayer_Identification/Owner/Claim_part")
+                            Redirect("/Form8233/TaxPayer_Identification/Owner/Claim_part",authDetails?.agentId,history,true)
                           }}
                           variant="contained"
                           style={{

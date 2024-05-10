@@ -13,6 +13,7 @@ import {
   TextField,
   Select,
   MenuItem,
+  Checkbox
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "@mui/material/Link";
@@ -33,8 +34,9 @@ import {
   getAllCountriesIncomeCode,
   getAllStateByCountryId,
   postW8ECI_EForm,
+  PostDualCertW9Entity
 } from "../../../Redux/Actions";
-import { TaxPurposeSchema } from "../../../schemas/w8ECI";
+import { FederalTaxSchema_dualCert } from "../../../schemas/w8ECI";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import useAuth from "../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
@@ -49,29 +51,33 @@ export default function Fedral_tax(props: any) {
     handleChange,
     setselectedContinue,
   } = props;
-
+  const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const { authDetails } = useAuth();
   const W8ECI = useSelector((state: any) => state.W8ECI);
-  const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
+ 
   const [IsIndividual, setIsIndividual] = useState(obValues?.businessTypeId == 1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const [selectedfile, setSelectedFile] = useState<any>(null);
-
+  const EntityDualCert = JSON.parse(localStorage.getItem("EntityDualCertPrevStepData") || "{}");
   const initialValue = {
-    businessName: W8ECI?.entityName ?? obValues?.entityName,
-    businessDisgradedEntity:
-      W8ECI?.businessDisgradedEntity ?? obValues?.businessDisgradedEntity,
-    countryOfIncorporation:
-      W8ECI?.countryOfIncorporation ?? obValues?.foreignTINCountryId,
-    chapter3Status: W8ECI?.chapter3Status ?? 0,
-    firstName: W8ECI?.firstName ?? obValues?.firstName ?? "",
-    lastName: W8ECI?.lastName ?? obValues?.lastName ?? "",
-    isSubmissionSingleUSOwner: W8ECI?.isSubmissionSingleUSOwner === true ? "yes" : "no" ?? "",
-    descriptionHybridStatus: W8ECI?.descriptionHybridStatus ?? "",
-    attachSupportingDocument: W8ECI?.attachSupportingDocument ?? "",
-    attachSupportingDocumentFile: W8ECI?.attachSupportingDocumentFile ?? "",
-    isDisRegardedSection1446: W8ECI?.isDisRegardedSection1446 === true ? "yes" : "no" ?? "",
-    isHybridStatus: W8ECI?.isHybridStatus ?? "",
+    businessName: PrevStepData?.businessName || "",
+    businessDisgradedEntity:PrevStepData?.businessDisgradedEntity ||"",
+    countryOfIncorporation:parseInt( PrevStepData?.countryOfIncorporation) || 0,
+    chapter3Status: PrevStepData?.chapter3Status || 0,
+    firstName: PrevStepData?.firstName || "",
+    lastName: PrevStepData?.lastName ||"",
+    isSubmissionSingleUSOwner: PrevStepData?.isSubmissionSingleUSOwner === true ? "yes" : "no" ?? "",
+    descriptionHybridStatus: PrevStepData?.descriptionHybridStatus || "",
+    attachSupportingDocument: PrevStepData?.attachSupportingDocument || "",
+    attachSupportingDocumentFile: PrevStepData?.attachSupportingDocumentFile || "",
+    isDisRegardedSection1446: PrevStepData?.isDisRegardedSection1446 === true ? "yes" : "no" ?? "",
+    isHybridStatus: PrevStepData?.isHybridStatus || "",
+    DateOfIncorporation:EntityDualCert?.DateOfIncorporation ||"",
+    IsJurisdictionforTaxPurposes: EntityDualCert ?. IsJurisdictionforTaxPurposes ||"",
+    IsTieBreakerClauseUnderApplicableTaxTreaty:EntityDualCert?.IsTieBreakerClauseUnderApplicableTaxTreaty || "",
+    CountryIdwhereTaxesarePaid:EntityDualCert?.CountryIdwhereTaxesarePaid ||0,
+    ContentforTaxJurisdictionMismatchExplanation:EntityDualCert?.ContentforTaxJurisdictionMismatchExplanation || "",
+    IsTrueandAccurateStatement:EntityDualCert?.IsTrueandAccurateStatement||false
   };
 
   const [clickCount, setClickCount] = useState(0);
@@ -86,6 +92,7 @@ export default function Fedral_tax(props: any) {
   const handleFileChange = (e: any) => {
     setSelectedFile(e.target.files[0]);
   }
+  
 
 
   useEffect(() => {
@@ -188,36 +195,38 @@ export default function Fedral_tax(props: any) {
                   enableReinitialize
                   validateOnMount={true}
                   validationSchema={
-                    TaxPurposeSchema(IsIndividual)
+                    FederalTaxSchema_dualCert
                   }
                   onSubmit={(values, { setSubmitting }) => {
                     let temp = {
-                      ...PrevStepData,
+                    
                       ...values,
-                      isSubmissionSingleUSOwner: values.isSubmissionSingleUSOwner === "yes",
-                      isDisRegardedSection1446: values.isDisRegardedSection1446 === "yes",
-                      attachSupportingDocumentFile: selectedfile,
-                      isHybridStatus: Number.parseInt(values.isHybridStatus) ?? 3,
-                      agentId: authDetails?.agentId,
-                      accountHolderBasicDetailId: authDetails?.accountHolderId,
+                      AccountHolderBasicDetailsId: authDetails?.accountHolderId ??
+                      obValues?.AccountHolderBasicDetailsId,
+                    FormTypeSelectionId: obValues.businessTypeId,
+
+
+                    agentId: authDetails?.agentId,
+                    accountHolderBasicDetailId: authDetails?.accountHolderId,
                     };
                     setSubmitting(true);
                     const returnPromise = new Promise((resolve, reject) => {
-                      // (
-                      //   postW8ECI_EForm(
-                      //     temp,
-                      //     (data: any) => {
-                      //       resolve(data);
-                      //       localStorage.setItem(
-                      //         "PrevStepData",
-                      //         JSON.stringify(temp)
-                      //       );dispatch
-                      //     },
-                      //     (err: any) => {
-                      //       reject(err);
-                      //     }
-                      //   )
-                      // );
+                      dispatch(
+                        PostDualCertW9Entity(
+                          temp,
+                          (data: any) => {
+                            resolve(data);
+                            localStorage.setItem(
+                              "EntityDualCertPrevStepData",
+                              JSON.stringify(temp)
+                            );
+                            history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC/Fatca_DC");
+                          },
+                          (err: any) => {
+                            reject(err);
+                          }
+                        )
+                      );
                     });
                     return returnPromise;
                   }}
@@ -422,7 +431,7 @@ export default function Fedral_tax(props: any) {
                                   <select
                                     name="chapter3Status"
                                     value={values.chapter3Status}
-                                    onChange={handleChange}
+                                   
                                     autoComplete="chapter3Status"
                                     // onBlur={handleBlur}
                                     style={{
@@ -473,7 +482,7 @@ export default function Fedral_tax(props: any) {
                                         }}
                                         sx={{ backgroundColor: "#e9ecef" }}
                                         type="text"
-                                        onChange={handleChange}
+                                      
                                         error={Boolean(
                                           touched.firstName &&
                                           errors.firstName
@@ -505,7 +514,7 @@ export default function Fedral_tax(props: any) {
                                           readOnly: true,
                                         }}
                                         sx={{ backgroundColor: "#e9ecef" }}
-                                        onChange={handleChange}
+                                      
                                         // onBlur={handleBlur}
                                         // helperText={
                                         //   touched.businessDisgradedEntity && errors.businessDisgradedEntity
@@ -541,7 +550,7 @@ export default function Fedral_tax(props: any) {
                                         <select
                                           name="countryOfIncorporation"
                                           value={values.countryOfIncorporation}
-                                          onChange={handleChange}
+                                          
                                           autoComplete="countryOfIncorporation"
                                           // placeholder="Business Name"
                                           onBlur={(e) => { handleBlur(e) }}
@@ -606,7 +615,7 @@ export default function Fedral_tax(props: any) {
                                         <TextField
                                           autoComplete="businessName"
                                           type="text"
-                                          onChange={handleChange}
+                                       
                                           error={Boolean(
                                             touched.businessName &&
                                             errors.businessName
@@ -634,7 +643,7 @@ export default function Fedral_tax(props: any) {
                                         <TextField
                                           autoComplete="businessDisgradedEntity"
                                           type="text"
-                                          onChange={handleChange}
+                                         
                                           // onBlur={handleBlur}
                                           // helperText={
                                           //   touched.businessDisgradedEntity && errors.businessDisgradedEntity
@@ -670,7 +679,7 @@ export default function Fedral_tax(props: any) {
                                           <select
                                             name="countryOfIncorporation"
                                             value={values.countryOfIncorporation}
-                                            onChange={handleChange}
+                                         
                                             autoComplete="countryOfIncorporation"
                                             // placeholder="Business Name"
                                             // onBlur={handleBlur}
@@ -738,7 +747,7 @@ export default function Fedral_tax(props: any) {
                                         <TextField
                                           autoComplete="businessName"
                                           type="text"
-                                          onChange={handleChange}
+                                         
                                           // onBlur={handleBlur}
                                           // helperText={
                                           //   touched.businessName && errors.businessName
@@ -770,7 +779,7 @@ export default function Fedral_tax(props: any) {
                                         <TextField
                                           autoComplete="businessDisgradedEntity"
                                           type="text"
-                                          onChange={handleChange}
+                                          
                                           // onBlur={handleBlur}
                                           // helperText={
                                           //   touched.businessDisgradedEntity && errors.businessDisgradedEntity
@@ -811,7 +820,7 @@ export default function Fedral_tax(props: any) {
                                             value={
                                               values.countryOfIncorporation
                                             }
-                                            onChange={handleChange}
+                                       
                                             autoComplete="countryOfIncorporation"
                                             // onBlur={handleBlur}
                                             style={{
@@ -862,7 +871,7 @@ export default function Fedral_tax(props: any) {
                                       aria-labelledby="demo-row-radio-buttons-group-label"
                                       name="isHybridStatus"
                                       value={values.isHybridStatus}
-                                      onChange={handleChange}
+                                    
                                       id="isHybridStatus"
                                     >
                                       <FormControlLabel
@@ -906,7 +915,7 @@ export default function Fedral_tax(props: any) {
                                       className="textfield1"
                                       name="descriptionHybridStatus"
                                       value={values.descriptionHybridStatus}
-                                      onChange={handleChange}
+                                   
                                     />
                                   </FormControl>
                                   <div className="d-flex mt-3 ">
@@ -943,7 +952,7 @@ export default function Fedral_tax(props: any) {
                                         aria-labelledby="demo-row-radio-buttons-group-label"
                                         name="isSubmissionSingleUSOwner"
                                         value={values.isSubmissionSingleUSOwner}
-                                        onChange={handleChange}
+                                       
                                       >
                                         <FormControlLabel
                                           control={<Radio />}
@@ -982,7 +991,7 @@ export default function Fedral_tax(props: any) {
                                           value={
                                             values.isDisRegardedSection1446
                                           }
-                                          onChange={handleChange}
+                                       
                                           id="isDisRegardedSection1446"
                                         >
                                           <FormControlLabel
@@ -1016,6 +1025,241 @@ export default function Fedral_tax(props: any) {
                             )}
                           </Typography>
                         </div>
+
+                        <div style={{marginTop:"10px",marginLeft:"10px"}}>
+                              <div>
+
+                                <Typography
+                                  align="left"
+                                  className="d-flex w-60 "
+                                  style={{
+                                    fontSize: "16px",
+                                    marginTop: "5px",
+                                  }}
+                                >
+                                 Date of incorporation:
+                                  <span style={{ color: "red" }}>
+                                    *
+                                  </span>
+
+                                </Typography>
+                                <FormControl className="datee" style={{width:"30%"}}>
+                                  <input
+                                    style={{height:"37px"}}
+                                    
+                                    autoComplete="DateOfIncorporation"
+                                    type="date"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                  
+                                   
+                                    name="DateOfIncorporation"
+                                  
+                                    value={values.DateOfIncorporation}
+                                  />
+                                </FormControl>
+                               {errors.DateOfIncorporation && touched.DateOfIncorporation ?( <p className="error">
+                                        {errors.DateOfIncorporation?.toString()}
+                                      </p>):""}
+                              </div>
+                              <div>
+                              <Typography
+                                      className="mt-3"
+                                      style={{
+                                        fontSize: "16px",
+                                      }}
+                                    >
+                                    <span style={{fontWeight:"bold"}}>Jurisdiction for Tax Purposes:</span> Is the jurisdiction in which your organisation is resident for tax purposes different from the country of incorporation?<span className="error" style={{verticalAlign:"super",fontSize:"15px"}}>*</span>
+                                    </Typography>
+                                    <FormControl style={{ marginLeft: "2px" }}>
+                                      <RadioGroup
+                                        row
+
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        name="IsJurisdictionforTaxPurposes"
+                                        value={values.IsJurisdictionforTaxPurposes}
+                                        onChange={handleChange}
+                                        id="IsJurisdictionforTaxPurposes"
+                                      >
+                                        <FormControlLabel
+                                          control={<Radio />}
+                                          value="Yes"
+                                          name="IsJurisdictionforTaxPurposes"
+                                          label="Yes"
+                                        />
+                                        <FormControlLabel
+                                          control={<Radio />}
+                                          value="No"
+                                          name="IsJurisdictionforTaxPurposes"
+                                          label="No"
+                                        />
+
+                                      </RadioGroup>
+                                      <p className="error">
+                                        {errors.IsJurisdictionforTaxPurposes?.toString()}
+                                      </p>
+                                    </FormControl>
+                              </div>
+
+                          {values.IsJurisdictionforTaxPurposes === "Yes" ?(  <><div className="col-12 d-flex">
+                            <div className="col-7">
+                              <Typography
+                                      className="mt-3"
+                                      style={{
+                                        fontSize: "16px",
+                                      }}
+                                    >
+                                   If you are applying a tie-breaker clause under an applicable tax treaty then please select Yes here. <span className="error" style={{verticalAlign:"super",fontSize:"15px"}}>*</span>
+                                    </Typography>
+                                    <FormControl style={{ marginLeft: "2px" }}>
+                                      <RadioGroup
+                                        row
+
+                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                        name="IsTieBreakerClauseUnderApplicableTaxTreaty"
+                                        value={values.IsTieBreakerClauseUnderApplicableTaxTreaty}
+                                        onChange={handleChange}
+                                        id="IsTieBreakerClauseUnderApplicableTaxTreaty"
+                                      >
+                                        <FormControlLabel
+                                          control={<Radio />}
+                                          value="Yes"
+                                          name="IsTieBreakerClauseUnderApplicableTaxTreaty"
+                                          label="Yes"
+                                        />
+                                        <FormControlLabel
+                                          control={<Radio />}
+                                          value="No"
+                                          name="IsTieBreakerClauseUnderApplicableTaxTreaty"
+                                          label="No"
+                                        />
+
+                                      </RadioGroup>
+                                     {errors.IsTieBreakerClauseUnderApplicableTaxTreaty && touched?.IsTieBreakerClauseUnderApplicableTaxTreaty?( <p className="error">
+                                        {errors.IsTieBreakerClauseUnderApplicableTaxTreaty?.toString()}
+                                      </p>):""}
+                                    </FormControl>
+                              </div>
+                              <div className=" col-5" style={{marginRight:"50px"}}>
+                                    <Typography
+                                      align="right"
+                                    
+                                      style={{
+                                        fontSize: "15px",
+                                        marginTop: "15px",
+                                      }}
+                                    >
+                                      Country where taxes Are Paid:
+                                      <span style={{ color: "red" }}>
+                                        *
+                                      </span>
+                                    </Typography>
+                                    <Typography align="right">
+                                    <FormControl className="w-50">
+                                      <select
+                                        
+                                        name="CountryIdwhereTaxesarePaid"
+                                        value={
+                                          values.CountryIdwhereTaxesarePaid
+                                        }
+                                        onChange={handleChange}
+                                        autoComplete="CountryIdwhereTaxesarePaid"
+                                        onBlur={handleBlur}
+                                        style={{
+                                          padding: " 0 10px",
+                                          color: "#121112",
+                                          fontStyle: "italic",
+                                          height: "39px",
+                                        }}
+                                      >
+                                        <option value={0}>---select---</option>
+                                        <option value={257}>
+                                          United Kingdom
+                                        </option>
+                                        <option value={258}>
+                                          United States
+                                        </option>
+                                        <option value={-1}>---</option>
+                                        {getCountriesReducer.allCountriesData?.map(
+                                          (ele: any) => (
+                                            <option
+                                              key={ele?.id}
+                                              value={ele?.id}
+                                            >
+                                              {ele?.name}
+                                            </option>
+                                          )
+                                        )}
+                                      </select>
+                                      {errors.CountryIdwhereTaxesarePaid && touched.CountryIdwhereTaxesarePaid?(<p className="error">
+                                        {errors.CountryIdwhereTaxesarePaid?.toString()}
+                                      </p>):""}
+                                    </FormControl>
+                                  
+                                    </Typography>
+                                  </div>
+                              
+
+                                   
+
+                            </div>
+                            
+                             <div>
+
+                             <Typography
+                               align="left"
+                               className="d-flex w-60 "
+                               style={{
+                                 fontSize: "16px",
+                                 marginTop: "5px",
+                               }}
+                             >
+                             Content block for tax jurisdiction mismatch explanation
+                               <span style={{ color: "red" }}>
+                                 *
+                               </span>
+                             
+                             </Typography>
+                             <FormControl className="explanation">
+                               <TextField
+                               
+                                 
+                                 autoComplete="ContentforTaxJurisdictionMismatchExplanation"
+                                 type="text"
+                                 onChange={handleChange}
+                                 onBlur={handleBlur}
+                               
+                                placeholder="PLease Provide an explanation here:"
+                                 name="ContentforTaxJurisdictionMismatchExplanation"
+                                 className="othertext"
+                                 value={values.ContentforTaxJurisdictionMismatchExplanation}
+                               />
+                              {errors.ContentforTaxJurisdictionMismatchExplanation && touched?.ContentforTaxJurisdictionMismatchExplanation?(   <p className="error">
+                                        {errors.ContentforTaxJurisdictionMismatchExplanation?.toString()}
+                                      </p>):""}
+                             </FormControl>
+                           
+                             <div className="mt-1">
+                               <div className="d-flex col-6">
+                                 <Checkbox name="IsTrueandAccurateStatement" checked={values.IsTrueandAccurateStatement} onChange={handleChange}
+                                 />
+                                 <Typography className="mt-2">
+                                 Check to confirm this is a true and accurate statement:
+                                 </Typography>
+                               </div>
+                               {errors.IsTrueandAccurateStatement && touched.IsTrueandAccurateStatement ? (  <p className="error">
+                               {typeof errors.IsTrueandAccurateStatement === 'string' ? errors.IsTrueandAccurateStatement : ''}
+                                       
+                                      </p>):""}
+                             
+                             </div>
+                             </div>
+                             </> 
+                          
+                          ):""}
+                           
+                            </div>
+
 
                         <div style={{ padding: "10px" }}>
                           <Accordion
@@ -1905,19 +2149,17 @@ export default function Fedral_tax(props: any) {
                             View Form
                           </Button>
                           <Button
-                            //type="submit"
+                            type="submit"
                             disabled={!isValid}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
-                            // onClick={() => {
-                            //   submitForm().then((data) => {
-                            //     console.log(data)
-                            //   history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC/Fatca_DC");
-                            //   })
-                            // }}
                             onClick={() => {
-                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC/Fatca_DC");
-                          }}
+                              submitForm().then((data) => {
+                                console.log(data)
+                              
+                              })
+                            }}
+                          
                           >
                             Continue
                           </Button>

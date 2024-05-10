@@ -32,6 +32,7 @@ import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 
 export default function Factors() {
   const [initialValue, setInitialValue] = useState({
@@ -518,7 +519,7 @@ export default function Factors() {
                           //type="submit"
                           onClick={() => {
                             submitForm().then(() => {
-                              history("/Attach_document_ECI");
+                              Redirect("/Attach_document_ECI",authDetails?.agentId,history);
                             })
                           }}
                           disabled={!isValid || !incomeTypesValid}
@@ -542,7 +543,7 @@ export default function Factors() {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history("/W-8ECI/Tax_Payer")
+                            Redirect("/W-8ECI/Tax_Payer",authDetails?.agentId,history,true)
                           }}
                           variant="contained"
                           size="large"

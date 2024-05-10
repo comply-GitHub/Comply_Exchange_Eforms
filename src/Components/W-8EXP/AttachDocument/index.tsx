@@ -75,7 +75,7 @@ const AttachDocumentEXP = () => {
             <AttachDocument
                 InitialValues={initialValues}
                 FormTypeId={FormTypeId.W8EXP}
-                BreadCrumbOrder={1214}
+                BreadCrumbOrder={1267}
                 ContinueRoute='/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp'
                 BackRoute='/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp'
                 GetPdf={() => {

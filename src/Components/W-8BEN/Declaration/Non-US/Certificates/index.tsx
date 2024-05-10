@@ -26,6 +26,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
+import Redirect from "../../../../../Router/RouterSkip";
 export default function Certifications(props: any) {
   const history = useNavigate();
   const location = useLocation();
@@ -129,7 +130,7 @@ export default function Certifications(props: any) {
               validationSchema={certificateSchema_w8Ben}
               
               onSubmit={(values, { setSubmitting }) => {
-                history("/W-8BEN/Declaration/US_Tin/Certification_Substitute/participation")
+                Redirect("/W-8BEN/Declaration/US_Tin/Certification_Substitute/participation",authDetails?.agentId,history)
                 setSubmitting(true);
                 let temp = {
                   ...PrevStepData,
@@ -672,7 +673,7 @@ export default function Certifications(props: any) {
                       {" "}
                       <Button
                         onClick={() => {
-                          history("/Attach_document_BEN");
+                          Redirect("/Attach_document_BEN",authDetails?.agentId,history,true);
                         }}
                         variant="contained"
                         style={{

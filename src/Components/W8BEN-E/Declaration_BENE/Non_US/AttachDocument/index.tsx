@@ -79,7 +79,7 @@ const AttachDocumentW9 = () => {
 <AttachDocument
                 InitialValues={initialValues}
                 FormTypeId={FormTypeId.BENE}
-                BreadCrumbOrder={1214}
+                BreadCrumbOrder={1260}
                 ContinueRoute='/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE'
                 BackRoute={handleBackRoute()}
                 
