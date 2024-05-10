@@ -42,7 +42,7 @@ import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import useAuth from "../../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
-import { GetEciPdf } from "../../../../Redux/Actions/PfdActions";
+import { GetW9DCPdf } from "../../../../Redux/Actions/PfdActions";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const {
@@ -64,7 +64,7 @@ export default function Fedral_tax(props: any) {
     BusinessName: PrevStepData?.BusinessName,
     BusinessDisregardedEntityName: PrevStepData?.BusinessDisregardedEntityName,
     countryOfIncorporation: parseInt(PrevStepData?.countryOfIncorporation),
-    FederalTaxClassificationId: parseInt(PrevStepData?.FederalTaxClassificationId || 0),
+    FederalTaxClassificationId: parseInt(PrevStepData?.federalTaxClassificationId),
     LLCOwnerEntityType:0,
     USFederalTaxClassification: PrevStepData?.USFederalTaxClassification,
     OtherType: PrevStepData?.OtherType,
@@ -153,9 +153,9 @@ export default function Fedral_tax(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform" onClick={() => {
-              dispatch(GetEciPdf(authDetails?.accountHolderId))
-            }}>View Form</div>
+            <div className="viewform"  onClick={() => {
+                              dispatch(GetW9DCPdf(authDetails?.accountHolderId))
+                            }}>View Form</div>
             <div className="helpvideo">
               {GethelpData && GethelpData[5].id === 7 ? (
                 <a
@@ -180,7 +180,7 @@ export default function Fedral_tax(props: any) {
         <div className="row w-100">
           <div className="col-4">
             <div style={{ padding: "20px 0px", height: "100%" }}>
-              <BreadCrumbComponent breadCrumbCode={1203} formName={4} />
+              <BreadCrumbComponent breadCrumbCode={1200} formName={13} />
             </div>
           </div>
           <div className="col-8 mt-3">
@@ -426,10 +426,10 @@ export default function Fedral_tax(props: any) {
 
                                 <FormControl className="w-50">
                                   <select
-                                    disabled
+                                    
                                     name="FederalTaxClassificationId"
                                     value={values.FederalTaxClassificationId}
-                                    onChange={handleChange}
+                                   
                                     autoComplete="FederalTaxClassificationId"
 
                                     style={{
@@ -2055,7 +2055,7 @@ export default function Fedral_tax(props: any) {
                             disabled={isSubmitting}
                             variant="contained"
                             onClick={() => {
-                              dispatch(GetEciPdf(authDetails?.accountHolderId))
+                              dispatch(GetW9DCPdf(authDetails?.accountHolderId))
                             }}
                             style={{ color: "white", marginLeft: "15px" }}
                           >

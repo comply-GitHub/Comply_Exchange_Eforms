@@ -76,8 +76,8 @@ export default function BreadCrumbComponent(props: any): any {
 
   function groupDataByBreadcrumbPart(data: any) {
     const groupedData: any = {};
-    if (userType === "GEN") {
-      data = data.filter((x: any) => !x?.title?.toLowerCase()?.includes("self-cert") && (!x?.title?.toLowerCase()?.includes("documentation")) || formName == FormTypeId.F8233)
+    if (authDetails?.userType === "GEN") {
+      data = data.filter((x: any) => !x?.title?.toLowerCase()?.includes("self-cert") || formName == FormTypeId.F8233)
     }
     // if (userType === "GEN") {
     //   data = data.filter((x: any) => !x?.title?.toLowerCase()?.includes("self-cert") && !x?.title?.toLowerCase()?.includes("documentation"))

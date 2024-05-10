@@ -72,6 +72,9 @@ export default function Penalties() {
   const [toolInfo, setToolInfo] = useState("");
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+  const onBoardingFormValues = JSON.parse(
+    localStorage.getItem("agentDetails") ?? "null"
+  );
   console.log(PrevStepData, ";;")
   const W9Data = useSelector((state: any) => state.W9Data);
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
@@ -184,8 +187,9 @@ export default function Penalties() {
               <div className="row w-100 ">
                 <div className="col-4">
                   <div style={{ padding: "20px 0px", height: "100%" }}>
-                    <BreadCrumbComponent breadCrumbCode={1285} formName={3} />
-
+                   
+                    {onBoardingFormValues?.businessTypeId === 1 ?( <BreadCrumbComponent breadCrumbCode={1310} formName={12} />):  <BreadCrumbComponent breadCrumbCode={1310} formName={13} />
+                 }
                   </div>
                 </div>
                 <div className="col-8 mt-3">
@@ -239,14 +243,7 @@ export default function Penalties() {
                       >
                         Self Cert Individual Electronic Substitute Form Statement
                       </Typography>
-                      <Typography
-                        align="left"
-                        style={{ margin: "10px", fontSize: "17px", color: "grey" }}
-                      >
-                        The Internal Revenue Service does not require your consent
-                        to any provisions of this document other than the
-                        certifications required to avoid backup withholding.
-                      </Typography>
+                    
 
                       <div
                         className="row"

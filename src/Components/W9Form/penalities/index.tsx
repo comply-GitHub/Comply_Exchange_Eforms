@@ -77,6 +77,7 @@ export default function Penalties() {
     (state: any) => state?.GetByW9FormReducer?.GetByW9FormData
   );
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
+  const accountDetails = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
   const initialValue = {
     signedBy:  W9Data?.signedBy || PrevStepData?.signedBy ,
     confirmationCode: W9Data?.confirmationCode || PrevStepData?.confirmationCode,
@@ -104,10 +105,14 @@ export default function Penalties() {
     <>
       <Formik
         validateOnChange={true}
-        validateOnBlur={false}
+        validateOnBlur={true}
+        enableReinitialize
         initialValues={initialValue}
         validationSchema={partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
+          if (clickCount === 0) {
+            setClickCount(clickCount + 1);
+          } else {
           const returnPromise = new Promise((resolve, reject) => {
             const new_obj = { ...PrevStepData, stepName: `/${urlValue}` };
             const result = { ...new_obj, ...values };
@@ -144,6 +149,7 @@ export default function Penalties() {
 
           return returnPromise;
         }
+      }
         }
       >
         {({
@@ -206,7 +212,7 @@ export default function Penalties() {
                   <div style={{ padding: "14px" }}>
                     <Paper style={{ padding: "10px" }}>
 
-                      {obValues.uniqueIdentifier !== values.signedBy && clickCount === 1 ? (
+                      {accountDetails.uniqueIdentifier !== values.signedBy ? (
                         <div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                           <Typography>
                             SIG101
