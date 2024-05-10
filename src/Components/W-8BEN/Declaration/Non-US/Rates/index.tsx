@@ -34,6 +34,7 @@ import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import {GetSpecialRateAndCondition,GetCountryArticleByID, getAllCountriesIncomeCode,postW8BENForm,GetHelpVideoDetails,UpsertSpecialRateAndCondition } from "../../../../../Redux/Actions";
 import useAuth from "../../../../../customHooks/useAuth";
 import { useLocation } from "react-router-dom";
+import Redirect from "../../../../../Router/RouterSkip";
 export default function Factors() {
   const history = useNavigate();
   const { authDetails } = useAuth();
@@ -641,7 +642,7 @@ const GetAllIncomeCodesReducer = useSelector(
                           disabled={(!incomeTypesValid || !isValid) && values.isSubmissionSpecialRates !== "no"}
                           onClick={() =>
                             submitForm().then((data) => {
-                              history("/Attach_document_BEN")
+                              Redirect("/Attach_document_BEN",authDetails?.agentId,history)
                             }).catch((err) => {
                               console.log(err);
                             })
@@ -669,7 +670,7 @@ const GetAllIncomeCodesReducer = useSelector(
                 <Typography align="center">
                   <Button
                   onClick={()=>{
-                    history('/W-8BEN/Declaration/US_Tin/Claim')
+                    Redirect('/W-8BEN/Declaration/US_Tin/Claim',authDetails?.agentId,history,true)
                   }}
                     variant="contained"
                     size="large"

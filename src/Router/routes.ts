@@ -927,7 +927,7 @@ const ROUTES: Array<RouteType> = [
   },
   {
     name: "Documentaion",
-    path: "Form8233/TaxPayer_Identification/Owner/Documentaion",
+    path: "/Form8233/TaxPayer_Identification/Owner/Documentaion",
     id: 7,
     Component: Documentaion,
     isPrivate: true,

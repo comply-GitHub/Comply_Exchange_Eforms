@@ -594,10 +594,10 @@ export default function Certifications(props: any) {
                         onClick={() => {
                           submitForm()
                             .then((data) => {
-                              // Redirect("/W-8ECI/Certification/Participation",authDetails?.agentId,history,false)
-                              history(
-                                "/W-8ECI/Certification/Participation"
-                              );
+                              Redirect("/W-8ECI/Certification/Participation",authDetails?.agentId,history,false)
+                              // history(
+                              //   "/W-8ECI/Certification/Participation"
+                              // );
                             })
                             .catch((err) => {
                               console.log(err);

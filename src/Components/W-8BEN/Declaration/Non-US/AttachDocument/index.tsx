@@ -87,7 +87,7 @@ const AttachDocumentEXP = () => {
             <AttachDocument
                 InitialValues={initialValues}
                 FormTypeId={FormTypeId.BEN}
-                BreadCrumbOrder={1214}
+                BreadCrumbOrder={1260}
                 ContinueRoute="/W-8BEN/Declaration/US_Tin/Certificates"
                 BackRoute={handleBackRoute()}
                 GetPdf={() => {

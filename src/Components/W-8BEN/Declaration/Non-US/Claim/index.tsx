@@ -39,6 +39,7 @@ import {
   GetHelpVideoDetails,
   GetLimitationBenefits,
 } from "../../../../../Redux/Actions";
+import Redirect from "../../../../../Router/RouterSkip";
 export default function FCTA_Reporting(props: any) {
   const history = useNavigate();
   const { authDetails } = useAuth();
@@ -689,10 +690,10 @@ export default function FCTA_Reporting(props: any) {
                           validateForm().then(() => {
                             submitForm().then((data) => {
                               if (values?.isClaimTreaty == "no") {
-                                history('/Attach_document_BEN')
+                                Redirect('/Attach_document_BEN',authDetails?.agentId,history)
                               } else {
-                                history(
-                                  "/W-8BEN/Declaration/US_Tin/Rates"
+                                Redirect(
+                                  "/W-8BEN/Declaration/US_Tin/Rates",authDetails?.agentId,history
                                 );
                               }
 
@@ -726,7 +727,7 @@ export default function FCTA_Reporting(props: any) {
                     <Typography align="center">
                       <Button
                         onClick={() => {
-                          history("/W-8BEN/Declaration/US_Tin");
+                          Redirect("/W-8BEN/Declaration/US_Tin",authDetails?.agentId,history,true);
                         }}
                         variant="contained"
                         style={{

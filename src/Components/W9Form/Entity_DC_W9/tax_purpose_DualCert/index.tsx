@@ -58,6 +58,9 @@ export default function Fedral_tax(props: any) {
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const [IsIndividual, setIsIndividual] = useState(obValues?.businessTypeId == 1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  
+  const EntityDualCert = JSON.parse(localStorage.getItem("EntityDualCertPrevStepData") || "{}");
+  
   const [selectedfile, setSelectedFile] = useState<any>(null);
 
   const initialValue = {
@@ -68,12 +71,12 @@ export default function Fedral_tax(props: any) {
     LLCOwnerEntityType:0,
     USFederalTaxClassification: PrevStepData?.USFederalTaxClassification,
     OtherType: PrevStepData?.OtherType,
-    DateOfIncorporation:"",
-    IsJurisdictionforTaxPurposes:"",
-    IsTieBreakerClauseUnderApplicableTaxTreaty:"",
-    CountryIdwhereTaxesarePaid:0,
-    ContentforTaxJurisdictionMismatchExplanation:"",
-    IsTrueandAccurateStatement:false
+    DateOfIncorporation:EntityDualCert?.DateOfIncorporation ||"",
+    IsJurisdictionforTaxPurposes: EntityDualCert ?. IsJurisdictionforTaxPurposes ||"",
+    IsTieBreakerClauseUnderApplicableTaxTreaty:EntityDualCert?.IsTieBreakerClauseUnderApplicableTaxTreaty || "",
+    CountryIdwhereTaxesarePaid:EntityDualCert?.CountryIdwhereTaxesarePaid ||0,
+    ContentforTaxJurisdictionMismatchExplanation:EntityDualCert?.ContentforTaxJurisdictionMismatchExplanation || "",
+    IsTrueandAccurateStatement:EntityDualCert?.IsTrueandAccurateStatement||false
   };
 
   const [clickCount, setClickCount] = useState(0);
@@ -1204,9 +1207,10 @@ export default function Fedral_tax(props: any) {
                                  Check to confirm this is a true and accurate statement:
                                  </Typography>
                                </div>
-                               <p className="error">
-                                        {errors.IsTrueandAccurateStatement}
-                                      </p>
+                               {errors.IsTrueandAccurateStatement && touched.IsTrueandAccurateStatement ? (  <p className="error">
+                               {typeof errors.IsTrueandAccurateStatement === 'string' ? errors.IsTrueandAccurateStatement : ''}
+                                       
+                                      </p>):""}
                              
                              </div>
                              </div>

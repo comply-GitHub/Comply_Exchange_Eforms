@@ -55,14 +55,15 @@ export default function Penalties() {
 
   const urlValue = location.pathname.substring(1);
   const agentDefaultDetails = JSON.parse(
-    localStorage.getItem("agentDefaultDetails") || "{}"
+    localStorage.getItem("agentDefaultDetails") || "{}" 
   );
   const W8BENData = useSelector((state: any) => state.W8BEN);
+  
   // const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
   // const toggleRecoverSection = () => {
   //   setShowRecoverSection(true);
-  // };
+  // };DualCertData
   console.log(PrevStepData, ";;")
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -94,15 +95,15 @@ export default function Penalties() {
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
   const initialValue = {
-    signedBy: W8BENData?.signedBy ?? "",
+    signedBy: PrevStepData?.signedBy ||"",
     EnterconfirmationCode: "",
-    confirmationCode: W8BENData?.confirmationCode ?? "",
-    date: W8BENData?.date ?? new Date().toLocaleDateString('en-US', {
+    confirmationCode: PrevStepData?.confirmationCode || "",
+    date: PrevStepData?.date ?? new Date().toLocaleDateString('en-US', {
       month: '2-digit',
       day: '2-digit',
       year: 'numeric',
     }),
-    isCheckAcceptance: W8BENData?.isCheckAcceptance ? true : false
+    isCheckAcceptance: PrevStepData?.isCheckAcceptance || false
 
   };
 
@@ -650,16 +651,16 @@ export default function Penalties() {
                         >
                           Please "check" box to confirm your acceptance with the
                           above declarations{" "}
-                          {errors.isCheckAcceptance &&
-                            touched.isCheckAcceptance ? (
-                            <div>
-                              <Typography color="error">
-                                {errors.isCheckAcceptance}
-                              </Typography>
-                            </div>
-                          ) : (
-                            ""
-                          )}
+                          {errors.isCheckAcceptance && touched.isCheckAcceptance ? (
+    <div>
+        <Typography color="error">
+            {typeof errors.isCheckAcceptance === 'string' ? errors.isCheckAcceptance : ''}
+        </Typography>
+    </div>
+) : (
+    ""
+)}
+                        
                           <span>
                             <Tooltip
                               style={{ backgroundColor: "black", color: "white" }}

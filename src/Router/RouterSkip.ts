@@ -802,6 +802,131 @@ case "/Attach_document_BEN":
   }
   break;
 
+//ECI
+case "/Attach_document_ECI":
+  if (
+    mappingAvailable.filter((x) => x.id == 36 && x.agentId == agentId)
+      .length > 0
+  ) {
+    //skip condition
+    //redirecting to next step
+
+    if (!isback) {
+      // going forward in forms case  ContinueRoute='/W-8ECI/Certification'
+               
+      Redirect(
+        "/W-8ECI/Certification",
+        agentId,
+        navigate
+      );
+    } else {
+      // going back in forms case
+      Redirect(
+        "/W-8ECI/Income",
+        agentId,
+        navigate
+      );
+    }
+  } else {
+    // step is not skipped
+    navigate(stepRoute);
+  }
+  break;
+
+//EXP
+case "/Attach_document_EXP":
+  if (
+    mappingAvailable.filter((x) => x.id == 34 && x.agentId == agentId)
+      .length > 0
+  ) {
+    //skip condition
+    //redirecting to next step
+
+    if (!isback) {
+      // going forward in forms case  ContinueRoute='/W-8ECI/Certification'
+               
+      Redirect(
+        "/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp",
+        agentId,
+        navigate
+      );
+    } else {
+      // going back in forms case
+      Redirect(
+        "/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp",
+        agentId,
+        navigate
+      );
+    }
+  } else {
+    // step is not skipped
+    navigate(stepRoute);
+  }
+  break;
+// IMY
+
+
+case "/Attach_document_IMY":
+  if (
+    mappingAvailable.filter((x) => x.id == 33 && x.agentId == agentId)
+      .length > 0
+  ) {
+    //skip condition
+    //redirecting to next step
+
+    if (!isback) {
+      // going forward in forms case  ContinueRoute='/W-8ECI/Certification'
+               
+      Redirect(
+        "/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY",
+        agentId,
+        navigate
+      );
+    } else {
+      // going back in forms case
+      Redirect(
+        "/IMY/Tax_Purpose_Exp/Chapter4_IMY/Statement",
+        agentId,
+        navigate
+      );
+    }
+  } else {
+    // step is not skipped
+    navigate(stepRoute);
+  }
+  break;
+
+//8233
+case "/Form8233/TaxPayer_Identification/Owner/Documentaion":
+  if (
+    mappingAvailable.filter((x) => x.id == 53 && x.agentId == agentId)
+      .length > 0
+  ) {
+    //skip condition
+    //redirecting to next step
+
+    if (!isback) {
+      // going forward in forms case  ContinueRoute='/W-8ECI/Certification'
+               
+      Redirect(
+        "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification",
+        agentId,
+        navigate
+      );
+    } else {
+      // going back in forms case
+      Redirect(
+        "/Form8233/TaxPayer_Identification/Owner/Claim_part",
+        agentId,
+        navigate
+      );
+    }
+  } else {
+    // step is not skipped
+    navigate(stepRoute);
+  }
+  break;
+
 
     default:
       navigate(stepRoute);
