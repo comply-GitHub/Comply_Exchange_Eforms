@@ -1,5 +1,26 @@
 import { GetAgentSkippedSteps } from "../Redux/Actions";
 import store from "../Redux/store";
+const handleBENESupportingDocsBackRoute = () => {
+  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  if (PrevStepData?.isClaimTreaty === "no" || PrevStepData?.isClaimTreaty === false) {
+      return "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E"
+      
+  } else {
+     return "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE"
+      
+  }
+}
+const handleBackRoute = () => {
+  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  if (PrevStepData?.isClaimTreaty === "no" || PrevStepData?.isClaimTreaty === false) {
+      return "/W-8BEN/Declaration/US_Tin/Claim"
+      
+  } else {
+     return "/W-8BEN/Declaration/US_Tin/Rates"
+      
+  }
+}
+
 const Redirect = async (
   stepRoute: string = "W-8ECI/Info",
   agentId: number = 3,
@@ -154,6 +175,35 @@ const Redirect = async (
       break;
 
     //BenE section
+    case "/Attach_document_BENE":
+      if (
+        mappingAvailable.filter((x) => x.id == 32 && x.agentId == agentId)
+          .length > 0
+      ) {
+        //skip condition
+        //redirecting to next step
+
+        if (!isback) {
+          // going forward in forms case
+          Redirect(
+            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE",
+            agentId,
+            navigate
+          );
+        } else {
+          // going back in forms case
+          Redirect(
+            handleBENESupportingDocsBackRoute(),
+            agentId,
+            navigate
+          );
+        }
+      } else {
+        // step is not skipped
+        navigate(stepRoute);
+      }
+      break;
+
     // case "/BenE/Tax_Purpose_BenE":
     //   if (
     //     mappingAvailable.filter((x) => x.id == 15 && x.agentId == agentId) //x.id not confirmed
@@ -691,6 +741,67 @@ const Redirect = async (
         navigate(stepRoute);
       }
       break;
+
+      // w9
+      case "/Attach_document_w9":
+        if (
+          mappingAvailable.filter((x) => x.id == 30 && x.agentId == agentId)
+            .length > 0
+        ) {
+          //skip condition
+          //redirecting to next step
+  
+          if (!isback) {
+            // going forward in forms case
+            Redirect(
+              "/US_Purposes/Back/Exemption/Tax/Certificates",
+              agentId,
+              navigate
+            );
+          } else {
+            // going back in forms case
+            Redirect(
+              "/US_Purposes/Back/Exemption/Tax",
+              agentId,
+              navigate
+            );
+          }
+        } else {
+          // step is not skipped
+          navigate(stepRoute);
+        }
+        break;
+  
+//BEN
+case "/Attach_document_BEN":
+  if (
+    mappingAvailable.filter((x) => x.id == 31 && x.agentId == agentId)
+      .length > 0
+  ) {
+    //skip condition
+    //redirecting to next step
+
+    if (!isback) {
+      // going forward in forms case
+      Redirect(
+        "/W-8BEN/Declaration/US_Tin/Certificates",
+        agentId,
+        navigate
+      );
+    } else {
+      // going back in forms case
+      Redirect(
+        handleBackRoute(),
+        agentId,
+        navigate
+      );
+    }
+  } else {
+    // step is not skipped
+    navigate(stepRoute);
+  }
+  break;
+
 
     default:
       navigate(stepRoute);
