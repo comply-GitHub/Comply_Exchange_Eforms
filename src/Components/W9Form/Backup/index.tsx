@@ -1040,7 +1040,7 @@ export default function Backup_witholding(props: any) {
               <Typography align="center">
                 <Button
                   onClick={() => {
-                    if(StepData?.agentId === 1){
+                    if(StepData?.businessTypeId === 1){
                       Redirect(
                         "/W9/purposes",
                         authDetails?.agentId,

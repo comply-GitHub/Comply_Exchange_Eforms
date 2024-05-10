@@ -34,6 +34,7 @@ export default function Certifications(props: any) {
   const { authDetails } = useAuth();
   const location = useLocation();
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
+  const OnboardingData = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   console.log(PrevStepData, "prevv")
   const urlValue = location.pathname.substring(1);
   const initialValue = {
@@ -126,8 +127,9 @@ export default function Certifications(props: any) {
       <div className="row w-100 " style={{ backgroundColor: "#0c3d69" }}>
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>
-            <BreadCrumbComponent breadCrumbCode={1500} formName={1} />
-
+           
+            {OnboardingData.businessTypeId === 1 ?( <BreadCrumbComponent breadCrumbCode={1300} formName={12} />): <BreadCrumbComponent breadCrumbCode={1300} formName={13} />
+                 }
           </div>
         </div>
 

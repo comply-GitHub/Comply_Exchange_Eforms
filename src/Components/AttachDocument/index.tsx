@@ -249,7 +249,7 @@ const AttachDocument = ({
         () => {
         
           localStorage.setItem("form8233Data", JSON.stringify({ additionalDocs: additionalDocs }));
-          history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification");
+          // history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification");
         },
         () => {}
       )

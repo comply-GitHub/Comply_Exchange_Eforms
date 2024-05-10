@@ -491,7 +491,8 @@ export default function TaxPayer(props: any) {
             <div className="row w-100">
               <div className="col-4">
                 <div style={{ padding: "20px 0px" }}>
-                  <BreadCrumbComponent breadCrumbCode={1249} formName={1} />
+                 {onBoardingFormValues.businessTypeId === 1 ?( <BreadCrumbComponent breadCrumbCode={1220} formName={12} />):<BreadCrumbComponent breadCrumbCode={1220} formName={13} />
+                 }
 
                 </div>
               </div>
@@ -721,7 +722,7 @@ export default function TaxPayer(props: any) {
                       </div>
                       <div style={{ marginLeft: "18px", marginTop: "20px" }} >
                         <Typography>
-                          Does the entityWithMultipleTaxJurisdictions represent an entity that has multiple tax jurisdictions? <span style={{ color: "red" }}>*</span>
+                          Does the submission represent an entity that has multiple tax jurisdictions? <span style={{ color: "red" }}>*</span>
                         </Typography>
                         <>{console.log(typeof values.entityWithMultipleTaxJurisdictions, typeof GetDualCertData.entityWithMultipleTaxJurisdictions, "67")}</>
                         <FormControl className="col-12 radio">

@@ -473,7 +473,7 @@ export const GetW9DCPdf = (accountHolderId: number, callback: Function = (data: 
                             });
                             callback();
                         }
-                        convertAndDownloadPdf(data?.pdf, "W9DCIndividual.pdf", isDownload)
+                        convertAndDownloadPdf(data?.pdf, "W9DCSelfCertification.pdf", isDownload)
                     }
                 }
             },
