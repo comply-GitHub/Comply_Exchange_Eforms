@@ -8,18 +8,22 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import { FormTypeId } from "../../../../Utils/constVals";
 import { SubmitSchema } from "../../../../schemas/submit";
-import { PostDualCert } from "../../../../Redux/Actions";
+import { GetHelpVideoDetails, PostDualCert } from "../../../../Redux/Actions";
 import Utils from "../../../../Utils";
+import View_Insructions from "../../../viewInstruction";
+import { GetW9Pdf } from "../../../../Redux/Actions/PfdActions";
+import useAuth from "../../../../customHooks/useAuth";
+import SideBar from "../../../Reusable/SideBar";
 
 
 
 export default function Classification (props: any){
-
+  const { authDetails } = useAuth();
   const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
 
   const history = useNavigate();
@@ -34,16 +38,18 @@ export default function Classification (props: any){
   ) => {
     if (newExpanded) {
       setExpandedState(panel);
+      const payload = {
+        heading1: panelHeading,
+        subheading1:'FATCA Classification -'+ panelHeading+' Cayman',
+        selectedHeading : panelHeading,
+        selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
+      
+      }
       dispatch({
         type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
-        payload: {
-          heading1: panelHeading,
-          subheading1:'FATCA Classification -'+ panelHeading+' Cayman',
-          selectedHeading : panelHeading,
-          selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
-        
-        },
+        payload,
       });
+      //localStorage.setItem("FATCASelfCertData", JSON.stringify(payload));
 
       localStorage.setItem("clickedPanelHeading", panelHeading);
       localStorage.setItem("Heading1",panelHeading)
@@ -93,37 +99,28 @@ export default function Classification (props: any){
 
     }, [isAccordionVisible])
 
+    useEffect(() => {
+      console.log("calling")
+      //const payload = {};
+      dispatch({
+        type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassificationEmpty,
+      });
+
+    },[])
+    
+
+
   return (
     <Fragment>
      <section
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-      <div className="overlay-div">
-        <div className="overlay-div-group">
-          <div className="viewInstructions">View Instructions</div>
-          <div className="viewform">View Form</div>
-          <div className="helpvideo">
-            <a
-              href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"
-              target="popup"
-              onClick={() =>
-                window.open(
-                  "https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-",
-                  "name",
-                  "width=600,height=400"
-                )
-              }
-            >
-              Help Video
-            </a>
-          </div>
-        </div>
-      </div>
+      <SideBar/>
       <div className="row w-100">
         <div className="col-4 mt-3">
 
-          <BreadCrumbComponent breadCrumbCode={1310} formName={FormTypeId.CaymanEntity} />
+          <BreadCrumbComponent breadCrumbCode={1310} formName={FormTypeId.BENE} />
         </div>
 
         <div className="col-8 mt-3">
@@ -193,7 +190,7 @@ export default function Classification (props: any){
                      }}
                       style={{ backgroundColor: "#d3ae33",cursor:"pointer",color: "black", fontSize: "12px", fontWeight: "bold" }}
                     >
-                    FATCA Classification Guide
+                    FATCA Classification Guide 
                     </Button>
                   </div>
                 
@@ -408,7 +405,7 @@ export default function Classification (props: any){
                 <Button
                  onClick={() => {
                 
-                  history("/Cayman/Entity/FATCA")
+                  history("/BENEEntityFatcaClassification")
                   setExpandedState(false)
                  }}
                   variant="outlined"
@@ -430,20 +427,9 @@ export default function Classification (props: any){
                  localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
                  
                }
-                {expandedState==='panel2' ? history("/Cayman/Entity/FATCA/Financial") : history("/Cayman/Entity/FATCA/Complete") }
-                  // if (expandedState === "panel2") {
-                  //   history("/Cayman/Entity/FATCA/Financial");
-                  // } else if (expandedState === "panel3") {
-                  //   history("/Cayman/Entity/FATCA/Complete");
-                  // }else if(expandedState === "panel4"){
-                  //   history("/Cayman/Entity/FATCA/Complete");
-                  // }else if(expandedState === "panel5"){
-                  //   history("/Cayman/Entity/FATCA/Complete");
-                  // }else if(expandedState === "panel6"){
-                  //   history("/Cayman/Entity/FATCA/Complete");
-                  // }else {
-                  //   history("/Cayman/Entity/FATCA/Complete");
-                  // }
+               {expandedState==='panel2' ? history("/BENEEntityFatcaClassificationFinancial") : history("/BENEIndividualFatcaClassificationComplete") }
+
+                  
                 }}
                   variant="contained"
                  
@@ -460,7 +446,7 @@ export default function Classification (props: any){
                 </Button>
                 <Button
                  onClick={() => { 
-                  history("/Cayman/Entity/FATCA")
+                  history("/BENEEntityFatcaClassification")
                   setIsAccordionVisible(false)
                   setExpandedState(false)
                  }}
@@ -473,7 +459,7 @@ export default function Classification (props: any){
                     marginLeft: "10px"
                   }}
                 >
-                  Back
+                  Back 
                 </Button>
                 
               </Typography>

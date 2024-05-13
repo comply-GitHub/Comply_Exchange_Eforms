@@ -1,10 +1,3 @@
-// import React, { useState, useEffect } from "react";
-
-//  export default function abc(){
-//      return(<>
-//     hiiii there  Submit_DC
-//    </>)
-//  }
 
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -24,9 +17,6 @@ import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { SubmitSchemaECI } from "../../../../schemas/w8ECI";
 import { GetEciPdf } from "../../../../Redux/Actions/PfdActions";
-
-
-
 
 const Declaration = (props: any) => {
   const { open, setOpen } = props;
@@ -95,22 +85,22 @@ const Declaration = (props: any) => {
                   statusId: 1,
                 };
                 const returnPromise = new Promise((resolve, reject) => {
-                  // dispatch(
-                  //   PostDualCert(
-                  //     [temp],
-                  //     (res: any) => {
-                  //       localStorage.setItem(
-                  //         "DualCertData",
-                  //         JSON.stringify(temp)
-                  //       );
-
-                  //       resolve(res);
-                  //     },
-                  //     (err: any) => {
-                  //       reject(err);
-                  //     }
-                  //   )
-                  // );
+                  dispatch(
+                    PostDualCert(
+                      [temp],
+                      (res: any) => {
+                        localStorage.setItem(
+                          "DualCertData",
+                          JSON.stringify(temp)
+                        );
+                        history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/ThankYou_DC");
+                        resolve(res);
+                      },
+                      (err: any) => {
+                        reject(err);
+                      }
+                    )
+                  );
                 });
                 return returnPromise;
 
@@ -129,7 +119,7 @@ const Declaration = (props: any) => {
                 submitForm
               }) => (
                 <form onSubmit={handleSubmit}>
-                  {/* <form> */}
+                 
                   {
                     <Typography
                       align="left"
@@ -423,6 +413,9 @@ const Declaration = (props: any) => {
                         dispatch(PostDualCert(
                             {
                                 ...prevStepData,
+                                AccountHolderDetailsId:authDetails.accountHolderId,
+                                agentId: authDetails?.agentId,
+                                formTypeId: FormTypeId.BENE,
                                 ...values,
                                 stepName: `/${urlValue}`
                             }
@@ -433,7 +426,7 @@ const Declaration = (props: any) => {
                           GlobalValues.basePageRoute
                         );
                       })
-                    }} formTypeId={FormTypeId.W8ECI} />
+                    }} formTypeId={FormTypeId.BENE} />
                     <Button
                       onClick={() => {
                         dispatch(GetEciPdf(authDetails?.accountHolderId))
@@ -447,7 +440,7 @@ const Declaration = (props: any) => {
                     <Button
                       onClick={() => {
                         submitForm().then(() => {
-                          history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/ThankYou_DC");
+                         
                         })
                       }}
                       disabled={!isValid}

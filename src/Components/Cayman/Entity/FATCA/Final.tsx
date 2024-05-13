@@ -64,7 +64,9 @@ export default function Final (props: any){
         isControllingPersonsInformation:false,
         fullNameOfSponsorsEntity:"",
     };
-
+    useEffect(() => {
+      localStorage.setItem('FATCAClassificationData', JSON.stringify(initialValue));
+    }, [initialValue]);
 
 
   return (
@@ -578,10 +580,11 @@ export default function Final (props: any){
                 </>)}
 
                 { values.selectedHeading === 'Active NFFE' && (<>
-                    <Typography>
+                  <div style={{marginLeft:"10px"}}>
+                  <Typography>
                     Select Status:
                 </Typography>
-                <Typography>
+                <Typography style={{fontSize:"20px",fontWeight:"550"}}>
                 {values.selectedHeading}
                 </Typography>
                 <Typography>
@@ -610,6 +613,7 @@ export default function Final (props: any){
                     }}
                 /> 
 
+                  </div>
                  
 
                 </>)}

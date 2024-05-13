@@ -44,11 +44,11 @@ export default function TaxPayer(props: any) {
   const [clickCount, setClickCount] = useState(0);
   const [continueId, setcontinueId] = useState(0);
 
-  const onBoardingFormValues = JSON.parse(
+  const obValues = JSON.parse(
     localStorage.getItem("agentDetails") ?? "null"
   );
 
-
+  
 
   const [yesCount, setYesCount] = useState(0)
 
@@ -58,8 +58,7 @@ export default function TaxPayer(props: any) {
     Temp[event.target.name] = event.target.value
     setValues(Temp)
 
-    // Handle your existing form field changes here
-    // For the specific case of entityWithMultipleTaxJurisdictions
+    
     if (event.target.name === 'additionalTaxJurisdictions' || event.target.name === "entityWithMultipleTaxJurisdictions") {
       if (event.target.value === 'Yes') {
         setPayload([...payload, { ...defuaultPayload }]);
@@ -93,7 +92,7 @@ export default function TaxPayer(props: any) {
     tinNumber: "",
     isAlternativeTinFormat: false,
     notAvailableReason: "",
-    formTypeId: FormTypeId?.W9,
+    formTypeId: FormTypeId?.BENE,
     accountHolderDetailsId: authDetails?.accountHolderId,
     agentId: authDetails?.agentId,
     formEntryId: 0,
@@ -195,7 +194,7 @@ export default function TaxPayer(props: any) {
       getW9Form(authDetails?.accountHolderId, (data: any) => {
       })
     );
-    dispatch(getDualCertW9(authDetails?.accountHolderId, FormTypeId?.W9))
+    dispatch(getDualCertW9(authDetails?.accountHolderId, FormTypeId?.BENE))
   }, [authDetails]);
 
 
@@ -208,7 +207,7 @@ export default function TaxPayer(props: any) {
           id: 0,
           agentId: authDetails?.agentId,
           accountHolderDetailsId: authDetails?.accountHolderId,
-          formTypeId: FormTypeId.W9,
+          formTypeId: FormTypeId.BENE,
           formEntryId: index,
           additionalTaxJurisdictions: ele?.additionalTaxJurisdictions,
           countryId: parseInt(ele?.countryId),
@@ -221,22 +220,22 @@ export default function TaxPayer(props: any) {
       }));
     }
   }, [GetDualCertData]);
-  const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
+ 
 
   const initialValues = {
     agentId: authDetails?.agentId,
     accountHolderId: authDetails?.accountHolderId,
     entityWithMultipleTaxJurisdictions: "",
-    usTinTypeId: onBoardingFormValues?.taxpayerIdTypeID
-      ? onBoardingFormValues?.taxpayerIdTypeID : getReducerData?.taxpayerIdTypeID || 0,
-    usTin: onBoardingFormValues?.usTin || "",
+    usTinTypeId: obValues?.usTinTypeId
+      ? obValues?.usTinTypeId : getReducerData?.usTinTypeId || 0,
+    usTin: obValues?.usTin || "",
     formEntryId: "",
     id: "",
     foreignTINCountry: obValues.foreignTINCountryId == null || obValues.foreignTINCountryId == ""
       || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId,
-    foreignTIN: "",
+    foreignTIN:  W8BENEData.foreignTIN ? W8BENEData.foreignTIN : "",
     isFTINLegally: W8BENEData.isFTINLegally ? W8BENEData.isFTINLegally : false,
-    isNotAvailable: W8BENEData.isNotAvailable ? (W8BENEData.isNotAvailable == true && W8BENEData.alternativeTINFormat == false ? "Yes" : "") : "",
+    isNotAvailable: W8BENEData.isNotAvailable ? (W8BENEData.isNotAvailable == true && W8BENEData.alternativeTINFormat == false ? "Yes" : "") : false,
 
   };
 
@@ -273,8 +272,8 @@ export default function TaxPayer(props: any) {
           id: 0,
           agentId: authDetails?.agentId,
           accountHolderDetailsId: authDetails?.accountHolderId,
-          formTypeId: FormTypeId.W9,
-          formEntryId: FormTypeId.W9,
+          formTypeId: FormTypeId.BENE,
+          formEntryId: FormTypeId.BENE,
           additionalTaxJurisdictions: ele?.additionalTaxJurisdictions,
           countryId: parseInt(ele?.countryId),
           otherCountry: ele?.otherCountry || "",
@@ -308,11 +307,16 @@ export default function TaxPayer(props: any) {
           id: 0,
           accountHolderDetailsId: authDetails?.accountHolderId,
           agentId: authDetails?.agentId,
-          formTypeID: FormTypeId.W9,
+          formTypeID: FormTypeId.BENE,
           entityWithMultipleTaxJurisdictions: TaxJurisdictions,
-          usTinTypeId: onBoardingFormValues?.taxpayerIdTypeID
-            ? onBoardingFormValues?.taxpayerIdTypeID : getReducerData?.taxpayerIdTypeID,
-          usTin: onBoardingFormValues?.usTin || values.usTin,
+          usTinTypeId: obValues?.taxpayerIdTypeID
+            ? obValues?.taxpayerIdTypeID : getReducerData?.taxpayerIdTypeID,
+          usTin: obValues?.usTin || values.usTin,
+          foreignTINCountry: obValues.foreignTINCountryId == null || obValues.foreignTINCountryId == ""
+      || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId,
+    foreignTIN: obValues.foreignTIN || values.foreignTIN,
+    isFTINLegally: W8BENEData.isFTINLegally ? W8BENEData.isFTINLegally : false,
+    isNotAvailable: W8BENEData.isNotAvailable ? (W8BENEData.isNotAvailable == true && W8BENEData.alternativeTINFormat == false ? "Yes" : "") : false,
         },
       ];
       console.log(secondPayload, "Second Payload");
@@ -337,7 +341,7 @@ export default function TaxPayer(props: any) {
   //         id: 0,
   //         agentId: authDetails?.agentId,
   //         accountHolderDetailsId: authDetails?.accountHolderId,
-  //         formTypeId: FormTypeId.W9,
+  //         formTypeId: FormTypeId.BENE,
   //         formEntryId: index,
   //         additionalTaxJurisdictions: ele?.additionalTaxJurisdictions ,
   //         countryId: ele?.countryId ,
@@ -409,7 +413,7 @@ export default function TaxPayer(props: any) {
               console.log("Nooo", values.entityWithMultipleTaxJurisdictions)
 
               handleSecondPayloadSubmit(values)
-              // history("/Certification_W9_DC");
+            
               history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Certification_DC");
               
               setSubmitting(false);
@@ -590,7 +594,7 @@ export default function TaxPayer(props: any) {
 
                           </div>) : ""}
                           <FormControl className="w-100">
-                            {onBoardingFormValues?.isUSIndividual == true ? (
+                            {obValues?.isUSIndividual == true ? (
 
                               <select
                                 onChange={
@@ -691,7 +695,7 @@ export default function TaxPayer(props: any) {
                             onChange={
                               handleChange
                             }
-                            className="input-w9-cstm"
+                           
                             inputProps={{ maxLength: 11 }}
                             onKeyDown={(e: any) => formatTin(e, values)}
                             fullWidth
@@ -717,11 +721,11 @@ export default function TaxPayer(props: any) {
                         style={{
                           margin: "10px",
                           display: "flex",
-                          marginTop: "25px",
+                          marginTop: "15px",
                         }}
                         className="row"
                       >
-                        <div className="col-lg-5">
+                        <div className="col-md-4 col-6">
                           <Typography style={{ fontSize: "14px" }}>
                             Foreign TIN Country
                             <span style={{ color: "red" }}>*</span>
@@ -729,13 +733,18 @@ export default function TaxPayer(props: any) {
                           <select
                             disabled
                             style={{
-                              border: " 1px solid #d9d9d9 ",
-                              padding: " 0 10px",
-                              color: "#121112",
-                              fontStyle: "italic",
-                              height: "40px",
                               width: "100%",
+                              border: " 1px solid #d9d9d9 ",
+                              height: "40px",
+                              lineHeight: "36px ",
+                              background: "#fff ",
+                              fontSize: "13px",
+                              color: " #000 ",
+                              fontStyle: "normal",
+                              borderRadius: "1px",
+                              padding: " 0 10px ",
                             }}
+                        
                             name="foreignTINCountry"
                             id="Income"
                             onBlur={handleBlur}
@@ -875,7 +884,7 @@ export default function TaxPayer(props: any) {
                             ""
                           )}
                         </div>
-                        <div className="col-lg-5 col-12">
+                        <div className="col-md-4 col-6">
                           <Typography style={{ fontSize: "14px" }}>
                             Foreign TIN{" "}
                             {values.foreignTINCountry == 257 ? (
@@ -899,11 +908,16 @@ export default function TaxPayer(props: any) {
                                   <Info
                                     onClick={() => setToolInfo("ForeignTin")}
                                     style={{
-                                      color: "#ffc107",
-                                      fontSize: "15px",
-                                      verticalAlign: "super",
-                                      marginLeft: "5px",
-                                      cursor: "pointer",
+                                      width: "100%",
+                                      border: " 1px solid #d9d9d9 ",
+                                      height: "40px",
+                                      lineHeight: "36px ",
+                                      background: "#fff ",
+                                      fontSize: "13px",
+                                      color: " #000 ",
+                                      fontStyle: "normal",
+                                      borderRadius: "1px",
+                                      padding: " 0 10px ",
                                     }}
                                   />
                                 </Tooltip>
@@ -936,7 +950,7 @@ export default function TaxPayer(props: any) {
                                 color: "#7e7e7e",
                                 fontStyle: "italic",
                                 height: "40px",
-                                width: "100%",
+                               
                               }}
                             />
                           ) : (
@@ -962,7 +976,7 @@ export default function TaxPayer(props: any) {
                                 color: "#7e7e7e",
                                 fontStyle: "italic",
                                 height: "40px",
-                                width: "100%",
+                            
                               }}
                             />
                           )}
@@ -1103,13 +1117,16 @@ export default function TaxPayer(props: any) {
             >
 
 
-              {/* <SaveAndExit Callback={() => {
+              <SaveAndExit Callback={() => {
                 submitForm().then(() => {
                   const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                   const urlValue = window.location.pathname.substring(1);
                   dispatch(PostDualCert(
                     {
                       ...prevStepData,
+                      AccountHolderDetailsId:authDetails.accountHolderId,
+                      AgentId: authDetails?.agentId,
+                      formTypeId: FormTypeId.BENE,
                       ...values,
                       stepName: `/${urlValue}`
                     }
@@ -1120,7 +1137,7 @@ export default function TaxPayer(props: any) {
                     GlobalValues.basePageRoute
                   );
                 })
-              }} formTypeId={FormTypeId.W9} /> */}
+              }} formTypeId={FormTypeId.BENE} />
               <Button variant="contained" onClick={viewPdf} style={{ color: "white", marginLeft: "15px" }}>
                 View Form
               </Button>
@@ -1129,12 +1146,10 @@ export default function TaxPayer(props: any) {
                 //    onClick={(e)=>{
                 //   handleSecondPayloadSubmit(e)
                 //    handlePayloadSubmit(e)
-                //    history("/Certification_W9_DC")
+                //    history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Certification_DC");
                 //  }}
                 type="submit"
-                onClick={() => {
-                  history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Certification_DC");
-                }}
+               
                 disabled={!isValid || !TinTax}
                
                 variant="contained"

@@ -15,6 +15,7 @@ import { SubmitSchema } from "../../../../schemas/submit";
 import { PostDualCert } from "../../../../Redux/Actions";
 import { FormTypeId } from "../../../../Utils/constVals";
 import Utils from "../../../../Utils";
+import SideBar from "../../../Reusable/SideBar";
 export default function GIINNotAvailable (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
@@ -29,15 +30,17 @@ export default function GIINNotAvailable (props: any){
   ) => {
     if (newExpanded) {
       setExpandedState(panel);
+      const payload = {
+        heading3: panelHeading,
+        subheading3:'FATCA Classification -'+ panelHeading+' Cayman',
+        selectedHeading : panelHeading,
+        selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
+      }
       dispatch({
         type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
-        payload: {
-          heading3: panelHeading,
-          subheading3:'FATCA Classification -'+ panelHeading+' Cayman',
-          selectedHeading : panelHeading,
-          selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
-        },
+        payload,
       });
+      // localStorage.setItem("FATCASelfCertData", JSON.stringify(payload));
 
       localStorage.setItem("clickedPanelHeading", panelHeading);
       localStorage.setItem("Heading3",panelHeading)
@@ -63,31 +66,11 @@ export default function GIINNotAvailable (props: any){
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-      <div className="overlay-div">
-        <div className="overlay-div-group">
-          <div className="viewInstructions">View Instructions</div>
-          <div className="viewform">View Form</div>
-          <div className="helpvideo">
-            <a
-              href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"
-              target="popup"
-              onClick={() =>
-                window.open(
-                  "https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-",
-                  "name",
-                  "width=600,height=400"
-                )
-              }
-            >
-              Help Video
-            </a>
-          </div>
-        </div>
-      </div>
+      <SideBar/>
       <div className="row w-100">
         <div className="col-4 mt-3">
 
-          <BreadCrumbComponent breadCrumbCode={1210} formName={FormTypeId.CaymanEntity} />
+          <BreadCrumbComponent breadCrumbCode={1310} formName={FormTypeId.CaymanEntity} />
         </div>
 
         <div className="col-8 mt-3">
@@ -285,7 +268,7 @@ export default function GIINNotAvailable (props: any){
               <Button
                  onClick={() => {
                  
-                  history("/Cayman/Entity/FATCA")
+                  history("/BENEEntityFatcaClassification")
                 }}
                   variant="outlined"
                   style={{
@@ -306,7 +289,7 @@ export default function GIINNotAvailable (props: any){
                     localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
                     
                   }
-                  {expandedState === "panel2" ?  history("/Cayman/Entity/FATCA/SponsoredFinanceInstitution") : history("/Cayman/Entity/FATCA/Complete")}
+                  {expandedState === "panel2" ?  history("/BENEEntityFatcaClassificationSponsoredFinancialInstitution") : history("/BENEIndividualFatcaClassificationComplete")}
                     // if (expandedState === "panel2") {
                     //   history("/Cayman/Entity/FATCA/SponsoredFinanceInstitution");
                     // } else  {
@@ -338,7 +321,7 @@ export default function GIINNotAvailable (props: any){
                     marginBottom: "20px",
                   }}
                 >
-                  Back
+                  Back 
                 </Button>
                 
               </Typography>

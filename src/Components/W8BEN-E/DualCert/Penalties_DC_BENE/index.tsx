@@ -1,10 +1,4 @@
-// import React, { useState, useEffect } from "react";
 
-// export default function abc(){
-//      return(<>
-//      hiiii there  Submit_DC
-//      </>)
-// }
 import React from "react";
 import { useState, useEffect } from "react";
 import {
@@ -126,7 +120,7 @@ export default function Penalties() {
               PostDualCert(temp, () => {
                 setSubmitting(true);
                 localStorage.setItem("DualCertData", JSON.stringify(temp))
-              
+                history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_DC_BENE");
                 
                 resolve("success")
               }, (err: any) => {
@@ -608,8 +602,7 @@ export default function Penalties() {
 
                             </FormControl>
 
-                            {/* /> */}
-                            {/* <p className="error">{errors.date}</p> */}
+                          
                           </Typography>
                         </div>
                       </div>
@@ -742,16 +735,8 @@ export default function Penalties() {
                         >
                           View Form
                         </Button>
-                        {/* <Button
-                          onClick={() => {
-                            setOpen2(true);
-                          }}
-                          variant="contained"
-                          style={{ color: "white", marginLeft: "15px" }}
-                        >
-                          SAVE & EXIT
-                        </Button> */}
-                        {/* <div style={{ color: "white", marginLeft: "15px" }}>
+                       
+                        <div style={{ color: "white", marginLeft: "15px" }}>
                           <SaveAndExit Callback={() => {
                             submitForm().then(() => {
                               const prevStepData = JSON.parse(
@@ -762,6 +747,9 @@ export default function Penalties() {
                                 dispatch(PostDualCert(
                                   {
                                       ...prevStepData,
+                                      AccountHolderDetailsId:authDetails.accountHolderId,
+                                      agentId: authDetails?.agentId,
+                                      formTypeId: FormTypeId.BENE,
                                       ...values,
                                       stepName: `/${urlValue}`
                                   }
@@ -774,15 +762,15 @@ export default function Penalties() {
                               })
                             
                              
-                          }} formTypeId={FormTypeId.W9} />
-                        </div> */}
+                          }} formTypeId={FormTypeId.BENE} />
+                        </div>
 
 
                         <Button
                           type="submit"
                           onClick={() => {
                             submitForm().then((data: any) => {
-                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_DC_BENE");
+                              
                             }).catch(() => {
 
                             })
