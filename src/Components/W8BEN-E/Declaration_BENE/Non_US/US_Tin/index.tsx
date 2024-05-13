@@ -203,6 +203,7 @@ export default function Tin(props: any) {
                     ...values,
                     agentId: authDetails?.agentId,
                     accountHolderBasicDetailId: authDetails?.accountHolderId,
+                    foreignTIN:values.foreignTIN,
                     isNotAvailable: values.isNotAvailable === "Yes",
                     alternativeTINFormat: values.alternativeTINFormat === "No",
                     isExplanationNotLegallyFTIN: values.isExplanationNotLegallyFTIN == "Yes",

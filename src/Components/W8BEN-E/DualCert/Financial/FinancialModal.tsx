@@ -162,7 +162,7 @@ export default function Declaration (props: any){
                 </Button>
                 <Button
               onClick={()=>{
-                history("/Complete_CRS_W9")
+                history("/Complete_CRS_BENE")
               }}
                   variant="contained"
                  

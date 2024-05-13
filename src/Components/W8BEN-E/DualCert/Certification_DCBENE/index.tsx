@@ -26,6 +26,7 @@ import View_Insructions from "../../../viewInstruction";
 import { useLocation } from "react-router-dom";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
+import useAuth from "../../../../customHooks/useAuth";
 
 export default function Certifications(props: any) {
   const location = useLocation();
@@ -38,7 +39,7 @@ export default function Certifications(props: any) {
     confirmYouhaveRewiedElectronicForm: false,
 
   };
-
+  const { authDetails } = useAuth();
   const dispatch = useDispatch();
   const [checkbox2, setCheckbox2] = useState(false);
   const [checkbox5, setCheckbox5] = useState(false);
@@ -138,11 +139,13 @@ export default function Certifications(props: any) {
                   const submitPromise = new Promise((resolve, reject) => {
                     setSubmitting(true);
 
-                    const result = [{ ...PrevStepData[0], ...values, stepName: `/${urlValue}` }];
+                    const result = [{ ...PrevStepData[0], ...values, stepName: `/${urlValue}`, AccountHolderDetailsId:authDetails.accountHolderId,
+                    agentId: authDetails?.agentId,
+                    formTypeId: FormTypeId.BENE, }];
                     dispatch(
                       PostDualCert(result, () => {
                         localStorage.setItem("DualCertData", JSON.stringify(result))
-                        history("/Participation_W9_DC")
+                        history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_DC");
 
                         resolve("");
                       },
@@ -284,6 +287,9 @@ export default function Certifications(props: any) {
                               {
                                 ...prevStepData,
                                 ...values,
+                                AccountHolderDetailsId:authDetails.accountHolderId,
+                                agentId: authDetails?.agentId,
+                                formTypeId: FormTypeId.BENE,
                                 stepName: `/${urlValue}`
                               }
                               , () => { },
@@ -311,7 +317,7 @@ export default function Certifications(props: any) {
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
                             submitForm().then((data) => {
-                              history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_DC");
+                             
                             }).catch((error) => {
                               console.log(error);
                             })

@@ -34,6 +34,7 @@ import {
   getAllCountriesIncomeCode,
   getAllStateByCountryId,
   postW8ECI_EForm,
+  PostDualCert,
   PostDualCertW9Entity
 } from "../../../Redux/Actions";
 import { FederalTaxSchema_dualCert } from "../../../schemas/w8ECI";
@@ -220,7 +221,7 @@ export default function Fedral_tax(props: any) {
                               "EntityDualCertPrevStepData",
                               JSON.stringify(temp)
                             );
-                            history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC/Fatca_DC");
+                            history("/BENEEntityFatcaClassification");
                           },
                           (err: any) => {
                             reject(err);
@@ -284,8 +285,8 @@ export default function Fedral_tax(props: any) {
                                 ) : (
                                   ""
                                 )}
-                            {values.isHybridStatus == "Not" &&
-                              clickCount === 1 ? (
+                            {values.isHybridStatus == "Not"
+                              ? (
                               <div
                                 style={{
                                   backgroundColor: "#e8e1e1",
@@ -2118,17 +2119,20 @@ export default function Fedral_tax(props: any) {
                                   );
                                   const urlValue =
                                     window.location.pathname.substring(1);
-                                  // dispatch(
-                                  //   postW8ECI_EForm(
-                                  //     {
-                                  //       ...prevStepData,
-                                  //       stepName: `/${urlValue}`,
-                                  //     },
-                                  //     () => {
-                                  //       history(GlobalValues.basePageRoute);
-                                  //     }
-                                  //   )
-                                  // );
+                                  dispatch(
+                                    PostDualCert(
+                                      {
+                                        ...prevStepData,
+                                        AccountHolderDetailsId:authDetails.accountHolderId,
+                                        AgentId: authDetails?.agentId,
+                                        formTypeId: FormTypeId.BENE,
+                                        stepName: `/${urlValue}`,
+                                      },
+                                      () => {
+                                        history(GlobalValues.basePageRoute);
+                                      }
+                                    )
+                                  );
                                 }).catch((error) => {
                                   console.log(error);
                                 })
