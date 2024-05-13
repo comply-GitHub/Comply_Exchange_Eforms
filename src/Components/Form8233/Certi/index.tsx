@@ -12,6 +12,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import { GetForm8233Pdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 
 export default function Certifications(props: any) {
   const { authDetails } = useAuth();
@@ -105,7 +106,7 @@ export default function Certifications(props: any) {
                         (responseData: any) => {
                           localStorage.setItem("PrevStepData", JSON.stringify(temp));
                           resolve(responseData);
-                          history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission");
+                          Redirect("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission",authDetails?.agentId,history);
                         },
                         (err: any) => {
                           reject(err);
@@ -551,7 +552,7 @@ export default function Certifications(props: any) {
                     <Typography align="center">
                       <Button
                         onClick={() => {
-                          history("/Form8233/TaxPayer_Identification/Owner/Documentaion")
+                          Redirect("/Form8233/TaxPayer_Identification/Owner/Documentaion",authDetails?.agentId,history,true)
                         }}
                         variant="contained"
                         style={{

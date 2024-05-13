@@ -828,6 +828,7 @@ export default function Fedral_tax(props: any) {
 
                                 <FormControl className="w-100">
                                   <TextField
+                                  disabled
                                     autoComplete="firstName"
                                     type="text"
                                     placeholder="First Name"
@@ -857,6 +858,7 @@ export default function Fedral_tax(props: any) {
 
                                 <FormControl className="w-100">
                                   <TextField
+                                    disabled
                                     autoComplete="lastName"
                                     type="text"
                                     placeholder="Last Name"

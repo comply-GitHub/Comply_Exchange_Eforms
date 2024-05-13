@@ -30,7 +30,7 @@ export default function Declaration (props: any){
   const { authDetails } = useAuth();
   const history = useNavigate();
   const dispatch = useDispatch();
-  console.log("FATCAClassificationData", FATCAClassificationData);
+  console.log("FATCAClassificationData", CRSClassificationData);
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
   const handleChangeAccodionState = (panel: string, panelHeading: string) => (
     event: React.SyntheticEvent,
@@ -193,7 +193,7 @@ export default function Declaration (props: any){
                   </div>
                    </div>
                    <div className="mt-3 " style={{marginLeft:"10px"}}>
-                    <Typography style={{fontSize:"25px",fontWeight:"540"}}>{CRSClassificationData?.selectedHeading}</Typography>
+                    <Typography style={{fontSize:"25px",fontWeight:"540"}}>{CRSClassificationData?.clickedPanelHeading}</Typography>
                    </div>
                   </div>
 

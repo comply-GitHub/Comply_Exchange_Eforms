@@ -37,6 +37,7 @@ import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../../../customHooks/useAuth";
 import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
+import Redirect from "../../../../../Router/RouterSkip";
 export default function FCTA_Reporting(props: any) {
   const history = useNavigate();
   const { authDetails } = useAuth()
@@ -784,10 +785,10 @@ The treaty country chosen does not match the country selected earlier as the pri
                           validateForm().then(() => {
                             submitForm().then((data) => {
                               if (values?.isClaimTreaty == "no") {
-                                history('/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE')
+                                Redirect('/Attach_document_BENE',authDetails?.agentId,history)
                               } else {
-                                history(
-                                  "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE"
+                                Redirect(
+                                  "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE",authDetails?.agentId,history
                                 );
                               }
 
@@ -822,8 +823,8 @@ The treaty country chosen does not match the country selected earlier as the pri
                     <Typography align="center">
                       <Button
                         onClick={() => {
-                          history(
-                            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/US_Tin_BenE"
+                          Redirect(
+                            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/US_Tin_BenE",authDetails?.agentId,history,true
                           );
                         }}
                         variant="contained"

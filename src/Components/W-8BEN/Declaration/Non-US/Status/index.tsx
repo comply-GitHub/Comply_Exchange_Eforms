@@ -50,6 +50,8 @@ export default function Factors() {
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  const PrevData = JSON.parse(localStorage.getItem("Formvalues") || "{}");
+  console.log(PrevData.IsUsSourcedIncome,"12333")
   const convertToStandardFormat = (customDateString: any) => {
     const dateObject = new Date(customDateString);
     const year = dateObject.getUTCFullYear();
@@ -1383,7 +1385,7 @@ export default function Factors() {
                           >
                             Has the individual been physically present in the
                             United States on at least 31 days during the current
-                            calendar year?1
+                            calendar year?
                           </Typography>
 
                           <FormControl>
@@ -2212,9 +2214,19 @@ export default function Factors() {
                     </Typography>
                     <Typography align="center">
                       <Button
+                      
                         onClick={() => {
+                          if (PrevData?.IsUsSourcedIncome == true){
+                          
+                          history("/W-8BEN/Declaration/US_Sourced")
+                        }
+                        else{
                           history("/W-8BEN/Declaration");
-                        }}
+                        }
+                      
+                      }}
+                    
+                       
                         variant="contained"
                         size="small"
                         style={{

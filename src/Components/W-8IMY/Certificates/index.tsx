@@ -27,6 +27,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../customHooks/useAuth";
 import { GetImyPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 export default function Certifications(props: any) {
   const { authDetails } = useAuth();
   const history = useNavigate();
@@ -127,7 +128,7 @@ export default function Certifications(props: any) {
                       (responseData: any) => {
                         localStorage.setItem("PrevStepData", JSON.stringify(temp));
                         resolve(responseData);
-                        history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY");
+                        Redirect("/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY/Participation_IMY",authDetails?.agentId,history);
                       },
                       (err: any) => {
                         reject(err);
@@ -469,7 +470,7 @@ export default function Certifications(props: any) {
                     <Typography align="center">
                       <Button
                         onClick={() => {
-                          history("/IMY/Tax_Purpose_Exp/Chapter4_IMY/Statement")
+                          Redirect("/Attach_document_IMY",authDetails?.agentId,history,true)
                         }}
                         variant="contained"
                         style={{

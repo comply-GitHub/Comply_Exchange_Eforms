@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import Accordion from "@mui/material/Accordion";
@@ -8,16 +8,20 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import { SubmitSchema } from "../../../../schemas/submit";
-import { PostDualCert } from "../../../../Redux/Actions";
+import { GetHelpVideoDetails, PostDualCert } from "../../../../Redux/Actions";
 import { FormTypeId } from "../../../../Utils/constVals";
 import exp from "constants";
 import Utils from "../../../../Utils";
+import View_Insructions from "../../../viewInstruction";
+import useAuth from "../../../../customHooks/useAuth";
+import { GetW9Pdf } from "../../../../Redux/Actions/PfdActions";
+import SideBar from "../../../Reusable/SideBar";
 export default function GIINAvailable (props: any){
-
+  const {authDetails} = useAuth();
   const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
 
   const history = useNavigate();
@@ -31,15 +35,29 @@ export default function GIINAvailable (props: any){
     if (newExpanded) {
       setExpandedState(panel);
       localStorage.setItem("clickedPanelHeading", panelHeading);
+
+      const payload = {
+        heading3: panelHeading,
+        subheading3:'FATCA Classification -'+ panelHeading+' Cayman',
+        selectedHeading : panelHeading,
+        selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
+      }
       dispatch({
         type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
-        payload: {
-          heading3: panelHeading,
-          subheading3:'FATCA Classification -'+ panelHeading+' Cayman',
-          selectedHeading : panelHeading,
-          selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
-        },
+        payload,
       });
+      // localStorage.setItem("FATCASelfCertData", JSON.stringify(payload));
+
+
+      // dispatch({
+      //   type: Utils.actionName.InsertCaymanEntityNonUSFATCAClassification,
+      //   payload: {
+      //     heading3: panelHeading,
+      //     subheading3:'FATCA Classification -'+ panelHeading+' Cayman',
+      //     selectedHeading : panelHeading,
+      //     selectedSubHeading : 'FATCA Classification -'+ panelHeading+' Cayman'
+      //   },
+      // });
 
       localStorage.setItem("Heading3",panelHeading)
       localStorage.setItem("SubHeading3",'FATCA Classification -'+ panelHeading+' Cayman')
@@ -57,6 +75,7 @@ export default function GIINAvailable (props: any){
     isNotConsentReceipentstatement: false
     };
 
+    
 
   return (
     <Fragment>
@@ -64,27 +83,7 @@ export default function GIINAvailable (props: any){
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-      <div className="overlay-div">
-        <div className="overlay-div-group">
-          <div className="viewInstructions">View Instructions</div>
-          <div className="viewform">View Form</div>
-          <div className="helpvideo">
-            <a
-              href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"
-              target="popup"
-              onClick={() =>
-                window.open(
-                  "https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-",
-                  "name",
-                  "width=600,height=400"
-                )
-              }
-            >
-              Help Video
-            </a>
-          </div>
-        </div>
-      </div>
+      <SideBar/>
       <div className="row w-100">
         <div className="col-4 mt-3">
 
@@ -286,7 +285,7 @@ export default function GIINAvailable (props: any){
               <Button
                  onClick={() => {
                  
-                  history("/Cayman/Entity/FATCA")
+                  history("/BENEEntityFatcaClassification")
                 }}
                   variant="outlined"
                   style={{
@@ -295,8 +294,8 @@ export default function GIINAvailable (props: any){
                     marginTop: "10px",
                     marginBottom: "20px",
                   }}
-                >
-                  Close
+                > 
+                  Close 
                 </Button>
                 <Button
                  disabled={!isContinueEnabled} 
@@ -307,10 +306,9 @@ export default function GIINAvailable (props: any){
                     localStorage.setItem("lastClickedPanelHeading", clickedPanelHeading);
                     
                   }
-                    {expandedState!=="panel1"  ? history("/Cayman/Entity/FATCA/Complete") : history("/Cayman/Entity/FATCA/Complete")}
+                    {expandedState!=="panel1"  ? history("/BENEIndividualFatcaClassificationComplete") : history("/BENEIndividualFatcaClassificationComplete")}
 
-                    // {(expandedState === "panel2" ||  expandedState === "panel3" || expandedState === "panel4" || expandedState === "panel5") ? "test" : "" }
-                    // history("/Cayman/Entity/FATCA/Complete")
+                    
                   }}
                   style={{
                     fontSize:"12px",

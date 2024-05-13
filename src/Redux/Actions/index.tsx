@@ -1146,32 +1146,55 @@ export const GetAgentIncomeCodeHiddenForEformAction = (): any => {
   };
 };
 
-// export const GetAgentUSVisaTypeHiddenForEformAction = (): any => {
-//   return (dispatch: any) => {
-//     Utils.api.getApiCall(
-//       Utils.EndPoint.GetAgentUSVisaTypeHiddenForEform,
-//       "",
-//       (resData) => {
-//         const { data } = resData;
-//         if (resData.status === 200) {
+export const GetAgentdocumentTypes = (): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetDocumentListType,
+      "",
+      (resData) => {
+        const { data } = resData;
+        if (resData.status === 200) {
 
-//           dispatch({
-//             type: Utils.actionName.GetAgentUSVisaTypeHiddenForEform,
-//             payload: {
-//               GetAgentUSVisaTypeHiddenForEformData: resData.data,
-//             },
-//           });
-//         } else {
-//         }
-//       },
-//       (error: any) => {
+          dispatch({
+            type: Utils.actionName.GetDocumentListType,
+            payload: {
+              GetDocumentListTypeData: resData.data,
+            },
+          });
+        } else {
+        }
+      },
+      (error: any) => {
 
-//       }
-//     );
-//   };
-// };
-//GetAgentExemptionCodeHidden
+      }
+    );
+  };
+};
+//GetDocumentListType
 
+
+export const GetAgentDocumentList = (id: number): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetDocumentList,
+      `?id=${id}`,
+      (resData) => {
+        const { data } = resData;
+        if (resData.status === 200) {
+          dispatch({
+            type: Utils.actionName.GetDocumentList,
+            payload: {
+              DocumentListData: resData.data,
+            },
+          });
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
 export const GetAgentExemptionCodeHidden = (id: number): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
@@ -2507,7 +2530,8 @@ export const post8233_EForm_Documentation = (value: any, callback: Function, err
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.UpsertSupportingDocumentation,
-      convertToFormData(value),
+      // convertToFormData(value),
+      value,
       (responseData) => {
         let { data } = responseData;
         //console.log("Form 8233 Response Data",responseData);
@@ -2545,7 +2569,7 @@ export const post8233_EForm_Documentation = (value: any, callback: Function, err
         });
         errorCallback(error)
       },
-      "multi"
+      // "multi"
     );
   };
 };

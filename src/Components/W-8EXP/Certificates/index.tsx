@@ -466,7 +466,7 @@ export default function Certifications(props: any) {
                     <Typography align="center">
                       <Button
                         onClick={() => {
-                          history("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp")
+                          history("/Attach_document_EXP")
                         }}
                         variant="contained"
                         style={{

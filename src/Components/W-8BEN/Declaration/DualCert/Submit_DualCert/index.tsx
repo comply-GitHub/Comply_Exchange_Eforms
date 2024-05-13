@@ -44,9 +44,9 @@ const Declaration = (props: any) => {
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
   console.log(PrevStepData, "op")
   const initialValue = {
-    isAgreeWithDeclaration: false,
-    isConsentReceipentstatement: false,
-    isNotConsentReceipentstatement: false,
+    IsAgreeWithDeclaration: PrevStepData?.IsAgreeWithDeclaration || false,
+    IsConsentReceipentstatement: PrevStepData?.IsConsentReceipentstatement || false,
+    IsNotConsentReceipentstatement: PrevStepData?.IsNotConsentReceipentstatement || false,
   };
   const viewPdf = () => {
     history("w8Ben_pdf");
@@ -74,7 +74,7 @@ const Declaration = (props: any) => {
                 const returnPromise = new Promise((resolve, reject) => {
                   dispatch(
                     PostDualCert([result], (data: any) => {
-
+                      history("/ThankYou_DC_BEN");
                       localStorage.setItem("DualCertData", JSON.stringify(result))
                       resolve(data);
                       setSubmitting(true);
@@ -267,16 +267,17 @@ const Declaration = (props: any) => {
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
                           <Checkbox
-                            name="isAgreeWithDeclaration"
-                            value={values.isAgreeWithDeclaration}
+                            name="IsAgreeWithDeclaration"
+                            value={values.IsAgreeWithDeclaration}
                             onChange={handleChange}
-                            checked={values.isAgreeWithDeclaration}
+                            checked={values.IsAgreeWithDeclaration}
                           />
                           <Typography style={{ marginTop: "9px" }}>
                             I agree with the above Declarations
                           </Typography>
                         </div>
-                        <p className="error">{errors.isAgreeWithDeclaration}</p>
+                        {errors.IsAgreeWithDeclaration && touched.IsAgreeWithDeclaration ? ( <p className="error">{ typeof errors.IsAgreeWithDeclaration === 'string' ? errors.IsAgreeWithDeclaration : ''}</p>):""}
+                       
                       </AccordionDetails>
                     </Accordion>
                     <Accordion
@@ -341,13 +342,13 @@ const Declaration = (props: any) => {
                         </Paper>
                         <div style={{ display: "flex", marginTop: "10px" }}>
                           <Checkbox
-                            name="isConsentReceipentstatement"
-                            value={values.isConsentReceipentstatement}
+                            name="IsConsentReceipentstatement"
+                            value={values.IsConsentReceipentstatement}
                             onChange={(e) => {
                               handleChange(e);
-                              setTimeout(() => { setFieldValue("IsSubmit_not", false) }, 50)
+                              setTimeout(() => { setFieldValue("IsNotConsentReceipentstatement", false) }, 50)
                             }}
-                            checked={values.isConsentReceipentstatement}
+                            checked={values.IsConsentReceipentstatement}
                           />
 
                           <Typography style={{ marginTop: "9px" }}>
@@ -355,16 +356,17 @@ const Declaration = (props: any) => {
                             electronically.
                           </Typography>
                         </div>
-                        <p className="error">{errors.isConsentReceipentstatement}</p>
+                        {errors.IsConsentReceipentstatement && touched.IsConsentReceipentstatement ? ( <p className="error">{ typeof errors.IsConsentReceipentstatement === 'string' ? errors.IsConsentReceipentstatement : ''}</p>):""}
+                       
                         <div style={{ display: "flex", marginTop: "10px" }}>
                           <Checkbox
-                            name="isNotConsentReceipentstatement"
-                            value={values.isNotConsentReceipentstatement}
+                            name="IsNotConsentReceipentstatement"
+                            value={values.IsNotConsentReceipentstatement}
                             onChange={(e) => {
                               handleChange(e);
-                              setTimeout(() => { setFieldValue("isConsentReceipentstatement", false) }, 50)
+                              setTimeout(() => { setFieldValue("IsConsentReceipentstatement", false) }, 50)
                             }}
-                            checked={values.isNotConsentReceipentstatement}
+                            checked={values.IsNotConsentReceipentstatement}
                           />
                           <Typography style={{ marginTop: "9px" }}>
                             {" "}
@@ -372,7 +374,7 @@ const Declaration = (props: any) => {
                             statement electronically.
                           </Typography>
                         </div>
-                        <p className="error">{errors.isNotConsentReceipentstatement}</p>
+                       {errors.IsNotConsentReceipentstatement && touched.IsNotConsentReceipentstatement ? ( <p className="error">{ typeof errors.IsNotConsentReceipentstatement === 'string' ? errors.IsNotConsentReceipentstatement : ''}</p>):""}
                       </AccordionDetails>
                     </Accordion>
                   </div>
@@ -419,7 +421,7 @@ const Declaration = (props: any) => {
                       disabled={!isValid}
                       onClick={() => {
                         submitForm().then((data: any) => {
-                          history("/ThankYou_DC_BEN");
+                          
                         }).catch(() => {
 
                         })

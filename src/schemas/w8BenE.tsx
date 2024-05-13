@@ -556,8 +556,8 @@ export const partCertiSchema = () => {
       .required("Please enter code")
       .test(
         'match',
-        'Confirmation code does not match',
-        function (value) {
+        'Confirmation code does not match', 
+         function (value) {
           const storedConfirmationCode = obValues?.confirmationCode;
           return !storedConfirmationCode || value === storedConfirmationCode;
         }

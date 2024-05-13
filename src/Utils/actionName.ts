@@ -37,6 +37,8 @@ const ActionName = {
     W9PDF:"W9PDF",
     GetAllLanguage:"GetAllLanguage",
     //
+    GetDocumentListType:"GetDocumentListType",
+    GetDocumentList:"GetDocumentList",
     GetAgentExemptionCodeHidden:"GetAgentExemptionCodeHidden",
     GetAgentCapacityHiddenForEform: "GetAgentCapacityHiddenForEform",
     GetAgentChapter4EntityTypeHiddenForEform: "GetAgentChapter4EntityTypeHiddenForEform",

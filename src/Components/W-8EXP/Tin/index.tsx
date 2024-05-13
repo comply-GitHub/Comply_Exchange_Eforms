@@ -1097,8 +1097,8 @@ export default function Tin(props: any) {
                           disabled={!isValid}
                           onClick={() => {
                             submitForm().then(() => {
-                              Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp",authDetails?.agentId,history,false)
-                              // history("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp");
+                              Redirect("/Attach_document_EXP",authDetails?.agentId,history,false)
+                              
                             })
                           }}
                           variant="contained"

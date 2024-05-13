@@ -31,6 +31,7 @@ import GlobalValues from "../../../../../Utils/constVals";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../../../customHooks/useAuth";
 import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
+import Redirect from "../../../../../Router/RouterSkip";
 export default function Certifications(props: any) {
   const { authDetails } = useAuth();
   const history = useNavigate();
@@ -727,8 +728,8 @@ export default function Certifications(props: any) {
                         onClick={() => {
                           submitForm()
                             .then((data) => {
-                              history(
-                                "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE"
+                              Redirect(
+                                "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE",authDetails?.agentId,history
                               );
                             })
                             .catch((err) => {
@@ -754,25 +755,17 @@ export default function Certifications(props: any) {
                     </Typography>
                     <Typography align="center">
                       <Button
-                        onClick={() => {
-                          if (PrevStepData?.isClaimTreaty === "no" || PrevStepData?.isClaimTreaty === false) {
-                            history(
-                              "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E"
-                            );
-
-                          } else {
-                            history(
-                              "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE"
-                            );
-                          }
-                        }}
-                        variant="contained"
-                        style={{
-                          color: "white",
-                          backgroundColor: "black",
-                          marginTop: "10px",
-                          marginBottom: "20px",
-                        }}
+                      variant="contained"
+                      style={{
+                        color: "white",
+                        backgroundColor: "black",
+                        marginTop: "10px",
+                        marginBottom: "20px",
+                      }}
+                      onClick={()=>{
+                        Redirect('/Attach_document_BENE',authDetails?.agentId,history,true)
+                      }}
+                        
                       >
                         Back
                       </Button>

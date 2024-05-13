@@ -25,6 +25,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../customHooks/useAuth";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
+import AttachDocument from "../../AttachDocument";
 import Redirect from "../../../Router/RouterSkip";
 
 export default function Certifications(props: any) {
@@ -102,7 +103,7 @@ export default function Certifications(props: any) {
             }}
           >View Form</div>
           <div className="helpvideo">
-            {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
+          
             {GethelpData && GethelpData[5].id === 7 ? (
               <a
                 href={GethelpData[5].fieldValue}
@@ -622,7 +623,7 @@ export default function Certifications(props: any) {
                     <Typography align="center">
                       <Button
                         onClick={() => {
-                          Redirect("/W-8ECI/Certification/Participation",authDetails?.agentId,history,true)
+                          Redirect("/Attach_document_ECI",authDetails?.agentId,history,true)
                         }}
                         variant="contained"
                         style={{

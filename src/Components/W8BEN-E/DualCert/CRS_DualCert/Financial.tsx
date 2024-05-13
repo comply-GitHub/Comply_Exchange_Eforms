@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { SubmitSchema } from "../../../../schemas/submit";
@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
+import Utils from "../../../../Utils";
 export default function Declaration (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
@@ -29,12 +30,39 @@ export default function Declaration (props: any){
   ) => {
     if (newExpanded) {
       setExpandedState(panel);
+      dispatch({
+        type: Utils.actionName.InsertCRSEntityNonUSClassification,
+        payload: {
+          heading1: panelHeading,
+          subheading1:'CRS Classification -'+ panelHeading,
+          selectedHeading : panelHeading,
+          selectedSubHeading : 'CRS Classification -'+ panelHeading
+        
+        },
+      })
       localStorage.setItem("clickedPanelHeading", panelHeading);
+      localStorage.setItem("Heading1",panelHeading)
+      localStorage.setItem("SubHeading1",'CRS Classification -'+ panelHeading)
+
+     
     } else {
       setExpandedState(false);
       localStorage.removeItem("clickedPanelHeading");
     }
   };
+  useEffect(() => {
+    console.log("expandedState",expandedState)
+    if(expandedState=== 'panel1'){
+      localStorage.removeItem("Heading1");
+      localStorage.removeItem("SubHeading1");
+      localStorage.removeItem("Heading2");
+      localStorage.removeItem("SubHeading2");
+      localStorage.removeItem("Heading3");
+      localStorage.removeItem("SubHeading3");
+      localStorage.removeItem("Heading4");
+      localStorage.removeItem("SubHeading4");
+    }
+  },[expandedState])
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   
@@ -86,7 +114,7 @@ export default function Declaration (props: any){
             validateOnChange={true}
             validateOnBlur={true}
               initialValues={initialValue}
-              validationSchema={SubmitSchema}
+              // validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
                 console.log("values", values)
                 setSubmitting(true);
@@ -247,7 +275,7 @@ export default function Declaration (props: any){
               <Button
                  onClick={() => {
                  
-                  history("/CRS_W9_DC")
+                  history("/CRS_BENE_DC")
                 }}
                   variant="outlined"
                   style={{
@@ -269,13 +297,13 @@ export default function Declaration (props: any){
                     
                   }
                     if (expandedState === "panel2") {
-                      history("/FinancialReport_CRS_W9_DC");
+                      history("/FinancialReport_CRS_BENE_DC");
                       // history("/Reporting_CRS_W9_DC");
                     } else if (expandedState === "panel3") {
-                      history("/Non_Reporting_CRS_W9_DC");
+                      history("/Non_Reporting_CRS_BENE_DC");
                     }
                     else if(expandedState === "panel4"){
-                      history("/Financial_CRS_W9_DC")
+                      history("/Financial_BENE_DC")
                     }
                   }}
                   style={{

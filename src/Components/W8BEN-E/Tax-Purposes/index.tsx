@@ -224,9 +224,7 @@ export default function Fedral_tax(props: any) {
                   onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
                     const submitPromise = new Promise((resolve, reject) => {
-                      if (clickCount === 0) {
-                        setClickCount(clickCount + 1);
-                      } else {
+                      
                         setSubmitting(true);
                         const temp = {
                           ...PrevStepData, ...values,
@@ -253,7 +251,7 @@ export default function Fedral_tax(props: any) {
                             }
                           )
                         );
-                      }
+                      
                     })
                     return submitPromise;
                   }}
@@ -303,7 +301,7 @@ export default function Fedral_tax(props: any) {
                                 </span>
                               </Typography>
                             </div>
-                          ) : values.countryOfIncorporation === 186 && clickCount === 1 ? (
+                          ) : values.countryOfIncorporation === 186  ? (
                             <div
                               style={{
                                 backgroundColor: "#e8e1e1",

@@ -201,12 +201,12 @@ export default function Tin(props: any) {
                   if (continueId == 1) {
                     setcontinueId(0);
                     Redirect(
-                      "/US_Purposes/Back/Exemption/Tax/Certificates",
+                      "/Attach_document_w9",
                       authDetails?.agentId,
                       history,
                       false
                     );
-                    // history("/US_Purposes/Back/Exemption/Tax/Certificates")
+                   
                   }
                   setSubmitting(false);
                   resolve("success");

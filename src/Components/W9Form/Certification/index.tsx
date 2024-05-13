@@ -590,9 +590,9 @@ export default function Certifications(props: any) {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            // history("/US_Purposes/Back/Exemption/Tax")
+                           
                             Redirect(
-                              "/US_Purposes/Back/Exemption/Tax",
+                              "/Attach_document_w9",
                               authDetails?.agentId,
                               history,
                               true

@@ -10,18 +10,20 @@ import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { Form, Formik } from "formik";
-import { W8_state_ECI,PostDualCert } from "../../../../Redux/Actions";
-import { useDispatch } from "react-redux";
+import { postSCFATCAClassification,PostDualCert } from "../../../../Redux/Actions";
+import { useDispatch ,useSelector} from "react-redux";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
+import useAuth from "../../../../customHooks/useAuth";
 export default function Declaration (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
   const CRSData = localStorage.getItem("lastClickedPanelHeading");
-
+  const { authDetails } = useAuth();
   const history = useNavigate();
   const dispatch = useDispatch();
+  const CRSClassificationData = useSelector((state:any) => state?.CRSEntityReducer?.CRSClassificationData);
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
   const handleChangeAccodionState = (panel: string, panelHeading: string) => (
     event: React.SyntheticEvent,
@@ -38,11 +40,28 @@ export default function Declaration (props: any){
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   
-    const initialValue = {
-    isAgreeWithDeclaration: false,
-    isConsentReceipentstatement: false,
-    isNotConsentReceipentstatement: false
-    };
+  const initialValue = {
+    id:0,
+    // agentId: authDetails.agentId,
+    // accountHolderBasicDetailId: authDetails.accountHolderId,
+    formTypeId: FormTypeId.W9,
+    formEntryId:0,
+    classificationType : "CRS",
+    userType:"DC",
+    heading1:CRSClassificationData?.heading1 ? CRSClassificationData?.heading1 : "",
+    subHeading1:CRSClassificationData?.subheading1 ? CRSClassificationData?.subheading1 : "",
+    heading2:CRSClassificationData?.heading2 ? CRSClassificationData?.heading2 : "",
+    subHeading2:CRSClassificationData?.subheading2 ? CRSClassificationData?.subheading2 : "",
+    heading3:CRSClassificationData?.heading3 ? CRSClassificationData?.heading3 : "",
+    subHeading3:CRSClassificationData?.subheading3 ? CRSClassificationData?.subheading3 : "",
+    heading4:CRSClassificationData?.heading4 ? CRSClassificationData?.heading4 : "",
+    subHeading4:CRSClassificationData?.subheading4 ? CRSClassificationData?.subheading4 : "",
+    heading5:CRSClassificationData?.heading5 ? CRSClassificationData?.heading5 : "",
+    subHeading5:CRSClassificationData?.subheading5 ? CRSClassificationData?.subheading5 : "",
+    selectedHeading: CRSClassificationData?.selectedHeading ? CRSClassificationData?.selectedHeading : "",
+    selectedSubHeading: CRSClassificationData?.selectedSubHeading ? CRSClassificationData?.selectedSubHeading : "",
+  };
+
 
 
     useEffect(() => {
@@ -89,20 +108,29 @@ export default function Declaration (props: any){
             validateOnChange={true}
             validateOnBlur={true}
               initialValues={initialValue}
-              validationSchema={SubmitSchema}
+              // validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
                 console.log("values", values)
                 setSubmitting(true);
                 const result = {
+                  agentId: authDetails.agentId,
+                  accountHolderDetailsId: authDetails.accountHolderId,
                   ...PrevStepData, 
                   ...values,
                  
-                  statusId: 1,
                 };
                 const returnPromise = new Promise((resolve, reject) => {
                 dispatch(
-                  PostDualCert(result, (data: any) => {
+                  postSCFATCAClassification(result, (data: any) => {
                     localStorage.setItem("DualCertData", JSON.stringify(result))
+                    if(CRSClassificationData?.selectedHeading =="Passive Non Financial Entity"){
+                      history("/BENE_DC_SelfCert")
+                    }
+                    else{
+                      history("/TaxPayer_DC_BENE")
+                    }
+                 
+                   
                     resolve(data);
                   }
                     , (err: any) => {
@@ -175,14 +203,19 @@ export default function Declaration (props: any){
                   >
                    
                     <Button
+                 
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
                     >
                       View Form
                     </Button>
 
-                    <Button    
+                    <Button  
+                    type="submit"  
                       variant="contained"
+                      onClick={()=>{
+                        history("/TaxPayer_DC_BENE")
+                      }}
                       style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
                     >
                       Confirm

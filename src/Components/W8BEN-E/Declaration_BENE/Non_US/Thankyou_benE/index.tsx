@@ -115,7 +115,7 @@ export default function Term() {
             >
               If you are using a public computer, please clear your cookies.
             </Typography>
-          </Paper>
+         
           <Typography align="center">
             <div className="mt-5" style={{ justifyContent: "center" }}>
 
@@ -168,17 +168,12 @@ export default function Term() {
                   Exit
                 </Button>
               </div>
-            </div>
-          </Typography>
-        </div>
-      </div>
-
-      {authDetails?.configurations?.userType === "DC" ? (
+              {authDetails?.configurations?.userType === "DC" ? (
                   <div style={{ marginTop: "25px" }}>
                     <Button
                       type="submit"
                       onClick={() => {
-                        //history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/TaxPayer_DC");
+                        
                         history("/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE/Participation_BenE/Submit_BenE/Status_DC");
                       }}
                       style={{
@@ -201,6 +196,13 @@ export default function Term() {
                     </Button>
                   </div>
                 ) : ""}
+            </div>
+          </Typography>
+          </Paper>
+        </div>
+      </div>
+
+     
 
       <div className="container-fluid">
         <footer>

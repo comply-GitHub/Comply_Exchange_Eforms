@@ -5,7 +5,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Button, Typography, Paper, Checkbox, Link, Input } from "@mui/material";
+import { Button, Typography, Paper, Checkbox, Link, Input, FormControl, Tooltip } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,25 +13,30 @@ import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import { FormTypeId } from "../../../../Utils/constVals";
 import { SubmitSchema } from "../../../../schemas/submit";
-import { PostDualCert } from "../../../../Redux/Actions";
+import InfoIcon from "@mui/icons-material/Info";
+
+import { PostDualCert, upsertFATCAStepsDetails } from "../../../../Redux/Actions";
 import Utils from "../../../../Utils";
+import SideBar from "../../../Reusable/SideBar";
+import useAuth from "../../../../customHooks/useAuth";
 
 
 
 export default function Final (props: any){
-
+  const {authDetails} = useAuth();
   const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
 
   const history = useNavigate();
   const dispatch = useDispatch();
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   const FATCAClassificationData = useSelector((state:any) => state?.CaymanEntity?.FATCAClassificationData);
-
+  const [toolInfo, setToolInfo] = useState("");
   console.log("FATCAClassificationData",FATCAClassificationData)
   
 
   
     const initialValue = {
+      
         heading1:FATCAClassificationData?.heading1 ? FATCAClassificationData?.heading1 : "",
         subHeading1:FATCAClassificationData?.subheading1 ? FATCAClassificationData?.subheading1 : "",
         heading2:FATCAClassificationData?.heading2 ? FATCAClassificationData?.heading2 : "",
@@ -44,14 +49,20 @@ export default function Final (props: any){
         subHeading5:FATCAClassificationData?.subheading5 ? FATCAClassificationData?.subheading5 : "",
         selectedHeading: FATCAClassificationData?.selectedHeading ? FATCAClassificationData?.selectedHeading : "",
         selectedSubHeading: FATCAClassificationData?.selectedSubHeading ? FATCAClassificationData?.selectedSubHeading : "",
-        GIIN:"",
-        fullnameofsponsorsntity:"",
-        sponsorentitygiin:"",
-        trusteegiin:"",
-        exemption:"",
-        status:"",
-        qualifyingcriteria:"",
-        directreportinggiin:""
+        
+        classificationType:"FATCA",
+        userType : "SC",
+        gIINNumber:"",
+        sponsoringEntityGIIN:"",
+        sponsoredEntityGIIN:"",
+        trusteeGIIN:"",
+        exemptionFromGIIN:"",
+        gIINStatus:"",
+        qualifyingCriteria:"",
+        directReportingNFFEsGIIN:"",
+        isSubstantialUSOwnerInformation:false,
+        isControllingPersonsInformation:false,
+        fullNameOfSponsorsEntity:"",
     };
 
 
@@ -62,27 +73,7 @@ export default function Final (props: any){
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-      <div className="overlay-div">
-        <div className="overlay-div-group">
-          <div className="viewInstructions">View Instructions</div>
-          <div className="viewform">View Form</div>
-          <div className="helpvideo">
-            <a
-              href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"
-              target="popup"
-              onClick={() =>
-                window.open(
-                  "https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-",
-                  "name",
-                  "width=600,height=400"
-                )
-              }
-            >
-              Help Video
-            </a>
-          </div>
-        </div>
-      </div>
+      <SideBar/>
       <div className="row w-100">
         <div className="col-4 mt-3">
 
@@ -97,29 +88,35 @@ export default function Final (props: any){
             validateOnChange={true}
             validateOnBlur={true}
               initialValues={initialValue}
-              validationSchema={SubmitSchema}
+              //validationSchema={SubmitSchema}
               onSubmit={(values, { setSubmitting }) => {
+
+                
                 // console.log("values", values)
                 // setSubmitting(true);
-                // const result = {
-                //   ...PrevStepData, 
-                //   ...values,
+                const result = {
+                  agentId: authDetails.agentId,
+                  accountHolderDetailsId: authDetails.accountHolderId,
+                  ...PrevStepData, 
+                  ...values,
                  
-                //   statusId: 1,
-                // };
-              //   const returnPromise = new Promise((resolve, reject) => {
-              //   dispatch(
-              //     PostDualCert(result, (data: any) => {
-              //       localStorage.setItem("SelfCertData", JSON.stringify(result))
-              //       resolve(data);
-              //     }
-              //       , (err: any) => {
-              //         reject(err);
-              //       }
-              //     )
-              //   );
-              // })
-              // return returnPromise;
+                  statusId: 1,
+                };
+                const returnPromise = new Promise((resolve, reject) => {
+                dispatch(
+                  upsertFATCAStepsDetails(result, (data: any) => {
+                    localStorage.setItem("SelfCertData", JSON.stringify(result))
+                    resolve(data);
+                    history("/CRS_BENE_DC")
+                  }
+                    , (err: any) => {
+                      reject(err);
+                    }
+                  )
+                );
+              })
+              
+              return returnPromise;
 
             }}
             >
@@ -136,6 +133,8 @@ export default function Final (props: any){
                 isValid
               }) => (
                 <form onSubmit={handleSubmit}>
+                  <>{console.log("values", values)}</>
+                  <>{console.log("error", errors)}</>
                  {!isAccordionVisible && ( <>
                    <div style={{justifyContent:"space-between",display:"flex",marginTop:"10px"}}>
                   <Typography
@@ -152,7 +151,7 @@ export default function Final (props: any){
                     </Typography>
                     <Button
                      onClick={() =>{ 
-                        history("Cayman/Entity/FATCA")
+                        history("/BENEEntityFatcaClassification")
                       
                      }}
                       style={{ backgroundColor: "#d3ae33",cursor:"pointer",color: "black", fontSize: "12px", fontWeight: "bold" }}
@@ -167,7 +166,7 @@ export default function Final (props: any){
                     <Typography style={{fontSize:"19px"}}>Select FATCA Classification:</Typography>
                     <Link className="mx-2"  onClick={() => {
                 
-                history("/Cayman/Entity/FATCA")
+                history("/BENEEntityFatcaClassification")
                }}
                     style={{fontSize:"19px",textDecorationLine:"none",color:"#1149c4",cursor:"pointer"}}>Click Here to start Process</Link>
                   </div>
@@ -191,7 +190,7 @@ export default function Final (props: any){
                 <Button
                  onClick={() => {
                 
-                  history("/Cayman/Entity/FATCA")
+                  history("/BENEEntityFatcaClassification")
                  }}
                   variant="outlined"
                   style={{
@@ -215,6 +214,7 @@ export default function Final (props: any){
                     marginLeft: "10px"
 
                   }}
+                  
                 >
                   Confirm
                 </Button>
@@ -242,7 +242,7 @@ export default function Final (props: any){
             </div>
             )}
 
-                { values.heading2 === 'GIIN available' && (<>
+                { values.heading2 === 'GIIN available' && values.selectedHeading!=="Sponsored Direct Reporting" && values.selectedHeading!=="Passive NFFE" && (<>
                     <Typography>
                     Select Status:
                 </Typography>
@@ -272,15 +272,15 @@ export default function Final (props: any){
                     Please provide GIIN here:
                 </Typography>
                 <Input
-                    name="GIIN"
+                    name="gIINNumber"
                     value={
-                    values.GIIN
+                    values.gIINNumber
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.GIIN &&
-                    errors.GIIN
+                    touched.gIINNumber &&
+                    errors.gIINNumber
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -308,15 +308,15 @@ export default function Final (props: any){
                     Please enter the full legal name of the sponsoring entity here:
                 </Typography>
                 <Input
-                    name="fullnameofsponsorsntity"
+                    name="fullNameOfSponsorsEntity"
                     value={
-                    values.fullnameofsponsorsntity
+                    values.fullNameOfSponsorsEntity
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.fullnameofsponsorsntity &&
-                    errors.fullnameofsponsorsntity
+                    touched.fullNameOfSponsorsEntity &&
+                    errors.fullNameOfSponsorsEntity
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -332,15 +332,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="sponsorentitygiin"
+                    name="sponsoringEntityGIIN"
                     value={
-                    values.sponsorentitygiin
+                    values.sponsoringEntityGIIN
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.sponsorentitygiin &&
-                    errors.sponsorentitygiin
+                    touched.sponsoringEntityGIIN &&
+                    errors.sponsoringEntityGIIN
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -355,7 +355,7 @@ export default function Final (props: any){
 
 
 
-                { values.selectedHeading === 'Sponsor has obtained a Sponsored Entity GIIN on its behalf' && (<>
+                { (values.selectedHeading === 'Sponsor has obtained a Sponsored Entity GIIN on its behalf' || values.selectedHeading === 'Sponsored Direct Reporting') && (<>
                     <Typography>
                     Select Status:
                 </Typography>
@@ -370,15 +370,15 @@ export default function Final (props: any){
                     Please enter the full legal name of the sponsoring entity here:
                 </Typography>
                 <Input
-                    name="fullnameofsponsorsntity"
+                    name="fullNameOfSponsorsEntity"
                     value={
-                    values.fullnameofsponsorsntity
+                    values.fullNameOfSponsorsEntity
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.fullnameofsponsorsntity &&
-                    errors.fullnameofsponsorsntity
+                    touched.fullNameOfSponsorsEntity &&
+                    errors.fullNameOfSponsorsEntity
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -394,15 +394,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="sponsorentitygiin"
+                    name="sponsoringEntityGIIN"
                     value={
-                    values.sponsorentitygiin
+                    values.sponsoringEntityGIIN
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.sponsorentitygiin &&
-                    errors.sponsorentitygiin
+                    touched.sponsoringEntityGIIN &&
+                    errors.sponsoringEntityGIIN
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -415,19 +415,19 @@ export default function Final (props: any){
                 /> 
 
                  <Typography>
-                Please provide the sponsoring entity's GIIN here:
+                Please provide the sponsored entity's GIIN here:
 
                 </Typography>
                 <Input
-                    name="sponsorentitygiin"
+                    name="sponsoredEntityGIIN"
                     value={
-                    values.sponsorentitygiin
+                    values.sponsoredEntityGIIN
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.sponsorentitygiin &&
-                    errors.sponsorentitygiin
+                    touched.sponsoredEntityGIIN &&
+                    errors.sponsoredEntityGIIN
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -457,15 +457,15 @@ export default function Final (props: any){
                     Please enter the full legal name of the sponsoring entity here:
                 </Typography>
                 <Input
-                    name="fullnameofsponsorsntity"
+                    name="fullNameOfSponsorsEntity"
                     value={
-                    values.fullnameofsponsorsntity
+                    values.fullNameOfSponsorsEntity
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.fullnameofsponsorsntity &&
-                    errors.fullnameofsponsorsntity
+                    touched.fullNameOfSponsorsEntity &&
+                    errors.fullNameOfSponsorsEntity
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -481,15 +481,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="trusteegiin"
+                    name="trusteeGIIN"
                     value={
-                    values.trusteegiin
+                    values.trusteeGIIN
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.trusteegiin &&
-                    errors.trusteegiin
+                    touched.trusteeGIIN &&
+                    errors.trusteeGIIN
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -517,15 +517,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="exemption"
+                    name="exemptionFromGIIN"
                     value={
-                    values.exemption
+                    values.exemptionFromGIIN
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.exemption &&
-                    errors.exemption
+                    touched.exemptionFromGIIN &&
+                    errors.exemptionFromGIIN
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -553,15 +553,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="status"
+                    name="gIINStatus"
                     value={
-                    values.status
+                    values.gIINStatus
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.status &&
-                    errors.status
+                    touched.gIINStatus &&
+                    errors.gIINStatus
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -590,15 +590,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="qualifyingcriteria"
+                    name="qualifyingCriteria"
                     value={
-                    values.qualifyingcriteria
+                    values.qualifyingCriteria
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.qualifyingcriteria &&
-                    errors.qualifyingcriteria
+                    touched.qualifyingCriteria &&
+                    errors.qualifyingCriteria
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -627,15 +627,15 @@ export default function Final (props: any){
 
                 </Typography>
                 <Input
-                    name="directreportinggiin"
+                    name="directReportingNFFEsGIIN"
                     value={
-                    values.directreportinggiin
+                    values.directReportingNFFEsGIIN
                     }
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(
-                    touched.directreportinggiin &&
-                    errors.directreportinggiin
+                    touched.directReportingNFFEsGIIN &&
+                    errors.directReportingNFFEsGIIN
                     )}
                     style={{
                     border: " 1px solid #d9d9d9 ",
@@ -646,6 +646,191 @@ export default function Final (props: any){
                     width: "100%",
                     }}
                 /> 
+
+                 
+
+                </>)}
+
+                { values.selectedHeading === 'Passive NFFE' && (<>
+                    <Typography>
+                    Select Status:
+                </Typography>
+                <Typography>
+                {values.selectedHeading}
+                </Typography>
+                <Typography>
+                Please select from the options below to provide either:
+                {/* <span style={{ color: "red" }}>*</span> */}
+
+                </Typography>
+                <FormControl className="w-100">
+                                          
+                  <Checkbox 
+                      value={values.isSubstantialUSOwnerInformation}
+                      checked={values.isSubstantialUSOwnerInformation}
+                      onChange={(e:any) => {
+                        handleChange(e);
+                        setTimeout(() => {
+                          setFieldValue("isControllingPersonsInformation", false)
+                        },200)
+                      }}
+                      name="isSubstantialUSOwnerInformation"
+                      size="medium"
+                      style={{ fontSize: "2rem",marginTop: "6px" }} />
+                    <Typography className="mx-2"
+                      style={{ fontSize: "14px", color: "black", marginTop: "15px", textAlign: "justify" }}
+                    >
+                    Substantial U.S. owner information(if you choose to use the definition of 'Substantial U.S. Owner' from the U.S. Treasury Regulation)
+                    <span>
+                          <Tooltip
+                            style={{ backgroundColor: "black", color: "white" }}
+                            title={
+                              <>
+                                <Typography color="inherit">
+                                  Passive NFFE- Substantial U.S.Owner Information
+                                </Typography>
+                                <a onClick={() => setToolInfo("basic")}>
+                                  <Typography
+                                    style={{
+                                      cursor: "pointer",
+                                      textDecorationLine: "underline",
+                                    }}
+                                    align="center"
+                                  >
+                                    {" "}
+                                    View More...
+                                  </Typography>
+                                </a>
+                              </>
+                            }
+                          >
+                            <InfoIcon
+                              style={{
+                                color: "#ffc107",
+                                fontSize: "20px",
+                                cursor: "pointer",
+                                verticalAlign: "super",
+                              }}
+                            />
+                          </Tooltip>
+                        </span>
+                        {toolInfo === "basic" ? (
+                        <div>
+                          <Paper
+                            style={{
+                              backgroundColor: "#dedcb1",
+                              padding: "15px",
+                              marginBottom: "10px",
+                              width: "70%",
+                            }}
+                          >
+                            <Typography>
+                            Passive NFFE - Substantial U.S. owner information
+                            </Typography>
+
+                            
+
+                            <Link
+                              href="#"
+                              underline="none"
+                              style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
+                              onClick={() => {
+                                setToolInfo("");
+                              }}
+                            >
+                              --Show Less--
+                            </Link>
+                          </Paper>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </Typography>
+
+                    <Checkbox 
+                      value={values.isControllingPersonsInformation}
+                      checked={values.isControllingPersonsInformation}
+                      onChange={(e:any) => {
+                        handleChange(e);
+                        setTimeout(() => {
+                          setFieldValue("isSubstantialUSOwnerInformation", false)
+                        },200)
+                      }}
+                      name="isControllingPersonsInformation"
+                      size="medium"
+                      style={{ fontSize: "2rem",marginTop: "6px" }} />
+                    <Typography className="mx-2"
+                      style={{ fontSize: "14px", color: "black", marginTop: "15px", textAlign: "justify" }}
+                    >
+                      Controlling persons information (as per the CRS definition)
+                      <span>
+                          <Tooltip
+                            style={{ backgroundColor: "black", color: "white" }}
+                            title={
+                              <>
+                                <Typography color="inherit">
+                                  Passive NFFE- Controlling Persons Information
+                                </Typography>
+                                <a onClick={() => setToolInfo("controlling")}>
+                                  <Typography
+                                    style={{
+                                      cursor: "pointer",
+                                      textDecorationLine: "underline",
+                                    }}
+                                    align="center"
+                                  >
+                                    {" "}
+                                    View More...
+                                  </Typography>
+                                </a>
+                              </>
+                            }
+                          >
+                            <InfoIcon
+                              style={{
+                                color: "#ffc107",
+                                fontSize: "20px",
+                                cursor: "pointer",
+                                verticalAlign: "super",
+                              }}
+                            />
+                          </Tooltip>
+                        </span>
+                        {toolInfo === "controlling" ? (
+                        <div>
+                          <Paper
+                            style={{
+                              backgroundColor: "#dedcb1",
+                              padding: "15px",
+                              marginBottom: "10px",
+                              width: "70%",
+                            }}
+                          >
+                            <Typography>
+                            Passive NFFE- Controlling Persons Information
+                            </Typography>
+
+                            
+
+                            <Link
+                              href="#"
+                              underline="none"
+                              style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
+                              onClick={() => {
+                                setToolInfo("");
+                              }}
+                            >
+                              --Show Less--
+                            </Link>
+                          </Paper>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </Typography>
+
+
+                </FormControl>
 
                  
 
@@ -669,13 +854,34 @@ export default function Final (props: any){
                       View Form
                     </Button>
 
-                    <Button    
-
-                      disabled           
+                    <Button  
+                      type="submit"
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
+                      disabled={
+                        (values.gIINStatus == "")
+                        &&
+                        (values.gIINNumber == "")
+                        &&
+                        (values.directReportingNFFEsGIIN == "")
+                        &&
+                        (values.exemptionFromGIIN == "")
+                        &&
+                        (values.fullNameOfSponsorsEntity == "" || values.sponsoringEntityGIIN == "")
+                        &&
+                        (values.qualifyingCriteria == "")
+                        &&
+                        (values.sponsoredEntityGIIN == "")
+                        &&
+                        ((values.isSubstantialUSOwnerInformation == false) && (values.isControllingPersonsInformation == false))
+                        
+                       
+                        
+                        ? true 
+                        : false
+                      }
                     >
-                      Confirm
+                      Confirm 
                     </Button>
                   </div>)}
                 

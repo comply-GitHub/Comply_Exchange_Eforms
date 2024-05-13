@@ -1,5 +1,26 @@
 import { GetAgentSkippedSteps } from "../Redux/Actions";
 import store from "../Redux/store";
+const handleBENESupportingDocsBackRoute = () => {
+  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  if (PrevStepData?.isClaimTreaty === "no" || PrevStepData?.isClaimTreaty === false) {
+      return "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E"
+      
+  } else {
+     return "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE"
+      
+  }
+}
+const handleBackRoute = () => {
+  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+  if (PrevStepData?.isClaimTreaty === "no" || PrevStepData?.isClaimTreaty === false) {
+      return "/W-8BEN/Declaration/US_Tin/Claim"
+      
+  } else {
+     return "/W-8BEN/Declaration/US_Tin/Rates"
+      
+  }
+}
+
 const Redirect = async (
   stepRoute: string = "W-8ECI/Info",
   agentId: number = 3,
@@ -154,6 +175,35 @@ const Redirect = async (
       break;
 
     //BenE section
+    case "/Attach_document_BENE":
+      if (
+        mappingAvailable.filter((x) => x.id == 32 && x.agentId == agentId)
+          .length > 0
+      ) {
+        //skip condition
+        //redirecting to next step
+
+        if (!isback) {
+          // going forward in forms case
+          Redirect(
+            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE/Certi_BenE",
+            agentId,
+            navigate
+          );
+        } else {
+          // going back in forms case
+          Redirect(
+            handleBENESupportingDocsBackRoute(),
+            agentId,
+            navigate
+          );
+        }
+      } else {
+        // step is not skipped
+        navigate(stepRoute);
+      }
+      break;
+
     // case "/BenE/Tax_Purpose_BenE":
     //   if (
     //     mappingAvailable.filter((x) => x.id == 15 && x.agentId == agentId) //x.id not confirmed
@@ -691,6 +741,192 @@ const Redirect = async (
         navigate(stepRoute);
       }
       break;
+
+      // w9
+      case "/Attach_document_w9":
+        if (
+          mappingAvailable.filter((x) => x.id == 30 && x.agentId == agentId)
+            .length > 0
+        ) {
+          //skip condition
+          //redirecting to next step
+  
+          if (!isback) {
+            // going forward in forms case
+            Redirect(
+              "/US_Purposes/Back/Exemption/Tax/Certificates",
+              agentId,
+              navigate
+            );
+          } else {
+            // going back in forms case
+            Redirect(
+              "/US_Purposes/Back/Exemption/Tax",
+              agentId,
+              navigate
+            );
+          }
+        } else {
+          // step is not skipped
+          navigate(stepRoute);
+        }
+        break;
+  
+//BEN
+case "/Attach_document_BEN":
+  if (
+    mappingAvailable.filter((x) => x.id == 31 && x.agentId == agentId)
+      .length > 0
+  ) {
+    //skip condition
+    //redirecting to next step
+
+    if (!isback) {
+      // going forward in forms case
+      Redirect(
+        "/W-8BEN/Declaration/US_Tin/Certificates",
+        agentId,
+        navigate
+      );
+    } else {
+      // going back in forms case
+      Redirect(
+        handleBackRoute(),
+        agentId,
+        navigate
+      );
+    }
+  } else {
+    // step is not skipped
+    navigate(stepRoute);
+  }
+  break;
+
+//ECI
+case "/Attach_document_ECI":
+  if (
+    mappingAvailable.filter((x) => x.id == 36 && x.agentId == agentId)
+      .length > 0
+  ) {
+    //skip condition
+    //redirecting to next step
+
+    if (!isback) {
+      // going forward in forms case  ContinueRoute='/W-8ECI/Certification'
+               
+      Redirect(
+        "/W-8ECI/Certification",
+        agentId,
+        navigate
+      );
+    } else {
+      // going back in forms case
+      Redirect(
+        "/W-8ECI/Income",
+        agentId,
+        navigate
+      );
+    }
+  } else {
+    // step is not skipped
+    navigate(stepRoute);
+  }
+  break;
+
+//EXP
+case "/Attach_document_EXP":
+  if (
+    mappingAvailable.filter((x) => x.id == 34 && x.agentId == agentId)
+      .length > 0
+  ) {
+    //skip condition
+    //redirecting to next step
+
+    if (!isback) {
+      // going forward in forms case  ContinueRoute='/W-8ECI/Certification'
+               
+      Redirect(
+        "/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp",
+        agentId,
+        navigate
+      );
+    } else {
+      // going back in forms case
+      Redirect(
+        "/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp",
+        agentId,
+        navigate
+      );
+    }
+  } else {
+    // step is not skipped
+    navigate(stepRoute);
+  }
+  break;
+// IMY
+
+
+case "/Attach_document_IMY":
+  if (
+    mappingAvailable.filter((x) => x.id == 33 && x.agentId == agentId)
+      .length > 0
+  ) {
+    //skip condition
+    //redirecting to next step
+
+    if (!isback) {
+      // going forward in forms case  ContinueRoute='/W-8ECI/Certification'
+               
+      Redirect(
+        "/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY/Certificates_IMY",
+        agentId,
+        navigate
+      );
+    } else {
+      // going back in forms case
+      Redirect(
+        "/IMY/Tax_Purpose_Exp/Chapter4_IMY/Statement",
+        agentId,
+        navigate
+      );
+    }
+  } else {
+    // step is not skipped
+    navigate(stepRoute);
+  }
+  break;
+
+//8233
+case "/Form8233/TaxPayer_Identification/Owner/Documentaion":
+  if (
+    mappingAvailable.filter((x) => x.id == 53 && x.agentId == agentId)
+      .length > 0
+  ) {
+    //skip condition
+    //redirecting to next step
+
+    if (!isback) {
+      // going forward in forms case  ContinueRoute='/W-8ECI/Certification'
+               
+      Redirect(
+        "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification",
+        agentId,
+        navigate
+      );
+    } else {
+      // going back in forms case
+      Redirect(
+        "/Form8233/TaxPayer_Identification/Owner/Claim_part",
+        agentId,
+        navigate
+      );
+    }
+  } else {
+    // step is not skipped
+    navigate(stepRoute);
+  }
+  break;
+
 
     default:
       navigate(stepRoute);

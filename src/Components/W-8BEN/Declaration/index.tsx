@@ -52,6 +52,10 @@ export default function Term() {
     };
 
     dispatch(postW8BENForm(formValues, successCallback, errorCallback));
+    localStorage.setItem(
+      "Formvalues",
+      JSON.stringify(formValues)
+    );
     history("/W-8BEN/Declaration/US_Sourced");
 };
 
@@ -73,6 +77,10 @@ const handleNonUSButtonClick = () => {
   };
 
   dispatch(postW8BENForm(formValues, successCallback, errorCallback));
+  localStorage.setItem(
+    "Formvalues",
+    JSON.stringify(formValues)
+  );
   history("/W-8BEN/Declaration/Non_US_Sorced/Status");
 };
   return (
