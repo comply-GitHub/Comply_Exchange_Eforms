@@ -743,11 +743,9 @@ export default function Tin(props: any) {
                               ""
                             )}
                           </Typography>
-
                           {values.isNotAvailable === "No" ? (
                             <Input
                               fullWidth
-                              type="text"
                               disabled={
                                 values.isFTINLegally ||
                                 values.foreignTINCountry == "1"
@@ -756,7 +754,10 @@ export default function Tin(props: any) {
                               value={values.foreignTIN}
                               onBlur={handleBlur}
                               onChange={handleChange}
-                              inputProps={{ maxLength: 10 }}
+                              type={values.foreignTINCountry=='257' ? "number" : "text"}
+                              inputProps={{
+                                maxLength: 10,
+                              }}
                               placeholder="ENTER FOREIGN TIN"
                               error={Boolean(
                                 touched.foreignTIN && errors.foreignTIN
@@ -773,7 +774,11 @@ export default function Tin(props: any) {
                           ) : (
                             <Input
                               fullWidth
-                              type="text"
+                              type={values.foreignTINCountry=='257' ? "number" : "text"}
+                              inputProps={{
+                                maxLength: 10,
+                              }}
+                              
                               disabled={
                                 values.isFTINLegally ||
                                 values.foreignTINCountry == "1" ||

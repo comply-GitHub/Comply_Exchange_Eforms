@@ -459,6 +459,18 @@ export default function Entity() {
     // }
   };
 
+  // const foreignFTin = (e: any, values: any): any => {
+  //   if (e.key === "Backspace" || e.key === "Delete") return;
+  //   if (e.target.value.length === 3) {
+  //     setPayload({ ...payload, usTin: payload.usTin + "-" });
+  //     values.usTin = values.usTin + "-";
+  //   }
+  //   if (e.target.value.length === 6) {
+  //     setPayload({ ...payload, usTin: payload.usTin + "-" });
+  //     values.usTin = values.usTin + "-";
+  //   }
+  // };
+
   const formatBankCode = (e: any, values: any): any => {
 
     if (e.target.value.length === 9) return;
@@ -1954,6 +1966,7 @@ export default function Entity() {
                                 (values.foreignTINCountryId != 0 &&
                                   values.foreignTINNotAvailable == true)
                               }
+                              type={values.foreignTINCountryId==257 ? "number" : "text"}
                               style={{
                                 border: " 1px solid #d9d9d9 ",
                                 height: " 36px",
@@ -1964,6 +1977,9 @@ export default function Entity() {
                                 fontStyle: "normal",
                                 borderRadius: "1px",
                                 padding: " 0 10px ",
+                              }}
+                              inputProps={{
+                                maxLength: values.foreignTINCountryId==257 ? 10 :30,
                               }}
                               id="outlined"
                               name="foreignTIN"
