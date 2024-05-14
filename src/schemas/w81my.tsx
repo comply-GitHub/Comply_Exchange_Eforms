@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import { isAlphaNumeric } from "../Helpers/convertToFormData";
 
 export const TaxPurposeSchemaW81Chapter3 = () => {
   return Yup.object().shape({
@@ -23,7 +24,7 @@ export const TaxPurposeSchemaW81Chapter4 = () => {
   });
 }
 
-export const US_TINSchema8IMY = () => {
+export const US_TINSchema8IMY = (isGiinEnabled: boolean) => {
   return Yup.object().shape({
 
 
@@ -64,7 +65,78 @@ export const US_TINSchema8IMY = () => {
       then: () => Yup.string().required("required"),
       otherwise: () => Yup.string().notRequired(),
     }),
+    giinId: Yup.string().nullable()
+      .test(
+        {
+          name: "Uppercase",
+          message: "GIIN is required and must be all uppercase",
+          test: (value, context) => {
+            let { giinNotAvailable, giinTypeId } = context.parent;
+            if (isGiinEnabled && giinNotAvailable !== true && (giinTypeId === 1 || giinTypeId === "1")) {
+              if (value) {
+                const hasLowerCase = /[a-z]/.test(value);
+                return !hasLowerCase;
+              } else {
+                return false;
+              }
 
+            } else {
+              return true;
+            }
+          }
+        })
+      .test({
+        name: "length",
+        message: "GIIN length should be 16 character",
+        test: (value, context) => {
+          let { giinNotAvailable, giinTypeId } = context.parent;
+          if (isGiinEnabled && giinNotAvailable !== true && (giinTypeId === 1 || giinTypeId === "1")) {
+            return value?.length == 16
+          }
+          else
+            return true
+        }
+      })
+
+      .test({
+        name: "format",
+        message: "GIIN format should be valid",
+        test: (value, context) => {
+          let { giinNotAvailable, giinTypeId } = context.parent;
+          if (isGiinEnabled && giinNotAvailable !== true && (giinTypeId === 1 || giinTypeId === "1")) {
+            if (!value) {
+              return false;
+            }
+            let case1 = isAlphaNumeric(value?.slice(0, 6));
+            if (!case1) {
+              //console.log("case1")
+              return false;
+            }
+            let case2 = isAlphaNumeric(value?.slice(6, 11));
+            if (!case2) {
+              //console.log("case2")
+              return false;
+            }
+            let case3Data = ["LE", "SL", "ME", "BR", "SP"];
+            let case3 = case3Data.includes(value?.slice(11, 13));
+            if (!case3) {
+              //console.log("case3")
+              return false;
+            }
+
+            let case4 = Number.parseInt(value?.slice(13, 16));
+            if (Number.isNaN(case4)) {
+              //console.log("case4")
+              return false;
+            }
+
+            return true
+
+          }
+          else
+            return true
+        }
+      }),
 
   });
 };

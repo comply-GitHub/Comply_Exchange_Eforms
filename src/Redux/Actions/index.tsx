@@ -3255,4 +3255,32 @@ export const GetAccountHolderDisregardedEntity = (accountHolderId: number, formT
   };
 }
 
+export const GetAllGIINTypes = (callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetAllGIINTypes,
+      ``,
+      (resData) => {
+        const { data } = resData;
+        if (resData.status === 200) {
+          if (callback) {
+            callback(data);
+          }
+          dispatch({
+            type: Utils.actionName.UpdateGIINTypes,
+            payload: [...data]
+          })
+
+        } else {
+          if (callback) {
+            callback();
+          }
+        }
+      },
+      (error: any) => {
+
+      }
+    );
+  };
+}
 
