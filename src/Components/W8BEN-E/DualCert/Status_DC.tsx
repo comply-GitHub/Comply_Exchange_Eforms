@@ -2138,7 +2138,7 @@ export default function Fedral_tax(props: any) {
                                 })
                               }
                             }
-                            formTypeId={FormTypeId.W8ECI}
+                            formTypeId={FormTypeId.BENE}
                           >
                           </SaveAndExit>
                           <Button

@@ -446,8 +446,10 @@ export default function AddMoreForm(props: any) {
                         value={values.previouslySubmittedAllocationStatement}
 
                       />
-                      <label>I have previously submitted a Withholding / Allocation Statement, which remains valid </label>
+                      <label style={{fontSize:"15px"}}>I have previously submitted a Withholding / Allocation Statement, which remains valid </label>
+                      </div>
 
+<div>
                       <Radio
                         name="attachCopyofAllocationStatement"
                         checked={values.attachCopyofAllocationStatement}
@@ -462,8 +464,8 @@ export default function AddMoreForm(props: any) {
                         value={values.attachCopyofAllocationStatement}
 
                       />
-                      <label>Attach a copy of a Withholding / Allocation Statement already created or using the template provided (You will be able to attach later in the process) </label>
-                    </div>
+                      <label style={{fontSize:"15px"}}>Attach a copy of a Withholding / Allocation Statement already created or using the template provided (You will be able to attach later in the process) </label>
+                      </div>
                     {values.attachCopyofAllocationStatement === true && (<>
                       <Button
                         variant="contained"

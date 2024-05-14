@@ -300,7 +300,7 @@ export default function Certifications(props: any) {
                             console.log(err);
                           })
 
-                        }} formTypeId={FormTypeId.W9} />
+                        }} formTypeId={FormTypeId.BENE} />
                         <Button
 
                           variant="contained"
