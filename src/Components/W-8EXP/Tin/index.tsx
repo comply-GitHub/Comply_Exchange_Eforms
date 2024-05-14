@@ -20,7 +20,7 @@ import "./index.scss";
 import checksolid from "../../../../../assets/img/check-solid.png";
 import { useNavigate } from "react-router-dom";
 import { US_TINSchema } from "../../../schemas/w8Ben";
-import { W8_state, getTinTypes, getAllCountries, GetHelpVideoDetails, postW8EXPForm } from "../../../Redux/Actions";
+import { W8_state, getTinTypes, getAllCountries, GetHelpVideoDetails, postW8EXPForm, GetAllGIINTypes, GetAgentSkippedSteps } from "../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -39,6 +39,12 @@ export default function Tin(props: any) {
   const { authDetails } = useAuth();
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || '{}')
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+
+
+  const skippedSteps = useSelector((state: any) => state.SkippedSteps);
+  const [isGiinEnabled, setIsGiinEnabled] = useState(false);
+  const GIINTypes = useSelector((state: any) => state?.GIINTypes)
+
   const W8EXPData = useSelector((state: any) => state.W8EXP);
   const LoadData = () => {
     const temp = {
@@ -54,6 +60,9 @@ export default function Tin(props: any) {
       fTinNotAvailableReason: W8EXPData?.fTinNotAvailableReason ?? "",
       alternativeTINFormat: W8EXPData?.isNotAvailable ? (W8EXPData?.isNotAvailable == false && W8EXPData?.alternativeTINFormat == true ? "No" : "") : "",
       isExplanationNotLegallyFTIN: W8EXPData?.isExplanationNotLegallyFTIN ?? "",
+      giinId: W8EXPData?.giinId ?? obValues.giinId ?? "",
+      giinTypeId: W8EXPData?.giinTypeId ?? (obValues?.giinId ? 1 : 0) ?? 0,
+      giinNotAvailable: W8EXPData?.giinNotAvailable ?? false,
       stepName: null
     }
     console.log(temp, "initial load data")
@@ -106,8 +115,12 @@ export default function Tin(props: any) {
     fTinNotAvailableReason: "",
     alternativeTINFormat: "",
     isExplanationNotLegallyFTIN: "",
+    giinId: "",
+    giinTypeId: 0,
+    giinNotAvailable: false,
     stepName: null
   });
+
 
 
   const history = useNavigate();
@@ -160,6 +173,23 @@ export default function Tin(props: any) {
     return val;
   }
   const [toolInfo, setToolInfo] = useState("");
+
+  useEffect(() => {
+    if (skippedSteps.length === 0) {
+      dispatch(
+        GetAgentSkippedSteps(authDetails?.agentId, (data: any[]) => {
+          // mappingAvailable = data; 
+        })
+      );
+    }
+    dispatch(GetAllGIINTypes(() => { }))
+  }, [authDetails?.agentId])
+
+  useEffect(() => {
+    let temp1: any[] = skippedSteps.filter((x: any) => x.id == 8 && x.agentId == authDetails?.agentId);
+    setIsGiinEnabled(temp1?.length > 0 ? false : true);
+
+  }, [skippedSteps, authDetails?.agentId])
   return (
     <>
       <section
@@ -211,7 +241,7 @@ export default function Tin(props: any) {
                   validateOnMount={true}
                   validateOnBlur={true}
                   initialValues={initialValue}
-                  validationSchema={TaxPayerSchema}
+                  validationSchema={TaxPayerSchema(isGiinEnabled)}
                   onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
                     const temp = {
@@ -530,6 +560,194 @@ export default function Tin(props: any) {
                             </div>
                           </div>
                         </div>
+                        {isGiinEnabled ? <div
+                          style={{
+                            margin: "10px",
+                            display: "flex",
+                            marginTop: "25px",
+                          }}
+                          className="row"
+                        >
+                          <div className="col-lg-5 col-12">
+                            <Typography style={{ fontSize: "14px", minHeight: "25px" }}>
+                              Global Intermediary Identification Number (GIIN)
+                              <span style={{ color: "red" }}>*</span>
+
+                            </Typography>
+                            <select
+                              //disabled={values.notAvailable}
+                              style={{
+                                border: " 1px solid #d9d9d9 ",
+                                padding: " 0 10px",
+                                color: "#121112",
+                                fontStyle: "italic",
+                                height: "40px",
+                                width: "100%",
+                              }}
+                              name="giinTypeId"
+                              id="Income"
+                              // defaultValue={getUStinValue()}
+                              onBlur={handleBlur}
+                              value={values.giinTypeId}
+                              onChange={(e) => {
+                                handleChange(e);
+                                setTimeout(() => {
+                                  setFieldValue("giinId", "")
+
+                                }, 100)
+                              }}
+                            >
+                              <option value={0}>-Select-</option>
+                              {GIINTypes?.map((ele: any) => (
+                                <option
+                                  key={ele?.id}
+                                  value={ele?.id}
+                                >
+                                  {ele?.giinType}
+                                </option>
+                              ))}
+                            </select>
+                            {/* <p className="error">{errors.usTinTypeId}</p> */}
+                          </div>
+
+                          <>
+                            <div className="col-lg-5 col-12">
+                              <FormControl className="w-100">
+                                <Typography align="left" style={{ minHeight: "25px" }}>
+                                  GIIN
+                                  {/* <span style={{ color: 'red' }}>*</span> */}
+                                  <span>
+                                    <Tooltip
+                                      style={{
+                                        backgroundColor: "black",
+                                        color: "white"
+                                      }}
+                                      title={
+                                        <>
+                                          <Typography color="inherit">
+                                            Tax Residency Information - GIIN
+                                          </Typography>
+                                          <a onClick={() => setToolInfo("giin")}>
+                                            <Typography
+                                              style={{
+                                                cursor: "pointer",
+                                                textDecorationLine: "underline",
+                                              }}
+                                              align="center"
+                                            >
+                                              {" "}
+                                              View More...
+                                            </Typography>
+                                          </a>
+                                        </>
+                                      }
+                                    >
+                                      <Info
+                                        style={{
+                                          color: "#ffc107",
+                                          fontSize: "16px",
+                                          cursor: "pointer",
+                                          verticalAlign: "super",
+                                        }}
+                                      />
+                                    </Tooltip>
+                                  </span>
+
+                                  {toolInfo === "giin" ? (
+                                    <div>
+                                      <Paper
+                                        style={{
+                                          backgroundColor: "#dedcb1",
+                                          padding: "15px",
+                                          marginBottom: "10px",
+                                        }}
+                                      >
+                                        <Typography sx={{ color: "black", marginBottom: "10px" }}>GIIN means a Global Intermediary Identification Number assigned to a PFFI or Registered Deemed Compliant FFI.</Typography>
+                                        <Typography sx={{ color: "gray", marginBottom: "10px" }}>
+                                          A separate GIIN will be issued to the Financial Institution to identify each jurisdiction, including the FI's jurisdiction of residence, in which the FI maintains a branch that is not treated as a Limited Branch.
+                                        </Typography>
+                                        <Typography sx={{ color: "gray", marginBottom: "10px" }}>
+                                          A GIIN will be issued to only those Financial Institutions that are not Limited FFIs, Limited Branches, or U.S. branches of an FFI, and will be issued after an FI's FATCA Registration is submitted and approved.
+                                        </Typography>
+                                        <Typography sx={{ color: "gray", marginBottom: "10px" }}>
+                                          Format: XXXXXX.XXXXX.XX.XXX
+                                        </Typography>
+                                        <Link
+                                          href="#"
+                                          underline="none"
+                                          style={{
+                                            marginTop: "10px",
+                                            fontSize: "16px", color: "#0000C7"
+                                          }}
+                                          onClick={() => {
+                                            setToolInfo("");
+                                          }}
+                                        >
+                                          --Show Less--
+                                        </Link>
+                                      </Paper>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+                                </Typography>
+                                <Input
+                                  style={{
+                                    border: " 1px solid #d9d9d9 ",
+                                    padding: " 0 10px",
+                                    color: "#7e7e7e",
+                                    fontStyle: "italic",
+                                    height: "40px",
+                                    width: "100%",
+                                  }}
+                                  disabled={values.giinTypeId == 2 || values.giinTypeId == 3
+                                    || values.giinNotAvailable
+                                  }
+                                  id="outlined"
+                                  name="giinId"
+                                  placeholder="Enter GIIN"
+                                  onChange={handleChange}
+                                  // inputProps={{ maxLength: 11 }}
+                                  onBlur={handleBlur}
+                                  error={Boolean(touched.giinId && errors.giinId)}
+                                  value={values.giinId}
+                                />
+                                {errors.giinId && touched.giinId ? <p className="error">{errors.giinId}</p> : <></>}
+                              </FormControl>
+                            </div>
+                          </>
+
+                          <div className="col-lg-2 ">
+                            <div className="radio" style={{ marginTop: "17px" }}>
+                              <Checkbox
+                                value={values.giinNotAvailable}
+                                checked={values.giinNotAvailable}
+                                onChange={(e) => {
+                                  setTimeout(() => {
+                                    setFieldValue("giinId", "")
+                                  }, 100);
+                                  handleChange(e);
+                                }}
+                                size="medium"
+                                name="giinNotAvailable"
+                              />
+                              <span style={{ fontSize: "12px" }}>
+                                Not Available
+                                {errors.notAvailable && touched.notAvailable ? (
+                                  <div>
+                                    <Typography color="error">
+                                      {errors.notAvailable}
+                                    </Typography>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                          : <></>}
 
                         <div
                           style={{
@@ -1097,8 +1315,8 @@ export default function Tin(props: any) {
                           disabled={!isValid}
                           onClick={() => {
                             submitForm().then(() => {
-                              Redirect("/Attach_document_EXP",authDetails?.agentId,history,false)
-                              
+                              Redirect("/Attach_document_EXP", authDetails?.agentId, history, false)
+
                             })
                           }}
                           variant="contained"
@@ -1123,7 +1341,7 @@ export default function Tin(props: any) {
                         <Button
                           onClick={() => {
                             // history("/Exp/Tax_Purpose_Exp/Chapter4_Exp");
-                            Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp",authDetails?.agentId,history,true)
+                            Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp", authDetails?.agentId, history, true)
                           }}
                           variant="contained"
                           style={{

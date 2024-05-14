@@ -96,6 +96,7 @@ const ActionName = {
     getSelfCetHidden:"getSelfCetHidden",
     GetFederalTaxClassification:"GetFederalTaxClassification",
     GetAllUSFormTypes:"GetAllUSFormTypes",
+    UpdateGIINTypes:"UpdateGIINTypes",
     getAllAccountStatement:"getAllAccountStatement",
     InsertCaymanIndividualNonUS:"InsertCaymanIndividualNonUS",
     UpsertTaxLiabilityinanyOtherJurisdictions:"UpsertTaxLiabilityinanyOtherJurisdictions",

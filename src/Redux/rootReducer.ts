@@ -41,6 +41,7 @@ import {
   getIGAReducer,
   GetSelfCetHiddenReducer,
   GetUSFormTypeReducer,
+  GetAllGIINTypesReducer,
   
 } from "./Reducers";
 import w9Reducer from "./Reducers/w9Reducer";
@@ -104,6 +105,7 @@ let reducers = {
   GetSelfCetHiddenReducer,
   GetUSFormTypeReducer,
   SkippedSteps:SkippedStepsReducer,
+  GIINTypes:GetAllGIINTypesReducer,
 };
 const rootReducer = combineReducers({
   ...reducers,
