@@ -1,10 +1,4 @@
-// import React, { useState, useEffect } from "react";
 
-// export default function abc(){
-//      return(<>
-//      hiiii there  Submit_DC
-//      </>)
-// }
 import React from "react";
 import { useState, useEffect } from "react";
 import {
@@ -118,7 +112,7 @@ export default function Penalties() {
               ...values,
                AccountHolderDetailsId:authDetails.accountHolderId,
                agentId: authDetails?.agentId,
-               formTypeId: FormTypeId.BENE,
+               formTypeId: FormTypeId.FW81MY,
               date: new Date().toISOString(),
               stepName: `/${urlValue}`
             }]
@@ -751,7 +745,7 @@ export default function Penalties() {
                         >
                           SAVE & EXIT
                         </Button> */}
-                        {/* <div style={{ color: "white", marginLeft: "15px" }}>
+                        <div style={{ color: "white", marginLeft: "15px" }}>
                           <SaveAndExit Callback={() => {
                             submitForm().then(() => {
                               const prevStepData = JSON.parse(
@@ -774,8 +768,8 @@ export default function Penalties() {
                               })
                             
                              
-                          }} formTypeId={FormTypeId.W9} />
-                        </div> */}
+                          }} formTypeId={FormTypeId.FW81MY} />
+                        </div>
 
 
                         <Button

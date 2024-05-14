@@ -171,6 +171,39 @@ const Financial_CRS_BENE_DC = React.lazy(
 const FinancialReport_CRS_BENE_DC = React.lazy(
   () => import("../Components/W8BEN-E/DualCert/Financial/FinancialModal")
 );
+
+
+
+///
+
+const CRS_IMY_DC = React.lazy(
+  () => import("../Components/W-8IMY/DualCert/CRS_DualCert")
+);
+
+const Financial_IMY_DC = React.lazy(
+  () => import("../Components/W-8IMY/DualCert/CRS_DualCert/Financial")
+);
+
+const SelfCertDualCert_IMY = React.lazy(
+  () => import("../Components/W-8IMY/DualCert/SelfCertPassive")
+);
+
+const Complete_CRS_IMY = React.lazy(
+  () => import("../Components/W-8IMY/DualCert/CRS_Complete")
+);
+const Active_Non_Financial_IMY_DC = React.lazy(
+  () => import("../Components/W-8IMY/DualCert/CRS_DualCert/Active_Non_financial")
+);
+
+const Non_Reporting_CRS_IMY_DC = React.lazy(
+  () => import("../Components/W-8IMY/DualCert/CRS_DualCert/NonReporting/index")
+);
+const Financial_CRS_IMY_DC = React.lazy(
+  () => import("../Components/W-8IMY/DualCert/CRS_DualCert/Financial")
+);
+const FinancialReport_CRS_IMY_DC = React.lazy(
+  () => import("../Components/W-8IMY/DualCert/Financial/FinancialModal")
+);
 const Submit_DC_BENE = React.lazy(
   () => import("../Components/W8BEN-E/DualCert/Submit_DC_BENE")
 )
@@ -377,6 +410,14 @@ const BENEIndividualFatcaClassificationComplete= React.lazy(() => import("../Com
 const BENEIndividualFatcaClassificationFinal= React.lazy(() => import("../Components/W8BEN-E/DualCert/FATCA/Final"));
 
 
+const IMYEntityFatcaClassification = React.lazy(() => import("../Components/W-8IMY/DualCert/FATCA/index"));
+const IMYEntityFatcaClassificationFinancial = React.lazy(() => import("../Components/W-8IMY/DualCert/FATCA/Financial"));
+const IMYEntityFatcaClassificationGIINAvailable = React.lazy(() => import("../Components/W-8IMY/DualCert/FATCA/GIINAvailable"));
+const IMYEntityFatcaClassificationGIINNotAvailable = React.lazy(() => import("../Components/W-8IMY/DualCert/FATCA/GIINNotAvailable"));
+const IMYEntityFatcaClassificationSponsoredFinancialInstitution = React.lazy(() => import("../Components/W-8IMY/DualCert/FATCA/SponsoredFinanceInstitution"));
+const IMYIndividualFatcaClassificationComplete= React.lazy(() => import("../Components/W-8IMY/DualCert/FATCA/Complete"));
+const IMYIndividualFatcaClassificationFinal= React.lazy(() => import("../Components/W-8IMY/DualCert/FATCA/Final"));
+
 const ROUTES: Array<RouteType> = [
   {
     name: "Login",
@@ -450,20 +491,64 @@ const ROUTES: Array<RouteType> = [
     Component: Attach_document_ECI,
     isPrivate: true,
   },
+  ///
   {
-    name: "Attach_document_BENE",
-    path: "/Attach_document_BENE",
+    name: "CRS_IMY_DC",
+    path: "/CRS_IMY_DC",
     id: 2,
-    Component: Attach_document_BENE,
+    Component: CRS_IMY_DC,
+    isPrivate: true,
+  },//SelfCertDualCert_IMY
+  {
+    name: "SelfCertDualCert_IMY",
+    path: "/SelfCertDualCert_IMY",
+    id: 2,
+    Component: SelfCertDualCert_IMY,
     isPrivate: true,
   },
   {
-    name: "Attach_document_w9",
-    path: "/Attach_document_w9",
+    name: "Financial_IMY_DC",
+    path: "/Financial_IMY_DC",
     id: 2,
-    Component: Attach_document_w9,
+    Component: Financial_IMY_DC,
     isPrivate: true,
   },
+  {
+    name: "Complete_CRS_IMY",
+    path: "/Complete_CRS_IMY",
+    id: 2,
+    Component: Complete_CRS_IMY,
+    isPrivate: true,
+  },
+  {
+    name: "Active_Non_Financial_IMY_DC",
+    path: "/Active_Non_Financial_IMY_DC",
+    id: 2,
+    Component: Active_Non_Financial_IMY_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Non_Reporting_CRS_IMY_DC",
+    path: "/Non_Reporting_CRS_IMY_DC",
+    id: 2,
+    Component: Non_Reporting_CRS_IMY_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Financial_CRS_IMY_DC",
+    path: "/Financial_CRS_IMY_DC",
+    id: 2,
+    Component: Financial_CRS_IMY_DC,
+    isPrivate: true,
+  },
+  {
+    name: "FinancialReport_CRS_IMY_DC",
+    path: "/FinancialReport_CRS_IMY_DC",
+    id: 2,
+    Component: FinancialReport_CRS_IMY_DC,
+    isPrivate: true,
+  },
+
   {
     name: "TaxPayer_DC_BEN",
     path: "/TaxPayer_DC_BEN",
@@ -754,6 +839,56 @@ const ROUTES: Array<RouteType> = [
     path: "W-8BEN/Declaration/US_Tin",
     id: 4,
     Component: Non_us_tin,
+    isPrivate: true,
+  },
+  //
+  {
+    name: "IMYEntityFatcaClassification",
+    path: "/IMYEntityFatcaClassification",
+    id: 4,
+    Component: IMYEntityFatcaClassification,
+    isPrivate: true,
+  },
+  {
+    name: "IMYEntityFatcaClassificationFinancial",
+    path: "/IMYEntityFatcaClassificationFinancial",
+    id: 4,
+    Component: IMYEntityFatcaClassificationFinancial,
+    isPrivate: true,
+  },
+  {
+    name: "IMYEntityFatcaClassificationGIINAvailable",
+    path: "/IMYEntityFatcaClassificationGIINAvailable",
+    id: 4,
+    Component: IMYEntityFatcaClassificationGIINAvailable,
+    isPrivate: true,
+  },
+  {
+    name: "IMYEntityFatcaClassificationGIINNotAvailable",
+    path: "/IMYEntityFatcaClassificationGIINNotAvailable",
+    id: 4,
+    Component: IMYEntityFatcaClassificationGIINNotAvailable,
+    isPrivate: true,
+  },
+  {
+    name: "IMYEntityFatcaClassificationSponsoredFinancialInstitution",
+    path: "/IMYEntityFatcaClassificationSponsoredFinancialInstitution",
+    id: 4,
+    Component: IMYEntityFatcaClassificationSponsoredFinancialInstitution,
+    isPrivate: true,
+  },
+  {
+    name: "IMYIndividualFatcaClassificationComplete",
+    path: "/IMYIndividualFatcaClassificationComplete",
+    id: 4,
+    Component: IMYIndividualFatcaClassificationComplete,
+    isPrivate: true,
+  },
+  {
+    name: "IMYIndividualFatcaClassificationFinal",
+    path: "/IMYIndividualFatcaClassificationFinal",
+    id: 4,
+    Component: IMYIndividualFatcaClassificationFinal,
     isPrivate: true,
   },
   {

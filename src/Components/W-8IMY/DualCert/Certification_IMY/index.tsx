@@ -294,7 +294,7 @@ export default function Certifications(props: any) {
                             console.log(err);
                           })
 
-                        }} formTypeId={FormTypeId.W9} />
+                        }} formTypeId={FormTypeId.FW81MY} />
                         <Button
 
                           variant="contained"
@@ -309,16 +309,14 @@ export default function Certifications(props: any) {
 
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
-                          // onClick={() => {
-                          //   submitForm().then((data) => {
-                          //     history("/IMY/Certfication/Penalties_DC");
-                          //   }).catch((error) => {
-                          //     console.log(error);
-                          //   })
-                          // }}
                           onClick={() => {
-                            history("/IMY/Certfication/Penalties_DC");
+                            submitForm().then((data) => {
+                             
+                            }).catch((error) => {
+                              console.log(error);
+                            })
                           }}
+                        
                         >
                           Continue
                         </Button>

@@ -82,7 +82,7 @@ const Declaration = (props: any) => {
                   ...values,
                   AccountHolderDetailsId:authDetails.accountHolderId,
                   agentId: authDetails?.agentId,
-                  formTypeId: FormTypeId.BENE,
+                  formTypeId: FormTypeId.FW81MY,
                   accountHolderBasicDetailId: authDetails?.accountHolderId,
                   statusId: 1,
                 };
@@ -408,24 +408,24 @@ const Declaration = (props: any) => {
                       marginTop: "40px",
                     }}
                   >
-                    {/* <SaveAndExit Callback={() => {
+                    <SaveAndExit Callback={() => {
                       submitForm().then(() => {
                         const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                         const urlValue = window.location.pathname.substring(1);
-                        // dispatch(PostDualCert(
-                        //     {
-                        //         ...prevStepData,
-                        //         ...values,
-                        //         stepName: `/${urlValue}`
-                        //     }
-                        //     , () => { }, 
-                        //     () => { }) 
-                        // );
+                        dispatch(PostDualCert(
+                            {
+                                ...prevStepData,
+                                ...values,
+                                stepName: `/${urlValue}`
+                            }
+                            , () => { }, 
+                            () => { }) 
+                        );
                         history(
                           GlobalValues.basePageRoute
                         );
                       })
-                    }} formTypeId={FormTypeId.W8ECI} /> */}
+                    }} formTypeId={FormTypeId.FW81MY} />
                     <Button
                       onClick={() => {
                         dispatch(GetEciPdf(authDetails?.accountHolderId))
