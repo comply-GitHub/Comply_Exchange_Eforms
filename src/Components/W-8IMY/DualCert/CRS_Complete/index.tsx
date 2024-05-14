@@ -44,7 +44,7 @@ export default function Declaration (props: any){
     id:0,
     // agentId: authDetails.agentId,
     // accountHolderBasicDetailId: authDetails.accountHolderId,
-    formTypeId: FormTypeId.BENE,
+    formTypeId: FormTypeId.FW81MY,
     formEntryId:0,
     classificationType : "CRS",
     userType:"DC",
@@ -124,10 +124,10 @@ export default function Declaration (props: any){
                   postSCFATCAClassification(result, (data: any) => {
                     localStorage.setItem("DualCertData", JSON.stringify(result))
                     if(CRSClassificationData?.selectedHeading =="Passive Non Financial Entity"){
-                      history("/BENE_DC_SelfCert")
+                      history("/SelfCertDualCert_IMY")
                     }
                     else{
-                      history("/TaxPayer_DC_BENE")
+                      history("/IMY/ThankYou/Status_DC/Tax_DC")
                     }
                  
                    

@@ -4210,7 +4210,7 @@ export default function Entity() {
 
                   {Income === true ? (
                     <>
-                      {values.isUSIndividual == "yes" ? (
+                      {values.isUSEntity == "yes" ? (
                         <>
                           <CardHeader
                             className="flex-row-reverse"

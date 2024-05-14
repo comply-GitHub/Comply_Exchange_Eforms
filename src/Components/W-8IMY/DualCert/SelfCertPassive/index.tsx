@@ -224,13 +224,13 @@ const individualSelfType = {
     }
   }
   useEffect(() => {
-    dispatch(GetDualCertDetailsPerson(authDetails?.accountHolderId, FormTypeId.BENE,(res: any[]) => {
+    dispatch(GetDualCertDetailsPerson(authDetails?.accountHolderId, FormTypeId.FW81MY,(res: any[]) => {
       console.log(res, "existing data");
       let temp = res.map((ele: any) => {
         return {
           agentId: authDetails.agentId,
           accountHolderDetailsId: authDetails?.accountHolderId,
-          formTypeId: FormTypeId.W9,
+          formTypeId: FormTypeId.FW81MY,
           formEntryId: ele.formEntryId,
           firstName: ele.firstName,
           familyName: ele.familyName,
@@ -476,7 +476,7 @@ const individualSelfType = {
                         
                         // history("/US_Determination_W9_DC")
                         Redirect(
-                          "/TaxPayer_DC_BENE",
+                        "/IMY/ThankYou/Status_DC/Tax_DC",
                           authDetails?.agentId,
                           history,
                           false
