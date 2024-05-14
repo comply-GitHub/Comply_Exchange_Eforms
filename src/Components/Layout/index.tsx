@@ -28,7 +28,7 @@ const Layout = () => {
                     <Navbar />
                     <LoadData />
                 </div>
-                {/* <AutoLogoutWrap /> */}
+                <AutoLogoutWrap />
                 <ErrorComponet></ErrorComponet>
                 <div className="main">
                     <Outlet />
