@@ -120,7 +120,9 @@ export default function Tin(props: any) {
     LoadData();
   }, [authDetails]);
 
-
+  var getReducerData = useSelector(
+    (state: any) => state?.GetByW9FormReducer?.GetByW9FormData
+  );
 
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
@@ -128,7 +130,7 @@ export default function Tin(props: any) {
  
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
-  console.log(obValues.taxpayerIdTypeID, "pp")
+  console.log(obValues.taxpayerIdTypeID, "pp",getReducerData)
   const [IsIndividual, setIsIndividual] = useState(obValues?.businessTypeId == 1);
   const dispatch = useDispatch();
   const [initialValue, setInitialValues] = useState({

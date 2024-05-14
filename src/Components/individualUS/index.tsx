@@ -3346,6 +3346,9 @@ useEffect(()=>{
                                       disabled={
                                         values.vatId == 0 || values.vatId == 2
                                       }
+                                      inputProps={{
+                                        maxLength: 30,
+                                      }}
                                       style={{
                                         border: " 1px solid #d9d9d9 ",
                                         height: " 36px",

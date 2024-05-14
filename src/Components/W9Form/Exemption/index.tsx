@@ -9,6 +9,7 @@ import {
   AccordionSummary,
   AccordionDetails,
   TextField,
+  Link,
   Tooltip,
   RadioGroup,
   Radio,
@@ -52,6 +53,7 @@ export default function FCTA_Reporting(props: any) {
     setCanvaBx(false);
   }
   const [clickCount, setClickCount] = useState(0);
+  const [toolInfo, setToolInfo] = useState("");
   const [report, setReport] = useState<string>("");
 
   const handleChangestatus =
@@ -241,6 +243,10 @@ export default function FCTA_Reporting(props: any) {
                                 </Typography>
                                 <a >
                                   <Typography
+                                  onClick={() => {setToolInfo("exemption");
+  console.log(toolInfo,"123" )
+}
+                                  }
                                     style={{
                                       cursor: "pointer",
                                       textDecorationLine: "underline",
@@ -266,6 +272,51 @@ export default function FCTA_Reporting(props: any) {
                         </span>
 
                       </Typography>
+                      {toolInfo == "exemption" ? (
+                        <div>
+                          <Paper
+                            style={{
+                              backgroundColor: "#dedcb1",
+                              padding: "15px",
+                              marginBottom: "10px",
+                            }}
+                          >
+                            <Typography>What is FATCA reporting?</Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                            The Foreign Account Tax Compliance Act (FATCA) requires a participating foreign financial institution to report all United States account holders that are specified United States persons.
+                            </Typography>
+                            <Typography style={{ marginTop: "20px" }}>
+                            If you are submitting this form for payments to be made into an account held outside of the United States by a foreign (non U.S) financial institution you will be considered for FATCA Reporting unless you can make a selection from the list provided stating why you are exempt from FATCA reporting.
+                            </Typography>
+                            <Typography style={{ marginTop: "20px" }}>
+                              Ref: EH160
+                            </Typography>
+                            <Typography style={{ marginTop: "20px" }}>
+                            If you are only submitting this form for payments received into an account you hold in the United States, you do not need to make a FATCA exemption selection.
+ 
+ U.S. Financial Institutions and other U.S withholding agents must:
+                            </Typography>
+                            <Typography style={{ marginTop: "20px" }}>
+                            Withhold 30% on certain payments to foreign entities that do not document their FATCA status and
+
+Report information about certain non-financial foreign entities.
+                            </Typography>
+
+                            <Link
+                              href="#"
+                              underline="none"
+                              style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
+                              onClick={() => {
+                                setToolInfo("");
+                              }}
+                            >
+                              --Show Less--
+                            </Link>
+                          </Paper>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
                       <Typography
                         align="left"
                         style={{ margin: "10px", fontSize: "17px", marginTop: "10px" }}
@@ -325,6 +376,7 @@ export default function FCTA_Reporting(props: any) {
                                     </Typography>
                                     <a >
                                       <Typography
+                                     
                                         style={{
                                           cursor: "pointer",
                                           textDecorationLine: "underline",
@@ -349,6 +401,7 @@ export default function FCTA_Reporting(props: any) {
                               </Tooltip>
                             </span>
                           </Typography>
+                        
                           <FormControl className="w-100 mt-2">
                             <select
                               className="col-md-6 col-12"
