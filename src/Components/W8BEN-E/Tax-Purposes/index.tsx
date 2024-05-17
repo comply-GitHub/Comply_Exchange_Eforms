@@ -43,6 +43,7 @@ import { convertToFormData } from "../../../Helpers/convertToFormData";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetBenEPdf } from "../../../Redux/Actions/PfdActions";
+import WarningCompoenet from "../../Reusable/WarningComponent";
 export default function Fedral_tax(props: any) {
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
@@ -224,34 +225,34 @@ export default function Fedral_tax(props: any) {
                   onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
                     const submitPromise = new Promise((resolve, reject) => {
-                      
-                        setSubmitting(true);
-                        const temp = {
-                          ...PrevStepData, ...values,
-                          agentId: authDetails?.agentId,
-                          accountHolderBasicDetailId: authDetails?.accountHolderId,
-                          isSubmissionSingleUSOwner: values.isSubmissionSingleUSOwner === "yes" ? true : false,
-                          isDisRegardedSection1446: values.isDisRegardedSection1446 === "yes" ? true : false,
-                        };
-                        const result = {
-                          ...temp,
-                          isHybridStatus: Number.isNaN(temp.isHybridStatus) ? 0 : temp.isHybridStatus,
-                          formTypeSelectionId: FormTypeSelection.Entity,
-                          attachSupportingDocumentFile: selectedfile,
-                        };
-                        dispatch(
-                          postW8BEN_EForm(result, () => {
-                            localStorage.setItem("PrevStepData", JSON.stringify(temp));
-                            resolve("success");
+
+                      setSubmitting(true);
+                      const temp = {
+                        ...PrevStepData, ...values,
+                        agentId: authDetails?.agentId,
+                        accountHolderBasicDetailId: authDetails?.accountHolderId,
+                        isSubmissionSingleUSOwner: values.isSubmissionSingleUSOwner === "yes" ? true : false,
+                        isDisRegardedSection1446: values.isDisRegardedSection1446 === "yes" ? true : false,
+                      };
+                      const result = {
+                        ...temp,
+                        isHybridStatus: Number.isNaN(temp.isHybridStatus) ? 0 : temp.isHybridStatus,
+                        formTypeSelectionId: FormTypeSelection.Entity,
+                        attachSupportingDocumentFile: selectedfile,
+                      };
+                      dispatch(
+                        postW8BEN_EForm(result, () => {
+                          localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                          resolve("success");
+                          setSubmitting(false);
+                        },
+                          (error: any) => {
+                            reject(error);
                             setSubmitting(false);
-                          },
-                            (error: any) => {
-                              reject(error);
-                              setSubmitting(false);
-                            }
-                          )
-                        );
-                      
+                          }
+                        )
+                      );
+
                     })
                     return submitPromise;
                   }}
@@ -275,122 +276,28 @@ export default function Fedral_tax(props: any) {
                           //touched.countryOfIncorporation &&
                           values?.countryOfIncorporation && values?.countryOfIncorporation?.toString() !== "0" &&
                             values?.countryOfIncorporation !== obValues?.permanentResidentialCountryId ? (
-                            <div
-                              style={{
-                                backgroundColor: "#e8e1e1",
-                                padding: "10px",
-                              }}
-                            >
-                              <Typography>
-                                ICOR114
-                                <span className="mx-2">
-                                  <img
-                                    src={Infoicon}
-                                    style={{
-                                      color: "#ffc107",
-                                      height: "22px",
-                                      width: "20px",
-                                      boxShadow: "inherit",
 
-                                      cursor: "pointer",
-                                      marginBottom: "3px",
-                                    }}
-                                  />
-                                  Country of incorporation is different from the
-                                  PRA country.
-                                </span>
-                              </Typography>
-                            </div>
-                          ) : values.countryOfIncorporation === 186  ? (
-                            <div
-                              style={{
-                                backgroundColor: "#e8e1e1",
-                                padding: "10px",
-                              }}
-                            >
-                              <Typography>
-                                ICOR104
-                                <span className="mx-2">
-                                  <img
-                                    src={Infoicon}
-                                    style={{
-                                      color: "#ffc107",
-                                      height: "22px",
-                                      width: "20px",
-                                      boxShadow: "inherit",
+                            <WarningCompoenet warningCode={"ICOR114"} warningMessage={"Country of incorporation is different from the PRA country."} formTypeId={FormTypeId.BENE} />
 
-                                      cursor: "pointer",
-                                      marginBottom: "3px",
-                                    }}
-                                  />
-                                  You have selected 'other' for Country of
-                                  incorporation or organization. Your agent may
-                                  need to contact you for further information.
-                                </span>
-                              </Typography>
-                            </div>
+                          ) : values.countryOfIncorporation === 186 ? (
+
+                            <WarningCompoenet warningCode={"ICOR104"} warningMessage={"You have selected 'other' for Country of incorporation or organization. Your agent may need to contact you for further information."} formTypeId={FormTypeId.BENE} />
+
                           ) : values.countryOfIncorporation === 186 &&
                             values.other === "" ? (
-                            <div
-                              style={{
-                                backgroundColor: "#e8e1e1",
-                                padding: "10px",
-                              }}
-                            >
-                              <Typography>
-                                ICOR105
-                                <span className="mx-2">
-                                  <img
-                                    src={Infoicon}
-                                    style={{
-                                      color: "#ffc107",
-                                      height: "22px",
-                                      width: "20px",
-                                      boxShadow: "inherit",
 
-                                      cursor: "pointer",
-                                      marginBottom: "3px",
-                                    }}
-                                  />
-                                  You have selected "other" for Country of
-                                  incorporation or organization, but have not
-                                  entered the country.
-                                </span>
-                              </Typography>
-                            </div>
+                            <WarningCompoenet warningCode={"ICOR105"} warningMessage={'You have selected "other" for Country of incorporation or organization, but have not entered the country.'} formTypeId={FormTypeId.BENE} />
+
                           ) : obValues.isUSEntity === false &&
                             obValues.isUSIndividual === false &&
                             values.countryOfIncorporation && values.countryOfIncorporation === 258 ? (
-                            <div
-                              style={{
-                                backgroundColor: "#e8e1e1",
-                                padding: "10px",
-                              }}
-                            >
-                              <Typography>
-                                ICOR110
-                                <span className="mx-2">
-                                  <img
-                                    src={Infoicon}
-                                    style={{
-                                      color: "#ffc107",
-                                      height: "22px",
-                                      width: "20px",
-                                      boxShadow: "inherit",
+                            <WarningCompoenet warningCode={"ICOR110"} warningMessage={`You have identified that you are submitting a
+                            form on behalf of a NON U.S. Entity and
+                            indicated that the Country of Incorporation was
+                            in the United States. The Entity may be classed
+                            as a U.S person for U.S tax purposes. Your agent
+                            may need to contact you for further information`} formTypeId={FormTypeId.BENE} />
 
-                                      cursor: "pointer",
-                                      marginBottom: "3px",
-                                    }}
-                                  />
-                                  You have identified that you are submitting a
-                                  form on behalf of a NON U.S. Entity and
-                                  indicated that the Country of Incorporation was
-                                  in the United States. The Entity may be classed
-                                  as a U.S person for U.S tax purposes. Your agent
-                                  may need to contact you for further information
-                                </span>
-                              </Typography>
-                            </div>
                           ) : null}
 
                         <div>

@@ -318,6 +318,7 @@ export default function Entity() {
     dispatch(getAllCountries());
     dispatch(getAllCountriesCode());
     dispatch(getAllCountriesIncomeCode());
+    dispatch(GetHelpVideoDetails());
     dispatch(getAllStateByCountryId(0));
     dispatch(
       GetAgentPaymentType(authDetails?.agentId, () => {
