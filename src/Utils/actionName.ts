@@ -115,6 +115,9 @@ const ActionName = {
     UpsertFATCAStepsDetails:"UpsertFATCAStepsDetails",
     UpsertCRSStepsDetails:"UpsertCRSStepsDetails",
 
+    // update warnings
+    UpdateWarnings:"UpdateWarnings"
+
   };
 
   export default ActionName;
