@@ -175,6 +175,35 @@ const FinancialReport_CRS_BENE_DC = React.lazy(
 
 
 ///
+const CRS_ECI_DC = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/CRS_DualCert")
+);
+
+const Financial_ECI_DC = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/CRS_DualCert/Financial")
+);
+
+const SelfCertDualCert_ECI = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/SelfCertPassive")
+);
+
+const Complete_CRS_ECI = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/CRS_Complete")
+);
+const Active_Non_Financial_ECI_DC = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/CRS_DualCert/Active_Non_financial")
+);
+
+const Non_Reporting_CRS_ECI_DC = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/CRS_DualCert/NonReporting/index")
+);
+const Financial_CRS_ECI_DC = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/CRS_DualCert/Financial")
+);
+const FinancialReport_CRS_ECI_DC = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/Financial/FinancialModal")
+);
+////
 
 const CRS_IMY_DC = React.lazy(
   () => import("../Components/W-8IMY/DualCert/CRS_DualCert")
@@ -296,6 +325,10 @@ const Perti_dualCert_Eci = React.lazy(
   () => import("../Components/W-8ECI/DualCert/PenalitiesDualCert")
 );
 
+const Chapter3_Eci = React.lazy(
+  () => import("../Components/W-8ECI/Chapter3")
+);
+
 const Submit_dualCert_Eci = React.lazy(
   () => import("../Components/W-8ECI/DualCert/Submit_DualCert_Eci")
 );
@@ -318,6 +351,14 @@ const W8Eci = React.lazy(
 
 const W8Exp = React.lazy(
   () => import("../formPDF/W8EXP")
+);
+
+const status_ECI_dualCert = React.lazy(
+  () => import("../../src/Components/W-8ECI/DualCert/Chapter3Status")
+);
+
+const SelfCert_ECI_dualCert = React.lazy(
+  () => import("../../src/Components/W-8ECI/DualCert/SelfCertPassive")
 );
 
 const Presence = React.lazy(() => import("../Components/Form8233/SubstantialPresence"));
@@ -418,6 +459,15 @@ const IMYEntityFatcaClassificationSponsoredFinancialInstitution = React.lazy(() 
 const IMYIndividualFatcaClassificationComplete= React.lazy(() => import("../Components/W-8IMY/DualCert/FATCA/Complete"));
 const IMYIndividualFatcaClassificationFinal= React.lazy(() => import("../Components/W-8IMY/DualCert/FATCA/Final"));
 
+const ECIEntityFatcaClassification = React.lazy(() => import("../Components/W-8ECI/DualCert/FATCA/index"));
+const ECIEntityFatcaClassificationFinancial = React.lazy(() => import("../Components/W-8ECI/DualCert/FATCA/Financial"));
+const  ECIEntityFatcaClassificationGIINAvailable = React.lazy(() => import("../Components/W-8ECI/DualCert/FATCA/GIINAvailable"));
+const  ECIEntityFatcaClassificationGIINNotAvailable = React.lazy(() => import("../Components/W-8ECI/DualCert/FATCA/GIINNotAvailable"));
+const  ECIEntityFatcaClassificationSponsoredFinancialInstitution = React.lazy(() => import("../Components/W-8ECI/DualCert/FATCA/SponsoredFinanceInstitution"));
+const  ECIIndividualFatcaClassificationComplete= React.lazy(() => import("../Components/W-8ECI/DualCert/FATCA/Complete"));
+const  ECIIndividualFatcaClassificationFinal= React.lazy(() => import("../Components/W-8ECI/DualCert/FATCA/Final"));
+
+
 const ROUTES: Array<RouteType> = [
   {
     name: "Login",
@@ -447,6 +497,145 @@ const ROUTES: Array<RouteType> = [
     Component: Security,
     isPrivate: true,
   },
+
+  {
+    name: "CRS_ECI_DC",
+    path: "/CRS_ECI_DC",
+    id: 2,
+    Component: CRS_ECI_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Financial_ECI_DC",
+    path: "/Financial_ECI_DC",
+    id: 2,
+    Component: Financial_ECI_DC,
+    isPrivate: true,
+  },
+  {
+    name: "SelfCertDualCert_ECI",
+    path: "/SelfCertDualCert_ECI",
+    id: 2,
+    Component: SelfCertDualCert_ECI,
+    isPrivate: true,
+  },
+  {
+    name: "Complete_CRS_ECI",
+    path: "/Complete_CRS_ECI",
+    id: 2,
+    Component: Complete_CRS_ECI,
+    isPrivate: true,
+  },
+  {
+    name: "Active_Non_Financial_ECI_DC",
+    path: "/Active_Non_Financial_ECI_DC",
+    id: 2,
+    Component: Active_Non_Financial_ECI_DC,
+    isPrivate: true,
+  },
+  
+  {
+    name: "SelfCert_ECI_dualCert",
+    path: "/SelfCert_ECI_dualCert",
+    id: 2,
+    Component: SelfCert_ECI_dualCert,
+    isPrivate: true,
+  },
+  
+  {
+    name: "status_ECI_dualCert",
+    path: "/status_ECI_dualCert",
+    id: 2,
+    Component: status_ECI_dualCert,
+    isPrivate: true,
+  },
+
+  {
+    name: "Non_Reporting_CRS_ECI_DC",
+    path: "/Non_Reporting_CRS_ECI_DC",
+    id: 2,
+    Component: Non_Reporting_CRS_ECI_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Financial_CRS_ECI_DC",
+    path: "/Financial_CRS_ECI_DC",
+    id: 2,
+    Component: Financial_CRS_ECI_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Financial_CRS_ECI_DC",
+    path: "/Financial_CRS_ECI_DC",
+    id: 2,
+    Component: Financial_CRS_ECI_DC,
+    isPrivate: true,
+  },
+  {
+    name: "Security",
+    path: "/Security",
+    id: 2,
+    Component: Security,
+    isPrivate: true,
+  },
+  {
+    name: "FinancialReport_CRS_ECI_DC",
+    path: "/FinancialReport_CRS_ECI_DC",
+    id: 2,
+    Component: FinancialReport_CRS_ECI_DC,
+    isPrivate: true,
+  },
+  {
+    name: "ECIEntityFatcaClassification",
+    path: "/ECIEntityFatcaClassification",
+    id: 2,
+    Component: ECIEntityFatcaClassification,
+    isPrivate: true,
+  },
+  {
+    name: "ECIEntityFatcaClassificationFinancial",
+    path: "/ECIEntityFatcaClassificationFinancial",
+    id: 2,
+    Component: ECIEntityFatcaClassificationFinancial,
+    isPrivate: true,
+  },
+  {
+    name: "ECIEntityFatcaClassificationGIINAvailable",
+    path: "/ECIEntityFatcaClassificationGIINAvailable",
+    id: 2,
+    Component: ECIEntityFatcaClassificationGIINAvailable,
+    isPrivate: true,
+  },
+  {
+    name: "ECIEntityFatcaClassificationGIINNotAvailable",
+    path: "/ECIEntityFatcaClassificationGIINNotAvailable",
+    id: 2,
+    Component: ECIEntityFatcaClassificationGIINNotAvailable,
+    isPrivate: true,
+  },
+  {
+    name: "ECIEntityFatcaClassificationSponsoredFinancialInstitution",
+    path: "/ECIEntityFatcaClassificationSponsoredFinancialInstitution",
+    id: 2,
+    Component: ECIEntityFatcaClassificationSponsoredFinancialInstitution,
+    isPrivate: true,
+  },
+  {
+    name: "ECIIndividualFatcaClassificationComplete",
+    path: "/ECIIndividualFatcaClassificationComplete",
+    id: 2,
+    Component: ECIIndividualFatcaClassificationComplete,
+    isPrivate: true,
+  },
+  {
+    name: "ECIIndividualFatcaClassificationFinal",
+    path: "/ECIIndividualFatcaClassificationFinal",
+    id: 2,
+    Component: ECIIndividualFatcaClassificationFinal,
+    isPrivate: true,
+  },
+ 
+
   {
     name: "Taxpayer_DC",
     path: "/Taxpayer_DC",
@@ -584,7 +773,14 @@ const ROUTES: Array<RouteType> = [
     Component: Perti_dualCert_Eci,
     isPrivate: true,
   },
-
+  {
+    name: "Chapter3_Eci",
+    path: "/Chapter3_Eci",
+    id: 2,
+    Component: Chapter3_Eci,
+    isPrivate: true,
+  },
+  
   // {
   //   name: "Attach_document",
   //   path: "/Attach_document",

@@ -27,7 +27,7 @@ export default function Term() {
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
-
+  const BusinessType = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const auth = JSON.parse(authDetailsString);
   const userType = auth?.configurations?.userType;
 
@@ -174,7 +174,15 @@ export default function Term() {
                     <Button
                       type="submit"
                       onClick={() => {
-                        history("/Tax_dualCert_Eci");
+                        if(BusinessType.businessTypeId==2){
+                          
+                          history("/status_ECI_dualCert");
+                        }
+                        else{
+                          history("/Tax_dualCert_Eci");
+                        }
+                       
+                        
                       }}
                       style={{
                         border: "1px solid #0095dd",
