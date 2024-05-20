@@ -96,6 +96,7 @@ const ActionName = {
     getSelfCetHidden:"getSelfCetHidden",
     GetFederalTaxClassification:"GetFederalTaxClassification",
     GetAllUSFormTypes:"GetAllUSFormTypes",
+    UpdateGIINTypes:"UpdateGIINTypes",
     getAllAccountStatement:"getAllAccountStatement",
     InsertCaymanIndividualNonUS:"InsertCaymanIndividualNonUS",
     UpsertTaxLiabilityinanyOtherJurisdictions:"UpsertTaxLiabilityinanyOtherJurisdictions",
@@ -113,6 +114,9 @@ const ActionName = {
     UpdateSkippedSteps:"UpdateSkippedSteps",
     UpsertFATCAStepsDetails:"UpsertFATCAStepsDetails",
     UpsertCRSStepsDetails:"UpsertCRSStepsDetails",
+
+    // update warnings
+    UpdateWarnings:"UpdateWarnings"
 
   };
 

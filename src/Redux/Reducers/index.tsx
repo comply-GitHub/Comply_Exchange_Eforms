@@ -1,7 +1,7 @@
 import Utils from "../../Utils";
 import { getAllAccountStatement } from "../Actions";
 
-const { LOGIN, formPDFFieldData,GetCountries, GetControllingEntity,getBreadCrums, GetAgentPaymentType, GetTinTypes, GetSecurityQuestions, GetCountriesCode, GetAllIncomeCodes, GetStateByCountryId, W9PDF, postSecurutyCode,
+const { LOGIN, formPDFFieldData, GetCountries, GetControllingEntity, getBreadCrums, GetAgentPaymentType, GetTinTypes, GetSecurityQuestions, GetCountriesCode, GetAllIncomeCodes, GetStateByCountryId, W9PDF, postSecurutyCode,
   GetAgentCapacityHiddenForEform,
   GetAgentExemptionCodeHidden,
   GetDocumentList,
@@ -26,8 +26,8 @@ const { LOGIN, formPDFFieldData,GetCountries, GetControllingEntity,getBreadCrums
   GetFederalTaxClassification,
   GetAllHelpVideosDetails,
   GetAgentIncomeTypeHiddenAllowAnoymo,
-  SendOTPMail,GetByW9IndividualEntityUSFormId,
-  GetCountriesTreaty,GetCountryArticleByID,
+  SendOTPMail, GetByW9IndividualEntityUSFormId,
+  GetCountriesTreaty, GetCountryArticleByID,
   UpsertSpecialRateAndConditionsIncomeTypes,
   UpsertDualCertDetailsControllingPerson,
   GetByW8EXPIndividualId,
@@ -38,6 +38,7 @@ const { LOGIN, formPDFFieldData,GetCountries, GetControllingEntity,getBreadCrums
   GetIGA,
   getSelfCetHidden,
   GetAllUSFormTypes,
+  UpdateGIINTypes,
 } = Utils.actionName
 
 
@@ -53,7 +54,7 @@ export const GetAllLanguageReducer = (state = initialState, action: any) => {
 }
 export const GetSelfCetHiddenReducer = (state = initialState, action: any) => {
   switch (action.type) {
-    case getSelfCetHidden:   return { ...state, ...action.payload };
+    case getSelfCetHidden: return { ...state, ...action.payload };
     default:
       return state;
   }
@@ -473,7 +474,7 @@ export const GetIncomeTypesReducer = (state = initialState, action: any): any =>
 export const SpecialRateAndConditionIncomeTypesReducer = (state = initialState, action: any): any => {
   switch (action.type) {
     case UpsertSpecialRateAndConditionsIncomeTypes:
-      return [ ...action.payload ];
+      return [...action.payload];
     default:
       return state;
   }
@@ -483,7 +484,7 @@ export const SpecialRateAndConditionIncomeTypesReducer = (state = initialState, 
 export const UpsertDualCertDetailsControllingPersonReducer = (state = initialState, action: any): any => {
   switch (action.type) {
     case UpsertDualCertDetailsControllingPerson:
-      return [ ...action.payload ];
+      return [...action.payload];
     default:
       return state;
   }
@@ -504,6 +505,15 @@ export const GetUSFormTypeReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case GetAllUSFormTypes:
       return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+};
+
+export const GetAllGIINTypesReducer = (state: any[] = [], action: any) => {
+  switch (action.type) {
+    case UpdateGIINTypes:
+      return [...action.payload];
     default:
       return state;
   }

@@ -41,6 +41,7 @@ import {
   getIGAReducer,
   GetSelfCetHiddenReducer,
   GetUSFormTypeReducer,
+  GetAllGIINTypesReducer,
   
 } from "./Reducers";
 import w9Reducer from "./Reducers/w9Reducer";
@@ -61,6 +62,7 @@ import CaymanEntityReducer from "./Reducers/CaymanEntityReducer";
 import CRSEntityReducer from "./Reducers/CRSEntityReducer";
 
 import SkippedStepsReducer from "./Reducers/SkippedStepsReduce";
+import WarningReducer from "./Reducers/WarningReducer";
 
 let reducers = {
   getCountriesReducer,
@@ -104,6 +106,8 @@ let reducers = {
   GetSelfCetHiddenReducer,
   GetUSFormTypeReducer,
   SkippedSteps:SkippedStepsReducer,
+  GIINTypes:GetAllGIINTypesReducer,
+  Warnings:WarningReducer,
 };
 const rootReducer = combineReducers({
   ...reducers,

@@ -144,6 +144,9 @@ GetCaymanIndividualPdf:"/CaymanIndividualNonUS/GetCaymanIndividualPdf",
  UpsertAccountHolderDisRegardedEntity:"/AccountHolderDetail/UpsertAccountHolderDisRegardedEntity",
  GetDisregardedEntity:"/AccountHolderDetail/GetDisregardedEntity",
  
+ GetAllGIINTypes:"/USTinType/GetAllGIINTypes",
+ // for warninngs
+ InsertFormWarnings:"/FormWarnings/InsertFormWarnings",
 
 };
 export default EndPoint;

@@ -47,7 +47,8 @@ import {
   getAllStateByCountryId,
   getTinTypes,
   GetHelpVideoDetails,
-  GET_AGENT_BY_ID
+  GET_AGENT_BY_ID,
+  GetAgentSkippedSteps
 } from "../../Redux/Actions";
 import { AppDispatch } from "../../Redux/store";
 import GlobalValues from "../../Utils/constVals";
@@ -95,6 +96,9 @@ export default function Entity() {
   const Payment = auth?.configurations?.requestBankAccountInformation;
   const PaymentMandatry = auth?.configurations?.requestBankAccountInformationAndWhenYesMakeMandatory;
 
+  const skippedSteps = useSelector((state: any) => state.SkippedSteps);
+  const [isGiinEnabled, setIsGiinEnabled] = useState(false);
+
   const [payload, setPayload] = useState({
     id: 0,
     agentId: authDetails?.agentId,
@@ -114,7 +118,7 @@ export default function Entity() {
     foreignTIN: "",
     foreignTINNotAvailable: false,
     alternativeTINFormat: false,
-    giin: "",
+    giinId: "",
     bsb: "",
     permanentResidentialCountryId: 0,
     otherCountry: "",
@@ -188,7 +192,7 @@ export default function Entity() {
     foreignTIN: "",
     foreignTINNotAvailable: false, //
     alternativeTINFormat: false, //
-    giin: "",
+    giinId: "",
     permanentResidentialCountryId: 0,
     otherCountry: "",
     permanentResidentialStreetNumberandName: "",
@@ -290,6 +294,21 @@ export default function Entity() {
     }
   }
 
+  useEffect(() => {
+    if (skippedSteps.length === 0) {
+      dispatch(
+        GetAgentSkippedSteps(authDetails?.agentId, (data: any[]) => {
+          // mappingAvailable = data; 
+        })
+      );
+    }
+  }, [authDetails?.agentId])
+
+  useEffect(() => {
+    let temp1: any[] = skippedSteps.filter((x: any) => x.id == 8 && x.agentId == authDetails?.agentId);
+    setIsGiinEnabled(temp1?.length > 0 ? false : true);
+
+  }, [skippedSteps, authDetails?.agentId])
 
   // useEffect(() =>{
   // document.title=""
@@ -299,6 +318,7 @@ export default function Entity() {
     dispatch(getAllCountries());
     dispatch(getAllCountriesCode());
     dispatch(getAllCountriesIncomeCode());
+    dispatch(GetHelpVideoDetails());
     dispatch(getAllStateByCountryId(0));
     dispatch(
       GetAgentPaymentType(authDetails?.agentId, () => {
@@ -540,7 +560,7 @@ export default function Entity() {
               error={Boolean(touched.abaRouting && errors.abaRouting)}
               value={values.abaRouting}
             />
-           {touched.abaRouting && errors.abaRouting ?( <p className="error">{errors.abaRouting}</p>):""}
+            {touched.abaRouting && errors.abaRouting ? (<p className="error">{errors.abaRouting}</p>) : ""}
           </FormControl>
         </div>
       );
@@ -573,7 +593,7 @@ export default function Entity() {
               error={Boolean(touched.sortCode && errors.sortCode)}
               value={values.sortCode}
             />
-           {touched.sortCode && errors.sortCode ?( <p className="error">{errors.sortCode}</p>):""}
+            {touched.sortCode && errors.sortCode ? (<p className="error">{errors.sortCode}</p>) : ""}
           </FormControl>
         </div>
       );
@@ -606,7 +626,7 @@ export default function Entity() {
               error={Boolean(touched.bsb && errors.bsb)}
               value={values.bsb}
             />
-           {touched.bsb && errors.bsb?( <p className="error">{errors.bsb}</p>):""}
+            {touched.bsb && errors.bsb ? (<p className="error">{errors.bsb}</p>) : ""}
           </FormControl>
         </div>
       );
@@ -640,7 +660,7 @@ export default function Entity() {
               error={Boolean(touched.bankCode && errors.bankCode)}
               value={values.bankCode}
             />
-           {touched.bankCode && errors.bankCode ?( <p className="error">{errors.bankCode}</p>):""}
+            {touched.bankCode && errors.bankCode ? (<p className="error">{errors.bankCode}</p>) : ""}
           </FormControl>
         </div>
       );
@@ -769,13 +789,13 @@ export default function Entity() {
                   dob: values?.dob,
                   nameOfDisregarded: values?.nameOfDisregarded,
                   entityName: values?.entityName,
-                  taxpayerIdTypeID: userType== "SC" ? 1 :  values?.taxpayerIdTypeID,
+                  taxpayerIdTypeID: userType == "SC" ? 1 : values?.taxpayerIdTypeID,
                   usTin: values?.usTin,
                   foreignTINCountryId: values?.foreignTINCountryId,
                   foreignTIN: values?.foreignTIN,
                   foreignTINNotAvailable: values?.foreignTINNotAvailable, //
                   alternativeTINFormat: values?.alternativeTINFormat, //
-                  giin: values?.giin,
+                  giinId: values?.giinId,
                   permanentResidentialCountryId:
                     values?.permanentResidentialCountryId,
                   permanentResidentialStreetNumberandName:
@@ -870,7 +890,7 @@ export default function Entity() {
                 setSubmitting(false);
               }
               }
-              validationSchema={EntitySchema(userType, PaymentMandatry, IncomeMandatory)}
+              validationSchema={EntitySchema(userType, PaymentMandatry, IncomeMandatory, isGiinEnabled)}
             >
               {({
                 errors,
@@ -1201,7 +1221,7 @@ export default function Entity() {
                   {toolInfo === "identity" ? (
                     <div className="mt-5">
                       <Paper
-                        style={{ backgroundColor: "#d1ecf1", padding: "15px",marginLeft:"23px" }}
+                        style={{ backgroundColor: "#d1ecf1", padding: "15px", marginLeft: "23px" }}
                       >
                         <div
                           className="d-flex"
@@ -1474,24 +1494,26 @@ export default function Entity() {
                             Unique Identifier
                             <span style={{ color: "red" }}>*</span>
                             <Tooltip
+                              style={{
+                                backgroundColor: "black",
+                                color: "white",
+                              }}
+                              title={
+                                <>
+                                  <a
+                                    onClick={() => setToolInfo("identity")}
+                                  ></a>
+                                </>
+                              }
+                            >
+                              <Info
                                 style={{
-                                  backgroundColor: "black",
-                                  color: "white",
+                                  color: "#ffc107", fontSize: "15px",
+                                  marginLeft: "5px",
+                                  cursor: "pointer",
                                 }}
-                                title={
-                                  <>
-                                    <a
-                                      onClick={() => setToolInfo("identity")}
-                                    ></a>
-                                  </>
-                                }
-                              >
-                            <Info
-                              style={{ color: "#ffc107", fontSize: "15px", 
-                              marginLeft: "5px",
-                              cursor: "pointer", }}
-                              onClick={() => setToolInfo("identity")}
-                            />
+                                onClick={() => setToolInfo("identity")}
+                              />
                             </Tooltip>
                           </Typography>
                           <Input
@@ -1507,7 +1529,7 @@ export default function Entity() {
                               padding: " 0 10px ",
                             }}
                             className="w-100 input"
-                    
+
                             name="uniqueIdentifier"
                             placeholder="Enter Instructor Identifier"
                             onChange={handleChange}
@@ -1520,7 +1542,7 @@ export default function Entity() {
                             value={values?.uniqueIdentifier}
                           />
                           {touched.uniqueIdentifier &&
-                              errors.uniqueIdentifier ?(<p className="error">{errors.uniqueIdentifier}</p>):""}
+                            errors.uniqueIdentifier ? (<p className="error">{errors.uniqueIdentifier}</p>) : ""}
                         </div>
                       </div>
                     </FormControl>
@@ -1555,7 +1577,7 @@ export default function Entity() {
                               )}
                               value={values.entityName}
                             />
-                           { touched.entityName && errors.entityName ?( <p className="error">{errors.entityName}</p>):""}
+                            {touched.entityName && errors.entityName ? (<p className="error">{errors.entityName}</p>) : ""}
                           </FormControl>
                         </div>
                       </div>
@@ -1588,7 +1610,7 @@ export default function Entity() {
                               )}
                               value={values.entityName}
                             />
-                            { touched.entityName && errors.entityName ?(<p className="error">{errors.entityName}</p>):""}
+                            {touched.entityName && errors.entityName ? (<p className="error">{errors.entityName}</p>) : ""}
                           </FormControl>
                         </div>
                       </div>
@@ -1865,7 +1887,7 @@ export default function Entity() {
                               ))}
                             </select>
                           </FormControl>
-                          {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ?(<p className="error">{errors.taxpayerIdTypeID}</p>):""}
+                          {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ? (<p className="error">{errors.taxpayerIdTypeID}</p>) : ""}
                         </div>
 
                         <div className="col-lg-3 col-6 col-md-3">
@@ -1912,7 +1934,7 @@ export default function Entity() {
                         <div className="col-lg-3 col-6 col-md-3 ">
                           <Typography align="left" className="d-flex w-100 ">
                             Foreign TIN Country
-                           
+
                           </Typography>
 
                           <FormControl className="w-100">
@@ -2094,86 +2116,200 @@ export default function Entity() {
                             </FormControl>
                           </div> */}
                         </div>
-                      {userType === "DC" ?( 
-                        ""
-                      ):
-                      <div className="col-12">
-                      <div className="row">
-                        <div className="col-lg-3 col-6 col-md-3 ">
-                          <Typography align="left" className="d-flex w-100">
-                            Value Added Tax Number (VAT)
-                            <span style={{ color: "red" }}>*</span>
-                          </Typography>
+                        {userType === "DC" ? (
+                          ""
+                        ) :
+                          <div className="col-12">
+                            <div className="row">
+                              <div className="col-lg-3 col-6 col-md-3 ">
+                                <Typography align="left" className="d-flex w-100">
+                                  Value Added Tax Number (VAT)
+                                  <span style={{ color: "red" }}>*</span>
+                                </Typography>
 
-                          <FormControl className="w-100">
-                            <select
-                              style={{
-                                padding: " 0 10px",
-                                color: "#121112",
-                                fontStyle: "italic",
-                                height: "36px",
-                              }}
-                              name="vatId"
-                              defaultValue={0}
-                              onChange={(e: any) => {
-                                handleChange(e);
+                                <FormControl className="w-100">
+                                  <select
+                                    style={{
+                                      padding: " 0 10px",
+                                      color: "#121112",
+                                      fontStyle: "italic",
+                                      height: "36px",
+                                    }}
+                                    name="vatId"
+                                    defaultValue={0}
+                                    onChange={(e: any) => {
+                                      handleChange(e);
 
-                                if (
-                                  e.target.value == 2 ||
-                                  e.target.value == 0
-                                )
-                                  setFieldValue("vat", "");
-                              }}
-                              value={values.vatId}
-                            >
-                              <option value={0}>---select---</option>
-                              <option value={1}>My VAT Number is</option>
-                              <option value={2}>
-                                I Do Not Have A VAT Number
-                              </option>
-                            </select>
-                           {errors.vatId && touched.vatId ?( <p className="error">{errors.vatId}</p>):""}
-                          </FormControl>
-                        </div>
+                                      if (
+                                        e.target.value == 2 ||
+                                        e.target.value == 0
+                                      )
+                                        setFieldValue("vat", "");
+                                    }}
+                                    value={values.vatId}
+                                  >
+                                    <option value={0}>---select---</option>
+                                    <option value={1}>My VAT Number is</option>
+                                    <option value={2}>
+                                      I Do Not Have A VAT Number
+                                    </option>
+                                  </select>
+                                  {errors.vatId && touched.vatId ? (<p className="error">{errors.vatId}</p>) : ""}
+                                </FormControl>
+                              </div>
 
-                        <div className="col-lg-3 col-6 col-md-3 ">
-                          <FormControl className="w-100">
-                            <Typography align="left">
-                              Value Added Tax Number (VAT)
-                              {/* <span style={{ color: 'red' }}>*</span> */}
-                            </Typography>
-                            <Input
-                              disabled={
-                                values.vatId == 0 || values.vatId == 2
-                              }
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                height: " 36px",
-                                lineHeight: "36px ",
-                                background: "#fff ",
-                                fontSize: "13px",
-                                color: " #000 ",
-                                fontStyle: "normal",
-                                borderRadius: "1px",
-                                padding: " 0 10px ",
-                              }}
-                              id="outlined"
-                              name="vat"
-                              placeholder="Enter Value Added Tax Number"
-                              // onKeyDown={formatTin}
-                              onChange={handleChange}
-                              inputProps={{ maxLength: 11 }}
-                              onBlur={handleBlur}
-                              error={Boolean(touched.vat && errors.vat)}
-                              //   error={Boolean(touched.usTin && errors.vat)}
-                              value={values.vat}
-                            />
-                            {errors.vat && touched.vat ? <p className="error">{errors.vat}</p> : <></>}
-                          </FormControl>
-                        </div>
-                      </div>
-                    </div>
-                      }
+                              <div className="col-lg-3 col-6 col-md-3 ">
+                                <FormControl className="w-100">
+                                  <Typography align="left">
+                                    Value Added Tax Number (VAT)
+                                    {/* <span style={{ color: 'red' }}>*</span> */}
+                                  </Typography>
+                                  <Input
+                                    disabled={
+                                      values.vatId == 0 || values.vatId == 2
+                                    }
+                                    style={{
+                                      border: " 1px solid #d9d9d9 ",
+                                      height: " 36px",
+                                      lineHeight: "36px ",
+                                      background: "#fff ",
+                                      fontSize: "13px",
+                                      color: " #000 ",
+                                      fontStyle: "normal",
+                                      borderRadius: "1px",
+                                      padding: " 0 10px ",
+                                    }}
+                                    id="outlined"
+                                    name="vat"
+                                    placeholder="Enter Value Added Tax Number"
+                                    // onKeyDown={formatTin}
+                                    onChange={handleChange}
+                                    inputProps={{ maxLength: 11 }}
+                                    onBlur={handleBlur}
+                                    error={Boolean(touched.vat && errors.vat)}
+                                    //   error={Boolean(touched.usTin && errors.vat)}
+                                    value={values.vat}
+                                  />
+                                  {errors.vat && touched.vat ? <p className="error">{errors.vat}</p> : <></>}
+                                </FormControl>
+                              </div>
+
+
+                            </div>
+                          </div>
+
+                        }
+                        {isGiinEnabled ? <div className="col-12" style={{ marginTop: "20px" }}>
+                          <div className="row">
+                            <div className="col-lg-3 col-6 col-md-3 ">
+                              <FormControl className="w-100">
+                                <Typography align="left">
+                                  GIIN
+                                  {/* <span style={{ color: 'red' }}>*</span> */}
+                                  <span>
+                                    <Tooltip
+                                      style={{
+                                        backgroundColor: "black",
+                                        color: "white",
+                                      }}
+                                      title={
+                                        <>
+                                          <Typography color="inherit">
+                                            Tax Residency Information - GIIN
+                                          </Typography>
+                                          <a onClick={() => setToolInfo("giin")}>
+                                            <Typography
+                                              style={{
+                                                cursor: "pointer",
+                                                textDecorationLine: "underline",
+                                              }}
+                                              align="center"
+                                            >
+                                              {" "}
+                                              View More...
+                                            </Typography>
+                                          </a>
+                                        </>
+                                      }
+                                    >
+                                      <Info
+                                        style={{
+                                          color: "#ffc107",
+                                          fontSize: "16px",
+                                          cursor: "pointer",
+                                          verticalAlign: "super",
+                                        }}
+                                      />
+                                    </Tooltip>
+                                  </span>
+
+                                  {toolInfo === "giin" ? (
+                                    <div>
+                                      <Paper
+                                        style={{
+                                          backgroundColor: "#dedcb1",
+                                          padding: "15px",
+                                          marginBottom: "10px",
+                                        }}
+                                      >
+                                        <Typography sx={{ color: "black", marginBottom: "10px" }}>GIIN means a Global Intermediary Identification Number assigned to a PFFI or Registered Deemed Compliant FFI.</Typography>
+                                        <Typography sx={{ color: "gray", marginBottom: "10px" }}>
+                                          A separate GIIN will be issued to the Financial Institution to identify each jurisdiction, including the FI's jurisdiction of residence, in which the FI maintains a branch that is not treated as a Limited Branch.
+                                        </Typography>
+                                        <Typography sx={{ color: "gray", marginBottom: "10px" }}>
+                                          A GIIN will be issued to only those Financial Institutions that are not Limited FFIs, Limited Branches, or U.S. branches of an FFI, and will be issued after an FI's FATCA Registration is submitted and approved.
+                                        </Typography>
+                                        <Typography sx={{ color: "gray", marginBottom: "10px" }}>
+                                          Format: XXXXXX.XXXXX.XX.XXX
+                                        </Typography>
+                                        <Link
+                                          href="#"
+                                          underline="none"
+                                          style={{
+                                            marginTop: "10px",
+                                            fontSize: "16px", color: "#0000C7"
+                                          }}
+                                          onClick={() => {
+                                            setToolInfo("");
+                                          }}
+                                        >
+                                          --Show Less--
+                                        </Link>
+                                      </Paper>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+                                </Typography>
+                                <Input
+                                  style={{
+                                    border: " 1px solid #d9d9d9 ",
+                                    height: " 36px",
+                                    lineHeight: "36px ",
+                                    background: "#fff ",
+                                    fontSize: "13px",
+                                    color: " #000 ",
+                                    fontStyle: "normal",
+                                    borderRadius: "1px",
+                                    padding: " 0 10px ",
+                                  }}
+                                  id="outlined"
+                                  name="giinId"
+                                  placeholder="Enter GIIN"
+                                  onChange={handleChange}
+                                  // inputProps={{ maxLength: 11 }}
+                                  onBlur={handleBlur}
+                                  error={Boolean(touched.giinId && errors.giinId)}
+                                  value={values.giinId}
+                                />
+                                {errors.giinId && touched.giinId ? <p className="error">{errors.giinId}</p> : <></>}
+                              </FormControl>
+                            </div>
+
+
+                          </div>
+                        </div> : <></>}
+
                       </div>
                     ) : (
                       <div className="col-12 d-flex">
@@ -2235,7 +2371,7 @@ export default function Entity() {
                                 // );
                               ))}
                             </select>
-                            {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ?(<p className="error">{errors.taxpayerIdTypeID}</p>):""}
+                            {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ? (<p className="error">{errors.taxpayerIdTypeID}</p>) : ""}
                           </FormControl>
                         </div>
 
@@ -2457,9 +2593,9 @@ export default function Entity() {
                               )
                             )}
                           </select>
-                          {errors.permanentResidentialCountryId && touched.permanentResidentialCountryId ?(<p className="error">
+                          {errors.permanentResidentialCountryId && touched.permanentResidentialCountryId ? (<p className="error">
                             {errors.permanentResidentialCountryId}
-                          </p>):""}
+                          </p>) : ""}
                         </FormControl>
                       </div>
                       {values.permanentResidentialCountryId == 186 ? (
@@ -2491,9 +2627,9 @@ export default function Entity() {
                               )}
                               value={values.otherCountry}
                             />
-                           {errors.permanentResidentialStreetNumberandName && touched.permanentResidentialStreetNumberandName ?( <p className="error">
+                            {errors.permanentResidentialStreetNumberandName && touched.permanentResidentialStreetNumberandName ? (<p className="error">
                               {errors.permanentResidentialStreetNumberandName}
-                            </p>):""}
+                            </p>) : ""}
                           </FormControl>
                         </div>
                       ) : (
@@ -2533,9 +2669,9 @@ export default function Entity() {
                             }
                           />
                           {touched.permanentResidentialStreetNumberandName &&
-                              errors.permanentResidentialStreetNumberandName ?(<p className="error">
-                            {errors.permanentResidentialStreetNumberandName}
-                          </p>):""}
+                            errors.permanentResidentialStreetNumberandName ? (<p className="error">
+                              {errors.permanentResidentialStreetNumberandName}
+                            </p>) : ""}
                         </FormControl>
                       </div>
                       <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -2589,10 +2725,10 @@ export default function Entity() {
                             )}
                             value={values.permanentResidentialCityorTown}
                           />
-                        {touched.permanentResidentialCityorTown &&
-                              errors.permanentResidentialCityorTown ?(  <p className="error">
-                            {errors.permanentResidentialCityorTown}
-                          </p>):""}
+                          {touched.permanentResidentialCityorTown &&
+                            errors.permanentResidentialCityorTown ? (<p className="error">
+                              {errors.permanentResidentialCityorTown}
+                            </p>) : ""}
                         </FormControl>
                       </div>
                       {/* {is_US ? (
@@ -2712,10 +2848,10 @@ export default function Entity() {
                             )}
                             value={values.permanentResidentialZipPostalCode}
                           />
-                         {touched.permanentResidentialZipPostalCode &&
-                              errors.permanentResidentialZipPostalCode ?( <p className="error">
-                            {errors.permanentResidentialZipPostalCode}
-                          </p>):""}
+                          {touched.permanentResidentialZipPostalCode &&
+                            errors.permanentResidentialZipPostalCode ? (<p className="error">
+                              {errors.permanentResidentialZipPostalCode}
+                            </p>) : ""}
                         </FormControl>
                       </div>
                       {values.permanentResidentialCountryId == 45 ? (
@@ -3411,9 +3547,9 @@ export default function Entity() {
                                   )
                                 )}
                               </select>
-                              {errors.permanentResidentialCountryId1 && touched.permanentResidentialCountryId1?(<p className="error">
+                              {errors.permanentResidentialCountryId1 && touched.permanentResidentialCountryId1 ? (<p className="error">
                                 {errors.permanentResidentialCountryId1}
-                              </p>):""}
+                              </p>) : ""}
                             </FormControl>
                           </div>
                         </div>
@@ -3449,12 +3585,12 @@ export default function Entity() {
                                   values.permanentResidentialStreetNumberandName1
                                 }
                               />
-{ touched.permanentResidentialStreetNumberandName1 &&
-                                  errors.permanentResidentialStreetNumberandName1 ?(                              <p className="error">
-                                {
-                                  errors.permanentResidentialStreetNumberandName1
-                                }
-                              </p>):""}
+                              {touched.permanentResidentialStreetNumberandName1 &&
+                                errors.permanentResidentialStreetNumberandName1 ? (<p className="error">
+                                  {
+                                    errors.permanentResidentialStreetNumberandName1
+                                  }
+                                </p>) : ""}
                             </FormControl>
                           </div>
                           <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -3509,10 +3645,10 @@ export default function Entity() {
                                 )}
                                 value={values.permanentResidentialCityorTown1}
                               />
-                             {touched.permanentResidentialCityorTown1 &&
-                                  errors.permanentResidentialCityorTown1 ?( <p className="error">
-                                {errors.permanentResidentialCityorTown1}
-                              </p>):""}
+                              {touched.permanentResidentialCityorTown1 &&
+                                errors.permanentResidentialCityorTown1 ? (<p className="error">
+                                  {errors.permanentResidentialCityorTown1}
+                                </p>) : ""}
                             </FormControl>
                           </div>
                           {GetStateByCountryIdReducer?.allCountriesStateIdData &&
@@ -3620,9 +3756,9 @@ export default function Entity() {
                                 }
                               />
                               {touched.permanentResidentialZipPostalCode1 &&
-                                  errors.permanentResidentialZipPostalCode1 ?(<p className="error">
-                                {errors.permanentResidentialZipPostalCode1}
-                              </p>):""}
+                                errors.permanentResidentialZipPostalCode1 ? (<p className="error">
+                                  {errors.permanentResidentialZipPostalCode1}
+                                </p>) : ""}
                             </FormControl>
                           </div>
                         </div>
@@ -3813,8 +3949,8 @@ export default function Entity() {
                             )}
                             value={values.contactFirstName}
                           />
-                          { touched.contactFirstName &&
-                              errors.contactFirstName ?(<p className="error">{errors.contactFirstName}</p>):""}
+                          {touched.contactFirstName &&
+                            errors.contactFirstName ? (<p className="error">{errors.contactFirstName}</p>) : ""}
                         </FormControl>
                       </div>
                       <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -3844,7 +3980,7 @@ export default function Entity() {
                             )}
                             value={values.contactLastName}
                           />
-                         {touched.contactLastName && errors.contactLastName ?( <p className="error">{errors.contactLastName}</p>):""}
+                          {touched.contactLastName && errors.contactLastName ? (<p className="error">{errors.contactLastName}</p>) : ""}
                         </FormControl>
                       </div>
                       <div className="row">
@@ -3878,7 +4014,7 @@ export default function Entity() {
                               )}
                               value={values.contactEmail}
                             />
-                         { touched.contactEmail && errors.contactEmail ?(   <p className="error">{errors.contactEmail}</p>):""}
+                            {touched.contactEmail && errors.contactEmail ? (<p className="error">{errors.contactEmail}</p>) : ""}
                           </FormControl>
                         </div>
                       </div>
@@ -4074,623 +4210,623 @@ export default function Entity() {
                   <hr className="w-100 "></hr>
 
                   {Income === true ? (
-                      <>
-                        {values.isUSEntity == "yes" ? (
-                          <>
-                            <CardHeader
-                              className="flex-row-reverse"
-                              title={
+                    <>
+                      {values.isUSEntity == "yes" ? (
+                        <>
+                          <CardHeader
+                            className="flex-row-reverse"
+                            title={
+                              <div
+                                style={{
+                                  marginLeft: "13px",
+                                }}
+                              >
                                 <div
                                   style={{
-                                    marginLeft: "13px",
+                                    display: "flex",
+                                    alignItems: "left",
+
+                                    cursor: "pointer",
                                   }}
-                                >
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "left",
-
-                                      cursor: "pointer",
-                                    }}
-                                    onClick={() => handleOpen("it")}
-                                  >
-                                    Income Type
-                                    {IncomeMandatory === true ? ("") :
-                                      <span
-                                        style={{
-                                          fontSize: "13px",
-                                          color: "grey",
-                                          marginLeft: "4px",
-                                          marginTop: "11px",
-                                        }}
-                                      >
-                                        (Optional)
-                                      </span>
-                                    }
-                                    <Tooltip
-                                      style={{
-                                        backgroundColor: "black",
-                                        color: "white",
-                                      }}
-                                      title={
-                                        <>
-                                          <Typography color="inherit">
-                                            Q&A, Income Type
-                                          </Typography>
-                                          <a
-
-
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              setToolInfo("income");
-                                            }}
-
-                                          >
-                                            <Typography
-                                              style={{
-                                                cursor: "pointer",
-                                                textDecorationLine: "underline",
-                                              }}
-                                              align="center"
-                                            >
-                                              {" "}
-                                              View More...
-                                            </Typography>
-                                          </a>
-                                        </>
-                                      }
-                                    >
-                                      <Info
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-
-                                        }}
-                                        style={{
-                                          color: "#ffc107",
-                                          fontSize: "15px",
-                                          marginLeft: "5px",
-                                          cursor: "pointer",
-                                        }}
-                                      />
-                                    </Tooltip>
-                                  </div>
-                                  {touched.incomeTypeId && incomeErrors.length > 0 && IncomeMandatory === true ?
-                                    <p className="error mb-0">Mandatory Information Required</p>
-                                    : null
-                                  }
-                                </div>
-                              }
-                              action={
-                                <IconButton
                                   onClick={() => handleOpen("it")}
-                                  aria-label="expand"
-                                  size="small"
-                                  style={{ marginTop: "3px" }}
                                 >
-                                  {open === "it" ? (
-                                    <RemoveCircleOutlineOutlined />
-                                  ) : (
-                                    <ControlPointOutlined />
-                                  )}
-                                </IconButton>
-                              }
-                            ></CardHeader>
+                                  Income Type
+                                  {IncomeMandatory === true ? ("") :
+                                    <span
+                                      style={{
+                                        fontSize: "13px",
+                                        color: "grey",
+                                        marginLeft: "4px",
+                                        marginTop: "11px",
+                                      }}
+                                    >
+                                      (Optional)
+                                    </span>
+                                  }
+                                  <Tooltip
+                                    style={{
+                                      backgroundColor: "black",
+                                      color: "white",
+                                    }}
+                                    title={
+                                      <>
+                                        <Typography color="inherit">
+                                          Q&A, Income Type
+                                        </Typography>
+                                        <a
 
-                            {toolInfo === "income" ? (
-                              <div>
-                                <Paper
-                                  style={{
-                                    backgroundColor: "#dedcb1",
-                                    padding: "15px",
+
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setToolInfo("income");
+                                          }}
+
+                                        >
+                                          <Typography
+                                            style={{
+                                              cursor: "pointer",
+                                              textDecorationLine: "underline",
+                                            }}
+                                            align="center"
+                                          >
+                                            {" "}
+                                            View More...
+                                          </Typography>
+                                        </a>
+                                      </>
+                                    }
+                                  >
+                                    <Info
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+
+                                      }}
+                                      style={{
+                                        color: "#ffc107",
+                                        fontSize: "15px",
+                                        marginLeft: "5px",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                  </Tooltip>
+                                </div>
+                                {touched.incomeTypeId && incomeErrors.length > 0 && IncomeMandatory === true ?
+                                  <p className="error mb-0">Mandatory Information Required</p>
+                                  : null
+                                }
+                              </div>
+                            }
+                            action={
+                              <IconButton
+                                onClick={() => handleOpen("it")}
+                                aria-label="expand"
+                                size="small"
+                                style={{ marginTop: "3px" }}
+                              >
+                                {open === "it" ? (
+                                  <RemoveCircleOutlineOutlined />
+                                ) : (
+                                  <ControlPointOutlined />
+                                )}
+                              </IconButton>
+                            }
+                          ></CardHeader>
+
+                          {toolInfo === "income" ? (
+                            <div>
+                              <Paper
+                                style={{
+                                  backgroundColor: "#dedcb1",
+                                  padding: "15px",
+                                }}
+                              >
+                                <Typography>
+                                  Income type or code is requested as part of the
+                                  tax form completion process for purposes of
+                                  calculating withholding rates, where applicable,
+                                  and to further determine how you should be
+                                  reported on. You should select the type of code
+                                  that best defines the payments that you expect
+                                  to receive. Income Types, associated with Form
+                                  1099 reporting, can include things like:
+                                  Interest, Dividends, Rents, Royalties, Prizes
+                                  and Awards. Income Codes, associated with Form
+                                  1042-S reporting, can be found here:
+                                  https://www.irs.gov/pub/irs-pdf/p515.pdf
+                                </Typography>
+
+                                <Link
+                                  underline="none"
+                                  style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
+                                  onClick={() => {
+                                    setToolInfo("");
                                   }}
                                 >
-                                  <Typography>
-                                    Income type or code is requested as part of the
-                                    tax form completion process for purposes of
-                                    calculating withholding rates, where applicable,
-                                    and to further determine how you should be
-                                    reported on. You should select the type of code
-                                    that best defines the payments that you expect
-                                    to receive. Income Types, associated with Form
-                                    1099 reporting, can include things like:
-                                    Interest, Dividends, Rents, Royalties, Prizes
-                                    and Awards. Income Codes, associated with Form
-                                    1042-S reporting, can be found here:
-                                    https://www.irs.gov/pub/irs-pdf/p515.pdf
-                                  </Typography>
+                                  --Show Less--
+                                </Link>
+                              </Paper>
+                            </div>
+                          ) : (
+                            ""
+                          )}
 
-                                  <Link
-                                    underline="none"
-                                    style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" ,color: "#0000C7"}}
-                                    onClick={() => {
-                                      setToolInfo("");
-                                    }}
-                                  >
-                                    --Show Less--
-                                  </Link>
-                                </Paper>
-                              </div>
+                          <Collapse
+                            className="px-5 mx-2"
+                            in={open === "it"}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <Typography className="d-flex w-100 pb-2">
+                              Income Type
+                            </Typography>
+                            {/* <>{console.log(incomeArr, "qqq")}</> */}
+                            {incomeArr.length &&
+                              incomeArr.map((ind, i) => {
+
+                                return (
+                                  <div className="col-lg-3 col-6 col-md-3 ">
+                                    <FormControl className="w-100 d-flex" key={i}>
+                                      <span className="w-100 d-flex pb-2">
+                                        <select
+                                          className="w-100"
+                                          style={{
+                                            padding: " 0 10px",
+                                            color: "#121112",
+                                            fontStyle: "italic",
+                                            height: "36px",
+                                          }}
+                                          name="incomeTypeId"
+                                          onBlur={handleBlur}
+
+                                          id="Income"
+                                          onChange={(e: any) => handleIcome(e, i)}
+                                          value={selectedValues[i]}
+                                        >
+                                          <option value="0">---select---</option>
+
+                                          {GetAgentUSVisaTypeHiddenForEform?.map(
+                                            (ele: any) => (
+                                              <option
+                                                key={ele?.incomeTypeId}
+                                                value={ele?.incomeTypeId}
+                                              >
+                                                {ele?.name}
+                                              </option>
+                                            )
+                                          )}
+                                        </select>
+                                        {incomeArr.length > 1 && (
+                                          <Delete
+                                            onClick={() => handleDelete(i)}
+                                            style={{
+                                              color: "red",
+                                              fontSize: "20px",
+                                              marginTop: "8px",
+                                              marginLeft: "4px",
+                                            }}
+                                          />
+                                        )}
+                                      </span>
+                                      {selectedValues[i] === '0' && IncomeMandatory === true && incomeErrors.length > 0 && touched.incomeTypeId ? (
+                                        <p className="error">Please select an income type.</p>
+                                      ) : ""}
+                                      {/* {errors.incomeTypeId && touched.incomeTypeId ?(  <p className="error">{errors.incomeTypeId}</p>):""} */}
+                                    </FormControl>
+                                  </div>
+                                );
+                              })}
+
+                            {incomeArr.length < 5 ? (
+                              <Typography
+                                style={{
+                                  color: "#007bff",
+                                  cursor: "pointer",
+                                  fontSize: "12px",
+                                }}
+                                onClick={addIncomeType}
+                              >
+                                <a>Add Income Type</a>
+                              </Typography>
                             ) : (
                               ""
                             )}
-
-                            <Collapse
-                              className="px-5 mx-2"
-                              in={open === "it"}
-                              timeout="auto"
-                              unmountOnExit
-                            >
-                              <Typography className="d-flex w-100 pb-2">
-                                Income Type
-                              </Typography>
-                              {/* <>{console.log(incomeArr, "qqq")}</> */}
-                              {incomeArr.length &&
-                                incomeArr.map((ind, i) => {
-
-                                  return (
-                                    <div className="col-lg-3 col-6 col-md-3 ">
-                                      <FormControl className="w-100 d-flex" key={i}>
-                                        <span className="w-100 d-flex pb-2">
-                                          <select
-                                            className="w-100"
-                                            style={{
-                                              padding: " 0 10px",
-                                              color: "#121112",
-                                              fontStyle: "italic",
-                                              height: "36px",
-                                            }}
-                                            name="incomeTypeId"
-                                            onBlur={handleBlur}
-
-                                            id="Income"
-                                            onChange={(e: any) => handleIcome(e, i)}
-                                            value={selectedValues[i]}
-                                          >
-                                            <option value="0">---select---</option>
-
-                                            {GetAgentUSVisaTypeHiddenForEform?.map(
-                                              (ele: any) => (
-                                                <option
-                                                  key={ele?.incomeTypeId}
-                                                  value={ele?.incomeTypeId}
-                                                >
-                                                  {ele?.name}
-                                                </option>
-                                              )
-                                            )}
-                                          </select>
-                                          {incomeArr.length > 1 && (
-                                            <Delete
-                                              onClick={() => handleDelete(i)}
-                                              style={{
-                                                color: "red",
-                                                fontSize: "20px",
-                                                marginTop: "8px",
-                                                marginLeft: "4px",
-                                              }}
-                                            />
-                                          )}
-                                        </span>
-                                        {selectedValues[i] === '0' && IncomeMandatory === true && incomeErrors.length > 0 && touched.incomeTypeId ? (
-                                          <p className="error">Please select an income type.</p>
-                                        ) : ""}
-                                        {/* {errors.incomeTypeId && touched.incomeTypeId ?(  <p className="error">{errors.incomeTypeId}</p>):""} */}
-                                      </FormControl>
-                                    </div>
-                                  );
-                                })}
-
-                              {incomeArr.length < 5 ? (
-                                <Typography
-                                  style={{
-                                    color: "#007bff",
-                                    cursor: "pointer",
-                                    fontSize: "12px",
-                                  }}
-                                  onClick={addIncomeType}
-                                >
-                                  <a>Add Income Type</a>
-                                </Typography>
-                              ) : (
-                                ""
-                              )}
-                            </Collapse>
-                          </>
-                        ) : (
-                          <>
-                            <CardHeader
-                              className="flex-row-reverse"
-                              title={
+                          </Collapse>
+                        </>
+                      ) : (
+                        <>
+                          <CardHeader
+                            className="flex-row-reverse"
+                            title={
+                              <div
+                                style={{
+                                  marginLeft: "13px",
+                                }}
+                              >
                                 <div
                                   style={{
-                                    marginLeft: "13px",
+                                    display: "flex",
+                                    alignItems: "left",
+
+                                    cursor: "pointer"
                                   }}
-                                >
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "left",
-
-                                      cursor: "pointer"
-                                    }}
-                                    onClick={() => handleOpen("it")}
-                                  >
-                                    Income Code
-                                    {IncomeMandatory === true ? ("") :
-                                      <span
-                                        style={{
-                                          fontSize: "13px",
-                                          color: "grey",
-                                          marginLeft: "4px",
-                                          marginTop: "11px",
-
-                                        }}
-                                      >
-                                        (Optional)
-                                      </span>
-                                    }
-                                    <Tooltip
-                                      style={{
-                                        backgroundColor: "black",
-                                        color: "white",
-                                      }}
-                                      title={
-                                        <>
-                                          <Typography color="inherit">
-                                            Q&A, Income Type
-                                          </Typography>
-                                          <a
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              setToolInfo("income");
-                                            }}   >
-                                            <Typography
-                                              style={{
-                                                cursor: "pointer",
-                                                textDecorationLine: "underline",
-                                              }}
-                                              align="center"
-                                            >
-                                              {" "}
-                                              View More...
-                                            </Typography>
-                                          </a>
-                                        </>
-                                      }
-                                    >
-                                      <Info
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-
-                                        }}
-                                        style={{
-                                          color: "#ffc107",
-                                          fontSize: "15px",
-                                          marginLeft: "5px",
-                                          cursor: "pointer",
-                                        }}
-                                      />
-                                    </Tooltip>
-                                  </div>
-                                  {touched.incomeTypeId && incomeErrors.length > 0 && IncomeMandatory === true ?
-                                    <p className="error mb-0">Mandatory Information Required</p>
-                                    : null
-                                  }
-                                </div>
-                              }
-                              action={
-                                <IconButton
                                   onClick={() => handleOpen("it")}
-                                  aria-label="expand"
-                                  size="small"
-                                  style={{ marginTop: "3px" }}
                                 >
-                                  {open === "it" ? (
-                                    <RemoveCircleOutlineOutlined />
-                                  ) : (
-                                    <ControlPointOutlined />
-                                  )}
-                                </IconButton>
-                              }
-                            ></CardHeader>
+                                  Income Code
+                                  {IncomeMandatory === true ? ("") :
+                                    <span
+                                      style={{
+                                        fontSize: "13px",
+                                        color: "grey",
+                                        marginLeft: "4px",
+                                        marginTop: "11px",
 
-                            {toolInfo === "income" ? (
-                              <div>
-                                <Paper
-                                  style={{
-                                    backgroundColor: "#dedcb1",
-                                    padding: "15px",
+                                      }}
+                                    >
+                                      (Optional)
+                                    </span>
+                                  }
+                                  <Tooltip
+                                    style={{
+                                      backgroundColor: "black",
+                                      color: "white",
+                                    }}
+                                    title={
+                                      <>
+                                        <Typography color="inherit">
+                                          Q&A, Income Type
+                                        </Typography>
+                                        <a
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setToolInfo("income");
+                                          }}   >
+                                          <Typography
+                                            style={{
+                                              cursor: "pointer",
+                                              textDecorationLine: "underline",
+                                            }}
+                                            align="center"
+                                          >
+                                            {" "}
+                                            View More...
+                                          </Typography>
+                                        </a>
+                                      </>
+                                    }
+                                  >
+                                    <Info
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+
+                                      }}
+                                      style={{
+                                        color: "#ffc107",
+                                        fontSize: "15px",
+                                        marginLeft: "5px",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                  </Tooltip>
+                                </div>
+                                {touched.incomeTypeId && incomeErrors.length > 0 && IncomeMandatory === true ?
+                                  <p className="error mb-0">Mandatory Information Required</p>
+                                  : null
+                                }
+                              </div>
+                            }
+                            action={
+                              <IconButton
+                                onClick={() => handleOpen("it")}
+                                aria-label="expand"
+                                size="small"
+                                style={{ marginTop: "3px" }}
+                              >
+                                {open === "it" ? (
+                                  <RemoveCircleOutlineOutlined />
+                                ) : (
+                                  <ControlPointOutlined />
+                                )}
+                              </IconButton>
+                            }
+                          ></CardHeader>
+
+                          {toolInfo === "income" ? (
+                            <div>
+                              <Paper
+                                style={{
+                                  backgroundColor: "#dedcb1",
+                                  padding: "15px",
+                                }}
+                              >
+                                <Typography>
+                                  Income type or code is requested as part of the
+                                  tax form completion process for purposes of
+                                  calculating withholding rates, where applicable,
+                                  and to further determine how you should be
+                                  reported on. You should select the type of code
+                                  that best defines the payments that you expect
+                                  to receive. Income Types, associated with Form
+                                  1099 reporting, can include things like:
+                                  Interest, Dividends, Rents, Royalties, Prizes
+                                  and Awards. Income Codes, associated with Form
+                                  1042-S reporting, can be found here:
+                                  https://www.irs.gov/pub/irs-pdf/p515.pdf
+                                </Typography>
+
+                                <Link
+                                  underline="none"
+                                  style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
+                                  onClick={() => {
+                                    setToolInfo("");
                                   }}
                                 >
-                                  <Typography>
-                                    Income type or code is requested as part of the
-                                    tax form completion process for purposes of
-                                    calculating withholding rates, where applicable,
-                                    and to further determine how you should be
-                                    reported on. You should select the type of code
-                                    that best defines the payments that you expect
-                                    to receive. Income Types, associated with Form
-                                    1099 reporting, can include things like:
-                                    Interest, Dividends, Rents, Royalties, Prizes
-                                    and Awards. Income Codes, associated with Form
-                                    1042-S reporting, can be found here:
-                                    https://www.irs.gov/pub/irs-pdf/p515.pdf
-                                  </Typography>
+                                  --Show Less--
+                                </Link>
+                              </Paper>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          <Collapse
+                            className="px-5 mx-2"
+                            in={open === "it"}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <Typography className="d-flex w-100 pb-2">
+                              Income Code
+                            </Typography>
+                            {incomeArr.length && incomeArr.length <= 4 &&
+                              incomeArr.map((ind, i) => {
+                                // console.log(ind, i,"udvgjudgvfjdbgjfd")
+                                return (
+                                  <div className="col-lg-3 col-6 col-md-3 ">
+                                    <FormControl className="w-100 d-flex" key={i}>
+                                      <span className="w-100 d-flex pb-2">
+                                        <select
+                                          className="w-100"
+                                          style={{
+                                            padding: " 0 10px",
+                                            color: "#121112",
+                                            fontStyle: "italic",
+                                            height: "36px",
+                                          }}
+                                          name="incomeTypeId"
+                                          onBlur={handleBlur}
+                                          onChange={(e: any) => handleIcome(e, i)}
+                                          value={selectedValues[i]}
+                                        >
+                                          <option value="0">---select---</option>
+                                          {GetAllIncomeCodesReducer.allCountriesIncomeCodeData?.map(
+                                            (ele: any) => (
+                                              <option
+                                                key={ele?.id}
+                                                value={ele?.id}
+                                              >
+                                                {ele?.name}
+                                              </option>
+                                            )
+                                          )}
+                                        </select>
+                                        {incomeArr.length > 1 && (
+                                          <Delete
+                                            onClick={() => handleDelete(i)}
+                                            style={{
+                                              color: "red",
+                                              fontSize: "20px",
+                                              marginTop: "8px",
+                                              marginLeft: "4px",
+                                            }}
+                                          />
+                                        )}
+                                      </span>
+                                      {selectedValues[i] === '0' && IncomeMandatory === true && incomeErrors.length > 0 && touched.incomeTypeId ? (
+                                        <p className="error">Please select an income type.</p>
+                                      ) : ""}
+                                    </FormControl>
+                                  </div>
+                                );
+                              })}
 
-                                  <Link
-                                    underline="none"
-                                    style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer" , color: "#0000C7"}}
-                                    onClick={() => {
-                                      setToolInfo("");
-                                    }}
-                                  >
-                                    --Show Less--
-                                  </Link>
-                                </Paper>
-                              </div>
+
+                            {incomeArr.length < 5 ? (
+                              <Typography
+                                style={{
+                                  color: "#007bff",
+                                  cursor: "pointer",
+                                  fontSize: "12px",
+                                }}
+                                onClick={addIncomeType}
+                              >
+                                <a>Add Income code</a>
+                              </Typography>
                             ) : (
                               ""
                             )}
-                            <Collapse
-                              className="px-5 mx-2"
-                              in={open === "it"}
-                              timeout="auto"
-                              unmountOnExit
-                            >
-                              <Typography className="d-flex w-100 pb-2">
-                                Income Code
-                              </Typography>
-                              {incomeArr.length && incomeArr.length <= 4 &&
-                                incomeArr.map((ind, i) => {
-                                  // console.log(ind, i,"udvgjudgvfjdbgjfd")
-                                  return (
-                                    <div className="col-lg-3 col-6 col-md-3 ">
-                                      <FormControl className="w-100 d-flex" key={i}>
-                                        <span className="w-100 d-flex pb-2">
-                                          <select
-                                            className="w-100"
-                                            style={{
-                                              padding: " 0 10px",
-                                              color: "#121112",
-                                              fontStyle: "italic",
-                                              height: "36px",
-                                            }}
-                                            name="incomeTypeId"
-                                            onBlur={handleBlur}
-                                            onChange={(e: any) => handleIcome(e, i)}
-                                            value={selectedValues[i]}
-                                          >
-                                            <option value="0">---select---</option>
-                                            {GetAllIncomeCodesReducer.allCountriesIncomeCodeData?.map(
-                                              (ele: any) => (
-                                                <option
-                                                  key={ele?.id}
-                                                  value={ele?.id}
-                                                >
-                                                  {ele?.name}
-                                                </option>
-                                              )
-                                            )}
-                                          </select>
-                                          {incomeArr.length > 1 && (
-                                            <Delete
-                                              onClick={() => handleDelete(i)}
-                                              style={{
-                                                color: "red",
-                                                fontSize: "20px",
-                                                marginTop: "8px",
-                                                marginLeft: "4px",
-                                              }}
-                                            />
-                                          )}
-                                        </span>
-                                        {selectedValues[i] === '0' && IncomeMandatory === true && incomeErrors.length > 0 && touched.incomeTypeId ? (
-                                          <p className="error">Please select an income type.</p>
-                                        ) : ""}
-                                      </FormControl>
-                                    </div>
-                                  );
-                                })}
+                          </Collapse>
 
-
-                              {incomeArr.length < 5 ? (
-                                <Typography
-                                  style={{
-                                    color: "#007bff",
-                                    cursor: "pointer",
-                                    fontSize: "12px",
-                                  }}
-                                  onClick={addIncomeType}
-                                >
-                                  <a>Add Income code</a>
-                                </Typography>
-                              ) : (
-                                ""
-                              )}
-                            </Collapse>
-
-                          </>
-                        )}
-                        <hr className="w-100"></hr>
-                      </>
-                    ) : ""}
+                        </>
+                      )}
+                      <hr className="w-100"></hr>
+                    </>
+                  ) : ""}
                   {/* <hr className="w-100"></hr> */}
 
                   {Payment === true ? (
-                      <>
-                        <CardHeader
-                          className="flex-row-reverse"
-                          title={
+                    <>
+                      <CardHeader
+                        className="flex-row-reverse"
+                        title={
+                          <div
+                            style={{
+                              marginLeft: "13px",
+                            }}
+                          >
                             <div
                               style={{
-                                marginLeft: "13px",
+                                display: "flex",
+                                alignItems: "left",
+
+                                cursor: "pointer",
                               }}
-                            >
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "left",
-
-                                  cursor: "pointer",
-                                }}
-                                onClick={() => handleOpen("pt")}
-                              >
-                                Payment Type
-
-                                {PaymentMandatry === true ? ("") :
-                                  <span
-                                    style={{
-                                      fontSize: "13px",
-                                      color: "grey",
-                                      marginLeft: "4px",
-                                      marginTop: "11px",
-                                    }}
-                                  >
-                                    (Optional)
-                                  </span>
-                                }
-                                <Tooltip
-                                  style={{ backgroundColor: "black", color: "white" }}
-                                  title={
-                                    <>
-                                      <Typography color="inherit">
-                                        TT-134 Q&A, Account{" "}
-                                      </Typography>
-                                      <Typography color="inherit">
-                                        {" "}
-                                        information
-                                      </Typography>
-                                      <a
-
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          setToolInfo("account");
-                                        }}
-
-
-                                      >
-                                        <Typography
-                                          style={{
-                                            cursor: "pointer",
-                                            textDecorationLine: "underline",
-                                          }}
-                                          align="center"
-                                        >
-                                          {" "}
-                                          View More...
-                                        </Typography>
-                                      </a>
-                                    </>
-                                  }
-                                >
-                                  <Info
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-
-                                    }}
-                                    style={{
-                                      color: "#ffc107",
-                                      fontSize: "15px",
-                                      marginLeft: "5px",
-                                      cursor: "pointer",
-                                    }}
-                                  />
-                                </Tooltip>
-                              </div>
-                              <p className="error mb-0">
-                                {errors?.paymentTypeId && touched?.paymentTypeId
-                                  ? "Mandatory Information Required"
-                                  : ""}
-                              </p>
-                            </div>
-                          }
-                          action={
-                            <IconButton
                               onClick={() => handleOpen("pt")}
-                              aria-label="expand"
-                              size="small"
-                              style={{ marginTop: "3px" }}
                             >
-                              {open === "pt" ? (
-                                <RemoveCircleOutlineOutlined />
-                              ) : (
-                                <ControlPointOutlined />
-                              )}
-                            </IconButton>
-                          }
-                        ></CardHeader>
-                        {toolInfo === "account" ? (
-                          <div>
-                            <Paper
-                              style={{
-                                backgroundColor: "#dedcb1",
-                                padding: "15px",
-                              }}
-                            >
-                              <Typography>
-                                As part of the tax form completion process, your
-                                withholding agent has requested that you provide
-                                banking details associated with your account. Here,
-                                you will be asked to select the method for which
-                                payment will be remitted, as permitted by the
-                                withholding agent. Allowable options can include:
-                                ACH, Wire or Check
-                              </Typography>
-
-                              <Link
-                                underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
-                                onClick={() => {
-                                  setToolInfo("");
-                                }}
-                              >
-                                --Show Less--
-                              </Link>
-                            </Paper>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        <Collapse
-                          className="px-5 mx-2"
-                          in={open === "pt"}
-                          timeout="auto"
-                          unmountOnExit
-                        >
-                          <div className="col-lg-3 col-6 col-md-3 ">
-                            <Typography className="d-flex w-100 pb-2">
                               Payment Type
-                              <span style={{ color: "red" }}>*</span>
+
+                              {PaymentMandatry === true ? ("") :
+                                <span
+                                  style={{
+                                    fontSize: "13px",
+                                    color: "grey",
+                                    marginLeft: "4px",
+                                    marginTop: "11px",
+                                  }}
+                                >
+                                  (Optional)
+                                </span>
+                              }
+                              <Tooltip
+                                style={{ backgroundColor: "black", color: "white" }}
+                                title={
+                                  <>
+                                    <Typography color="inherit">
+                                      TT-134 Q&A, Account{" "}
+                                    </Typography>
+                                    <Typography color="inherit">
+                                      {" "}
+                                      information
+                                    </Typography>
+                                    <a
+
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setToolInfo("account");
+                                      }}
+
+
+                                    >
+                                      <Typography
+                                        style={{
+                                          cursor: "pointer",
+                                          textDecorationLine: "underline",
+                                        }}
+                                        align="center"
+                                      >
+                                        {" "}
+                                        View More...
+                                      </Typography>
+                                    </a>
+                                  </>
+                                }
+                              >
+                                <Info
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+
+                                  }}
+                                  style={{
+                                    color: "#ffc107",
+                                    fontSize: "15px",
+                                    marginLeft: "5px",
+                                    cursor: "pointer",
+                                  }}
+                                />
+                              </Tooltip>
+                            </div>
+                            <p className="error mb-0">
+                              {errors?.paymentTypeId && touched?.paymentTypeId
+                                ? "Mandatory Information Required"
+                                : ""}
+                            </p>
+                          </div>
+                        }
+                        action={
+                          <IconButton
+                            onClick={() => handleOpen("pt")}
+                            aria-label="expand"
+                            size="small"
+                            style={{ marginTop: "3px" }}
+                          >
+                            {open === "pt" ? (
+                              <RemoveCircleOutlineOutlined />
+                            ) : (
+                              <ControlPointOutlined />
+                            )}
+                          </IconButton>
+                        }
+                      ></CardHeader>
+                      {toolInfo === "account" ? (
+                        <div>
+                          <Paper
+                            style={{
+                              backgroundColor: "#dedcb1",
+                              padding: "15px",
+                            }}
+                          >
+                            <Typography>
+                              As part of the tax form completion process, your
+                              withholding agent has requested that you provide
+                              banking details associated with your account. Here,
+                              you will be asked to select the method for which
+                              payment will be remitted, as permitted by the
+                              withholding agent. Allowable options can include:
+                              ACH, Wire or Check
                             </Typography>
 
-                            <FormControl className="w-100 d-flex">
-                              <span className="w-100 d-flex">
-                                <select
-                                  className="w-100"
-                                  style={{
-                                    padding: " 0 10px",
-                                    color: "#121112",
-                                    fontStyle: "italic",
-                                    height: "36px",
-                                  }}
-                                  name="paymentTypeId"
-                                  onBlur={handleBlur}
-                                  id="Payment"
-                                  onChange={handleChange}
-                                  value={values.paymentTypeId}
-                                >
-                                  <option value="">---select---</option>
-                                  {GetAgentPaymentTypeData?.map((ele: any) => (
-                                    <option
-                                      key={ele?.paymentTypeId}
-                                      value={ele?.paymentTypeId}
-                                    >
-                                      {ele?.name}
-                                    </option>
-                                  ))}
-                                </select>
+                            <Link
+                              underline="none"
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
+                              onClick={() => {
+                                setToolInfo("");
+                              }}
+                            >
+                              --Show Less--
+                            </Link>
+                          </Paper>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                      <Collapse
+                        className="px-5 mx-2"
+                        in={open === "pt"}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        <div className="col-lg-3 col-6 col-md-3 ">
+                          <Typography className="d-flex w-100 pb-2">
+                            Payment Type
+                            <span style={{ color: "red" }}>*</span>
+                          </Typography>
 
-                                {/* <Delete
+                          <FormControl className="w-100 d-flex">
+                            <span className="w-100 d-flex">
+                              <select
+                                className="w-100"
+                                style={{
+                                  padding: " 0 10px",
+                                  color: "#121112",
+                                  fontStyle: "italic",
+                                  height: "36px",
+                                }}
+                                name="paymentTypeId"
+                                onBlur={handleBlur}
+                                id="Payment"
+                                onChange={handleChange}
+                                value={values.paymentTypeId}
+                              >
+                                <option value="">---select---</option>
+                                {GetAgentPaymentTypeData?.map((ele: any) => (
+                                  <option
+                                    key={ele?.paymentTypeId}
+                                    value={ele?.paymentTypeId}
+                                  >
+                                    {ele?.name}
+                                  </option>
+                                ))}
+                              </select>
+
+                              {/* <Delete
                               style={{
                                 color: "red",
                                 fontSize: "20px",
@@ -4698,14 +4834,14 @@ export default function Entity() {
                                 marginLeft: "4px",
                               }}
                             /> */}
-                              </span>
-                              {errors.paymentTypeId && touched.paymentTypeId ? (<p className="error">{errors.paymentTypeId}</p>) : ""}
-                            </FormControl>
-                          </div>
-                        </Collapse>
-                        <hr className="w-100"></hr>
-                      </>
-                    ) : ""}
+                            </span>
+                            {errors.paymentTypeId && touched.paymentTypeId ? (<p className="error">{errors.paymentTypeId}</p>) : ""}
+                          </FormControl>
+                        </div>
+                      </Collapse>
+                      <hr className="w-100"></hr>
+                    </>
+                  ) : ""}
 
                   {values.paymentTypeId ? (
                     <>
@@ -4951,10 +5087,10 @@ export default function Entity() {
                                     )}
                                     value={values.accountHolderName}
                                   />
-                                { touched.accountHolderName &&
-                                      errors.accountHolderName ?(  <p className="error">
-                                    {errors.accountHolderName}
-                                  </p>):""}
+                                  {touched.accountHolderName &&
+                                    errors.accountHolderName ? (<p className="error">
+                                      {errors.accountHolderName}
+                                    </p>) : ""}
                                 </FormControl>
                               </div>
                               <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -4986,10 +5122,10 @@ export default function Entity() {
                                     )}
                                     value={values.accountBankName}
                                   />
-                                 { touched.accountBankName &&
-                                      errors.accountBankName ?( <p className="error">
-                                    {errors.accountBankName}
-                                  </p>):""}
+                                  {touched.accountBankName &&
+                                    errors.accountBankName ? (<p className="error">
+                                      {errors.accountBankName}
+                                    </p>) : ""}
                                 </FormControl>
                               </div>
                               <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -5025,9 +5161,9 @@ export default function Entity() {
                                       )
                                     )}
                                   </select>
-                                  {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ?(<p className="error">
+                                  {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? (<p className="error">
                                     {errors.accountBankBranchLocationId}
-                                  </p>):""}
+                                  </p>) : ""}
                                 </FormControl>
                               </div>
 
@@ -5061,10 +5197,10 @@ export default function Entity() {
                                     inputProps={{ maxLength: 10 }}
                                     value={values.accountNumber}
                                   />
-                                { touched.accountNumber &&
-                                      errors.accountNumber ?(  <p className="error">
-                                    {errors.accountNumber}
-                                  </p>):""}
+                                  {touched.accountNumber &&
+                                    errors.accountNumber ? (<p className="error">
+                                      {errors.accountNumber}
+                                    </p>) : ""}
                                 </FormControl>
                               </div>
                               {returnFieldName(
@@ -5120,7 +5256,7 @@ export default function Entity() {
                                     )}
                                     value={values.makePayable}
                                   />
-                                  { touched.makePayable && errors.makePayable ?(<p className="error">{errors.makePayable}</p>):""}
+                                  {touched.makePayable && errors.makePayable ? (<p className="error">{errors.makePayable}</p>) : ""}
                                 </FormControl>
                               </div>
                               <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -5156,9 +5292,9 @@ export default function Entity() {
                                       )
                                     )}
                                   </select>
-                                  {errors.payResidentalCountryId && touched.payResidentalCountryId ?(<p className="error">
+                                  {errors.payResidentalCountryId && touched.payResidentalCountryId ? (<p className="error">
                                     {errors.payResidentalCountryId}
-                                  </p>):""}
+                                  </p>) : ""}
                                 </FormControl>
                               </div>
                               <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -5221,10 +5357,10 @@ export default function Entity() {
                                     )}
                                     value={values.payStreetNumberAndName}
                                   />
-                                 { touched.payStreetNumberAndName &&
-                                      errors.payStreetNumberAndName ?( <p className="error">
-                                    {errors.payStreetNumberAndName}
-                                  </p>):""}
+                                  {touched.payStreetNumberAndName &&
+                                    errors.payStreetNumberAndName ? (<p className="error">
+                                      {errors.payStreetNumberAndName}
+                                    </p>) : ""}
                                 </FormControl>
                               </div>
 
@@ -5283,10 +5419,10 @@ export default function Entity() {
                                     )}
                                     value={values.payCityorTown}
                                   />
-                                  { touched.payCityorTown &&
-                                      errors.payCityorTown ?(<p className="error">
-                                    {errors.payCityorTown}
-                                  </p>):""}
+                                  {touched.payCityorTown &&
+                                    errors.payCityorTown ? (<p className="error">
+                                      {errors.payCityorTown}
+                                    </p>) : ""}
                                 </FormControl>
                               </div>
                               {values?.payResidentalCountryId == 258 ? (
@@ -5400,10 +5536,10 @@ export default function Entity() {
                                     )}
                                     value={values.payZipPostalCode}
                                   />
-                                 { touched.payZipPostalCode &&
-                                      errors.payZipPostalCode ?( <p className="error">
-                                    {errors.payZipPostalCode}
-                                  </p>):""}
+                                  {touched.payZipPostalCode &&
+                                    errors.payZipPostalCode ? (<p className="error">
+                                      {errors.payZipPostalCode}
+                                    </p>) : ""}
                                 </FormControl>
                               </div>
                             </div>
@@ -5417,9 +5553,9 @@ export default function Entity() {
                                 // error={Boolean(touched.isCorrectPaymentPurposes && errors.isCorrectPaymentPurposes)}
                                 value={values.isCorrectPaymentPurposes}
                               />
-                             {touched.isCorrectPaymentPurposes && errors.isCorrectPaymentPurposes ?( <p className="error">
+                              {touched.isCorrectPaymentPurposes && errors.isCorrectPaymentPurposes ? (<p className="error">
                                 {errors.isCorrectPaymentPurposes}
-                              </p>):""}
+                              </p>) : ""}
                               <Typography
                                 align="left"
                                 style={{ marginTop: "10px" }}
@@ -5475,10 +5611,10 @@ export default function Entity() {
                                     )}
                                     value={values.accountHolderName}
                                   />
-                                 { touched.accountHolderName &&
-                                      errors.accountHolderName ?( <p className="error">
-                                    {errors.accountHolderName}
-                                  </p>):""}
+                                  {touched.accountHolderName &&
+                                    errors.accountHolderName ? (<p className="error">
+                                      {errors.accountHolderName}
+                                    </p>) : ""}
                                 </FormControl>
                               </div>
                               <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -5507,10 +5643,10 @@ export default function Entity() {
                                     )}
                                     value={values.accountBankName}
                                   />
-                                 {touched.accountBankName &&
-                                      errors.accountBankName ?( <p className="error">
-                                    {errors.accountBankName}
-                                  </p>):""}
+                                  {touched.accountBankName &&
+                                    errors.accountBankName ? (<p className="error">
+                                      {errors.accountBankName}
+                                    </p>) : ""}
                                 </FormControl>
                               </div>
                               <div className="col-lg-3 col-6 col-md-3 mt-2">
@@ -5565,9 +5701,9 @@ export default function Entity() {
                                       )
                                     )}
                                   </select>
-                                 {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ?( <p className="error">
+                                  {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? (<p className="error">
                                     {errors.accountBankBranchLocationId}
-                                  </p>):""}
+                                  </p>) : ""}
                                 </FormControl>
                               </div>
 
@@ -5602,9 +5738,9 @@ export default function Entity() {
                                     value={values.accountNumber}
                                   />
                                   {touched.accountNumber &&
-                                      errors.accountNumber ?(<p className="error">
-                                    {errors.accountNumber}
-                                  </p>):""}
+                                    errors.accountNumber ? (<p className="error">
+                                      {errors.accountNumber}
+                                    </p>) : ""}
                                 </FormControl>
                               </div>
 
@@ -5651,60 +5787,60 @@ export default function Entity() {
                                 ""
                               )}
                               {values.accountBankBranchLocationId == 257 ? (
-                               <div className="d-flex col-12">
-                                 <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <FormControl className="w-100">
-                                    <Typography>
-                                      IBAN
-                                      {/* <span style={{ color: 'red' }}>*</span> */}
-                                    </Typography>
-                                    <Input
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                        width:"96%"
-                                      }}
-                                      id="outlined"
-                                      name="iban"
-                                      placeholder="Enter IBAN"
-                                      onChange={handleChange}
-                                      value={values.iban}
-                                    />
-                                  </FormControl>
+                                <div className="d-flex col-12">
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                    <FormControl className="w-100">
+                                      <Typography>
+                                        IBAN
+                                        {/* <span style={{ color: 'red' }}>*</span> */}
+                                      </Typography>
+                                      <Input
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          height: " 36px",
+                                          lineHeight: "36px ",
+                                          background: "#fff ",
+                                          fontSize: "13px",
+                                          color: " #000 ",
+                                          fontStyle: "normal",
+                                          borderRadius: "1px",
+                                          padding: " 0 10px ",
+                                          width: "96%"
+                                        }}
+                                        id="outlined"
+                                        name="iban"
+                                        placeholder="Enter IBAN"
+                                        onChange={handleChange}
+                                        value={values.iban}
+                                      />
+                                    </FormControl>
 
                                   </div>
                                   <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <FormControl className="w-100">
-                                    <Typography style={{marginLeft:"5px"}}>Swift code</Typography>
-                                    <Input
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        width:"96%",
-                                        marginLeft:"5px",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                      }}
-                                      id="outlined"
-                                      name="swiftCode"
-                                      placeholder="Enter Swift code"
-                                      onChange={handleChange}
-                                      value={values.swiftCode}
-                                    />
-                                  </FormControl>
-                                </div>
+                                    <FormControl className="w-100">
+                                      <Typography style={{ marginLeft: "5px" }}>Swift code</Typography>
+                                      <Input
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          height: " 36px",
+                                          lineHeight: "36px ",
+                                          width: "96%",
+                                          marginLeft: "5px",
+                                          background: "#fff ",
+                                          fontSize: "13px",
+                                          color: " #000 ",
+                                          fontStyle: "normal",
+                                          borderRadius: "1px",
+                                          padding: " 0 10px ",
+                                        }}
+                                        id="outlined"
+                                        name="swiftCode"
+                                        placeholder="Enter Swift code"
+                                        onChange={handleChange}
+                                        value={values.swiftCode}
+                                      />
+                                    </FormControl>
+                                  </div>
                                 </div>
                               ) : (
                                 ""
@@ -5963,9 +6099,9 @@ export default function Entity() {
                         </Typography>
                       </div>
                     </div>
-                   {errors.isConfirmed && touched.isConfirmed ?( <p className="error">
+                    {errors.isConfirmed && touched.isConfirmed ? (<p className="error">
                       {errors.isConfirmed}
-                    </p>):""}
+                    </p>) : ""}
                     {values.isConfirmed ? (
                       <div className="text-center">
                         <Button
