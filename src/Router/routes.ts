@@ -120,7 +120,7 @@ const Penalities_EXP_Dualcert = React.lazy(
   () => import("../Components/W-8EXP/DualCert/Participation_EXP")
 )
 const ThankYou_EXP_Dualcert = React.lazy(
-  () => import("../Components/W-8ECI/DualCert/ThankYou_DualCert")
+  () => import("../Components/W-8EXP/DualCert/ThankYou_EXP")
 )
 const Non_Reporting_CRS_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/NonReporting")

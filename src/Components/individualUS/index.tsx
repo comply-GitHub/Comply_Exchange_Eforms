@@ -2593,6 +2593,11 @@ useEffect(()=>{
                                     defaultValue={0}
                                     onChange={(e) => {
                                       handleChange(e);
+                                      if (Number(e.target.value) === 0) {
+                                        setFieldValue("foreignTIN", "");
+                                      } else if (values.foreignTINCountryId == 0 || values.foreignTINNotAvailable == true) {
+                                        setFieldValue("foreignTIN", "");
+                                      }
                                     }}
                                     value={values.foreignTINCountryId}
                                   >
@@ -2656,7 +2661,7 @@ useEffect(()=>{
                                     disabled={
                                       values.foreignTINCountryId == 0 ||
                                       (values.foreignTINCountryId != 0 &&
-                                        values.foreignTINNotAvailable == true)
+                                        values.foreignTINNotAvailable === true)
                                     }
                                     style={{
                                       border: " 1px solid #d9d9d9 ",
@@ -2751,8 +2756,9 @@ useEffect(()=>{
                                         if (e.target.value)
                                           setFieldValue(
                                             "alternativeTINFormat",
-                                            false
+                                            false 
                                           );
+                                          setFieldValue("foreignTIN", "");
                                       }}
                                     />
 
@@ -2796,6 +2802,7 @@ useEffect(()=>{
                                             "foreignTINNotAvailable",
                                             false
                                           );
+                                          setFieldValue("foreignTIN", "");
                                         // if(e.target.value) setFieldValue('alternativeTINFormat',!values.alternativeTINFormat)
                                       }}
                                     />
