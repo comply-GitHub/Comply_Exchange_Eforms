@@ -189,17 +189,15 @@ export default function Tin(props: any) {
 
 
           const submitPromise = new Promise((resolve, reject) => {
-            if (clickCount === 0) {
-              setClickCount(clickCount + 1);
-            } else {
+           
               setSubmitting(true);
               const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
               const result = { ...new_obj, ...values };
               dispatch(
                 postW9Form(result, () => {
                   localStorage.setItem("PrevStepData", JSON.stringify(result))
-                  if (continueId == 1) {
-                    setcontinueId(0);
+                
+                   
                     Redirect(
                       "/Attach_document_w9",
                       authDetails?.agentId,
@@ -207,7 +205,7 @@ export default function Tin(props: any) {
                       false
                     );
                    
-                  }
+                
                   setSubmitting(false);
                   resolve("success");
                 }, (error: any) => { reject(error); setSubmitting(false); })
@@ -216,7 +214,7 @@ export default function Tin(props: any) {
 
             }
 
-          });
+          );
           return submitPromise;
         }
         }
@@ -246,7 +244,7 @@ export default function Tin(props: any) {
 
 
                     <div style={{ backgroundColor: "#ffff", }}>
-                      {values.Tin && businessType === 1 && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                      {!values.Tin && businessType === 1  ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                         <Typography>
                           TIN 100
                           <span className="mx-1">
@@ -271,7 +269,7 @@ export default function Tin(props: any) {
 
 
                       </div>) : ""}
-                      {values.Tin &&  businessType === 2 && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                      {!values.Tin &&  businessType === 2  ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                         <Typography>
                           TIN 100
                           <span className="mx-1">
