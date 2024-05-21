@@ -24,9 +24,11 @@ export default function Term() {
   const history = useNavigate();
   const pdfRef = useRef(null);
   const pdfRefnew = useRef(null);
+  const authDetailsString = localStorage.getItem("authDetails") || "{}";
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
-
+  const auth = JSON.parse(authDetailsString);
+  const userType = auth?.configurations?.userType;
   const handleDownload = () => {
     if (pdfUrl) {
       const link = document.createElement("a");
@@ -137,8 +139,8 @@ export default function Term() {
                 >
                   Download
                 </Button>
-              </div>
-              <div style={{ marginTop: "25px" }}>
+           
+            
                 <Button
                   // type="submit"
                   onClick={() => {
@@ -164,6 +166,33 @@ export default function Term() {
                 </Button>
               </div>
             </div>
+            {userType === "DC" ? (
+              <div style={{ marginTop: "25px" }}>
+                <Button
+                  type="submit"
+                  onClick={() => {
+                    history("/IMY/ThankYou/Status_DC");
+                  }}
+                  style={{
+                    border: "1px solid #0095dd",
+                    background: "black",
+                    height: "45px",
+                    lineHeight: "normal",
+                    textAlign: "center",
+                    fontSize: "16px",
+                    marginLeft: "12px",
+                    textTransform: "uppercase",
+                    borderRadius: "0px",
+                    color: "#ffff",
+                    padding: "0 35px",
+                    letterSpacing: "1px",
+                  }}
+                  className="btn btn_submit  btn-primary-agent"
+                >
+                  Continue To Self Certification Submission
+                </Button>
+              </div>
+            ) : ""}
           </Typography>
         </div>
       </div>

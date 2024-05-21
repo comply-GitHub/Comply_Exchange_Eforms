@@ -36,8 +36,7 @@ export const firstStepBusinessSchema = () => {
     businessName: Yup.string().when("federalTaxClassificationId",{
       is: (value: any) => value > 1,
       then: () =>
-        Yup.string()
-        .required("Please Enter business Name"),
+        Yup.string(),
     }),
  
      

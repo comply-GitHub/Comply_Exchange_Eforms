@@ -1222,7 +1222,7 @@ export default function Tin(props: any) {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history("/W-8ECI/Certification/Participation/Submit_Eci/ThankYou_Eci");
+                            history("/CRS_ECI_DC");
                           }}
                           variant="contained"
                           style={{

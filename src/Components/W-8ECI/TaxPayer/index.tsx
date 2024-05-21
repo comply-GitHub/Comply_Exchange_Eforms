@@ -154,7 +154,7 @@ export default function Tin(props: any) {
     <>
       <section
         className="inner_content"
-        style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
+        style={{ backgroundColor: "#d1ecf1", marginBottom: "10px" }}
       >
         <div className="overlay-div">
           <div className="overlay-div-group">
@@ -184,7 +184,7 @@ export default function Tin(props: any) {
             </div>
           </div>
         </div>
-        <div className="row w-100">
+        <div className="row w-100" >
           <div className="col-4">
             <div
               style={{ padding: "20px 0px", height: "100%" }}
@@ -248,7 +248,7 @@ export default function Tin(props: any) {
                       {toolInfo === "ForeignTin" ? (
                         <div className="mt-5">
                           <Paper
-                            style={{ backgroundColor: "#d1ecf1", padding: "15px" }}
+                            style={{  padding: "15px"}}
                           >
                             <div className="d-flex" style={{ justifyContent: "space-between" }}>
                               <Typography style={{ color: "#0c5460" }}>
@@ -1214,7 +1214,13 @@ export default function Tin(props: any) {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history("/W-8ECI/Tax_Purpose");
+                            if(obValues?.businessTypeId == 2){
+                              history("/Chapter3_Eci");
+                            }
+                            else{
+                              history("/W-8ECI/Tax_Purpose");
+                            }
+                            
                           }}
                           variant="contained"
                           style={{

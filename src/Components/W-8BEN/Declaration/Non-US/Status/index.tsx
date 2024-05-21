@@ -80,7 +80,7 @@ export default function Factors() {
     countryTaxLiability: "",
     taxReferenceNumber: "",
     isTINFormatNotAvailable: false,
-    IsPresentAtleast31Days: "Yes",
+    IsPresentAtleast31Days: "No",
     statusId: 1,
     stepName: `/${urlValue}`,
   };

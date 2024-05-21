@@ -43,9 +43,13 @@ export default function Tin(props: any) {
   const obValues = JSON.parse(
     localStorage.getItem("accountHolderDetails") || "{}"
   );
+
+  const prevValues = JSON.parse(
+    localStorage.getItem("agentDetails") || "{}"
+  );
   const W8ECI = useSelector((state: any) => state.W8ECI);
-  const isIndividual = obValues?.businessTypeId == 1;
-  const isEntity = obValues?.businessTypeId == 2;
+  const isIndividual = prevValues?.businessTypeId == 1;
+  const isEntity = prevValues?.businessTypeId == 2;
 
   const [initialValue, setInitialValue] = useState({
     formTypeSelectionId: obValues?.businessTypeId,
@@ -607,14 +611,25 @@ export default function Tin(props: any) {
                           onClick={() => {
                             submitForm()
                               .then((data) => {
+                                if(prevValues?.businessTypeId == 2){
+                                  Redirect(
+                                    "/Chapter3_Eci",
+                                    authDetails?.agentId,
+                                    history,
+                                    false
+                                  );
+                                  
+                                }
+                               else{
                                 Redirect(
                                   "/W-8ECI/Tax_Purpose",
                                   authDetails?.agentId,
                                   history,
                                   false
                                 );
+                               }
 
-                                // history("/W-8ECI/Tax_Purpose");
+                                // history("/Chapter3_Eci");
                               })
                               .catch((error) => {
                                 console.log(error);
@@ -640,6 +655,7 @@ export default function Tin(props: any) {
                       <Typography align="center">
                         <Button
                           onClick={() => {
+                            
                             Redirect(
                               "/W-8ECI/Tax_Purpose",
                               authDetails?.agentId,

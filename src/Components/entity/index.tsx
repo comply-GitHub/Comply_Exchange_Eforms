@@ -1950,6 +1950,11 @@ export default function Entity() {
                               defaultValue={0}
                               onChange={(e) => {
                                 handleChange(e);
+                                if (Number(e.target.value) === 0) {
+                                  setFieldValue("foreignTIN", "");
+                                } else if (values.foreignTINCountryId == 0 || values.foreignTINNotAvailable == true) {
+                                  setFieldValue("foreignTIN", "");
+                                }
                               }}
                               value={values.foreignTINCountryId}
                             >
@@ -2019,6 +2024,7 @@ export default function Entity() {
                                       "alternativeTINFormat",
                                       false
                                     );
+                                    setFieldValue("foreignTIN", "");
                                 }}
                               />
 
@@ -2060,6 +2066,7 @@ export default function Entity() {
                                       "foreignTINNotAvailable",
                                       false
                                     );
+                                    setFieldValue("foreignTIN", "");
                                 }}
                               />
 
