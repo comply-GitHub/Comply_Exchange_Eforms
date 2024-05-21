@@ -65,7 +65,7 @@ export default function Tin(props: any) {
       ...PrevStepData,
       ...W8BENData,
       usTinTypeId: obValues?.taxpayerIdTypeID?.toString() ?? (W8BENData?.usTinTypeId ? W8BENData?.usTinTypeId : "1"),
-      usTin: W8BENData?.usTin == "" ? obValues?.usTin : W8BENData?.usTin,
+      usTin: W8BENData?.usTin ?? obValues?.usTin,
       notAvailable: W8BENData?.notAvailable ? W8BENData?.notAvailable : false,
       notAvailableReason: W8BENData?.notAvailableReason || "",
       foreignTINCountry: obValues.foreignTINCountryId == null || obValues.foreignTINCountryId == ""
@@ -112,7 +112,7 @@ export default function Tin(props: any) {
       getTinTypes(authDetails?.agentId, (data: any) => {
         setUStinArray(data);
         let datas = data.filter((ele: any) => {
-          return ele.usEntity === false || ele.usIndividual === true;
+          return ele.usIndividual === false;
         });
         setUStinvalue(datas);
       })
@@ -125,7 +125,7 @@ export default function Tin(props: any) {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
- 
+
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   console.log(obValues.taxpayerIdTypeID, "pp")
@@ -165,8 +165,8 @@ export default function Tin(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform" onClick={() => {
-              dispatch(GetBenPdf(authDetails?.accountHolderId))
-            }}>View Form</div>
+            dispatch(GetBenPdf(authDetails?.accountHolderId))
+          }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[3].id === 5 ? (
@@ -744,59 +744,33 @@ export default function Tin(props: any) {
                             )}
                           </Typography>
 
-                          {values.isNotAvailable === "No" ? (
-                            <Input
-                              fullWidth
-                              type="text"
-                              disabled={
-                                values.isFTINLegally ||
-                                values.foreignTINCountry == "1"
-                              }
-                              name="foreignTIN"
-                              value={values.foreignTIN}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              inputProps={{ maxLength: 10 }}
-                              placeholder="ENTER FOREIGN TIN"
-                              error={Boolean(
-                                touched.foreignTIN && errors.foreignTIN
-                              )}
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                padding: " 0 10px",
-                                color: "#7e7e7e",
-                                fontStyle: "italic",
-                                height: "40px",
-                                width: "100%",
-                              }}
-                            />
-                          ) : (
-                            <Input
-                              fullWidth
-                              type="text"
-                              disabled={
-                                values.isFTINLegally ||
-                                values.foreignTINCountry == "1" ||
-                                values.isNotAvailable === "Yes"
-                              }
-                              placeholder="ENTER FOREIGN TIN"
-                              name="foreignTIN"
-                              value={values.foreignTIN}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              error={Boolean(
-                                touched.foreignTIN && errors.foreignTIN
-                              )}
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                padding: " 0 10px",
-                                color: "#7e7e7e",
-                                fontStyle: "italic",
-                                height: "40px",
-                                width: "100%",
-                              }}
-                            />
-                          )}
+
+                          <Input
+                            fullWidth
+                            type="text"
+                            disabled={
+                              values.isFTINLegally ||
+                              // values.foreignTINCountry === "1" ||
+                              values.isNotAvailable === "Yes"
+                            }
+                            placeholder="ENTER FOREIGN TIN"
+                            name="foreignTIN"
+                            value={values.foreignTIN}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            error={Boolean(
+                              touched.foreignTIN && errors.foreignTIN
+                            )}
+                            style={{
+                              border: " 1px solid #d9d9d9 ",
+                              padding: " 0 10px",
+                              color: "#7e7e7e",
+                              fontStyle: "italic",
+                              height: "40px",
+                              width: "100%",
+                            }}
+                          />
+
                           {values.isFTINLegally ? "" : " "}
 
                           <div>
@@ -1142,8 +1116,8 @@ export default function Tin(props: any) {
                       align="center"
                       style={{
 
-                        color: "#505E50",  
-                       
+                        color: "#505E50",
+
                         justifyContent: "center",
                         alignItems: "center",
                         marginTop: "20px",
@@ -1154,15 +1128,15 @@ export default function Tin(props: any) {
                     <Typography align="center">
                       <Button
                         onClick={() => {
-                          if(PrevStepData.IsPresentAtleast31Days ==="Yes"){
+                          if (PrevStepData.IsPresentAtleast31Days === "Yes") {
                             history("/Susbtantial_BEN")
-                          }else{
+                          } else {
                             history(
                               "/W-8BEN/Declaration/Non_US_Sorced/Status"
-  
+
                             );
                           }
-                         
+
                         }}
                         variant="contained"
                         style={{

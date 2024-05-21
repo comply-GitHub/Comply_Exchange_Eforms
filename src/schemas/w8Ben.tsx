@@ -14,10 +14,10 @@ export const StatusSchema = () => {
     // dob: Yup.date().required("Please Enter DOB"),
 
     isTaxationUSCitizenOrResident: Yup.string()
-    .required(
-      "Please select one of the options"
-    ),
-    
+      .required(
+        "Please select one of the options"
+      ),
+
     isPermamnentResidentCardHolder: Yup.string()
     ,
     isHoldDualCitizenshipStatus: Yup.string(),
@@ -63,15 +63,15 @@ export const US_TINSchemaW8Ben_Dc = () => {
   return Yup.object().shape({
     usTinTypeId: PrevValues.usTinTypeId !== null && PrevValues.usTinTypeId !== "" ? Yup.number().required("Please select") : Yup.number(),
     usTin: Yup.string().when(["notAvailable", "usTinTypeId"], {
-      is: (notAvailable:any, usTinTypeId:any) => {
+      is: (notAvailable: any, usTinTypeId: any) => {
         const prevUsTinTypeId = PrevValues.tinValue;
-        return !notAvailable && 
-               usTinTypeId !== 8 && 
-               usTinTypeId !== 7 && 
-               usTinTypeId !== 1 && 
-               (prevUsTinTypeId !== null && prevUsTinTypeId !== "");
+        return !notAvailable &&
+          usTinTypeId !== 8 &&
+          usTinTypeId !== 7 &&
+          usTinTypeId !== 1 &&
+          (prevUsTinTypeId !== null && prevUsTinTypeId !== "");
       },
-      then:()=> Yup.string().required("Please enter US Tin"),
+      then: () => Yup.string().required("Please enter US Tin"),
     }),
     notAvailable: Yup.boolean(),
     notAvailableReason: Yup.string().when("notAvailable", {
@@ -87,16 +87,16 @@ export const US_TINSchemaW8Ben_Dc = () => {
           .required("Please Specify Reason"),
     }),
     foreignTIN: Yup.string().when("foreignTINCountry", {
-      is: (foreignTINCountry:any) => {
+      is: (foreignTINCountry: any) => {
         const prevForeignTIN = PrevValues.foreignTIN;
         return PrevValues.foreignTINCountry !== 0 && (prevForeignTIN !== null && prevForeignTIN !== "");
       },
-      then: ()=> Yup.string().required("Please enter Foreign TIN"),
+      then: () => Yup.string().required("Please enter Foreign TIN"),
     }),
-   
+
     foreignTINCountry: Yup.string().when("tinisFTINNotLegallyRequired", {
-      is: (value:any) => value === "No" || value === "",
-      then: ()=> Yup.string().test('foreignTINCountryRequired', 'Please select Foreign Tin Country', function(value) {
+      is: (value: any) => value === "No" || value === "",
+      then: () => Yup.string().test('foreignTINCountryRequired', 'Please select Foreign Tin Country', function (value) {
         const prevForeignTINCountry = PrevValues.foreignTINCountry;
         if (!value && (prevForeignTINCountry !== null && prevForeignTINCountry !== "")) {
           return false;
@@ -142,6 +142,40 @@ export const US_TINSchemaW8BenE = () => {
         Yup.string()
           .required("Please enter why tin is not available"),
     }),
+    foreignTIN: Yup.string()
+      .test(
+        "Foreign tin",
+        "Foreign tin must be provided",
+        (value, validationContext) => {
+          const {
+            createError,
+            parent: { foreignTINCountry, isFTINLegally, isNotAvailable }
+          } = validationContext;
+
+          console.log(foreignTINCountry, isFTINLegally, isNotAvailable, value, "yupppppo")
+          // if (!value) {
+          //   return createError({
+          //     message: "The downpayment field is required"
+          //   });
+          // }
+
+          // if (loan === "Mortgage Loan") {
+          //   return value >= 25 && value < 100;
+          // }
+
+          if (foreignTINCountry >= 0 && isFTINLegally === false && (isNotAvailable === "No" || isNotAvailable === undefined)) {
+            if (!value) {
+              return createError({
+                message: "The Foreign tin field is required"
+              });
+            } else
+              return value?.length > 0;
+          }
+
+          return true
+
+        }
+      ),
     fTinNotAvailableReason: Yup.string().when("isNotAvailable", {
       is: (isNotAvailable: any) => isNotAvailable == "Yes",
       then: () =>
@@ -165,7 +199,7 @@ export const US_TINSchemaW8BenE = () => {
             .oneOf(["Yes", "No"], "please provide an answer")
       })
     ,
-   
+
     isNotLegallyFTIN: Yup.string().when("isFTINNotLegallyRequired", {
       is: true,
       then: () =>
@@ -181,58 +215,58 @@ export const US_TINSchema = () => {
       is: "false",
       then: () =>
         Yup.string()
-        .required("Please enter US Tin"),
+          .required("Please enter US Tin"),
     }),
     notAvailable: Yup.boolean(),
-    FTINFeild:Yup.string().when("notAvailable", {
+    FTINFeild: Yup.string().when("notAvailable", {
       is: true,
       then: () =>
         Yup.string()
-        .required("Please Specify Reason"),
-    }), 
+          .required("Please Specify Reason"),
+    }),
     FTINFeild1: Yup.string().when("tinisFTINNotLegallyRequired", {
       is: "Yes",
       then: () =>
         Yup.string()
-        .required("Please Specify Reason"),
+          .required("Please Specify Reason"),
     }),
-    foreignTINCountry:  Yup.string().when("tinisFTINNotLegallyRequired", {
-      is: (value:any) => value === "No" || value === "",
+    foreignTINCountry: Yup.string().when("tinisFTINNotLegallyRequired", {
+      is: (value: any) => value === "No" || value === "",
       then: () =>
         Yup.string()
-        .required("Please select Foreign Tin Country"),
-      
+          .required("Please select Foreign Tin Country"),
+
     }),
     foreignTIN: Yup.string().when("tinisFTINNotLegallyRequired", {
-      is: (value:any) => value === "No" || value === "",
+      is: (value: any) => value === "No" || value === "",
       then: () =>
         Yup.string()
-        .required("Please enter Foreign Tin"),
-      
+          .required("Please enter Foreign Tin"),
+
     }),
-  
-    
+
+
     isFTINNotLegallyRequired: Yup.boolean(),
 
     isNotLegallyFTIN: Yup.string().when("isFTINNotLegallyRequired", {
       is: true,
       then: () =>
         Yup.string()
-        .required("Please Select"),
+          .required("Please Select"),
     }),
   });
 };
 
 export const ClaimSchema = () => {
   return Yup.object().shape({
-    isClaimTreaty: Yup.string().required(
+    isSubmissionClaimTreaty: Yup.string().required(
       "Please select one of the options"
     ),
     ownerResidentId: Yup.string().when(["isClaimTreaty"], {
       is: (isClaimTreaty: any) => isClaimTreaty === "yes",
       then: () => Yup.string().required().notOneOf(["0"], "Please select a Country from the list")
     }),
-   
+
   });
 };
 
@@ -247,13 +281,13 @@ export const claimSchemaaa = () => {
     }),
     limitationBenefitsId: Yup.string().when(["ownerResidentId"], ([ownerResidentId], schema) => {
       if (ownerResidentId && ownerResidentId != "" && ownerResidentId !== "0") {
-        return schema.required("Please select an option.").notOneOf(["0"],"Please select an option.");
+        return schema.required("Please select an option.").notOneOf(["0"], "Please select an option.");
       } else {
         return schema;
       }
     }),
     isSubmissionClaimTreaty: Yup.string().when(["ownerResidentId"], ([ownerResidentId], schema) => {
-    
+
       if (ownerResidentId != undefined && ownerResidentId != "" && ownerResidentId !== "0") {
         return schema.notOneOf(["", undefined, null], "Please select an option.");
       } else {
@@ -265,9 +299,9 @@ export const claimSchemaaa = () => {
 
 export const SubstantialSchema = () => {
   return Yup.object().shape({
-    DaysInCurrentYear: Yup.number().max(366).required("Field Cannot be Empty"),
-    DaysInFirstYearBefore: Yup.number().max(366).required("Field Cannot be Empty"),
-    DaysInSecondYearBefore: Yup.number().max(366).required("Field Cannot be Empty"),
+    DaysInCurrentYear: Yup.number().min(0, "must be non negative").max(366).required("Field Cannot be Empty"),
+    DaysInFirstYearBefore: Yup.number().min(0, "must be non negative").max(366).required("Field Cannot be Empty"),
+    DaysInSecondYearBefore: Yup.number().min(0, "must be non negative").max(366).required("Field Cannot be Empty"),
     totalQualifyingDays: Yup.number(),
   });
 };
@@ -290,22 +324,22 @@ export const claimSchema = () => {
   });
 };
 export const rateSchema = () => {
-  return Yup.object().shape({    
+  return Yup.object().shape({
     isSubmissionSpecialRates: Yup.string().required(
       "Please select one of the options"
     ),
-    articleExplanation:  Yup.string().required("Please Enter Explanation"), 
+    articleExplanation: Yup.string().required("Please Enter Explanation"),
   });
 };
 
-export const specilaRateIncomeTypeSchema=(isSubmissionSpecialRates:string)=>{
+export const specilaRateIncomeTypeSchema = (isSubmissionSpecialRates: string) => {
   return Yup.object().shape({
-    articleBeneficalOwner:Yup.string().required("Please select one of the options"),
-    paragraphArticleClaimed: Yup.string().required("Please select one of the options"),    
-    subParagraphArticle:Yup.string().required("Please enter Article"),  
-    withHoldingClaim:  Yup.string().required("Please select one of the options"),
-    incomeExpected:  Yup.string().required("Please select one of the options"), 
-    articleExplanation:  Yup.string().required("Please Enter Explanation"), 
+    articleBeneficalOwner: Yup.string().notOneOf(["", "0", undefined], "Please select one of the options"),
+    paragraphArticleClaimed: Yup.string().notOneOf(["", "0", undefined], "Please select one of the options"),
+    subParagraphArticle: Yup.string().notOneOf(["", "0", undefined], "Please enter Article"),
+    withHoldingClaim: Yup.string().notOneOf(["", undefined], "Please select one of the options"),
+    incomeExpectedId: Yup.string().notOneOf(["", "0", undefined], "Please select one of the options"),
+    //articleExplanation: Yup.string().notOneOf(["", "0", undefined], "Please Enter Explanation"),
   });
 }
 
@@ -351,14 +385,14 @@ export const partCertiSchema = () => {
     confirmationCode: Yup.string()
       .required("Please enter code")
       .test(
-      'match',
-      'Confirmation code does not match',
-      function (value) {
-        const storedConfirmationCode = obValues?.confirmationCode;
-        return !storedConfirmationCode || value === storedConfirmationCode;
-      }
-    ), 
-    
+        'match',
+        'Confirmation code does not match',
+        function (value) {
+          const storedConfirmationCode = obValues?.confirmationCode;
+          return !storedConfirmationCode || value === storedConfirmationCode;
+        }
+      ),
+
     // word: Yup.boolean().when("EnterconfirmationCode", {
     //   is: "no",
     //   then: () => Yup.string().required("Please select owner"),
@@ -377,15 +411,15 @@ export const partCertiSchema_DC_BEN = () => {
     signedBy: Yup.string().required("Please enter name of the person signing the form"),
     confirmationCode: Yup.string()
       .required("Please enter code")
-    .test(
-      'match',
-      'Confirmation code does not match',
-      function (value) {
-        const storedConfirmationCode = obValues?.confirmationCode;
-        return !storedConfirmationCode || value === storedConfirmationCode;
-      }
-    ), 
-    
+      .test(
+        'match',
+        'Confirmation code does not match',
+        function (value) {
+          const storedConfirmationCode = obValues?.confirmationCode;
+          return !storedConfirmationCode || value === storedConfirmationCode;
+        }
+      ),
+
     // word: Yup.boolean().when("EnterconfirmationCode", {
     //   is: "no",
     //   then: () => Yup.string().required("Please select owner"),
@@ -393,7 +427,7 @@ export const partCertiSchema_DC_BEN = () => {
     date: Yup.date(),
     isCheckAcceptance: Yup.boolean().oneOf(
       [true],
-      "Please mark the checkbox" 
+      "Please mark the checkbox"
     ),
   });
 };

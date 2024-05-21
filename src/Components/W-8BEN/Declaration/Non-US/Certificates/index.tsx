@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FormControl,
   Typography,
@@ -10,10 +10,10 @@ import {
   Paper,
   Checkbox,
 } from "@mui/material";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik } from "formik";
 import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
-import { postW8BENForm,GetHelpVideoDetails } from "../../../../../Redux/Actions";
+import { postW8BENForm, GetHelpVideoDetails } from "../../../../../Redux/Actions";
 import { certificateSchema_w8Ben } from "../../../../../schemas/w8Exp";
 import checksolid from "../../../../../assets/img/check-solid.png";
 import InfoIcon from "@mui/icons-material/Info";
@@ -32,10 +32,10 @@ export default function Certifications(props: any) {
   const location = useLocation();
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
- 
-  useEffect(()=>{
+
+  useEffect(() => {
     document.title = "Certification I"
-  },[])
+  }, [])
   useEffect(() => {
     setInitialValue((prev: any) => {
       return {
@@ -62,7 +62,7 @@ export default function Certifications(props: any) {
     isBeneficialOwnerNotUSPerson: false,
     isAuthorizeWithHoldingAgent: false,
     isCapacityForm: false,
-  
+
     isElectronicForm: false,
   });
   const urlValue = location.pathname.substring(1);
@@ -76,10 +76,10 @@ export default function Certifications(props: any) {
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
-    const viewPdf=()=>{
-      // history("/w8Ben_pdf", { replace: true });
-      history("/w8Ben_pdf");
-    }
+  const viewPdf = () => {
+    // history("/w8Ben_pdf", { replace: true });
+    history("/w8Ben_pdf");
+  }
   return (
     <section
       className="inner_content"
@@ -89,27 +89,27 @@ export default function Certifications(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform" onClick={() => {
-              dispatch(GetBenPdf(authDetails?.accountHolderId))
-            }}>View Form</div>
+            dispatch(GetBenPdf(authDetails?.accountHolderId))
+          }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[4].id === 6 ? (
-  <a
-    href={GethelpData[4].fieldValue}
-    target="popup"
-    onClick={() =>
-      window.open(
-        GethelpData[4].fieldValue,
-        'name',
-        `width=${GethelpData[4].width},height=${GethelpData[4].height},top=${GethelpData[4].top},left=${GethelpData[4].left}`
-      )
-    }
-  >
-    Help Video
-  </a>
-) : (
-  ""
-)}
+              <a
+                href={GethelpData[4].fieldValue}
+                target="popup"
+                onClick={() =>
+                  window.open(
+                    GethelpData[4].fieldValue,
+                    'name',
+                    `width=${GethelpData[4].width},height=${GethelpData[4].height},top=${GethelpData[4].top},left=${GethelpData[4].left}`
+                  )
+                }
+              >
+                Help Video
+              </a>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
@@ -128,9 +128,9 @@ export default function Certifications(props: any) {
               initialValues={initialValue}
               enableReinitialize
               validationSchema={certificateSchema_w8Ben}
-              
+
               onSubmit={(values, { setSubmitting }) => {
-                Redirect("/W-8BEN/Declaration/US_Tin/Certification_Substitute/participation",authDetails?.agentId,history)
+                Redirect("/W-8BEN/Declaration/US_Tin/Certification_Substitute/participation", authDetails?.agentId, history)
                 setSubmitting(true);
                 let temp = {
                   ...PrevStepData,
@@ -157,19 +157,19 @@ export default function Certifications(props: any) {
                   );
                 });
                 return returnPromise;
-               
+
               }}
             >
               {({
-                 errors,
-                 touched,
-                 handleBlur,
-                 values,
-                 handleSubmit,
-                 handleChange,
-                 setFieldValue,
-                 isValid,
-                 submitForm,
+                errors,
+                touched,
+                handleBlur,
+                values,
+                handleSubmit,
+                handleChange,
+                setFieldValue,
+                isValid,
+                submitForm,
               }) => (
                 <Form onSubmit={handleSubmit}>
                   <Paper style={{ padding: "14px" }}>
@@ -271,7 +271,7 @@ export default function Certifications(props: any) {
                           <Link
                             href="#"
                             underline="none"
-                            style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
+                            style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                             onClick={() => {
                               setToolInfo("");
                             }}
@@ -330,6 +330,7 @@ export default function Certifications(props: any) {
                           <Checkbox
                             name="isBeneficialOwnerIncome"
                             value={values.isBeneficialOwnerIncome}
+                            onBlur={handleBlur}
                             onChange={handleChange}
                             size="medium"
                             style={{ fontSize: "2rem" }}
@@ -352,7 +353,7 @@ export default function Certifications(props: any) {
                           </Typography>
                         </Typography>
                         <p className="error">
-                          {errors.isBeneficialOwnerIncome}
+                          {touched.isBeneficialOwnerGrossIncome ? errors.isBeneficialOwnerIncome : ""}
                         </p>
                         <Divider
                           style={{
@@ -365,6 +366,7 @@ export default function Certifications(props: any) {
                           <Checkbox
                             name="isAmountCertificationUS"
                             value={values.isAmountCertificationUS}
+                            onBlur={handleBlur}
                             onChange={handleChange}
                             size="medium"
                             style={{ fontSize: "2rem" }}
@@ -383,7 +385,7 @@ export default function Certifications(props: any) {
                           </Typography>
                         </Typography>
                         <p className="error">
-                          {errors.isAmountCertificationUS}
+                          {touched.isAmountCertificationUS ? errors.isAmountCertificationUS : ""}
                         </p>
                         <Divider
                           style={{
@@ -396,6 +398,7 @@ export default function Certifications(props: any) {
                           <Checkbox
                             name="isBeneficialOwnerGrossIncome"
                             value={values.isBeneficialOwnerGrossIncome}
+                            onBlur={handleBlur}
                             onChange={handleChange}
                             size="medium"
                             style={{ fontSize: "2rem" }}
@@ -413,8 +416,8 @@ export default function Certifications(props: any) {
                           </Typography>
                         </Typography>
 
-                        <div style={{ marginLeft: "60px"}}>
-                                 <Typography
+                        <div style={{ marginLeft: "60px" }}>
+                          <Typography
                             style={{
                               fontSize: "14px",
                               color: "black",
@@ -422,27 +425,27 @@ export default function Certifications(props: any) {
                               textAlign: "justify",
                             }}
                           >
-                          <li>
-                            (a) not effectively connected with the conduct of a
-                            trade or business in the United States,
-                          </li>
-                          <li>
-                            (b) effectively connected but is not subject to tax
-                            under an applicable income tax treaty, or
-                          </li>
-                          <li>
-                            (c) the partner's share of a partnership's
-                            effectively connected income or,
-                          </li>
-                          <li>
-                            (d) the partner’s amount realized from the transfer
-                            of a partnership interest subject to withholding
-                            under section 1446(f)
-                          </li>
+                            <li>
+                              (a) not effectively connected with the conduct of a
+                              trade or business in the United States,
+                            </li>
+                            <li>
+                              (b) effectively connected but is not subject to tax
+                              under an applicable income tax treaty, or
+                            </li>
+                            <li>
+                              (c) the partner's share of a partnership's
+                              effectively connected income or,
+                            </li>
+                            <li>
+                              (d) the partner’s amount realized from the transfer
+                              of a partnership interest subject to withholding
+                              under section 1446(f)
+                            </li>
                           </Typography>
                         </div>
                         <p className="error">
-                          {errors.isBeneficialOwnerGrossIncome}
+                          {touched.isBeneficialOwnerGrossIncome ? errors.isBeneficialOwnerGrossIncome : ""}
                         </p>
                         <Divider
                           style={{
@@ -455,6 +458,7 @@ export default function Certifications(props: any) {
                           <Checkbox
                             name="isBeneficialOwnerNotUSPerson"
                             value={values.isBeneficialOwnerNotUSPerson}
+                            onBlur={handleBlur}
                             onChange={handleChange}
                             size="medium"
                             style={{ fontSize: "2rem" }}
@@ -476,7 +480,7 @@ export default function Certifications(props: any) {
                           </Typography>
                         </Typography>
                         <p className="error">
-                          {errors.isBeneficialOwnerNotUSPerson}
+                          {touched.isBeneficialOwnerNotUSPerson ? errors.isBeneficialOwnerNotUSPerson : ""}
                         </p>
                         <Divider
                           style={{
@@ -489,6 +493,7 @@ export default function Certifications(props: any) {
                           <Checkbox
                             name="isAuthorizeWithHoldingAgent"
                             value={values.isAuthorizeWithHoldingAgent}
+                            onBlur={handleBlur}
                             onChange={handleChange}
                             size="medium"
                             style={{ fontSize: "2rem" }}
@@ -508,7 +513,7 @@ export default function Certifications(props: any) {
                           </Typography>
                         </Typography>
                         <p className="error">
-                          {errors.isAuthorizeWithHoldingAgent}
+                          {touched.isAuthorizeWithHoldingAgent ? errors.isAuthorizeWithHoldingAgent : ""}
                         </p>
                         <Divider
                           style={{
@@ -521,6 +526,7 @@ export default function Certifications(props: any) {
                           <Checkbox
                             name="isCapacityForm"
                             value={values.isCapacityForm}
+                            onBlur={handleBlur}
                             onChange={handleChange}
                             size="medium"
                             style={{ fontSize: "2rem" }}
@@ -547,7 +553,7 @@ export default function Certifications(props: any) {
                             </span>
                           </Typography>
                         </Typography>
-                        <p className="error">{errors.isCapacityForm}</p>
+                        <p className="error">{touched.isCapacityForm ? errors.isCapacityForm : ""}</p>
                         <Divider
                           style={{
                             marginTop: "1rem",
@@ -556,14 +562,15 @@ export default function Certifications(props: any) {
                           }}
                         />
 
-                       
-                       
-                       
+
+
+
                         <Typography style={{ display: "flex" }}>
                           <Checkbox
                             name="isElectronicForm"
                             value={values.isElectronicForm}
                             onChange={handleChange}
+                            onBlur={handleBlur}
                             size="medium"
                             style={{ fontSize: "2rem" }}
                             className="mx-2"
@@ -579,9 +586,9 @@ export default function Certifications(props: any) {
                             Check to confirm you have reviewed the Electronic
                             Form
                             <span
-                            onClick={() => {
-                              dispatch(GetBenPdf(authDetails?.accountHolderId))
-                            }}
+                              onClick={() => {
+                                dispatch(GetBenPdf(authDetails?.accountHolderId))
+                              }}
                               style={{
                                 color: "blue",
                                 fontSize: "14px",
@@ -592,7 +599,7 @@ export default function Certifications(props: any) {
                             </span>
                           </Typography>
                         </Typography>
-                        <p className="error">{errors.isElectronicForm}</p>
+                        <p className="error">{touched.isElectronicForm ? errors.isElectronicForm : ""}</p>
                         <Divider
                           style={{
                             marginTop: "1rem",
@@ -609,7 +616,7 @@ export default function Certifications(props: any) {
                         marginTop: "40px",
                       }}
                     >
-                        <SaveAndExit
+                      <SaveAndExit
                         formTypeId={3}
                         Callback={() => {
                           submitForm()
@@ -660,7 +667,7 @@ export default function Certifications(props: any) {
                     <Typography
                       align="center"
                       style={{
-                        color: "#505E50",    
+                        color: "#505E50",
                         justifyContent: "center",
                         alignItems: "center",
                         marginTop: "20px",
@@ -673,7 +680,7 @@ export default function Certifications(props: any) {
                       {" "}
                       <Button
                         onClick={() => {
-                          Redirect("/Attach_document_BEN",authDetails?.agentId,history,true);
+                          Redirect("/Attach_document_BEN", authDetails?.agentId, history, true);
                         }}
                         variant="contained"
                         style={{
