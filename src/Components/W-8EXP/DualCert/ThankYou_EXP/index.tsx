@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import FormW8Exp from "../../../formPDF/W8EXP";
+import FormW8ECI from "../../../../formPDF/W8ECI";
 // import Form1 from "../../formPDF/form1";
 // import Formw9 from "../../formPDF/formw9";
 // import FormEXP from "../../formPDF/formEXP";
@@ -14,21 +14,27 @@ import { useRef } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
-import useAuth from "../../../customHooks/useAuth";
+import { GetECIDCPdf, GetEciPdf } from "../../../../Redux/Actions/PfdActions";
+import useAuth from "../../../../customHooks/useAuth";
 
 export default function Term() {
   //States
-  const dispatch = useDispatch();
   const { authDetails } = useAuth();
+  const dispatch = useDispatch();
   const history = useNavigate();
   const pdfRef = useRef(null);
   const pdfRefnew = useRef(null);
-  const authDetailsString = localStorage.getItem("authDetails") || "{}";
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const authDetailsString = localStorage.getItem("authDetails") || "{}";
+
   const auth = JSON.parse(authDetailsString);
   const userType = auth?.configurations?.userType;
+
+  useEffect(() => {
+    document.title = "Thank You"
+  }, [])
+
   const handleDownload = () => {
     if (pdfUrl) {
       const link = document.createElement("a");
@@ -41,20 +47,18 @@ export default function Term() {
     }
   };
 
-  useEffect(() => {
-    document.title = "Thank You"
-  }, [])
+
 
   return (
     <section
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-      {/*     
-      <div style={{ paddingBlockStart: "30px" }}>
-        <FormW8Exp/>
-      </div>
-      */}
+
+      {/* <div style={{ paddingBlockStart: "30px" }}>
+        <FormW8ECI/>
+      </div> */}
+
       <div className="container-fluid">
         <div className="col-lg-12 mt-20" style={{ padding: "18px" }}>
           <Paper elevation={6} style={{ padding: "17px", marginTop: "20px" }}>
@@ -111,89 +115,64 @@ export default function Term() {
             >
               If you are using a public computer, please clear your cookies.
             </Typography>
-          </Paper>
-          <Typography align="center">
-            <div className="mt-5" style={{ justifyContent: "center" }}>
 
-              <div style={{ marginTop: "25px" }}>
-                <Button
-                  // type="submit"
-                  onClick={() => {
-                    dispatch(GetExpPdf(authDetails?.accountHolderId, () => { }, () => { }, true));
-                  }}
-                  style={{
-                    border: "1px solid #0095dd",
-                    background: "black",
-                    height: "35px",
-                    lineHeight: "normal",
-                    textAlign: "center",
-                    fontSize: "16px",
-                    marginLeft: "12px",
-                    textTransform: "uppercase",
-                    borderRadius: "0px",
-                    color: "#ffff",
-                    padding: "0 35px",
-                    letterSpacing: "1px",
-                  }}
-                  className="btn btn_submit  btn-primary-agent"
-                >
-                  Download
-                </Button>
-           
-            
-                <Button
-                  // type="submit"
-                  onClick={() => {
-                    history("/Certificates");
-                  }}
-                  style={{
-                    border: "1px solid #0095dd",
-                    background: "black",
-                    height: "35px",
-                    lineHeight: "normal",
-                    textAlign: "center",
-                    fontSize: "16px",
-                    marginLeft: "12px",
-                    textTransform: "uppercase",
-                    borderRadius: "0px",
-                    color: "#ffff",
-                    padding: "0 35px",
-                    letterSpacing: "1px",
-                  }}
-                  className="btn btn_submit  btn-primary-agent"
-                >
-                  Exit
-                </Button>
+            <Typography align="center">
+              <div className="mt-5" style={{ justifyContent: "center" }}>
+
+
+                <div style={{ marginTop: "25px" }}>
+                  <Button
+                    //type="submit"
+                    onClick={() => {
+                      // history("/w8Eci_pdf");
+                      dispatch(GetECIDCPdf(authDetails?.accountHolderId, () => { }, () => { }, true))
+                    }}
+                    style={{
+                      border: "1px solid #0095dd",
+                      background: "black",
+                      height: "35px",
+                      lineHeight: "normal",
+                      textAlign: "center",
+                      fontSize: "16px",
+                      marginLeft: "12px",
+                      textTransform: "uppercase",
+                      borderRadius: "0px",
+                      color: "#ffff",
+                      padding: "0 35px",
+                      letterSpacing: "1px",
+                    }}
+                    className="btn btn_submit  btn-primary-agent"
+                  >
+                    Download PDF
+                  </Button>
+                  <Button
+                    type="submit"
+                    onClick={() => {
+                      history("/Certificates");
+                    }}
+                    style={{
+                      border: "1px solid #0095dd",
+                      background: "black",
+                      height: "35px",
+                      lineHeight: "normal",
+                      textAlign: "center",
+                      fontSize: "16px",
+                      marginLeft: "12px",
+                      textTransform: "uppercase",
+                      borderRadius: "0px",
+                      color: "#ffff",
+                      padding: "0 35px",
+                      letterSpacing: "1px",
+                    }}
+                    className="btn btn_submit  btn-primary-agent"
+                  >
+                    Exit
+                  </Button>
+                </div>
+
               </div>
-            </div>
-            {userType === "DC" ? (
-              <div style={{ marginTop: "25px" }}>
-                <Button
-                  type="submit"
-                  onClick={() => {
-                    history("/IMY/ThankYou/Status_DC");
-                  }}
-                  style={{
-                    border: "1px solid #0095dd",
-                    background: "black",
-                    height: "45px",
-                    lineHeight: "normal",
-                    textAlign: "center",
-                    fontSize: "16px",
-                    marginLeft: "12px",
-                    textTransform: "uppercase",
-                    borderRadius: "0px",
-                    color: "#ffff",
-                    padding: "0 35px",
-                    letterSpacing: "1px",
-                  }}
-                  className="btn btn_submit  btn-primary-agent"
-                >
-                  Continue To Self Certification Submission
-                </Button>
-              </div>
-            ) : ""}
-          </Typography>
+            </Typography>
+          </Paper>
         </div>
       </div>
       <div className="container-fluid">

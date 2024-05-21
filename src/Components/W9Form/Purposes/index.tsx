@@ -889,7 +889,7 @@ export default function Fedral_tax(props: any) {
                                     }}
                                   >
                                     Business Name or disregarded entity name if
-                                    different
+                                    different:
                                   </Typography>
 
                                   <FormControl className="w-50">

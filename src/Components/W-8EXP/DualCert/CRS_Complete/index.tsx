@@ -44,7 +44,7 @@ export default function Declaration (props: any){
     id:0,
     // agentId: authDetails.agentId,
     // accountHolderBasicDetailId: authDetails.accountHolderId,
-    formTypeId: FormTypeId.W8ECI,
+    formTypeId: FormTypeId.FW81MY,
     formEntryId:0,
     classificationType : "CRS",
     userType:"DC",

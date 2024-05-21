@@ -100,6 +100,28 @@ const Submit_IMYDC = React.lazy(
 const ThankYou_IMYDC = React.lazy(
   () => import("../Components/W-8IMY/DualCert/ThankYou_IMY")
 )
+
+const Chapter3_EXP_dualcert = React.lazy(
+  () => import("../Components/W-8EXP/DualCert/Chapter3Status")
+)
+const TaxPayer_EXP_Dualcert = React.lazy(
+  () => import("../Components/W-8EXP/DualCert/TaxPayer_EXP")
+)
+const Certification_EXP_Dualcert = React.lazy(
+  () => import("../Components/W-8EXP/DualCert/Certification_EXP")
+)
+const Submit_EXP_Dualcert = React.lazy(
+  () => import("../Components/W-8EXP/DualCert/Submit_EXP")
+)
+const SelfCert_EXP_Dualcert = React.lazy(
+  () => import("../Components/W-8EXP/DualCert/SelfCertPassive")
+)
+const Penalities_EXP_Dualcert = React.lazy(
+  () => import("../Components/W-8EXP/DualCert/Participation_EXP")
+)
+const ThankYou_EXP_Dualcert = React.lazy(
+  () => import("../Components/W-8ECI/DualCert/ThankYou_DualCert")
+)
 const Non_Reporting_CRS_W9_DC = React.lazy(
   () => import("../Components/W9Form/Entity_DC_W9/CRS_DualCert/NonReporting")
 );
@@ -204,6 +226,36 @@ const FinancialReport_CRS_ECI_DC = React.lazy(
   () => import("../Components/W-8ECI/DualCert/Financial/FinancialModal")
 );
 ////
+const CRS_EXP_DC = React.lazy(
+  () => import("../Components/W-8EXP/DualCert/CRS_DualCert")
+);
+
+const Financial_EXP_DC = React.lazy(
+  () => import("../Components/W-8EXP/DualCert/CRS_DualCert/Financial")
+);
+
+const SelfCertDualCert_EXP = React.lazy(
+  () => import("../Components/W-8EXP/DualCert/SelfCertPassive")
+);
+
+const Complete_CRS_EXP = React.lazy(
+  () => import("../Components/W-8EXP/DualCert/CRS_Complete")
+);
+const Active_Non_Financial_EXP_DC = React.lazy(
+  () => import("../Components/W-8EXP/DualCert/CRS_DualCert/Active_Non_financial")
+);
+
+const Non_Reporting_CRS_EXP_DC = React.lazy(
+  () => import("../Components/W-8EXP/DualCert/CRS_DualCert/NonReporting/index")
+);
+const Financial_CRS_EXP_DC = React.lazy(
+  () => import("../Components/W-8EXP/DualCert/CRS_DualCert/Financial")
+);
+const FinancialReport_CRS_EXP_DC = React.lazy(
+  () => import("../Components/W-8EXP/DualCert/Financial/FinancialModal")
+);
+
+//
 
 const CRS_IMY_DC = React.lazy(
   () => import("../Components/W-8IMY/DualCert/CRS_DualCert")
@@ -468,6 +520,14 @@ const  ECIIndividualFatcaClassificationComplete= React.lazy(() => import("../Com
 const  ECIIndividualFatcaClassificationFinal= React.lazy(() => import("../Components/W-8ECI/DualCert/FATCA/Final"));
 
 
+const EXPEntityFatcaClassification = React.lazy(() => import("../Components/W-8EXP/DualCert/FATCA/index"));
+const EXPEntityFatcaClassificationFinancial = React.lazy(() => import("../Components/W-8EXP/DualCert/FATCA/Financial"));
+const  EXPEntityFatcaClassificationGIINAvailable = React.lazy(() => import("../Components/W-8EXP/DualCert/FATCA/GIINAvailable"));
+const  EXPEntityFatcaClassificationGIINNotAvailable = React.lazy(() => import("../Components/W-8EXP/DualCert/FATCA/GIINNotAvailable"));
+const  EXPEntityFatcaClassificationSponsoredFinancialInstitution = React.lazy(() => import("../Components/W-8EXP/DualCert/FATCA/SponsoredFinanceInstitution"));
+const  EXPIndividualFatcaClassificationComplete= React.lazy(() => import("../Components/W-8EXP/DualCert/FATCA/Complete"));
+const  EXPIndividualFatcaClassificationFinal= React.lazy(() => import("../Components/W-8EXP/DualCert/FATCA/Final"));
+
 const ROUTES: Array<RouteType> = [
   {
     name: "Login",
@@ -585,6 +645,22 @@ const ROUTES: Array<RouteType> = [
     Component: FinancialReport_CRS_ECI_DC,
     isPrivate: true,
   },
+
+  {
+    name: "Attach_document_w9",
+    path: "/Attach_document_w9",
+    id: 2,
+    Component: Attach_document_w9,
+    isPrivate: true,
+  },
+
+  {
+    name: "Attach_document_BENE",
+    path: "/Attach_document_BENE",
+    id: 2,
+    Component: Attach_document_BENE,
+    isPrivate: true,
+  },
   {
     name: "ECIEntityFatcaClassification",
     path: "/ECIEntityFatcaClassification",
@@ -635,6 +711,169 @@ const ROUTES: Array<RouteType> = [
     isPrivate: true,
   },
  
+  //
+  {
+    name: "CRS_EXP_DC",
+    path: "/CRS_EXP_DC",
+    id: 2,
+    Component: CRS_EXP_DC,
+    isPrivate: true,
+  },
+ 
+  {
+    name: "Financial_EXP_DC",
+    path: "/Financial_EXP_DC",
+    id: 2,
+    Component: Financial_EXP_DC,
+    isPrivate: true,
+  },
+ 
+  {
+    name: "SelfCertDualCert_EXP",
+    path: "/SelfCertDualCert_EXP",
+    id: 2,
+    Component: SelfCertDualCert_EXP,
+    isPrivate: true,
+  },
+ 
+  {
+    name: "Complete_CRS_EXP",
+    path: "/Complete_CRS_EXP",
+    id: 2,
+    Component: Complete_CRS_EXP,
+    isPrivate: true,
+  },
+ 
+  {
+    name: "Active_Non_Financial_EXP_DC",
+    path: "/Active_Non_Financial_EXP_DC",
+    id: 2,
+    Component: Active_Non_Financial_EXP_DC,
+    isPrivate: true,
+  },
+ 
+  {
+    name: "Non_Reporting_CRS_EXP_DC",
+    path: "/Non_Reporting_CRS_EXP_DC",
+    id: 2,
+    Component: Non_Reporting_CRS_EXP_DC,
+    isPrivate: true,
+  },
+ 
+  {
+    name: "Financial_CRS_EXP_DC",
+    path: "/Financial_CRS_EXP_DC",
+    id: 2,
+    Component: Financial_CRS_EXP_DC,
+    isPrivate: true,
+  },
+  {
+    name: "FinancialReport_CRS_EXP_DC",
+    path: "/FinancialReport_CRS_EXP_DC",
+    id: 2,
+    Component: FinancialReport_CRS_EXP_DC,
+    isPrivate: true,
+  },
+  {
+    name: "EXPEntityFatcaClassification",
+    path: "/EXPEntityFatcaClassification",
+    id: 2,
+    Component: EXPEntityFatcaClassification,
+    isPrivate: true,
+  },
+  {
+    name: "EXPEntityFatcaClassificationFinancial",
+    path: "/EXPEntityFatcaClassificationFinancial",
+    id: 2,
+    Component: EXPEntityFatcaClassificationFinancial,
+    isPrivate: true,
+  },
+  {
+    name: "EXPEntityFatcaClassificationGIINAvailable",
+    path: "/EXPEntityFatcaClassificationGIINAvailable",
+    id: 2,
+    Component: EXPEntityFatcaClassificationGIINAvailable,
+    isPrivate: true,
+  },
+  {
+    name: "EXPEntityFatcaClassificationGIINNotAvailable",
+    path: "/EXPEntityFatcaClassificationGIINNotAvailable",
+    id: 2,
+    Component: EXPEntityFatcaClassificationGIINNotAvailable,
+    isPrivate: true,
+  },
+  {
+    name: "EXPEntityFatcaClassificationSponsoredFinancialInstitution",
+    path: "/EXPEntityFatcaClassificationSponsoredFinancialInstitution",
+    id: 2,
+    Component: EXPEntityFatcaClassificationSponsoredFinancialInstitution,
+    isPrivate: true,
+  },
+  {
+    name: "EXPIndividualFatcaClassificationComplete",
+    path: "/EXPIndividualFatcaClassificationComplete",
+    id: 2,
+    Component: EXPIndividualFatcaClassificationComplete,
+    isPrivate: true,
+  },
+  {
+    name: "EXPIndividualFatcaClassificationFinal",
+    path: "/EXPIndividualFatcaClassificationFinal",
+    id: 2,
+    Component: EXPIndividualFatcaClassificationFinal,
+    isPrivate: true,
+  },
+  {
+    name: "Chapter3_EXP_dualcert",
+    path: "/Chapter3_EXP_dualcert",
+    id: 2,
+    Component: Chapter3_EXP_dualcert,
+    isPrivate: true,
+  },
+  {
+    name: "TaxPayer_EXP_Dualcert",
+    path: "/TaxPayer_EXP_Dualcert",
+    id: 2,
+    Component: TaxPayer_EXP_Dualcert,
+    isPrivate: true,
+  },
+  {
+    name: "Certification_EXP_Dualcert",
+    path: "/Certification_EXP_Dualcert",
+    id: 2,
+    Component: Certification_EXP_Dualcert,
+    isPrivate: true,
+  },
+  {
+    name: "Submit_EXP_Dualcert",
+    path: "/Submit_EXP_Dualcert",
+    id: 2,
+    Component: Submit_EXP_Dualcert,
+    isPrivate: true,
+  },
+  {
+    name: "SelfCert_EXP_Dualcert",
+    path: "/SelfCert_EXP_Dualcert",
+    id: 2,
+    Component: SelfCert_EXP_Dualcert,
+    isPrivate: true,
+  },
+  {
+    name: "Penalities_EXP_Dualcert",
+    path: "/Penalities_EXP_Dualcert",
+    id: 2,
+    Component: Penalities_EXP_Dualcert,
+    isPrivate: true,
+  },
+  {
+    name: "ThankYou_EXP_Dualcert",
+    path: "/ThankYou_EXP_Dualcert",
+    id: 2,
+    Component: ThankYou_EXP_Dualcert,
+    isPrivate: true,
+  },
+ 
+ //
 
   {
     name: "Taxpayer_DC",

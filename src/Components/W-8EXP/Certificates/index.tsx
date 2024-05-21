@@ -13,7 +13,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik } from "formik";
 import { W8_state_ECI, GetHelpVideoDetails, postW8EXPForm } from "../../../Redux/Actions";
-import { certificateSchema } from "../../../schemas/w8Exp";
+import { certificateSchema_EXP } from "../../../schemas/w8Exp";
 import checksolid from "../../../../../assets/img/check-solid.png";
 import InfoIcon from "@mui/icons-material/Info";
 import { useNavigate } from "react-router-dom";
@@ -123,7 +123,7 @@ export default function Certifications(props: any) {
               validateOnMount={true}
               initialValues={initialValue}
               enableReinitialize
-              validationSchema={certificateSchema}
+              validationSchema={certificateSchema_EXP}
               onSubmit={(values, { setSubmitting }) => {
                 setSubmitting(true);
                 console.log(values, "vallllll");
