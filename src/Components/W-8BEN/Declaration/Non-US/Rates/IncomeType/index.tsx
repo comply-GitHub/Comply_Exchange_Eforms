@@ -70,6 +70,7 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
         setFieldValue,
       }) => (
         <Form>
+          <>{console.log(errors, "income type errors")}</>
           <Paper
             className="paper"
             elevation={3}
@@ -141,8 +142,8 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                   >
                     Enter the Paragraph of the Article being
                     claimed:
-                    
-             
+
+
                   </Typography>
                   <FormControl className="w-100">
                     <select

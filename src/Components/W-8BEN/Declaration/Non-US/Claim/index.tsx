@@ -54,10 +54,10 @@ export default function FCTA_Reporting(props: any) {
   const [clickCount, setClickCount] = useState(0);
 
   const [initialValues, setInitialValues] = useState({
-    isClaimTreaty: "No",
+    //isClaimTreaty: "No",
     ownerResidentId: "0",
     limitationBenefitsId: 0,
-    isSubmissionClaimTreaty: "",
+    isSubmissionClaimTreaty: "No",
   });
 
   const urlValue = location.pathname.substring(1);
@@ -72,9 +72,11 @@ export default function FCTA_Reporting(props: any) {
   }, []);
   const getCountriesData = useSelector((state: any) =>
     state.CountriesTreaty.records?.filter(
-      (ele: any) => ele.treatyEffectiveYear !== 0
+      (ele: any) => ele.treatyEffectiveYear !== 0 && ele.treatyEffectiveYear != null
     )
   );
+
+
   const W8BENData = useSelector((state: any) => state.w8Ben);
   console.log(W8BENData, "W8BENDataW8BENDataW8BENData");
   const LoadData = () => {
@@ -127,8 +129,8 @@ export default function FCTA_Reporting(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform" onClick={() => {
-              dispatch(GetBenPdf(authDetails?.accountHolderId))
-            }}>
+            dispatch(GetBenPdf(authDetails?.accountHolderId))
+          }}>
             View Form
           </div>
           <div className="helpvideo">
@@ -179,8 +181,6 @@ export default function FCTA_Reporting(props: any) {
                     ...values,
                     agentId: authDetails?.agentId,
                     accountHolderBasicDetailId: authDetails?.accountHolderId,
-                    isClaimTreaty:
-                      values?.isClaimTreaty === "yes" ? true : false,
                     isSubmissionClaimTreaty:
                       values?.isSubmissionClaimTreaty === "yes" ? true : false,
                     stepName: null,
@@ -219,6 +219,7 @@ export default function FCTA_Reporting(props: any) {
                   submitForm,
                 }) => (
                   <Form onSubmit={handleSubmit}>
+
                     {values.isSubmissionClaimTreaty && clickCount === 1 ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -423,7 +424,7 @@ export default function FCTA_Reporting(props: any) {
                               <Link
                                 href="#"
                                 underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px" , color: "#0000C7"}}
+                                style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                                 onClick={() => {
                                   setToolInfo("");
                                 }}
@@ -440,7 +441,7 @@ export default function FCTA_Reporting(props: any) {
                           style={{ fontSize: "22px", marginTop: "16px" }}
                         >
                           Is this submission being made to claim treaty
-                          benefits?<span style={{color:"red"}}>*</span>
+                          benefits?<span style={{ color: "red" }}>*</span>
                         </Typography>
 
                         <div
@@ -452,7 +453,7 @@ export default function FCTA_Reporting(props: any) {
                           <RadioGroup
                             row
                             aria-labelledby="demo-row-radio-buttons-group-label"
-                            value={values?.isClaimTreaty}
+                            value={values?.isSubmissionClaimTreaty}
                             onChange={(e) => {
                               console.log("form change", e);
                               handleChange(e);
@@ -460,32 +461,32 @@ export default function FCTA_Reporting(props: any) {
                                 validateForm();
                               }, 100);
                             }}
-                            name="isClaimTreaty"
+                            name="isSubmissionClaimTreaty"
                           >
                             <FormControlLabel
                               value="yes"
                               control={<Radio />}
                               label="Yes"
-                              // name="isClaimTreaty"
+                            // name="isClaimTreaty"
                             />
                             <FormControlLabel
                               value="no"
                               control={<Radio />}
                               label="No"
-                              // name="isClaimTreaty"
+                            // name="isClaimTreaty"
                             />
                           </RadioGroup>
-                          {errors?.isClaimTreaty && touched.isClaimTreaty ? (
+                          {errors?.isSubmissionClaimTreaty && touched.isSubmissionClaimTreaty ? (
                             <div>
                               <Typography color="error">
-                                {errors?.isClaimTreaty}
+                                {errors?.isSubmissionClaimTreaty}
                               </Typography>
                             </div>
                           ) : (
                             ""
                           )}
                         </div>
-                        {values?.isClaimTreaty == "yes" ? (
+                        {values?.isSubmissionClaimTreaty == "yes" ? (
                           <>
                             <Typography
                               align="left"
@@ -567,7 +568,7 @@ export default function FCTA_Reporting(props: any) {
                                     underline="none"
                                     style={{
                                       marginTop: "10px",
-                                      fontSize: "16px", 
+                                      fontSize: "16px",
                                       color: "#0000C7"
                                     }}
                                     onClick={() => {
@@ -609,9 +610,9 @@ export default function FCTA_Reporting(props: any) {
                                         <option value={257}>
                                           United Kingdom
                                         </option>
-                                        <option value={258}>
+                                        {/* <option value={258}>
                                           United States
-                                        </option>
+                                        </option> */}
                                         <option value="">-----</option>
                                         {getCountriesData?.map((ele: any) => (
                                           <option key={ele?.id} value={ele?.id}>
@@ -689,11 +690,11 @@ export default function FCTA_Reporting(props: any) {
                         onClick={async () => {
                           validateForm().then(() => {
                             submitForm().then((data) => {
-                              if (values?.isClaimTreaty == "no") {
-                                Redirect('/Attach_document_BEN',authDetails?.agentId,history)
+                              if (values?.isSubmissionClaimTreaty == "no") {
+                                Redirect('/Attach_document_BEN', authDetails?.agentId, history)
                               } else {
                                 Redirect(
-                                  "/W-8BEN/Declaration/US_Tin/Rates",authDetails?.agentId,history
+                                  "/W-8BEN/Declaration/US_Tin/Rates", authDetails?.agentId, history
                                 );
                               }
 
@@ -706,7 +707,7 @@ export default function FCTA_Reporting(props: any) {
                           //   "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE"
                           // );
                         }}
-                       
+
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                       >
@@ -716,7 +717,7 @@ export default function FCTA_Reporting(props: any) {
                     <Typography
                       align="center"
                       style={{
-                        color: "#505E50",   
+                        color: "#505E50",
                         justifyContent: "center",
                         alignItems: "center",
                         marginTop: "20px",
@@ -727,7 +728,7 @@ export default function FCTA_Reporting(props: any) {
                     <Typography align="center">
                       <Button
                         onClick={() => {
-                          Redirect("/W-8BEN/Declaration/US_Tin",authDetails?.agentId,history,true);
+                          Redirect("/W-8BEN/Declaration/US_Tin", authDetails?.agentId, history, true);
                         }}
                         variant="contained"
                         style={{

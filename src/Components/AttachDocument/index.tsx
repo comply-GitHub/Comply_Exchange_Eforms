@@ -13,7 +13,7 @@ import {
 import { Info, DeleteOutline } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
-import { GetHelpVideoDetails,GetAgentdocumentTypes, CREATE_8233, GetAgentDocumentationMandatoryForEformAction, post8233_EForm, getSupportingDocument, post8233_EForm_Documentation, getSupportedFile,GetAgentDocumentList } from "../../Redux/Actions";
+import { GetHelpVideoDetails, GetAgentdocumentTypes, CREATE_8233, GetAgentDocumentationMandatoryForEformAction, post8233_EForm, getSupportingDocument, post8233_EForm_Documentation, getSupportedFile, GetAgentDocumentList } from "../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import BreadCrumbComponent from "../reusables/breadCrumb";
 import SaveAndExit from "../Reusable/SaveAndExit/Index";
@@ -63,14 +63,14 @@ const AttachDocument = ({
     }
   };
 
-  useEffect(()=>{
-    if(authDetails?.agentId){
+  useEffect(() => {
+    if (authDetails?.agentId) {
       dispatch(GetAgentDocumentList(authDetails?.agentId));
-     
-  
-     
+
+
+
     }
-  },[authDetails])
+  }, [authDetails])
 
 
   useEffect(() => {
@@ -89,8 +89,8 @@ const AttachDocument = ({
     (state: any) => state.GetAgentDocumentationMandatoryForEformReducer
   );
 
-  const GetDocumentData = useSelector((state:any) => state.GetAgentDocumentListReducer);
-  console.log(GetDocumentData , "99")
+  const GetDocumentData = useSelector((state: any) => state.GetAgentDocumentListReducer);
+  console.log(GetDocumentData, "99")
   const history = useNavigate();
   const dispatch = useDispatch();
   const [tax, setTax] = useState<string>("");
@@ -106,7 +106,7 @@ const AttachDocument = ({
   const [image, setImage] = useState("")
   const handleChangeImg = (event: any) => {
     setImage(event.target.files[0].name)
-   
+
   }
 
 
@@ -121,7 +121,7 @@ const AttachDocument = ({
   };
 
   const [toolInfo, setToolInfo] = useState("");
-  
+
 
   const [docNam, setDocname] = useState("")
   const handleChangeDocument = (event: any) => {
@@ -136,9 +136,9 @@ const AttachDocument = ({
     }
   };
   useEffect(() => {
-   
+
     const savedFormData = JSON.parse(localStorage.getItem("form8233Data") || "{}");
-    
+
     setAdditionalDocs(savedFormData.additionalDocs || []);
 
   }, []);
@@ -150,7 +150,7 @@ const AttachDocument = ({
   };
   const [files, setFiles] = useState<File[]>([]);
 
-  const handleUploadFile = (e:any, index:any) => {
+  const handleUploadFile = (e: any, index: any) => {
     const file = e.target.files[0];
     const newFiles = [...files];
     newFiles[index] = file;
@@ -172,7 +172,7 @@ const AttachDocument = ({
       setAdditionalDocs(updatedDocs);
     }
   };
-  
+
 
   const callAPI = () => {
     const formData = new FormData()
@@ -202,12 +202,12 @@ const AttachDocument = ({
       // history(
       //   "/Form8233/TaxPayer_Identification/Owner/Documentaion/certification"
       // );
-      
+
     }))
 
 
   }
-  
+
 
   const handleSubmitFileAndCallAPI = () => {
     const formData = new FormData();
@@ -222,9 +222,9 @@ const AttachDocument = ({
       documentTypeId: GetDocumentData.DocumentListData[index].documentationId,
       file: file.name,
       fileStorageName: file.name,
-      action: 0 
+      action: 0
     }));
-  
+
     mergedArray?.forEach((me, i) => {
       Object.keys(me).forEach((key) => {
         const value = me[key];
@@ -232,7 +232,7 @@ const AttachDocument = ({
         obj = { ...obj, [objectKey]: value };
       });
     });
-  
+
     const temp = {
       ...obj,
       ...onBoardingFormValuesPrevStepData,
@@ -240,24 +240,24 @@ const AttachDocument = ({
       accountHolderBasicDetailId: authDetails?.accountHolderId,
       stepName: null,
     };
-  
+
     const payload = [...filesPayload, temp];
-  
+
     dispatch(
       post8233_EForm_Documentation(
         payload,
         () => {
-        
+
           localStorage.setItem("form8233Data", JSON.stringify({ additionalDocs: additionalDocs }));
           // history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification");
         },
-        () => {}
+        () => { }
       )
     );
     console.log(payload);
   };
-  
-  
+
+
 
   const [existingDocNew, setExistingDocNew] = useState<String[]>([]);
   const handleChangeExistDocument = (event: any, index: number) => {
@@ -311,16 +311,16 @@ const AttachDocument = ({
       formTypeId: FormTypeId,
       formEntryId: FormTypeId,
       documentTypeId: GetDocumentData.DocumentListData[index].documentationId,
-     
+
       file: file.name,
       fileStorageName: file.name
     }));
 
-    dispatch(post8233_EForm_Documentation(payload,()=>{},()=>{}));
-    console.log(payload); 
+    dispatch(post8233_EForm_Documentation(payload, () => { }, () => { }));
+    console.log(payload);
   };
 
-  
+
 
   useEffect(() => {
     if (localStorage?.getItem("supportingDocuments")) {
@@ -340,22 +340,22 @@ const AttachDocument = ({
         onSubmit={(values, { setSubmitting }) => {
           const returnPromise = new Promise((resolve, reject) => {
             setSubmitting(true);
-         
-            
-            ContinueFunction(handleSubmitFileAndCallAPI(),
-                () => {
-                    Redirect(ContinueRoute, authDetails?.agentId, history);
-                    resolve("success");
-                }, (err: any) => {
-                    reject(err);
-                })
-        });
-        return returnPromise;
-    }}
-         
-        
 
-      
+
+            ContinueFunction(handleSubmitFileAndCallAPI(),
+              () => {
+                Redirect(ContinueRoute, authDetails?.agentId, history);
+                resolve("success");
+              }, (err: any) => {
+                reject(err);
+              })
+          });
+          return returnPromise;
+        }}
+
+
+
+
       >
         {({
           errors,
@@ -368,7 +368,7 @@ const AttachDocument = ({
           submitForm
         }) => (
           <Form onSubmit={handleSubmit}>
-        
+
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
@@ -378,7 +378,7 @@ const AttachDocument = ({
                   <div className="viewInstructions">View Instructions</div>
                   <div className="viewform"
                     onClick={() => {
-                      dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
+                      GetPdf();
                     }}>View Form</div>
                   <div className="helpvideo">
 
@@ -405,10 +405,10 @@ const AttachDocument = ({
               <div className="row w-100">
                 <div className="col-4">
                   <div style={{ padding: "15px 0px", height: "100%" }}>
-                  <BreadCrumbComponent
-                                breadCrumbCode={BreadCrumbOrder}
-                                formName={FormTypeId}
-                            />
+                    <BreadCrumbComponent
+                      breadCrumbCode={BreadCrumbOrder}
+                      formName={FormTypeId}
+                    />
                   </div>
                 </div>
                 <div className="col-8 mt-3">
@@ -467,12 +467,12 @@ const AttachDocument = ({
                               marginBottom: "10px",
                             }}
                           >
-                            <Typography style={{fontSize:"12px"}}>
-                            Please see below for the supporting documentation types that may be required to be submitted along with your tax form.
+                            <Typography style={{ fontSize: "12px" }}>
+                              Please see below for the supporting documentation types that may be required to be submitted along with your tax form.
                             </Typography>
 
-                            <Typography style={{ marginTop: "10px",fontSize:"12px" }}>
-                            To add a piece of supporting documentation different to those listed, please click 'Add Additional Documentation' and make your selection there. 
+                            <Typography style={{ marginTop: "10px", fontSize: "12px" }}>
+                              To add a piece of supporting documentation different to those listed, please click 'Add Additional Documentation' and make your selection there.
                             </Typography>
 
                             <Link
@@ -490,35 +490,35 @@ const AttachDocument = ({
                       ) : (
                         ""
                       )}
- {GetDocumentData?.DocumentListData?.map((document : any, index : any) => (
-  <>        <div className="d-flex mt-3 mx-3" style={{ justifyContent: "space-between" }} key={index}>
-          <div>
-            <Typography style={{fontWeight:"500"}}>{document.name}</Typography>
-            <Typography style={{ fontSize: "12px" }}>{document.documentDetails}</Typography>
-          </div>
-          <div>
-            <Input type="file" onChange={(e) => handleUploadFile(e, index)} style={{fontSize:"12px",marginTop:"10px"}} />
-          </div>
-        </div>
-         <hr className="w-100"></hr>
-         </>
+                      {GetDocumentData?.DocumentListData?.map((document: any, index: any) => (
+                        <>        <div className="d-flex mt-3 mx-3" style={{ justifyContent: "space-between" }} key={index}>
+                          <div>
+                            <Typography style={{ fontWeight: "500" }}>{document.name}</Typography>
+                            <Typography style={{ fontSize: "12px" }}>{document.documentDetails}</Typography>
+                          </div>
+                          <div>
+                            <Input type="file" onChange={(e) => handleUploadFile(e, index)} style={{ fontSize: "12px", marginTop: "10px" }} />
+                          </div>
+                        </div>
+                          <hr className="w-100"></hr>
+                        </>
 
-      ))
-      }
-            
+                      ))
+                      }
+
 
                       <Typography
                         style={{
                           margin: "10px",
                           fontSize: "22px",
                           fontWeight: "550",
-                          marginTop:"20px"
+                          marginTop: "20px"
                         }}
                       >
                         Add Additional Documentation
                       </Typography>
 
-                    
+
                       {selectedOptions.length > 0 && existingDoc?.map((row, index) => (
                         <div
                           key={index}
@@ -578,11 +578,11 @@ const AttachDocument = ({
                             {(selectedOptions[index] !== undefined && selectedOptions[index] === '2') && (
                               <Input style={{ fontSize: "12px" }} type="file" onChange={(e) => handleUploadExisting(e, index)} />
                             )}
-                            <span className="my-auto text mx-2" style={{fontSize:"10px",color:"blue"}}>
+                            <span className="my-auto text mx-2" style={{ fontSize: "10px", color: "blue" }}>
                               <a onClick={() => viewDoc(row.fileStorageName, 'Form8233')}>View..</a>
                             </span>
                           </div>
- </div>
+                        </div>
                       ))}
 
                       {additionalDocs.map((row, index) => (
@@ -683,13 +683,13 @@ const AttachDocument = ({
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
+                            GetPdf();
                           }}
                         >
                           View Form
                         </Button>
                         <Button
-                        
+
                           type="submit"
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
@@ -712,7 +712,7 @@ const AttachDocument = ({
                         <Button
                           onClick={() => {
                             Redirect(BackRoute, authDetails?.agentId, history, true);
-                        }}
+                          }}
                           variant="contained"
                           style={{
                             color: "white",
