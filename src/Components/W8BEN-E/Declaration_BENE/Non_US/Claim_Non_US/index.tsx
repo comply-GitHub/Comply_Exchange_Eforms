@@ -73,7 +73,7 @@ export default function FCTA_Reporting(props: any) {
   }
 
 
-  const getCountriesData = useSelector((state: any) => state.CountriesTreaty.records?.filter((ele: any) => ele.treatyEffectiveYear !== 0))
+  const getCountriesData = useSelector((state: any) => state.CountriesTreaty.records?.filter((ele: any) => ele.treatyEffectiveYear !== 0 && ele.treatyEffectiveYear != null))
   console.log(getCountriesData, "get countries data")
   useEffect(() => {
     document.title = "Treaty Claim Statement";
@@ -785,10 +785,10 @@ The treaty country chosen does not match the country selected earlier as the pri
                           validateForm().then(() => {
                             submitForm().then((data) => {
                               if (values?.isClaimTreaty == "no") {
-                                Redirect('/Attach_document_BENE',authDetails?.agentId,history)
+                                Redirect('/Attach_document_BENE', authDetails?.agentId, history)
                               } else {
                                 Redirect(
-                                  "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE",authDetails?.agentId,history
+                                  "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E/Rates_BenE", authDetails?.agentId, history
                                 );
                               }
 
@@ -824,7 +824,7 @@ The treaty country chosen does not match the country selected earlier as the pri
                       <Button
                         onClick={() => {
                           Redirect(
-                            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/US_Tin_BenE",authDetails?.agentId,history,true
+                            "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/US_Tin_BenE", authDetails?.agentId, history, true
                           );
                         }}
                         variant="contained"

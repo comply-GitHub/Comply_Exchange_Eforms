@@ -72,9 +72,11 @@ export default function FCTA_Reporting(props: any) {
   }, []);
   const getCountriesData = useSelector((state: any) =>
     state.CountriesTreaty.records?.filter(
-      (ele: any) => ele.treatyEffectiveYear !== 0
+      (ele: any) => ele.treatyEffectiveYear !== 0 && ele.treatyEffectiveYear != null
     )
   );
+
+
   const W8BENData = useSelector((state: any) => state.w8Ben);
   console.log(W8BENData, "W8BENDataW8BENDataW8BENData");
   const LoadData = () => {
@@ -608,9 +610,9 @@ export default function FCTA_Reporting(props: any) {
                                         <option value={257}>
                                           United Kingdom
                                         </option>
-                                        <option value={258}>
+                                        {/* <option value={258}>
                                           United States
-                                        </option>
+                                        </option> */}
                                         <option value="">-----</option>
                                         {getCountriesData?.map((ele: any) => (
                                           <option key={ele?.id} value={ele?.id}>
