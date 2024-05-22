@@ -1579,16 +1579,21 @@ useEffect(()=>{
                                 value={values.countryOfCitizenshipId}
                               >
                                 <option value="">---select---</option>
-                                {/* <option value={257}>United Kingdom</option>
-                                <option value={258}>United States</option>
-                                <option value={500}>---</option> */}
-                                {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                               </select>
                               {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ? <p className="error">{errors.countryOfCitizenshipId}</p> : <></>}
 
@@ -1646,16 +1651,21 @@ useEffect(()=>{
                                 value={values.countryOfBirthId}
                               >
                                 <option value="">---select---</option>
-                                {/* <option value={257}>United Kingdom</option>
-                                <option value={258}>United States</option>
-                                <option value={500}>---</option> */}
-                                {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                               </select>
 
                               {/* <select
@@ -1843,16 +1853,21 @@ useEffect(()=>{
                                   value={values.countryOfBirthId}
                                 >
                                   <option value="">---select---</option>
-                                  {/* <option value={257}>United Kingdom</option>
-                                  <option value={258}>United States</option>
-                                  <option value={500}>---</option> */}
-                                  {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
-                                    (ele: any) => (
-                                      <option key={ele?.id} value={ele?.id}>
-                                        {ele?.name}
-                                      </option>
-                                    )
-                                  )}
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                 </select>
                                 {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
                                     <p className="error">{errors?.countryOfBirthId}</p>
@@ -2118,16 +2133,21 @@ useEffect(()=>{
                                 value={values.countryOfCitizenshipId}
                               >
                                 <option value="">---select---</option>
-                                {/* <option value={257}>United Kingdom</option>
-                                <option value={258}>United States</option>
-                                <option value={500}>---</option> */}
-                                {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                               </select>
                               {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ? <p className="error">{errors.countryOfCitizenshipId}</p> : <></>}
 
@@ -2607,16 +2627,21 @@ useEffect(()=>{
                                     value={values.foreignTINCountryId}
                                   >
                                     <option value={0}>---select---</option>
-                                    {/* <option value={257}>United Kingdom</option>
-                                    <option value={500}>---</option> */}
-                                    {
-                                      getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
-                                        (ele: any) => (
-                                          <option key={ele?.id} value={ele?.id}>
-                                            {ele?.name}
-                                          </option>
-                                        )
-                                      )}
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                   </select>
                                 </FormControl>
                               </div>
@@ -3086,16 +3111,21 @@ useEffect(()=>{
                                   value={values.foreignTINCountryId}
                                 >
                                   <option value={0}>---select---</option>
-                                  {/* <option value={257}>United Kingdom</option>
-                                  <option value={500}>---</option> */}
-                                  {
-                                    getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
-                                      (ele: any) => (
-                                        <option key={ele?.id} value={ele?.id}>
-                                          {ele?.name}
-                                        </option>
-                                      )
-                                    )}
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                 </select>
                               </FormControl>
                             </div>
@@ -3680,16 +3710,21 @@ useEffect(()=>{
                             >
                               <option value={0}>---select---</option>
 
-                              {/* <option value={257}>United Kingdom</option>
-                              <option value={258}>United States</option>
-                              <option value={500}>---</option> */}
-                              {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
-                                (ele: any) => (
-                                  <option key={ele?.id} value={ele?.id}>
-                                    {ele?.name}
-                                  </option>
-                                )
-                              )}
+                              {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                             </select>
                             {errors.permanentResidentialCountryId && touched.permanentResidentialCountryId ? <p className="error">{errors.permanentResidentialCountryId}</p> : <></>}
 
@@ -4656,16 +4691,21 @@ useEffect(()=>{
                                 value={values.permanentResidentialCountryId1}
                               >
                                 <option value={0}>---select---</option>
-                                {/* <option value={257}>United Kingdom</option>
-                                <option value={258}>United States</option>
-                                <option value={500}>---</option> */}
-                                {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                               </select>
                               {errors.permanentResidentialCountryId1 && touched.permanentResidentialCountryId1 ? <p className="error">{errors.permanentResidentialCountryId1}</p> : <></>}
 
@@ -6271,19 +6311,21 @@ useEffect(()=>{
                                       value={values.accountBankBranchLocationId}
                                     >
                                       <option value={0}>---select---</option>
-                                      {/* <option value={16}>Australia</option>
-                                      <option value={257}>
-                                        United Kingdom
-                                      </option>
-                                      <option value={258}>United States</option>
-                                      <option value={500}>---</option> */}
-                                      {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
-                                        (ele: any) => (
-                                          <option key={ele?.id} value={ele?.id}>
-                                            {ele?.name}
-                                          </option>
-                                        )
-                                      )}
+                                      {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                     </select>
                                     {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? <p className="error">{errors.accountBankBranchLocationId}</p> : <></>}
 
@@ -6413,18 +6455,21 @@ useEffect(()=>{
                                         {errors.payResidentalCountryId}
                                       </p>
                                       <option value={0}>---select---</option>
-                                      {/* <option value={257}>
-                                        United Kingdom
-                                      </option>
-                                      <option value={258}>United States</option>
-                                      <option value={500}>---</option> */}
-                                      {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
-                                        (ele: any) => (
-                                          <option key={ele?.id} value={ele?.id}>
-                                            {ele?.name}
-                                          </option>
-                                        )
-                                      )}
+                                      {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                     </select>
                                     {errors.payResidentalCountryId && touched.payResidentalCountryId ? <p className="error">{errors.payResidentalCountryId}</p> : <></>}
 
@@ -6769,31 +6814,21 @@ useEffect(()=>{
                                       >
                                         ---select---
                                       </option>
-                                      <option
-                                        value={257}
-                                        onClick={() => setBankLocation("UK")}
-                                      >
-                                        United Kingdom
-                                      </option>
-                                      <option
-                                        value={258}
-                                        onClick={() => setBankLocation("US")}
-                                      >
-                                        United States
-                                      </option>
-                                      <option
-                                        value=""
-                                        onClick={() => setBankLocation("")}
-                                      >
-                                        ---
-                                      </option>
-                                      {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
-                                        (ele: any) => (
-                                          <option key={ele?.id} value={ele?.id}>
-                                            {ele?.name}
-                                          </option>
-                                        )
-                                      )}
+                                      {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                     </select>
                                     {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? <p className="error">{errors.accountBankBranchLocationId}</p> : <></>}
 
