@@ -63,8 +63,8 @@ export default function Fedral_tax(props: any) {
     businessDisgradedEntity:
       PrevStepData?.businessDisgradedEntity ||"",
     countryOfIncorporation:
-      PrevStepData?.countryOfIncorporation || 0,
-    chapter3Status: PrevStepData?.chapter3Status || 0,
+      PrevStepData?.countryOfIncorporationId || 0,
+    chapter3Status: PrevStepData?.chapter3StatusId,
     businessName: PrevStepData?.businessName || "",
     DateOfIncorporation:EntityDualCert?.DateOfIncorporation ||"",
     IsJurisdictionforTaxPurposes: EntityDualCert ?. IsJurisdictionforTaxPurposes ||"No",
@@ -99,7 +99,7 @@ export default function Fedral_tax(props: any) {
     dispatch(getAllCountriesIncomeCode());
     // dispatch(getAllStateByCountryId())
     dispatch(GetHelpVideoDetails());
-    dispatch(GetChapter3Status(FormTypeId.BENE));
+    dispatch(GetChapter3Status(FormTypeId.W8EXP));
   }, []);
   // const viewPdf = () => {
   //   history("/w8Eci_pdf", { replace: true });
@@ -1630,7 +1630,7 @@ export default function Fedral_tax(props: any) {
                                           ...prevStepData,
                                           AccountHolderDetailsId:authDetails.accountHolderId,
                                           AgentId: authDetails?.agentId,
-                                          formTypeId: FormTypeId.FW81MY,
+                                          formTypeId: FormTypeId.W8EXP,
                                           stepName: `/${urlValue}`,
                                         },
                                         () => {
@@ -1643,7 +1643,7 @@ export default function Fedral_tax(props: any) {
                                 })
                               }
                             }
-                            formTypeId={FormTypeId.FW81MY}
+                            formTypeId={FormTypeId.W8EXP}
                           >
                           </SaveAndExit>
                           <Button
