@@ -46,7 +46,8 @@ import {
   getTinTypes,
   GetAgentPaymentType,
   GetHelpVideoDetails,
-  GET_AGENT_BY_ID
+  GET_AGENT_BY_ID,
+  getAllCountriesAgentWise
 } from "../../Redux/Actions";
 import moment from "moment";
 import { AppDispatch } from "../../Redux/store";
@@ -99,7 +100,7 @@ export default function IndividualUs() {
 
 
   const allCountriesData = useSelector(
-    (state: any) => state.getCountriesReducer
+    (state: any) => state.getCountriesAgentWiseReducer
   );
   const accountHolderDetails = JSON.parse(localStorage.getItem("accountHolderDetails") || "{}")
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
@@ -344,6 +345,7 @@ export default function IndividualUs() {
 useEffect(()=>{
   if(authDetails?.agentId){
     dispatch(GetAgentUSVisaTypeHiddenForEformAction(authDetails?.agentId));
+    dispatch(getAllCountriesAgentWise(authDetails?.agentId));    
     dispatch(
       getTinTypes(authDetails?.agentId, (data: any) => {
         setUStinArray(data);
@@ -475,6 +477,9 @@ useEffect(()=>{
 
   const getCountriesReducer = useSelector(
     (state: any) => state.getCountriesReducer
+  );
+  const getCountriesAgentWiseReducer = useSelector(
+    (state: any) => state.getCountriesAgentWiseReducer
   );
   const getCountriesCodeReducer = useSelector(
     (state: any) => state.getCountriesCodeReducer
@@ -1577,7 +1582,7 @@ useEffect(()=>{
                                 {/* <option value={257}>United Kingdom</option>
                                 <option value={258}>United States</option>
                                 <option value={500}>---</option> */}
-                                {getCountriesReducer.allCountriesData?.map(
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
                                   (ele: any) => (
                                     <option key={ele?.id} value={ele?.id}>
                                       {ele?.name}
@@ -1644,7 +1649,7 @@ useEffect(()=>{
                                 {/* <option value={257}>United Kingdom</option>
                                 <option value={258}>United States</option>
                                 <option value={500}>---</option> */}
-                                {getCountriesReducer.allCountriesData?.map(
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
                                   (ele: any) => (
                                     <option key={ele?.id} value={ele?.id}>
                                       {ele?.name}
@@ -1841,7 +1846,7 @@ useEffect(()=>{
                                   {/* <option value={257}>United Kingdom</option>
                                   <option value={258}>United States</option>
                                   <option value={500}>---</option> */}
-                                  {getCountriesReducer.allCountriesData?.map(
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
                                     (ele: any) => (
                                       <option key={ele?.id} value={ele?.id}>
                                         {ele?.name}
@@ -2116,7 +2121,7 @@ useEffect(()=>{
                                 {/* <option value={257}>United Kingdom</option>
                                 <option value={258}>United States</option>
                                 <option value={500}>---</option> */}
-                                {getCountriesReducer.allCountriesData?.map(
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
                                   (ele: any) => (
                                     <option key={ele?.id} value={ele?.id}>
                                       {ele?.name}
@@ -2605,7 +2610,7 @@ useEffect(()=>{
                                     {/* <option value={257}>United Kingdom</option>
                                     <option value={500}>---</option> */}
                                     {
-                                      getCountriesReducer.allCountriesData?.map(
+                                      getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
                                         (ele: any) => (
                                           <option key={ele?.id} value={ele?.id}>
                                             {ele?.name}
@@ -3084,7 +3089,7 @@ useEffect(()=>{
                                   {/* <option value={257}>United Kingdom</option>
                                   <option value={500}>---</option> */}
                                   {
-                                    getCountriesReducer.allCountriesData?.map(
+                                    getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
                                       (ele: any) => (
                                         <option key={ele?.id} value={ele?.id}>
                                           {ele?.name}
@@ -3678,7 +3683,7 @@ useEffect(()=>{
                               {/* <option value={257}>United Kingdom</option>
                               <option value={258}>United States</option>
                               <option value={500}>---</option> */}
-                              {getCountriesReducer.allCountriesData?.map(
+                              {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
                                 (ele: any) => (
                                   <option key={ele?.id} value={ele?.id}>
                                     {ele?.name}
@@ -4654,7 +4659,7 @@ useEffect(()=>{
                                 {/* <option value={257}>United Kingdom</option>
                                 <option value={258}>United States</option>
                                 <option value={500}>---</option> */}
-                                {getCountriesReducer.allCountriesData?.map(
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
                                   (ele: any) => (
                                     <option key={ele?.id} value={ele?.id}>
                                       {ele?.name}
@@ -6272,7 +6277,7 @@ useEffect(()=>{
                                       </option>
                                       <option value={258}>United States</option>
                                       <option value={500}>---</option> */}
-                                      {getCountriesReducer.allCountriesData?.map(
+                                      {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
                                         (ele: any) => (
                                           <option key={ele?.id} value={ele?.id}>
                                             {ele?.name}
@@ -6413,7 +6418,7 @@ useEffect(()=>{
                                       </option>
                                       <option value={258}>United States</option>
                                       <option value={500}>---</option> */}
-                                      {getCountriesReducer.allCountriesData?.map(
+                                      {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
                                         (ele: any) => (
                                           <option key={ele?.id} value={ele?.id}>
                                             {ele?.name}
@@ -6782,7 +6787,7 @@ useEffect(()=>{
                                       >
                                         ---
                                       </option>
-                                      {getCountriesReducer.allCountriesData?.map(
+                                      {getCountriesAgentWiseReducer.agentWiseCountriesData?.map(
                                         (ele: any) => (
                                           <option key={ele?.id} value={ele?.id}>
                                             {ele?.name}

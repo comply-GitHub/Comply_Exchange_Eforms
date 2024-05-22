@@ -4,6 +4,7 @@ const EndPoint = {
   eFormSignIn1: "/eFormSignIn/eFormSignIn1",
   individualAccountHolder: "/AccountHolderDetail/InsertAccountHolderDetail",
   GetCountries: "/Country/GetAllCountries",
+  GetAgentWiseCountries: "/Country/GetAgentWiseCountries",
   GetSettings:"/Setting/GetSetting",
   GetCountriesTreaty: "/Countries/GetAllCountries",
   GetCountriesCode: "/Country/GetCountriesCode",
