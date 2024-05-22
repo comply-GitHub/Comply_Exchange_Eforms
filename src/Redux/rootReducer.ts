@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 // import { getMovieDataReducer, getSearchDataReducer } from "./reducer";
 import {
   getCountriesReducer,
+  getCountriesAgentWiseReducer,
   getSettingsReducer,
   getControllingPersonReducer,
   getCountriesCodeReducer,
@@ -66,6 +67,7 @@ import WarningReducer from "./Reducers/WarningReducer";
 
 let reducers = {
   getCountriesReducer,
+  getCountriesAgentWiseReducer,
   getCountriesCodeReducer,
   GetDualCertW9Reducer,
   GetAllIncomeCodesReducer,

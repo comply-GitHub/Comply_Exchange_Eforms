@@ -811,6 +811,32 @@ export const getAllCountries = (callback: any = () => { console.log("") }): any 
   };
 };
 
+export const getAllCountriesAgentWise = (_id: Number, callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetAgentWiseCountries,
+      `?AgentId=${_id}`,
+      (resData) => {
+        if (resData.status === 200) {
+          if (callback) {
+            callback(resData.data)
+          }
+          dispatch({
+            type: Utils.actionName.GetAgentWiseCountries,
+            payload: {
+              agentWiseCountriesData: resData.data,
+            },
+          });
+
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
+
 export const getAllCountriesWithTreaty = (): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
