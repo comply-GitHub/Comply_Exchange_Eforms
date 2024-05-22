@@ -48,7 +48,8 @@ import {
   getTinTypes,
   GetHelpVideoDetails,
   GET_AGENT_BY_ID,
-  GetAgentSkippedSteps
+  GetAgentSkippedSteps,
+  getAllCountriesAgentWise
 } from "../../Redux/Actions";
 import { AppDispatch } from "../../Redux/store";
 import GlobalValues from "../../Utils/constVals";
@@ -324,7 +325,9 @@ export default function Entity() {
       GetAgentPaymentType(authDetails?.agentId, () => {
       })
     );
+    dispatch(getAllCountriesAgentWise(authDetails?.agentId));  
     dispatch(
+      
       getTinTypes(authDetails?.agentId, (data: any) => {
         setUStinArray(data);
         let datas = data.filter((ele: any) => {
@@ -346,6 +349,10 @@ export default function Entity() {
 
     LoadPageData();
   }, [authDetails]);
+
+  const getCountriesAgentWiseReducer = useSelector(
+    (state: any) => state.getCountriesAgentWiseReducer
+  );
 
   const onUidBlur = (e: any, values: any): any => {
     const value = e.target.value;
@@ -1959,15 +1966,21 @@ export default function Entity() {
                               value={values.foreignTINCountryId}
                             >
                               <option value={0}>---select---</option>
-                              <option value={257}>United Kingdom</option>
-                              <option value={500}>---</option>
-                              {getCountriesReducer.allCountriesData?.map(
-                                (ele: any) => (
-                                  <option key={ele?.id} value={ele?.id}>
-                                    {ele?.name}
-                                  </option>
-                                )
-                              )}
+                              {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                             </select>
                           </FormControl>
                         </div>
@@ -2589,16 +2602,21 @@ export default function Entity() {
                           >
                             <option value={0}>---select---</option>
 
-                            <option value={257}>United Kingdom</option>
-                            <option value={258}>United States</option>
-                            <option value={500}>---</option>
-                            {getCountriesReducer.allCountriesData?.map(
-                              (ele: any) => (
-                                <option key={ele?.id} value={ele?.id}>
-                                  {ele?.name}
-                                </option>
-                              )
-                            )}
+                            {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                           </select>
                           {errors.permanentResidentialCountryId && touched.permanentResidentialCountryId ? (<p className="error">
                             {errors.permanentResidentialCountryId}
@@ -3543,16 +3561,21 @@ export default function Entity() {
                                 value={values.permanentResidentialCountryId1}
                               >
                                 <option value={0}>---select---</option>
-                                <option value={257}>United Kingdom</option>
-                                <option value={258}>United States</option>
-                                <option value={500}>---</option>
-                                {getCountriesReducer.allCountriesData?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                               </select>
                               {errors.permanentResidentialCountryId1 && touched.permanentResidentialCountryId1 ? (<p className="error">
                                 {errors.permanentResidentialCountryId1}
@@ -4044,14 +4067,21 @@ export default function Entity() {
                             value={values.primaryContactNumberId}
                           >
                             <option value={0}>---select---</option>
-                            {/* <option value={1}>--Select1--</option> */}
-                            {getCountriesCodeReducer.allCountriesCodeData?.map(
-                              (ele: any) => (
-                                <option key={ele?.id} value={ele?.id}>
-                                  {ele?.name}
-                                </option>
-                              )
-                            )}
+                            {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                           </select>
                           <Input
                             className="mt-2"
@@ -4145,14 +4175,21 @@ export default function Entity() {
                                     value={values.alternativeNumberId1}
                                   >
                                     <option value={0}>---select---</option>
-                                    {/* <option value={1}>--Select1--</option> */}
-                                    {getCountriesCodeReducer.allCountriesCodeData?.map(
-                                      (ele: any) => (
-                                        <option key={ele?.id} value={ele?.id}>
-                                          {ele?.name}
-                                        </option>
-                                      )
-                                    )}
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                   </select>
                                   <Delete
                                     sx={{
@@ -5156,17 +5193,21 @@ export default function Entity() {
                                     value={values.accountBankBranchLocationId}
                                   >
                                     <option value={0}>---select---</option>
-                                    <option value={16}>Australia</option>
-                                    <option value={257}>United Kingdom</option>
-                                    <option value={258}>United States</option>
-                                    <option value={500}>---</option>
-                                    {getCountriesReducer.allCountriesData?.map(
-                                      (ele: any) => (
-                                        <option key={ele?.id} value={ele?.id}>
-                                          {ele?.name}
-                                        </option>
-                                      )
-                                    )}
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                   </select>
                                   {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? (<p className="error">
                                     {errors.accountBankBranchLocationId}
@@ -5288,16 +5329,21 @@ export default function Entity() {
                                     value={values.payResidentalCountryId}
                                   >
                                     <option value={0}>---select---</option>
-                                    <option value={257}>United Kingdom</option>
-                                    <option value={258}>United States</option>
-                                    <option value={500}>---</option>
-                                    {getCountriesReducer.allCountriesData?.map(
-                                      (ele: any) => (
-                                        <option key={ele?.id} value={ele?.id}>
-                                          {ele?.name}
-                                        </option>
-                                      )
-                                    )}
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                   </select>
                                   {errors.payResidentalCountryId && touched.payResidentalCountryId ? (<p className="error">
                                     {errors.payResidentalCountryId}
