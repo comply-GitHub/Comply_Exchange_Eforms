@@ -9,6 +9,7 @@ const EndPoint = {
   GetCountriesTreaty: "/Countries/GetAllCountries",
   GetCountriesCode: "/Country/GetCountriesCode",
   GetAllIncomeCodes: "/Countries/GetAllIncomeCodes",
+  GetAllIncomeCodesAgentWise: "/Countries/GetAllIncomeCodesAgentWise",
   GetCountryArticleByID: "/Countries/GetCountryArticleByID",
   GetStateByCountryId: "/Country/GetStateByCountryId",
   InsertAccountHolderDetail: "/AccountHolderDetail/InsertAccountHolderDetail",
