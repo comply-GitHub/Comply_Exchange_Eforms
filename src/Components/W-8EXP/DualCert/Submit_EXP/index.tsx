@@ -423,7 +423,7 @@ const Declaration = (props: any) => {
                           GlobalValues.basePageRoute
                         );
                       })
-                    }} formTypeId={FormTypeId.W8ECI} />
+                    }} formTypeId={FormTypeId.W8EXP} />
                     <Button
                       onClick={() => {
                         dispatch(GetECIDCPdf(authDetails?.accountHolderId))

@@ -230,7 +230,7 @@ const individualSelfType = {
         return {
           agentId: authDetails.agentId,
           accountHolderDetailsId: authDetails?.accountHolderId,
-          formTypeId: FormTypeId.W9,
+          formTypeId: FormTypeId.BENE,
           formEntryId: ele.formEntryId,
           firstName: ele.firstName,
           familyName: ele.familyName,
