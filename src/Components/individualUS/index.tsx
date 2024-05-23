@@ -47,7 +47,8 @@ import {
   GetAgentPaymentType,
   GetHelpVideoDetails,
   GET_AGENT_BY_ID,
-  getAllCountriesAgentWise
+  getAllCountriesAgentWise,
+  getAllCountriesIncomeCodeAgentWise
 } from "../../Redux/Actions";
 import moment from "moment";
 import { AppDispatch } from "../../Redux/store";
@@ -345,7 +346,8 @@ export default function IndividualUs() {
 useEffect(()=>{
   if(authDetails?.agentId){
     dispatch(GetAgentUSVisaTypeHiddenForEformAction(authDetails?.agentId));
-    dispatch(getAllCountriesAgentWise(authDetails?.agentId));    
+    dispatch(getAllCountriesAgentWise(authDetails?.agentId));   
+    dispatch(getAllCountriesIncomeCodeAgentWise(authDetails?.agentId));    
     dispatch(
       getTinTypes(authDetails?.agentId, (data: any) => {
         setUStinArray(data);
@@ -486,6 +488,9 @@ useEffect(()=>{
   );
   const GetAllIncomeCodesReducer = useSelector(
     (state: any) => state.GetAllIncomeCodesReducer
+  );
+  const GetAllIncomeCodesAgentWiseReducer = useSelector(
+    (state: any) => state.GetAllIncomeCodesAgentWiseReducer
   );
   // console.log("GetAllIncomeCodesReducer" , GetAllIncomeCodesReducer)
 
@@ -5754,7 +5759,7 @@ useEffect(()=>{
                                             value={selectedValues[i]}
                                           >
                                             <option value="0">---select---</option>
-                                            {GetAllIncomeCodesReducer.allCountriesIncomeCodeData?.map(
+                                            {GetAllIncomeCodesAgentWiseReducer.allCountriesIncomeCodeDataAgentWise?.map(
                                               (ele: any) => (
                                                 <option
                                                   key={ele?.id}

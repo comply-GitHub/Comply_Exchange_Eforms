@@ -49,7 +49,8 @@ import {
   GetHelpVideoDetails,
   GET_AGENT_BY_ID,
   GetAgentSkippedSteps,
-  getAllCountriesAgentWise
+  getAllCountriesAgentWise,
+  getAllCountriesIncomeCodeAgentWise
 } from "../../Redux/Actions";
 import { AppDispatch } from "../../Redux/store";
 import GlobalValues from "../../Utils/constVals";
@@ -326,6 +327,7 @@ export default function Entity() {
       })
     );
     dispatch(getAllCountriesAgentWise(authDetails?.agentId));  
+    dispatch(getAllCountriesIncomeCodeAgentWise(authDetails?.agentId));  
     dispatch(
       
       getTinTypes(authDetails?.agentId, (data: any) => {
@@ -445,6 +447,9 @@ export default function Entity() {
   );
   const GetAllIncomeCodesReducer = useSelector(
     (state: any) => state.GetAllIncomeCodesReducer
+  );
+  const GetAllIncomeCodesAgentWiseReducer = useSelector(
+    (state: any) => state.GetAllIncomeCodesAgentWiseReducer
   );
   const GetStateByCountryIdReducer = useSelector(
     (state: any) => state.GetStateByCountryIdReducer
@@ -4641,7 +4646,7 @@ export default function Entity() {
                                           value={selectedValues[i]}
                                         >
                                           <option value="0">---select---</option>
-                                          {GetAllIncomeCodesReducer.allCountriesIncomeCodeData?.map(
+                                          {GetAllIncomeCodesAgentWiseReducer.allCountriesIncomeCodeDataAgentWise?.map(
                                             (ele: any) => (
                                               <option
                                                 key={ele?.id}

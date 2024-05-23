@@ -931,6 +931,29 @@ export const getAllCountriesIncomeCode = (): any => {
   };
 };
 
+export const getAllCountriesIncomeCodeAgentWise = (_id: Number, callback: any = () => { console.log("") }): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GetAllIncomeCodesAgentWise,
+      `?AgentId=${_id}`,
+      (resData) => {
+        const { data } = resData;
+        if (resData.status === 200) {
+          dispatch({
+            type: Utils.actionName.GetAllIncomeCodesAgentWise,
+            payload: {
+              allCountriesIncomeCodeDataAgentWise: resData.data,
+            },
+          });
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
+
 export const getAllStateByCountryId = (id: any): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
