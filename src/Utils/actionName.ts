@@ -18,6 +18,7 @@ const ActionName = {
     GetCountriesTreaty: "GetCountriesTreaty",
     GetCountriesCode: "GetCountriesCode",
     GetAllIncomeCodes :"GetAllIncomeCodes",
+    GetAllIncomeCodesAgentWise: "GetAllIncomeCodesAgentWise",
     GetStateByCountryId:"GetStateByCountryId",
     GetCountryArticleByID:"GetCountryArticleByID",
     GetSecurityQuestion:"GetSecurityQuestion",
