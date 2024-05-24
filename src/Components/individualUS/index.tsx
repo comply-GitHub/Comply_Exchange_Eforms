@@ -324,6 +324,7 @@ export default function IndividualUs() {
   const isLoginAndContinue = () => {
     return false;
   }
+  
 
   const ahdData: any = useSelector((state: any) => state?.accountHolder);
 
@@ -6691,7 +6692,16 @@ useEffect(()=>{
                               </div>
 
                               <div className="d-flex mt-3">
-                                <Checkbox />
+                                <Checkbox   checked={values.isCorrectPaymentPurposes}
+                                name="radio-buttons"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                // error={Boolean(touched.isCorrectPaymentPurposes && errors.isCorrectPaymentPurposes)}
+                                value={values.isCorrectPaymentPurposes}
+                              />
+                              {touched.isCorrectPaymentPurposes && errors.isCorrectPaymentPurposes ? (<p className="error">
+                                {errors.isCorrectPaymentPurposes}
+                              </p>) : ""}
                                 <Typography
                                   align="left"
                                   style={{ marginTop: "10px" }}
@@ -6740,7 +6750,7 @@ useEffect(()=>{
                                       name="accountHolderName"
                                       placeholder="Enter Account holder name"
                                       onChange={handleChange}
-                                      // onBlur={handleBlur}
+                                    onBlur={handleBlur}
                                       error={Boolean(
                                         touched.accountHolderName &&
                                         errors.accountHolderName
@@ -6934,7 +6944,7 @@ useEffect(()=>{
                                         name="iban"
                                         placeholder="Enter IBAN"
                                         onChange={handleChange}
-                                        // onBlur={handleBlur}
+                                         onBlur={handleBlur}
                                         // error={Boolean(touched.iban && errors.iban)}
                                         value={values.iban}
                                       />
