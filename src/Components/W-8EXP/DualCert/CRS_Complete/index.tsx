@@ -44,7 +44,7 @@ export default function Declaration (props: any){
     id:0,
     // agentId: authDetails.agentId,
     // accountHolderBasicDetailId: authDetails.accountHolderId,
-    formTypeId: FormTypeId.FW81MY,
+    formTypeId: FormTypeId.W8EXP,
     formEntryId:0,
     classificationType : "CRS",
     userType:"DC",
@@ -97,7 +97,7 @@ export default function Declaration (props: any){
       <div className="row w-100">
         <div className="col-4 mt-3">
 
-          <BreadCrumbComponent breadCrumbCode={1210} formName={3} />
+          <BreadCrumbComponent breadCrumbCode={1210} formName={17} />
         </div>
 
         <div className="col-8 mt-3">

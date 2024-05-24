@@ -224,13 +224,13 @@ const individualSelfType = {
     }
   }
   useEffect(() => {
-    dispatch(GetDualCertDetailsPerson(authDetails?.accountHolderId, FormTypeId.FW81MY,(res: any[]) => {
+    dispatch(GetDualCertDetailsPerson(authDetails?.accountHolderId, FormTypeId.W8EXP,(res: any[]) => {
       console.log(res, "existing data");
       let temp = res.map((ele: any) => {
         return {
           agentId: authDetails.agentId,
           accountHolderDetailsId: authDetails?.accountHolderId,
-          formTypeId: FormTypeId.FW81MY,
+          formTypeId: FormTypeId.W8EXP,
           formEntryId: ele.formEntryId,
           firstName: ele.firstName,
           familyName: ele.familyName,

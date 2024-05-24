@@ -191,7 +191,10 @@ export default function Tin(props: any) {
             <div
               style={{ padding: "20px 0px", height: "100%" }}
             >
-              <BreadCrumbComponent breadCrumbCode={1249} formName={4} />
+             {obValues?.businessTypeId == 2?( <BreadCrumbComponent breadCrumbCode={1230} formName={16} />):
+             
+             <BreadCrumbComponent breadCrumbCode={1230} formName={15} />
+             }
             </div>
           </div>
           <div className="col-8 mt-3">

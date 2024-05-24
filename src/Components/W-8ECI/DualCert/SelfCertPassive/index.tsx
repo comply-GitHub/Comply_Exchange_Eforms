@@ -224,13 +224,13 @@ const individualSelfType = {
     }
   }
   useEffect(() => {
-    dispatch(GetDualCertDetailsPerson(authDetails?.accountHolderId, FormTypeId.FW81MY,(res: any[]) => {
+    dispatch(GetDualCertDetailsPerson(authDetails?.accountHolderId, FormTypeId.W8ECI,(res: any[]) => {
       console.log(res, "existing data");
       let temp = res.map((ele: any) => {
         return {
           agentId: authDetails.agentId,
           accountHolderDetailsId: authDetails?.accountHolderId,
-          formTypeId: FormTypeId.FW81MY,
+          formTypeId: FormTypeId.W8ECI,
           formEntryId: ele.formEntryId,
           firstName: ele.firstName,
           familyName: ele.familyName,
@@ -447,7 +447,7 @@ const individualSelfType = {
       <div className="row w-100 " >
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>
-            <BreadCrumbComponent breadCrumbCode={1500} formName={1} />
+            <BreadCrumbComponent breadCrumbCode={1210} formName={16} />
 
           </div>
         </div>

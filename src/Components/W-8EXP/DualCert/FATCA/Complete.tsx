@@ -57,7 +57,7 @@ export default function Declaration (props: any){
       id:0,
       // agentId: authDetails.agentId,
       // accountHolderBasicDetailId: authDetails.accountHolderId,
-      formTypeId: FormTypeId.FW81MY,
+      formTypeId: FormTypeId.W8EXP,
       formEntryId:0,
       classificationType : "FATCA",
       userType:"SC",
@@ -86,7 +86,7 @@ export default function Declaration (props: any){
       <div className="row w-100">
         <div className="col-4 mt-3">
 
-          <BreadCrumbComponent breadCrumbCode={1320} formName={FormTypeId.CaymanEntity} />
+          <BreadCrumbComponent breadCrumbCode={1220} formName={17} />
         </div>
 
         <div className="col-8 mt-3">
