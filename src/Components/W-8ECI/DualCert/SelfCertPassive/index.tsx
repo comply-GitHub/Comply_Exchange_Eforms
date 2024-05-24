@@ -39,6 +39,7 @@ import "./index.scss";
 import useAuth from "../../../../customHooks/useAuth";
 import { boolean } from "yup";
 import Redirect from "../../../../Router/RouterSkip";
+import { GetECIDCPdf } from "../../../../Redux/Actions/PfdActions";
 type ValuePiece = Date | null;
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function Certifications(props: any) {
@@ -422,7 +423,9 @@ const individualSelfType = {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+          }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
@@ -532,7 +535,9 @@ const individualSelfType = {
 
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
-                          onClick={viewPdf}
+                          onClick={() => {
+                            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                          }}
                         >
                           View form
                         </Button>

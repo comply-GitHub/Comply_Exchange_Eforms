@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik } from "formik";
-import { W8_state_ECI, PostDualCert, GetHelpVideoDetails } from "../../../../Redux/Actions";
+import { PostDualCert, GetHelpVideoDetails } from "../../../../Redux/Actions";
 import { certificateSchema_w9_DC } from "../../../../schemas/w8Exp";
 import InfoIcon from "@mui/icons-material/Info";
 import checksolid from "../../../assets/img/check-solid.png";
@@ -27,6 +27,7 @@ import { useLocation } from "react-router-dom";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../../customHooks/useAuth";
+import { GetBENEDCPdf } from "../../../../Redux/Actions/PfdActions";
 
 export default function Certifications(props: any) {
   const location = useLocation();
@@ -96,7 +97,9 @@ export default function Certifications(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform"  onClick={() => {
+                            dispatch(GetBENEDCPdf(authDetails?.accountHolderId))
+                          }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
@@ -305,7 +308,9 @@ export default function Certifications(props: any) {
 
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
-                          onClick={viewPdf}
+                          onClick={() => {
+                            dispatch(GetBENEDCPdf(authDetails?.accountHolderId))
+                          }}
                         >
                           View form
                         </Button>

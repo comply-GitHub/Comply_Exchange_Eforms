@@ -16,7 +16,7 @@ import useAuth from "../../../../customHooks/useAuth";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { SubmitSchemaECI } from "../../../../schemas/w8ECI";
-import { GetEciPdf } from "../../../../Redux/Actions/PfdActions";
+import { GetBENEDCPdf, GetEciPdf } from "../../../../Redux/Actions/PfdActions";
 
 const Declaration = (props: any) => {
   const { open, setOpen } = props;
@@ -428,9 +428,9 @@ const Declaration = (props: any) => {
                       })
                     }} formTypeId={FormTypeId.BENE} />
                     <Button
-                      onClick={() => {
-                        dispatch(GetEciPdf(authDetails?.accountHolderId))
-                      }}
+                     onClick={() => {
+                      dispatch(GetBENEDCPdf(authDetails?.accountHolderId))
+                    }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >

@@ -15,7 +15,7 @@ import useAuth from "../../../../customHooks/useAuth";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { SubmitSchemaECI } from "../../../../schemas/w8ECI";
-import { GetECIDCPdf, GetEciPdf } from "../../../../Redux/Actions/PfdActions";
+import { GetECIDCPdf, GetEXPDCPdf, GetEciPdf } from "../../../../Redux/Actions/PfdActions";
 
 
 
@@ -426,7 +426,7 @@ const Declaration = (props: any) => {
                     }} formTypeId={FormTypeId.W8EXP} />
                     <Button
                       onClick={() => {
-                        dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                        dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
                       }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
