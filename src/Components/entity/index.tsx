@@ -4095,21 +4095,13 @@ export default function Entity() {
                             value={values.primaryContactNumberId}
                           >
                             <option value={0}>---select---</option>
-                            {getCountriesAgentWiseReducer.agentWiseCountriesData
-    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
-    .map((ele:any) => (
-      <option key={ele.id} value={ele.id}>
-        {ele.name}
-      </option>
-    ))}
-  <option value={500}>---</option>
-  {getCountriesAgentWiseReducer.agentWiseCountriesData
-    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
-    .map((ele:any) => (
-      <option key={ele.id} value={ele.id}>
-        {ele.name}
-      </option>
-    ))}
+                            {getCountriesCodeReducer.allCountriesCodeData?.map(
+                              (ele: any) => (
+                                <option key={ele?.id} value={ele?.id}>
+                                  {ele?.name}
+                                </option>
+                              )
+                            )}
                           </select>
                           <Input
                             className="mt-2"
