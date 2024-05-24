@@ -5495,7 +5495,7 @@ useEffect(()=>{
                                     Interest, Dividends, Rents, Royalties, Prizes
                                     and Awards. Income Codes, associated with Form
                                     1042-S reporting, can be found here:
-                                    https://www.irs.gov/pub/irs-pdf/p515.pdf
+                                    <Link href="https://www.irs.gov/pub/irs-pdf/p515.pdf" target="_blank" rel="noopener noreferrer">https://www.irs.gov/pub/irs-pdf/p515.pdf</Link>
                                   </Typography>
 
                                   <Link
@@ -5713,7 +5713,7 @@ useEffect(()=>{
                                     Interest, Dividends, Rents, Royalties, Prizes
                                     and Awards. Income Codes, associated with Form
                                     1042-S reporting, can be found here:
-                                    https://www.irs.gov/pub/irs-pdf/p515.pdf
+                                    <Link href="https://www.irs.gov/pub/irs-pdf/p515.pdf" target="_blank" rel="noopener noreferrer">https://www.irs.gov/pub/irs-pdf/p515.pdf</Link>
                                   </Typography>
 
                                   <Link
