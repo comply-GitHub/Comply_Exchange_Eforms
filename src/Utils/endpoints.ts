@@ -107,6 +107,9 @@ GetForm8233Pdf:"/Form8233Individual/GetForm8233Pdf",
 GetW9DCPdf:"/W9IndividualEntity/GetW9DCPdf",
 GetECIDCPdf:"/W8ECIIndividualEntity/GetECIDCPdf",
 GetBENDCPdf:"/W8BENIndividual/GetBENDCPdf",
+GetBENEDCPdf:"/W8BENEEntity/GetBENEDCPdf",
+GetEXPDCPdf:"/W8EXPEntity/GetExpDCPdf",
+GetIMYDCPdf:"/W8IMYEntity/GetIMYDCPdf",
 GetCaymanIndividualPdf:"/CaymanIndividualNonUS/GetCaymanIndividualPdf",
 
 

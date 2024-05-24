@@ -16,6 +16,8 @@ import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import Utils from "../../../../Utils";
+import { GetECIDCPdf } from "../../../../Redux/Actions/PfdActions";
+import useAuth from "../../../../customHooks/useAuth";
 export default function Declaration (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
@@ -23,7 +25,7 @@ export default function Declaration (props: any){
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
-
+  const { authDetails } = useAuth();
   const handleChangeAccodionState = (panel: string, panelHeading: string) => (
     event: React.SyntheticEvent,
     newExpanded: boolean
@@ -80,7 +82,9 @@ export default function Declaration (props: any){
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform">View Form</div>
+          <div className="viewform"  onClick={() => {
+            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+          }}>View Form</div>
           <div className="helpvideo">
             <a
               href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"

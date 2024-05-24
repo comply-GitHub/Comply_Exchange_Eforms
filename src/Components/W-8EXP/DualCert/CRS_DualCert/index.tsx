@@ -16,6 +16,8 @@ import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import Utils from "../../../../Utils";
+import { GetEXPDCPdf } from "../../../../Redux/Actions/PfdActions";
+import useAuth from "../../../../customHooks/useAuth";
 export default function Declaration (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
@@ -50,7 +52,7 @@ export default function Declaration (props: any){
   };
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
-  
+  const { authDetails } = useAuth();
     const initialValue = {
     isAgreeWithDeclaration: false,
     isConsentReceipentstatement: false,
@@ -82,7 +84,9 @@ export default function Declaration (props: any){
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform">View Form</div>
+          <div className="viewform" onClick={() => {
+                              dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                            }}>View Form</div>
           <div className="helpvideo">
             <a
               href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"
@@ -388,6 +392,10 @@ export default function Declaration (props: any){
                   >
                    
                     <Button
+                     onClick={() => {
+                      dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                    }}
+                       
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
                     >

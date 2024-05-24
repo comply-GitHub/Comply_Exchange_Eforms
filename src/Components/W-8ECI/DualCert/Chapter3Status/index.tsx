@@ -40,7 +40,7 @@ import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import useAuth from "../../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
-import { GetEciPdf } from "../../../../Redux/Actions/PfdActions";
+import { GetECIDCPdf, GetEciPdf } from "../../../../Redux/Actions/PfdActions";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const {
@@ -149,9 +149,9 @@ export default function Fedral_tax(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform" onClick={() => {
-              dispatch(GetEciPdf(authDetails?.accountHolderId))
-            }}>View Form</div>
+            <div className="viewform"  onClick={() => {
+            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+          }}>View Form</div>
             <div className="helpvideo">
               {GethelpData && GethelpData[5].id === 7 ? (
                 <a
@@ -1651,7 +1651,7 @@ export default function Fedral_tax(props: any) {
                             disabled={isSubmitting}
                             variant="contained"
                             onClick={() => {
-                              dispatch(GetEciPdf(authDetails?.accountHolderId))
+                              dispatch(GetECIDCPdf(authDetails?.accountHolderId))
                             }}
                             style={{ color: "white", marginLeft: "15px" }}
                           >

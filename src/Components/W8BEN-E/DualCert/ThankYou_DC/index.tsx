@@ -22,7 +22,7 @@ import { useRef } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { GetEciPdf } from "../../../../Redux/Actions/PfdActions";
+import { GetBENEDCPdf, GetEciPdf } from "../../../../Redux/Actions/PfdActions";
 import useAuth from "../../../../customHooks/useAuth";
 
 export default function Term() {
@@ -132,8 +132,7 @@ export default function Term() {
                 <Button
                   //type="submit"
                   onClick={() => {
-                    // history("/w8Eci_pdf");
-                    dispatch(GetEciPdf(authDetails?.accountHolderId))
+                    dispatch(GetBENEDCPdf(authDetails?.accountHolderId))
                   }}
                   style={{
                     border: "1px solid #0095dd",

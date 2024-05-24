@@ -39,6 +39,7 @@ import SecurityCodeRecover from "../../../Reusable/SecurityCodeRecover";
 import useAuth from "../../../../customHooks/useAuth";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
+import { GetIMYDCPdf } from "../../../../Redux/Actions/PfdActions";
 type ValuePiece = Date | null;
 console.log(Date, "date");
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
@@ -157,7 +158,9 @@ export default function Penalties() {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
-                  <div className="viewform">View Form</div>
+                  <div className="viewform" onClick={() => {
+                    dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                  }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                     {GethelpData && GethelpData[3].id === 5 ? (
@@ -730,7 +733,9 @@ export default function Penalties() {
                         }}
                       >
                         <Button
-
+onClick={() => {
+  dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+}}
                           variant="contained"
                           style={{ color: "white" }}
                         >

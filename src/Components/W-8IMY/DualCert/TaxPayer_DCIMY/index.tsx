@@ -36,6 +36,7 @@ import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import useAuth from "../../../../customHooks/useAuth";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import Text from "./tesx";
+import { GetIMYDCPdf } from "../../../../Redux/Actions/PfdActions";
 
 export default function TaxPayer(props: any) {
   const dispatch = useDispatch();
@@ -368,7 +369,9 @@ export default function TaxPayer(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+                    dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                  }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
@@ -1131,7 +1134,9 @@ export default function TaxPayer(props: any) {
                   );
                 })
               }} formTypeId={FormTypeId.W9} /> */}
-              <Button variant="contained" onClick={viewPdf} style={{ color: "white", marginLeft: "15px" }}>
+              <Button variant="contained" onClick={() => {
+                    dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                  }}style={{ color: "white", marginLeft: "15px" }}>
                 View Form
               </Button>
               <Button
