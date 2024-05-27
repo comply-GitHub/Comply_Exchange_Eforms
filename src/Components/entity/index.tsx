@@ -13,6 +13,7 @@ import {
   Tooltip,
   Link,
 } from "@mui/material";
+import InputMask from 'react-input-mask';
 import View_Insructions from "../viewInstruction";
 import Infoicon from "../../assets/img/info.png";
 // import { useDispatch } from "react-redux";
@@ -323,18 +324,20 @@ export default function Entity() {
       dispatch(getAllCountriesAgentWise(authDetails?.agentId));   
       dispatch(getAllCountriesIncomeCodeAgentWise(authDetails?.agentId));    
       dispatch(
+
         getTinTypes(authDetails?.agentId, (data: any) => {
           setUStinArray(data);
           let datas = data.filter((ele: any) => {
-            return ele.usIndividual === true;
+            return ele.nonUSEntity === true;
           });
           setUStinvalue(datas);
-          let nonData = data.filter((ele: any) => {
-            return ele.nonUSIndividual === true;
+          let dataNonUSEntity = data.filter((ele: any) => {
+            return ele.usEntity === true;
           });
-          setNonUsIndividual(nonData)
+          setNonUSEntity(dataNonUSEntity);
         })
       );
+  
       dispatch(
         GetAgentPaymentType(authDetails?.agentId, () => {
           // console.log("Data");
@@ -1930,7 +1933,7 @@ export default function Entity() {
                             <Typography align="left" className="d-flex w-100 ">
                               U.S.TIN
                             </Typography>
-                            <Input
+                            <InputMask
                               disabled={
                                 values.taxpayerIdTypeID == 8 ||
                                 values.taxpayerIdTypeID == 7 ||
@@ -1950,9 +1953,9 @@ export default function Entity() {
                               id="outlined"
                               name="usTin"
                               placeholder="Enter U.S. TIN"
-                              onKeyDown={(e) => formatTin(e, values)}
+                              // onKeyDown={(e) => formatTin(e, values)}
                               onChange={handleChange}
-                              inputProps={{ maxLength: 10 }}
+                              mask="999-99-9999"
                               value={values.usTin}
                             />
                           </FormControl>
@@ -2433,7 +2436,7 @@ export default function Entity() {
                                 *
                               </span>
                             </Typography>
-                            <Input
+                            <InputMask
                               disabled={values.taxpayerIdTypeID == 0}
                               style={{
                                 border: " 1px solid #d9d9d9 ",
@@ -2449,9 +2452,9 @@ export default function Entity() {
                               id="outlined"
                               name="usTin"
                               placeholder="Enter U.S. TIN"
-                              onKeyDown={(e) => formatTin(e, values)}
+                              // onKeyDown={(e) => formatTin(e, values)}
                               onChange={handleChange}
-                              inputProps={{ maxLength: 11 }}
+                              mask="999-99-9999"
                               value={values.usTin}
                             />
                           </FormControl>

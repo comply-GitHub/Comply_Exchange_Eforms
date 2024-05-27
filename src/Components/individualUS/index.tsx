@@ -31,6 +31,7 @@ import { individualSchema } from "../../schemas/individualindex";
  import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import "bootstrap/dist/css/bootstrap.css";
+import InputMask from 'react-input-mask';
 import entity from "../../../src/assets/img/entity.png";
 import individual from "../../../src/assets/img/individual.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -2572,7 +2573,7 @@ useEffect(()=>{
                                       *
                                     </span>
                                   </Typography>
-                                  <Input
+                                  <InputMask
                                     disabled={
                                       values.taxpayerIdTypeID == 8 ||
                                       values.taxpayerIdTypeID == 7 ||
@@ -2591,13 +2592,14 @@ useEffect(()=>{
                                       padding: " 0 10px ",
                                     }}
                                     id="outlined"
+                                    mask="999-99-9999"
                                     name="usTin"
                                     placeholder="Enter U.S. TIN"
-                                    onKeyDown={(e: any) => formatTin(e, values)}
+                                    // onKeyDown={(e: any) => formatTin(e, values)}
                                     onChange={handleChange}
-                                    inputProps={{ maxLength: 11 }}
+                                    // inputProps={{ maxLength: 11 }}
                                     onBlur={handleBlur}
-                                    error={Boolean(touched.usTin && errors.usTin)}
+                                    // error={Boolean(touched.usTin && errors.usTin)}
                                     value={values.usTin}
                                   />
                                   {errors.usTin && touched.usTin ? <p className="error">{errors.usTin}</p> : <></>}
@@ -2935,7 +2937,7 @@ useEffect(()=>{
                                 </span>
                               </Typography>
                               <FormControl className="w-100">
-                                <Input
+                                <InputMask
                                   disabled={
                                     // values.taxpayerIdTypeID == 3 ||
                                     values.taxpayerIdTypeID == 1 ||
@@ -2957,9 +2959,9 @@ useEffect(()=>{
                                   id="outlined"
                                   name="usTin"
                                   placeholder="Enter U.S. TIN"
-                                  onKeyDown={(e: any) => formatTin(e, values)}
+                                  // onKeyDown={(e: any) => formatTin(e, values)}
                                   onChange={handleChange}
-                                  inputProps={{ maxLength: 11 }}
+                                  mask="999-99-9999"
                                   onBlur={handleBlur}
                                   error={Boolean(touched.usTin && errors.usTin)}
                                   value={values.usTin}
@@ -3062,7 +3064,7 @@ useEffect(()=>{
                                     *
                                   </span>
                                 </Typography>
-                                <Input
+                                <InputMask
                                   disabled={
                                     values.taxpayerIdTypeID == 8 ||
                                     values.taxpayerIdTypeID == 7 ||
@@ -3083,9 +3085,9 @@ useEffect(()=>{
                                   id="outlined"
                                   name="usTin"
                                   placeholder="Enter U.S. TIN"
-                                  onKeyDown={(e: any) => formatTin(e, values)}
+                                  // onKeyDown={(e: any) => formatTin(e, values)}
                                   onChange={handleChange}
-                                  inputProps={{ maxLength: 11 }}
+                                  mask="999-99-9999"
                                   onBlur={handleBlur}
                                   error={Boolean(touched.usTin && errors.usTin)}
                                   value={values.usTin}
@@ -3495,7 +3497,7 @@ useEffect(()=>{
                                 </span>
                               </Typography>
                               <FormControl className="w-100">
-                                <Input
+                                <InputMask
                                   disabled={
                                     // values.taxpayerIdTypeID == 3 ||
                                     values.taxpayerIdTypeID == 1 ||
@@ -3517,9 +3519,9 @@ useEffect(()=>{
                                   id="outlined"
                                   name="usTin"
                                   placeholder="Enter U.S. TIN"
-                                  onKeyDown={(e: any) => formatTin(e, values)}
+                                  // onKeyDown={(e: any) => formatTin(e, values)}
                                   onChange={handleChange}
-                                  inputProps={{ maxLength: 11 }}
+                                  mask="999-99-9999"
                                   onBlur={handleBlur}
                                   error={Boolean(touched.usTin && errors.usTin)}
                                   value={values.usTin}
