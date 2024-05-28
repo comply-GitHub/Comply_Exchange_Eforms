@@ -1937,7 +1937,8 @@ export default function Entity() {
                               disabled={
                                 values.taxpayerIdTypeID == 8 ||
                                 values.taxpayerIdTypeID == 7 ||
-                                values.taxpayerIdTypeID == 1
+                                values.taxpayerIdTypeID == 1 ||
+                                values.taxpayerIdTypeID == 0
                               }
                               style={{
                                 border: " 1px solid #d9d9d9 ",
@@ -2250,13 +2251,13 @@ export default function Entity() {
                           </div>
 
                         }
-                        {isGiinEnabled ? <div className="col-12" style={{ marginTop: "20px" }}>
+                        {isGiinEnabled ? <div className="col-12">
                           <div className="row">
-                            <div className="col-lg-3 col-6 col-md-3 ">
+                            <div className="col-lg-3 col-6 col-md-3">
                               <FormControl className="w-100">
                                 <Typography align="left">
                                   GIIN
-                                  {/* <span style={{ color: 'red' }}>*</span> */}
+                                 
                                   <span>
                                     <Tooltip
                                       style={{
