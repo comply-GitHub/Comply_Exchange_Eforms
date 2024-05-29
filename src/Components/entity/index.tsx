@@ -2253,7 +2253,7 @@ export default function Entity() {
                         }
                         {isGiinEnabled ? <div className="col-12">
                           <div className="row">
-                            <div className="col-lg-3 col-6 col-md-3">
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
                               <FormControl className="w-100">
                                 <Typography align="left">
                                   GIIN
@@ -2287,7 +2287,7 @@ export default function Entity() {
                                       <Info
                                         style={{
                                           color: "#ffc107",
-                                          fontSize: "16px",
+                                          fontSize: "14px",
                                           cursor: "pointer",
                                           verticalAlign: "super",
                                         }}
@@ -2366,7 +2366,7 @@ export default function Entity() {
                     ) : (
                       <div className="col-12 d-flex">
                         <div className="col-lg-3 col-6 col-md-3 ">
-                          <Typography align="left" className="d-flex w-100 ">
+                          <Typography align="left" className="d-flex w-100">
                             U.S. TIN Type
                             <span
                               style={{ color: "red", verticalAlign: "super" }}
