@@ -26,7 +26,7 @@ import View_Insructions from "../../../viewInstruction";
 import { useLocation } from "react-router-dom";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
-import { GetECIDCPdf } from "../../../../Redux/Actions/PfdActions";
+import { GetECIDCPdf, GetEXPDCPdf } from "../../../../Redux/Actions/PfdActions";
 import useAuth from "../../../../customHooks/useAuth";
 
 export default function Certifications(props: any) {
@@ -99,8 +99,8 @@ export default function Certifications(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
-          }}>View Form</div>
+                    dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                  }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
@@ -125,7 +125,7 @@ export default function Certifications(props: any) {
       <div className="row w-100 " style={{ backgroundColor: "#0c3d69" }}>
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>
-            <BreadCrumbComponent breadCrumbCode={1259} formName={1} />
+            <BreadCrumbComponent breadCrumbCode={1330} formName={17} />
 
           </div>
         </div>
@@ -307,13 +307,13 @@ export default function Certifications(props: any) {
                           }).catch((err) => {
                             console.log(err);
                           })
-                        }} formTypeId={FormTypeId.W8ECI} />
+                        }} formTypeId={FormTypeId.W8EXP} />
                         <Button
 
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                            dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
                           }}
                         >
                           View form

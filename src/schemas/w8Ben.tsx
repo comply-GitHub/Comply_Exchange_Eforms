@@ -128,7 +128,9 @@ export const US_TINSchemaW8Ben_Dc = () => {
 
 export const US_TINSchemaW8BenE = () => {
   return Yup.object().shape({
-    usTinTypeId: Yup.number().required("Please select"),
+    usTinTypeId: Yup.number()
+    .notOneOf([0], "Please select"),
+    
     usTin: Yup.string().when(["notAvailable", "usTinTypeId"], {
       is: (notAvailable: any, usTinTypeId: any) => JSON.stringify(notAvailable) === "false" && JSON.stringify(usTinTypeId) !== "8" && JSON.stringify(usTinTypeId) !== "7" && JSON.stringify(usTinTypeId) !== "1",
       then: () =>

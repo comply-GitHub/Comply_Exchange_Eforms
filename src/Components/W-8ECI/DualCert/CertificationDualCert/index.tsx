@@ -34,6 +34,7 @@ export default function Certifications(props: any) {
   const { authDetails } = useAuth()
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
   console.log(PrevStepData, "prevv")
+  const Values = JSON.parse(localStorage.getItem("agentDetails") || '{}')
   const urlValue = location.pathname.substring(1);
   const initialValue = {
 
@@ -125,7 +126,7 @@ export default function Certifications(props: any) {
       <div className="row w-100 " style={{ backgroundColor: "#0c3d69" }}>
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>
-            <BreadCrumbComponent breadCrumbCode={1259} formName={1} />
+            {Values?.businessTypeId === 2 ?(<BreadCrumbComponent breadCrumbCode={1230} formName={16} />):<BreadCrumbComponent breadCrumbCode={1230} formName={15} />}
 
           </div>
         </div>

@@ -30,7 +30,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import useAuth from "../../../../customHooks/useAuth";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
-import { GetECIDCPdf } from "../../../../Redux/Actions/PfdActions";
+import { GetECIDCPdf, GetEXPDCPdf } from "../../../../Redux/Actions/PfdActions";
 // import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 export default function Tin(props: any) {
 
@@ -162,7 +162,7 @@ export default function Tin(props: any) {
             <div className="viewInstructions">View Instructions</div>
             <div className="viewform"
               onClick={() => {
-                dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
               }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -191,7 +191,7 @@ export default function Tin(props: any) {
             <div
               style={{ padding: "20px 0px", height: "100%" }}
             >
-              <BreadCrumbComponent breadCrumbCode={1249} formName={4} />
+              <BreadCrumbComponent breadCrumbCode={1230} formName={17} />
             </div>
           </div>
           <div className="col-8 mt-3">
@@ -210,7 +210,7 @@ export default function Tin(props: any) {
                       // ...PrevStepData,
                       ...values,
                       id: 0,
-                      FormTypeID: FormTypeId.W8ECI,
+                      FormTypeID: FormTypeId.W8EXP,
                       agentId: authDetails?.agentId,
 
                       AccountHolderDetailsId: authDetails?.accountHolderId,
@@ -1181,12 +1181,12 @@ export default function Tin(props: any) {
                               GlobalValues.basePageRoute
                             );
                           })
-                        }} formTypeId={FormTypeId.W8ECI} />
+                        }} formTypeId={FormTypeId.W8EXP} />
 
                         <Button
                           variant="contained"
                           onClick={() => {
-                            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                            dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
                           }}
                           style={{ color: "white", marginLeft: "15px" }}
                         >
@@ -1222,7 +1222,7 @@ export default function Tin(props: any) {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            history("/W-8ECI/Certification/Participation/Submit_Eci/ThankYou_Eci");
+                            history("/CRS_ECI_DC");
                           }}
                           variant="contained"
                           style={{

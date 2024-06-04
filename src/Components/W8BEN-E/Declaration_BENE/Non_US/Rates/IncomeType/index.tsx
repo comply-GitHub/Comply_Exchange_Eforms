@@ -39,7 +39,9 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
     console.log("change", e)
     UpdateIncomeType({ ...temp }, index);
   }
-
+  const GetAllIncomeCodesAgentWiseReducer = useSelector(
+    (state: any) => state.GetAllIncomeCodesAgentWiseReducer
+  );
   const getOptionsBasedOnMaxNumberOfParagraph = (maxNumber: number) => {
     let arr: any = [];
     for (let i = 1; i <= maxNumber; i++) {

@@ -171,7 +171,7 @@ export default function Term() {
                 <Button
                   type="submit"
                   onClick={() => {
-                    history("/IMY/ThankYou/Status_DC");
+                    history("/Chapter3_EXP_dualcert");
                   }}
                   style={{
                     border: "1px solid #0095dd",

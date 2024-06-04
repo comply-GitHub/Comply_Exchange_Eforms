@@ -15,11 +15,13 @@ import { useDispatch } from "react-redux";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
+import { GetEXPDCPdf } from "../../../../Redux/Actions/PfdActions";
+import useAuth from "../../../../customHooks/useAuth";
 export default function Declaration (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
   const Headingdata = localStorage.getItem("lastClickedPanelHeading") ;
-
+  const { authDetails } = useAuth();
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
@@ -47,7 +49,9 @@ export default function Declaration (props: any){
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform">View Form</div>
+          <div className="viewform" onClick={() => {
+                              dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                            }}>View Form</div>
           <div className="helpvideo">
             <a
               href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"
@@ -68,7 +72,7 @@ export default function Declaration (props: any){
       <div className="row w-100">
         <div className="col-4 mt-3">
 
-          <BreadCrumbComponent breadCrumbCode={1210} formName={3} />
+          <BreadCrumbComponent breadCrumbCode={1220} formName={17} />
         </div>
 
         <div className="col-8 mt-3">

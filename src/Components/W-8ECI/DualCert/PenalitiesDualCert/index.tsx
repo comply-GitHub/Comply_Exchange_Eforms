@@ -56,7 +56,7 @@ export default function Penalties() {
     setShowRecoverSection(!showRecoverSection);
     setSecurityWordError("");
   };
-
+  const Values = JSON.parse(localStorage.getItem("agentDetails") || '{}')
   useEffect(() => {
     document.title = "Certfication II"
   }, [])
@@ -178,7 +178,9 @@ export default function Penalties() {
               <div className="row w-100">
                 <div className="col-4">
                   <div style={{ padding: "20px 0px", height: "100%" }}>
-                    <BreadCrumbComponent breadCrumbCode={1269} formName={FormTypeId.W9} />
+                    {Values?.businessTypeId === 2 ?(<BreadCrumbComponent breadCrumbCode={1320} formName={16} />):
+                    <BreadCrumbComponent breadCrumbCode={1320} formName={15} />
+                    }
                   </div>
                 </div>
                 <div className="col-8 mt-3">

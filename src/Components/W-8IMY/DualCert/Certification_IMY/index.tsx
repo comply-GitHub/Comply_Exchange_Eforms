@@ -26,9 +26,12 @@ import View_Insructions from "../../../viewInstruction";
 import { useLocation } from "react-router-dom";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
+import { GetIMYDCPdf } from "../../../../Redux/Actions/PfdActions";
+import useAuth from "../../../../customHooks/useAuth";
 
 export default function Certifications(props: any) {
   const location = useLocation();
+  const { authDetails } = useAuth();
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
   console.log(PrevStepData, "prevv")
   const urlValue = location.pathname.substring(1);
@@ -95,7 +98,9 @@ export default function Certifications(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+                            dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                          }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
@@ -246,6 +251,9 @@ export default function Certifications(props: any) {
                               style={{ fontSize: "14px", color: "black", marginTop: "10px", textAlign: "justify" }}
                             >
                               Check to confirm you have reviewed the Electronic Form  <span
+                              onClick={() => {
+                                dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                              }}
                                 style={{ color: "blue", fontSize: "14px", marginLeft: "5px", cursor: "pointer" }}
                               >
                                 (View Electronic Form)
@@ -299,7 +307,9 @@ export default function Certifications(props: any) {
 
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
-                          onClick={viewPdf}
+                          onClick={() => {
+                            dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                          }}
                         >
                           View form
                         </Button>

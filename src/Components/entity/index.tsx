@@ -13,6 +13,7 @@ import {
   Tooltip,
   Link,
 } from "@mui/material";
+import InputMask from 'react-input-mask';
 import View_Insructions from "../viewInstruction";
 import Infoicon from "../../assets/img/info.png";
 // import { useDispatch } from "react-redux";
@@ -48,7 +49,11 @@ import {
   getTinTypes,
   GetHelpVideoDetails,
   GET_AGENT_BY_ID,
-  GetAgentSkippedSteps
+  GetAgentSkippedSteps,
+  getAllCountriesAgentWise,
+  getAllCountriesIncomeCodeAgentWise,
+  GetAgentUSVisaTypeHiddenForEformAction,
+  GetAgentIncomeTypeHiddenAllowAnoymo
 } from "../../Redux/Actions";
 import { AppDispatch } from "../../Redux/store";
 import GlobalValues from "../../Utils/constVals";
@@ -146,7 +151,7 @@ export default function Entity() {
     alternativeNumber: "",
     alternativeNumberId1: 0,
     alternativeNumber1: "",
-    incomeTypeId: 1,
+    incomeTypeId: [],
     paymentTypeId: 0,
     accountHolderName: "",
     userType: userType,
@@ -220,7 +225,7 @@ export default function Entity() {
     alternativeNumber: "",
     alternativeNumberId1: 0,
     alternativeNumber1: "",
-    incomeTypeId: 0,
+    incomeTypeId: [],
     paymentTypeId: 0,
     accountHolderName: "",
     accountBankName: "",
@@ -313,6 +318,40 @@ export default function Entity() {
   // useEffect(() =>{
   // document.title=""
   // },[])
+  useEffect(()=>{
+    if(authDetails?.agentId){
+      dispatch(GetAgentUSVisaTypeHiddenForEformAction(authDetails?.agentId));
+      dispatch(getAllCountriesAgentWise(authDetails?.agentId));   
+      dispatch(getAllCountriesIncomeCodeAgentWise(authDetails?.agentId));    
+      dispatch(
+
+        getTinTypes(authDetails?.agentId, (data: any) => {
+          setUStinArray(data);
+          let datas = data.filter((ele: any) => {
+            return ele.nonUSEntity === true;
+          });
+          setUStinvalue(datas);
+          let dataNonUSEntity = data.filter((ele: any) => {
+            return ele.usEntity === true;
+          });
+          setNonUSEntity(dataNonUSEntity);
+        })
+      );
+  
+      dispatch(
+        GetAgentPaymentType(authDetails?.agentId, () => {
+          // console.log("Data");
+        })
+      );
+  
+      dispatch(
+        GET_AGENT_BY_ID(authDetails?.agentId, (data: any) => {
+          // alert(data.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat)
+          setAgentData(data);
+        }));
+    }
+  },[authDetails])
+
 
   useEffect(() => {
     dispatch(getAllCountries());
@@ -320,32 +359,15 @@ export default function Entity() {
     dispatch(getAllCountriesIncomeCode());
     dispatch(GetHelpVideoDetails());
     dispatch(getAllStateByCountryId(0));
-    dispatch(
-      GetAgentPaymentType(authDetails?.agentId, () => {
-      })
-    );
-    dispatch(
-      getTinTypes(authDetails?.agentId, (data: any) => {
-        setUStinArray(data);
-        let datas = data.filter((ele: any) => {
-          return ele.nonUSEntity === true;
-        });
-        setUStinvalue(datas);
-        let dataNonUSEntity = data.filter((ele: any) => {
-          return ele.usEntity === true;
-        });
-        setNonUSEntity(dataNonUSEntity);
-      })
-    );
-
-    dispatch(
-      GET_AGENT_BY_ID(authDetails?.agentId, (data: any) => {
-        // alert(data.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat)
-        setAgentData(data);
-      }));
+    dispatch(GetAgentIncomeTypeHiddenAllowAnoymo());
+   
 
     LoadPageData();
-  }, [authDetails]);
+  }, []);
+
+  const getCountriesAgentWiseReducer = useSelector(
+    (state: any) => state.getCountriesAgentWiseReducer
+  );
 
   const onUidBlur = (e: any, values: any): any => {
     const value = e.target.value;
@@ -438,6 +460,9 @@ export default function Entity() {
   );
   const GetAllIncomeCodesReducer = useSelector(
     (state: any) => state.GetAllIncomeCodesReducer
+  );
+  const GetAllIncomeCodesAgentWiseReducer = useSelector(
+    (state: any) => state.GetAllIncomeCodesAgentWiseReducer
   );
   const GetStateByCountryIdReducer = useSelector(
     (state: any) => state.GetStateByCountryIdReducer
@@ -673,11 +698,24 @@ export default function Entity() {
     );
   };
 
+
+  useEffect(() => {
+    selectedValues.forEach((ele, i) => {
+      if (ele === "0") {
+        setIncomeErrors("Income field is mandatory")
+        return;
+      }
+      setIncomeErrors("")
+    })
+
+  }, [selectedValues])
   const handleIcome = (e: any, i: number) => {
     const newValue = e.target.value;
-    const updatedIncomeArr = [...incomeArr];
-    updatedIncomeArr[i] = newValue;
-    setIncomeArr(updatedIncomeArr);
+    setSelectedValues(prevState => {
+      const newState = [...prevState];
+      newState[i] = newValue;
+      return newState;
+    });
   };
   // console.log(errors,"error")
   return (
@@ -839,7 +877,7 @@ export default function Entity() {
                   alternativeNumber: values?.alternativeNumber,
                   alternativeNumberId1: values?.alternativeNumberId1,
                   alternativeNumber1: values?.alternativeNumber1,
-                  incomeTypeId: values?.incomeTypeId,
+                  incomeTypeId: incomeArr,
                   paymentTypeId: values?.paymentTypeId,
                   accountHolderName:
                     values?.accountHolderName === ""
@@ -1895,11 +1933,12 @@ export default function Entity() {
                             <Typography align="left" className="d-flex w-100 ">
                               U.S.TIN
                             </Typography>
-                            <Input
+                            <InputMask
                               disabled={
                                 values.taxpayerIdTypeID == 8 ||
                                 values.taxpayerIdTypeID == 7 ||
-                                values.taxpayerIdTypeID == 1
+                                values.taxpayerIdTypeID == 1 ||
+                                values.taxpayerIdTypeID == 0
                               }
                               style={{
                                 border: " 1px solid #d9d9d9 ",
@@ -1915,9 +1954,9 @@ export default function Entity() {
                               id="outlined"
                               name="usTin"
                               placeholder="Enter U.S. TIN"
-                              onKeyDown={(e) => formatTin(e, values)}
+                              // onKeyDown={(e) => formatTin(e, values)}
                               onChange={handleChange}
-                              inputProps={{ maxLength: 10 }}
+                              mask="999-99-9999"
                               value={values.usTin}
                             />
                           </FormControl>
@@ -1959,15 +1998,21 @@ export default function Entity() {
                               value={values.foreignTINCountryId}
                             >
                               <option value={0}>---select---</option>
-                              <option value={257}>United Kingdom</option>
-                              <option value={500}>---</option>
-                              {getCountriesReducer.allCountriesData?.map(
-                                (ele: any) => (
-                                  <option key={ele?.id} value={ele?.id}>
-                                    {ele?.name}
-                                  </option>
-                                )
-                              )}
+                              {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                             </select>
                           </FormControl>
                         </div>
@@ -2206,13 +2251,13 @@ export default function Entity() {
                           </div>
 
                         }
-                        {isGiinEnabled ? <div className="col-12" style={{ marginTop: "20px" }}>
+                        {isGiinEnabled ? <div className="col-12">
                           <div className="row">
-                            <div className="col-lg-3 col-6 col-md-3 ">
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
                               <FormControl className="w-100">
                                 <Typography align="left">
                                   GIIN
-                                  {/* <span style={{ color: 'red' }}>*</span> */}
+                                 
                                   <span>
                                     <Tooltip
                                       style={{
@@ -2242,7 +2287,7 @@ export default function Entity() {
                                       <Info
                                         style={{
                                           color: "#ffc107",
-                                          fontSize: "16px",
+                                          fontSize: "14px",
                                           cursor: "pointer",
                                           verticalAlign: "super",
                                         }}
@@ -2321,7 +2366,7 @@ export default function Entity() {
                     ) : (
                       <div className="col-12 d-flex">
                         <div className="col-lg-3 col-6 col-md-3 ">
-                          <Typography align="left" className="d-flex w-100 ">
+                          <Typography align="left" className="d-flex w-100">
                             U.S. TIN Type
                             <span
                               style={{ color: "red", verticalAlign: "super" }}
@@ -2392,7 +2437,7 @@ export default function Entity() {
                                 *
                               </span>
                             </Typography>
-                            <Input
+                            <InputMask
                               disabled={values.taxpayerIdTypeID == 0}
                               style={{
                                 border: " 1px solid #d9d9d9 ",
@@ -2408,9 +2453,9 @@ export default function Entity() {
                               id="outlined"
                               name="usTin"
                               placeholder="Enter U.S. TIN"
-                              onKeyDown={(e) => formatTin(e, values)}
+                              // onKeyDown={(e) => formatTin(e, values)}
                               onChange={handleChange}
-                              inputProps={{ maxLength: 11 }}
+                              mask="999-99-9999"
                               value={values.usTin}
                             />
                           </FormControl>
@@ -2589,16 +2634,21 @@ export default function Entity() {
                           >
                             <option value={0}>---select---</option>
 
-                            <option value={257}>United Kingdom</option>
-                            <option value={258}>United States</option>
-                            <option value={500}>---</option>
-                            {getCountriesReducer.allCountriesData?.map(
-                              (ele: any) => (
-                                <option key={ele?.id} value={ele?.id}>
-                                  {ele?.name}
-                                </option>
-                              )
-                            )}
+                            {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                           </select>
                           {errors.permanentResidentialCountryId && touched.permanentResidentialCountryId ? (<p className="error">
                             {errors.permanentResidentialCountryId}
@@ -3543,16 +3593,21 @@ export default function Entity() {
                                 value={values.permanentResidentialCountryId1}
                               >
                                 <option value={0}>---select---</option>
-                                <option value={257}>United Kingdom</option>
-                                <option value={258}>United States</option>
-                                <option value={500}>---</option>
-                                {getCountriesReducer.allCountriesData?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                               </select>
                               {errors.permanentResidentialCountryId1 && touched.permanentResidentialCountryId1 ? (<p className="error">
                                 {errors.permanentResidentialCountryId1}
@@ -4044,7 +4099,6 @@ export default function Entity() {
                             value={values.primaryContactNumberId}
                           >
                             <option value={0}>---select---</option>
-                            {/* <option value={1}>--Select1--</option> */}
                             {getCountriesCodeReducer.allCountriesCodeData?.map(
                               (ele: any) => (
                                 <option key={ele?.id} value={ele?.id}>
@@ -4145,14 +4199,21 @@ export default function Entity() {
                                     value={values.alternativeNumberId1}
                                   >
                                     <option value={0}>---select---</option>
-                                    {/* <option value={1}>--Select1--</option> */}
-                                    {getCountriesCodeReducer.allCountriesCodeData?.map(
-                                      (ele: any) => (
-                                        <option key={ele?.id} value={ele?.id}>
-                                          {ele?.name}
-                                        </option>
-                                      )
-                                    )}
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                   </select>
                                   <Delete
                                     sx={{
@@ -4339,7 +4400,7 @@ export default function Entity() {
                                   Interest, Dividends, Rents, Royalties, Prizes
                                   and Awards. Income Codes, associated with Form
                                   1042-S reporting, can be found here:
-                                  https://www.irs.gov/pub/irs-pdf/p515.pdf
+                                  <Link href="https://www.irs.gov/pub/irs-pdf/p515.pdf" target="_blank" rel="noopener noreferrer">https://www.irs.gov/pub/irs-pdf/p515.pdf</Link>
                                 </Typography>
 
                                 <Link
@@ -4557,7 +4618,7 @@ export default function Entity() {
                                   Interest, Dividends, Rents, Royalties, Prizes
                                   and Awards. Income Codes, associated with Form
                                   1042-S reporting, can be found here:
-                                  https://www.irs.gov/pub/irs-pdf/p515.pdf
+                                  <Link href="https://www.irs.gov/pub/irs-pdf/p515.pdf" target="_blank" rel="noopener noreferrer">https://www.irs.gov/pub/irs-pdf/p515.pdf</Link>
                                 </Typography>
 
                                 <Link
@@ -4604,7 +4665,7 @@ export default function Entity() {
                                           value={selectedValues[i]}
                                         >
                                           <option value="0">---select---</option>
-                                          {GetAllIncomeCodesReducer.allCountriesIncomeCodeData?.map(
+                                          {GetAllIncomeCodesAgentWiseReducer.allCountriesIncomeCodeDataAgentWise?.map(
                                             (ele: any) => (
                                               <option
                                                 key={ele?.id}
@@ -4930,20 +4991,20 @@ export default function Entity() {
                               </Tooltip>
                             </div>
                             <p className="error mb-0">
-                              {errors?.accountHolderName ||
-                                errors?.accountBankName ||
-                                errors?.accountBankBranchLocationId ||
-                                errors?.accountNumber ||
-                                errors?.makePayable ||
-                                errors?.payResidentalCountryId ||
-                                errors?.payStreetNumberAndName ||
-                                errors?.payCityorTown ||
-                                errors?.payStateOrProvince ||
-                                errors?.payZipPostalCode ||
-                                errors?.sortCode ||
-                                errors?.bsb ||
-                                errors?.bankCode ||
-                                errors?.abaRouting
+                              {errors?.accountHolderName && touched?.accountHolderName ||
+                                errors?.accountBankName && touched?.accountBankName||
+                                errors?.accountBankBranchLocationId && touched?.accountBankBranchLocationId||
+                                errors?.accountNumber && touched?.accountNumber||
+                                errors?.makePayable && touched?.makePayable||
+                                errors?.payResidentalCountryId && touched?.payResidentalCountryId||
+                                errors?.payStreetNumberAndName && touched?.payStreetNumberAndName||
+                                errors?.payCityorTown && touched?.payCityorTown||
+                                errors?.payStateOrProvince && touched?.payStateOrProvince||
+                                errors?.payZipPostalCode && touched?.payZipPostalCode||
+                                errors?.sortCode && touched?.sortCode||
+                                errors?.bsb && touched?.bsb||
+                                errors?.bankCode && touched?.bankCode||
+                                errors?.abaRouting && touched?.abaRouting
                                 ? "Mandatory Information Required!"
                                 : ""}
                             </p>
@@ -5156,17 +5217,21 @@ export default function Entity() {
                                     value={values.accountBankBranchLocationId}
                                   >
                                     <option value={0}>---select---</option>
-                                    <option value={16}>Australia</option>
-                                    <option value={257}>United Kingdom</option>
-                                    <option value={258}>United States</option>
-                                    <option value={500}>---</option>
-                                    {getCountriesReducer.allCountriesData?.map(
-                                      (ele: any) => (
-                                        <option key={ele?.id} value={ele?.id}>
-                                          {ele?.name}
-                                        </option>
-                                      )
-                                    )}
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                   </select>
                                   {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? (<p className="error">
                                     {errors.accountBankBranchLocationId}
@@ -5283,21 +5348,31 @@ export default function Entity() {
                                     id="outlined"
                                     name="payResidentalCountryId"
                                     // placeholder="Enter Residential Country"
-                                    onChange={handleChange}
+                                    onChange={(e) => {
+                                      handleChange(e);
+                                      //alert(e.target.value);
+                                      setFieldValue("payStateOrProvince", "")
+                                      dispatch(getAllStateByCountryId(e.target.value));
+                                    }}
                                     onBlur={handleBlur}
                                     value={values.payResidentalCountryId}
                                   >
                                     <option value={0}>---select---</option>
-                                    <option value={257}>United Kingdom</option>
-                                    <option value={258}>United States</option>
-                                    <option value={500}>---</option>
-                                    {getCountriesReducer.allCountriesData?.map(
-                                      (ele: any) => (
-                                        <option key={ele?.id} value={ele?.id}>
-                                          {ele?.name}
-                                        </option>
-                                      )
-                                    )}
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                   </select>
                                   {errors.payResidentalCountryId && touched.payResidentalCountryId ? (<p className="error">
                                     {errors.payResidentalCountryId}
@@ -5503,14 +5578,7 @@ export default function Entity() {
                                       )}
                                       value={values.payStateOrProvince}
                                     />
-                                    <p
-                                      style={{
-                                        color: "red",
-                                        textAlign: "left",
-                                      }}
-                                    >
-                                      {errors.payStateOrProvince}
-                                    </p>
+                                    {errors.payStateOrProvince && touched.payStateOrProvince ? <p className="error">{errors.payStateOrProvince}</p> : <></>}
                                   </FormControl>
                                 </div>
                               )}
@@ -5682,31 +5750,21 @@ export default function Entity() {
                                     >
                                       ---select---
                                     </option>
-                                    <option
-                                      value={257}
-                                      onClick={() => setBankLocation("UK")}
-                                    >
-                                      United Kingdom
-                                    </option>
-                                    <option
-                                      value={258}
-                                      onClick={() => setBankLocation("US")}
-                                    >
-                                      United States
-                                    </option>
-                                    <option
-                                      value=""
-                                      onClick={() => setBankLocation("")}
-                                    >
-                                      ---
-                                    </option>
-                                    {getCountriesReducer.allCountriesData?.map(
-                                      (ele: any) => (
-                                        <option key={ele?.id} value={ele?.id}>
-                                          {ele?.name}
-                                        </option>
-                                      )
-                                    )}
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                   </select>
                                   {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? (<p className="error">
                                     {errors.accountBankBranchLocationId}
@@ -5780,14 +5838,7 @@ export default function Entity() {
                                       )}
                                       value={values.abaRouting}
                                     />
-                                    <p
-                                      style={{
-                                        color: "red",
-                                        textAlign: "left",
-                                      }}
-                                    >
-                                      {errors.abaRouting}
-                                    </p>
+                                      {errors.abaRouting && touched.abaRouting ? <p className="error">{errors.abaRouting}</p> : <></>}
                                   </FormControl>
                                 </div>
                               ) : (
@@ -5818,6 +5869,7 @@ export default function Entity() {
                                         name="iban"
                                         placeholder="Enter IBAN"
                                         onChange={handleChange}
+                                        onBlur={handleBlur}
                                         value={values.iban}
                                       />
                                     </FormControl>
@@ -6079,15 +6131,21 @@ export default function Entity() {
                     ""
                   )}
                   <div className="row d-flex mx-1 mt-3">
+                  <div
+                        className="d-flex p-0 flex-column"
+                        onClick={() => {
+                          setFieldValue("isConfirmed", !values.isConfirmed);
+                        }}
+                      >
                     <div className="d-flex p-0">
                       <div className="w-auto px-2">
                         <Checkbox
                           className="pr-0"
-                          checked={values.isConfirmed}
+                          checked={values.isConfirmed || false}
                           name="isConfirmed"
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          value={values.isConfirmed}
+                        
                         // onBlur={handleBlur}
                         // error={Boolean(touched.isConfirmed && errors.isConfirmed)}
                         // value={payload.isConfirmed}
@@ -6105,6 +6163,7 @@ export default function Entity() {
                           I confirm the information above is correct.
                         </Typography>
                       </div>
+                    </div>
                     </div>
                     {errors.isConfirmed && touched.isConfirmed ? (<p className="error">
                       {errors.isConfirmed}

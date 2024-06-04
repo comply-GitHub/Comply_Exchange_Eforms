@@ -30,7 +30,7 @@ import useAuth from "../../../../customHooks/useAuth";
 import SecurityCodeRecover from "../../../Reusable/SecurityCodeRecover";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
-import { GetECIDCPdf, GetEciPdf } from "../../../../Redux/Actions/PfdActions";
+import { GetECIDCPdf, GetEXPDCPdf, GetEciPdf } from "../../../../Redux/Actions/PfdActions";
 export default function Penalties() {
   const location = useLocation();
   const { authDetails } = useAuth();
@@ -150,9 +150,9 @@ export default function Penalties() {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
-                  <div className="viewform" onClick={() => {
-                    dispatch(GetECIDCPdf(authDetails?.accountHolderId))
-                  }}>View Form</div>
+                  <div className="viewform"  onClick={() => {
+                            dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                          }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                     {GethelpData && GethelpData[5].id === 7 ? (
@@ -178,7 +178,7 @@ export default function Penalties() {
               <div className="row w-100">
                 <div className="col-4">
                   <div style={{ padding: "20px 0px", height: "100%" }}>
-                    <BreadCrumbComponent breadCrumbCode={1269} formName={FormTypeId.W9} />
+                    <BreadCrumbComponent breadCrumbCode={1320} formName={17} />
                   </div>
                 </div>
                 <div className="col-8 mt-3">
@@ -719,7 +719,18 @@ export default function Penalties() {
                               GlobalValues.basePageRoute
                             );
                           })
-                        }} formTypeId={FormTypeId.W8ECI} />
+                        }} formTypeId={FormTypeId.W8EXP} />
+                        <Button
+                            type="submit"
+                            disabled={isSubmitting}
+                            variant="contained"
+                            onClick={() => {
+                              dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                            }}
+                            style={{ color: "white", marginLeft: "15px" }}
+                          >
+                            View Form
+                          </Button>
                         <Button
                           onClick={() => {
                             submitForm().then(() => {

@@ -16,6 +16,7 @@ import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import useAuth from "../../../../customHooks/useAuth";
+import { GetIMYDCPdf } from "../../../../Redux/Actions/PfdActions";
 export default function Declaration (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
@@ -76,7 +77,9 @@ export default function Declaration (props: any){
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform">View Form</div>
+          <div className="viewform"  onClick={() => {
+                            dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                          }}>View Form</div>
           <div className="helpvideo">
             <a
               href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"
@@ -97,7 +100,7 @@ export default function Declaration (props: any){
       <div className="row w-100">
         <div className="col-4 mt-3">
 
-          <BreadCrumbComponent breadCrumbCode={1210} formName={3} />
+          <BreadCrumbComponent breadCrumbCode={1210} formName={17} />
         </div>
 
         <div className="col-8 mt-3">
@@ -203,7 +206,9 @@ export default function Declaration (props: any){
                   >
                    
                     <Button
-                 
+                  onClick={() => {
+                    dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                  }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
                     >

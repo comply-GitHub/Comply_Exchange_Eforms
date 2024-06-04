@@ -31,6 +31,7 @@ import { individualSchema } from "../../schemas/individualindex";
  import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import "bootstrap/dist/css/bootstrap.css";
+import InputMask from 'react-input-mask';
 import entity from "../../../src/assets/img/entity.png";
 import individual from "../../../src/assets/img/individual.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,7 +47,9 @@ import {
   getTinTypes,
   GetAgentPaymentType,
   GetHelpVideoDetails,
-  GET_AGENT_BY_ID
+  GET_AGENT_BY_ID,
+  getAllCountriesAgentWise,
+  getAllCountriesIncomeCodeAgentWise
 } from "../../Redux/Actions";
 import moment from "moment";
 import { AppDispatch } from "../../Redux/store";
@@ -99,7 +102,7 @@ export default function IndividualUs() {
 
 
   const allCountriesData = useSelector(
-    (state: any) => state.getCountriesReducer
+    (state: any) => state.getCountriesAgentWiseReducer
   );
   const accountHolderDetails = JSON.parse(localStorage.getItem("accountHolderDetails") || "{}")
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
@@ -322,6 +325,7 @@ export default function IndividualUs() {
   const isLoginAndContinue = () => {
     return false;
   }
+  
 
   const ahdData: any = useSelector((state: any) => state?.accountHolder);
 
@@ -344,6 +348,8 @@ export default function IndividualUs() {
 useEffect(()=>{
   if(authDetails?.agentId){
     dispatch(GetAgentUSVisaTypeHiddenForEformAction(authDetails?.agentId));
+    dispatch(getAllCountriesAgentWise(authDetails?.agentId));   
+    dispatch(getAllCountriesIncomeCodeAgentWise(authDetails?.agentId));    
     dispatch(
       getTinTypes(authDetails?.agentId, (data: any) => {
         setUStinArray(data);
@@ -476,11 +482,17 @@ useEffect(()=>{
   const getCountriesReducer = useSelector(
     (state: any) => state.getCountriesReducer
   );
+  const getCountriesAgentWiseReducer = useSelector(
+    (state: any) => state.getCountriesAgentWiseReducer
+  );
   const getCountriesCodeReducer = useSelector(
     (state: any) => state.getCountriesCodeReducer
   );
   const GetAllIncomeCodesReducer = useSelector(
     (state: any) => state.GetAllIncomeCodesReducer
+  );
+  const GetAllIncomeCodesAgentWiseReducer = useSelector(
+    (state: any) => state.GetAllIncomeCodesAgentWiseReducer
   );
   // console.log("GetAllIncomeCodesReducer" , GetAllIncomeCodesReducer)
 
@@ -1574,16 +1586,21 @@ useEffect(()=>{
                                 value={values.countryOfCitizenshipId}
                               >
                                 <option value="">---select---</option>
-                                {/* <option value={257}>United Kingdom</option>
-                                <option value={258}>United States</option>
-                                <option value={500}>---</option> */}
-                                {getCountriesReducer.allCountriesData?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                               </select>
                               {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ? <p className="error">{errors.countryOfCitizenshipId}</p> : <></>}
 
@@ -1641,16 +1658,21 @@ useEffect(()=>{
                                 value={values.countryOfBirthId}
                               >
                                 <option value="">---select---</option>
-                                {/* <option value={257}>United Kingdom</option>
-                                <option value={258}>United States</option>
-                                <option value={500}>---</option> */}
-                                {getCountriesReducer.allCountriesData?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                               </select>
 
                               {/* <select
@@ -1838,16 +1860,21 @@ useEffect(()=>{
                                   value={values.countryOfBirthId}
                                 >
                                   <option value="">---select---</option>
-                                  {/* <option value={257}>United Kingdom</option>
-                                  <option value={258}>United States</option>
-                                  <option value={500}>---</option> */}
-                                  {getCountriesReducer.allCountriesData?.map(
-                                    (ele: any) => (
-                                      <option key={ele?.id} value={ele?.id}>
-                                        {ele?.name}
-                                      </option>
-                                    )
-                                  )}
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                 </select>
                                 {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
                                     <p className="error">{errors?.countryOfBirthId}</p>
@@ -2113,16 +2140,21 @@ useEffect(()=>{
                                 value={values.countryOfCitizenshipId}
                               >
                                 <option value="">---select---</option>
-                                {/* <option value={257}>United Kingdom</option>
-                                <option value={258}>United States</option>
-                                <option value={500}>---</option> */}
-                                {getCountriesReducer.allCountriesData?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                               </select>
                               {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ? <p className="error">{errors.countryOfCitizenshipId}</p> : <></>}
 
@@ -2541,7 +2573,7 @@ useEffect(()=>{
                                       *
                                     </span>
                                   </Typography>
-                                  <Input
+                                  <InputMask
                                     disabled={
                                       values.taxpayerIdTypeID == 8 ||
                                       values.taxpayerIdTypeID == 7 ||
@@ -2560,13 +2592,14 @@ useEffect(()=>{
                                       padding: " 0 10px ",
                                     }}
                                     id="outlined"
+                                    mask="999-99-9999"
                                     name="usTin"
                                     placeholder="Enter U.S. TIN"
-                                    onKeyDown={(e: any) => formatTin(e, values)}
+                                    // onKeyDown={(e: any) => formatTin(e, values)}
                                     onChange={handleChange}
-                                    inputProps={{ maxLength: 11 }}
+                                    // inputProps={{ maxLength: 11 }}
                                     onBlur={handleBlur}
-                                    error={Boolean(touched.usTin && errors.usTin)}
+                                    // error={Boolean(touched.usTin && errors.usTin)}
                                     value={values.usTin}
                                   />
                                   {errors.usTin && touched.usTin ? <p className="error">{errors.usTin}</p> : <></>}
@@ -2602,16 +2635,21 @@ useEffect(()=>{
                                     value={values.foreignTINCountryId}
                                   >
                                     <option value={0}>---select---</option>
-                                    {/* <option value={257}>United Kingdom</option>
-                                    <option value={500}>---</option> */}
-                                    {
-                                      getCountriesReducer.allCountriesData?.map(
-                                        (ele: any) => (
-                                          <option key={ele?.id} value={ele?.id}>
-                                            {ele?.name}
-                                          </option>
-                                        )
-                                      )}
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                   </select>
                                 </FormControl>
                               </div>
@@ -2899,7 +2937,7 @@ useEffect(()=>{
                                 </span>
                               </Typography>
                               <FormControl className="w-100">
-                                <Input
+                                <InputMask
                                   disabled={
                                     // values.taxpayerIdTypeID == 3 ||
                                     values.taxpayerIdTypeID == 1 ||
@@ -2921,9 +2959,9 @@ useEffect(()=>{
                                   id="outlined"
                                   name="usTin"
                                   placeholder="Enter U.S. TIN"
-                                  onKeyDown={(e: any) => formatTin(e, values)}
+                                  // onKeyDown={(e: any) => formatTin(e, values)}
                                   onChange={handleChange}
-                                  inputProps={{ maxLength: 11 }}
+                                  mask="999-99-9999"
                                   onBlur={handleBlur}
                                   error={Boolean(touched.usTin && errors.usTin)}
                                   value={values.usTin}
@@ -3026,7 +3064,7 @@ useEffect(()=>{
                                     *
                                   </span>
                                 </Typography>
-                                <Input
+                                <InputMask
                                   disabled={
                                     values.taxpayerIdTypeID == 8 ||
                                     values.taxpayerIdTypeID == 7 ||
@@ -3047,9 +3085,9 @@ useEffect(()=>{
                                   id="outlined"
                                   name="usTin"
                                   placeholder="Enter U.S. TIN"
-                                  onKeyDown={(e: any) => formatTin(e, values)}
+                                  // onKeyDown={(e: any) => formatTin(e, values)}
                                   onChange={handleChange}
-                                  inputProps={{ maxLength: 11 }}
+                                  mask="999-99-9999"
                                   onBlur={handleBlur}
                                   error={Boolean(touched.usTin && errors.usTin)}
                                   value={values.usTin}
@@ -3081,16 +3119,21 @@ useEffect(()=>{
                                   value={values.foreignTINCountryId}
                                 >
                                   <option value={0}>---select---</option>
-                                  {/* <option value={257}>United Kingdom</option>
-                                  <option value={500}>---</option> */}
-                                  {
-                                    getCountriesReducer.allCountriesData?.map(
-                                      (ele: any) => (
-                                        <option key={ele?.id} value={ele?.id}>
-                                          {ele?.name}
-                                        </option>
-                                      )
-                                    )}
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                 </select>
                               </FormControl>
                             </div>
@@ -3454,7 +3497,7 @@ useEffect(()=>{
                                 </span>
                               </Typography>
                               <FormControl className="w-100">
-                                <Input
+                                <InputMask
                                   disabled={
                                     // values.taxpayerIdTypeID == 3 ||
                                     values.taxpayerIdTypeID == 1 ||
@@ -3476,9 +3519,9 @@ useEffect(()=>{
                                   id="outlined"
                                   name="usTin"
                                   placeholder="Enter U.S. TIN"
-                                  onKeyDown={(e: any) => formatTin(e, values)}
+                                  // onKeyDown={(e: any) => formatTin(e, values)}
                                   onChange={handleChange}
-                                  inputProps={{ maxLength: 11 }}
+                                  mask="999-99-9999"
                                   onBlur={handleBlur}
                                   error={Boolean(touched.usTin && errors.usTin)}
                                   value={values.usTin}
@@ -3675,16 +3718,21 @@ useEffect(()=>{
                             >
                               <option value={0}>---select---</option>
 
-                              {/* <option value={257}>United Kingdom</option>
-                              <option value={258}>United States</option>
-                              <option value={500}>---</option> */}
-                              {getCountriesReducer.allCountriesData?.map(
-                                (ele: any) => (
-                                  <option key={ele?.id} value={ele?.id}>
-                                    {ele?.name}
-                                  </option>
-                                )
-                              )}
+                              {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                             </select>
                             {errors.permanentResidentialCountryId && touched.permanentResidentialCountryId ? <p className="error">{errors.permanentResidentialCountryId}</p> : <></>}
 
@@ -4651,16 +4699,21 @@ useEffect(()=>{
                                 value={values.permanentResidentialCountryId1}
                               >
                                 <option value={0}>---select---</option>
-                                {/* <option value={257}>United Kingdom</option>
-                                <option value={258}>United States</option>
-                                <option value={500}>---</option> */}
-                                {getCountriesReducer.allCountriesData?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                               </select>
                               {errors.permanentResidentialCountryId1 && touched.permanentResidentialCountryId1 ? <p className="error">{errors.permanentResidentialCountryId1}</p> : <></>}
 
@@ -5444,7 +5497,7 @@ useEffect(()=>{
                                     Interest, Dividends, Rents, Royalties, Prizes
                                     and Awards. Income Codes, associated with Form
                                     1042-S reporting, can be found here:
-                                    https://www.irs.gov/pub/irs-pdf/p515.pdf
+                                    <Link href="https://www.irs.gov/pub/irs-pdf/p515.pdf" target="_blank" rel="noopener noreferrer">https://www.irs.gov/pub/irs-pdf/p515.pdf</Link>
                                   </Typography>
 
                                   <Link
@@ -5662,7 +5715,7 @@ useEffect(()=>{
                                     Interest, Dividends, Rents, Royalties, Prizes
                                     and Awards. Income Codes, associated with Form
                                     1042-S reporting, can be found here:
-                                    https://www.irs.gov/pub/irs-pdf/p515.pdf
+                                    <Link href="https://www.irs.gov/pub/irs-pdf/p515.pdf" target="_blank" rel="noopener noreferrer">https://www.irs.gov/pub/irs-pdf/p515.pdf</Link>
                                   </Typography>
 
                                   <Link
@@ -5709,7 +5762,7 @@ useEffect(()=>{
                                             value={selectedValues[i]}
                                           >
                                             <option value="0">---select---</option>
-                                            {GetAllIncomeCodesReducer.allCountriesIncomeCodeData?.map(
+                                            {GetAllIncomeCodesAgentWiseReducer.allCountriesIncomeCodeDataAgentWise?.map(
                                               (ele: any) => (
                                                 <option
                                                   key={ele?.id}
@@ -6266,19 +6319,21 @@ useEffect(()=>{
                                       value={values.accountBankBranchLocationId}
                                     >
                                       <option value={0}>---select---</option>
-                                      {/* <option value={16}>Australia</option>
-                                      <option value={257}>
-                                        United Kingdom
-                                      </option>
-                                      <option value={258}>United States</option>
-                                      <option value={500}>---</option> */}
-                                      {getCountriesReducer.allCountriesData?.map(
-                                        (ele: any) => (
-                                          <option key={ele?.id} value={ele?.id}>
-                                            {ele?.name}
-                                          </option>
-                                        )
-                                      )}
+                                      {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                     </select>
                                     {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? <p className="error">{errors.accountBankBranchLocationId}</p> : <></>}
 
@@ -6408,18 +6463,21 @@ useEffect(()=>{
                                         {errors.payResidentalCountryId}
                                       </p>
                                       <option value={0}>---select---</option>
-                                      {/* <option value={257}>
-                                        United Kingdom
-                                      </option>
-                                      <option value={258}>United States</option>
-                                      <option value={500}>---</option> */}
-                                      {getCountriesReducer.allCountriesData?.map(
-                                        (ele: any) => (
-                                          <option key={ele?.id} value={ele?.id}>
-                                            {ele?.name}
-                                          </option>
-                                        )
-                                      )}
+                                      {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                     </select>
                                     {errors.payResidentalCountryId && touched.payResidentalCountryId ? <p className="error">{errors.payResidentalCountryId}</p> : <></>}
 
@@ -6636,7 +6694,16 @@ useEffect(()=>{
                               </div>
 
                               <div className="d-flex mt-3">
-                                <Checkbox />
+                                <Checkbox   checked={values.isCorrectPaymentPurposes}
+                                name="radio-buttons"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                // error={Boolean(touched.isCorrectPaymentPurposes && errors.isCorrectPaymentPurposes)}
+                                value={values.isCorrectPaymentPurposes}
+                              />
+                              {touched.isCorrectPaymentPurposes && errors.isCorrectPaymentPurposes ? (<p className="error">
+                                {errors.isCorrectPaymentPurposes}
+                              </p>) : ""}
                                 <Typography
                                   align="left"
                                   style={{ marginTop: "10px" }}
@@ -6685,7 +6752,7 @@ useEffect(()=>{
                                       name="accountHolderName"
                                       placeholder="Enter Account holder name"
                                       onChange={handleChange}
-                                      // onBlur={handleBlur}
+                                    onBlur={handleBlur}
                                       error={Boolean(
                                         touched.accountHolderName &&
                                         errors.accountHolderName
@@ -6764,31 +6831,21 @@ useEffect(()=>{
                                       >
                                         ---select---
                                       </option>
-                                      <option
-                                        value={257}
-                                        onClick={() => setBankLocation("UK")}
-                                      >
-                                        United Kingdom
-                                      </option>
-                                      <option
-                                        value={258}
-                                        onClick={() => setBankLocation("US")}
-                                      >
-                                        United States
-                                      </option>
-                                      <option
-                                        value=""
-                                        onClick={() => setBankLocation("")}
-                                      >
-                                        ---
-                                      </option>
-                                      {getCountriesReducer.allCountriesData?.map(
-                                        (ele: any) => (
-                                          <option key={ele?.id} value={ele?.id}>
-                                            {ele?.name}
-                                          </option>
-                                        )
-                                      )}
+                                      {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
+  <option value={500}>---</option>
+  {getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+    .map((ele:any) => (
+      <option key={ele.id} value={ele.id}>
+        {ele.name}
+      </option>
+    ))}
                                     </select>
                                     {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? <p className="error">{errors.accountBankBranchLocationId}</p> : <></>}
 
@@ -6889,7 +6946,7 @@ useEffect(()=>{
                                         name="iban"
                                         placeholder="Enter IBAN"
                                         onChange={handleChange}
-                                        // onBlur={handleBlur}
+                                         onBlur={handleBlur}
                                         // error={Boolean(touched.iban && errors.iban)}
                                         value={values.iban}
                                       />

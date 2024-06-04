@@ -40,7 +40,7 @@ import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import useAuth from "../../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
-import { GetEciPdf } from "../../../../Redux/Actions/PfdActions";
+import { GetEXPDCPdf, GetEciPdf } from "../../../../Redux/Actions/PfdActions";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const {
@@ -63,8 +63,8 @@ export default function Fedral_tax(props: any) {
     businessDisgradedEntity:
       PrevStepData?.businessDisgradedEntity ||"",
     countryOfIncorporation:
-      PrevStepData?.countryOfIncorporation || 0,
-    chapter3Status: PrevStepData?.chapter3Status || 0,
+      PrevStepData?.countryOfIncorporationId || 0,
+    chapter3Status: PrevStepData?.chapter3StatusId,
     businessName: PrevStepData?.businessName || "",
     DateOfIncorporation:EntityDualCert?.DateOfIncorporation ||"",
     IsJurisdictionforTaxPurposes: EntityDualCert ?. IsJurisdictionforTaxPurposes ||"No",
@@ -99,7 +99,7 @@ export default function Fedral_tax(props: any) {
     dispatch(getAllCountriesIncomeCode());
     // dispatch(getAllStateByCountryId())
     dispatch(GetHelpVideoDetails());
-    dispatch(GetChapter3Status(FormTypeId.BENE));
+    dispatch(GetChapter3Status(FormTypeId.W8EXP));
   }, []);
   // const viewPdf = () => {
   //   history("/w8Eci_pdf", { replace: true });
@@ -149,9 +149,9 @@ export default function Fedral_tax(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform" onClick={() => {
-              dispatch(GetEciPdf(authDetails?.accountHolderId))
-            }}>View Form</div>
+            <div className="viewform"  onClick={() => {
+                            dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                          }}>View Form</div>
             <div className="helpvideo">
               {GethelpData && GethelpData[5].id === 7 ? (
                 <a
@@ -176,7 +176,7 @@ export default function Fedral_tax(props: any) {
         <div className="row w-100">
           <div className="col-4">
             <div style={{ padding: "20px 0px", height: "100%" }}>
-              <BreadCrumbComponent breadCrumbCode={1203} formName={4} />
+              <BreadCrumbComponent breadCrumbCode={1200} formName={17} />
             </div>
           </div>
           <div className="col-8 mt-3">
@@ -1630,7 +1630,7 @@ export default function Fedral_tax(props: any) {
                                           ...prevStepData,
                                           AccountHolderDetailsId:authDetails.accountHolderId,
                                           AgentId: authDetails?.agentId,
-                                          formTypeId: FormTypeId.FW81MY,
+                                          formTypeId: FormTypeId.W8EXP,
                                           stepName: `/${urlValue}`,
                                         },
                                         () => {
@@ -1643,7 +1643,7 @@ export default function Fedral_tax(props: any) {
                                 })
                               }
                             }
-                            formTypeId={FormTypeId.FW81MY}
+                            formTypeId={FormTypeId.W8EXP}
                           >
                           </SaveAndExit>
                           <Button
@@ -1651,7 +1651,7 @@ export default function Fedral_tax(props: any) {
                             disabled={isSubmitting}
                             variant="contained"
                             onClick={() => {
-                              dispatch(GetEciPdf(authDetails?.accountHolderId))
+                              dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
                             }}
                             style={{ color: "white", marginLeft: "15px" }}
                           >

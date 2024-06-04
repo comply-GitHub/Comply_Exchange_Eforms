@@ -14,7 +14,7 @@ import { useRef } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { GetECIDCPdf, GetEciPdf } from "../../../../Redux/Actions/PfdActions";
+import { GetECIDCPdf, GetEXPDCPdf, GetEciPdf } from "../../../../Redux/Actions/PfdActions";
 import useAuth from "../../../../customHooks/useAuth";
 
 export default function Term() {
@@ -70,7 +70,8 @@ export default function Term() {
                   fontWeight: "bold",
                   justifyContent: "center",
                 }}
-              />            </Typography>
+              />           
+               </Typography>
             <Typography
               style={{ fontSize: "20px", color: "grey" }}
               align="center"
@@ -124,8 +125,7 @@ export default function Term() {
                   <Button
                     //type="submit"
                     onClick={() => {
-                      // history("/w8Eci_pdf");
-                      dispatch(GetECIDCPdf(authDetails?.accountHolderId, () => { }, () => { }, true))
+                      dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
                     }}
                     style={{
                       border: "1px solid #0095dd",
