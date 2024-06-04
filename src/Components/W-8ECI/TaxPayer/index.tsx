@@ -248,7 +248,7 @@ export default function Tin(props: any) {
                       {toolInfo === "ForeignTin" ? (
                         <div className="mt-5">
                           <Paper
-                            style={{  padding: "15px"}}
+                            style={{ padding: "15px" }}
                           >
                             <div className="d-flex" style={{ justifyContent: "space-between" }}>
                               <Typography style={{ color: "#0c5460" }}>
@@ -354,7 +354,7 @@ export default function Tin(props: any) {
                                       underline="none"
                                       style={{
                                         marginTop: "10px",
-                                        fontSize: "16px",color: "#0000C7"
+                                        fontSize: "16px", color: "#0000C7"
                                       }}
                                       onClick={() => {
                                         setToolInfo("");
@@ -673,13 +673,17 @@ export default function Tin(props: any) {
                             >
                               <option value={0}>---select---</option>
                               <option value={257}>United Kingdom</option>
-                              {getCountriesReducer.allCountriesData?.map(
-                                (ele: any) => (
-                                  <option key={ele?.id} value={ele?.id}>
-                                    {ele?.name}
-                                  </option>
-                                )
-                              )}
+                              {getCountriesReducer.allCountriesData?.filter(
+                                (x: any) =>
+                                  x.name?.toLowerCase() !== "united states"
+                              )
+                                ?.map(
+                                  (ele: any) => (
+                                    <option key={ele?.id} value={ele?.id}>
+                                      {ele?.name}
+                                    </option>
+                                  )
+                                )}
                             </select>
                             {/* <p className="error">{errors.foreignTINCountry}</p> */}
 
@@ -1203,7 +1207,7 @@ export default function Tin(props: any) {
                         style={{
 
                           //color: "#f5f5f5",
-                          color: "#505E50",  
+                          color: "#505E50",
                           justifyContent: "center",
                           alignItems: "center",
                           marginTop: "20px",
@@ -1214,13 +1218,13 @@ export default function Tin(props: any) {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            if(obValues?.businessTypeId == 2){
+                            if (obValues?.businessTypeId == 2) {
                               history("/Chapter3_Eci");
                             }
-                            else{
+                            else {
                               history("/W-8ECI/Tax_Purpose");
                             }
-                            
+
                           }}
                           variant="contained"
                           style={{

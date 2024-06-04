@@ -702,13 +702,17 @@ export default function Tin(props: any) {
                             >
                               <option value={0}>---select---</option>
                               <option value={257}>United Kingdom</option>
-                              {getCountriesReducer.allCountriesData?.map(
-                                (ele: any) => (
-                                  <option key={ele?.id} value={ele?.id}>
-                                    {ele?.name}
-                                  </option>
-                                )
-                              )}
+                              {getCountriesReducer.allCountriesData?.filter(
+                                (x: any) =>
+                                  x.name?.toLowerCase() !== "united states"
+                              )
+                                ?.map(
+                                  (ele: any) => (
+                                    <option key={ele?.id} value={ele?.id}>
+                                      {ele?.name}
+                                    </option>
+                                  )
+                                )}
                             </select>
                             {errors?.ForeginTIN_CountryId && typeof errors?.ForeginTIN_CountryId === 'string' && (
                               <p className="error">{errors?.ForeginTIN_CountryId}</p>
@@ -1002,7 +1006,7 @@ export default function Tin(props: any) {
                                   onChange={handleChange}
                                   onClick={() => {
                                     setFieldValue("ForegionTIN", "");
-                                    
+
                                   }}
 
                                 >

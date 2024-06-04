@@ -649,7 +649,7 @@ export default function Factors() {
                         Continue
                       </Button>) : <>
                         <Button
-                          disabled={((!incomeTypesValid) || (!isValid))}
+                          disabled={((!incomeTypesValid && values.isSubmissionSpecialRates === "yes") || (!isValid))}
                           onClick={() =>
                             submitForm().then((data) => {
                               Redirect("/Attach_document_BEN", authDetails?.agentId, history)
