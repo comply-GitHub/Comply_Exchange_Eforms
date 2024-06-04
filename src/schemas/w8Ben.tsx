@@ -328,7 +328,11 @@ export const rateSchema = () => {
     isSubmissionSpecialRates: Yup.string().required(
       "Please select one of the options"
     ),
-    articleExplanation: Yup.string().required("Please Enter Explanation"),
+    articleExplanation: Yup.string().when("isSubmissionSpecialRates",
+      {
+        is: "yes",
+        then: () => Yup.string().required("Please Enter Explanation"),
+      }),
   });
 };
 
