@@ -59,7 +59,7 @@ export default function Tin(props: any) {
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const [payload, setPayload] = useState({
     taxpayerIdTypeID: 0,
-    Tin: ""
+    tIN_USTIN: ""
   });
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
@@ -84,19 +84,19 @@ export default function Tin(props: any) {
   const formatTin = (e: any, values: any): any => {
     if (e.key === "Backspace" || e.key === "Delete") return;
     if (e.target.value.length === 3) {
-      setPayload({ ...payload, Tin: payload.Tin + "-" });
-      values.Tin = values.Tin + "-";
+      setPayload({ ...payload, tIN_USTIN: payload.tIN_USTIN + "-" });
+      values.tIN_USTIN = values.tIN_USTIN + "-";
     }
     if (e.target.value.length === 6) {
-      setPayload({ ...payload, Tin: payload.Tin + "-" });
-      values.Tin = values.Tin + "-";
+      setPayload({ ...payload, tIN_USTIN: payload.tIN_USTIN + "-" });
+      values.tIN_USTIN = values.tIN_USTIN + "-";
     }
   };
   const initialValue = {
     taxpayerIdTypeID: onBoardingFormValues?.usTinTypeId
       ? onBoardingFormValues?.usTinTypeId
       : getReducerData?.taxpayerIdTypeID,
-    Tin: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin : getReducerData?.tiN_USTIN,
+    tIN_USTIN: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin : getReducerData?.tiN_USTIN,
   };
   const [selectedTaxClassification, setSelectedTaxClassification] =
     useState(0);
@@ -184,35 +184,35 @@ export default function Tin(props: any) {
             : selectedTaxClassification == 1
               ? firstStepSchema
               : firstStepBusinessSchema
-        } 
+        }
         onSubmit={(values, { setSubmitting }) => {
 
 
           const submitPromise = new Promise((resolve, reject) => {
-           
-              setSubmitting(true);
-              const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
-              const result = { ...new_obj, ...values };
-              dispatch(
-                postW9Form(result, () => {
-                  localStorage.setItem("PrevStepData", JSON.stringify(result))
-                
-                   
-                    Redirect(
-                      "/Attach_document_w9",
-                      authDetails?.agentId,
-                      history,
-                      false
-                    );
-                   
-                
-                  setSubmitting(false);
-                  resolve("success");
-                }, (error: any) => { reject(error); setSubmitting(false); })
-              );
+
+            setSubmitting(true);
+            const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
+            const result = { ...new_obj, ...values };
+            dispatch(
+              postW9Form({ ...result, tIN_USTIN: values.tIN_USTIN?.replaceAll("-", "") }, () => {
+                localStorage.setItem("PrevStepData", JSON.stringify(result))
 
 
-            }
+                Redirect(
+                  "/Attach_document_w9",
+                  authDetails?.agentId,
+                  history,
+                  false
+                );
+
+
+                setSubmitting(false);
+                resolve("success");
+              }, (error: any) => { reject(error); setSubmitting(false); })
+            );
+
+
+          }
 
           );
           return submitPromise;
@@ -244,7 +244,7 @@ export default function Tin(props: any) {
 
 
                     <div style={{ backgroundColor: "#ffff", }}>
-                      {!values.Tin && businessType === 1  ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                      {!values.tIN_USTIN && businessType === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                         <Typography>
                           TIN 100
                           <span className="mx-1">
@@ -269,7 +269,7 @@ export default function Tin(props: any) {
 
 
                       </div>) : ""}
-                      {!values.Tin &&  businessType === 2  ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                      {!values.tIN_USTIN && businessType === 2 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                         <Typography>
                           TIN 100
                           <span className="mx-1">
@@ -294,7 +294,7 @@ export default function Tin(props: any) {
 
 
                       </div>) : ""}
-                      {values.Tin == "" && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                      {values.tIN_USTIN == "" && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                         <Typography>
                           TIN
                           <span className="mx-1">
@@ -457,9 +457,9 @@ export default function Tin(props: any) {
 
                           <Typography>U.S. TIN</Typography>
                           <Input
-                            name="Tin"
-                            value={values.Tin}
-                            id="Tin"
+                            name="tIN_USTIN"
+                            value={values.tIN_USTIN}
+                            id="tIN_USTIN"
                             disabled={values.taxpayerIdTypeID == 0 || values.taxpayerIdTypeID == 1 || values.taxpayerIdTypeID == 7 || values.taxpayerIdTypeID == 8}
                             onChange={
                               handleChange
@@ -482,7 +482,7 @@ export default function Tin(props: any) {
                               padding: " 0 10px ",
                             }}
                           />
-                          <p className="error">{errors.Tin?.toString()}</p>
+                          <p className="error">{errors.tIN_USTIN?.toString()}</p>
                         </div>
 
                       </div>

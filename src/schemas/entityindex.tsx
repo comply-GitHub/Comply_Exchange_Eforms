@@ -39,7 +39,10 @@ export const EntitySchema = (Cert: string, payment: boolean, income: boolean, is
           name: "Uppercase",
           message: "GIIN is required and must be all uppercase",
           test: (value, context) => {
-            if (isGiinEnabled) {
+
+            const { isUSEntity } = context.parent;
+
+            if (isGiinEnabled && isUSEntity === "no") {
               if (value) {
                 const hasLowerCase = /[a-z]/.test(value);
                 return !hasLowerCase;
@@ -56,7 +59,8 @@ export const EntitySchema = (Cert: string, payment: boolean, income: boolean, is
         name: "length",
         message: "GIIN lenth should be 16 character",
         test: (value, context) => {
-          if (isGiinEnabled) {
+          const { isUSEntity } = context.parent;
+          if (isGiinEnabled && isUSEntity === "no") {
             return value?.length == 16
           }
           else
@@ -67,7 +71,9 @@ export const EntitySchema = (Cert: string, payment: boolean, income: boolean, is
         name: "format",
         message: "GIIN format should be valid",
         test: (value, context) => {
-          if (isGiinEnabled) {
+          const { isUSEntity } = context.parent;
+
+          if (isGiinEnabled && isUSEntity === "no") {
             if (!value) {
               return false;
             }
