@@ -49,8 +49,8 @@ export default function Backup_witholding(props: any) {
   const StepData = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const [selectedValue, setSelectedValue] = useState("");
 
-  const handleRadioChange = (value: string, setValues:any) => {
-    console.log(value,"selectedValuevalue")
+  const handleRadioChange = (value: string, setValues: any) => {
+    console.log(value, "selectedValuevalue")
     if (selectedValue === value) {
       setSelectedValue("");
     } else {
@@ -65,7 +65,7 @@ export default function Backup_witholding(props: any) {
 
   const initialValue = {
     isExemptionfromBackup: getReducerData?.isExemptionfromBackup ?? 2,
-    excemptionGuide:getReducerData?.excemptionGuide ?? "",
+    excemptionGuide: getReducerData?.excemptionGuide ?? "",
   };
   const isRadioSelected = selectedValue !== "";
   const handleCanvaOpen = () => {
@@ -141,16 +141,19 @@ export default function Backup_witholding(props: any) {
           validateOnBlur={false}
           initialValues={initialValue}
           enableReinitialize
-          validationSchema={secondStepSchema} 
+          validationSchema={secondStepSchema}
           onSubmit={(values, { setSubmitting }) => {
-           
+
             setSubmitting(true);
-            console.log(selectedValue,"selectedValue")
-            const addSelectedValue={...PrevStepData}
-         
+            console.log(selectedValue, "selectedValue")
+            const addSelectedValue = { ...PrevStepData }
+
             const new_obj = { ...addSelectedValue, stepName: `/${urlValue}` };
-            const result = { ...new_obj, ...values , excemptionGuide: "true",  AccountHolderBasicDetailsId: authDetails.accountHolderId,AgentId:authDetails.agentId,FormTypeSelectionId:StepData.businessTypeId, };
-           
+            const result = {
+              ...new_obj, ...values, excemptionGuide: "true", interestDividendPaymentId: selectedValue ? selectedValue.split("_")[1] : "0",
+              AccountHolderBasicDetailsId: authDetails.accountHolderId, AgentId: authDetails.agentId, FormTypeSelectionId: StepData.businessTypeId,
+            };
+
             const submitPromise = new Promise((resolve, reject) => {
               dispatch(
                 postW9Form(result, () => {
@@ -591,29 +594,29 @@ export default function Backup_witholding(props: any) {
                             <AccordionDetails>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "1"}
-                                    onChange={() => handleRadioChange("1",setValues)} />
+                                  <Checkbox checked={selectedValue === "_1"}
+                                    onChange={() => handleRadioChange("_1", setValues)} />
                                 </span>
                                 1.  An organization exempt from tax under section 501(a), any IRA, or a custodial account under section 403(b)(7) if the account satisfies the requirements of section 401(f)(2)
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "2"}
-                                    onChange={() => handleRadioChange("2",setValues)} />
+                                  <Checkbox checked={selectedValue === "_2"}
+                                    onChange={() => handleRadioChange("_2", setValues)} />
                                 </span>
                                 2.  The United States or any of its agencies or instrumentalities
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "3"}
-                                    onChange={() => handleRadioChange("3",setValues)} />
+                                  <Checkbox checked={selectedValue === "_3"}
+                                    onChange={() => handleRadioChange("_3", setValues)} />
                                 </span>
                                 3.  A state, the District of Columbia, a possession of the United States, or any of their political subdivisions or instrumentalities
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "4"}
-                                    onChange={() => handleRadioChange("4",setValues)} />
+                                  <Checkbox checked={selectedValue === "_4"}
+                                    onChange={() => handleRadioChange("_4", setValues)} />
                                 </span>
                                 4. A foreign government or any of its political subdivisions, agencies, or instrumentalities
                               </Typography>
@@ -625,8 +628,8 @@ export default function Backup_witholding(props: any) {
           </Typography> */}
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "6"}
-                                    onChange={() => handleRadioChange("6",setValues)} />
+                                  <Checkbox checked={selectedValue === "_6"}
+                                    onChange={() => handleRadioChange("_6", setValues)} />
                                 </span>
                                 6.    A dealer in securities or commodities required to register in the United States, the District of Columbia, or a possession of the United States
                               </Typography>
@@ -638,43 +641,43 @@ export default function Backup_witholding(props: any) {
           </Typography> */}
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "8"}
-                                    onChange={() => handleRadioChange("8",setValues)} />
+                                  <Checkbox checked={selectedValue === "_8"}
+                                    onChange={() => handleRadioChange("_8", setValues)} />
                                 </span>
                                 8.    A real estate investment trust
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }} >
                                 <span>
-                                  <Checkbox checked={selectedValue === "9"}
-                                    onChange={() => handleRadioChange("9",setValues)} />
+                                  <Checkbox checked={selectedValue === "_9"}
+                                    onChange={() => handleRadioChange("_9", setValues)} />
                                 </span>
                                 9.    An entity registered at all times during the tax year under the Investment Company Act of 1940
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }} >
                                 <span>
-                                  <Checkbox checked={selectedValue === "10"}
-                                    onChange={() => handleRadioChange("10",setValues)} />
+                                  <Checkbox checked={selectedValue === "_10"}
+                                    onChange={() => handleRadioChange("_10", setValues)} />
                                 </span>
                                 10.   A common trust fund operated by a bank under section 584(a)
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }} >
                                 <span>
-                                  <Checkbox checked={selectedValue === "11"}
-                                    onChange={() => handleRadioChange("11",setValues)} />
+                                  <Checkbox checked={selectedValue === "_11"}
+                                    onChange={() => handleRadioChange("_11", setValues)} />
                                 </span>
                                 11.   	A financial institution
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }} >
                                 <span>
-                                  <Checkbox checked={selectedValue === "12"}
-                                    onChange={() => handleRadioChange("12",setValues)} />
+                                  <Checkbox checked={selectedValue === "_12"}
+                                    onChange={() => handleRadioChange("_12", setValues)} />
                                 </span>
                                 12.    A middleman known in the investment community as a nominee or custodian
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }} >
                                 <span>
-                                  <Checkbox checked={selectedValue === "13"}
-                                    onChange={() => handleRadioChange("13",setValues)} />
+                                  <Checkbox checked={selectedValue === "_13"}
+                                    onChange={() => handleRadioChange("_13", setValues)} />
                                 </span>
                                 13.    A trust exempt from tax under section 664 or described in section 4947
                               </Typography>
@@ -695,72 +698,72 @@ export default function Backup_witholding(props: any) {
                             <AccordionDetails>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }} >
                                 <span>
-                                  <Checkbox checked={selectedValue === "14"}
-                                    onChange={() => handleRadioChange("14",setValues)} />
+                                  <Checkbox checked={selectedValue === "2_1"}
+                                    onChange={() => handleRadioChange("2_1", setValues)} />
                                 </span>
                                 1.  An organization exempt from tax under section 501(a), any IRA, or a custodial account under section 403(b)(7) if the account satisfies the requirements of section 401(f)(2)
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "15"}
-                                    onChange={() => handleRadioChange("15",setValues)} />
+                                  <Checkbox checked={selectedValue === "2_2"}
+                                    onChange={() => handleRadioChange("2_2", setValues)} />
                                 </span>
                                 2.  The United States or any of its agencies or instrumentalities
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }} >
                                 <span>
-                                  <Checkbox checked={selectedValue === "16"}
-                                    onChange={() => handleRadioChange("16",setValues)} />
+                                  <Checkbox checked={selectedValue === "2_3"}
+                                    onChange={() => handleRadioChange("2_3", setValues)} />
                                 </span>
                                 3.  A state, the District of Columbia, a possession of the United States, or any of their political subdivisions or instrumentalities
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "17"}
-                                    onChange={() => handleRadioChange("17",setValues)} />
+                                  <Checkbox checked={selectedValue === "2_4"}
+                                    onChange={() => handleRadioChange("2_4", setValues)} />
                                 </span>
                                 4.  A foreign government or any of its political subdivisions, agencies, or instrumentalities
                               </Typography>
 
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "18"}
-                                    onChange={() => handleRadioChange("18",setValues)} />
+                                  <Checkbox checked={selectedValue === "2_6"}
+                                    onChange={() => handleRadioChange("2_6", setValues)} />
                                 </span>
                                 6.  	A dealer in securities or commodities required to register in the United States, the District of Columbia, or a possession of the United States
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "19"}
-                                    onChange={() => handleRadioChange("19",setValues)} />
+                                  <Checkbox checked={selectedValue === "2_7"}
+                                    onChange={() => handleRadioChange("2_7", setValues)} />
                                 </span>
                                 7. A futures commission merchant registered with the Commodity Futures Trading Commission
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "20"}
-                                    onChange={() => handleRadioChange("20",setValues)} />
+                                  <Checkbox checked={selectedValue === "2_8"}
+                                    onChange={() => handleRadioChange("2_8", setValues)} />
                                 </span>
                                 8.  A real estate investment trust
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "21"}
-                                    onChange={() => handleRadioChange("21",setValues)} />
+                                  <Checkbox checked={selectedValue === "2_9"}
+                                    onChange={() => handleRadioChange("2_9", setValues)} />
                                 </span>
                                 9.  An entity registered at all times during the tax year under the Investment Company Act of 1940
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "22"}
-                                    onChange={() => handleRadioChange("22",setValues)} />
+                                  <Checkbox checked={selectedValue === "2_10"}
+                                    onChange={() => handleRadioChange("2_10", setValues)} />
                                 </span>
                                 10.  A common trust fund operated by a bank under section 584(a)
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "23"}
-                                    onChange={() => handleRadioChange("23",setValues)} />
+                                  <Checkbox checked={selectedValue === "2_11"}
+                                    onChange={() => handleRadioChange("2_11", setValues)} />
                                 </span>
                                 11.  A financial institution
                               </Typography>
@@ -781,29 +784,29 @@ export default function Backup_witholding(props: any) {
                               <Typography>Exemption Codes – Select from the list below only when it applies</Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "24"}
-                                    onChange={() => handleRadioChange("24",setValues)} />
+                                  <Checkbox checked={selectedValue === "3_1"}
+                                    onChange={() => handleRadioChange("3_1", setValues)} />
                                 </span>
                                 1.	An organization exempt from tax under section 501(a), any IRA, or a custodial account under section 403(b)(7) if the account satisfies the requirements of section 401(f)(2)
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "25"}
-                                    onChange={() => handleRadioChange("25",setValues)} />
+                                  <Checkbox checked={selectedValue === "3_2"}
+                                    onChange={() => handleRadioChange("3_2", setValues)} />
                                 </span>
                                 2.	The United States or any of its agencies or instrumentalities
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "26"}
-                                    onChange={() => handleRadioChange("26",setValues)} />
+                                  <Checkbox checked={selectedValue === "3_3"}
+                                    onChange={() => handleRadioChange("3_3", setValues)} />
                                 </span>
                                 3.	A state, the District of Columbia, a possession of the United States, or any of their political subdivisions or instrumentalities
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "27"}
-                                    onChange={() => handleRadioChange("27",setValues)} />
+                                  <Checkbox checked={selectedValue === "3_4"}
+                                    onChange={() => handleRadioChange("3_4", setValues)} />
                                 </span>
                                 4.	A foreign government or any of its political subdivisions, agencies, or instrumentalities
                               </Typography>
@@ -827,29 +830,29 @@ export default function Backup_witholding(props: any) {
                               <Typography>Exemption Codes – Select from the list below only when it applies</Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "28"}
-                                    onChange={() => handleRadioChange("28",setValues)} />
+                                  <Checkbox checked={selectedValue === "4_1"}
+                                    onChange={() => handleRadioChange("4_1", setValues)} />
                                 </span>
                                 1.	An organization exempt from tax under section 501(a), any IRA, or a custodial account under section 403(b)(7) if the account satisfies the requirements of section 401(f)(2)
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "29"}
-                                    onChange={() => handleRadioChange("29",setValues)} />
+                                  <Checkbox checked={selectedValue === "4_2"}
+                                    onChange={() => handleRadioChange("4_2", setValues)} />
                                 </span>
                                 2.	The United States or any of its agencies or instrumentalities
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "30"}
-                                    onChange={() => handleRadioChange("30",setValues)} />
+                                  <Checkbox checked={selectedValue === "4_3"}
+                                    onChange={() => handleRadioChange("4_3", setValues)} />
                                 </span>
                                 3.	A state, the District of Columbia, a possession of the United States, or any of their political subdivisions or instrumentalities
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "31"}
-                                    onChange={() => handleRadioChange("31",setValues)} />
+                                  <Checkbox checked={selectedValue === "4_4"}
+                                    onChange={() => handleRadioChange("4_4", setValues)} />
                                 </span>
                                 4.	A foreign government or any of its political subdivisions, agencies, or instrumentalities
                               </Typography>
@@ -873,29 +876,29 @@ export default function Backup_witholding(props: any) {
                               <Typography>Exemption Codes – Select from the list below only when it applies</Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "310"}
-                                    onChange={() => handleRadioChange("310",setValues)} />
+                                  <Checkbox checked={selectedValue === "5_1"}
+                                    onChange={() => handleRadioChange("5_1", setValues)} />
                                 </span>
                                 1.	An organization exempt from tax under section 501(a), any IRA, or a custodial account under section 403(b)(7) if the account satisfies the requirements of section 401(f)(2)
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "32"}
-                                    onChange={() => handleRadioChange("32",setValues)} />
+                                  <Checkbox checked={selectedValue === "5_2"}
+                                    onChange={() => handleRadioChange("5_2", setValues)} />
                                 </span>
                                 2.	The United States or any of its agencies or instrumentalities
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "33"}
-                                    onChange={() => handleRadioChange("33",setValues)} />
+                                  <Checkbox checked={selectedValue === "5_3"}
+                                    onChange={() => handleRadioChange("5_3", setValues)} />
                                 </span>
                                 3.	A state, the District of Columbia, a possession of the United States, or any of their political subdivisions or instrumentalities
                               </Typography>
                               <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
                                 <span>
-                                  <Checkbox checked={selectedValue === "34"}
-                                    onChange={() => handleRadioChange("34",setValues)} />
+                                  <Checkbox checked={selectedValue === "5_4"}
+                                    onChange={() => handleRadioChange("5_4", setValues)} />
                                 </span>
                                 4.	A foreign government or any of its political subdivisions, agencies, or instrumentalities
                               </Typography>
@@ -968,7 +971,7 @@ export default function Backup_witholding(props: any) {
                     dispatch(postW9Form(
                       {
                         ...prevStepData,
-                        AccountHolderBasicDetailsId: authDetails.accountHolderId,AgentId:authDetails.agentId,FormTypeSelectionId:StepData.businessTypeId,
+                        AccountHolderBasicDetailsId: authDetails.accountHolderId, AgentId: authDetails.agentId, FormTypeSelectionId: StepData.businessTypeId,
                         stepName: `/${urlValue}`
                       }
                       , () => { }))
@@ -1001,10 +1004,10 @@ export default function Backup_witholding(props: any) {
                 >
                   Continue
                 </Button>) : ( */}
-                
-                
+
+
                 <Button
-                
+
                   disabled={isSubmitting}
                   variant="contained"
                   style={{ color: "white", marginLeft: "15px" }}
@@ -1023,8 +1026,8 @@ export default function Backup_witholding(props: any) {
                 >
                   Continue
                 </Button>
-              
-              
+
+
               </div>
               <Typography
                 align="center"
@@ -1040,7 +1043,7 @@ export default function Backup_witholding(props: any) {
               <Typography align="center">
                 <Button
                   onClick={() => {
-                    if(StepData?.businessTypeId === 1){
+                    if (StepData?.businessTypeId === 1) {
                       Redirect(
                         "/W9/purposes",
                         authDetails?.agentId,
@@ -1048,7 +1051,7 @@ export default function Backup_witholding(props: any) {
                         true
                       );
                       // history("/W9/purposes")
-                    }else{
+                    } else {
                       Redirect(
                         "/TaxPurpose_W9",
                         authDetails?.agentId,
@@ -1057,7 +1060,7 @@ export default function Backup_witholding(props: any) {
                       );
                       // history('/TaxPurpose_W9')
                     }
-                   
+
                   }}
 
                   variant="contained"
