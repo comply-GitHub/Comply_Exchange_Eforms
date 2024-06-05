@@ -26,6 +26,7 @@ import BreadCrumbComponent from "../../reusables/breadCrumb";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { certificateSchema_BEN_DC } from "../../../schemas/w8Exp";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
+import { GetCaymanEntityPdf } from "../../../Redux/Actions/PfdActions";
 export default function Certifications(props: any) {
   const location = useLocation();
   const { authDetails } = useAuth();
@@ -36,7 +37,7 @@ export default function Certifications(props: any) {
     agentId: authDetails?.agentId,
     accountHolderBasicDetailId: authDetails?.accountHolderId,
     confirmThisisaTrueAndAccurate: false,
-    confirmYouhaveRewiedElectronicForm:false,
+    confirmYouhaveRewiedElectronicForm: false,
 
   };
 
@@ -51,9 +52,9 @@ export default function Certifications(props: any) {
   const handleCanvaClose = () => {
     setCanvaBx(false);
   }
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "Comply Exchange"
-  },[])
+  }, [])
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, [])
@@ -82,7 +83,7 @@ export default function Certifications(props: any) {
   const handleClose2 = () => setOpen2(false);
   const [toolInfo, setToolInfo] = useState("");
 
-  const viewPdf=()=>{
+  const viewPdf = () => {
     history("w9_pdf");
   }
   return (
@@ -90,7 +91,7 @@ export default function Certifications(props: any) {
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-      <SideBar/>
+      <SideBar />
       <div className="row w-100 " style={{ backgroundColor: "#0c3d69" }}>
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>
@@ -114,17 +115,17 @@ export default function Certifications(props: any) {
                     const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
                     const result = { ...new_obj, ...values };
                     dispatch(
-                        postSCEntityEForm([result], () => {
+                      postSCEntityEForm([result], () => {
                         localStorage.setItem("SelfCertData", JSON.stringify(result))
-                        
+
                         setSubmitting(true);
                         //history("/Cayman/Entity/Submission")
                         resolve("success");
                       },
-                      (err:any)=>{
-                        reject(err);
-                        setSubmitting(false);
-                      })
+                        (err: any) => {
+                          reject(err);
+                          setSubmitting(false);
+                        })
                     );
                   });
                   return submitPromise;
@@ -156,20 +157,20 @@ export default function Certifications(props: any) {
                           marginLeft: "10px",
                         }}
                       >
-                        Certification 
-                       
+                        Certification
+
                       </Typography>
-                      <Typography   align="left"
+                      <Typography align="left"
                         style={{
                           margin: "10px",
                           fontSize: "15px",
-                        
+
                           marginLeft: "10px",
                         }}>
-                            Declaration and Undertaking
+                        Declaration and Undertaking
                       </Typography>
-                      <Divider style={{borderWidth:"thin"}}/>
-                     
+                      <Divider style={{ borderWidth: "thin" }} />
+
                       <Typography
                         style={{
                           margin: "10px",
@@ -178,15 +179,15 @@ export default function Certifications(props: any) {
                           marginLeft: "10px",
                         }}
                       >
-                       I/We declare ( as an authorised signatory o f the Entity) that the information provided in this form is, to the best of my/our knowledge and belief, accurate and complete. I /We undertake to advise the recipient promptly and <strong>provide an updated SelfCertification form within 30 days where any change in circumstances occurs</strong>, which causes any of the information contained in this form to be inaccurate or incomplete. Where legally obliged to do so , I/we hereby consent to the recipient sharing t his information with the relevant tax information authorities.
+                        I/We declare ( as an authorised signatory o f the Entity) that the information provided in this form is, to the best of my/our knowledge and belief, accurate and complete. I /We undertake to advise the recipient promptly and <strong>provide an updated SelfCertification form within 30 days where any change in circumstances occurs</strong>, which causes any of the information contained in this form to be inaccurate or incomplete. Where legally obliged to do so , I/we hereby consent to the recipient sharing t his information with the relevant tax information authorities.
                       </Typography>
-                      <Typography  style={{
-                          margin: "10px",
-                          fontSize: "14px",
-                          color: "grey",
-                          marginLeft: "10px",
-                        }}>
-                      I/we acknowledge that it is an offence to make a self-certification that is false in a material particular.
+                      <Typography style={{
+                        margin: "10px",
+                        fontSize: "14px",
+                        color: "grey",
+                        marginLeft: "10px",
+                      }}>
+                        I/we acknowledge that it is an offence to make a self-certification that is false in a material particular.
 
                       </Typography>
 
@@ -200,11 +201,11 @@ export default function Certifications(props: any) {
                               checked={values.confirmThisisaTrueAndAccurate}
                               onChange={handleChange}
                               size="medium"
-                              style={{ fontSize: "2rem",marginTop: "6px" }} />
+                              style={{ fontSize: "2rem", marginTop: "6px" }} />
                             <Typography className="mx-2"
                               style={{ fontSize: "14px", color: "black", marginTop: "15px", textAlign: "justify" }}
                             >
-                            Check to confirm this is a true and accurate statement
+                              Check to confirm this is a true and accurate statement
                             </Typography>
                           </Typography>
                           <p className="error">{errors.confirmThisisaTrueAndAccurate}</p>
@@ -215,23 +216,23 @@ export default function Certifications(props: any) {
                               checked={values.confirmYouhaveRewiedElectronicForm}
                               onChange={(e) => {
                                 handleChange(e);
-                                
+
                               }}
                               size="medium"
                               style={{ fontSize: "2rem" }} />
                             <Typography className="mx-2"
-                              style={{ fontSize: "14px", color: "black",marginTop: "10px", textAlign: "justify" }}
+                              style={{ fontSize: "14px", color: "black", marginTop: "10px", textAlign: "justify" }}
                             >
-                             Check to confirm you have reviewed the Electronic Form  <span
-                                style={{ color: "blue", fontSize: "14px", marginLeft: "5px",cursor:"pointer" }}
+                              Check to confirm you have reviewed the Electronic Form  <span
+                                style={{ color: "blue", fontSize: "14px", marginLeft: "5px", cursor: "pointer" }}
                               >
                                 (View Electronic Form)
                               </span>
                             </Typography>
                           </Typography>
                           <p className="error">{errors.confirmYouhaveRewiedElectronicForm}</p>
-                         
-                        
+
+
                         </div>
                       </Paper>
 
@@ -269,7 +270,7 @@ export default function Certifications(props: any) {
                           })
                         }} formTypeId={FormTypeId.CaymanEntity} ></SaveAndExit>
 
-                           {/* <SaveAndExit Callback={() => {
+                        {/* <SaveAndExit Callback={() => {
                             submitForm().then((data) => {
                               const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                               const urlValue = window.location.pathname.substring(1);
@@ -291,14 +292,16 @@ export default function Certifications(props: any) {
 
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
-                          onClick={viewPdf}
+                          onClick={() => {
+                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId))
+                          }}
                         >
                           View form
                         </Button>
                         <Button
-                        type="submit"
+                          type="submit"
                           disabled={
-                            ((values.confirmThisisaTrueAndAccurate && values.confirmYouhaveRewiedElectronicForm) === false ? true : false )}
+                            ((values.confirmThisisaTrueAndAccurate && values.confirmYouhaveRewiedElectronicForm) === false ? true : false)}
 
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
@@ -314,35 +317,35 @@ export default function Certifications(props: any) {
                         </Button>
                       </div>
                       <Typography
-                      align="center"
-                      style={{
-                        color: "#adadac",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: "20px",
-                      }}
-                    >
-                      Do you want to go back?
-                    </Typography>
-                    <Typography align="center">
-                      <Button
-                        onClick={() => {
-                          history(
-                            "/Cayman/Entity/TIN"   
-                          );
-                        }}
-                        variant="contained"
+                        align="center"
                         style={{
-                          color: "white",
-                          backgroundColor: "black",
-                          marginTop: "10px",
-                          marginBottom: "20px",
+                          color: "#adadac",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginTop: "20px",
                         }}
                       >
-                        Back
-                      </Button>
-                    </Typography>
-                     
+                        Do you want to go back?
+                      </Typography>
+                      <Typography align="center">
+                        <Button
+                          onClick={() => {
+                            history(
+                              "/Cayman/Entity/TIN"
+                            );
+                          }}
+                          variant="contained"
+                          style={{
+                            color: "white",
+                            backgroundColor: "black",
+                            marginTop: "10px",
+                            marginBottom: "20px",
+                          }}
+                        >
+                          Back
+                        </Button>
+                      </Typography>
+
                     </Paper>
                   </Form>
                 )}

@@ -28,9 +28,9 @@ import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../../../customHooks/useAuth";
-import { GetChapter3Status, GetHelpVideoDetails, GetTaxJusrisdictionMismatchExplaination, getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode , insertCaymanEntityNonUSFATCAClassificationEmpty,  postSCEntityEForm } from "../../../../Redux/Actions";
+import { GetChapter3Status, GetHelpVideoDetails, GetTaxJusrisdictionMismatchExplaination, getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode, insertCaymanEntityNonUSFATCAClassificationEmpty, postSCEntityEForm } from "../../../../Redux/Actions";
 import GlobalValues, { FormTypeId, FormTypeSelection } from "../../../../Utils/constVals";
-import { GetBenEPdf, GetW9Pdf } from "../../../../Redux/Actions/PfdActions";
+import { GetBenEPdf, GetCaymanEntityPdf, GetW9Pdf } from "../../../../Redux/Actions/PfdActions";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import DatePicker from 'react-date-picker';
@@ -63,7 +63,7 @@ export default function Fedral_tax(props: any) {
 
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
 
-  const chapter3DataEntity = useSelector((state:any) => state.CaymanEntity.chapter3Data);
+  const chapter3DataEntity = useSelector((state: any) => state.CaymanEntity.chapter3Data);
   const [initialValue, setInitialValue] = useState({
     agentId: authDetails?.agentId,
     formTypeSelectionId: FormTypeId.CaymanEntity,
@@ -72,14 +72,14 @@ export default function Fedral_tax(props: any) {
     businessDisgradedEntity: chapter3DataEntity?.businessDisgradedEntity ? chapter3DataEntity?.businessDisgradedEntity : obValues.businessDisgradedEntity,
     other: "",
     countryOfIncorporation: chapter3DataEntity?.countryOfIncorporation ? chapter3DataEntity?.countryOfIncorporation : 0,
-    dateOfIncorporation:chapter3DataEntity?.dateOfIncorporation ? chapter3DataEntity?.dateOfIncorporation : "",
-    jurisdictionForTaxPurposes : chapter3DataEntity?.jurisdictionForTaxPurposes ? chapter3DataEntity?.jurisdictionForTaxPurposes : "",
-    isApplyingTieBreakerClauseUnderApplicableTaxTreaty:chapter3DataEntity?.isApplyingTieBreakerClauseUnderApplicableTaxTreaty ? chapter3DataEntity?.isApplyingTieBreakerClauseUnderApplicableTaxTreaty : "",
-    countryOfTaxesPaid:chapter3DataEntity?.countryOfTaxesPaid ? chapter3DataEntity?.countryOfTaxesPaid : 0,
-    taxJuridictionListItem:[],
-    taxJurisdictionMismatchExplanationId:chapter3DataEntity?.taxJurisdictionMismatchExplanationId ? chapter3DataEntity?.taxJurisdictionMismatchExplanationId : null,
-    explainationForNone: chapter3DataEntity?.explainationForNone ? chapter3DataEntity?.explainationForNone :"",
-    confirmThisisaTrueAndAccurate:chapter3DataEntity?.confirmThisisaTrueAndAccurate ? chapter3DataEntity?.confirmThisisaTrueAndAccurate :false,
+    dateOfIncorporation: chapter3DataEntity?.dateOfIncorporation ? chapter3DataEntity?.dateOfIncorporation : "",
+    jurisdictionForTaxPurposes: chapter3DataEntity?.jurisdictionForTaxPurposes ? chapter3DataEntity?.jurisdictionForTaxPurposes : "",
+    isApplyingTieBreakerClauseUnderApplicableTaxTreaty: chapter3DataEntity?.isApplyingTieBreakerClauseUnderApplicableTaxTreaty ? chapter3DataEntity?.isApplyingTieBreakerClauseUnderApplicableTaxTreaty : "",
+    countryOfTaxesPaid: chapter3DataEntity?.countryOfTaxesPaid ? chapter3DataEntity?.countryOfTaxesPaid : 0,
+    taxJuridictionListItem: [],
+    taxJurisdictionMismatchExplanationId: chapter3DataEntity?.taxJurisdictionMismatchExplanationId ? chapter3DataEntity?.taxJurisdictionMismatchExplanationId : null,
+    explainationForNone: chapter3DataEntity?.explainationForNone ? chapter3DataEntity?.explainationForNone : "",
+    confirmThisisaTrueAndAccurate: chapter3DataEntity?.confirmThisisaTrueAndAccurate ? chapter3DataEntity?.confirmThisisaTrueAndAccurate : false,
     chapter3Status: chapter3DataEntity?.chapter3Status ? chapter3DataEntity?.chapter3Status : 0,
     attachSupportingDocumentFile: chapter3DataEntity?.attachSupportingDocumentFile ? chapter3DataEntity?.attachSupportingDocumentFile : null,
     attachSupportingDocument: chapter3DataEntity?.attachSupportingDocument ? chapter3DataEntity?.attachSupportingDocument : null,
@@ -94,31 +94,31 @@ export default function Fedral_tax(props: any) {
   useEffect(() => {
     setInitialValue({
       agentId: authDetails?.agentId,
-    formTypeSelectionId: FormTypeId.CaymanEntity,
-    accountHolderBasicDetailId: authDetails?.accountHolderId,
-    businessName: obValues.entityName,
-    businessDisgradedEntity: chapter3DataEntity?.businessDisgradedEntity ? chapter3DataEntity?.businessDisgradedEntity : obValues.businessDisgradedEntity,
-    other: "",
-    countryOfIncorporation: chapter3DataEntity?.countryOfIncorporation ? chapter3DataEntity?.countryOfIncorporation : 0,
-    dateOfIncorporation:chapter3DataEntity?.dateOfIncorporation ? chapter3DataEntity?.dateOfIncorporation : "",
-    jurisdictionForTaxPurposes : chapter3DataEntity?.jurisdictionForTaxPurposes ? chapter3DataEntity?.jurisdictionForTaxPurposes : "",
-    isApplyingTieBreakerClauseUnderApplicableTaxTreaty:chapter3DataEntity?.isApplyingTieBreakerClauseUnderApplicableTaxTreaty ? chapter3DataEntity?.isApplyingTieBreakerClauseUnderApplicableTaxTreaty : "",
-    countryOfTaxesPaid:chapter3DataEntity?.countryOfTaxesPaid ? chapter3DataEntity?.countryOfTaxesPaid : 0,
-    taxJuridictionListItem:[],
-    taxJurisdictionMismatchExplanationId:chapter3DataEntity?.taxJurisdictionMismatchExplanationId ? chapter3DataEntity?.taxJurisdictionMismatchExplanationId : null,
-    explainationForNone: chapter3DataEntity?.explainationForNone ? chapter3DataEntity?.explainationForNone :"",
-    confirmThisisaTrueAndAccurate:chapter3DataEntity?.confirmThisisaTrueAndAccurate ? chapter3DataEntity?.confirmThisisaTrueAndAccurate :false,
-    chapter3Status: chapter3DataEntity?.chapter3Status ? chapter3DataEntity?.chapter3Status : 0,
-    attachSupportingDocumentFile: chapter3DataEntity?.attachSupportingDocumentFile ? chapter3DataEntity?.attachSupportingDocumentFile : null,
-    attachSupportingDocument: chapter3DataEntity?.attachSupportingDocument ? chapter3DataEntity?.attachSupportingDocument : null,
-    descriptionHybridStatus: chapter3DataEntity?.descriptionHybridStatus ? chapter3DataEntity?.descriptionHybridStatus : "",
-    hybridStatus: chapter3DataEntity?.hybridStatus ? chapter3DataEntity?.hybridStatus : 3,
-    isDisRegardedSection: chapter3DataEntity?.isDisRegardedSection ? chapter3DataEntity?.isDisRegardedSection : "",
-    isDisRegardedSection1446: chapter3DataEntity?.isDisRegardedSection1446 ? chapter3DataEntity?.isDisRegardedSection1446 : "",
-    statusId: 1,
-    stepName: `/${urlValue}`,
+      formTypeSelectionId: FormTypeId.CaymanEntity,
+      accountHolderBasicDetailId: authDetails?.accountHolderId,
+      businessName: obValues.entityName,
+      businessDisgradedEntity: chapter3DataEntity?.businessDisgradedEntity ? chapter3DataEntity?.businessDisgradedEntity : obValues.businessDisgradedEntity,
+      other: "",
+      countryOfIncorporation: chapter3DataEntity?.countryOfIncorporation ? chapter3DataEntity?.countryOfIncorporation : 0,
+      dateOfIncorporation: chapter3DataEntity?.dateOfIncorporation ? chapter3DataEntity?.dateOfIncorporation : "",
+      jurisdictionForTaxPurposes: chapter3DataEntity?.jurisdictionForTaxPurposes ? chapter3DataEntity?.jurisdictionForTaxPurposes : "",
+      isApplyingTieBreakerClauseUnderApplicableTaxTreaty: chapter3DataEntity?.isApplyingTieBreakerClauseUnderApplicableTaxTreaty ? chapter3DataEntity?.isApplyingTieBreakerClauseUnderApplicableTaxTreaty : "",
+      countryOfTaxesPaid: chapter3DataEntity?.countryOfTaxesPaid ? chapter3DataEntity?.countryOfTaxesPaid : 0,
+      taxJuridictionListItem: [],
+      taxJurisdictionMismatchExplanationId: chapter3DataEntity?.taxJurisdictionMismatchExplanationId ? chapter3DataEntity?.taxJurisdictionMismatchExplanationId : null,
+      explainationForNone: chapter3DataEntity?.explainationForNone ? chapter3DataEntity?.explainationForNone : "",
+      confirmThisisaTrueAndAccurate: chapter3DataEntity?.confirmThisisaTrueAndAccurate ? chapter3DataEntity?.confirmThisisaTrueAndAccurate : false,
+      chapter3Status: chapter3DataEntity?.chapter3Status ? chapter3DataEntity?.chapter3Status : 0,
+      attachSupportingDocumentFile: chapter3DataEntity?.attachSupportingDocumentFile ? chapter3DataEntity?.attachSupportingDocumentFile : null,
+      attachSupportingDocument: chapter3DataEntity?.attachSupportingDocument ? chapter3DataEntity?.attachSupportingDocument : null,
+      descriptionHybridStatus: chapter3DataEntity?.descriptionHybridStatus ? chapter3DataEntity?.descriptionHybridStatus : "",
+      hybridStatus: chapter3DataEntity?.hybridStatus ? chapter3DataEntity?.hybridStatus : 3,
+      isDisRegardedSection: chapter3DataEntity?.isDisRegardedSection ? chapter3DataEntity?.isDisRegardedSection : "",
+      isDisRegardedSection1446: chapter3DataEntity?.isDisRegardedSection1446 ? chapter3DataEntity?.isDisRegardedSection1446 : "",
+      statusId: 1,
+      stepName: `/${urlValue}`,
     })
-  },[chapter3DataEntity])
+  }, [chapter3DataEntity])
   const [toolInfo, setToolInfo] = useState("");
   const [expanded, setExpanded] = React.useState<string | false>("");
   const [clickCount, setClickCount] = useState(0);
@@ -161,7 +161,7 @@ export default function Fedral_tax(props: any) {
     dispatch(getAllCountriesCode());
     dispatch(getAllCountriesIncomeCode());
     dispatch(GetHelpVideoDetails());
-    dispatch(GetTaxJusrisdictionMismatchExplaination((data:any) => {
+    dispatch(GetTaxJusrisdictionMismatchExplaination((data: any) => {
       setTaxJuridictionListItemArray(data)
     }));
     dispatch(GetChapter3Status(FormTypeId.BENE));
@@ -171,11 +171,11 @@ export default function Fedral_tax(props: any) {
     setInitialValue((preV) => {
       return {
         ...preV,
-        "taxJuridictionListItem":taxJuridictionListItemArray 
+        "taxJuridictionListItem": taxJuridictionListItemArray
       }
     })
     //taxJuridictionListItemArray ? taxJuridictionListItemArray : 
-  },[taxJuridictionListItemArray])
+  }, [taxJuridictionListItemArray])
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
@@ -222,7 +222,7 @@ export default function Fedral_tax(props: any) {
   const viewPdf = () => {
     history("/w8BenE_pdf");
   }
-  
+
   const [canvaBx, setCanvaBx] = useState(false);
   const handleCanvaOpen = () => {
     setCanvaBx(true);
@@ -230,15 +230,15 @@ export default function Fedral_tax(props: any) {
   const handleCanvaClose = () => {
     setCanvaBx(false);
   };
-    // console.log("GetChapter3StatusReducer",GetChapter3StatusReducer)
-    
+  // console.log("GetChapter3StatusReducer",GetChapter3StatusReducer)
+
   return (
     <>
       <section
         className="inner_content"
         style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
       >
-        <SideBar/>
+        <SideBar />
         <div className="row w-100">
           <div className="col-4">
             <div style={{ padding: "20px 0px", height: "100%" }}>
@@ -266,40 +266,40 @@ export default function Fedral_tax(props: any) {
                       // if (clickCount === 0) {
                       //   setClickCount(clickCount + 1);
                       // } else {
-                        setSubmitting(true);
-                        const temp = {
-                          ...PrevStepData,
-                          ...values,
-                          agentId: authDetails?.agentId,
-                          accountHolderBasicDetailId: authDetails?.accountHolderId,
-                        };
-                        const result = {
-                          ...temp,
-                          hybridStatus: Number.isNaN(temp.hybridStatus) ? 0 : temp.hybridStatus,
-                          formTypeSelectionId: FormTypeSelection.Entity,
-                          attachSupportingDocumentFile: selectedfile,
-                        };
-                        console.log("result", result);
-                        dispatch(
-                          postSCEntityEForm(result, () => {
-                            localStorage.setItem("PrevStepData", JSON.stringify(temp));
-                            resolve("success");
-                            history("/Cayman/Entity/FATCA")
+                      setSubmitting(true);
+                      const temp = {
+                        ...PrevStepData,
+                        ...values,
+                        agentId: authDetails?.agentId,
+                        accountHolderBasicDetailId: authDetails?.accountHolderId,
+                      };
+                      const result = {
+                        ...temp,
+                        hybridStatus: Number.isNaN(temp.hybridStatus) ? 0 : temp.hybridStatus,
+                        formTypeSelectionId: FormTypeSelection.Entity,
+                        attachSupportingDocumentFile: selectedfile,
+                      };
+                      console.log("result", result);
+                      dispatch(
+                        postSCEntityEForm(result, () => {
+                          localStorage.setItem("PrevStepData", JSON.stringify(temp));
+                          resolve("success");
+                          history("/Cayman/Entity/FATCA")
+                          setSubmitting(false);
+                        },
+                          (error: any) => {
+                            reject(error);
                             setSubmitting(false);
-                          },
-                            (error: any) => {
-                              reject(error);
-                              setSubmitting(false);
-                            }
-                          )
-                        );
+                          }
+                        )
+                      );
                       // }
                     })
-                    
+
                     return submitPromise;
-                    
+
                   }}
-                  
+
                 >
                   {({
                     errors,
@@ -315,7 +315,7 @@ export default function Fedral_tax(props: any) {
                     validateForm
                   }) => (
                     <Form onSubmit={handleSubmit}>
-                        <>{console.log("values",values, errors)}</>
+                      <>{console.log("values", values, errors)}</>
                       <div style={{ width: "100%" }}>
                         {
                           //touched.countryOfIncorporation &&
@@ -609,7 +609,7 @@ export default function Fedral_tax(props: any) {
                                   {errors?.chapter3Status && typeof errors?.chapter3Status === 'string' && (
                                     <p className="error">{errors?.chapter3Status}</p>
                                   )}
-                                  
+
                                 </FormControl>
                               </div>
                             </div>
@@ -916,85 +916,85 @@ export default function Fedral_tax(props: any) {
                                 <div
                                   className="col-12"
                                 >
-                                    <div
-                                        className="col-3  "
-                                        style={{ marginLeft: "0px" }}
+                                  <div
+                                    className="col-3  "
+                                    style={{ marginLeft: "0px" }}
+                                  >
+                                    <Typography
+                                      align="left"
+                                      className="d-flex w-60 "
+                                      style={{
+                                        fontSize: "13px",
+                                        marginTop: "6px",
+                                      }}
                                     >
-                                        <Typography
-                                            align="left"
-                                            className="d-flex w-60 "
-                                            style={{
-                                                fontSize: "13px",
-                                                marginTop: "6px",
-                                            }}
-                                        >
-                                            Date of incorporation<span style={{ color: "red" }}>*</span>
-                                        </Typography>
+                                      Date of incorporation<span style={{ color: "red" }}>*</span>
+                                    </Typography>
 
-                                        <FormControl className="w-100">
-                                            <DatePicker
-                                                className="dateclass"
-                                                onBlur={handleBlur}
-                                                name="dateOfIncorporation"
-                                                onChange={(date:any) => { 
-                                                    setTimeout(() => { 
-                                                    const inputDate = new Date(date);
-                                                    const year = inputDate.getFullYear();
-                                                    const month = String(inputDate.getMonth() + 1).padStart(2, '0');
-                                                    const day = String(inputDate.getDate()).padStart(2, '0');
-                                                    const formattedDate = `${year}-${month}-${day}`;
-                                                    setFieldValue("dateOfIncorporation", formattedDate);
-                                                    }, 200);
-                                                }}
-                                                value={values.dateOfIncorporation}
-                                                clearIcon={null}
-                                                format="yyyy-MM-dd"
-                                                dayPlaceholder="dd"
-                                                monthPlaceholder="mm"
-                                                yearPlaceholder="yy"
-                                            />
+                                    <FormControl className="w-100">
+                                      <DatePicker
+                                        className="dateclass"
+                                        onBlur={handleBlur}
+                                        name="dateOfIncorporation"
+                                        onChange={(date: any) => {
+                                          setTimeout(() => {
+                                            const inputDate = new Date(date);
+                                            const year = inputDate.getFullYear();
+                                            const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+                                            const day = String(inputDate.getDate()).padStart(2, '0');
+                                            const formattedDate = `${year}-${month}-${day}`;
+                                            setFieldValue("dateOfIncorporation", formattedDate);
+                                          }, 200);
+                                        }}
+                                        value={values.dateOfIncorporation}
+                                        clearIcon={null}
+                                        format="yyyy-MM-dd"
+                                        dayPlaceholder="dd"
+                                        monthPlaceholder="mm"
+                                        yearPlaceholder="yy"
+                                      />
 
-                                        </FormControl>
-                                    </div>
+                                    </FormControl>
+                                  </div>
 
 
 
-                                    <div
-                                        className="col-12"
-                                        style={{ marginLeft: "0px" }}
+                                  <div
+                                    className="col-12"
+                                    style={{ marginLeft: "0px" }}
+                                  >
+                                    <Typography
+                                      // align="left"
+                                      className="d-flex w-60 "
+                                      style={{
+                                        fontSize: "13px",
+                                        marginTop: "15px",
+                                      }}
                                     >
-                                        <Typography
-                                            // align="left"
-                                            className="d-flex w-60 "
-                                            style={{
-                                                fontSize: "13px",
-                                                marginTop: "15px",
-                                            }}
-                                            >
-                                        <strong>Jurisdiction for Tax Purposes:</strong> Is the jurisdiction in which your organisation is resident for tax purposes different from the country of incorporation?<span style={{ color: "red" }}>*</span>
-                                        </Typography>
+                                      <strong>Jurisdiction for Tax Purposes:</strong> Is the jurisdiction in which your organisation is resident for tax purposes different from the country of incorporation?<span style={{ color: "red" }}>*</span>
+                                    </Typography>
 
-                                        <FormControl className="w-100">
-                                        <RadioGroup
-                                            aria-labelledby="demo-controlled-radio-buttons-group"
-                                            name="jurisdictionForTaxPurposes"
-                                            value={values.jurisdictionForTaxPurposes}
-                                            onChange={(event) => {
-                                                // setFieldValue("jurisdictionForTaxPurposes", event.currentTarget.value === "true" ? true : false)
-                                                setFieldValue("jurisdictionForTaxPurposes", event.currentTarget.value)
-                                              }}
-                                            style={{ flexDirection: "row" }}
-                                        >
-                                            <FormControlLabel name="jurisdictionForTaxPurposes" value="Yes" control={<Radio />} label="Yes" />
-                                            <FormControlLabel name="jurisdictionForTaxPurposes" value="No" control={<Radio />} label="No" />
-                                        </RadioGroup>
+                                    <FormControl className="w-100">
+                                      <RadioGroup
+                                        aria-labelledby="demo-controlled-radio-buttons-group"
+                                        name="jurisdictionForTaxPurposes"
+                                        value={values.jurisdictionForTaxPurposes}
+                                        onChange={(event) => {
+                                          // setFieldValue("jurisdictionForTaxPurposes", event.currentTarget.value === "true" ? true : false)
+                                          setFieldValue("jurisdictionForTaxPurposes", event.currentTarget.value)
+                                        }}
+                                        style={{ flexDirection: "row" }}
+                                      >
+                                        <FormControlLabel name="jurisdictionForTaxPurposes" value="Yes" control={<Radio />} label="Yes" />
+                                        <FormControlLabel name="jurisdictionForTaxPurposes" value="No" control={<Radio />} label="No" />
+                                      </RadioGroup>
 
-                                        </FormControl>
-                                    </div>
+                                    </FormControl>
+                                  </div>
                                 </div>
-                                
+
                                 {values.jurisdictionForTaxPurposes === "Yes" && (
-                                    <div>
+                                  <div>
                                     <div className="col-6">
                                       <Typography
                                         align="left"
@@ -1003,26 +1003,26 @@ export default function Fedral_tax(props: any) {
                                       >
                                         If you are applying a tax residency tie-breaker clause under an applicable tax treaty then please enter your primary residence jurisdiction only.
                                         <span style={{ color: "red" }}>*</span>
-                                        
-                                      </Typography>
-                                      
-  
-                                      <FormControl className="w-100">
-                                          <RadioGroup
-                                              aria-labelledby="demo-controlled-radio-buttons-group"
-                                              name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty"
-                                              value={values.isApplyingTieBreakerClauseUnderApplicableTaxTreaty}
-                                              onChange={(event) => {
-                                                  // setFieldValue("isApplyingTieBreakerClauseUnderApplicableTaxTreaty", event.currentTarget.value === "true" ? true : false)
-                                                  setFieldValue("isApplyingTieBreakerClauseUnderApplicableTaxTreaty", event.currentTarget.value)
 
-                                                }}  
-                                              style={{ flexDirection: "row" }}
-                                          >
-                                              
-                                              <FormControlLabel name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty" value="Yes" control={<Radio />} label="Yes" />
-                                              <FormControlLabel name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty" value="No" control={<Radio />} label="No" />
-                                          </RadioGroup>
+                                      </Typography>
+
+
+                                      <FormControl className="w-100">
+                                        <RadioGroup
+                                          aria-labelledby="demo-controlled-radio-buttons-group"
+                                          name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty"
+                                          value={values.isApplyingTieBreakerClauseUnderApplicableTaxTreaty}
+                                          onChange={(event) => {
+                                            // setFieldValue("isApplyingTieBreakerClauseUnderApplicableTaxTreaty", event.currentTarget.value === "true" ? true : false)
+                                            setFieldValue("isApplyingTieBreakerClauseUnderApplicableTaxTreaty", event.currentTarget.value)
+
+                                          }}
+                                          style={{ flexDirection: "row" }}
+                                        >
+
+                                          <FormControlLabel name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty" value="Yes" control={<Radio />} label="Yes" />
+                                          <FormControlLabel name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty" value="No" control={<Radio />} label="No" />
+                                        </RadioGroup>
                                       </FormControl>
                                       <p className="error">
                                         {typeof (errors.businessName) == "string" && touched.businessName ? errors.businessName : <></>}
@@ -1039,38 +1039,38 @@ export default function Fedral_tax(props: any) {
                                       >
                                         Country where Taxes are paid:<span style={{ color: "red" }}>*</span>
                                       </Typography>
-  
+
                                       <FormControl className="w-100" >
                                         <select name="countryOfTaxesPaid"
-                                              value={values.countryOfTaxesPaid}
-                                              onChange={handleChange}
-                                              autoComplete="countryOfTaxesPaid"
-                                              // placeholder="Business Name"
-                                              onBlur={handleBlur}
-                                              style={{
-                                                padding: " 0 10px",
-                                                color: "#121112",
-                                                fontStyle: "italic",
-                                                height: "36px",
-                                              }}>
-                                                  <option value={0}>---select---</option>
-                                                      <option value={257}>
-                                                          United Kingdom
-                                                      </option>
-                                                      <option value={258}>
-                                                          United States
-                                                      </option>
-                                                      <option value={0}>---</option>
-                                                      {getCountriesReducer.allCountriesData?.map(
-                                                          (ele: any) => (
-                                                          <option
-                                                              key={ele?.id}
-                                                              value={ele?.id}
-                                                          >
-                                                              {ele?.name}
-                                                          </option>
-                                                          )
-                                                      )}
+                                          value={values.countryOfTaxesPaid}
+                                          onChange={handleChange}
+                                          autoComplete="countryOfTaxesPaid"
+                                          // placeholder="Business Name"
+                                          onBlur={handleBlur}
+                                          style={{
+                                            padding: " 0 10px",
+                                            color: "#121112",
+                                            fontStyle: "italic",
+                                            height: "36px",
+                                          }}>
+                                          <option value={0}>---select---</option>
+                                          <option value={257}>
+                                            United Kingdom
+                                          </option>
+                                          <option value={258}>
+                                            United States
+                                          </option>
+                                          <option value={0}>---</option>
+                                          {getCountriesReducer.allCountriesData?.map(
+                                            (ele: any) => (
+                                              <option
+                                                key={ele?.id}
+                                                value={ele?.id}
+                                              >
+                                                {ele?.name}
+                                              </option>
+                                            )
+                                          )}
                                         </select>
                                       </FormControl>
                                     </div>
@@ -1080,78 +1080,78 @@ export default function Fedral_tax(props: any) {
                                         className="d-flex w-60 "
                                         style={{ fontSize: "13px" }}
                                       >
-                                        Content block for tax jurisdiction mismatch explanation 
+                                        Content block for tax jurisdiction mismatch explanation
                                         <span style={{ color: "red" }}>*</span>
-                                        
+
                                       </Typography>
-                                      
-                                                      {/* This is going to be dynamic data for radio group */}
-                                      
-                                      
+
+                                      {/* This is going to be dynamic data for radio group */}
+
+
                                       <FormControl className="w-100">
-                                          <RadioGroup
-                                              aria-labelledby="demo-controlled-radio-buttons-group"
-                                              name="taxJurisdictionMismatchExplanationId"
-                                              value={values?.taxJurisdictionMismatchExplanationId}
-                                              onChange={(event) => {
-                                                  setFieldValue("taxJurisdictionMismatchExplanationId", event.currentTarget.value )
-                                                }}  
-                                              style={{ flexDirection: "row" }}
-                                          >
-                                            {values?.taxJuridictionListItem?.map((item: any, index: any) => (
-                                              <FormControlLabel
-                                                key={index}
-                                                name="taxJurisdictionMismatchExplanationId"
-                                                value={item.id}
-                                                control={<Radio />}
-                                                label={item.mismatchExplanation}
-                                              />
-                                            ))}
-                                              
-                                          </RadioGroup>
-                                      </FormControl> 
-                                      
-                                      {values.taxJurisdictionMismatchExplanationId == 15 && (<>
-                                      <div className="col-6">
-                                      <FormControl className="w-100 textfield1">
-                                        <TextField 
-                                        className="textfield1"
-                                         name="explainationForNone" 
-                                         value={values.explainationForNone} 
-                                         placeholder="Please provide an explanation here:"
-                                         onChange={handleChange} />
-                                      </FormControl>
-                                      
-                                      
-                                      
-                                      <FormControl className="w-100">
-                                          
-                                      <Checkbox name="confirmThisisaTrueAndAccurate"
-                                          value={values.confirmThisisaTrueAndAccurate}
-                                          checked={values.confirmThisisaTrueAndAccurate}
-                                          onChange={handleChange}
-                                          size="medium"
-                                          style={{ fontSize: "2rem",marginTop: "6px" }} />
-                                        <Typography className="mx-2"
-                                          style={{ fontSize: "14px", color: "black", marginTop: "15px", textAlign: "justify" }}
+                                        <RadioGroup
+                                          aria-labelledby="demo-controlled-radio-buttons-group"
+                                          name="taxJurisdictionMismatchExplanationId"
+                                          value={values?.taxJurisdictionMismatchExplanationId}
+                                          onChange={(event) => {
+                                            setFieldValue("taxJurisdictionMismatchExplanationId", event.currentTarget.value)
+                                          }}
+                                          style={{ flexDirection: "row" }}
                                         >
-                                        Check to confirm this is a true and accurate statement
-                                        </Typography>
-                                      </FormControl> 
-                                      
-                                    </div>
-                                    </>)}
-                                    
+                                          {values?.taxJuridictionListItem?.map((item: any, index: any) => (
+                                            <FormControlLabel
+                                              key={index}
+                                              name="taxJurisdictionMismatchExplanationId"
+                                              value={item.id}
+                                              control={<Radio />}
+                                              label={item.mismatchExplanation}
+                                            />
+                                          ))}
+
+                                        </RadioGroup>
+                                      </FormControl>
+
+                                      {values.taxJurisdictionMismatchExplanationId == 15 && (<>
+                                        <div className="col-6">
+                                          <FormControl className="w-100 textfield1">
+                                            <TextField
+                                              className="textfield1"
+                                              name="explainationForNone"
+                                              value={values.explainationForNone}
+                                              placeholder="Please provide an explanation here:"
+                                              onChange={handleChange} />
+                                          </FormControl>
+
+
+
+                                          <FormControl className="w-100">
+
+                                            <Checkbox name="confirmThisisaTrueAndAccurate"
+                                              value={values.confirmThisisaTrueAndAccurate}
+                                              checked={values.confirmThisisaTrueAndAccurate}
+                                              onChange={handleChange}
+                                              size="medium"
+                                              style={{ fontSize: "2rem", marginTop: "6px" }} />
+                                            <Typography className="mx-2"
+                                              style={{ fontSize: "14px", color: "black", marginTop: "15px", textAlign: "justify" }}
+                                            >
+                                              Check to confirm this is a true and accurate statement
+                                            </Typography>
+                                          </FormControl>
+
+                                        </div>
+                                      </>)}
+
                                     </div>
 
-                                    
+
 
 
 
 
                                   </div>
                                 )}
-                                
+
 
                               </>
                             ) : (
@@ -1356,7 +1356,7 @@ export default function Fedral_tax(props: any) {
                                           type="text"
                                           onChange={handleChange}
                                           onBlur={handleBlur}
-                                          
+
                                           error={Boolean(
                                             touched.businessDisgradedEntity && errors.businessDisgradedEntity
                                           )}
@@ -1423,53 +1423,53 @@ export default function Fedral_tax(props: any) {
                                         </FormControl>
                                       </div>
                                     </div>
-                                    
+
                                   </>
-                                  
+
                                 </>
 
                                 <div>
 
-                                <div
-                                        className="col-3"
-                                        style={{ marginLeft: "0px" }}
+                                  <div
+                                    className="col-3"
+                                    style={{ marginLeft: "0px" }}
+                                  >
+                                    <Typography
+                                      align="left"
+                                      className="d-flex w-60 "
+                                      style={{
+                                        fontSize: "13px",
+                                        marginTop: "6px",
+                                      }}
                                     >
-                                        <Typography
-                                            align="left"
-                                            className="d-flex w-60 "
-                                            style={{
-                                                fontSize: "13px",
-                                                marginTop: "6px",
-                                            }}
-                                        >
-                                            Date of incorporation<span style={{ color: "red" }}>*</span>
-                                        </Typography>
+                                      Date of incorporation<span style={{ color: "red" }}>*</span>
+                                    </Typography>
 
-                                        <FormControl className="w-100">
-                                            <DatePicker
-                                                className="dateclass"
-                                                onBlur={handleBlur}
-                                                name="dateOfIncorporation"
-                                                onChange={(date:any) => { 
-                                                    setTimeout(() => { 
-                                                    const inputDate = new Date(date);
-                                                    const year = inputDate.getFullYear();
-                                                    const month = String(inputDate.getMonth() + 1).padStart(2, '0');
-                                                    const day = String(inputDate.getDate()).padStart(2, '0');
-                                                    const formattedDate = `${year}-${month}-${day}`;
-                                                    setFieldValue("dateOfIncorporation", formattedDate);
-                                                    }, 200);
-                                                }}
-                                                value={values.dateOfIncorporation}
-                                                clearIcon={null}
-                                                format="yyyy-MM-dd"
-                                                dayPlaceholder="dd"
-                                                monthPlaceholder="mm"
-                                                yearPlaceholder="yy"
-                                            />
+                                    <FormControl className="w-100">
+                                      <DatePicker
+                                        className="dateclass"
+                                        onBlur={handleBlur}
+                                        name="dateOfIncorporation"
+                                        onChange={(date: any) => {
+                                          setTimeout(() => {
+                                            const inputDate = new Date(date);
+                                            const year = inputDate.getFullYear();
+                                            const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+                                            const day = String(inputDate.getDate()).padStart(2, '0');
+                                            const formattedDate = `${year}-${month}-${day}`;
+                                            setFieldValue("dateOfIncorporation", formattedDate);
+                                          }, 200);
+                                        }}
+                                        value={values.dateOfIncorporation}
+                                        clearIcon={null}
+                                        format="yyyy-MM-dd"
+                                        dayPlaceholder="dd"
+                                        monthPlaceholder="mm"
+                                        yearPlaceholder="yy"
+                                      />
 
-                                        </FormControl>
-                                    </div>
+                                    </FormControl>
+                                  </div>
 
 
                                   <Typography
@@ -1510,8 +1510,8 @@ export default function Fedral_tax(props: any) {
                                       />
                                     </RadioGroup>
                                     {errors?.hybridStatus && typeof errors?.hybridStatus === 'string' && (
-                                        <p className="error">{errors?.hybridStatus}</p>
-                                      )}
+                                      <p className="error">{errors?.hybridStatus}</p>
+                                    )}
                                     {/* <p className="error">
                                       {errors.hybridStatus}
                                     </p> */}
@@ -1538,7 +1538,7 @@ export default function Fedral_tax(props: any) {
                                       style={{
                                         fontSize: "15px",
                                       }}
-                                      
+
                                     >
                                       Attach supporting documentation:
                                     </Typography>
@@ -1637,208 +1637,208 @@ export default function Fedral_tax(props: any) {
                                   )}
                                   <>
                                     <div
-                                        className="col-12"
-                                        style={{ marginLeft: "0px" }}
+                                      className="col-12"
+                                      style={{ marginLeft: "0px" }}
                                     >
-                                        <Typography
-                                            // align="left"
-                                            className="d-flex w-60 "
-                                            style={{
-                                                fontSize: "13px",
-                                                marginTop: "15px",
-                                            }}
-                                            >
+                                      <Typography
+                                        // align="left"
+                                        className="d-flex w-60 "
+                                        style={{
+                                          fontSize: "13px",
+                                          marginTop: "15px",
+                                        }}
+                                      >
                                         <strong>Jurisdiction for Tax Purposes:</strong> Is the jurisdiction in which your organisation is resident for tax purposes different from the country of incorporation?<span style={{ color: "red" }}>*</span>
-                                        </Typography>
+                                      </Typography>
 
-                                        <FormControl className="w-100">
+                                      <FormControl className="w-100">
                                         <RadioGroup
-                                            aria-labelledby="demo-controlled-radio-buttons-group"
-                                            name="jurisdictionForTaxPurposes"
-                                            value={values.jurisdictionForTaxPurposes}
-                                            onChange={(event) => {
-                                                // setFieldValue("jurisdictionForTaxPurposes", event.currentTarget.value === "true" ? true : false)
-                                                setFieldValue("jurisdictionForTaxPurposes", event.currentTarget.value)
-                                              }}
-                                            style={{ flexDirection: "row" }}
+                                          aria-labelledby="demo-controlled-radio-buttons-group"
+                                          name="jurisdictionForTaxPurposes"
+                                          value={values.jurisdictionForTaxPurposes}
+                                          onChange={(event) => {
+                                            // setFieldValue("jurisdictionForTaxPurposes", event.currentTarget.value === "true" ? true : false)
+                                            setFieldValue("jurisdictionForTaxPurposes", event.currentTarget.value)
+                                          }}
+                                          style={{ flexDirection: "row" }}
                                         >
-                                            <FormControlLabel name="jurisdictionForTaxPurposes" value="Yes" control={<Radio />} label="Yes" />
-                                            <FormControlLabel name="jurisdictionForTaxPurposes" value="No" control={<Radio />} label="No" />
+                                          <FormControlLabel name="jurisdictionForTaxPurposes" value="Yes" control={<Radio />} label="Yes" />
+                                          <FormControlLabel name="jurisdictionForTaxPurposes" value="No" control={<Radio />} label="No" />
                                         </RadioGroup>
 
-                                        </FormControl>
+                                      </FormControl>
                                     </div>
-                                    </>
-                                    {values.jurisdictionForTaxPurposes === "Yes" && (
+                                  </>
+                                  {values.jurisdictionForTaxPurposes === "Yes" && (
                                     <div>
-                                    <div className="col-6">
-                                      <Typography
-                                        align="left"
-                                        className="d-flex w-60 "
-                                        style={{ fontSize: "13px" }}
-                                      >
-                                        If you are applying a tax residency tie-breaker clause under an applicable tax treaty then please enter your primary residence jurisdiction only.
-                                        <span style={{ color: "red" }}>*</span>
-                                        
-                                      </Typography>
-                                      
-  
-                                      <FormControl className="w-100">
-                                          <RadioGroup
-                                              aria-labelledby="demo-controlled-radio-buttons-group"
-                                              name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty"
-                                              value={values.isApplyingTieBreakerClauseUnderApplicableTaxTreaty}
-                                              onChange={(event) => {
-                                                  // setFieldValue("isApplyingTieBreakerClauseUnderApplicableTaxTreaty", event.currentTarget.value === "true" ? true : false)
-                                                  setFieldValue("isApplyingTieBreakerClauseUnderApplicableTaxTreaty", event.currentTarget.value)
-                                                }}  
-                                              style={{ flexDirection: "row" }}
-                                          >
-                                              
-                                              <FormControlLabel name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty" value="Yes" control={<Radio />} label="Yes" />
-                                              <FormControlLabel name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty" value="No" control={<Radio />} label="No" />
-                                          </RadioGroup>
-                                      </FormControl>
-                                      <p className="error">
-                                        {typeof (errors.businessName) == "string" && touched.businessName ? errors.businessName : <></>}
-                                      </p>
-                                    </div>
-                                    <div
-                                      className="col-6  "
-                                      style={{ marginLeft: "10px" }}
-                                    >
-                                      <Typography
-                                        align="left"
-                                        className="d-flex w-60 "
-                                        style={{ fontSize: "13px" }}
-                                      >
-                                        Country where Taxes are paid:<span style={{ color: "red" }}>*</span>
-                                      </Typography>
-  
-                                      <FormControl className="w-100" >
-                                        <select name="countryOfTaxesPaid"
-                                              value={values.countryOfTaxesPaid}
-                                              onChange={handleChange}
-                                              autoComplete="countryOfTaxesPaid"
-                                              // placeholder="Business Name"
-                                              onBlur={handleBlur}
-                                              style={{
-                                                padding: " 0 10px",
-                                                color: "#121112",
-                                                fontStyle: "italic",
-                                                height: "36px",
-                                              }}>
-                                                  <option value={0}>---select---</option>
-                                                      <option value={257}>
-                                                          United Kingdom
-                                                      </option>
-                                                      <option value={258}>
-                                                          United States
-                                                      </option>
-                                                      <option value={0}>---</option>
-                                                      {getCountriesReducer.allCountriesData?.map(
-                                                          (ele: any) => (
-                                                          <option
-                                                              key={ele?.id}
-                                                              value={ele?.id}
-                                                          >
-                                                              {ele?.name}
-                                                          </option>
-                                                          )
-                                                      )}
-                                        </select>
-                                      </FormControl>
-                                    </div>
-                                    <div className="col-6">
-                                      <Typography
-                                        align="left"
-                                        className="d-flex w-60 "
-                                        style={{ fontSize: "13px" }}
-                                      >
-                                        Content block for tax jurisdiction mismatch explanation 
-                                        <span style={{ color: "red" }}>*</span>
-                                        
-                                      </Typography>
-                                      
                                       <div className="col-6">
-                                      <Typography
-                                        align="left"
-                                        className="d-flex w-60 "
-                                        style={{ fontSize: "13px" }}
-                                      >
-                                        Content block for tax jurisdiction mismatch explanation 
-                                        <span style={{ color: "red" }}>*</span>
-                                        
-                                      </Typography>
-                                      
-                                                      {/* This is going to be dynamic data for radio group */}
-                                      
-                                      
-                                      <FormControl className="w-100">
+                                        <Typography
+                                          align="left"
+                                          className="d-flex w-60 "
+                                          style={{ fontSize: "13px" }}
+                                        >
+                                          If you are applying a tax residency tie-breaker clause under an applicable tax treaty then please enter your primary residence jurisdiction only.
+                                          <span style={{ color: "red" }}>*</span>
+
+                                        </Typography>
+
+
+                                        <FormControl className="w-100">
                                           <RadioGroup
+                                            aria-labelledby="demo-controlled-radio-buttons-group"
+                                            name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty"
+                                            value={values.isApplyingTieBreakerClauseUnderApplicableTaxTreaty}
+                                            onChange={(event) => {
+                                              // setFieldValue("isApplyingTieBreakerClauseUnderApplicableTaxTreaty", event.currentTarget.value === "true" ? true : false)
+                                              setFieldValue("isApplyingTieBreakerClauseUnderApplicableTaxTreaty", event.currentTarget.value)
+                                            }}
+                                            style={{ flexDirection: "row" }}
+                                          >
+
+                                            <FormControlLabel name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty" value="Yes" control={<Radio />} label="Yes" />
+                                            <FormControlLabel name="isApplyingTieBreakerClauseUnderApplicableTaxTreaty" value="No" control={<Radio />} label="No" />
+                                          </RadioGroup>
+                                        </FormControl>
+                                        <p className="error">
+                                          {typeof (errors.businessName) == "string" && touched.businessName ? errors.businessName : <></>}
+                                        </p>
+                                      </div>
+                                      <div
+                                        className="col-6  "
+                                        style={{ marginLeft: "10px" }}
+                                      >
+                                        <Typography
+                                          align="left"
+                                          className="d-flex w-60 "
+                                          style={{ fontSize: "13px" }}
+                                        >
+                                          Country where Taxes are paid:<span style={{ color: "red" }}>*</span>
+                                        </Typography>
+
+                                        <FormControl className="w-100" >
+                                          <select name="countryOfTaxesPaid"
+                                            value={values.countryOfTaxesPaid}
+                                            onChange={handleChange}
+                                            autoComplete="countryOfTaxesPaid"
+                                            // placeholder="Business Name"
+                                            onBlur={handleBlur}
+                                            style={{
+                                              padding: " 0 10px",
+                                              color: "#121112",
+                                              fontStyle: "italic",
+                                              height: "36px",
+                                            }}>
+                                            <option value={0}>---select---</option>
+                                            <option value={257}>
+                                              United Kingdom
+                                            </option>
+                                            <option value={258}>
+                                              United States
+                                            </option>
+                                            <option value={0}>---</option>
+                                            {getCountriesReducer.allCountriesData?.map(
+                                              (ele: any) => (
+                                                <option
+                                                  key={ele?.id}
+                                                  value={ele?.id}
+                                                >
+                                                  {ele?.name}
+                                                </option>
+                                              )
+                                            )}
+                                          </select>
+                                        </FormControl>
+                                      </div>
+                                      <div className="col-6">
+                                        <Typography
+                                          align="left"
+                                          className="d-flex w-60 "
+                                          style={{ fontSize: "13px" }}
+                                        >
+                                          Content block for tax jurisdiction mismatch explanation
+                                          <span style={{ color: "red" }}>*</span>
+
+                                        </Typography>
+
+                                        <div className="col-6">
+                                          <Typography
+                                            align="left"
+                                            className="d-flex w-60 "
+                                            style={{ fontSize: "13px" }}
+                                          >
+                                            Content block for tax jurisdiction mismatch explanation
+                                            <span style={{ color: "red" }}>*</span>
+
+                                          </Typography>
+
+                                          {/* This is going to be dynamic data for radio group */}
+
+
+                                          <FormControl className="w-100">
+                                            <RadioGroup
                                               aria-labelledby="demo-controlled-radio-buttons-group"
                                               name="taxJurisdictionMismatchExplanationId"
                                               value={values?.taxJurisdictionMismatchExplanationId}
                                               onChange={(event) => {
-                                                  setFieldValue("taxJurisdictionMismatchExplanationId", event.currentTarget.value )
-                                                }}  
+                                                setFieldValue("taxJurisdictionMismatchExplanationId", event.currentTarget.value)
+                                              }}
                                               style={{ flexDirection: "row" }}
-                                          >
-                                            {values?.taxJuridictionListItem?.map((item: any, index: any) => (
-                                              <FormControlLabel
-                                                key={index}
-                                                name="taxJurisdictionMismatchExplanationId"
-                                                value={item.id}
-                                                control={<Radio />}
-                                                label={item.mismatchExplanation}
-                                              />
-                                            ))}
-                                              
-                                          </RadioGroup>
-                                      </FormControl> 
-                                      {values.taxJurisdictionMismatchExplanationId == 15 && (<>
-                                      <div className="col-6">
-                                      <FormControl className="w-100 textfield1">
-                                        <TextField 
-                                        className="textfield1"
-                                         name="explainationForNone" 
-                                         value={values.explainationForNone} 
-                                         placeholder="Please provide an explanation here:"
-                                         onChange={handleChange} />
-                                      </FormControl>
-                                      
-                                      
-                                      
-                                      <FormControl className="w-100">
-                                          
-                                      <Checkbox name="confirmThisisaTrueAndAccurate"
-                                          value={values.confirmThisisaTrueAndAccurate}
-                                          checked={values.confirmThisisaTrueAndAccurate}
-                                          onChange={handleChange}
-                                          size="medium"
-                                          style={{ fontSize: "2rem",marginTop: "6px" }} />
-                                        <Typography className="mx-2"
-                                          style={{ fontSize: "14px", color: "black", marginTop: "15px", textAlign: "justify" }}
-                                        >
-                                        Check to confirm this is a true and accurate statement
-                                        </Typography>
-                                      </FormControl> 
-                                      
+                                            >
+                                              {values?.taxJuridictionListItem?.map((item: any, index: any) => (
+                                                <FormControlLabel
+                                                  key={index}
+                                                  name="taxJurisdictionMismatchExplanationId"
+                                                  value={item.id}
+                                                  control={<Radio />}
+                                                  label={item.mismatchExplanation}
+                                                />
+                                              ))}
+
+                                            </RadioGroup>
+                                          </FormControl>
+                                          {values.taxJurisdictionMismatchExplanationId == 15 && (<>
+                                            <div className="col-6">
+                                              <FormControl className="w-100 textfield1">
+                                                <TextField
+                                                  className="textfield1"
+                                                  name="explainationForNone"
+                                                  value={values.explainationForNone}
+                                                  placeholder="Please provide an explanation here:"
+                                                  onChange={handleChange} />
+                                              </FormControl>
+
+
+
+                                              <FormControl className="w-100">
+
+                                                <Checkbox name="confirmThisisaTrueAndAccurate"
+                                                  value={values.confirmThisisaTrueAndAccurate}
+                                                  checked={values.confirmThisisaTrueAndAccurate}
+                                                  onChange={handleChange}
+                                                  size="medium"
+                                                  style={{ fontSize: "2rem", marginTop: "6px" }} />
+                                                <Typography className="mx-2"
+                                                  style={{ fontSize: "14px", color: "black", marginTop: "15px", textAlign: "justify" }}
+                                                >
+                                                  Check to confirm this is a true and accurate statement
+                                                </Typography>
+                                              </FormControl>
+
+                                            </div>
+                                          </>)}
+
+                                        </div>
+                                      </div>
+
+
+
+
                                     </div>
-                                    </>)}
-                                    
-                                    </div>
-                                    </div>
+                                  )}
 
 
-
-
-                                  </div>
-                                )}
-
-                                  
                                 </div>
-                                
+
                               </>
                             ) : (
                               ""
@@ -2713,13 +2713,13 @@ export default function Fedral_tax(props: any) {
                               const urlValue = window.location.pathname.substring(1);
                               dispatch(postSCEntityEForm(
                                 {
-                                    ...prevStepData,
-                                    ...values,
-                                    stepName: `/${urlValue}`
+                                  ...prevStepData,
+                                  ...values,
+                                  stepName: `/${urlValue}`
                                 }
-                                , () => { }, 
-                                () => { }) 
-                            );
+                                , () => { },
+                                () => { })
+                              );
                               history(GlobalValues.basePageRoute)
                             }).catch((err) => {
                               console.log(err);
@@ -2762,7 +2762,7 @@ export default function Fedral_tax(props: any) {
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
                             onClick={() => {
-                              dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                              dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId))
                             }}
                           >
                             View Form
@@ -2772,19 +2772,19 @@ export default function Fedral_tax(props: any) {
                             disabled={!isValid}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
-                            // onClick={() => {
-                            //   validateForm().then((err) => {
-                            //     if (Object.keys(err).length == 0) {
-                            //       submitForm().then((data) => {
-                            //         history("/BenE/Tax_Purpose_BenE/Declaration_BenE");
-                            //       }).catch((error) => {
-                            //         console.log(error);
-                            //       })
-                            //     }
+                          // onClick={() => {
+                          //   validateForm().then((err) => {
+                          //     if (Object.keys(err).length == 0) {
+                          //       submitForm().then((data) => {
+                          //         history("/BenE/Tax_Purpose_BenE/Declaration_BenE");
+                          //       }).catch((error) => {
+                          //         console.log(error);
+                          //       })
+                          //     }
 
-                            //   })
+                          //   })
 
-                            // }}
+                          // }}
                           >
                             Continue
                           </Button>
