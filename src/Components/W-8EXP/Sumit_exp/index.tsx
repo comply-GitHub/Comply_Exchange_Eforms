@@ -16,6 +16,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { SubmitSchemaECI } from "../../../schemas/w8ECI";
 import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 
 const Declaration = (props: any) => {
   const { open, setOpen } = props;
@@ -427,7 +428,7 @@ const Declaration = (props: any) => {
                     <Button
                       onClick={() => {
                         submitForm().then(() => {
-                          history("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp/Participation_Exp/Submit_Exp/ThankYou_Exp");
+                          Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp/Participation_Exp/Submit_Exp/ThankYou_Exp", authDetails?.agentId, history);
                         })
                       }}
                       disabled={!isValid}
@@ -460,7 +461,7 @@ const Declaration = (props: any) => {
                       }}
 
                       onClick={() => {
-                        history("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp/Participation_Exp")
+                        Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp/Participation_Exp", authDetails?.agentId, history, true);
                       }}
                     >
                       Back

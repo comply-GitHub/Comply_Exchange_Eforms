@@ -411,31 +411,56 @@ const Redirect = async (
         navigate(stepRoute);
       }
       break;
-    // case "/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp":
-    //   if (
-    //     mappingAvailable.filter((x) => x.id == 20 && x.agentId == agentId)
-    //       .length > 0
-    //   ) {
-    //     //x.id not confirmed
-    //     //skip condition
-    //     //redirecting to next step
+    case "/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp":
+      if (
+        mappingAvailable.filter((x) => x.id == 25 && x.agentId == agentId)
+          .length > 0
+      ) {
+        //x.id not confirmed
+        //skip condition
+        //redirecting to next step
 
-    //     if (!isback) {
-    //       // going forward in forms case
-    //       Redirect(
-    //         "/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp",
-    //         agentId,
-    //         navigate
-    //       );
-    //     } else {
-    //       // going back in forms case
-    //       Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp", agentId, navigate);
-    //     }
-    //   } else {
-    //     // step is not skipped
-    //     navigate(stepRoute);
-    //   }
-    //   break;
+        if (!isback) {
+          // going forward in forms case
+          Redirect(
+            "/Attach_document_EXP",
+            agentId,
+            navigate
+          );
+        } else {
+          // going back in forms case
+          Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp", agentId, navigate);
+        }
+      } else {
+        // step is not skipped
+        navigate(stepRoute);
+      }
+      break;
+    case "/Attach_document_EXP":
+      if (
+        mappingAvailable.filter((x) => x.id == 34 && x.agentId == agentId)
+          .length > 0
+      ) {
+        //x.id not confirmed
+        //skip condition
+        //redirecting to next step
+
+        if (!isback) {
+          // going forward in forms case
+          Redirect(
+            "/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp",
+            agentId,
+            navigate
+          );
+        } else {
+          // going back in forms case
+          Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp", agentId, navigate);
+        }
+      } else {
+        // step is not skipped
+        navigate(stepRoute);
+      }
+      break;
     case "/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp":
       if (
         mappingAvailable.filter((x) => x.id == 44 && x.agentId == agentId)
@@ -454,7 +479,7 @@ const Redirect = async (
         } else {
           // going back in forms case
           Redirect(
-            "/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp",
+            "/Attach_document_EXP",
             agentId,
             navigate
           );

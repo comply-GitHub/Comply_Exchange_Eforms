@@ -40,6 +40,7 @@ import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId, FormTypeSelection } from "../../../Utils/constVals";
 import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const {
@@ -3099,7 +3100,7 @@ export default function Fedral_tax(props: any) {
                             style={{ color: "white", marginLeft: "15px" }}
                             onClick={() => {
                               submitForm().then((data) => {
-                                history("/Exp/Tax_Purpose_Exp/Chapter4_Exp");
+                                Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp", authDetails?.agentId, history);
                               }).catch((error) => {
                                 console.log(error);
                               })
@@ -3122,7 +3123,7 @@ export default function Fedral_tax(props: any) {
                         <Typography align="center">
                           <Button
                             onClick={() => {
-                              history("/Certificates");
+                              Redirect("/Certificates", authDetails?.agentId, history, true);
                             }}
                             variant="contained"
                             style={{
