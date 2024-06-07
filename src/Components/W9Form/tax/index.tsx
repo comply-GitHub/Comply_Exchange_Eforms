@@ -192,12 +192,10 @@ export default function Tin(props: any) {
 
             setSubmitting(true);
             const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
-            const result = { ...new_obj, ...values };
+            const result = { ...new_obj, ...values, tIN_USTIN: values.tIN_USTIN?.replaceAll("-", "") };
             dispatch(
-              postW9Form({ ...result, tIN_USTIN: values.tIN_USTIN?.replaceAll("-", "") }, () => {
+              postW9Form({ ...result, }, () => {
                 localStorage.setItem("PrevStepData", JSON.stringify(result))
-
-
                 Redirect(
                   "/Attach_document_w9",
                   authDetails?.agentId,

@@ -48,6 +48,7 @@ import SubstantialUsPassiveNFE from "../../W8BEN-E/Declaration_BENE/Non_US/Statu
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const { authDetails } = useAuth();
@@ -1405,8 +1406,8 @@ export default function Fedral_tax(props: any) {
                             // type="submit"
                             onClick={() => {
                               submitForm().then((data) => {
-                                history(
-                                  "/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp"
+                                Redirect(
+                                  "/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp", authDetails?.agentId, history
                                 );
                               }).catch((err) => {
                                 console.log(err);
@@ -1443,7 +1444,7 @@ export default function Fedral_tax(props: any) {
                         <Typography align="center">
                           <Button
                             onClick={() => {
-                              history("/Exp/Tax_Purpose_Exp");
+                              Redirect("/Exp/Tax_Purpose_Exp", authDetails?.agentId, history, true);
                             }}
                             variant="contained"
                             style={{
