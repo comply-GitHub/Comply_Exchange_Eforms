@@ -258,7 +258,7 @@ const AttachDocument = ({
   };
 
 
-
+  const [touchedDropdown, setTouchedDropdown] = useState(false);
   const [existingDocNew, setExistingDocNew] = useState<String[]>([]);
   const handleChangeExistDocument = (event: any, index: number) => {
 
@@ -534,7 +534,7 @@ const AttachDocument = ({
                             <select
                               name="usTinTypeId"
                               onChange={(e) => handleChangeExistDocument(e, index)}
-                              value={row?.documentTypeId}
+                              value={row?.usTinTypeId}
                               style={{
                                 border: " 1px solid #d9d9d9 ",
                                 padding: " 0 10px",
@@ -585,60 +585,70 @@ const AttachDocument = ({
                         </div>
                       ))}
 
-                      {additionalDocs.map((row, index) => (
-                        <div
-                          key={index}
-                          style={{
-                            margin: "10px",
-                            display: "flex",
-                            marginTop: "25px",
-                            justifyContent: "space-between",
-                          }}
-                          className="row col-12"
-                        >
-                          <div className="col-4">
-                            <select
-                              name="usTinTypeId"
-                              onChange={handleChangeDocument}
-                              value={row.documentTypeId}
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                padding: " 0 10px",
-                                color: "#121112",
-                                fontStyle: "italic",
-                                height: "37px",
-                                width: "100%",
-                              }}
-                            >
-                              <option value="">---select---</option>
-                              {GetDocumentTypesData.GetDocumentListTypeData?.map(
-                                (ele: any) => (
-                                  <option key={ele?.documentationId} value={ele?.documentationId} selected={row.documentTypeId === ele.documentationId}>
-                                    {ele?.name}
-                                  </option>
-                                )
-                              )}
+{additionalDocs.map((row, index) => (
+  <div
+    key={index}
+    style={{
+      margin: "10px",
+      display: "flex",
+      marginTop: "25px",
+      justifyContent: "space-between",
+    }}
+    className="row col-12"
+  >
+    <div className="col-4">
+      <select
+        name="usTinTypeId"
+        onChange={(e) => {
+          handleChangeDocument(e);
+          setTouchedDropdown(true); 
+        }}
+        value={row.usTinTypeId}
+        style={{
+          border: " 1px solid #d9d9d9 ",
+          padding: " 0 10px",
+          color: "#121112",
+          fontStyle: "italic",
+          height: "37px",
+          width: "100%",
+        }}
+      >
+        <option value="">---select---</option>
+        {GetDocumentTypesData.GetDocumentListTypeData?.map((ele: any) => (
+          <option
+            key={ele?.documentationId}
+            value={ele?.documentationId}
+            // selected={row.documentTypeId === ele.documentationId}
+          >
+            {ele?.name}
+          </option>
+        ))}
+      </select>
+    </div>
 
-                            </select>
-                          </div>
-
-                          <div className="col-4">
-                            <Input
-                              style={{ fontSize: "12px", border: "none" }}
-                              type="file"
-                              onChange={(e) => handleUpload(e, index)}
-                            />
-                          </div>
-                          <div className="col-4">
-                            <DeleteOutline
-                              onClick={() => handleDeleteDocument(index)}
-                              style={{ color: "red", fontSize: "30px" }}
-                            />
-                          </div>
-
-
-                        </div>
-                      ))}
+    <div className="col-4">
+      <Input
+        style={{ fontSize: "12px", border: "none" }}
+        type="file"
+        onChange={(e) => handleUpload(e, index)}
+        // Add the 'required' attribute based on the selected value in the dropdown
+        required={row.documentTypeId !== ""}
+      />
+      {/* Display error message if file input is required and dropdown is touched */}
+      {/* {touchedDropdown == false && row.documentTypeId !== "" ? (
+        <p style={{ color: "red", fontSize: "12px", marginTop: "5px" }}>
+          Please select a file.
+        </p>
+      ):""} */}
+    </div>
+    <div className="col-4">
+      <DeleteOutline
+        onClick={() => handleDeleteDocument(index)}
+        style={{ color: "red", fontSize: "30px" }}
+      />
+    </div>
+  </div>
+))}
 
 
                       <div

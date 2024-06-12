@@ -186,7 +186,7 @@ export default function IndividualUs() {
     sortCode: "",
     bsb: "",
     capacityId: 1,
-    isCorrectPaymentPurposes: true,
+    isCorrectPaymentPurposes: false,
     isConfirmed: false,
   });
 
@@ -262,7 +262,7 @@ export default function IndividualUs() {
     sortCode: "",
     bsb: "",
     capacityId: 1,
-    isCorrectPaymentPurposes: true,
+    isCorrectPaymentPurposes: false,
     isConfirmed: false,
     taxpayerIdTypeName: ""
   });
@@ -986,7 +986,7 @@ useEffect(()=>{
                   isCorrectPaymentPurposes: values?.isCorrectPaymentPurposes,
                   isConfirmed: values?.isConfirmed,
                   taxpayerIdTypeName: values?.taxpayerIdTypeName,
-                  usTinTypeId: +values?.taxpayerIdTypeID,
+                  usTinTypeId: values?.taxpayerIdTypeID,
                   permanentresidentialzippostalcode: values?.permanentResidentialZipPostalCode,
                 };
                 dispatch(postOnboarding(payload, (data: any) => {
@@ -4064,17 +4064,18 @@ useEffect(()=>{
                                   onChange={handleChange}
                                 >
 
-                                  <FormControlLabel
-                                    control={<Radio />}
-                                    value="no"
-                                    name="isalternativebusinessaddress"
-                                    label="No"
-                                  />
+                                
                                   <FormControlLabel
                                     control={<Radio />}
                                     value="yes"
                                     name="isalternativebusinessaddress"
                                     label="Yes"
+                                  />
+                                    <FormControlLabel
+                                    control={<Radio />}
+                                    value="no"
+                                    name="isalternativebusinessaddress"
+                                    label="No"
                                   />
                                 </RadioGroup>
                                 {errors.isalternativebusinessaddress &&
@@ -6694,8 +6695,9 @@ useEffect(()=>{
                               </div>
 
                               <div className="d-flex mt-3">
-                                <Checkbox   checked={values.isCorrectPaymentPurposes}
-                                name="radio-buttons"
+                                <Checkbox   
+                                // checked={values.isCorrectPaymentPurposes}
+                                name="isCorrectPaymentPurposes"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 // error={Boolean(touched.isCorrectPaymentPurposes && errors.isCorrectPaymentPurposes)}

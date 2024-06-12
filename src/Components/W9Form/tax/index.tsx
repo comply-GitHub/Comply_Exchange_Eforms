@@ -31,6 +31,7 @@ import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
+import { string } from "yup";
 
 export default function Tin(props: any) {
   const dispatch = useDispatch();
@@ -176,8 +177,8 @@ export default function Tin(props: any) {
       <Formik
         initialValues={initialValue}
         enableReinitialize
-        validateOnChange={false}
-        validateOnBlur={false}
+        validateOnChange={true}
+        validateOnBlur={true}
         validationSchema={
           selectedTaxClassification == 0
             ? tinSchema
@@ -464,6 +465,8 @@ export default function Tin(props: any) {
                             onChange={
                               handleChange
                             }
+
+                           
                             className="input-w9-cstm"
                             inputProps={{ maxLength: 11 }}
                             onKeyDown={(e: any) => formatTin(e, values)}
@@ -482,7 +485,7 @@ export default function Tin(props: any) {
                               padding: " 0 10px ",
                             }}
                           />
-                          <p className="error">{errors.Tin?.toString()}</p>
+                          {errors.Tin && touched.Tin ?(<p className="error">{errors.Tin?.toString()}</p>):""}
                         </div>
 
                       </div>
@@ -535,7 +538,7 @@ export default function Tin(props: any) {
               </Button>
               <Button
                 // type="submit" 
-
+                disabled={!isValid}
                 onClick={() => {
                   setcontinueId(1);
                   submitForm().then((data) => {

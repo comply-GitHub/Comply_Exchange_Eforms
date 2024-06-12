@@ -331,15 +331,7 @@ export default function Factors() {
                   marginTop: "80px",
                 }}
               >
-                {/* <Button
-                  disabled={allocation !== 100}
-                  variant="contained"
-                  style={{ color: "white" }
-                  }
-                  onClick={handleSaveExit}
-                >
-                  SAVE & EXIT
-                </Button> */}
+                
 
                 <SaveAndExit Callback={() => { handleSaveExit(); }} formTypeId={FormTypeId.BEN} />
 

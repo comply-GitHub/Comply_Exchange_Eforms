@@ -174,7 +174,7 @@ export default function Entity() {
     capacityId: 1,
     payStateOrProvince: "",
     payZipPostalCode: "",
-    isCorrectPaymentPurposes: true,
+    isCorrectPaymentPurposes: false,
     isConfirmed: false,
   });
 
@@ -248,7 +248,7 @@ export default function Entity() {
     sortCode: "",
     bsb: "",
     capacityId: 1,
-    isCorrectPaymentPurposes: true,
+    isCorrectPaymentPurposes: false,
     isConfirmed: false,
   });
 
@@ -1897,7 +1897,7 @@ export default function Entity() {
                                   e.target.value == 1 ||
                                   e.target.value == 3 ||
                                   e.target.value == 4 ||
-                                  e.target.value == 5 ||
+                                  // e.target.value == 5 ||
                                   e.target.value == 7 ||
                                   e.target.value == 8
                                 )
@@ -2391,7 +2391,7 @@ export default function Entity() {
 
                                 if (
                                   e.target.value == 0 ||
-                                  e.target.value == 5 ||
+                                  // e.target.value == 5 ||
                                   e.target.value == 6 ||
                                   e.target.value == 7 ||
                                   e.target.value == 8
@@ -5621,8 +5621,8 @@ export default function Entity() {
 
                             <div className="d-flex mt-3">
                               <Checkbox
-                                checked={values.isCorrectPaymentPurposes}
-                                name="radio-buttons"
+                                // checked={values.isCorrectPaymentPurposes}
+                                name="isCorrectPaymentPurposes"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 // error={Boolean(touched.isCorrectPaymentPurposes && errors.isCorrectPaymentPurposes)}

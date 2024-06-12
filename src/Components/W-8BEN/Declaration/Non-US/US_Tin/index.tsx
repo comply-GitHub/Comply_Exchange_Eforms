@@ -64,13 +64,13 @@ export default function Tin(props: any) {
     const temp = {
       ...PrevStepData,
       ...W8BENData,
-      usTinTypeId: obValues?.taxpayerIdTypeID?.toString() ?? (W8BENData?.usTinTypeId ? W8BENData?.usTinTypeId : "1"),
+      usTinTypeId: W8BENData?.usTinTypeId?.toString() ?? obValues.taxpayerIdTypeID?.toString() ?? "",
       usTin: W8BENData?.usTin ?? obValues?.usTin,
       notAvailable: W8BENData?.notAvailable ? W8BENData?.notAvailable : false,
       notAvailableReason: W8BENData?.notAvailableReason || "",
       foreignTINCountry: obValues.foreignTINCountryId == null || obValues.foreignTINCountryId == ""
         || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId.toString(),
-      foreignTIN: W8BENData?.foreignTIN !== "" ? W8BENData?.foreignTIN : "",
+      foreignTIN: W8BENData?.foreignTIN ?? obValues?.foreignTIN ,
       isFTINLegally: W8BENData?.isFTINLegally ? W8BENData?.isFTINLegally : false,
       isNotAvailable: W8BENData?.isNotAvailable ? (W8BENData?.isNotAvailable == true && W8BENData?.alternativeTINFormat == false ? "Yes" : "") : "",
       fTinNotAvailableReason: W8BENData?.fTinNotAvailableReason || "",
@@ -86,16 +86,7 @@ export default function Tin(props: any) {
     history("/w8Ben_pdf");
   }
 
-  function getUStinValue() {
-    let val: number = 1;
-    ustinValue.map((item: any) => {
-      if (item?.taxpayerIdTypeID === onBoardingFormValues?.usTinTypeId) {
-        val = item.taxpayerIdTypeId;
-      }
-    });
-    console.log(ustinValue, "usTinvalue", val);
-    return val;
-  }
+ 
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -112,12 +103,13 @@ export default function Tin(props: any) {
       getTinTypes(authDetails?.agentId, (data: any) => {
         setUStinArray(data);
         let datas = data.filter((ele: any) => {
-          return ele.usIndividual === false;
+          return ele.nonUSIndividual === true;
         });
         setUStinvalue(datas);
+        LoadData();
       })
     );
-    LoadData();
+
   }, [authDetails]);
 
 
@@ -140,7 +132,7 @@ export default function Tin(props: any) {
     notAvailableReason: "",
     foreignTINCountry: obValues.foreignTINCountryId == null || obValues.foreignTINCountryId == ""
       || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId.toString(),
-    foreignTIN: "",
+    foreignTIN: W8BENData?.foreignTIN ?? obValues?.foreignTIN ,
     isFTINLegally: false,
     isNotAvailable: "",
     fTinNotAvailableReason: "",
@@ -148,6 +140,17 @@ export default function Tin(props: any) {
     isExplanationNotLegallyFTIN: "",
     stepName: null
   });
+
+  function getUStinValue() {
+    let val: string = ""
+   ustinValue.map((item: any) => {
+     if (item?.taxpayerIdTypeID === onBoardingFormValues?.usTinTypeId) {
+       val = item.taxpayerIdTypeId;
+     }
+   });
+   console.log(ustinValue, "usTinvalue", val);
+   return val;
+ }
   const [payload, setPayload] = useState({ usTin: "" });
   const formatTin = (e: any, values: any): any => {
     if (e.key === "Backspace" || e.key === "Delete") return;
@@ -439,6 +442,7 @@ export default function Tin(props: any) {
                                 {ele?.taxpayerIdTypeName}
                               </option>
                             ))}
+                              {getUStinValue()}
                           </select>
                           {/* <p className="error">{errors.usTinTypeId}</p> */}
                         </div>
@@ -479,6 +483,7 @@ export default function Tin(props: any) {
                             <div className="col-lg-5 col-12">
                               <Typography style={{ fontSize: "14px" }}>
                                 U.S. TIN
+                                <span style={{ color: "red" }}>*</span>
                               </Typography>
                               <Input
                                 disabled={
@@ -556,7 +561,7 @@ export default function Tin(props: any) {
                             <span style={{ color: "red" }}>*</span>
                           </Typography>
                           <select
-                            disabled
+                            
                             style={{
                               border: " 1px solid #d9d9d9 ",
                               padding: " 0 10px",
@@ -709,6 +714,7 @@ export default function Tin(props: any) {
                         <div className="col-lg-5 col-12">
                           <Typography style={{ fontSize: "14px" }}>
                             Foreign TIN{" "}
+                            <span style={{ color: "red" }}>*</span>
                             {values.foreignTINCountry == "257" ? (
                               <span>
                                 {" "}
@@ -744,19 +750,45 @@ export default function Tin(props: any) {
                             )}
                           </Typography>
 
-
+                          {values.isNotAvailable === "No" ? (
+                            <Input
+                              fullWidth
+                              type="text"
+                              disabled={
+                                values.isFTINLegally
+                              }
+                              name="foreignTIN"
+                              value={values.foreignTIN}
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                              inputProps={{ maxLength: 20 }}
+                              placeholder="ENTER FOREIGN TIN"
+                              error={Boolean(
+                                touched.foreignTIN && errors.foreignTIN
+                              )}
+                              style={{
+                                border: " 1px solid #d9d9d9 ",
+                                padding: " 0 10px",
+                                color: "#7e7e7e",
+                                fontStyle: "italic",
+                                height: "40px",
+                                width: "100%",
+                              }}
+                            />
+                          ) : (
                           <Input
                             fullWidth
                             type="text"
                             disabled={
                               values.isFTINLegally ||
-                              // values.foreignTINCountry === "1" ||
+                          
                               values.isNotAvailable === "Yes"
                             }
                             placeholder="ENTER FOREIGN TIN"
                             name="foreignTIN"
                             value={values.foreignTIN}
                             onBlur={handleBlur}
+                            inputProps={{ maxLength: 20 }}
                             onChange={handleChange}
                             error={Boolean(
                               touched.foreignTIN && errors.foreignTIN
@@ -764,12 +796,13 @@ export default function Tin(props: any) {
                             style={{
                               border: " 1px solid #d9d9d9 ",
                               padding: " 0 10px",
-                              color: "#7e7e7e",
+                              // color: "#7e7e7e",
                               fontStyle: "italic",
                               height: "40px",
                               width: "100%",
                             }}
                           />
+                          )}
 
                           {values.isFTINLegally ? "" : " "}
 
@@ -810,6 +843,8 @@ export default function Tin(props: any) {
                                       handleChange(
                                         "isNotAvailable"
                                       )("");
+                                      setFieldValue("fTinNotAvailableReason", "")
+                                      setFieldValue("foreignTIN", "");
                                     }}
                                     style={{
                                       color: "red",
