@@ -111,6 +111,7 @@ GetBENEDCPdf:"/W8BENEEntity/GetBENEDCPdf",
 GetEXPDCPdf:"/W8EXPEntity/GetExpDCPdf",
 GetIMYDCPdf:"/W8IMYEntity/GetIMYDCPdf",
 GetCaymanIndividualPdf:"/CaymanIndividualNonUS/GetCaymanIndividualPdf",
+GetCaymanEntityPdf:"/CaymanEntityNonUS/GetCaymanEntityPdf",
 
 
  //Account Holder Endpoints

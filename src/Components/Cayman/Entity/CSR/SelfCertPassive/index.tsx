@@ -36,61 +36,62 @@ import { GetDualCertDetailsPerson, GetHelpVideoDetails, UpsertDualCertDetailsCon
 import { FormTypeId } from "../../../../../Utils/constVals";
 import SideBar from "../../../../Reusable/SideBar";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
+import { GetCaymanEntityPdf } from "../../../../../Redux/Actions/PfdActions";
 type ValuePiece = Date | null;
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function Certifications(props: any) {
   const location = useLocation();
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
   const SelfControllingData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
-  
-  
+
+
   const urlValue = location.pathname.substring(1);
-  const [IsCompDataValid,SetIsCompDataValid]=useState(false);
- 
-// console.log(formattedDate); 
-const individualSelfType = {
-  // firstName: SelfControllingData?.[0]?.firstName || "",
-  // familyName: SelfControllingData?.[0]?.familyName || "",
-  // dateOfBirth: SelfControllingData?.[0]?.dateOfBirth || "",
-  // countryOfBirth: SelfControllingData?.[0]?.countryOfBirth || "",
-  // cityOfBirth: SelfControllingData?.[0]?.cityOfBirth ||"",
-  // permanentHouseNumberOrName: SelfControllingData?.[0]?.permanentHouseNumberOrName || "",
-  // permanentRoadName: SelfControllingData?.[0]?.permanentRoadName|| "",
-  // permanentLocation: SelfControllingData?.[0]?.permanentLocation || "",
-  // permanentCityOrTown: SelfControllingData?.[0]?.permanentCityOrTown || "",
-  // permanentStateOrProvince: SelfControllingData?.[0]?.permanentStateOrProvince || "",
-  // permanentZipOrPostalCode: SelfControllingData?.[0]?.permanentZipOrPostalCode || "",
-  // permanentResidentialCountry: SelfControllingData?.[0]?.permanentResidentialCountry ||"",
-  // alterHouseNumberOrName: SelfControllingData?.[0]?.alterHouseNumberOrName ||"",
-  // alterRoadName: SelfControllingData?.[0]?.alterRoadName || "",
-  // alterLocation: SelfControllingData?.[0]?.alterLocation ||"",
-  // alterCityOrTown: SelfControllingData?.[0]?.alterCityOrTown || "",
-  // alterStateOrProvince: SelfControllingData?.[0]?.alterStateOrProvince || "",
-  // alterZipOrPostalCode: SelfControllingData?.[0]?.alterZipOrPostalCode || "",
-  // alterResidentialCountry: SelfControllingData?.[0]?.alterResidentialCountry || "",
-  // primaryTaxJurisdictionCountry1: SelfControllingData?.[0]?.primaryTaxJurisdictionCountry1 ? SelfControllingData[0].primaryTaxJurisdictionCountry1 : "",
-  // tinType1: SelfControllingData?.[0]?.tinType1 || "",
-  // tiN1: SelfControllingData?.[0]?.tiN1 || "",
-  // tinUnavailable1: SelfControllingData?.[0]?.tinUnavailable1 ||false,
-  // primaryTaxJurisdictionCountry2: SelfControllingData?.[0]?.primaryTaxJurisdictionCountry2 || "",
-  // tinType2: SelfControllingData?.[0]?.tinType2 || "",
-  // tiN2: SelfControllingData?.[0]?.tiN2 ||"",
-  // tinUnavailable2: SelfControllingData?.[0]?.tinUnavailable2 ||false,
-  // PrimaryTaxJurisdictionCountry3: SelfControllingData?.[0]?.PrimaryTaxJurisdictionCountry3 ||"",
-  // tinType3: SelfControllingData?.[0]?.tinType3 || "",
-  // tiN3: SelfControllingData?.[0]?.tiN3 || "",
-  // tinUnavailable3: SelfControllingData?.[0]?.tinUnavailable3 ||false,
-  // ReasonforNonAvailabilityofTIN: SelfControllingData?.[0]?.ReasonforNonAvailabilityofTIN ||"",
-  // legalNameofEntity1: SelfControllingData?.[0]?.legalNameofEntity1 ||"",
-  // legalNameofEntity2: SelfControllingData?.[0]?.legalNameofEntity2 || "",
-  // legalNameofEntity3: SelfControllingData?.[0]?.legalNameofEntity3 ||"",
-  // StatusEntity1: SelfControllingData?.[0]?.StatusEntity1 ||"",
-  // statusEntity2: SelfControllingData?.[0]?.statusEntity2 || "",
-  // StatusEntity3: SelfControllingData?.[0]?.StatusEntity3 || "",
-  // ownershipPercentage: SelfControllingData?.[0]?.ownershipPercentage || "",
-  // emailAddress: SelfControllingData?.[0]?.emailAddress || "",
-  // usTaxCertificateSubmissionRequest: SelfControllingData?.[0]?.usTaxCertificateSubmissionRequest || false
-};
+  const [IsCompDataValid, SetIsCompDataValid] = useState(false);
+
+  // console.log(formattedDate); 
+  const individualSelfType = {
+    // firstName: SelfControllingData?.[0]?.firstName || "",
+    // familyName: SelfControllingData?.[0]?.familyName || "",
+    // dateOfBirth: SelfControllingData?.[0]?.dateOfBirth || "",
+    // countryOfBirth: SelfControllingData?.[0]?.countryOfBirth || "",
+    // cityOfBirth: SelfControllingData?.[0]?.cityOfBirth ||"",
+    // permanentHouseNumberOrName: SelfControllingData?.[0]?.permanentHouseNumberOrName || "",
+    // permanentRoadName: SelfControllingData?.[0]?.permanentRoadName|| "",
+    // permanentLocation: SelfControllingData?.[0]?.permanentLocation || "",
+    // permanentCityOrTown: SelfControllingData?.[0]?.permanentCityOrTown || "",
+    // permanentStateOrProvince: SelfControllingData?.[0]?.permanentStateOrProvince || "",
+    // permanentZipOrPostalCode: SelfControllingData?.[0]?.permanentZipOrPostalCode || "",
+    // permanentResidentialCountry: SelfControllingData?.[0]?.permanentResidentialCountry ||"",
+    // alterHouseNumberOrName: SelfControllingData?.[0]?.alterHouseNumberOrName ||"",
+    // alterRoadName: SelfControllingData?.[0]?.alterRoadName || "",
+    // alterLocation: SelfControllingData?.[0]?.alterLocation ||"",
+    // alterCityOrTown: SelfControllingData?.[0]?.alterCityOrTown || "",
+    // alterStateOrProvince: SelfControllingData?.[0]?.alterStateOrProvince || "",
+    // alterZipOrPostalCode: SelfControllingData?.[0]?.alterZipOrPostalCode || "",
+    // alterResidentialCountry: SelfControllingData?.[0]?.alterResidentialCountry || "",
+    // primaryTaxJurisdictionCountry1: SelfControllingData?.[0]?.primaryTaxJurisdictionCountry1 ? SelfControllingData[0].primaryTaxJurisdictionCountry1 : "",
+    // tinType1: SelfControllingData?.[0]?.tinType1 || "",
+    // tiN1: SelfControllingData?.[0]?.tiN1 || "",
+    // tinUnavailable1: SelfControllingData?.[0]?.tinUnavailable1 ||false,
+    // primaryTaxJurisdictionCountry2: SelfControllingData?.[0]?.primaryTaxJurisdictionCountry2 || "",
+    // tinType2: SelfControllingData?.[0]?.tinType2 || "",
+    // tiN2: SelfControllingData?.[0]?.tiN2 ||"",
+    // tinUnavailable2: SelfControllingData?.[0]?.tinUnavailable2 ||false,
+    // PrimaryTaxJurisdictionCountry3: SelfControllingData?.[0]?.PrimaryTaxJurisdictionCountry3 ||"",
+    // tinType3: SelfControllingData?.[0]?.tinType3 || "",
+    // tiN3: SelfControllingData?.[0]?.tiN3 || "",
+    // tinUnavailable3: SelfControllingData?.[0]?.tinUnavailable3 ||false,
+    // ReasonforNonAvailabilityofTIN: SelfControllingData?.[0]?.ReasonforNonAvailabilityofTIN ||"",
+    // legalNameofEntity1: SelfControllingData?.[0]?.legalNameofEntity1 ||"",
+    // legalNameofEntity2: SelfControllingData?.[0]?.legalNameofEntity2 || "",
+    // legalNameofEntity3: SelfControllingData?.[0]?.legalNameofEntity3 ||"",
+    // StatusEntity1: SelfControllingData?.[0]?.StatusEntity1 ||"",
+    // statusEntity2: SelfControllingData?.[0]?.statusEntity2 || "",
+    // StatusEntity3: SelfControllingData?.[0]?.StatusEntity3 || "",
+    // ownershipPercentage: SelfControllingData?.[0]?.ownershipPercentage || "",
+    // emailAddress: SelfControllingData?.[0]?.emailAddress || "",
+    // usTaxCertificateSubmissionRequest: SelfControllingData?.[0]?.usTaxCertificateSubmissionRequest || false
+  };
 
   const SelfCertControllingPerson = useSelector((state: any) => state.SelfCertControllingPerson);
 
@@ -142,16 +143,16 @@ const individualSelfType = {
   });
 
   const [incomeTypeData, setIncomeTypeData] = useState(SelfCertControllingPerson?.length > 1 ? [...SelfCertControllingPerson] : [{ ...individualSelfType }]);
- 
- console.log(incomeTypeData,"incomedata")
+
+  console.log(incomeTypeData, "incomedata")
   const DeleteIncomeType = (index: number) => {
     let temp = [...incomeTypeData]
     setIncomeTypeData([...temp]);
   }
-  
+
   console.log(incomeTypeData, "prevv")
 
-  
+
   const AddIncomeType = () => {
     setIncomeTypeData((prev) => {
       return [...prev, { ...individualSelfType }];
@@ -170,7 +171,7 @@ const individualSelfType = {
   const handleCanvaOpen = () => {
     setCanvaBx(true);
   }
- 
+
   const handleCanvaClose = () => {
     setCanvaBx(false);
   }
@@ -220,28 +221,28 @@ const individualSelfType = {
     }
   }
 
-  const formatDate = (inputDate:any) => {
+  const formatDate = (inputDate: any) => {
     // Create a new Date object from the input string
     var date = new Date(inputDate);
-    
+
     // Extract day, month, and year from the Date object
     var day = date.getDate();
     var month = date.getMonth() + 1; // January is 0
     var year = date.getFullYear();
-    
+
     // Add leading zeros if necessary
     var dayStr: string = (day < 10) ? '0' + day : '' + day;
     var monthStr: string = (month < 10) ? '0' + month : '' + month;
-    
+
     // Return the formatted date string
     return year + '-' + monthStr + '-' + dayStr
     //return dayStr + '/' + monthStr + '/' + year;
-}
+  }
 
 
   useEffect(() => {
-    dispatch(GetDualCertDetailsPerson(authDetails?.accountHolderId, FormTypeId.CaymanEntity,(res: any[]) => {
-     
+    dispatch(GetDualCertDetailsPerson(authDetails?.accountHolderId, FormTypeId.CaymanEntity, (res: any[]) => {
+
       let temp = res.map((ele: any) => {
         return {
           agentId: authDetails.agentId,
@@ -289,16 +290,16 @@ const individualSelfType = {
           ownershipPercentage: ele.ownershipPercentage,
           emailAddress: ele.emailAddress,
           usTaxCertificateSubmissionRequest: ele.usTaxCertificateSubmissionRequest,
-         
+
         }
       })
       setIncomeTypeData(temp);
     }))
   }, [authDetails, authDetails?.accountHolderId])
- 
+
   const [TinTax, setTinTax] = useState(false);
 
-  
+
   const setAccountHolder = (e: any, values: any): any => {
     if (values.accountHolderName === "") {
       values.accountHolderName = values.firstName + values.familyName;
@@ -332,18 +333,18 @@ const individualSelfType = {
     let returnPromise = new Promise((resolve, reject) => {
       let temp = incomeTypeData.map((ele: any, index: number) => {
         const formattedDateOfBirth = ele.dateofBirth
-        ? new Date(ele.dateofBirth).toISOString().slice(0, -5) + 'Z'
-        : '';
+          ? new Date(ele.dateofBirth).toISOString().slice(0, -5) + 'Z'
+          : '';
         let payload = {
           id: 0,
           accountHolderDetailsId: authDetails?.accountHolderId,
           agentId: authDetails?.agentId,
           formTypeId: FormTypeId.CaymanEntity,
           formEntryId: index + 1,
-          dualCertId:index + 1,
+          dualCertId: index + 1,
           firstName: ele.firstName,
           familyName: ele.familyName,
-          dateofBirth:formattedDateOfBirth,
+          dateofBirth: formattedDateOfBirth,
           countryofBirth: ele.countryofBirth,
           cityofBirth: ele.cityofBirth,
           permanentHouseNumberorName: ele.permanentHouseNumberorName,
@@ -352,7 +353,7 @@ const individualSelfType = {
           permanentCityorTown: ele.permanentCityorTown,
           permanentStateorProvince: ele.permanentStateorProvince,
           permanentZiporPostalCode: ele.permanentZiporPostalCode,
-          permanentResidentialCountry:  parseInt(ele.permanentResidentialCountry),
+          permanentResidentialCountry: parseInt(ele.permanentResidentialCountry),
           AlterHouseNumberorName: ele.AlterHouseNumberorName,
           AlterRoadName: ele.AlterRoadName,
           AlterLocation: ele.AlterLocation,
@@ -360,11 +361,11 @@ const individualSelfType = {
           AlterStateorProvince: ele.AlterStateorProvince,
           AlterZiporPostalCode: ele.AlterZiporPostalCode,
           AlterResidentialCountry: ele.AlterResidentialCountry,
-          primaryTaxJurisdictionCountry1:  parseInt(ele.primaryTaxJurisdictionCountry1),
+          primaryTaxJurisdictionCountry1: parseInt(ele.primaryTaxJurisdictionCountry1),
           tinType1: ele.tinType1,
           tiN1: ele.tiN1,
           tinUnavailable1: ele.tinUnavailable1,
-          primaryTaxJurisdictionCountry2:  parseInt(ele.primaryTaxJurisdictionCountry2),
+          primaryTaxJurisdictionCountry2: parseInt(ele.primaryTaxJurisdictionCountry2),
           tinType2: ele.tinType2,
           tiN2: ele.tiN2,
           tinUnavailable2: ele.tinUnavailable2,
@@ -376,33 +377,33 @@ const individualSelfType = {
           legalNameofEntity1: ele.legalNameofEntity1,
           legalNameofEntity2: ele.legalNameofEntity2,
           legalNameofEntity3: ele.legalNameofEntity3,
-          statusEntity1:  parseInt(ele.statusEntity1),
-          statusEntity2:  parseInt(ele.statusEntity2),
-          statusEntity3:  parseInt(ele.statusEntity3),
+          statusEntity1: parseInt(ele.statusEntity1),
+          statusEntity2: parseInt(ele.statusEntity2),
+          statusEntity3: parseInt(ele.statusEntity3),
           ownershipPercentage: ele.ownershipPercentage,
           emailAddress: ele.emailAddress,
           usTaxCertificateSubmissionRequest: ele.usTaxCertificateSubmissionRequest,
         };
         return payload;
       })
-        // if(IsCompDataValid ===true){
-          dispatch(
-            UpsertDualCertDetailsControllingPerson(
-              temp,
-              (data: any) => {
-                // Save data in localStorage after dispatch completes
-                localStorage.setItem('SelfCertData', JSON.stringify(temp));
-                resolve(data);
-              },
-              (err: any) => {
-                reject(err);
-              }
-            )
-          );
-        // }
-       
-      });
-      return returnPromise;
+      // if(IsCompDataValid ===true){
+      dispatch(
+        UpsertDualCertDetailsControllingPerson(
+          temp,
+          (data: any) => {
+            // Save data in localStorage after dispatch completes
+            localStorage.setItem('SelfCertData', JSON.stringify(temp));
+            resolve(data);
+          },
+          (err: any) => {
+            reject(err);
+          }
+        )
+      );
+      // }
+
+    });
+    return returnPromise;
   }
 
   return (
@@ -410,7 +411,7 @@ const individualSelfType = {
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-      <SideBar/>
+      <SideBar />
       <div className="row w-100 " >
         <div className="col-4">
           <div style={{ padding: "20px 0px", height: "100%" }}>
@@ -429,7 +430,7 @@ const individualSelfType = {
                 enableReinitialize
                 validateOnMount={true}
                 onSubmit={(values, { setSubmitting }) => {
-                 
+
                   let temp = {
                     ...PrevStepData,
                     agentId: authDetails?.agentId,
@@ -440,7 +441,7 @@ const individualSelfType = {
                     SubmitIncomeTypes().then(
                       (data) => {
                         localStorage.setItem("PrevStepData", JSON.stringify(temp));
-                        
+
                         history("/Cayman/Entity/TIN")
                         setSubmitting(true);
                         resolve(data);
@@ -467,15 +468,15 @@ const individualSelfType = {
                 }) => (
 
                   <Form onSubmit={handleSubmit}>
-                    <>{console.log(values,"valuess")}</>
+                    <>{console.log(values, "valuess")}</>
                     <Paper style={{ padding: "14px" }}>
-                    <Typography style={{ fontSize: "26px", fontWeight: "550", marginLeft: "8px" }} className="mt-2 mb-3">Self Certification - Controlling Person(s) of a Passive NFE</Typography>
-                    {incomeTypeData.map((_, index) => (
-                            <SelfCertType index={index} DeleteIncomeType={DeleteIncomeType} length={incomeTypeData.length} data={incomeTypeData[index]} UpdateIncomeType={UpdateIncomeType} handleSubmit={handleSubmit} SetIsCompDataValid={SetIsCompDataValid} incomeTypeData={incomeTypeData} />
-                          ))}
+                      <Typography style={{ fontSize: "26px", fontWeight: "550", marginLeft: "8px" }} className="mt-2 mb-3">Self Certification - Controlling Person(s) of a Passive NFE</Typography>
+                      {incomeTypeData.map((_, index) => (
+                        <SelfCertType index={index} DeleteIncomeType={DeleteIncomeType} length={incomeTypeData.length} data={incomeTypeData[index]} UpdateIncomeType={UpdateIncomeType} handleSubmit={handleSubmit} SetIsCompDataValid={SetIsCompDataValid} incomeTypeData={incomeTypeData} />
+                      ))}
 
                       <div>
-                        <Button  onClick={AddIncomeType} variant="contained" style={{ backgroundColor: "#364048", color: "#fff" }}>
+                        <Button onClick={AddIncomeType} variant="contained" style={{ backgroundColor: "#364048", color: "#fff" }}>
                           Add a controlling person
                         </Button>
                       </div>
@@ -493,15 +494,17 @@ const individualSelfType = {
 
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
-                          onClick={viewPdf}
+                          onClick={() => {
+                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId))
+                          }}
                         >
                           View form
                         </Button>
                         <Button
 
-//disabled={!isValid || !TinTax}
-disabled={!IsCompDataValid }
-type="submit"
+                          //disabled={!isValid || !TinTax}
+                          disabled={!IsCompDataValid}
+                          type="submit"
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {

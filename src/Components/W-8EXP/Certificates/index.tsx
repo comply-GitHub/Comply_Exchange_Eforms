@@ -26,6 +26,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
+import Redirect from "../../../Router/RouterSkip";
 export default function Certifications(props: any) {
 
   const { authDetails } = useAuth()
@@ -440,7 +441,7 @@ export default function Certifications(props: any) {
                         onClick={() => {
                           submitForm()
                             .then((data) => {
-                              history("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp/Participation_Exp");
+                              Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp/Participation_Exp", authDetails?.agentId, history);
                             })
                             .catch((err) => {
                               console.log(err);
@@ -466,7 +467,7 @@ export default function Certifications(props: any) {
                     <Typography align="center">
                       <Button
                         onClick={() => {
-                          history("/Attach_document_EXP")
+                          Redirect("/Attach_document_EXP", authDetails?.agentId, history, true);
                         }}
                         variant="contained"
                         style={{
