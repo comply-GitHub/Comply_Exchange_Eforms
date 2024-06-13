@@ -483,7 +483,7 @@ export default function Tin(props: any) {
                               padding: " 0 10px ",
                             }}
                           />
-                          {errors.Tin && touched.Tin ?(<p className="error">{errors.Tin?.toString()}</p>):""}
+                          <p className="error">{errors.tIN_USTIN?.toString()}</p>
                         </div>
 
                       </div>

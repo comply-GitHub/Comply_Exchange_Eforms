@@ -1956,7 +1956,9 @@ export default function Entity() {
                               placeholder="Enter U.S. TIN"
                               // onKeyDown={(e) => formatTin(e, values)}
                               onChange={handleChange}
-                              mask="999-99-9999"
+                              mask={
+                                values.taxpayerIdTypeID == 2 ? "99-9999999" : "999-99-9999"
+                              }
                               value={values.usTin}
                             />
                           </FormControl>
@@ -2455,7 +2457,9 @@ export default function Entity() {
                               placeholder="Enter U.S. TIN"
                               // onKeyDown={(e) => formatTin(e, values)}
                               onChange={handleChange}
-                              mask="999-99-9999"
+                              mask={
+                                values.taxpayerIdTypeID == 2 ? "99-9999999" : "999-99-9999"
+                              }
                               value={values.usTin}
                             />
                           </FormControl>
