@@ -30,7 +30,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { partCertiSchema } from "../../../schemas/w8Ben";
+import { partCertiSchema_W9 } from "../../../schemas/w8Ben";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import moment from "moment";
 import SecurityCodeRecover from "../../Reusable/SecurityCodeRecover";
@@ -108,7 +108,7 @@ export default function Penalties() {
         validateOnBlur={true}
         enableReinitialize
         initialValues={initialValue}
-        validationSchema={partCertiSchema}
+        validationSchema={partCertiSchema_W9}
         onSubmit={(values, { setSubmitting }) => {
           if (clickCount === 0) {
             setClickCount(clickCount + 1);
@@ -634,7 +634,7 @@ export default function Penalties() {
                         <Checkbox
                           name="isCheckAcceptance"
                           value={values.isCheckAcceptance}
-                          checked={values.isCheckAcceptance}
+                          // checked={values.isCheckAcceptance}
                           onChange={handleChange}
                         />
                         <Typography
@@ -646,15 +646,7 @@ export default function Penalties() {
                         >
                           Please "check" box to confirm your acceptance with the
                           above declarations{" "}
-                          {errors.isCheckAcceptance && touched.isCheckAcceptance ? (
-    <div>
-        <Typography color="error">
-            {typeof errors.isCheckAcceptance === 'string' ? errors.isCheckAcceptance : ''}
-        </Typography>
-    </div>
-) : (
-    ""
-)}
+                        
                           <span>
                             <Tooltip
                               style={{ backgroundColor: "black", color: "white" }}
@@ -690,6 +682,15 @@ export default function Penalties() {
                           </span>
                         </Typography>
                       </Typography>
+                      {errors.isCheckAcceptance && touched.isCheckAcceptance ? (
+    <div style={{marginLeft: "10px"}}>
+        <Typography className="error">
+            {typeof errors.isCheckAcceptance === 'string' ? errors.isCheckAcceptance : ''}
+        </Typography>
+    </div>
+) : (
+    ""
+)}
                       {toolInfo === "check" ? (
                         <div>
                           <Paper

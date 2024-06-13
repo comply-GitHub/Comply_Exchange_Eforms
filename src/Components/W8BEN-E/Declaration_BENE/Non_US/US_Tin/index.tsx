@@ -36,6 +36,7 @@ import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
 import Redirect from "../../../../../Router/RouterSkip";
+import { kMaxLength } from "buffer";
 export default function Tin(props: any) {
   const history = useNavigate();
   const { authDetails } = useAuth();
@@ -967,7 +968,7 @@ export default function Tin(props: any) {
                               value={values.foreignTIN}
                               onBlur={handleBlur}
                               onChange={handleChange}
-                              inputProps={{ maxLength: 10 }}
+                              inputProps={{ maxLength: 20 }}
                               placeholder="ENTER FOREIGN TIN"
                               error={Boolean(
                                 touched.foreignTIN && errors.foreignTIN
@@ -993,10 +994,12 @@ export default function Tin(props: any) {
                               name="foreignTIN"
                               value={values.foreignTIN}
                               onBlur={handleBlur}
+                              inputProps={{ maxLength: 20 }}
                               onChange={handleChange}
                               error={Boolean(
                                 touched.foreignTIN && errors.foreignTIN
                               )}
+                             
                               style={{
                                 border: " 1px solid #d9d9d9 ",
                                 padding: " 0 10px",
@@ -1048,6 +1051,7 @@ export default function Tin(props: any) {
                                           "isNotAvailable"
                                         )("");
                                         setFieldValue("fTinNotAvailableReason", "")
+                                        setFieldValue("foreignTIN", "");
                                       }}
                                       style={{
                                         color: "red",

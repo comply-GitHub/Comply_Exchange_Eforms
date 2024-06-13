@@ -411,6 +411,34 @@ export const partCertiSchema = () => {
   });
 };
 
+
+export const partCertiSchema_W9 = () => {
+  return Yup.object().shape({
+
+    signedBy: Yup.string().required("Please enter name of the person signing the form"),
+    confirmationCode: Yup.string()
+      .required("Please enter code")
+      .test(
+        'match',
+        'Confirmation code does not match',
+        function (value) {
+          const storedConfirmationCode = obValues?.confirmationCode;
+          return !storedConfirmationCode || value === storedConfirmationCode;
+        }
+      ),
+
+    // word: Yup.boolean().when("EnterconfirmationCode", {
+    //   is: "no",
+    //   then: () => Yup.string().required("Please select owner"),
+    // }),
+    date: Yup.date(),
+    isCheckAcceptance: Yup.boolean().oneOf(
+      [true],
+      "Please mark the checkbox"
+    ),
+  });
+};
+
 export const partCertiSchema_DC_BEN = () => {
   return Yup.object().shape({
 
