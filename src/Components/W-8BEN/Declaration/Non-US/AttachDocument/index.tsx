@@ -27,7 +27,7 @@ const AttachDocumentEXP = () => {
 
     const handleBackRoute = () => {
         const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-        if (PrevStepData?.isClaimTreaty === "no" || PrevStepData?.isClaimTreaty === false) {
+        if (PrevStepData?.isSubmissionClaimTreaty === "no" || PrevStepData?.isSubmissionClaimTreaty === false) {
             return "/W-8BEN/Declaration/US_Tin/Claim"
             
         } else {

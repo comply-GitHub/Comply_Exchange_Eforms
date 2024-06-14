@@ -42,7 +42,7 @@ const AttachDocumentW9 = () => {
     }
     const handleBackRoute = () => {
         const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-        if (PrevStepData?.isClaimTreaty === "no" || PrevStepData?.isClaimTreaty === false) {
+        if (PrevStepData?.isSubmissionClaimTreaty === "no" || PrevStepData?.isSubmissionClaimTreaty === false) {
             return "/BenE/Tax_Purpose_BenE/Declaration_BenE/Non_US/Claim_Ben_E"
             
         } else {
