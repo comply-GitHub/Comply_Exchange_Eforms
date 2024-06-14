@@ -635,7 +635,7 @@ export default function Factors() {
                       </Button>
                       {values.isSubmissionSpecialRates == "yes" ? (<Button
                         //type="submit"
-                        disabled={((!incomeTypesValid) || (!isValid))}
+                        disabled={(!incomeTypesValid || !isValid) && values.isSubmissionSpecialRates !== "no"}
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() =>
@@ -649,7 +649,7 @@ export default function Factors() {
                         Continue
                       </Button>) : <>
                         <Button
-                          disabled={((!incomeTypesValid && values.isSubmissionSpecialRates === "yes") || (!isValid))}
+                         disabled={(!incomeTypesValid || !isValid) && values.isSubmissionSpecialRates !== "no"}
                           onClick={() =>
                             submitForm().then((data) => {
                               Redirect("/Attach_document_BEN", authDetails?.agentId, history)
