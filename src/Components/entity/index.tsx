@@ -2041,6 +2041,7 @@ export default function Entity() {
                               }}
                               id="outlined"
                               name="foreignTIN"
+                              inputProps={{ maxLength: 11 }}
                               placeholder="Enter foreign TIN"
                               onChange={handleChange}
                               value={values.foreignTIN}

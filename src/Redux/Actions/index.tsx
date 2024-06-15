@@ -2,7 +2,7 @@ import { AnyAction } from "redux";
 import Utils from "../../Utils";
 import { convertToFormData } from "../../Helpers/convertToFormData";
 import store from "../store";
-import { FormTypeId } from "../../Utils/constVals";
+import { FormTypeId, FormTypeSelection } from "../../Utils/constVals";
 import { ErrorModel } from "./errormodel";
 
 export const W9_state = (value: any, callback: any = false): any => {
@@ -41,10 +41,14 @@ export const W8_state_ECI = (value: any, callback: any = false): any => {
 };
 
 export const postW8ECI_EForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  const BusinessTypeId=JSON.parse(localStorage.getItem("agentDetails") || "{}");
+  const AccountHolderId=JSON.parse(localStorage.getItem("authDetails") || "{}");
+  const NewValue={...value,formTypeSelectionId:BusinessTypeId.businessTypeId,accountHolderBasicDetailId:AccountHolderId.accountHolderId,agentId:AccountHolderId.agentId}
+ 
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.InsertW8ECIIndividualEntityNonUSForm,
-      convertToFormData(value),
+      convertToFormData(NewValue),
       // value,
       (responseData) => {
         let { data } = responseData;
@@ -1587,10 +1591,13 @@ export const GetHelpVideoDetails = (): any => {
 
 
 export const postW9Form = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  const BusinessTypeId=JSON.parse(localStorage.getItem("agentDetails") || "{}");
+  const AccountHolderId=JSON.parse(localStorage.getItem("authDetails") || "{}");
+  const NewValue={...value,formTypeSelectionId:BusinessTypeId.businessTypeId,accountHolderBasicDetailId:AccountHolderId.accountHolderId,agentId:AccountHolderId.agentId}
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.InsertW9IndividualEntityUSForm,
-      value,
+      NewValue,
       (responseData) => {
         let { data } = responseData;
         dispatch({
@@ -1616,10 +1623,13 @@ export const postW9Form = (value: any, callback: Function, errorCallback: Functi
 };
 
 export const postW8BENForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  const BusinessTypeId=JSON.parse(localStorage.getItem("agentDetails") || "{}");
+  const AccountHolderId=JSON.parse(localStorage.getItem("authDetails") || "{}");
+  const NewValue={...value,formTypeSelectionId:BusinessTypeId.businessTypeId,accountHolderBasicDetailId:AccountHolderId.accountHolderId,agentId:AccountHolderId.agentId}
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.InsertW8BENIndividualNonUS,
-      convertToFormData(value),
+      convertToFormData(NewValue),
       // value,
       (responseData) => {
         let { data } = responseData;
@@ -1663,10 +1673,14 @@ export const postW8BENForm = (value: any, callback: Function, errorCallback: Fun
 };
 //UpsertDualCertW9
 export const postW8BEN_EForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  const BusinessTypeId=JSON.parse(localStorage.getItem("agentDetails") || "{}");
+  const AccountHolderId=JSON.parse(localStorage.getItem("authDetails") || "{}");
+  const NewValue={...value,formTypeSelectionId:BusinessTypeId.businessTypeId,accountHolderBasicDetailId:AccountHolderId.accountHolderId,agentId:AccountHolderId.agentId}
+  
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.InsertW8BENEEntityNonUSForm,
-      convertToFormData(value),
+      convertToFormData(NewValue),
       (responseData) => {
         let { data } = responseData;
         dispatch({
@@ -1711,10 +1725,13 @@ export const postW8BEN_EForm = (value: any, callback: Function, errorCallback: F
 
 
 export const PostDualCertDetails = (value: any, successCallback: Function, errorCallback: Function): any => {
+  const BusinessTypeId=JSON.parse(localStorage.getItem("agentDetails") || "{}");
+  const AccountHolderId=JSON.parse(localStorage.getItem("authDetails") || "{}");
+  const NewValue={...value,formTypeSelectionId:BusinessTypeId.businessTypeId,accountHolderBasicDetailId:AccountHolderId.accountHolderId,agentId:AccountHolderId.agentId}
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.UpsertDualCertW9,
-      value,
+      NewValue,
       (responseData) => {
         let { data } = responseData;
         dispatch({
@@ -1758,10 +1775,13 @@ export const PostDualCertDetails = (value: any, successCallback: Function, error
 //UpsertEntityW9DualCert
 
 export const PostDualCertW9Entity = (value: any, successCallback: Function, errorCallback: Function): any => {
+  const BusinessTypeId=JSON.parse(localStorage.getItem("agentDetails") || "{}");
+  const AccountHolderId=JSON.parse(localStorage.getItem("authDetails") || "{}");
+  const NewValue={...value,formTypeSelectionId:BusinessTypeId.businessTypeId,accountHolderBasicDetailId:AccountHolderId.accountHolderId,agentId:AccountHolderId.agentId}
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.UpsertEntityW9DualCert,
-      value,
+      NewValue,
       (responseData) => {
         let { data } = responseData;
         dispatch({
@@ -1803,10 +1823,14 @@ export const PostDualCertW9Entity = (value: any, successCallback: Function, erro
 };
 
 export const PostDualCert = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  const BusinessTypeId=JSON.parse(localStorage.getItem("agentDetails") || "{}");
+  const AccountHolderId=JSON.parse(localStorage.getItem("authDetails") || "{}");
+  const NewValue={...value,formTypeSelectionId:BusinessTypeId.businessTypeId,accountHolderBasicDetailId:AccountHolderId.accountHolderId,agentId:AccountHolderId.agentId}
+  
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.InserDualCert,
-      value,
+      NewValue,
       (responseData) => {
         let { data } = responseData;
         dispatch({
@@ -1922,12 +1946,18 @@ export const PostDualCert = (value: any, callback: Function, errorCallback: Func
 //   };
 // };
 
+
+
 export const postW8EXPForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
   console.log("exp", value)
+  const BusinessTypeId=JSON.parse(localStorage.getItem("agentDetails") || "{}");
+  const AccountHolderId=JSON.parse(localStorage.getItem("authDetails") || "{}");
+  const NewValue={...value,formTypeSelectionId:BusinessTypeId.businessTypeId,accountHolderBasicDetailId:AccountHolderId.accountHolderId,agentId:AccountHolderId.agentId}
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.InsertW8EXPFormEntityNonUs,
-      convertToFormData(value),
+      convertToFormData(NewValue),
+
       //value,
       (responseData) => {
         let { data } = responseData;
@@ -2494,10 +2524,14 @@ export const UpsertIncomeReportDescription = (payload: any, callback: Function, 
 
 //Form 8233 post request
 export const post8233_EForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  const BusinessTypeId=JSON.parse(localStorage.getItem("agentDetails") || "{}");
+  const AccountHolderId=JSON.parse(localStorage.getItem("authDetails") || "{}");
+  const NewValue={...value,formTypeSelectionId:BusinessTypeId.businessTypeId,accountHolderBasicDetailId:AccountHolderId.accountHolderId,agentId:AccountHolderId.agentId}
+ 
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.InsertForm8233IndividualNonUSForm,
-      convertToFormData(value),
+      convertToFormData(NewValue),
       (responseData) => {
         let { data } = responseData;
         //console.log("Form 8233 Response Data",responseData);
@@ -2576,11 +2610,14 @@ export const getSupportingDocument = (AccountHolderId: number, FormTypeId: numbe
 };
 
 export const post8233_EForm_Documentation = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  const BusinessTypeId=JSON.parse(localStorage.getItem("agentDetails") || "{}");
+  const AccountHolderId=JSON.parse(localStorage.getItem("authDetails") || "{}");
+  const NewValue={...value,formTypeSelectionId:BusinessTypeId.businessTypeId,accountHolderBasicDetailId:AccountHolderId.accountHolderId,agentId:AccountHolderId.agentId}
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.UpsertSupportingDocumentation,
       // convertToFormData(value),
-      value,
+      NewValue,
       (responseData) => {
         let { data } = responseData;
         //console.log("Form 8233 Response Data",responseData);
@@ -2663,10 +2700,13 @@ export const getSupportedFile = (storageName: number, FolderName: string): any =
 
 
 export const postW81MY_EForm = (value: any, callback: Function, errorCallback: Function = (error: any) => { console.log(error) }): any => {
+  const BusinessTypeId=JSON.parse(localStorage.getItem("agentDetails") || "{}");
+  const AccountHolderId=JSON.parse(localStorage.getItem("authDetails") || "{}");
+  const NewValue={...value,formTypeSelectionId:BusinessTypeId.businessTypeId,accountHolderBasicDetailId:AccountHolderId.accountHolderId,agentId:AccountHolderId.agentId}
   return (dispatch: any) => {
     Utils.api.postApiCall(
       Utils.EndPoint.InsertW81MYEntityNonForm,
-      convertToFormData(value),
+      convertToFormData(NewValue),
       (responseData) => {
         let { data } = responseData;
         //console.log("Form 8233 Response Data",responseData);

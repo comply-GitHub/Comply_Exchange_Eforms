@@ -942,6 +942,7 @@ export default function Tin(props: any) {
                                 // error={Boolean(
                                 //   touched.foregionTIN && errors.foregionTIN
                                 // )}
+                                inputProps={{ maxLength: 11 }}
                                 style={{
                                   border: " 1px solid #d9d9d9 ",
                                   padding: " 0 10px",
