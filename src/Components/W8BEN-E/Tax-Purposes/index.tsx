@@ -181,9 +181,9 @@ export default function Fedral_tax(props: any) {
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
             <div className="viewform"
-             onClick={() => {
-              dispatch(GetBenEPdf(authDetails?.accountHolderId))
-            }}>View Form</div>
+              onClick={() => {
+                dispatch(GetBenEPdf(authDetails?.accountHolderId))
+              }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[3].id === 5 ? (
@@ -218,7 +218,7 @@ export default function Fedral_tax(props: any) {
                 <Formik
                   enableReinitialize
                   validateOnChange={true}
-                  validateOnBlur={false}
+                  validateOnBlur={true}
                   validateOnMount={true}
                   initialValues={initialValue}
                   validationSchema={TaxPurposeSchema}
@@ -2098,19 +2098,21 @@ export default function Fedral_tax(props: any) {
                           </Button>
                           <Button
                             type="submit"
-                            disabled={!isValid}
+                            disabled={isSubmitting || !isValid}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
                             onClick={() => {
-                              validateForm().then((err) => {
-                                if (Object.keys(err).length == 0) {
-                                  submitForm().then((data) => {
-                                    history("/BenE/Tax_Purpose_BenE/Declaration_BenE");
-                                  }).catch((error) => {
-                                    console.log(error);
-                                  })
-                                }
+                              // validateForm().then((err) => {
+                              //   if (Object.keys(err).length == 0) {
 
+                              //   }
+
+                              // })
+
+                              submitForm().then((data) => {
+                                history("/BenE/Tax_Purpose_BenE/Declaration_BenE");
+                              }).catch((error) => {
+                                console.log(error);
                               })
 
                             }}
