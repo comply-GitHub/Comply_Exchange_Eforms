@@ -66,7 +66,7 @@ export default function Factors() {
     formTypeSelectionId: obValues.businessTypeId,
     formTypeId: FormTypeId.BEN,
     accountHolderBasicDetailId:authDetails?.accountHolderId,
-    isHeldUSCitizenship: false,
+    isHeldUSCitizenship: "No",
     countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "0",
     isTaxationUSCitizenOrResident: false,
     isPermamnentResidentCardHolder: false,
@@ -263,7 +263,7 @@ export default function Factors() {
                   <Form onSubmit={handleSubmit}>
                     <>{console.log("VALUESSS", values)}</>
 
-                    {values.isHeldUSCitizenship === true &&
+                    {values.isHeldUSCitizenship === "Yes" &&
                       obValues?.isUSIndividual == false ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -365,7 +365,7 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
+                    {values.isHeldUSCitizenship === "Yes" &&
                       values.isRenouncedCitizenship === true ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -401,7 +401,7 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
+                    {values.isHeldUSCitizenship === "Yes" &&
                       values.isTaxationUSCitizenOrResident === true ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -452,7 +452,7 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
+                    {values.isHeldUSCitizenship === "Yes" &&
                       values.isPermamnentResidentCardHolder === true? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -505,7 +505,7 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
+                    {values.isHeldUSCitizenship === "Yes" &&
                       values.isHoldDualCitizenshipIncludeUSCitizenship === true ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -773,22 +773,22 @@ export default function Factors() {
                       <FormControl>
                         <RadioGroup
                           row
-                          defaultValue="No"
+                          
                           aria-labelledby="demo-row-radio-buttons-group-label"
-                          name="row-radio-buttons-group"
+                          name="isHeldUSCitizenship"
                           value={values.isHeldUSCitizenship}
                           onChange={handleChange}
                           id="isHeldUSCitizenship"
                         >
                           <FormControlLabel
                             control={<Radio />}
-                            value={true}
+                            value="Yes"
                             name="isHeldUSCitizenship"
                             label="Yes"
                           />
                           <FormControlLabel
                             control={<Radio />}
-                            value={false}
+                            value="No"
                             name="isHeldUSCitizenship"
                             label="No"
                           />
@@ -797,7 +797,7 @@ export default function Factors() {
                       </FormControl>
                       <Divider className="dividr" />
 
-                      {values.isHeldUSCitizenship == false ? (
+                      {values.isHeldUSCitizenship === "No" ? (
                         <>
                           <Typography
                             style={{
@@ -1419,7 +1419,7 @@ export default function Factors() {
 
                           <Divider className="dividr" />
                         </>
-                      ) : (
+                      ) :  (
                         <>
                           <Typography
                             style={{

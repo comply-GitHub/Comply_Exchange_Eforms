@@ -2259,7 +2259,7 @@ export default function Entity() {
                             <div className="col-lg-3 col-6 col-md-3 mt-2">
                               <FormControl className="w-100">
                                 <Typography align="left">
-                                  GIIN
+                                  GIIN<span style={{ color: 'red' }}>*</span>
                                  
                                   <span>
                                     <Tooltip

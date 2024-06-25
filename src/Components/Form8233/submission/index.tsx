@@ -26,6 +26,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetForm8233Pdf } from "../../../Redux/Actions/PfdActions";
 import SecurityCodeRecover from "../../Reusable/SecurityCodeRecover";
+import Redirect from "../../../Router/RouterSkip";
 export default function Penalties() {
   const { authDetails } = useAuth();
 
@@ -103,7 +104,7 @@ export default function Penalties() {
                     );
 
                     resolve(res);
-                    history('/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233')
+                    Redirect('/Form8233/TaxPayer_Identification/Owner/Documentaion/certification/Submission/Submit_8233',authDetails?.agentId,history)
                   },
                   (err: any) => {
                     reject(err);
@@ -177,7 +178,7 @@ export default function Penalties() {
                 <div className="col-8 mt-3">
                   <div style={{ padding: "12px" }}>
                     <Paper style={{ padding: "10px" }}>
-                      {obValues.uniqueIdentifier !== values.signBy ? (
+                      {obValues.uniqueIdentifier !== values.signBy && values.signBy !=="" ? (
                         <div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                           <Typography>
                             SIG101
@@ -658,8 +659,10 @@ export default function Penalties() {
                       </Typography>
                       <Typography align="center">
                         <Button
+                         
+
                           onClick={() => {
-                            history("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification")
+                            Redirect("/Form8233/TaxPayer_Identification/Owner/Documentaion/certification",authDetails?.agentId,history,true)
                           }}
                           variant="contained"
                           style={{

@@ -185,7 +185,7 @@ export default function Penalties() {
 
                   <div style={{ padding: "13px" }}>
                     <Paper style={{ padding: "18px" }}>
-                      {obValues.uniqueIdentifier !== values.signedBy && touched.signedBy && clickCount === 1 ? (
+                      {obValues.uniqueIdentifier !== values.signedBy && touched.signedBy && values.signedBy !=="" ? (
                         <div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                           <Typography>
                             SIG101
