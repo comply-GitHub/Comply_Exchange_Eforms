@@ -24,7 +24,7 @@ import {
   VapingRoomsOutlined,
 } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Formik, Form } from "formik";
+import { Formik, Form ,Field,ErrorMessage } from "formik";
 import { useNavigate } from "react-router-dom";
 import { individualSchema } from "../../schemas/individualindex";
  import Radio from "@mui/material/Radio";
@@ -66,6 +66,7 @@ import { log } from "console";
 import GlobalValues from "../../Utils/constVals";
 import useAuth from "../../customHooks/useAuth";
 import Utils from "../../Utils";
+import CustomDatePicker from "../CustomDatePicker";
 // import { CheckBox } from '@mui/icons-material';
 
 type ValuePiece = Date | null;
@@ -1629,22 +1630,11 @@ useEffect(()=>{
                                                   Date of Birth
                                                   <span style={{ color: "red" }}>*</span>
                                                 </Typography>
-                                                <DatePicker
-                                                  className="dateclass"
-                                                  onBlur={handleBlur}
-                                                  name="dob"
-                                                  onChange={(date) => {
-                                                    onChange(date);
-                                                    setFieldValue("dob", date);
-                                                  }}
-                                                  maxDate={moment().toDate()}
-                                                  value={value}
-                                                  clearIcon={null}
-                                                  format="MM-dd-yy"
-                                                  dayPlaceholder="DD"
-                                                  monthPlaceholder="MM"
-                                                  yearPlaceholder="YYYY"
-                                                />
+                                                <Field
+              name="dob"
+              component={CustomDatePicker}
+              onBlur={handleBlur}
+            />
                                                 {errors.dob && touched.dob ? (<p className="error">{errors.dob}</p>) : ""}
                   
                                               </FormControl>
@@ -1720,7 +1710,7 @@ useEffect(()=>{
                                   </select> */}
                                                 {/* {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ?<p className="error">{errors.countryOfCitizenshipId}</p>:<></>} */}
                                                 {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
-                                                {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
+                                                {errors?.countryOfBirthId && touched?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
                                                       <p className="error">{errors?.countryOfBirthId}</p>
                                                     )}
                                               </FormControl>
@@ -1753,7 +1743,7 @@ useEffect(()=>{
                   
                                                 />
                                                 {/* {(errors?.cityOfBirth && touched?.cityOfBirth) ? <p className="error">{errors?.cityOfBirth}</p> : <></>} */}
-                                                {errors?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
+                                                {errors?.cityOfBirth && touched?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
                                                       <p className="error">{errors?.cityOfBirth}</p>
                                                     )}
                                               </FormControl>
@@ -1834,7 +1824,13 @@ useEffect(()=>{
                                                     Date of Birth
                                                     <span style={{ color: "red" }}>*</span>
                                                   </Typography>
-                                                  <DatePicker
+                                                  <Field
+              name="dob"
+              component={CustomDatePicker}
+              onBlur={handleBlur}
+            />
+           
+                                                  {/* <DatePicker
                                                     className="dateclass"
                                                     name="dob"
                                                     onBlur={handleBlur}
@@ -1849,7 +1845,8 @@ useEffect(()=>{
                                                     dayPlaceholder="DD"
                                                     monthPlaceholder="MM"
                                                     yearPlaceholder="YYYY"
-                                                  />
+                                                  /> */}
+                                                  
                   
                                                   {errors.dob && touched.dob ? (<p className="error">{errors.dob}</p>) : ""}
                                                 </FormControl>
@@ -1894,7 +1891,7 @@ useEffect(()=>{
                         </option>
                       ))}
                                                   </select>
-                                                  {errors?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
+                                                  {errors?.countryOfBirthId && touched?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
                                                       <p className="error">{errors?.countryOfBirthId}</p>
                                                     )}
                                                   {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
@@ -1927,7 +1924,7 @@ useEffect(()=>{
                                                     value={values?.cityOfBirth}
                   
                                                   />
-                                                  {errors?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
+                                                  {errors?.cityOfBirth && touched?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
                                                       <p className="error">{errors?.cityOfBirth}</p>
                                                     )}
                                                   {/* {errors.cityOfBirth && touched.cityOfBirth ? <p className="error">{errors.cityOfBirth}</p> : <></>} */}
@@ -2187,25 +2184,11 @@ useEffect(()=>{
                                                   Date of Birth
                                                   <span style={{ color: "red" }}>*</span>
                                                 </Typography>
-                                                <DatePicker
-                                                  className="dateclass"
-                                                  name="dob"
-                                                  onChange={(date) => {
-                                                    onChange(date);
-                                                    setFieldValue("dob", date);
-                                                  }}
-                                                  maxDate={moment().toDate()}
-                                                  value={value}
-                                                  //   error={
-                                                  //     touched.dob && errors.dob
-                                                  // }
-                                                  onBlur={handleBlur}
-                                                  clearIcon={null}
-                                                  format="MM-dd-yy"
-                                                  dayPlaceholder="DD"
-                                                  monthPlaceholder="MM"
-                                                  yearPlaceholder="YYYY"
-                                                />
+                                                <Field
+              name="dob"
+              component={CustomDatePicker}
+              onBlur={handleBlur}
+            />
                                                 {errors.dob && touched.dob ? <p className="error">{errors.dob}</p> : <></>}
                   
                                               </FormControl>

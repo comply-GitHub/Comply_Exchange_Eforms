@@ -66,7 +66,7 @@ export default function Factors() {
     formTypeSelectionId: obValues.businessTypeId,
     formTypeId: FormTypeId.BEN,
     accountHolderBasicDetailId:authDetails?.accountHolderId,
-    isHeldUSCitizenship: "No",
+    isHeldUSCitizenship: false,
     countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "0",
     isTaxationUSCitizenOrResident: false,
     isPermamnentResidentCardHolder: false,
@@ -263,7 +263,7 @@ export default function Factors() {
                   <Form onSubmit={handleSubmit}>
                     <>{console.log("VALUESSS", values)}</>
 
-                    {values.isHeldUSCitizenship === "Yes" &&
+                    {values.isHeldUSCitizenship === true &&
                       obValues?.isUSIndividual == false ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -365,7 +365,7 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === "Yes" &&
+                    {values.isHeldUSCitizenship === true &&
                       values.isRenouncedCitizenship === true ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -401,7 +401,7 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === "Yes" &&
+                    {values.isHeldUSCitizenship === true &&
                       values.isTaxationUSCitizenOrResident === true ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -452,7 +452,7 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === "Yes" &&
+                    {values.isHeldUSCitizenship === true &&
                       values.isPermamnentResidentCardHolder === true? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -505,7 +505,7 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === "Yes" &&
+                    {values.isHeldUSCitizenship === true &&
                       values.isHoldDualCitizenshipIncludeUSCitizenship === true ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -782,13 +782,13 @@ export default function Factors() {
                         >
                           <FormControlLabel
                             control={<Radio />}
-                            value="Yes"
+                            value={true}
                             name="isHeldUSCitizenship"
                             label="Yes"
                           />
                           <FormControlLabel
                             control={<Radio />}
-                            value="No"
+                            value={false}
                             name="isHeldUSCitizenship"
                             label="No"
                           />
@@ -797,7 +797,7 @@ export default function Factors() {
                       </FormControl>
                       <Divider className="dividr" />
 
-                      {values.isHeldUSCitizenship === "No" ? (
+                      {values.isHeldUSCitizenship === false ? (
                         <>
                           <Typography
                             style={{

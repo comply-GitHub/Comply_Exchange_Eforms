@@ -13,6 +13,66 @@ input:-webkit-autofill:active{
    -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
 }
 
+
+.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+
+
+  letter-spacing: inherit;
+  color: currentColor;
+  padding: 4px 0 5px;
+  border: 0;
+  box-sizing: content-box;
+  background: none;
+  height: 0.2375em !important;
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+  display: block;
+  min-width: 0;
+  width: 100%;
+  -webkit-animation-name: mui-auto-fill-cancel;
+  animation-name: mui-auto-fill-cancel;
+  -webkit-animation-duration: 10ms;
+  animation-duration: 10ms;
+  padding: 16.5px 37px;
+  padding-right: 23px;
+}
+.dateclass{
+  height: 35px;
+}
+
+.custom-date-input {
+  position: relative;
+  display: inline-block;
+  border:#00000042
+}
+
+.date-picker-wrapper {
+  display: flex;
+  width:100% !important;
+  align-items: center;
+  position: relative;
+}
+.react-datepicker-wrapper {
+  width: 100%;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+}
+
+.dateclass {
+ 
+  width: 100%; /* Ensure full width for proper styling */
+  box-sizing: border-box; /* Include padding in width */
+  height: 35px;
+}
+
+.calendar-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #888;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
