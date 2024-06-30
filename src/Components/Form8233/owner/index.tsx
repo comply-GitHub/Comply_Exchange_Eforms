@@ -65,7 +65,7 @@ export default function Tin(props: any) {
 
 
   }, [onBoardingFormValuesPrevStepData?.dateOfEntryIntoUS])
-  // console.log(dateNonImmigrationStatusExpireState)
+
   const d = new Date();
   let year = d.getFullYear();
   const initialValue = {
@@ -153,12 +153,7 @@ export default function Tin(props: any) {
             ...values,
             stepName: null
           };
-          // const temp = {
-          //   ...values,
-          //   agentId: authDetails?.agentId,
-          //   accountHolderBasicDetailId: authDetails?.accountHolderId,
-          //   stepName: null,
-          // };
+         
           const returnPromise = new Promise((resolve, reject) => {
             dispatch(
               post8233_EForm(temp,
