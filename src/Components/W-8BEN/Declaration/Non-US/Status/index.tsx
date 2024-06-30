@@ -773,9 +773,9 @@ export default function Factors() {
                       <FormControl>
                         <RadioGroup
                           row
-                          defaultValue="No"
+                          
                           aria-labelledby="demo-row-radio-buttons-group-label"
-                          name="row-radio-buttons-group"
+                          name="isHeldUSCitizenship"
                           value={values.isHeldUSCitizenship}
                           onChange={handleChange}
                           id="isHeldUSCitizenship"
@@ -797,7 +797,7 @@ export default function Factors() {
                       </FormControl>
                       <Divider className="dividr" />
 
-                      {values.isHeldUSCitizenship == false ? (
+                      {values.isHeldUSCitizenship === false ? (
                         <>
                           <Typography
                             style={{
@@ -1419,7 +1419,7 @@ export default function Factors() {
 
                           <Divider className="dividr" />
                         </>
-                      ) : (
+                      ) :  (
                         <>
                           <Typography
                             style={{

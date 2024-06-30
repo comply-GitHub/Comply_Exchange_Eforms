@@ -1029,12 +1029,7 @@ export default function Fedral_tax(props: any) {
                                                                             fontSize: "12px",
                                                                         }}
                                                                     >
-                                                                        In the left hand menu you will see several
-                                                                        different USFederalTaxClassification types. Please
-                                                                        select each in turn reading the definition
-                                                                        provided. When you are satisfied the
-                                                                        description matches the entity type select
-                                                                        “confirm”.
+                                                                        In the menu below you will see several different classification types. Please select each in turn reading the definition provided. When you are satisfied the description matches the entity type select “confirm”.
                                                                     </Typography>
                                                                     <Typography
                                                                         align="left"
@@ -1043,11 +1038,7 @@ export default function Fedral_tax(props: any) {
                                                                             fontSize: "12px",
                                                                         }}
                                                                     >
-                                                                        Depending on the type selected you may
-                                                                        either be provided with further selections,
-                                                                        more detailed guidance or the pop up will
-                                                                        close and you will be taken to the next
-                                                                        stage in the submission process.
+                                                                       Depending on the type selected you may either be provided with further selections, more detailed guidance or the pop up will close and you will be taken to the next stage in the submission process.
                                                                     </Typography>
                                                                     <Typography
                                                                         align="left"
@@ -1056,9 +1047,7 @@ export default function Fedral_tax(props: any) {
                                                                             fontSize: "12px",
                                                                         }}
                                                                     >
-                                                                        Please note that although this guide is
-                                                                        provided to assist your selection, it is not
-                                                                        intended nor aims to provide tax advice.
+                                                                        Please note that although this guide is provided to assist your selection, it is not intended nor aims to provide tax advice.
                                                                     </Typography>
                                                                     <Typography
                                                                         align="left"
@@ -1089,10 +1078,8 @@ export default function Fedral_tax(props: any) {
                                                                 </AccordionSummary>
                                                                 <AccordionDetails>
                                                                     <Typography align="left">
-                                                                        It is a legal entity that is separate and
-                                                                        distinct from its owners formed under the
-                                                                        laws of the country or state in which it is
-                                                                        registered.
+                                                                    It is a legal entity that is separate and distinct from its owners formed under the laws of the country or state in which it is registered.
+ 
                                                                     </Typography>
                                                                     <Typography
                                                                         align="left"
@@ -1204,50 +1191,22 @@ export default function Fedral_tax(props: any) {
                                                                     <Typography
                                                                         style={{ fontSize: "18px", color: "blue" }}
                                                                     >
-                                                                        Simple Trust{" "}
+                                                                        Limited Liability Company (Disregarded Entity)
                                                                     </Typography>
                                                                 </AccordionSummary>
                                                                 <AccordionDetails>
                                                                     <Typography align="left">
-                                                                        Generally, a foreign simple trust is a
-                                                                        foreign trust that is required to distribute
-                                                                        all of its income annually.
-                                                                    </Typography>
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        Simple trusts are defined by three main
-                                                                        conditions.
-                                                                    </Typography>
-                                                                    <Typography align="left">
-                                                                        <li>
-                                                                            Income from a simple trust may not be
-                                                                            distributed to charitable beneficiaries.
-                                                                        </li>
+                                                                    Chapter 3 Classification - Limited Liability Company (Disregarded Entity)
 
-                                                                        <li>
-                                                                            Distributions may not be made from the
-                                                                            corpus (capital or principle amount) of a
-                                                                            simple trust.
-                                                                        </li>
-                                                                        <li>
-                                                                            For an entity to be classified as a simple
-                                                                            trust, the trust instrument must require
-                                                                            the trustee to distribute all of the
-                                                                            trust’s fiduciary accounting income to the
-                                                                            beneficiaries.
-                                                                        </li>
+
                                                                     </Typography>
                                                                     <Typography
                                                                         align="left"
                                                                         style={{ marginTop: "10px" }}
                                                                     >
-                                                                        These conditions are evaluated on a yearly
-                                                                        basis. If a trust fails to meet any one of
-                                                                        the three conditions, it is considered a
-                                                                        complex trust for that tax year.
+                                                                       For U.S. federal tax purposes, an entity that is disregarded as an entity separate from its owner is treated as a “disregarded entity.” Enter the owner's name on the “Name” line. The name of the entity entered on the “Name” line should never be a disregarded entity. The name on the “Name” line must be the name shown on the income tax return on which the income should be reported. For example, if a foreign LLC that is treated as a disregarded entity for U.S. federal tax purposes has a single owner that is a U.S. person, the U.S. owner's name is required to be provided on the “Name” line. If the direct owner of the entity is also a disregarded entity, enter the first owner that is not disregarded for federal tax purposes. Enter the disregarded entity's name on the “Business name/disregarded entity name” line. If the owner of the disregarded entity is a foreign person, the owner must complete an appropriate Form W-8 instead of a Form W-9. This is the case even if the foreign person has a U.S. TIN.
                                                                     </Typography>
+                                                                    
 
                                                                     <Typography
                                                                         align="center"
@@ -1270,26 +1229,21 @@ export default function Fedral_tax(props: any) {
                                                                     <Typography
                                                                         style={{ fontSize: "18px", color: "blue" }}
                                                                     >
-                                                                        Grantor Trust{" "}
+                                                                       Limited Liability Company (S or C Corporation)
                                                                     </Typography>
                                                                 </AccordionSummary>
                                                                 <AccordionDetails>
                                                                     <Typography align="left">
-                                                                        A grantor trust is a foreign (non-U.S.)
-                                                                        trust to the extent that all or a portion of
-                                                                        the income of the trust is treated as owned
-                                                                        by the grantor or another person under
-                                                                        sections 670 through 671 of the U.S. tax
-                                                                        code. Please click on the link below to open
-                                                                        the pdf in another window.
+                                                                    Chapter 3 Classification - Limited Liability Company (Corporation)
                                                                     </Typography>
-                                                                    <Link
+                                                                    <Typography
                                                                         align="left"
-                                                                        style={{ marginTop: "10px", color: "blue" }}
+                                                                        style={{ marginTop: "10px" }}
                                                                     >
-                                                                        Click here to open the U.S. Internal Revenue
-                                                                        Code
-                                                                    </Link>
+                                                                      If the person identified on the “Name” line is an LLC, check the “Limited liability company” box only and enter the appropriate code for the U.S. federal tax classification in the space provided. If you are an LLC that is treated as a partnership for U.S. federal tax purposes, enter “P” for partnership. If you are an LLC that has filed a Form 8832 or a Form 2553 to be taxed as a corporation, enter “C” for C corporation or “S” for S corporation, as appropriate. If you are an LLC that is disregarded as an entity separate from its owner under Regulation section 301.7701-3 (except for employment and excise tax), do not check the LLC box unless the owner of the LLC (required to be identified on the “Name” line) is another LLC that is not disregarded for U.S. federal tax purposes. If the LLC is disregarded as an entity separate from its owner, enter the appropriate tax classification of the owner identified on the “Name” line.
+
+
+                                                                    </Typography>
 
                                                                     <Typography
                                                                         align="center"
@@ -1311,19 +1265,23 @@ export default function Fedral_tax(props: any) {
                                                                     <Typography
                                                                         style={{ fontSize: "18px", color: "blue" }}
                                                                     >
-                                                                        Complex Trust{" "}
+                                                                        Limited Liability Company (Partnership)
                                                                     </Typography>
                                                                 </AccordionSummary>
                                                                 <AccordionDetails>
                                                                     <Typography align="left">
-                                                                        A complex trust is defined as any trust that
-                                                                        does not meet the definition of a simple
-                                                                        trust. Therefore, a complex trust must
-                                                                        distribute to charitable beneficiaries,
-                                                                        distribute amounts from the corpus (capital
-                                                                        or principle amount) , and/or retain some
-                                                                        current income by directive of the trust
-                                                                        instrument
+                                                                    Chapter 3 Classification - Limited Liability Company (Partnership)
+
+
+                                                                    </Typography>
+
+                                                                    <Typography
+                                                                        align="left"
+                                                                        style={{ marginTop: "10px" }}
+                                                                    >
+                                                                      A limited liability partnership (LLP) is formed under a State limited liability partnership law.  Limited liability partnerships file Form 1065, U.S. Partnership Return of Income. They were identified by their response to a question on Form 1065, Schedule B, Other Information. Organizationally, LLP’s are available in some states, only for professional partnerships, such as law firms or accounting firms. A partner in an LLP receives liability protection from the actions of other partners, but is liable for the partnership debts as well as for the consequences of his or her own actions.
+
+
                                                                     </Typography>
 
                                                                     <Typography
@@ -1347,16 +1305,31 @@ export default function Fedral_tax(props: any) {
                                                                     <Typography
                                                                         style={{ fontSize: "18px", color: "blue" }}
                                                                     >
-                                                                        Estate{" "}
+                                                                        Trust/Estate{" "}
                                                                     </Typography>
                                                                 </AccordionSummary>
                                                                 <AccordionDetails>
                                                                     <Typography align="left">
-                                                                        An Estate is defined as the whole of one's
-                                                                        possessions, especially all the property and
-                                                                        debts left by one at death
+                                                                    Chapter 3 Classification - Trust/Estate
                                                                     </Typography>
+                                                                    <Typography
+                                                                        align="left"
+                                                                        style={{ marginTop: "10px" }}
+                                                                    >
+                                                                     An Estate or Trust is a type of tax entity. Estates are entities that report income after an individual person has died. If the person, for example, earns interest, dividends or capital gains after his or her death, then that income is consider income for his or her estate, and the income must be reported on Form 1041, U.S. Income Tax Return for estates and Trusts. The estate tax is a tax on assets, whereas the estate income tax is a tax on income.
 
+
+                                                                    </Typography>
+                                                                    <Typography
+                                                                        align="left"
+                                                                        style={{ marginTop: "10px" }}
+                                                                    >
+                                                                      A trust is created by an individual person to protect or to preserve the person's assets, and to distribute income to beneficiaries.
+
+ 
+
+
+                                                                    </Typography>
                                                                     <Typography
                                                                         align="center"
                                                                         style={{ marginTop: "30px" }}
@@ -1366,374 +1339,7 @@ export default function Fedral_tax(props: any) {
                                                                 </AccordionDetails>
                                                             </Accordion>
 
-                                                            <Accordion
-                                                                expanded={expandedState === "panel9"}
-                                                                onChange={handleChangeAccodionState("panel9")}
-                                                            >
-                                                                <AccordionSummary
-                                                                    expandIcon={<ExpandMore />}
-                                                                    aria-controls="panel2d-content"
-                                                                    id="panel2d-header"
-                                                                >
-                                                                    <Typography
-                                                                        style={{ fontSize: "18px", color: "blue" }}
-                                                                    >
-                                                                        Foreign Government – Integral Part
-                                                                        (Temporary regulations definition){" "}
-                                                                    </Typography>
-                                                                </AccordionSummary>
-                                                                <AccordionDetails>
-                                                                    <Typography align="left">
-                                                                        Foreign government defined (temporary
-                                                                        regulations).
-                                                                    </Typography>
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        The term “foreign government” means only the
-                                                                        integral parts or controlled entities of a
-                                                                        foreign sovereign.
-                                                                    </Typography>
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        (i) It is wholly owned and controlled by a
-                                                                        foreign sovereign directly or indirectly
-                                                                        through one or more controlled entities;
-                                                                    </Typography>
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        <span style={{ fontWeight: "bold" }}>
-                                                                            Integral part.
-                                                                        </span>{" "}
-                                                                        An “integral part” of a foreign sovereign is
-                                                                        any person, body of persons, organization,
-                                                                        agency, bureau, fund, instrumentality, or
-                                                                        other body, however designated, that
-                                                                        constitutes a governing authority of a
-                                                                        foreign country. The net earnings of the
-                                                                        governing authority must be credited to its
-                                                                        own account or to other accounts of the
-                                                                        foreign sovereign, with no portion inuring
-                                                                        to the benefit of any private person. An
-                                                                        integral part does not include any
-                                                                        individual who is a sovereign, official, or
-                                                                        administrator acting in a private or
-                                                                        personal capacity. Consideration of all the
-                                                                        facts and circumstances will determine
-                                                                        whether an individual is acting in a private
-                                                                        or personal capacity.
-                                                                    </Typography>
-
-                                                                    <Typography
-                                                                        align="center"
-                                                                        style={{ marginTop: "30px" }}
-                                                                    >
-                                                                        <Button variant="contained" onClick={() => { confirmFunction(8, setFieldValue) }}>Confirm</Button>
-                                                                    </Typography>
-                                                                </AccordionDetails>
-                                                            </Accordion>
-
-                                                            <Accordion
-                                                                expanded={expandedState === "panel10"}
-                                                                onChange={handleChangeAccodionState("panel10")}
-                                                            >
-                                                                <AccordionSummary
-                                                                    expandIcon={<ExpandMore />}
-                                                                    aria-controls="panel2d-content"
-                                                                    id="panel2d-header"
-                                                                >
-                                                                    <Typography
-                                                                        style={{ fontSize: "18px", color: "blue" }}
-                                                                    >
-                                                                        Foreign Government – Controlled Entity
-                                                                        (Temporary regulations definition){" "}
-                                                                    </Typography>
-                                                                </AccordionSummary>
-                                                                <AccordionDetails>
-                                                                    <Typography align="left">
-                                                                        The term “foreign government” means only the
-                                                                        integral parts or controlled entities of a
-                                                                        foreign sovereign.
-                                                                    </Typography>
-                                                                </AccordionDetails>
-                                                                <AccordionDetails>
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        <span style={{ fontWeight: "bold" }}>
-                                                                            {" "}
-                                                                            Controlled entity.
-                                                                        </span>{" "}
-                                                                        The term “controlled entity” means an entity
-                                                                        that is separate in form from a foreign
-                                                                        sovereign or otherwise constitute a separate
-                                                                        juridical entity if it satisfies the
-                                                                        following requirements:
-                                                                    </Typography>
-                                                                </AccordionDetails>
-                                                                <AccordionDetails>
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        (i) It is wholly owned and controlled by a
-                                                                        foreign sovereign directly or indirectly
-                                                                        through one or more controlled entities;
-                                                                    </Typography>
-                                                                </AccordionDetails>
-                                                                <AccordionDetails>
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        (ii) It is organized under the laws of the
-                                                                        foreign sovereign by which owned;
-                                                                    </Typography>
-                                                                </AccordionDetails>
-                                                                <AccordionDetails>
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        (iii) Its net earnings are credited to its
-                                                                        own account or to other accounts of the
-                                                                        foreign sovereign, with no portion of its
-                                                                        income inuring to the benefit of any private
-                                                                        person; and
-                                                                    </Typography>
-                                                                </AccordionDetails>
-                                                                <AccordionDetails>
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        (iv) Its assets vest in the foreign
-                                                                        sovereign upon dissolution.
-                                                                    </Typography>
-                                                                </AccordionDetails>
-                                                                <AccordionDetails>
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        A controlled entity does not include
-                                                                        partnerships or any other entity owned and
-                                                                        controlled by more than one foreign
-                                                                        sovereign. Thus, a foreign financial
-                                                                        organization organized and wholly owned and
-                                                                        controlled by several foreign sovereigns to
-                                                                        foster economic, financial, and technical
-                                                                        cooperation between various foreign nations
-                                                                        is not a controlled entity for purposes of
-                                                                        this section.
-                                                                    </Typography>
-                                                                </AccordionDetails>
-                                                                <AccordionDetails>
-                                                                    <Typography
-                                                                        align="center"
-                                                                        style={{ marginTop: "30px" }}
-                                                                    >
-                                                                        <Button variant="contained" onClick={() => { confirmFunction(9, setFieldValue) }}>Confirm</Button>
-                                                                    </Typography>
-                                                                </AccordionDetails>
-                                                            </Accordion>
-
-                                                            <Accordion
-                                                                expanded={expandedState === "panel11"}
-                                                                onChange={handleChangeAccodionState("panel11")}
-                                                            >
-                                                                <AccordionSummary
-                                                                    expandIcon={<ExpandMore />}
-                                                                    aria-controls="panel2d-content"
-                                                                    id="panel2d-header"
-                                                                >
-                                                                    <Typography
-                                                                        style={{ fontSize: "18px", color: "blue" }}
-                                                                    >
-                                                                        International Organization{" "}
-                                                                    </Typography>
-                                                                </AccordionSummary>
-                                                                <AccordionDetails>
-                                                                    <Typography align="left">
-                                                                        An Estate is defined as the whole of one's
-                                                                        possessions, especially all the property and
-                                                                        debts left by one at death
-                                                                    </Typography>
-
-                                                                    <Typography
-                                                                        align="center"
-                                                                        style={{ marginTop: "30px" }}
-                                                                    >
-                                                                        <Button variant="contained" onClick={() => { confirmFunction(10, setFieldValue) }}>Confirm</Button>
-                                                                    </Typography>
-                                                                </AccordionDetails>
-                                                            </Accordion>
-
-                                                            <Accordion
-                                                                expanded={expandedState === "panel12"}
-                                                                onChange={handleChangeAccodionState("panel12")}
-                                                            >
-                                                                <AccordionSummary
-                                                                    expandIcon={<ExpandMore />}
-                                                                    aria-controls="panel2d-content"
-                                                                    id="panel2d-header"
-                                                                >
-                                                                    <Typography
-                                                                        style={{ fontSize: "18px", color: "blue" }}
-                                                                    >
-                                                                        Central Bank of Issue{" "}
-                                                                    </Typography>
-                                                                </AccordionSummary>
-                                                                <AccordionDetails>
-                                                                    <Typography align="left">
-                                                                        A bank that is constituted by a government
-                                                                        or international organization to issue and
-                                                                        regulate currency, regulate banks under its
-                                                                        jurisdiction, act as a lender of last
-                                                                        resort, and generally ensure a sustainable
-                                                                        monetary policy.
-                                                                    </Typography>
-
-                                                                    <Typography
-                                                                        align="center"
-                                                                        style={{ marginTop: "30px" }}
-                                                                    >
-                                                                        <Button variant="contained" onClick={() => { confirmFunction(11, setFieldValue) }}>Confirm</Button>
-                                                                    </Typography>
-                                                                </AccordionDetails>
-                                                            </Accordion>
-
-                                                            <Accordion
-                                                                expanded={expandedState === "panel13"}
-                                                                onChange={handleChangeAccodionState("panel13")}
-                                                            >
-                                                                <AccordionSummary
-                                                                    expandIcon={<ExpandMore />}
-                                                                    aria-controls="panel2d-content"
-                                                                    id="panel2d-header"
-                                                                >
-                                                                    <Typography
-                                                                        style={{ fontSize: "18px", color: "blue" }}
-                                                                    >
-                                                                        Tax-Exempt Organization{" "}
-                                                                    </Typography>
-                                                                </AccordionSummary>
-                                                                <AccordionDetails>
-                                                                    <Typography align="left">
-                                                                        A Foreign Tax-Exempt Organization is an
-                                                                        organization that is exempt under Section
-                                                                        501( C ) of the Internal Revenue Code
-                                                                    </Typography>
-
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        As a general rule this can include amongst
-                                                                        other types:
-                                                                    </Typography>
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        1. Corporations, and any community chest,
-                                                                        fund, or foundation, organized and operated
-                                                                        exclusively for religious, charitable,
-                                                                        scientific, testing for public safety
-                                                                        literary, or educational purposes
-                                                                    </Typography>
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        2. To foster national or international
-                                                                        amateur sports competition (but only if no
-                                                                        part of its activities involve the provision
-                                                                        of athletic facilities or equipment)
-                                                                    </Typography>
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        3. For the prevention of cruelty to children
-                                                                        or animals, no part of the net earnings of
-                                                                        which inures to the benefit of any private
-                                                                        shareholder or individual, no substantial
-                                                                        part of the activities of which is carrying
-                                                                        on propaganda, or otherwise attempting, to
-                                                                        influence legislation (except as otherwise
-                                                                        provided in subsection (h)), and which does
-                                                                        not participate in, or intervene in
-                                                                        (including the publishing or distributing of
-                                                                        statements), any political campaign on
-                                                                        behalf of (or in opposition to) any
-                                                                        candidate for public office.
-                                                                    </Typography>
-
-                                                                    <Typography
-                                                                        align="center"
-                                                                        style={{ marginTop: "30px" }}
-                                                                    >
-                                                                        <Button variant="contained" onClick={() => { confirmFunction(12, setFieldValue) }}>Confirm</Button>
-                                                                    </Typography>
-                                                                </AccordionDetails>
-                                                            </Accordion>
-
-                                                            <Accordion
-                                                                expanded={expandedState === "panel14"}
-                                                                onChange={handleChangeAccodionState("panel14")}
-                                                            >
-                                                                <AccordionSummary
-                                                                    expandIcon={<ExpandMore />}
-                                                                    aria-controls="panel2d-content"
-                                                                    id="panel2d-header"
-                                                                >
-                                                                    <Typography
-                                                                        style={{ fontSize: "18px", color: "blue" }}
-                                                                    >
-                                                                        Private Foundation{" "}
-                                                                    </Typography>
-                                                                </AccordionSummary>
-                                                                <AccordionDetails>
-                                                                    <Typography align="left">
-                                                                        Typically have a single major source of
-                                                                        funding (usually gifts from one family or
-                                                                        corporation rather than funding from many
-                                                                        sources) and most have as their primary
-                                                                        activity the making of grants to other
-                                                                        charitable organizations and to individuals,
-                                                                        rather than the direct operation of
-                                                                        charitable programs.
-                                                                    </Typography>
-
-                                                                    <Typography
-                                                                        align="left"
-                                                                        style={{ marginTop: "10px" }}
-                                                                    >
-                                                                        In order to demonstrate that it is a private
-                                                                        operating foundation, an organization must
-                                                                        meet an assets test, a support test, or an
-                                                                        endowment test and demonstrate that it
-                                                                        distributes substantially all (85% or more)
-                                                                        of the lesser of its adjusted net income or
-                                                                        minimum investment return directly for the
-                                                                        active conduct of activities that further
-                                                                        its exempt purposes.
-                                                                    </Typography>
-                                                                    <Typography
-                                                                        align="center"
-                                                                        style={{ marginTop: "30px" }}
-                                                                    >
-                                                                        <Button variant="contained" onClick={() => { confirmFunction(13, setFieldValue) }}>Confirm</Button>
-                                                                    </Typography>
-                                                                </AccordionDetails>
-                                                            </Accordion>
+                                                           
 
                                                             <Accordion
                                                                 expanded={expandedState === "panel15"}

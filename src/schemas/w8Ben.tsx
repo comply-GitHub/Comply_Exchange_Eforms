@@ -264,9 +264,9 @@ export const ClaimSchema = () => {
     isSubmissionClaimTreaty: Yup.string().required(
       "Please select one of the options"
     ),
-    ownerResidentId: Yup.string().when(["isClaimTreaty"], {
-      is: (isClaimTreaty: any) => isClaimTreaty === "yes",
-      then: () => Yup.string().required().notOneOf(["0"], "Please select a Country from the list")
+    ownerResidentId: Yup.string().when(["isSubmissionClaimTreaty"], {
+      is: (isSubmissionClaimTreaty: any) => isSubmissionClaimTreaty === "yes",
+      then: () => Yup.string().required().notOneOf([""], "Please select a Country from the list")
     }),
 
   });

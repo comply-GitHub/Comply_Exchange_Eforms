@@ -18,7 +18,7 @@ import Infoicon from "../../../../../assets/img/info.png";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
 import { ClaimSchema } from "../../../../../schemas/w8Ben";
-import { W8_state, getBENformData } from "../../../../../Redux/Actions";
+import { W8_state, getAllCountriesAgentWise, getBENformData } from "../../../../../Redux/Actions";
 import { useSelector, useDispatch } from "react-redux";
 import useAuth from "../../../../../customHooks/useAuth";
 import Accordion from "@mui/material/Accordion";
@@ -55,7 +55,7 @@ export default function FCTA_Reporting(props: any) {
 
   const [initialValues, setInitialValues] = useState({
     //isClaimTreaty: "No",
-    ownerResidentId: "0",
+    ownerResidentId: "",
     limitationBenefitsId: 0,
     isSubmissionClaimTreaty: "No",
   });
@@ -66,16 +66,29 @@ export default function FCTA_Reporting(props: any) {
   );
 
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+
+  
+  const AgentData = JSON.parse(localStorage.getItem("agentDetails") || "{}");
+  console.log("0067",AgentData.permanentResidentialCountryId)
   useEffect(() => {
     document.title = "SRC-Prepopulator"
     dispatch(GetHelpVideoDetails());
+     
   }, []);
+  useEffect(()=>{
+  if(authDetails?.agentId){
+    dispatch(getAllCountriesAgentWise(authDetails?.agentId)); 
+  }
+  },[authDetails])
   const getCountriesData = useSelector((state: any) =>
     state.CountriesTreaty.records?.filter(
       (ele: any) => ele.treatyEffectiveYear !== 0 && ele.treatyEffectiveYear != null
     )
   );
 
+  const getCountriesAgentWiseReducer = useSelector(
+    (state: any) => state.getCountriesAgentWiseReducer
+  );
 
   const W8BENData = useSelector((state: any) => state.w8Ben);
   console.log(W8BENData, "W8BENDataW8BENDataW8BENData");
@@ -220,7 +233,7 @@ export default function FCTA_Reporting(props: any) {
                 }) => (
                   <Form onSubmit={handleSubmit}>
 
-                    {values.isSubmissionClaimTreaty && clickCount === 1 ? (
+                    {values.isSubmissionClaimTreaty ==="yes" ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -244,36 +257,55 @@ export default function FCTA_Reporting(props: any) {
                             may contact you for further information.
                           </span>
                         </Typography>
-                        <Typography>
-                          Treaty120
-                          <span className="mx-1">
-                            <img
-                              src={Infoicon}
-                              style={{
-                                color: "#ffc107",
-                                height: "22px",
-                                width: "20px",
-                                boxShadow: "inherit",
-
-                                cursor: "pointer",
-                                marginBottom: "3px",
-                              }}
-                            />
-                            The treaty country chosen does not match the country
-                            selected earlier as the primary residence address
-                            country. Please review the selections for accuracy.
-                            Generally the primary residence address country will
-                            be the same country applicable for treaty claim
-                            purposes. The withholding agent may need to request
-                            further information depending on answers given
-                            elsewhere and attachments supplied.
-                          </span>
-                        </Typography>
+                        
                       </div>
                     ) : (
                       ""
                     )}
-                    {!values.isSubmissionClaimTreaty && clickCount === 1 ? (
+
+                    { values.ownerResidentId !== "" && values.isSubmissionClaimTreaty ==="yes" ?(
+                      <>
+                      
+                      {values.ownerResidentId !== AgentData.permanentResidentialCountryId  ? (
+                                            <div
+                                              style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
+                                            >
+                                             
+                                              <Typography>
+                                                Treaty120
+                                                <span className="mx-1">
+                                                  <img
+                                                    src={Infoicon}
+                                                    style={{
+                                                      color: "#ffc107",
+                                                      height: "22px",
+                                                      width: "20px",
+                                                      boxShadow: "inherit",
+                      
+                                                      cursor: "pointer",
+                                                      marginBottom: "3px",
+                                                    }}
+                                                  />
+                                                  The treaty country chosen does not match the country
+                                                  selected earlier as the primary residence address
+                                                  country. Please review the selections for accuracy.
+                                                  Generally the primary residence address country will
+                                                  be the same country applicable for treaty claim
+                                                  purposes. The withholding agent may need to request
+                                                  further information depending on answers given
+                                                  elsewhere and attachments supplied.
+                                                </span>
+                                              </Typography>
+                                            </div>
+                                          ) : (
+                                            ""
+                                          )}
+                      
+                      </>
+                    ):""}
+
+
+                    {values.isSubmissionClaimTreaty ==="no" ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -304,7 +336,7 @@ export default function FCTA_Reporting(props: any) {
                       ""
                     )}
 
-                    <>{console.log(errors, values, "valeeeeeeeeeee")}</>
+                    
                     <div>
                       <div style={{ margin: "10px" }}>
                         <Typography
@@ -467,13 +499,13 @@ export default function FCTA_Reporting(props: any) {
                               value="yes"
                               control={<Radio />}
                               label="Yes"
-                            // name="isClaimTreaty"
+                            name="isSubmissionClaimTreaty"
                             />
                             <FormControlLabel
                               value="no"
                               control={<Radio />}
                               label="No"
-                            // name="isClaimTreaty"
+                            name="isSubmissionClaimTreaty"
                             />
                           </RadioGroup>
                           {errors?.isSubmissionClaimTreaty && touched.isSubmissionClaimTreaty ? (
@@ -598,27 +630,30 @@ export default function FCTA_Reporting(props: any) {
                                           height: "36px",
                                         }}
                                         name="ownerResidentId"
-                                        id="Income"
+                                        id="ownerResidentId"
                                         onChange={(e) => {
                                           handleChange(e);
                                         }}
+                                       
                                         onBlur={handleBlur}
                                         value={values.ownerResidentId}
                                       >
-                                        <option value={0}>---select---</option>
-                                        <option value={45}>Canada</option>
-                                        <option value={257}>
-                                          United Kingdom
-                                        </option>
-                                        {/* <option value={258}>
-                                          United States
-                                        </option> */}
-                                        <option value="">-----</option>
-                                        {getCountriesData?.map((ele: any) => (
-                                          <option key={ele?.id} value={ele?.id}>
-                                            {ele?.name}
-                                          </option>
-                                        ))}
+                                        <option>---select---</option>
+                                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+                      ?.filter((ele:any) => ele.isImportantCountry === "Yes")
+                      .map((ele:any) => (
+                        <option key={ele.id} value={ele.id}>
+                          {ele.name}
+                        </option>
+                      ))}
+                    <option >---</option>
+                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+                      ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
+                      .map((ele:any) => (
+                        <option key={ele.id} value={ele.id}>
+                          {ele.name}
+                        </option>
+                      ))}
                                       </select>
                                     </div>
                                   </div>

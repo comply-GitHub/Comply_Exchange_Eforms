@@ -37,11 +37,10 @@ export default function Chapter4(props: any) {
   const [expanded, setExpanded] = React.useState<string | false>("");
   const handleChangeAccodionState = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
     setExpandedState(newExpanded ? panel : false);
-    setIsContinueEnabled(newExpanded); // Enable "Continue" button when any accordion panel is expanded
-  };
+    setIsContinueEnabled(newExpanded);};
 
   const handleContinue = () => {
-    setIsBackVisible(true); // Show the "Back" button when "Continue" is clicked
+    setIsBackVisible(true); 
   };
 
   const handleBack = () => {

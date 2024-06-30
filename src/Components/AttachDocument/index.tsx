@@ -612,6 +612,7 @@ const AttachDocument = ({
           height: "37px",
           width: "100%",
         }}
+        required
       >
         <option value="">---select---</option>
         {GetDocumentTypesData.GetDocumentListTypeData?.map((ele: any) => (
@@ -634,12 +635,7 @@ const AttachDocument = ({
         // Add the 'required' attribute based on the selected value in the dropdown
         required={row.documentTypeId !== ""}
       />
-      {/* Display error message if file input is required and dropdown is touched */}
-      {/* {touchedDropdown == false && row.documentTypeId !== "" ? (
-        <p style={{ color: "red", fontSize: "12px", marginTop: "5px" }}>
-          Please select a file.
-        </p>
-      ):""} */}
+   
     </div>
     <div className="col-4">
       <DeleteOutline

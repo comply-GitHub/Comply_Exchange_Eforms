@@ -13,7 +13,7 @@ import {
 import { Info, DeleteOutline } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
-import { GetHelpVideoDetails, CREATE_8233, GetAgentDocumentationMandatoryForEformAction, post8233_EForm, getSupportingDocument, post8233_EForm_Documentation, getSupportedFile } from "../../../Redux/Actions";
+import { GetHelpVideoDetails, CREATE_8233, GetAgentDocumentationMandatoryForEformAction, post8233_EForm, getSupportingDocument, post8233_EForm_Documentation, getSupportedFile, GetAgentdocumentTypes } from "../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
@@ -46,6 +46,7 @@ export default function Tin(props: any) {
     document.title = "Attatch Supporting Documentation"
     dispatch(GetAgentDocumentationMandatoryForEformAction());
     dispatch(GetHelpVideoDetails());
+    dispatch(GetAgentdocumentTypes())
   }, []);
 
   const handleDelete = (indexToDelete: number) => {
@@ -100,7 +101,9 @@ export default function Tin(props: any) {
   const handleTaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTax(event.target.value);
   };
-
+  const GetDocumentTypesData = useSelector(
+    (state: any) => state.GetAgentDocumentListTypesReducer
+  );
   const [toolInfo, setToolInfo] = useState("");
   //we need to check first if there is any supporting document is available 
   //if so then we need to bind that with additional document array and 
@@ -198,6 +201,7 @@ export default function Tin(props: any) {
       setDocname("");
     }
   };
+  const [touchedDropdown, setTouchedDropdown] = useState(false);
 
 
   const [selectedOptions, setSelectedOptions] = useState<String[]>([]);
@@ -240,6 +244,7 @@ export default function Tin(props: any) {
         validateOnMount={false}
         initialValues={initialValue}
         onSubmit={(values, { setSubmitting }) => {
+          
           setSubmitting(true);
           let filteredAdditionalDocs = additionalDocs.filter(item => item.file !== null);
           callAPI()
@@ -540,61 +545,64 @@ export default function Tin(props: any) {
 
 
 
+{additionalDocs.map((row, index) => (
+  <div
+    key={index}
+    style={{
+      margin: "10px",
+      display: "flex",
+      marginTop: "25px",
+      justifyContent: "space-between",
+    }}
+    className="row col-12"
+  >
+    <div className="col-4">
+      <select
+        name="usTinTypeId"
+        onChange={(e) => {
+          handleChangeDocument(e);
+          setTouchedDropdown(true); 
+        }}
+        value={row.usTinTypeId}
+        style={{
+          border: " 1px solid #d9d9d9 ",
+          padding: " 0 10px",
+          color: "#121112",
+          fontStyle: "italic",
+          height: "37px",
+          width: "100%",
+        }}
+        required
+      >
+        <option value="">---select---</option>
+        {GetDocumentTypesData.GetDocumentListTypeData?.map((ele: any) => (
+          <option
+            key={ele?.documentationId}
+            value={ele?.documentationId}
+          >
+            {ele?.name}
+          </option>
+        ))}
+      </select>
+    </div>
 
-                      {additionalDocs.map((row, index) => (
-                        <div
-                          key={index}
-                          style={{
-                            margin: "10px",
-                            display: "flex",
-                            marginTop: "25px",
-                            justifyContent: "space-between",
-                          }}
-                          className="row col-12"
-                        >
-                          <div className="col-4">
-                            <select
-                              name="usTinTypeId"
-                              onChange={handleChangeDocument}
-                              value={row.documentTypeId}
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                padding: " 0 10px",
-                                color: "#121112",
-                                fontStyle: "italic",
-                                height: "37px",
-                                width: "100%",
-                              }}
-                            >
-                              <option value="">---select---</option>
-                              {GetAgentDocumentationMandatoryForEformReducer.GetAgentDocumentationMandatoryForEformData?.map(
-                                (ele: any) => (
-                                  <option key={ele?.documentationId} value={ele?.documentationId} selected={row.documentTypeId === ele.documentationId}>
-                                    {ele?.name}
-                                  </option>
-                                )
-                              )}
+    <div className="col-4">
+      <Input
+        style={{ fontSize: "12px", border: "none" }}
+        type="file"
+        onChange={(e) => handleUpload(e, index)}
+        required={row.usTinTypeId !== ""}
+      />
+    </div>
+    <div className="col-4">
+      <DeleteOutline
+        onClick={() => handleDeleteDocument(index)}
+        style={{ color: "red", fontSize: "30px" }}
+      />
+    </div>
+  </div>
+))}
 
-                            </select>
-                          </div>
-
-                          <div className="col-4">
-                            <Input
-                              style={{ fontSize: "12px", border: "none" }}
-                              type="file"
-                              onChange={(e) => handleUpload(e, index)}
-                            />
-                          </div>
-                          <div className="col-4">
-                            <DeleteOutline
-                              onClick={() => handleDeleteDocument(index)}
-                              style={{ color: "red", fontSize: "30px" }}
-                            />
-                          </div>
-
-
-                        </div>
-                      ))}
                       <div
                         style={{
                           margin: "10px",
@@ -653,7 +661,7 @@ export default function Tin(props: any) {
                       <Typography
                         align="center"
                         style={{
-                          color: "#f5f5f5",
+                          color: "#b6afaf",
                           justifyContent: "center",
                           alignItems: "center",
                           marginTop: "20px",

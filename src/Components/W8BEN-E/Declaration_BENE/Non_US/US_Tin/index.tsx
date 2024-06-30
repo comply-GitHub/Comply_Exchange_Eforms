@@ -79,7 +79,7 @@ export default function Tin(props: any) {
       notAvailableReason: W8BENEData.notAvailableReason || "",
       foreignTINCountry: obValues.foreignTINCountryId == null || obValues.foreignTINCountryId == ""
         || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId,
-      foreignTIN: W8BENEData.foreignTIN !== "" ? W8BENEData.foreignTIN : "",
+      foreignTIN: W8BENEData?.foreignTIN == "" ? obValues?.foreignTIN : W8BENEData?.foreignTIN,
       isFTINLegally: W8BENEData.isFTINLegally ? W8BENEData.isFTINLegally : false,
       isNotAvailable: W8BENEData.isNotAvailable ? (W8BENEData.isNotAvailable == true && W8BENEData.alternativeTINFormat == false ? "Yes" : "") : "",
       fTinNotAvailableReason: W8BENEData.fTinNotAvailableReason || "",
