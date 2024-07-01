@@ -56,7 +56,7 @@ export default function FCTA_Reporting(props: any) {
   const [initialValues, setInitialValues] = useState({
     //isClaimTreaty: "No",
     ownerResidentId: "",
-    limitationBenefitsId: 0,
+   
     isSubmissionClaimTreaty: "No",
   });
 
@@ -263,7 +263,8 @@ export default function FCTA_Reporting(props: any) {
                       ""
                     )}
 
-                    { values.ownerResidentId !== "" && values.isSubmissionClaimTreaty ==="yes" ?(
+                    {values.ownerResidentId &&
+values.ownerResidentId !== "---" && values.isSubmissionClaimTreaty === "yes" ?(
                       <>
                       
                       {values.ownerResidentId !== AgentData.permanentResidentialCountryId  ? (
@@ -638,15 +639,15 @@ export default function FCTA_Reporting(props: any) {
                                         onBlur={handleBlur}
                                         value={values.ownerResidentId}
                                       >
-                                        <option>---select---</option>
-                                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+                    <option  value="">---select---</option>
+                    {getCountriesAgentWiseReducer.agentWiseCountriesData
                       ?.filter((ele:any) => ele.isImportantCountry === "Yes")
                       .map((ele:any) => (
                         <option key={ele.id} value={ele.id}>
                           {ele.name}
                         </option>
                       ))}
-                    <option >---</option>
+                    <option  value="">---</option>
                     {getCountriesAgentWiseReducer.agentWiseCountriesData
                       ?.filter((ele:any) => ele.isImportantCountry !== "Yes")
                       .map((ele:any) => (

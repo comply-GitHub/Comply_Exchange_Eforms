@@ -66,20 +66,20 @@ export default function Factors() {
     formTypeSelectionId: obValues.businessTypeId,
     formTypeId: FormTypeId.BEN,
     accountHolderBasicDetailId:authDetails?.accountHolderId,
-    isHeldUSCitizenship: false,
+    isHeldUSCitizenship: "no",
     countryOfCitizenship: obValues?.countryOfCitizenshipId ? obValues?.countryOfCitizenshipId : "0",
-    isTaxationUSCitizenOrResident: false,
-    isPermamnentResidentCardHolder: false,
-    isHoldDualCitizenshipStatus: false,
-    isHoldDualCitizenshipIncludeUSCitizenship: false,
-    isRenouncedCitizenship: false,
+    isTaxationUSCitizenOrResident: "no",
+    isPermamnentResidentCardHolder: "no",
+    isHoldDualCitizenshipStatus: "no",
+    isHoldDualCitizenshipIncludeUSCitizenship: "no",
+    isRenouncedCitizenship: "no",
     dateRenouncedUSCitizenship: obValues.dateRenouncedUSCitizenship,
     permanentResidentialCountryId: 0,
-    renouncementProof: "",
-    isTaxLiabilityJurisdictions: false,
-    countryTaxLiability: "",
+    renouncementProof: "no",
+    isTaxLiabilityJurisdictions: "no",
+    countryTaxLiability: "no",
     taxReferenceNumber: "",
-    isTINFormatNotAvailable: false,
+    isTINFormatNotAvailable: "no",
     IsPresentAtleast31Days: "No",
     statusId: 1,
     stepName: `/${urlValue}`,
@@ -220,7 +220,7 @@ export default function Factors() {
                 validateOnBlur={true}
                 initialValues={initialValue}
                 enableReinitialize
-                validationSchema={StatusSchema}
+                // validationSchema={StatusSchema}
                 onSubmit={(values, { setSubmitting }) => {
                   // if (clickCount === 0) {
                   //   setClickCount(clickCount + 1);
@@ -263,7 +263,7 @@ export default function Factors() {
                   <Form onSubmit={handleSubmit}>
                     <>{console.log("VALUESSS", values)}</>
 
-                    {values.isHeldUSCitizenship === true &&
+                    {values.isHeldUSCitizenship === "yes" &&
                       obValues?.isUSIndividual == false ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -317,7 +317,7 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHoldDualCitizenshipStatus === true
+                    {values.isHoldDualCitizenshipStatus === "yes"
                      ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
@@ -365,8 +365,8 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
-                      values.isRenouncedCitizenship === true ? (
+                    {values.isHeldUSCitizenship === "yes" &&
+                      values.isRenouncedCitizenship === "yes" ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -401,8 +401,8 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
-                      values.isTaxationUSCitizenOrResident === true ? (
+                    {values.isHeldUSCitizenship === "yes" &&
+                      values.isTaxationUSCitizenOrResident === "yes" ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -452,8 +452,8 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
-                      values.isPermamnentResidentCardHolder === true? (
+                    {values.isHeldUSCitizenship === "yes" &&
+                      values.isPermamnentResidentCardHolder === "yes"? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -505,8 +505,8 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === true &&
-                      values.isHoldDualCitizenshipIncludeUSCitizenship === true ? (
+                    {values.isHeldUSCitizenship === "yes" &&
+                      values.isHoldDualCitizenshipIncludeUSCitizenship === "yes" ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -782,13 +782,13 @@ export default function Factors() {
                         >
                           <FormControlLabel
                             control={<Radio />}
-                            value={true}
+                            value="yes"
                             name="isHeldUSCitizenship"
                             label="Yes"
                           />
                           <FormControlLabel
                             control={<Radio />}
-                            value={false}
+                            value="no"
                             name="isHeldUSCitizenship"
                             label="No"
                           />
@@ -797,7 +797,7 @@ export default function Factors() {
                       </FormControl>
                       <Divider className="dividr" />
 
-                      {values.isHeldUSCitizenship === false ? (
+                      {values.isHeldUSCitizenship === "no" ? (
                         <>
                           <Typography
                             style={{
@@ -810,6 +810,7 @@ export default function Factors() {
                           </Typography>
                           <FormControl className="form">
                             <select
+                               disabled
                               className="my-2"
                               style={{
                                 fontSize: "17px",
@@ -825,9 +826,7 @@ export default function Factors() {
                               }}
                               value={values.countryOfCitizenship}
                             >
-                              {/* <option value="">-Select-</option>
-                              <option value={257}>United Kingdom</option>
-                              <option value={258}>United States</option> */}
+                             
                               <option value="">---select---</option>
                               {getCountriesReducer.allCountriesData?.map(
                                 (ele: any) => (
@@ -848,7 +847,7 @@ export default function Factors() {
                               marginBottom: "10px",
                             }}
                           >
-                            Date of Birth (mm/dd/yyyy).....
+                            Date of Birth (MM/DD/YYYY).....
                           </Typography>
                           <FormControl className="form">
                             <input
@@ -885,13 +884,13 @@ export default function Factors() {
                               value={values.isTaxationUSCitizenOrResident}
                             >
                               <FormControlLabel
-                                value={true}
+                                value="yes"
                                 control={<Radio />}
                                 label="Yes"
                                 name="isTaxationUSCitizenOrResident"
                               />
                               <FormControlLabel
-                                value={false}
+                                value="no"
                                 control={<Radio />}
                                 label="No"
                                 name="isTaxationUSCitizenOrResident"
@@ -923,14 +922,14 @@ export default function Factors() {
                               onChange={handleChange}
                             >
                               <FormControlLabel
-                                value={true}
+                                value="yes"
                                 control={<Radio />}
                                 label="Yes"
                                 name="isPermamnentResidentCardHolder"
                               />
                               <FormControlLabel
                                 className="label"
-                                value={false}
+                                value="no"
                                 control={<Radio />}
                                 label="No"
                                 name="isPermamnentResidentCardHolder"
@@ -959,13 +958,13 @@ export default function Factors() {
                             >
                               <FormControlLabel
                                 control={<Radio />}
-                                value={true}
+                                value="yes"
                                 name="isHoldDualCitizenshipStatus"
                                 label="Yes"
                               />
                               <FormControlLabel
                                 control={<Radio />}
-                                value={false}
+                                value="no"
                                 name="isHoldDualCitizenshipStatus"
                                 label="No"
                               />
@@ -975,7 +974,7 @@ export default function Factors() {
                             </p>
                           </FormControl>
                           <Divider className="dividr" />
-                          {values.isHoldDualCitizenshipStatus === true ? (
+                          {values.isHoldDualCitizenshipStatus === "yes" ? (
                             <>
                               <Typography
                                 style={{
@@ -997,19 +996,19 @@ export default function Factors() {
                                     values.isHoldDualCitizenshipIncludeUSCitizenship
                                   }
                                   aria-labelledby="demo-row-radio-buttons-group-label"
-                                  name="row-radio-buttons-group"
+                                  name="isHoldDualCitizenshipIncludeUSCitizenship"
                                   onChange={handleChange}
                                   id="isHoldDualCitizenshipIncludeUSCitizenship"
                                 >
                                   <FormControlLabel
-                                    value={true}
+                                    value="yes"
                                     control={<Radio />}
                                     label="Yes"
                                     name="isHoldDualCitizenshipIncludeUSCitizenship"
                                   />
                                   <FormControlLabel
                                     className="label"
-                                    value={false}
+                                    value="no"
                                     control={<Radio />}
                                     label="No"
                                     name="isHoldDualCitizenshipIncludeUSCitizenship"
@@ -1023,7 +1022,7 @@ export default function Factors() {
                           )}
 
                           {values.isHoldDualCitizenshipIncludeUSCitizenship ==
-                            true ? (
+                            "yes" ? (
                             <>
                               <Typography
                                 style={{
@@ -1048,13 +1047,13 @@ export default function Factors() {
                                 >
                                   <FormControlLabel
                                     control={<Radio />}
-                                    value={true}
+                                    value="yes"
                                     name="isRenouncedCitizenship"
                                     label="Yes"
                                   />
                                   <FormControlLabel
                                     control={<Radio />}
-                                    value={false}
+                                    value="no"
                                     name="isRenouncedCitizenship"
                                     label="No"
                                   />
@@ -1066,7 +1065,7 @@ export default function Factors() {
                             ""
                           )}
 
-                          {values.isRenouncedCitizenship == true ? (
+                          {values.isRenouncedCitizenship == "yes" ? (
                             <>
                               <Typography
                                 style={{
@@ -1161,14 +1160,14 @@ export default function Factors() {
                               onChange={handleChange}
                             >
                               <FormControlLabel
-                                value={true}
+                                value="yes"
                                 control={<Radio />}
                                 label="Yes"
                                 name="isTaxLiabilityJurisdictions"
                               />
                               <FormControlLabel
                                 className="label"
-                                value={false}
+                                value="no"
                                 control={<Radio />}
                                 label="No"
                                 name="isTaxLiabilityJurisdictions"
@@ -1177,203 +1176,7 @@ export default function Factors() {
                           </FormControl>
                           <Divider className="dividr" />
 
-                          {values.isTaxLiabilityJurisdictions ? (
-                            <>
-                              <Typography>
-                                Please select the country where the individual
-                                has a tax liability:
-                                <span style={{ color: "red" }}>*</span>
-                              </Typography>
-                              <FormControl className="form">
-                                <select
-                                  style={{
-                                    padding: " 0 10px",
-                                    color: "#121112",
-                                    fontStyle: "italic",
-                                    height: "36px",
-                                  }}
-                                  name="permanentResidentialCountryId"
-                                  id="Income"
-                                  defaultValue={1}
-                                  onChange={handleChange}
-                                  // onBlur={handleBlur}
-                                  value={values.permanentResidentialCountryId}
-                                >
-                                  <option value={0}>---select---</option>
-                                  <option value={45}>-canada-</option>
-                                  <option value={257}>United Kingdom</option>
-                                  <option value={258}>United States</option>
-                                  <option value="">-----</option>
-                                  {GetAgentCountriesImportantForEformData?.map(
-                                    (ele: any) => (
-                                      <option key={ele?.id} value={ele?.id}>
-                                        {ele?.name}
-                                      </option>
-                                    )
-                                  )}
-                                </select>
-                              </FormControl>
-                              <Divider className="dividr" />
-
-                              <Typography>
-                                Please enter the tax reference number:
-                                <span style={{ color: "red" }}>*</span>
-                              </Typography>
-                              <div className="d-flex">
-                                <FormControl className="form">
-                                  {values.isTINFormatNotAvailable == false ? (
-                                    <Input
-                                      name="taxReferenceNumber"
-                                      onChange={handleChange}
-                                      value={values.taxReferenceNumber}
-                                      disabled
-                                      className="input"
-                                    />
-                                  ) : (
-                                    <Input
-                                      name="taxReferenceNumber"
-                                      onChange={handleChange}
-                                      value={values.taxReferenceNumber}
-                                      className="number"
-                                    />
-                                  )}
-                                </FormControl>
-                                <div className="d-flex">
-                                  <Checkbox
-                                    name="isTINFormatNotAvailable"
-                                    onChange={handleChange}
-                                    value={values.isTINFormatNotAvailable}
-                                  />
-                                  <div className="mt-2">
-                                    TIN format not available
-                                  </div>
-                                </div>
-                              </div>
-
-                              <Divider className="dividr" />
-                              <Typography
-                                style={{
-                                  fontSize: "17px",
-                                  marginTop: "10px",
-
-                                  marginBottom: "10px",
-                                }}
-                              >
-                                Does the individual the submission represents
-                                have tax liability in any other jurisdictions?
-                                <span style={{ color: "red" }}>*</span>
-                              </Typography>
-
-                              <FormControl>
-                                <RadioGroup
-                                  row
-                                  aria-labelledby="demo-row-radio-buttons-group-label"
-                                  name="row-radio-buttons-group"
-                                  value={values.isTaxLiabilityJurisdictions}
-                                  onChange={handleChange}
-                                >
-                                  <FormControlLabel
-                                    value={true}
-                                    control={<Radio />}
-                                    label="Yes"
-                                    name="isTaxLiabilityJurisdictions"
-                                  />
-                                  <FormControlLabel
-                                    className="label"
-                                    value={false}
-                                    control={<Radio />}
-                                    label="No"
-                                    name="isTaxLiabilityJurisdictions"
-                                  />
-                                </RadioGroup>
-                              </FormControl>
-                              <Divider className="dividr" />
-
-                              {values.isTaxLiabilityJurisdictions ? (
-                                <>
-                                  <Typography>
-                                    Please select the country where the
-                                    individual has a tax liability:
-                                    <span style={{ color: "red" }}>*</span>
-                                  </Typography>
-                                  <FormControl className="form">
-                                    <select
-                                      style={{
-                                        padding: " 0 10px",
-                                        color: "#121112",
-                                        fontStyle: "italic",
-                                        height: "36px",
-                                      }}
-                                      name="permanentResidentialCountryId"
-                                      id="Income"
-                                      defaultValue={1}
-                                      onChange={handleChange}
-                                      value={
-                                        values.permanentResidentialCountryId
-                                      }
-                                    >
-                                      <option value={0}>---select---</option>
-                                      <option value={45}>canada</option>
-                                      <option value={257}>
-                                        United Kingdom
-                                      </option>
-                                      <option value={258}>United States</option>
-                                      <option value="">-----</option>
-                                      {GetAgentCountriesImportantForEformData?.map(
-                                        (ele: any) => (
-                                          <option key={ele?.id} value={ele?.id}>
-                                            {ele?.name}
-                                          </option>
-                                        )
-                                      )}
-                                    </select>
-                                  </FormControl>
-                                  <Divider className="dividr" />
-
-                                  <Typography>
-                                    Please enter the tax reference number:
-                                    <span style={{ color: "red" }}>*</span>
-                                  </Typography>
-                                  <div className="d-flex">
-                                    <FormControl className="form">
-                                      {values.isTINFormatNotAvailable ==
-                                        false ? (
-                                        <Input
-                                          name="taxReferenceNumber"
-                                          onChange={handleChange}
-                                          value={values.taxReferenceNumber}
-                                          disabled
-                                          className="input"
-                                        />
-                                      ) : (
-                                        <Input
-                                          name="taxReferenceNumber"
-                                          onChange={handleChange}
-                                          value={values.taxReferenceNumber}
-                                          className="number"
-                                        />
-                                      )}
-                                    </FormControl>
-                                    <div className="d-flex">
-                                      <Checkbox
-                                        name="isTINFormatNotAvailable"
-                                        value={values.isTINFormatNotAvailable}
-                                      />
-                                      <div className="mt-2">
-                                        TIN format not available
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <Divider className="dividr" />
-                                </>
-                              ) : (
-                                ""
-                              )}
-                            </>
-                          ) : (
-                            ""
-                          )}
+                       
 
                           <Typography
                             style={{
@@ -1467,12 +1270,12 @@ export default function Factors() {
                               <FormControlLabel
                                 control={<Radio />}
                                 name="isTaxationUSCitizenOrResident"
-                                value={true}
+                                value="yes"
                                 label="Yes"
                               />
                               <FormControlLabel
                                 control={<Radio />}
-                                value={false}
+                                value="no"
                                 name="isTaxationUSCitizenOrResident"
                                 label="No"
                               />
@@ -1505,13 +1308,13 @@ export default function Factors() {
                             >
                               <FormControlLabel
                                 control={<Radio />}
-                                value={true}
+                                value="yes"
                                 name="isPermamnentResidentCardHolder"
                                 label="Yes"
                               />
                               <FormControlLabel
                                 control={<Radio />}
-                                value={false}
+                                value="no"
                                 name="isPermamnentResidentCardHolder"
                                 label="No"
                               />
@@ -1542,13 +1345,13 @@ export default function Factors() {
                             >
                               <FormControlLabel
                                 control={<Radio />}
-                                value={true}
+                                value="yes"
                                 name="isHoldDualCitizenshipStatus"
                                 label="Yes"
                               />
                               <FormControlLabel
                                 control={<Radio />}
-                                value={false}
+                                value="no"
                                 name="isHoldDualCitizenshipStatus"
                                 label="No"
                               />
@@ -1558,7 +1361,7 @@ export default function Factors() {
                             </p>
                           </FormControl>
                           <Divider className="dividr" />
-                          {values.isHoldDualCitizenshipStatus == true ? (
+                          {values.isHoldDualCitizenshipStatus == "yes" ? (
                             <>
                               <Typography
                                 style={{
@@ -1585,13 +1388,13 @@ export default function Factors() {
                                 >
                                   <FormControlLabel
                                     control={<Radio />}
-                                    value={true}
+                                    value="yes"
                                     name="isHoldDualCitizenshipIncludeUSCitizenship"
                                     label="Yes"
                                   />
                                   <FormControlLabel
                                     control={<Radio />}
-                                    value={false}
+                                    value="no"
                                     name="isHoldDualCitizenshipIncludeUSCitizenship"
                                     label="No"
                                   />
@@ -1609,7 +1412,7 @@ export default function Factors() {
                           )}
 
                           {values.isHoldDualCitizenshipIncludeUSCitizenship ==
-                            false ? (
+                            "no" ? (
                             <>
                               <Typography
                                 style={{
@@ -1634,13 +1437,13 @@ export default function Factors() {
                                 >
                                   <FormControlLabel
                                     control={<Radio />}
-                                    value={true}
+                                    value="yes"
                                     name="isRenouncedCitizenship"
                                     label="Yes"
                                   />
                                   <FormControlLabel
                                     control={<Radio />}
-                                    value={false}
+                                    value="no"
                                     name="isRenouncedCitizenship"
                                     label="No"
                                   />
@@ -1655,7 +1458,7 @@ export default function Factors() {
                             ""
                           )}
 
-                          {values.isRenouncedCitizenship === true ? (
+                          {values.isRenouncedCitizenship === "yes" ? (
                             <>
                               <Typography
                                 style={{
@@ -1731,13 +1534,13 @@ export default function Factors() {
                             >
                               <FormControlLabel
                                 control={<Radio />}
-                                value={true}
+                                value="yes"
                                 name="isTaxLiabilityJurisdictions"
                                 label="Yes"
                               />
                               <FormControlLabel
                                 control={<Radio />}
-                                value={false}
+                                value="no"
                                 name="isTaxLiabilityJurisdictions"
                                 label="No"
                               />
@@ -1748,7 +1551,7 @@ export default function Factors() {
                           </FormControl>
                           <Divider className="dividr" />
 
-                          {values.isTaxLiabilityJurisdictions == true ? (
+                          {values.isTaxLiabilityJurisdictions == "yes" ? (
                             <>
                               <Typography>
                                 Please select the country where the individual
@@ -1876,7 +1679,7 @@ export default function Factors() {
                               )}
                               <div className="d-flex">
                                 <FormControl className="form">
-                                  {values.isTINFormatNotAvailable == false ? (
+                                  {values.isTINFormatNotAvailable == "no" ? (
                                     <Input
                                       name="taxReferenceNumber"
                                       onChange={handleChange}
@@ -1937,13 +1740,13 @@ export default function Factors() {
                                 >
                                   <FormControlLabel
                                     control={<Radio />}
-                                    value={true}
+                                    value="yes"
                                     name="isTaxLiabilityJurisdictions"
                                     label="Yes"
                                   />
                                   <FormControlLabel
                                     control={<Radio />}
-                                    value={false}
+                                    value="no"
                                     name="isTaxLiabilityJurisdictions"
                                     label="No"
                                   />
