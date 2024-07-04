@@ -53,7 +53,7 @@ export default function Chapter4(props: any) {
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             <a
               href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"
-              target="popup"
+              target="_self"
               onClick={() =>
                 window.open(
                   "https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-",

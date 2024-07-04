@@ -79,7 +79,7 @@ export default function Factors() {
     isTaxLiabilityJurisdictions: "no",
     countryTaxLiability: "no",
     taxReferenceNumber: "",
-    isTINFormatNotAvailable: "no",
+    isTINFormatNotAvailable: false,
     IsPresentAtleast31Days: "No",
     statusId: 1,
     stepName: `/${urlValue}`,
@@ -189,9 +189,9 @@ export default function Factors() {
             {GethelpData && GethelpData[4].id === 6 ? (
               <a
                 href={GethelpData[4].fieldValue}
-                target="popup"
+               target="_self"
                 onClick={() =>
-                  window.open(
+                  (
                     GethelpData[4].fieldValue,
                     'name',
                     `width=${GethelpData[4].width},height=${GethelpData[4].height},top=${GethelpData[4].top},left=${GethelpData[4].left}`
@@ -221,33 +221,72 @@ export default function Factors() {
                 initialValues={initialValue}
                 enableReinitialize
                 // validationSchema={StatusSchema}
+                // onSubmit={(values, { setSubmitting }) => {
+                
+                //     setSubmitting(true);
+                //     const new_obj = { ...PrevStepData, citizenshipCountry: getNameById(PrevStepData.citizenshipCountry) }
+                //     const result = { ...new_obj, ...values };
+                //     // console.log(result,"FINAL RESULT")
+                //     dispatch(
+                //       postW8BENForm(values, () => {
+                //         // history("/W-8BEN/Declaration/US_Tin");
+                //         if (values?.IsPresentAtleast31Days=== "Yes") {
+                //           history('/Susbtantial_BEN')
+                //         } else {
+                //           history(
+                //             "/W-8BEN/Declaration/US_Tin"
+                //           );
+                //         }
+                //         localStorage.setItem(
+                //           "PrevStepData",
+                //           JSON.stringify(result)
+                //         );
+                //       })
+                //     );
+
+                //   }
+                // }
+
                 onSubmit={(values, { setSubmitting }) => {
-                  // if (clickCount === 0) {
-                  //   setClickCount(clickCount + 1);
-                  // } else {
-
-                    const new_obj = { ...PrevStepData, citizenshipCountry: getNameById(PrevStepData.citizenshipCountry) }
-                    const result = { ...new_obj, ...values };
-                    // console.log(result,"FINAL RESULT")
+                  setSubmitting(true);
+                  const new_obj = { ...PrevStepData, citizenshipCountry: getNameById(PrevStepData.citizenshipCountry) }
+                  const result = { ...new_obj, ...values ,agentId: authDetails?.agentId,
+                    accountHolderBasicDetailId: authDetails?.accountHolderId };
+                 
+                  const returnPromise = new Promise((resolve, reject) => {
                     dispatch(
-                      postW8BENForm(values, () => {
-                        // history("/W-8BEN/Declaration/US_Tin");
-                        if (values?.IsPresentAtleast31Days=== "Yes") {
-                          history('/Susbtantial_BEN')
-                        } else {
-                          history(
-                            "/W-8BEN/Declaration/US_Tin"
+                      postW8BENForm(
+                        result,
+                        (res: any) => {
+                          if (values?.IsPresentAtleast31Days=== "Yes") {
+                                      history('/Susbtantial_BEN')
+                                    } else {
+                                      history(
+                                        "/W-8BEN/Declaration/US_Tin"
+                                      );
+                                    }
+                          localStorage.setItem(
+                            "PrevStepData",
+                            JSON.stringify(result)
                           );
-                        }
-                        localStorage.setItem(
-                          "PrevStepData",
-                          JSON.stringify(result)
-                        );
-                      })
-                    );
 
-                  }
-                }
+                          resolve(res);
+                        },
+                        (err: any) => {
+                          reject(err);
+                        }
+                      )
+                    );
+                  });
+                  return returnPromise;
+                  // console.log(values, "vallllll");
+                  //   dispatch(
+                  //     W8_state_ECI(values, () => {
+                  //       history("/W-8ECI/Certification/Participation");
+                  //     })
+                  //   );
+                  //   history("/W-8ECI/Certification/Participation");
+                }}
               >
                 {({
                   errors,
@@ -365,8 +404,8 @@ export default function Factors() {
                       ""
                     )}
 
-                    {values.isHeldUSCitizenship === "yes" &&
-                      values.isRenouncedCitizenship === "yes" ? (
+                    {values.isHeldUSCitizenship == "yes" &&
+                      values.isRenouncedCitizenship == "yes" ? (
                       <div
                         style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                       >
@@ -1458,7 +1497,7 @@ export default function Factors() {
                             ""
                           )}
 
-                          {values.isRenouncedCitizenship === "yes" ? (
+                          {values.isRenouncedCitizenship == "yes" ? (
                             <>
                               <Typography
                                 style={{
@@ -1679,7 +1718,7 @@ export default function Factors() {
                               )}
                               <div className="d-flex">
                                 <FormControl className="form">
-                                  {values.isTINFormatNotAvailable == "no" ? (
+                                  {  values.isTINFormatNotAvailable == true? (
                                     <Input
                                       name="taxReferenceNumber"
                                       onChange={handleChange}
@@ -1967,22 +2006,19 @@ export default function Factors() {
                         marginTop: "80px",
                       }}
                     >
-                      {/* <Button variant="contained" style={{ color: "white" }}>
-                        SAVE & EXIT
-                      </Button> */}
+                     
                       <SaveAndExit Callback={() => {
-                        submitForm().then((data: any) => {
+                        submitForm().then(() => {
                           const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
                           const urlValue = window.location.pathname.substring(1);
                           dispatch(postW8BENForm(
                             {
                               ...prevStepData,
+                              ...values,
                               stepName: `/${urlValue}`
                             }
                             , () => { }))
                           history(GlobalValues.basePageRoute)
-                        }).catch((err: any) => {
-                          console.log(err);
                         })
                       }} formTypeId={FormTypeId.BEN} />
                       <Button

@@ -153,9 +153,9 @@ export default function Fedral_tax(props: any) {
               {GethelpData && GethelpData[6].id === 8 ? (
                 <a
                   href={GethelpData[6].fieldValue}
-                  target="popup"
+                 target="_self"
                   onClick={() =>
-                    window.open(
+              (
                       GethelpData[6].fieldValue,
                       'name',
                       `width=${GethelpData[6].width},height=${GethelpData[6].height},top=${GethelpData[6].top},left=${GethelpData[6].left}`

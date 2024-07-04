@@ -2,11 +2,11 @@ import React from "react";
 import { RouteType } from "./types";
 import Utils from "../Utils";
 
-import EntityUs from "../Components/entity"
+import Entity from "../Components/entity"
 // const login = React.lazy(() => import("../Components/LoginNew"));
 const login = React.lazy(() => import("../Components/login"));
 // const W9 = React.lazy(() => import("../Components/w9"));
-const IndividualUs = React.lazy(() => import("../Components/individualUS"));
+const Individual = React.lazy(() => import("../Components/individualUS"));
 const Layout = React.lazy(() => import("../Components/Layout"));
 // const EntityUs = React.lazy(() => import("../Components/entity"));
 const Term = React.lazy(() => import("../Components/term"));
@@ -544,10 +544,10 @@ const ROUTES: Array<RouteType> = [
     isPrivate: true,
   },
   {
-    name: "IndividualUs",
-    path: "IndividualUs",
+    name: "Individual",
+    path: "Individual",
     id: 2,
-    Component: IndividualUs,
+    Component: Individual,
     isPrivate: true,
   },
   {
@@ -1197,10 +1197,10 @@ const ROUTES: Array<RouteType> = [
   },
 
   {
-    name: "EntityUs",
-    path: "EntityUs",
+    name: "Entity",
+    path: "Entity",
     id: 2,
-    Component: EntityUs,
+    Component: Entity,
     isPrivate: true,
   },
   {

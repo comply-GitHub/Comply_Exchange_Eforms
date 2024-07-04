@@ -208,9 +208,9 @@ export default function Tin(props: any) {
                     {GethelpData && GethelpData[9].id === 12 ? (
                       <a
                         href={GethelpData[9].fieldValue}
-                        target="popup"
+                      target="_self"
                         onClick={() =>
-                          window.open(
+                          (
                             GethelpData[9].fieldValue,
                             'name',
                             `width=${GethelpData[9].width},height=${GethelpData[9].height},top=${GethelpData[9].top},left=${GethelpData[9].left}`
@@ -228,7 +228,7 @@ export default function Tin(props: any) {
               <div className="row w-100">
                 <div className="col-4">
                   <div style={{ padding: "10px 0px", height: "100%" }}>
-                    <BreadCrumbComponent breadCrumbCode={1358} formName={FormTypeId.F8233} />
+                    <BreadCrumbComponent breadCrumbCode={1359} formName={FormTypeId.F8233} />
                   </div>
                 </div>
                 <div className="col-8 mt-3">
@@ -302,7 +302,7 @@ export default function Tin(props: any) {
                                 <option key={ele} value={ele}>{ele}</option>
                               ))}
                             </select>
-                            {errors?.exemptionApplicableForCompensationForCalnderYear && typeof errors?.exemptionApplicableForCompensationForCalnderYear === 'string' && (
+                            {touched?.exemptionApplicableForCompensationForCalnderYear && errors?.exemptionApplicableForCompensationForCalnderYear && typeof errors?.exemptionApplicableForCompensationForCalnderYear === 'string' && (
                               <p className="error">{errors?.exemptionApplicableForCompensationForCalnderYear}</p>
                             )}
                             {/* <p className="error">
@@ -515,7 +515,7 @@ export default function Tin(props: any) {
                               )
                             )}
                           </select>
-                          {errors?.usVisaTypeID && typeof errors?.usVisaTypeID === 'string' && (
+                          {touched?.usVisaTypeID && errors?.usVisaTypeID && typeof errors?.usVisaTypeID === 'string' && (
                             <p className="error">{errors?.usVisaTypeID}</p>
                           )}
                           {/* <p className="error">{errors.usVisaTypeID}</p> */}
@@ -617,7 +617,7 @@ export default function Tin(props: any) {
                             ))}
                           </select>
 
-                          {errors?.countryIssuingPassportId && typeof errors?.countryIssuingPassportId === 'string' && (
+                          {touched?.countryIssuingPassportId && errors?.countryIssuingPassportId && typeof errors?.countryIssuingPassportId === 'string' && (
                             <p className="error">{errors?.countryIssuingPassportId}</p>
                           )}
                           {/* <p className="error">{errors.countryIssuingPassportId}</p> */}
@@ -710,7 +710,7 @@ export default function Tin(props: any) {
                             onChange={handleChange}
                             onBlur={handleBlur}
                           />
-                          {errors?.countryIssuingPassportNumber && typeof errors?.countryIssuingPassportNumber === 'string' && (
+                          {touched?.countryIssuingPassportNumber && errors?.countryIssuingPassportNumber && typeof errors?.countryIssuingPassportNumber === 'string' && (
                             <p className="error">{errors?.countryIssuingPassportNumber}</p>
                           )}
                           {/* <p className="error">
@@ -858,7 +858,7 @@ export default function Tin(props: any) {
                         }}
                       /> */}
                           {/* {values?.dateOfEntryIntoUS !== 'NaN-NaN-NaN' ? 'Selected Date ' + values?.dateOfEntryIntoUS : ""} */}
-                          {errors?.dateOfEntryIntoUS && typeof errors?.dateOfEntryIntoUS === 'string' && (
+                          {touched?.dateOfEntryIntoUS && errors?.dateOfEntryIntoUS && typeof errors?.dateOfEntryIntoUS === 'string' && (
                             <p className="error">{errors?.dateOfEntryIntoUS}</p>
                           )}
                           {/* <p className="error">{errors.dateOfEntryIntoUS}</p> */}
@@ -981,7 +981,7 @@ export default function Tin(props: any) {
 
 
                             />
-                            {errors?.currentNonImmigrationStatus && typeof errors?.currentNonImmigrationStatus === 'string' && (
+                            {touched?.currentNonImmigrationStatus && errors?.currentNonImmigrationStatus && typeof errors?.currentNonImmigrationStatus === 'string' && (
                               <p className="error">{errors?.currentNonImmigrationStatus}</p>
                             )}
                             {/* <p className="error">
@@ -1128,7 +1128,7 @@ export default function Tin(props: any) {
                         /> */}
                             {/* {values?.dateNonImmigrationStatusExpire !== 'NaN-NaN-NaN' ? 'Selected Date ' + values?.dateNonImmigrationStatusExpire : ""} */}
                             {/* {'Selected Date ' + values.dateNonImmigrationStatusExpire} */}
-                            {errors?.dateNonImmigrationStatusExpire && typeof errors?.dateNonImmigrationStatusExpire === 'string' && (
+                            {touched?.dateNonImmigrationStatusExpire && errors?.dateNonImmigrationStatusExpire && typeof errors?.dateNonImmigrationStatusExpire === 'string' && (
                               <p className="error">{errors?.dateNonImmigrationStatusExpire}</p>
                             )}
                             {/* <p className="error">
@@ -1161,7 +1161,7 @@ export default function Tin(props: any) {
                                 Duration of Stay (DS)
                               </span>
                             </div>
-                            {errors?.declarationOfDurationStayStatus && typeof errors?.declarationOfDurationStayStatus === 'string' && (
+                            {touched?.declarationOfDurationStayStatus && errors?.declarationOfDurationStayStatus && typeof errors?.declarationOfDurationStayStatus === 'string' && (
                               <p className="error">{errors?.declarationOfDurationStayStatus}</p>
                             )}
                             {/* <p className="error">
@@ -1225,7 +1225,7 @@ export default function Tin(props: any) {
                                 />
                               </Tooltip>
                             </span>
-                            {errors?.foreignStudent_Teacher_Professor_ResearcherStatus && typeof errors?.foreignStudent_Teacher_Professor_ResearcherStatus === 'string' && (
+                            {touched?.foreignStudent_Teacher_Professor_ResearcherStatus && errors?.foreignStudent_Teacher_Professor_ResearcherStatus && typeof errors?.foreignStudent_Teacher_Professor_ResearcherStatus === 'string' && (
                               <p className="error">{errors?.foreignStudent_Teacher_Professor_ResearcherStatus}</p>
                             )}
                             {/* <p className="error">
@@ -1250,7 +1250,7 @@ export default function Tin(props: any) {
                                 />
                                 {values.statementToForm8233_FileUpoad}
                               </div>
-                              {errors?.statementToForm8233_FileUpoad && typeof errors?.statementToForm8233_FileUpoad === 'string' && (
+                              {touched?.statementToForm8233_FileUpoad && errors?.statementToForm8233_FileUpoad && typeof errors?.statementToForm8233_FileUpoad === 'string' && (
                                 <p className="error">{errors?.statementToForm8233_FileUpoad}</p>
                               )}
                             </>)}

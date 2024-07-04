@@ -664,7 +664,7 @@ export const specilaRateIncomeTypeSchema = (isSubmissionSpecialRates: string) =>
     articleBeneficalOwner: Yup.string().notOneOf(["", "0"], "Please select one of the options"),
     paragraphArticleClaimed: Yup.string().notOneOf(["", "0"], "Please select one of the options"),
     subParagraphArticle: Yup.string().trim().notOneOf(["", undefined], "Please enter subparagraph"),
-    withHoldingClaim: Yup.string().notOneOf([""], "Please select one of the options"),
+    withHoldingClaim: Yup.string().notOneOf(["", undefined], "Please select one of the options"),
     incomeExpectedId: Yup.string().notOneOf(["", "0"], "Please select one of the options"),
   });
 }

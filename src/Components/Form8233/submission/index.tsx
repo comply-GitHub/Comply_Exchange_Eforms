@@ -151,9 +151,9 @@ export default function Penalties() {
                     {GethelpData && GethelpData[9].id === 12 ? (
                       <a
                         href={GethelpData[9].fieldValue}
-                        target="popup"
+                        target="_self"
                         onClick={() =>
-                          window.open(
+                        (
                             GethelpData[9].fieldValue,
                             'name',
                             `width=${GethelpData[9].width},height=${GethelpData[9].height},top=${GethelpData[9].top},left=${GethelpData[9].left}`
@@ -341,7 +341,7 @@ export default function Penalties() {
                             onChange={handleChange}
                             error={Boolean(touched.signBy && errors.signBy)}
                           />
-                          {errors?.signBy && typeof errors?.signBy === 'string' && (
+                          {touched?.signBy && errors?.signBy && typeof errors?.signBy === 'string' && (
                             <p className="error">{errors?.signBy}</p>
                           )}
                           {/* <p className="error">{errors.signBy}</p> */}
@@ -452,7 +452,7 @@ export default function Penalties() {
                             >
                               Recover Password
                             </span>
-                            {errors?.enterConfirmationCode && typeof errors?.enterConfirmationCode === 'string' && (
+                            {touched?.enterConfirmationCode && errors?.enterConfirmationCode && typeof errors?.enterConfirmationCode === 'string' && (
                               <p className="error">{errors?.enterConfirmationCode}</p>
                             )}
                             {/* <p className="error">{errors.enterConfirmationCode}</p> */}
@@ -547,7 +547,7 @@ export default function Penalties() {
                               />
                             </Tooltip>
                           </span>
-                          {errors?.confirmationOfAcceptanceWithTheAboveDeclarations && typeof errors?.confirmationOfAcceptanceWithTheAboveDeclarations === 'string' && (
+                          {touched?.confirmationOfAcceptanceWithTheAboveDeclarations && errors?.confirmationOfAcceptanceWithTheAboveDeclarations && typeof errors?.confirmationOfAcceptanceWithTheAboveDeclarations === 'string' && (
                             <p className="error">{errors?.confirmationOfAcceptanceWithTheAboveDeclarations}</p>
                           )}
                           {/* {errors.confirmationOfAcceptanceWithTheAboveDeclarations &&

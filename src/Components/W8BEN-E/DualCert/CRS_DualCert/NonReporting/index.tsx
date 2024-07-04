@@ -84,7 +84,7 @@ export default function Declaration (props: any){
           <div className="helpvideo">
             <a
               href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"
-              target="popup"
+                 target="_self"
               onClick={() =>
                 window.open(
                   "https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-",

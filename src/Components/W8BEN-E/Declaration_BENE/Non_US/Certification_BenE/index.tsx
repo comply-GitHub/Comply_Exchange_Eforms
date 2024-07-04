@@ -91,13 +91,13 @@ export default function Certifications(props: any) {
             dispatch(GetBenEPdf(authDetails?.accountHolderId))
           }}>View Form</div>
           <div className="helpvideo">
-            {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
+           
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
                 href={GethelpData[8].fieldValue}
-                target="popup"
+                target="_self"
                 onClick={() =>
-                  window.open(
+                 (
                     GethelpData[8].fieldValue,
                     "name",
                     `width=${GethelpData[8].width},height=${GethelpData[8].height},top=${GethelpData[8].top},left=${GethelpData[8].left}`

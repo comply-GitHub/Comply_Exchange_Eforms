@@ -17,10 +17,9 @@ export const individualSchema = (Cert: string, payment: boolean, income: boolean
       .required("Please Enter Last Name"),
     // .min(3, "Last Name should be minimum of 3 characters")
     // .max(50, "Last Name should be maximum of 50 characters"),
-    uniqueIdentifier: Yup.string()
-      .required("Please Enter unique Identifier")
-      // .min(3, "Too short")
-      .max(50, "Too long"),
+    uniqueIdentifier: Yup.string().trim()
+      .required("Please Enter unique Identifier"),
+  
     countryOfCitizenshipId: Cert==="SC" ? Yup.number() : Yup.number().when("isUSIndividual", {
       is: "no",
       then: () =>

@@ -65,8 +65,8 @@ const Login = () => {
 
   const redirectFunc = (defaultSelection:any) => {
     if(defaultSelection=="individual")
-    {history("/IndividualUs")}
-    else{history("/EntityUs");}
+    {history("/Individual")}
+    else{history("/Entity");}
   };
   const handleChange = (e: any) => {
     setData({ ...data, [e.target.name]: e.target.value });

@@ -80,9 +80,9 @@ export default function Certifications(props: any) {
             {GethelpData && GethelpData[7].id === 9 ? (
               <a
                 href={GethelpData[7].fieldValue}
-                target="popup"
+              target="_self"
                 onClick={() =>
-                  window.open(
+                  (
                     GethelpData[7].fieldValue,
                     'name',
                     `width=${GethelpData[7].width},height=${GethelpData[7].height},top=${GethelpData[7].top},left=${GethelpData[7].left}`

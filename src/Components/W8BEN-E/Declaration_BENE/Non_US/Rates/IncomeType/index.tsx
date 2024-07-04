@@ -181,7 +181,9 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                 </div>
               </div>
 
-              {Number.parseInt(values.paragraphArticleClaimed) > 0 && articleBeneficialOwner?.includeSubParagraph === true ?
+              {Number.parseInt(values.paragraphArticleClaimed) > 0 
+              // && articleBeneficialOwner?.includeSubParagraph === true 
+              ?
                 <div className="col-10">
                   <Typography
                     align="left"
@@ -245,7 +247,7 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                       name="withHoldingClaim"
                       value={values.withHoldingClaim}
                       id="Income"
-                      defaultValue={1}
+                   
                       onBlur={handleBlur}
                       onChange={(e) => {
                         handleChange(e); handleUpdateOnFormChange(e);
@@ -253,6 +255,7 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                     >
                       <option value="">---select---</option>
                       {articleBeneficialOwner?.treatyRates?.split(",").map((ele: string) => {
+                        console.log(ele,"element")
                         return <option  key={ele}
                         value={ele}>{ele}</option>
 

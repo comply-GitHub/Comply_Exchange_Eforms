@@ -108,7 +108,7 @@ export default function Entity() {
     id: 0,
     agentId: authDetails?.agentId,
     businessTypeId: 2,
-    isUSEntity: true,
+    isUSEntity: false,
     isUSIndividual: false,
     uniqueIdentifier: "",
     firstName: "",
@@ -287,7 +287,7 @@ export default function Entity() {
       let temp = {
         ...ahdData,
         id: accountHolderDetails.id ?? 0,
-        isUSEntity: ahdData.isUSEntity === true ? "yes" : "no",
+        isUSEntity: ahdData.isUSEntity === false ? "yes" : "no",
         isUSIndividual: ahdData.isUSIndividual === true ? "yes" : "no",
         isAddressRuralRoute: ahdData.isAddressRuralRoute === true ? "yes" : "no",
         isAddressPostOfficeBox: ahdData.isAddressPostOfficeBox === true ? "yes" : "no",
@@ -744,7 +744,7 @@ export default function Entity() {
             <div className="tabview">
               <ul>
                 <li>
-                  <button onClick={() => history("/IndividualUs")}>
+                  <button onClick={() => history("/Individual")}>
                     <div>
                       <div>
                         {" "}
@@ -782,15 +782,15 @@ export default function Entity() {
                 {GethelpData && GethelpData[1].id === 3 ? (
                   <a
                     href={GethelpData[1].fieldValue}
-                    target="popup"
-                  // onClick={
-                  //   () =>
-                  //   window.open(
-                  //     GethelpData[1].fieldValue,
-                  //     'name',
-                  //     `width=${GethelpData[1].width},height=${GethelpData[1].height},top=${GethelpData[1].top},left=${GethelpData[1].left}`
-                  //   )
-                  // }
+                    target="_self"
+                  onClick={
+                    () =>
+              (
+                      GethelpData[1].fieldValue,
+                      'name',
+                      `width=${GethelpData[1].width},height=${GethelpData[1].height},top=${GethelpData[1].top},left=${GethelpData[1].left}`
+                    )
+                  }
                   >
                     Help Video
                   </a>
@@ -1457,7 +1457,16 @@ export default function Entity() {
                                 row
                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                 value={values.isUSEntity}
-                                onChange={handleChange}
+                                onChange={(e) => {
+                                  console.log(e.target.value, "event")
+                                  handleChange(e);
+                                  // if (e.target.value == "yes") {
+                                  //   window.history.pushState({}, "", "/EntityUs")
+                                  // } else {
+                                  //   window.history.pushState({}, "", "/EntityNonUS")
+                                  // }
+
+                                }}
                               >
                                 <FormControlLabel
                                   control={<Radio />}
@@ -1572,7 +1581,8 @@ export default function Entity() {
                             placeholder="Enter Instructor Identifier"
                             onChange={handleChange}
                             onKeyUp={(e) => onNumberChange(e, values)}
-                            onBlur={(e) => onUidBlur(e, values)}
+                            // onBlur={(e) => onUidBlur(e, values)}
+                            onBlur={handleBlur}
                             error={Boolean(
                               touched.uniqueIdentifier &&
                               errors.uniqueIdentifier
@@ -4051,8 +4061,7 @@ export default function Entity() {
                           {touched.contactLastName && errors.contactLastName ? (<p className="error">{errors.contactLastName}</p>) : ""}
                         </FormControl>
                       </div>
-                      <div className="row">
-                        <div
+                      <div
                           className="col-lg-3 col-6 col-md-3 mt-2 mx-2"
                           style={{ paddingLeft: "0px" }}
                         >
@@ -4085,7 +4094,7 @@ export default function Entity() {
                             {touched.contactEmail && errors.contactEmail ? (<p className="error">{errors.contactEmail}</p>) : ""}
                           </FormControl>
                         </div>
-                      </div>
+                     
 
                       <div className="col-lg-3 col-6 col-md-3 mt-2">
                         <FormControl className="w-100">

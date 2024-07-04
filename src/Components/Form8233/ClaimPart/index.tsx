@@ -167,9 +167,9 @@ export default function Tin(props: any) {
                     {GethelpData && GethelpData[9].id === 12 ? (
                       <a
                         href={GethelpData[9].fieldValue}
-                        target="popup"
+                        target="_self"
                         onClick={() =>
-                          window.open(
+                          (
                             GethelpData[9].fieldValue,
                             'name',
                             `width=${GethelpData[9].width},height=${GethelpData[9].height},top=${GethelpData[9].top},left=${GethelpData[9].left}`
@@ -188,7 +188,7 @@ export default function Tin(props: any) {
               <div className="row w-100">
                 <div className="col-4">
                   <div style={{ padding: "20px 0px", height: "100%" }}>
-                    <BreadCrumbComponent breadCrumbCode={1359} formName={FormTypeId.F8233} />
+                    <BreadCrumbComponent breadCrumbCode={1360} formName={FormTypeId.F8233} />
                   </div>
                 </div>
                 <div className="col-8 mt-3">

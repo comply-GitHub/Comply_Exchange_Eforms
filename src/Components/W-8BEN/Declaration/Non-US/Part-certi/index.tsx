@@ -166,9 +166,9 @@ export default function Penalties() {
                     {GethelpData && GethelpData[4].id === 6 ? (
                       <a
                         href={GethelpData[4].fieldValue}
-                        target="popup"
+                       target="_self"
                         onClick={() =>
-                          window.open(
+                        (
                             GethelpData[4].fieldValue,
                             'name',
                             `width=${GethelpData[4].width},height=${GethelpData[4].height},top=${GethelpData[4].top},left=${GethelpData[4].left}`

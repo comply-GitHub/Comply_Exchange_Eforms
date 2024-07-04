@@ -174,7 +174,9 @@ const IncomeType = ({ DeleteIncomeType, index, length, data, UpdateIncomeType, C
                 </div>
               </div>
 
-              {Number.parseInt(values.paragraphArticleClaimed) > 0 && articleBeneficialOwner?.includeSubParagraph === true ?
+              {Number.parseInt(values.paragraphArticleClaimed) > 0 
+              // && articleBeneficialOwner?.includeSubParagraph === true
+               ?
                 <div className="col-10">
                   <Typography
                     align="left"

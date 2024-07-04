@@ -183,9 +183,9 @@ export default function Factors() {
             {GethelpData && GethelpData[3].id === 5 ? (
               <a
                 href={GethelpData[3].fieldValue}
-                target="popup"
+                target="_self"
                 onClick={() =>
-                  window.open(
+                  (
                     GethelpData[3].fieldValue,
                     'name',
                     `width=${GethelpData[3].width},height=${GethelpData[3].height},top=${GethelpData[3].top},left=${GethelpData[3].left}`
@@ -333,7 +333,7 @@ export default function Factors() {
               >
                 
 
-                <SaveAndExit Callback={() => { handleSaveExit(); }} formTypeId={FormTypeId.BEN} />
+                <SaveAndExit Callback={() => { handleSaveExit()}} formTypeId={FormTypeId.BEN} />
 
                 <Button
                   variant="contained"
@@ -384,9 +384,7 @@ export default function Factors() {
                 </Button>
               </Typography>
             </Paper>
-            {/* </Form>
-        )}
-  </Formik> */}
+                                                                    
           </div>
         </div>
       </div>

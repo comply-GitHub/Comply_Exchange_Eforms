@@ -200,9 +200,9 @@ export default function Tin(props: any) {
                     {GethelpData && GethelpData[9].id === 12 ? (
                       <a
                         href={GethelpData[9].fieldValue}
-                        target="popup"
+                        target="_self"
                         onClick={() =>
-                          window.open(
+                        (
                             GethelpData[9].fieldValue,
                             'name',
                             `width=${GethelpData[9].width},height=${GethelpData[9].height},top=${GethelpData[9].top},left=${GethelpData[9].left}`

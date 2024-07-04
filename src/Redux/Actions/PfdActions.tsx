@@ -7,13 +7,13 @@ const convertAndDownloadPdf = (base64String: string, fileName: string, isDownloa
     try {
         let iframe = "<iframe width='100%' height='100%' src='" + base64String + "'></iframe>"
         if (!isDownload) {
-            let x = window.open();
-            if (x) {
-                x.document.open();
-                x.document.write(iframe);
-                x.document.close();
+            // let x = window.open();
+            // if (x) {
+                document.open();
+                document.write(iframe);
+                document.close();
                 return
-            }
+            // }
         }
         // Create a temporary link element
         const link = document.createElement('a');
@@ -214,10 +214,7 @@ export const GetBenEPdf = (accountHolderId: number, callback: Function = (data: 
             (responseData) => {
                 const { data } = responseData;
                 console.log(responseData, "resp data")
-                //   dispatch({
-                //     type: Utils.actionName.InsertW8ECIIndividualEntityNonUSForm,
-                //     payload: { ...value, Response: data },
-                //   });
+               
                 if (responseData) {
                     if (responseData.status == 500) {
                         let err: ErrorModel = {

@@ -119,7 +119,7 @@ export default function Backup_witholding(props: any) {
               {GethelpData && GethelpData[8].id === 10 ? (
                 <a
                   href={GethelpData[8].fieldValue}
-                  target="popup"
+                     target="_self"
                   onClick={() =>
                     window.open(
                       GethelpData[8].fieldValue,

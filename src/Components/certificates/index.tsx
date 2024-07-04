@@ -216,9 +216,9 @@ export default function Certificates(props: any) {
             {GethelpData && GethelpData[2].id === 4 ? (
               <a
                 href={GethelpData[2].fieldValue}
-                target="popup"
+                target="_self"
                 onClick={() =>
-                  window.open(
+                  (
                     GethelpData[2].fieldValue,
                     'name',
                     `width=${GethelpData[2].width},height=${GethelpData[2].height},top=${GethelpData[2].top},left=${GethelpData[2].left}`
@@ -1072,7 +1072,7 @@ export default function Certificates(props: any) {
           <Typography align="center">
             <Button
               onClick={() => {
-                history("/IndividualUs");
+                history("/Individual");
               }}
               variant="contained"
               size="small"
