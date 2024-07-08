@@ -34,7 +34,7 @@ export default function Penalties() {
   const handleClickOpen2 = () => setOpen2(true);
   const [clickCount, setClickCount] = useState(0);
   const [toolInfo, setToolInfo] = useState("");
-  const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
+  const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
 
   const showHideRecoverSection = (data: boolean) => {
@@ -151,14 +151,14 @@ export default function Penalties() {
                     {GethelpData && GethelpData[9].id === 12 ? (
                       <a
                         href={GethelpData[9].fieldValue}
-                        target="_self"
-                        onClick={() =>
-                        (
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent the default anchor behavior
+                          window.open(
                             GethelpData[9].fieldValue,
-                            'name',
+                            'popupWindow',
                             `width=${GethelpData[9].width},height=${GethelpData[9].height},top=${GethelpData[9].top},left=${GethelpData[9].left}`
                           )
-                        }
+                        }}
                       >
                         Help Video
                       </a>
@@ -178,7 +178,7 @@ export default function Penalties() {
                 <div className="col-8 mt-3">
                   <div style={{ padding: "12px" }}>
                     <Paper style={{ padding: "10px" }}>
-                      {obValues.uniqueIdentifier !== values.signBy && values.signBy !=="" ? (
+                      {obValues.firstName.trim() + " " + obValues.lastName.trim() !== values.signBy && values.signBy !=="" ? (
                         <div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                           <Typography>
                             SIG101

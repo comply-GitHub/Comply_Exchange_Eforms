@@ -38,6 +38,7 @@ import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import moment from "moment";
 import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
+import View_Insructions from "../../../../viewInstruction";
 type ValuePiece = Date | null;
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function Penalties() {
@@ -58,6 +59,14 @@ export default function Penalties() {
   const agentDefaultDetails = JSON.parse(
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
+
+  const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
   const W8BENData = useSelector((state: any) => state.W8BEN);
   // const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
@@ -91,7 +100,7 @@ export default function Penalties() {
   const [isSecurityWordMatched, setIsSecurityWordMatched] = useState(false);
   const [securityWordError, setSecurityWordError] = useState("");
   const [toolInfo, setToolInfo] = useState("");
-  const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
+  const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
   const Values = JSON.parse(localStorage.getItem("agentDetails") || '{}')
   const initialValue = {
     signedBy: W8BENData?.signedBy ?? "",
@@ -155,9 +164,11 @@ export default function Penalties() {
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
             >
+              <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
+      {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
               <div className="overlay-div">
                 <div className="overlay-div-group">
-                  <div className="viewInstructions">View Instructions</div>
+                <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
                   <div className="viewform" onClick={() => {
                     dispatch(GetBenPdf(authDetails?.accountHolderId))
                   }}>View Form</div>
@@ -166,14 +177,14 @@ export default function Penalties() {
                     {GethelpData && GethelpData[4].id === 6 ? (
                       <a
                         href={GethelpData[4].fieldValue}
-                       target="_self"
-                        onClick={() =>
-                        (
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent the default anchor behavior
+                          window.open(
                             GethelpData[4].fieldValue,
-                            'name',
+                            'popupWindow',
                             `width=${GethelpData[4].width},height=${GethelpData[4].height},top=${GethelpData[4].top},left=${GethelpData[4].left}`
                           )
-                        }
+                        }}
                       >
                         Help Video
                       </a>
@@ -196,7 +207,7 @@ export default function Penalties() {
 
 
                     <Paper style={{ padding: "18px" }}>
-                      {obValues.uniqueIdentifier !== values.signedBy && values.signedBy !=="" ? (
+                      {obValues.firstName.trim() + " " + obValues.lastName.trim() !== values.signedBy && values.signedBy !=="" ? (
                         <div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                           <Typography>
                             SIG101

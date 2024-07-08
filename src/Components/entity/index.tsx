@@ -63,8 +63,10 @@ import useAuth from "../../customHooks/useAuth";
 export default function Entity() {
   const { authDetails } = useAuth();
   const history = useNavigate();
+  const Version =localStorage.getItem("Version");
   const dispatch = useDispatch<AppDispatch>();
   //   //States
+  console.log(Version,"Version")
   const [incomeData, setIncomeData] = useState<any>([]);
   // const [value, onChange] = useState<Value2>(null);
   const [open, setOpen] = useState("");
@@ -782,15 +784,14 @@ export default function Entity() {
                 {GethelpData && GethelpData[1].id === 3 ? (
                   <a
                     href={GethelpData[1].fieldValue}
-                    target="_self"
-                  onClick={
-                    () =>
-              (
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent the default anchor behavior
+                      window.open(
                       GethelpData[1].fieldValue,
-                      'name',
+                      'popupWindow',
                       `width=${GethelpData[1].width},height=${GethelpData[1].height},top=${GethelpData[1].top},left=${GethelpData[1].left}`
                     )
-                  }
+                  }}
                   >
                     Help Video
                   </a>
@@ -6248,7 +6249,7 @@ export default function Entity() {
               align="left"
               style={{ marginBottom: "10px", color: "white", fontSize: "12px" }}
             >
-              © Comply Exchange Ltd.2023 - Version: 2.2.0.29 - Render
+              © Comply Exchange Ltd.2023 - Version: {Version} - Render
               Time:8.6691538s
             </Typography>
 

@@ -254,14 +254,14 @@ export default function Fedral_tax(props: any) {
               {GethelpData && GethelpData[3].id === 5 ? (
                 <a
                   href={GethelpData[3].fieldValue}
-                 target="_self"
-                  onClick={() =>
-              (
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent the default anchor behavior
+                    window.open(
                       GethelpData[3].fieldValue,
-                      'name',
+                      'popupWindow',
                       `width=${GethelpData[3].width},height=${GethelpData[3].height},top=${GethelpData[3].top},left=${GethelpData[3].left}`
                     )
-                  }
+                  }}
                 >
                   Help Video
                 </a>

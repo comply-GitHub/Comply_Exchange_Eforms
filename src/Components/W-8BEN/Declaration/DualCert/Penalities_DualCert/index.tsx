@@ -93,7 +93,7 @@ export default function Penalties() {
   const [isSecurityWordMatched, setIsSecurityWordMatched] = useState(false);
   const [securityWordError, setSecurityWordError] = useState("");
   const [toolInfo, setToolInfo] = useState("");
-  const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
+  const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
   const initialValue = {
     signedBy: PrevStepData?.signedBy ||"",
     EnterconfirmationCode: "",
@@ -106,7 +106,13 @@ export default function Penalties() {
     isCheckAcceptance: PrevStepData?.isCheckAcceptance || false
 
   };
-
+  const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
 
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -183,14 +189,14 @@ export default function Penalties() {
                     {GethelpData && GethelpData[4].id === 6 ? (
                       <a
                         href={GethelpData[4].fieldValue}
-                        target="_self"
-                        onClick={() =>
-                    (
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent the default anchor behavior
+                          window.open(
                             GethelpData[4].fieldValue,
-                            'name',
+                            'popupWindow',
                             `width=${GethelpData[4].width},height=${GethelpData[4].height},top=${GethelpData[4].top},left=${GethelpData[4].left}`
                           )
-                        }
+                        }}
                       >
                         Help Video
                       </a>
@@ -213,7 +219,7 @@ export default function Penalties() {
 
 
                     <Paper style={{ padding: "18px" }}>
-                      {obValues.uniqueIdentifier !== values.signedBy && values.signedBy !=="" ? (
+                      {obValues.firstName.trim() + " " + obValues.lastName.trim() !== values.signedBy && values.signedBy !=="" ? (
                         <div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                           <Typography>
                             SIG101

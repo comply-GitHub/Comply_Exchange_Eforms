@@ -15,7 +15,7 @@ export default function Term() {
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   //States
-
+  const Version =localStorage.getItem("Version");
   const ahdData: any = useSelector((state: any) => state?.accountHolder);
   const LoadRoute = () => {
     // if(ahdData!==null && ahdData!==undefined){      
@@ -96,7 +96,7 @@ export default function Term() {
               align="left"
               style={{ marginBottom: "10px", color: "white", fontSize: "12px" }}
             >
-              © Comply Exchange Ltd.2023 - Version: 2.2.0.29 - Render
+              © Comply Exchange Ltd.2023 - Version: {Version} - Render
               Time:8.6691538s
             </Typography>
 

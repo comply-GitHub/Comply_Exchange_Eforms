@@ -33,6 +33,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
+import View_Insructions from "../../viewInstruction";
 
 export default function Factors() {
   const [initialValue, setInitialValue] = useState({
@@ -84,6 +85,14 @@ export default function Factors() {
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
+
+    const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
 
   const handleIncomeTypeReportSubmit = () => {
     const returnPromise = new Promise((resolve, reject) => {
@@ -164,9 +173,11 @@ export default function Factors() {
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
             >
+              <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
+      {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
               <div className="overlay-div">
                 <div className="overlay-div-group">
-                  <div className="viewInstructions">View Instructions</div>
+                <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
                   <div className="viewform" onClick={() => {
                     dispatch(GetEciPdf(authDetails?.accountHolderId))
                   }}>View Form</div>
@@ -175,14 +186,14 @@ export default function Factors() {
                     {GethelpData && GethelpData[5].id === 7 ? (
                       <a
                         href={GethelpData[5].fieldValue}
-                        target="_self"
-                        onClick={() =>
-                      (
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent the default anchor behavior
+                          window.open(
                             GethelpData[5].fieldValue,
-                            'name',
+                            'popupWindow',
                             `width=${GethelpData[5].width},height=${GethelpData[5].height},top=${GethelpData[5].top},left=${GethelpData[5].left}`
                           )
-                        }
+                        }}
                       >
                         Help Video
                       </a>

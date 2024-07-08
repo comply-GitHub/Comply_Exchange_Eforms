@@ -22,6 +22,7 @@ export default function Term() {
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
   const history = useNavigate();
+  const Version =localStorage.getItem("Version");
   const pdfRef = useRef(null);
   const pdfRefnew = useRef(null);
   const [notView, setNotView] = useState(false);
@@ -173,7 +174,7 @@ export default function Term() {
               align="left"
               style={{ marginBottom: "10px", color: "white", fontSize: "12px" }}
             >
-              © Comply Exchange Ltd.2023 - Version: 2.2.0.29 - Render
+              © Comply Exchange Ltd.2023 - Version: {Version} - Render
               Time:8.6691538s
             </Typography>
             <div className="col-12 col-sm-8 col-md-6 col-lg-6 footer_nav">

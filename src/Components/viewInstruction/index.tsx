@@ -56,37 +56,37 @@ export default function View_Insructions(props: any) {
                     <Link className="nav-link  text-decoration-none" href="/">W-8IMY - Intermediaries</Link>
                   </li> */}
           <li className="nav-item">
-            <a className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/iw8ben.pdf" target="_blank">W-8BEN - Foreign Status Individuals</a>
+            <Link className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/iw8ben.pdf" target="_blank">W-8BEN - Foreign Status Individuals</Link>
             
           </li>
         
           <li className="nav-item">
-            <a className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/iw8bene.pdf" target="_blank">W-8BEN-E - Foreign Status Entities</a>
+            <Link className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/iw8bene.pdf" target="_blank">W-8BEN-E - Foreign Status Entities</Link>
             
           </li>
         
           <li className="nav-item">
-            <a className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/iw8imy.pdf" target="_blank">W-8IMY - Intermediaries</a>
+            <Link className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/iw8imy.pdf" target="_blank">W-8IMY - Intermediaries</Link>
             
           </li>
         
           <li className="nav-item">
-            <a className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/iw8exp.pdf" target="_blank">W-8EXP - Exempt Organizations</a>
+            <Link className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/iw8exp.pdf" target="_blank">W-8EXP - Exempt Organizations</Link>
             
           </li>
         
           <li className="nav-item">
-            <a className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/iw8eci.pdf" target="_blank">W-8ECI - U.S. Place of Business</a>
+            <Link className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/iw8eci.pdf" target="_blank">W-8ECI - U.S. Place of Business</Link>
             
           </li>
         
           <li className="nav-item">
-            <a className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/iw9.pdf" target="_blank">W-9 - U.S. Persons</a>
+            <Link className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/iw9.pdf" target="_blank">W-9 - U.S. Persons</Link>
             
           </li>
         
           <li className="nav-item">
-            <a className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/i8233.pdf" target="_blank">8233 - Personal Services</a>
+            <Link className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/i8233.pdf" target="_blank">8233 - Personal Services</Link>
             
           </li>
 

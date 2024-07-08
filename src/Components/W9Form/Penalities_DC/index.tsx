@@ -40,6 +40,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetW9DCPdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
+import View_Insructions from "../../viewInstruction";
 type ValuePiece = Date | null;
 console.log(Date, "date");
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
@@ -59,6 +60,14 @@ export default function Penalties() {
 
     setSecurityWordError("");
   };
+
+  const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
   useEffect(() => {
     document.title = "Certifications II"
   }, [])
@@ -77,7 +86,7 @@ export default function Penalties() {
   );
   console.log(PrevStepData, ";;")
   const W9Data = useSelector((state: any) => state.W9Data);
-  const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
+  const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
   const initialValue = {
     signedBy: W9Data?.signedBy ?? "",
     confirmationCode: W9Data?.confirmationCode ?? "",
@@ -154,9 +163,11 @@ export default function Penalties() {
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
             >
+              <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
+      {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
               <div className="overlay-div">
                 <div className="overlay-div-group">
-                  <div className="viewInstructions">View Instructions</div>
+                <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
                   <div className="viewform"
                     onClick={() => {
                       dispatch(GetW9DCPdf(authDetails?.accountHolderId))
@@ -167,14 +178,14 @@ export default function Penalties() {
                     {GethelpData && GethelpData[3].id === 5 ? (
                       <a
                         href={GethelpData[3].fieldValue}
-                       target="_self"
-                        onClick={() =>
-                  (
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent the default anchor behavior
+                          window.open(
                             GethelpData[3].fieldValue,
-                            'name',
+                            'popupWindow',
                             `width=${GethelpData[3].width},height=${GethelpData[3].height},top=${GethelpData[3].top},left=${GethelpData[3].left}`
                           )
-                        }
+                        }}
                       >
                         Help Video
                       </a>
@@ -197,7 +208,7 @@ export default function Penalties() {
                   <div style={{ padding: "14px" }}>
                     <Paper style={{ padding: "10px" }}>
 
-                      {obValues.uniqueIdentifier !== values.signedBy && values.signedBy !=="" ? (
+                      {obValues.firstName.trim() + " " + obValues.lastName.trim() !== values.signedBy && values.signedBy !=="" ? (
                         <div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                           <Typography>
                             SIG101

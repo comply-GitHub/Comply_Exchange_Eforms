@@ -60,7 +60,7 @@ export default function Penalties() {
     dispatch(GetHelpVideoDetails());
   }, []);
   const [toolInfo, setToolInfo] = useState("");
-  const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
+  const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
   const [initialValue, setInitialValues] = useState({
     signedBy: W8EXPData?.signedBy ?? "",
     confirmationCode: W8EXPData?.confirmationCode ?? "",
@@ -153,14 +153,14 @@ export default function Penalties() {
                     {GethelpData && GethelpData[5].id === 7 ? (
                       <a
                         href={GethelpData[5].fieldValue}
-                        target="_self"
-                        onClick={() =>
-                      (
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent the default anchor behavior
+                          window.open(
                             GethelpData[5].fieldValue,
-                            'name',
+                            'popupWindow',
                             `width=${GethelpData[5].width},height=${GethelpData[5].height},top=${GethelpData[5].top},left=${GethelpData[5].left}`
                           )
-                        }
+                        }}
                       >
                         Help Video
                       </a>
@@ -180,7 +180,7 @@ export default function Penalties() {
 
                   <div style={{ padding: "13px" }}>
                     <Paper style={{ padding: "18px" }}>
-                      {obValues.uniqueIdentifier !== values.signedBy && touched.signedBy && values.signedBy !=="" ? (
+                      {obValues.firstName.trim() + " " + obValues.lastName.trim() !== values.signedBy && touched.signedBy && values.signedBy !=="" ? (
                         <div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                           <Typography>
                             SIG101

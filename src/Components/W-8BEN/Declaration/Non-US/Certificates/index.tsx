@@ -32,7 +32,13 @@ export default function Certifications(props: any) {
   const location = useLocation();
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
-
+  const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
   useEffect(() => {
     document.title = "Certification I"
   }, [])
@@ -96,14 +102,14 @@ export default function Certifications(props: any) {
             {GethelpData && GethelpData[4].id === 6 ? (
               <a
                 href={GethelpData[4].fieldValue}
-                target="_self"
-                onClick={() =>
-              (
+                onClick={(e) => {
+                e.preventDefault(); // Prevent the default anchor behavior
+                window.open(
                     GethelpData[4].fieldValue,
-                    'name',
+                    'popupWindow',
                     `width=${GethelpData[4].width},height=${GethelpData[4].height},top=${GethelpData[4].top},left=${GethelpData[4].left}`
                   )
-                }
+                }}
               >
                 Help Video
               </a>

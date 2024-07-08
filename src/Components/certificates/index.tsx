@@ -216,14 +216,14 @@ export default function Certificates(props: any) {
             {GethelpData && GethelpData[2].id === 4 ? (
               <a
                 href={GethelpData[2].fieldValue}
-                target="_self"
-                onClick={() =>
-                  (
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent the default anchor behavior
+                  window.open(
                     GethelpData[2].fieldValue,
-                    'name',
+                    'popupWindow',
                     `width=${GethelpData[2].width},height=${GethelpData[2].height},top=${GethelpData[2].top},left=${GethelpData[2].left}`
                   )
-                }
+                }}
               >
                 Help Video
               </a>

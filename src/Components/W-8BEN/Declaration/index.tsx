@@ -18,7 +18,7 @@ export default function Term() {
   const history = useNavigate();
   const dispatch = useDispatch();
   const { authDetails } = useAuth();
- 
+  const Version =localStorage.getItem("Version");
 
   useEffect(() => {
     document.title = "Comply Exchange"
@@ -98,14 +98,14 @@ const handleNonUSButtonClick = () => {
           {GethelpData && GethelpData[4].id === 6 ? (
   <a
     href={GethelpData[4].fieldValue}
-    target="_self"
-    onClick={() =>
-      (
+    onClick={(e) => {
+      e.preventDefault(); // Prevent the default anchor behavior
+      window.open(
         GethelpData[4].fieldValue,
-        'name',
+        'popupWindow',
         `width=${GethelpData[4].width},height=${GethelpData[4].height},top=${GethelpData[4].top},left=${GethelpData[4].left}`
       )
-    }
+    }}
   >
     Help Video
   </a>
@@ -286,7 +286,7 @@ const handleNonUSButtonClick = () => {
               align="left"
               style={{ marginBottom: "10px", color: "white", fontSize: "14px" }}
             >
-              © Comply Exchange Ltd.2023 - Version: 2.2.0.29 - Render
+              © Comply Exchange Ltd.2023 - Version: {Version} - Render
               Time:8.6691538s
             </Typography>
 

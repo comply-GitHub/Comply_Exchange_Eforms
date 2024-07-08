@@ -71,7 +71,7 @@ export default function Penalties() {
       setExpanded(isExpanded ? panel : false);
     };
   const [toolInfo, setToolInfo] = useState("");
-  const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
+  const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
 
   const [initialValue, setInitialValues] = useState({
     signedBy: W8IMYData?.signedBy ?? "",
@@ -175,14 +175,14 @@ export default function Penalties() {
                     {GethelpData && GethelpData[7].id === 9 ? (
                       <a
                         href={GethelpData[7].fieldValue}
-                      target="_self"
-                        onClick={() =>
-                          (
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent the default anchor behavior
+                          window.open(
                             GethelpData[7].fieldValue,
-                            'name',
+                            'popupWindow',
                             `width=${GethelpData[7].width},height=${GethelpData[7].height},top=${GethelpData[7].top},left=${GethelpData[7].left}`
                           )
-                        }
+                        }}
                       >
                         Help Video
                       </a>
@@ -203,7 +203,7 @@ export default function Penalties() {
 
                   <div style={{ padding: "13px" }}>
                     <Paper style={{ padding: "10px" }}>
-                      {obValues.uniqueIdentifier !== values.signedBy && values.signedBy !=="" ? (
+                      {obValues.firstName.trim() + " " + obValues.lastName.trim() !== values.signedBy && values.signedBy !=="" ? (
                         <div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                           <Typography>
                             SIG101

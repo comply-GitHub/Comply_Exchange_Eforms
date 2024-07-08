@@ -21,6 +21,8 @@ export default function FormW8EXP() {
   const getCountriesReducer = useSelector(
     (state: any) => state.getCountriesReducer
   );
+
+  const Version =localStorage.getItem("Version");
   // const contentRef = useRef<HTMLDivElement>(null);
   const [values, setValues] = useState({
     accountHolderBasicDetailId: 0,
@@ -2641,7 +2643,7 @@ export default function FormW8EXP() {
                       fontSize: "12px",
                     }}
                   >
-                    © Comply Exchange Ltd.2023 - Version: 2.2.0.29 - Render
+                    © Comply Exchange Ltd.2023 - Version: {Version} - Render
                     Time:8.6691538s
                   </Typography>
                   <div className="col-12 col-sm-8 col-md-6 col-lg-6 footer_nav">

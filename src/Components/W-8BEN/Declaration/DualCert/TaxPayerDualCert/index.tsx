@@ -32,6 +32,7 @@ import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import { GetBENDCPdf } from "../../../../../Redux/Actions/PfdActions";
+import View_Insructions from "../../../../viewInstruction";
 export default function Tin(props: any) {
   const history = useNavigate();
   const { authDetails } = useAuth();
@@ -120,6 +121,14 @@ export default function Tin(props: any) {
     LoadData();
   }, [authDetails]);
 
+  const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
+
   // useEffect(() => {
   //   console.log(authDetails,"AUTHDETAILSSSS")
 
@@ -172,9 +181,11 @@ export default function Tin(props: any) {
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-      <div className="overlay-div">
-        <div className="overlay-div-group">
-          <div className="viewInstructions">View Instructions</div>
+       <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
+      {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
+              <div className="overlay-div">
+                <div className="overlay-div-group">
+                <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={() => {
             dispatch(GetBENDCPdf(authDetails?.accountHolderId))
           }}>View Form</div>
@@ -183,14 +194,14 @@ export default function Tin(props: any) {
             {GethelpData && GethelpData[3].id === 5 ? (
               <a
                 href={GethelpData[3].fieldValue}
-                 target="_self"
-                onClick={() =>
-                  (
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent the default anchor behavior
+                  window.open(
                     GethelpData[3].fieldValue,
-                    "name",
+                    "popupWindow",
                     `width=${GethelpData[3].width},height=${GethelpData[3].height},top=${GethelpData[3].top},left=${GethelpData[3].left}`
                   )
-                }
+                }}
               >
                 Help Video
               </a>

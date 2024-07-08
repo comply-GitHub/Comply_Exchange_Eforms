@@ -27,6 +27,7 @@ import useAuth from "../../../customHooks/useAuth";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 import AttachDocument from "../../AttachDocument";
 import Redirect from "../../../Router/RouterSkip";
+import View_Insructions from "../../viewInstruction";
 
 export default function Certifications(props: any) {
 
@@ -49,6 +50,14 @@ export default function Certifications(props: any) {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+
+  const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
 
   useEffect(() => {
     document.title = "Certfication I"
@@ -94,9 +103,11 @@ export default function Certifications(props: any) {
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-      <div className="overlay-div">
-        <div className="overlay-div-group">
-          <div className="viewInstructions">View Instructions</div>
+      <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
+      {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
+              <div className="overlay-div">
+                <div className="overlay-div-group">
+                <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform"
             onClick={() => {
               dispatch(GetEciPdf(authDetails?.accountHolderId))
@@ -107,14 +118,14 @@ export default function Certifications(props: any) {
             {GethelpData && GethelpData[5].id === 7 ? (
               <a
                 href={GethelpData[5].fieldValue}
-              target="_self"
-                onClick={() =>
-                  (
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent the default anchor behavior
+                  window.open(
                     GethelpData[5].fieldValue,
-                    'name',
+                    'popupWindow',
                     `width=${GethelpData[5].width},height=${GethelpData[5].height},top=${GethelpData[5].top},left=${GethelpData[5].left}`
                   )
-                }
+                }}
               >
                 Help Video
               </a>

@@ -46,6 +46,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetEciPdf, GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
+import View_Insructions from "../../viewInstruction";
 export default function Fedral_tax(props: any) {
     const dispatch = useDispatch();
     const {
@@ -110,6 +111,14 @@ export default function Fedral_tax(props: any) {
     const getCountriesCodeReducer = useSelector(
         (state: any) => state.getCountriesCodeReducer
     );
+
+    const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
     const GetAllIncomeCodesReducer = useSelector(
         (state: any) => state.GetAllIncomeCodesReducer
     );
@@ -147,9 +156,11 @@ export default function Fedral_tax(props: any) {
                 className="inner_content"
                 style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
             >
-                <div className="overlay-div">
-                    <div className="overlay-div-group">
-                        <div className="viewInstructions">View Instructions</div>
+                <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
+      {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
+              <div className="overlay-div">
+                <div className="overlay-div-group">
+                <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
                         <div className="viewform" onClick={() => {
                             dispatch(GetEciPdf(authDetails?.accountHolderId))
                         }}>View Form</div>
@@ -157,13 +168,14 @@ export default function Fedral_tax(props: any) {
                             {GethelpData && GethelpData[5].id === 7 ? (
                                 <a
                                     href={GethelpData[5].fieldValue}
-                                target="_self"
-                                    onClick={() =>
-                                    (
+                                    onClick={(e) => {
+                                        e.preventDefault(); // Prevent the default anchor behavior
+                                        window.open(
                                             GethelpData[5].fieldValue,
-                                            "name",
+                                            "popupWindow",
                                             `width=${GethelpData[5].width},height=${GethelpData[5].height},top=${GethelpData[5].top},left=${GethelpData[5].left}`
                                         )
+                                    }
                                     }
                                 >
                                     Help Video

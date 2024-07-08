@@ -26,12 +26,21 @@ import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
+import View_Insructions from "../../../../viewInstruction";
 export default function Presence(props: any) {
   const { authDetails } = useAuth();
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const W8BENData = useSelector((state: any) => state.w8Ben);
   //const [isSubmitClicked, setIsSubmitClicked] = useState(false);
 
+
+  const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
   const [expanded, setExpanded] = React.useState<string | false>("");
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
@@ -133,23 +142,25 @@ export default function Presence(props: any) {
             style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
           >
 
-            <div className="overlay-div">
-              <div className="overlay-div-group">
-                <div className="viewInstructions">View Instructions</div>
+<View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
+      {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
+              <div className="overlay-div">
+                <div className="overlay-div-group">
+                <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
                 <div className="viewform">View Form</div>
                 <div className="helpvideo">
 
                   {GethelpData && GethelpData[9].id === 12 ? (
                     <a
                       href={GethelpData[9].fieldValue}
-                      target="_self"
-                      onClick={() =>
-                    (
+                      onClick={(e) => {
+                        e.preventDefault(); // Prevent the default anchor behavior
+                        window.open(
                           GethelpData[9].fieldValue,
-                          'name',
+                          'popupWindow',
                           `width=${GethelpData[9].width},height=${GethelpData[9].height},top=${GethelpData[9].top},left=${GethelpData[9].left}`
                         )
-                      }
+                      }}
                     >
                       Help Video
                     </a>

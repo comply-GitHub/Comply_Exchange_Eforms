@@ -41,6 +41,7 @@ import { useLocation } from "react-router-dom";
 import useAuth from "../../../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
+import View_Insructions from "../../../../viewInstruction";
 export default function Factors() {
   const { authDetails } = useAuth();
   const location = useLocation();
@@ -75,7 +76,7 @@ export default function Factors() {
     isRenouncedCitizenship: "no",
     dateRenouncedUSCitizenship: obValues.dateRenouncedUSCitizenship,
     permanentResidentialCountryId: 0,
-    renouncementProof: "no",
+    renouncementProof: "",
     isTaxLiabilityJurisdictions: "no",
     countryTaxLiability: "no",
     taxReferenceNumber: "",
@@ -112,6 +113,14 @@ export default function Factors() {
   const handleTaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTax(event.target.value);
   };
+
+  const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
 
   const [tax1, setTax1] = useState<string>("");
 
@@ -178,9 +187,11 @@ export default function Factors() {
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
 
-      <div className="overlay-div">
-        <div className="overlay-div-group">
-          <div className="viewInstructions">View Instructions</div>
+<View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
+      {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
+              <div className="overlay-div">
+                <div className="overlay-div-group">
+                <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={() => {
               dispatch(GetBenPdf(authDetails?.accountHolderId))
             }}>View Form</div>
@@ -188,15 +199,15 @@ export default function Factors() {
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[4].id === 6 ? (
               <a
-                href={GethelpData[4].fieldValue}
-               target="_self"
-                onClick={() =>
-                  (
-                    GethelpData[4].fieldValue,
-                    'name',
-                    `width=${GethelpData[4].width},height=${GethelpData[4].height},top=${GethelpData[4].top},left=${GethelpData[4].left}`
-                  )
-                }
+              href={GethelpData[4].fieldValue}
+              onClick={(e) => {
+                e.preventDefault(); // Prevent the default anchor behavior
+                window.open(
+                  GethelpData[4].fieldValue, // URL to open
+                  'popupWindow', // Window name
+                  `width=${GethelpData[4].width},height=${GethelpData[4].height},top=${GethelpData[4].top},left=${GethelpData[4].left},resizable=yes,scrollbars=yes` // Window features
+                );
+              }}
               >
                 Help Video
               </a>
@@ -1080,6 +1091,7 @@ export default function Factors() {
                                 <RadioGroup
                                   id="isRenouncedCitizenship"
                                   row
+                                  name="isRenouncedCitizenship"
                                   aria-labelledby="demo-row-radio-buttons-group-label"
                                   value={values.isRenouncedCitizenship}
                                   onChange={handleChange}
@@ -1119,25 +1131,7 @@ export default function Factors() {
                                 <span style={{ color: "red" }}>*</span>
                               </Typography>
 
-                              {/* <TextField
-                            autoComplete="dateRenouncedUSCitizenship"
-                            type="date"
-                            placeholder="date U.S. citizenship was
-                      renounced:"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            helperText={
-                              touched.dateRenouncedUSCitizenship &&
-                              errors.dateRenouncedUSCitizenship
-                            }
-                            error={Boolean(
-                              touched.dateRenouncedUSCitizenship &&
-                              errors.dateRenouncedUSCitizenship
-                            )}
-                            name="dateRenouncedUSCitizenship"
-                            className="inputClass"
-                            value={values.dateRenouncedUSCitizenship}
-                          /> */}
+                             
                               <FormControl className="form">
                                 <input
                                   className="my-2"
@@ -1161,7 +1155,7 @@ export default function Factors() {
                                 Please attach proof of formal renouncement:
                               </Typography>
                               <div style={{ marginTop: "10px" }}>
-                                <input
+                                <Input
                                   className="my-2"
                                   style={{ fontSize: "12px" }}
                                   type="file"
@@ -1411,7 +1405,7 @@ export default function Factors() {
                                 }}
                               >
                                 Does or did the dual citizenship include U.S.
-                                citizenship?{" "}
+                                citizenship?2
                                 <span style={{ color: "red" }}>*</span>
                               </Typography>
 

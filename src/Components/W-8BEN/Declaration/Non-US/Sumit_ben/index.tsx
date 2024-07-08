@@ -263,7 +263,14 @@ const Declaration = (props: any) => {
                           <Checkbox
                             name="declaration"
                             value={values.declaration}
-                            onChange={handleChange}
+                            onChange={(event) => {
+                              handleChange(event);
+                              if (event.target.checked) {
+                                setExpanded('panel2');
+                              } else {
+                                setExpanded(false);
+                              }
+                            }}
                             checked={values.declaration}
                           />
                           <Typography style={{ marginTop: "9px" }}>

@@ -29,7 +29,7 @@ export default function Term() {
   const viewPdf = () => {
     history("/w8BenE_pdf", { replace: true });
   }
-
+  const Version =localStorage.getItem("Version");
   const history = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
@@ -69,14 +69,14 @@ export default function Term() {
             {GethelpData && GethelpData[3].id === 5 ? (
               <a
                 href={GethelpData[3].fieldValue}
-               target="_self"
-                onClick={() =>
-          (
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent the default anchor behavior
+                  window.open(
                     GethelpData[3].fieldValue,
-                    'name',
+                    'popupWindow',
                     `width=${GethelpData[3].width},height=${GethelpData[3].height},top=${GethelpData[3].top},left=${GethelpData[3].left}`
                   )
-                }
+                }}
               >
                 Help Video
               </a>
@@ -270,7 +270,7 @@ export default function Term() {
               align="left"
               style={{ marginBottom: "10px", color: "white", fontSize: "14px" }}
             >
-              © Comply Exchange Ltd.2023 - Version: 2.2.0.29 - Render
+              © Comply Exchange Ltd.2023 - Version: {Version} - Render
               Time:8.6691538s
             </Typography>
 

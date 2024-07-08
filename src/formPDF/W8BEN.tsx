@@ -14,6 +14,7 @@ const W8Ben: React.FC = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
   const contentRef:any = useRef(null);
+  const Version =localStorage.getItem("Version");
   const { authDetails } = useAuth();
   const [values, setValues] = useState({
     agentId: 3,
@@ -1946,7 +1947,7 @@ U.S. source income statement.
                   fontSize: "12px",
                 }}
               >
-                © Comply Exchange Ltd.2023 - Version: 2.2.0.29 - Render
+                © Comply Exchange Ltd.2023 - Version: {Version}- Render
                 Time:8.6691538s
               </Typography>
               <div className="col-12 col-sm-8 col-md-6 col-lg-6 footer_nav">

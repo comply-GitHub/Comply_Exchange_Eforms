@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
+import View_Insructions from "../../../viewInstruction";
 export default function Declaration (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
@@ -36,6 +37,14 @@ export default function Declaration (props: any){
     }
   };
 
+  const [canvaBx, setCanvaBx] = useState(false);
+  const handleCanvaOpen = () => {
+    setCanvaBx(true);
+  }
+  const handleCanvaClose = () => {
+    setCanvaBx(false);
+  }
+
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   
@@ -52,21 +61,23 @@ export default function Declaration (props: any){
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-      <div className="overlay-div">
-        <div className="overlay-div-group">
-          <div className="viewInstructions">View Instructions</div>
+      <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
+      {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
+              <div className="overlay-div">
+                <div className="overlay-div-group">
+                <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform">View Form</div>
           <div className="helpvideo">
             <a
               href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"
-             target="_self"
-              onClick={() =>
+              onClick={(e) => {
+                e.preventDefault(); // Prevent the default anchor behavior
                 window.open(
                   "https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-",
-                  "name",
+                  "popupWindow",
                   "width=600,height=400"
                 )
-              }
+              }}
             >
               Help Video
             </a>

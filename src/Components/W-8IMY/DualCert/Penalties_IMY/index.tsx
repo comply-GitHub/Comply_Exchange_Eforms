@@ -75,7 +75,7 @@ export default function Penalties() {
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
   console.log(PrevStepData,";;")
   const W9Data = useSelector((state: any) => state.W9Data);
-  const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
+  const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
   const initialValue = {
     signedBy: W9Data?.signedBy ?? "",
     confirmationCode: W9Data?.confirmationCode ?? "",
@@ -166,14 +166,14 @@ export default function Penalties() {
                     {GethelpData && GethelpData[3].id === 5 ? (
                       <a
                         href={GethelpData[3].fieldValue}
-                        target="_self"
-                        onClick={() =>
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent the default anchor behavior
                           window.open(
                             GethelpData[3].fieldValue, 
-                            'name',
+                            'popupWindow',
                             `width=${GethelpData[3].width},height=${GethelpData[3].height},top=${GethelpData[3].top},left=${GethelpData[3].left}`
                           )
-                        }
+                        }}
                       >
                         Help Video                        
                       </a>
@@ -195,7 +195,7 @@ export default function Penalties() {
                   <div style={{ padding: "14px" }}>
                     <Paper style={{ padding: "10px" }}>
 
-                      {obValues.uniqueIdentifier !== values.signedBy && values.signedBy !=="" ? (
+                      {obValues.firstName.trim() + " " + obValues.lastName.trim() !== values.signedBy && values.signedBy !=="" ? (
                         <div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                           <Typography>
                             SIG101

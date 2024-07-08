@@ -21,6 +21,8 @@ const authDetailsString = localStorage.getItem("authDetails") || "{}";
 const auth = JSON.parse(authDetailsString);
 
 const userType = auth?.configurations?.userType;
+const Version = JSON.parse(localStorage.getItem("Version") || 'null') || {};
+
 
 export default function Term() {
   //States  
@@ -212,7 +214,7 @@ export default function Term() {
               align="left"
               style={{ marginBottom: "10px", color: "white", fontSize: "12px" }}
             >
-              © Comply Exchange Ltd.2023 - Version: 2.2.0.29 - Render
+              © Comply Exchange Ltd.2023 - Version: {Version} - Render
               Time:8.6691538s
             </Typography>
             <div className="col-12 col-sm-8 col-md-6 col-lg-6 footer_nav">

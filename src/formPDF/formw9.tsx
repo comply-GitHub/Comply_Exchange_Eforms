@@ -10,6 +10,7 @@ import moment from "moment";
 import { useNavigate } from "react-router";
 const W9: React.FC = () => {
   const dispatch =useDispatch();
+  const Version =localStorage.getItem("Version");
   const history = useNavigate();
   const [values,setValues] = useState(
  
@@ -1261,7 +1262,7 @@ information returns include, but are not limited to, the following.
                   fontSize: "12px",
                 }}
               >
-                © Comply Exchange Ltd.2023 - Version: 2.2.0.29 - Render
+                © Comply Exchange Ltd.2023 - Version: {Version} - Render
                 Time:8.6691538s
               </Typography>
               <div className="col-12 col-sm-8 col-md-6 col-lg-6 footer_nav">

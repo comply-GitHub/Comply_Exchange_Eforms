@@ -7,18 +7,18 @@ const convertAndDownloadPdf = (base64String: string, fileName: string, isDownloa
     try {
         let iframe = "<iframe width='100%' height='100%' src='" + base64String + "'></iframe>"
         if (!isDownload) {
-            // let x = window.open();
-            // if (x) {
+            let x = window.open();
+            if (x) {
                 document.open();
                 document.write(iframe);
                 document.close();
                 return
-            // }
+            }
         }
         // Create a temporary link element
         const link = document.createElement('a');
         link.href = base64String;
-        link.target = "_blank";
+        link.target = fileName;
         link.download = fileName;
 
         // Trigger download

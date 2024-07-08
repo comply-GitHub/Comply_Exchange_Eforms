@@ -10,7 +10,9 @@ export default function Tab(props:any){
                 <div className="viewform" onClick={()=>history("/PDFViewer")}>View Form</div>
                 <div className="helpvideo"> 
                 {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
-                <a href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"     target="_self" onClick={()=>window.open('https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-','name','width=600,height=400')}>Help Video</a>
+                <a href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"   onClick={(e) => {
+                  e.preventDefault(); // Prevent the default anchor behavior
+                  window.open('https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-','popupWindow','width=600,height=400')}}>Help Video</a>
                 </div>
             </div>
         </div>

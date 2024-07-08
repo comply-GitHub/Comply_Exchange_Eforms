@@ -179,14 +179,14 @@ export default function Tin(props: any) {
                     {GethelpData && GethelpData[9].id === 12 ? (
                       <a
                         href={GethelpData[9].fieldValue}
-                        target="_self"
-                        onClick={() =>
-                        (
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent the default anchor behavior
+                          window.open(
                             GethelpData[9].fieldValue,
-                            'name',
+                            'popupWindow',
                             `width=${GethelpData[9].width},height=${GethelpData[9].height},top=${GethelpData[9].top},left=${GethelpData[9].left}`
                           )
-                        }
+                        }}
                       >
                         Help Video
                       </a>

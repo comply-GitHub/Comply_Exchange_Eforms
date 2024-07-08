@@ -731,7 +731,7 @@ export default function IndividualUs() {
 
 
 
-
+  const Version =localStorage.getItem("Version");
   useEffect(() => {
     selectedValues.forEach((ele, i) => {
       if (ele === "0") {
@@ -849,14 +849,14 @@ export default function IndividualUs() {
                 {GethelpData && GethelpData[1].id === 3 ? (
                   <a
                     href={GethelpData[1].fieldValue}
-                  target="_self"
-                  // onClick={() =>
-                  //   window.open(
-                  //     GethelpData[1].fieldValue,
-                  //     'name',
-                  //     `width=${GethelpData[1].width},height=${GethelpData[1].height},top=${GethelpData[1].top},left=${GethelpData[1].left}`
-                  //   )
-                  // }
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent the default anchor behavior
+                      window.open(
+                      GethelpData[1].fieldValue,
+                      'popupWindow',
+                      `width=${GethelpData[1].width},height=${GethelpData[1].height},top=${GethelpData[1].top},left=${GethelpData[1].left}`
+                    )
+                  }}
                   >
                     Help Video
                   </a>
@@ -7122,7 +7122,7 @@ export default function IndividualUs() {
               align="left"
               style={{ marginBottom: "10px", color: "white", fontSize: "12px" }}
             >
-              © Comply Exchange Ltd.2023 - Version: 2.2.0.29 - Render
+              © Comply Exchange Ltd.2023 - Version: {Version} - Render
               Time:8.6691538s
             </Typography>
 

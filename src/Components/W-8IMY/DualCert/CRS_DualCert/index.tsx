@@ -90,14 +90,14 @@ export default function Declaration (props: any){
           <div className="helpvideo">
             <a
               href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"
-               target="_self"
-              onClick={() =>
+              onClick={(e) => {
+                e.preventDefault(); // Prevent the default anchor behavior
                 window.open(
                   "https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-",
-                  "name",
+                  "popupWindow",
                   "width=600,height=400"
                 )
-              }
+              }}
             >
               Help Video
             </a>

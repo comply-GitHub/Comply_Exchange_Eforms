@@ -91,14 +91,14 @@ import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
                 href={GethelpData[8].fieldValue}
-                target="_self"
-                onClick={() =>
-                (
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent the default anchor behavior
+                  window.open(
                     GethelpData[8].fieldValue,
-                    "name",
+                    "popupWindow",
                     `width=${GethelpData[8].width},height=${GethelpData[8].height},top=${GethelpData[8].top},left=${GethelpData[8].left}`
                   )
-                }
+                }}
               >
                 Help Video
               </a>
