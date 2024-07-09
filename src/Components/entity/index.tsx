@@ -2405,7 +2405,7 @@ export default function Entity() {
 
                                 if (
                                   e.target.value == 0 ||
-                                  // e.target.value == 5 ||
+                                  e.target.value == 1 ||
                                   e.target.value == 6 ||
                                   e.target.value == 7 ||
                                   e.target.value == 8
@@ -2452,7 +2452,7 @@ export default function Entity() {
                               </span>
                             </Typography>
                             <InputMask
-                              disabled={values.taxpayerIdTypeID == 0}
+                              disabled={values.taxpayerIdTypeID == 0 || values.taxpayerIdTypeID == 1 }
                               style={{
                                 border: " 1px solid #d9d9d9 ",
                                 height: " 36px",
