@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { getTinTypes, PostDualCertDetails, GetHelpVideoDetails, getW9Form, getAllCountries, getDualCertW9, PostDualCert } from "../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
+import PopupModal from "../../../Redux/Actions/poupModal";
 import View_Insructions from "../../viewInstruction";
 import { useLocation } from "react-router-dom";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
@@ -294,7 +295,10 @@ export default function TaxPayer(props: any) {
     return payloadSubmitPromise;
   };
 
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const handleSecondPayloadSubmit = async (values: any): Promise<any> => {
     const secondPayloadSubmitPromise = new Promise((resolve, reject) => {
       let secondPayload = [
@@ -363,8 +367,13 @@ export default function TaxPayer(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetW9DCPdf(authDetails?.accountHolderId))
-          }}>View Form</div>
+            dispatch(GetW9DCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
+      }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
@@ -805,9 +814,14 @@ export default function TaxPayer(props: any) {
                   );
                 })
               }} formTypeId={FormTypeId.W9} />
-              <Button variant="contained" onClick={() => {
-                dispatch(GetW9DCPdf(authDetails?.accountHolderId))
-              }} style={{ color: "white", marginLeft: "15px" }}>
+              <Button variant="contained"  onClick={() => {
+            dispatch(GetW9DCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
+      }} style={{ color: "white", marginLeft: "15px" }}>
                 View Form
               </Button>
               <Button
@@ -829,5 +843,6 @@ export default function TaxPayer(props: any) {
           </Form>
         )}
       </Formik>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>)
 }

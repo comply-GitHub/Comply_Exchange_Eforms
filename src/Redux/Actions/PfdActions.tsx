@@ -1,25 +1,26 @@
 import Utils from "../../Utils";
 import { ErrorModel } from "./errormodel";
-
+import PoupModal from "./poupModal";
 
 
 const convertAndDownloadPdf = (base64String: string, fileName: string, isDownload = false) => {
     try {
         let iframe = "<iframe width='100%' height='100%' src='" + base64String + "'></iframe>"
         if (!isDownload) {
-            let x = window.open();
-            if (x) {
-                document.open();
-                document.write(iframe);
-                document.close();
+            // let x = window.open();
+            // if (x) {
+               document.open();
+               document.write(iframe);
+               document.close();
                 return
-            }
+        //  }
+        
         }
         // Create a temporary link element
         const link = document.createElement('a');
         link.href = base64String;
-        link.target = fileName;
-        link.download = fileName;
+        // link.target = "_blank";
+        // link.download = fileName;
 
         // Trigger download
         document.body.appendChild(link);
@@ -33,6 +34,7 @@ const convertAndDownloadPdf = (base64String: string, fileName: string, isDownloa
     }
 
 }
+
 
 export const GetW9Pdf = (accountHolderId: number, callback: Function = (data: any) => { console.log(data) }, errorCallback: Function = (error: any) => { console.log(error) }, isDownload: boolean = false): any => {
     return (dispatch: any) => {
@@ -70,7 +72,7 @@ export const GetW9Pdf = (accountHolderId: number, callback: Function = (data: an
                                 type: Utils.actionName.UpdateError,
                                 payload: { ...err },
                             });
-                            callback();
+                            callback(data);
                         }
                         convertAndDownloadPdf(data?.pdf, "W9.pdf", isDownload)
                     }
@@ -468,7 +470,7 @@ export const GetW9DCPdf = (accountHolderId: number, callback: Function = (data: 
                                 type: Utils.actionName.UpdateError,
                                 payload: { ...err },
                             });
-                            callback();
+                            callback(data);
                         }
                         convertAndDownloadPdf(data?.pdf, "W9DCSelfCertification.pdf", isDownload)
                     }

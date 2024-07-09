@@ -3973,7 +3973,7 @@ const W8BenE = () => {
                   fontSize: "12px",
                 }}
               >
-                © Comply Exchange Ltd.2023 - Version: {Version} - Render
+                © Comply Exchange Ltd.{new Date().getFullYear()} - Version: {Version} - Render
                 Time:8.6691538s
               </Typography>
               <div className="col-12 col-sm-8 col-md-6 col-lg-6 footer_nav">

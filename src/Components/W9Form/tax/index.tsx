@@ -32,6 +32,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
 import { string } from "yup";
+import PopupModal from "../../../Redux/Actions/poupModal";
 
 export default function Tin(props: any) {
   const dispatch = useDispatch();
@@ -65,6 +66,11 @@ export default function Tin(props: any) {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   var getReducerData = useSelector(
     (state: any) => state?.GetByW9FormReducer?.GetByW9FormData
   );
@@ -151,8 +157,14 @@ export default function Tin(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetW9Pdf(authDetails?.accountHolderId))
-          }}>View Form</div>
+                            dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
+                        }}
+          >View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
@@ -527,9 +539,14 @@ export default function Tin(props: any) {
                 })
               }} formTypeId={FormTypeId.W9} />
               <Button variant="contained"
-                onClick={() => {
-                  dispatch(GetW9Pdf(authDetails?.accountHolderId))
-                }}
+               onClick={() => {
+                dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                    setPopupState({
+                        status:true,
+                        data: callbackData?.pdf
+                    })
+                }))
+            }}
                 style={{ color: "white", marginLeft: "15px" }}
               >
                 View Form
@@ -582,5 +599,7 @@ export default function Tin(props: any) {
           </Form>
         )}
       </Formik>
+
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>)
 }

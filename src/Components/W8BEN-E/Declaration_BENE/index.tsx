@@ -270,7 +270,7 @@ export default function Term() {
               align="left"
               style={{ marginBottom: "10px", color: "white", fontSize: "14px" }}
             >
-              © Comply Exchange Ltd.2023 - Version: {Version} - Render
+              © Comply Exchange Ltd.{new Date().getFullYear()} - Version: {Version} - Render
               Time:8.6691538s
             </Typography>
 

@@ -33,6 +33,7 @@ export default function Term() {
   }, [])
 
   const Version =localStorage.getItem("Version");
+  const currentYear = new Date().getFullYear();
   const handleDownload = () => {
     if (pdfUrl) {
       const link = document.createElement("a");
@@ -181,7 +182,7 @@ export default function Term() {
               align="left"
               style={{ marginBottom: "10px", color: "white", fontSize: "12px" }}
             >
-              © Comply Exchange Ltd.2023 - Version: {Version} - Render
+              © Comply Exchange Ltd.{currentYear} - Version: {Version} - Render
               Time:8.6691538s
             </Typography>
             <div className="col-12 col-sm-8 col-md-6 col-lg-6 footer_nav">

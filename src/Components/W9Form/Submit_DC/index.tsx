@@ -16,6 +16,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetW9DCPdf } from "../../../Redux/Actions/PfdActions";
 import useAuth from "../../../customHooks/useAuth";
 import Redirect from "../../../Router/RouterSkip";
+import PopupModal from "../../../Redux/Actions/poupModal"
 
 const Declaration = (props: any) => {
   const { authDetails } = useAuth();
@@ -38,6 +39,11 @@ const Declaration = (props: any) => {
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
+
+    const [popupState, setPopupState] = useState({
+      data:"",
+      status:false
+  })
   const initialValue = {
     IsAgreeWithDeclaration: false,
     IsConsentReceipentstatement: false,
@@ -403,9 +409,14 @@ const Declaration = (props: any) => {
 
                     }} formTypeId={FormTypeId.W9} />
                     <Button
-                      onClick={() => {
-                        dispatch(GetW9DCPdf(authDetails?.accountHolderId))
-                      }}
+                     onClick={() => {
+                      dispatch(GetW9DCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >
@@ -443,6 +454,8 @@ const Declaration = (props: any) => {
 
         </div>
       </section>
+        <PopupModal data={popupState} setPopupState={setPopupState} />
+
     </Fragment>
   );
 };

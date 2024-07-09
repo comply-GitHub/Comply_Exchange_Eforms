@@ -47,6 +47,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetEciPdf, GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
 import View_Insructions from "../../viewInstruction";
+import PopupModa from "../../../Redux/Actions/poupModal";
 export default function Fedral_tax(props: any) {
     const dispatch = useDispatch();
     const {
@@ -75,6 +76,10 @@ export default function Fedral_tax(props: any) {
     };
 
     const [clickCount, setClickCount] = useState(0);
+    const [popupState, setPopupState] = useState({
+        data:"",
+        status:false
+    })
     const [toolInfo, setToolInfo] = useState("");
     const history = useNavigate();
     const [expanded, setExpanded] = React.useState<string | false>("");
@@ -161,8 +166,13 @@ export default function Fedral_tax(props: any) {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-                        <div className="viewform" onClick={() => {
-                            dispatch(GetEciPdf(authDetails?.accountHolderId))
+                        <div className="viewform" style={{width:"100%",height:"100%"}} onClick={() => {
+                            dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
                         }}>View Form</div>
                         <div className="helpvideo">
                             {GethelpData && GethelpData[5].id === 7 ? (
@@ -1430,7 +1440,12 @@ export default function Fedral_tax(props: any) {
                                                         disabled={isSubmitting}
                                                         variant="contained"
                                                         onClick={() => {
-                                                            dispatch(GetW9Pdf(authDetails?.accountHolderId))
+                                                            dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                                                setPopupState({
+                                                                    status:true,
+                                                                    data: callbackData?.pdf
+                                                                })
+                                                            }))
                                                         }}
                                                         style={{ color: "white", marginLeft: "15px" }}
                                                     >
@@ -1493,6 +1508,7 @@ export default function Fedral_tax(props: any) {
                     </div>
                 </div>
             </section >
+            <PopupModa data={popupState} setPopupState={setPopupState} />
         </>
     );
 }
