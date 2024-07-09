@@ -27,6 +27,7 @@ import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
+import PopupModal from "../../../Redux/Actions/poupModal";
 export default function Certifications(props: any) {
 
   const { authDetails } = useAuth()
@@ -35,6 +36,10 @@ export default function Certifications(props: any) {
   useEffect(() => {
     document.title = "Certfication I"
   }, [])
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
 
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
@@ -86,7 +91,12 @@ export default function Certifications(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetExpPdf(authDetails?.accountHolderId));
+             dispatch(GetExpPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
           }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -427,9 +437,14 @@ export default function Certifications(props: any) {
                         })
                       }} formTypeId={FormTypeId.W8EXP} />
                       <Button
-                        onClick={() => {
-                          dispatch(GetExpPdf(authDetails?.accountHolderId));
-                        }}
+                       onClick={() => {
+                        dispatch(GetExpPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                         setPopupState({
+                             status:true,
+                             data: callbackData?.pdf
+                         })
+                     }))
+                     }}
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                       >
@@ -488,6 +503,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section >
   );
 }

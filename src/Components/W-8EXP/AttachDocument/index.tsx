@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 import { GetExpPdf } from '../../../Redux/Actions/PfdActions';
 import GlobalValues, { FormTypeId } from '../../../Utils/constVals';
 import { GetAccountHolderDisregardedEntity, PostAccountHolderDisregardedEntity, post8233_EForm_Documentation,postW8EXPForm } from '../../../Redux/Actions';
-
+import PopupModal from "../../../Redux/Actions/poupModal";
 const AttachDocumentEXP = () => {
 
     const { authDetails } = useAuth();
@@ -47,7 +47,11 @@ const AttachDocumentEXP = () => {
             }
         ))
     }
-
+    const [popupState, setPopupState] = useState({
+        data:"",
+        status:false
+    })
+    
     const saveAndExitFunction = (values: any, successCallback: Function, errorCallback: Function) => {
         const prevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
         const urlValue = window.location.pathname.substring(1);
@@ -79,11 +83,19 @@ const AttachDocumentEXP = () => {
                 ContinueRoute='/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp'
                 BackRoute='/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp'
                 GetPdf={() => {
-                    dispatch(GetExpPdf(authDetails?.accountHolderId))
+                  
+                        dispatch(GetExpPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                          setPopupState({
+                              status:true,
+                              data: callbackData?.pdf
+                          })
+                      }))
+                
                 }}
                 ContinueFunction={continueFunction}
                 SaveAndExitFunction={saveAndExitFunction}
             />
+             <PopupModal data={popupState} setPopupState={setPopupState} />
         </div>
     )
 }

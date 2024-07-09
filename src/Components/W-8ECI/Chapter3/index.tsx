@@ -37,12 +37,13 @@ import Infoicon from "../../../assets/img/info.png";
 import { TaxPurposeSchema } from "../../../schemas/w8BenE";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import { useLocation } from "react-router-dom";
+import PopupModal from "../../../Redux/Actions/poupModal";
 import GlobalValues, { FormTypeId, FormTypeSelection } from "../../../Utils/constVals";
 import Chapter3StatusGuide from "../Chapter3Guide";
 import { convertToFormData } from "../../../Helpers/convertToFormData";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
-import { GetBenEPdf } from "../../../Redux/Actions/PfdActions";
+import { GetBenEPdf, GetEciPdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
 import View_Insructions from "../../viewInstruction";
 export default function Fedral_tax(props: any) {
@@ -175,6 +176,11 @@ export default function Fedral_tax(props: any) {
     setSelectedFile(e.target.files[0]);
   }
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
+
   const viewPdf = () => {
     history("/w8BenE_pdf");
   }
@@ -191,9 +197,14 @@ export default function Fedral_tax(props: any) {
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
             <div className="viewform"
-              onClick={() => {
-                dispatch(GetBenEPdf(authDetails?.accountHolderId))
-              }}>View Form</div>
+               onClick={() => {
+                dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                  setPopupState({
+                      status:true,
+                      data: callbackData?.pdf
+                  })
+              }))
+          }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[3].id === 5 ? (
@@ -2195,8 +2206,13 @@ export default function Fedral_tax(props: any) {
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
                             onClick={() => {
-                              dispatch(GetBenEPdf(authDetails?.accountHolderId))
-                            }}
+                              dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
+                        }}
                           >
                             View Form
                           </Button>
@@ -2257,6 +2273,7 @@ export default function Fedral_tax(props: any) {
             </div>
           </div>
         </div>
+        <PopupModal data={popupState} setPopupState={setPopupState} />
       </section>
     </>
   );

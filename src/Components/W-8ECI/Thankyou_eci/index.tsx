@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 import useAuth from "../../../customHooks/useAuth";
-
+import PopupModal from "../../../Redux/Actions/poupModal";
 export default function Term() {
   //States
   const { authDetails } = useAuth();
@@ -24,6 +24,10 @@ export default function Term() {
   const history = useNavigate();
   const pdfRef = useRef(null);
   const pdfRefnew = useRef(null);
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
@@ -124,9 +128,13 @@ export default function Term() {
                   <Button
                     //type="submit"
                     onClick={() => {
-                      // history("/w8Eci_pdf");
-                      dispatch(GetEciPdf(authDetails?.accountHolderId, () => { }, () => { }, true))
-                    }}
+                      dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                }}
                     style={{
                       border: "1px solid #0095dd",
                       background: "black",
@@ -226,6 +234,7 @@ export default function Term() {
           </div>
         </footer>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

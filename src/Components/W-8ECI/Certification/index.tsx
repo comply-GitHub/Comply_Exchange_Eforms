@@ -12,6 +12,7 @@ import {
   Paper,
   Checkbox,
 } from "@mui/material";
+import PopupModal from "../../../Redux/Actions/poupModal";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InfoIcon from "@mui/icons-material/Info";
 import { useNavigate } from "react-router-dom";
@@ -44,7 +45,10 @@ export default function Certifications(props: any) {
     isElectronicForm: false,
   });
   const [expanded, setExpanded] = React.useState<string | false>("");
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const W8ECIData = useSelector((state: any) => state.W8ECI);
   const GethelpData = useSelector(
@@ -109,9 +113,15 @@ export default function Certifications(props: any) {
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform"
+           
             onClick={() => {
-              dispatch(GetEciPdf(authDetails?.accountHolderId))
-            }}
+              dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
+        }}
           >View Form</div>
           <div className="helpvideo">
           
@@ -595,8 +605,13 @@ export default function Certifications(props: any) {
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() => {
-                          dispatch(GetEciPdf(authDetails?.accountHolderId))
-                        }}
+                          dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
+                    }}
                       >
                         View form
                       </Button>
@@ -654,6 +669,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

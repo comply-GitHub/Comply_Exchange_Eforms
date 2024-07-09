@@ -127,7 +127,7 @@ export const GetEciPdf = (accountHolderId: number, callback: Function = (data: a
                                 type: Utils.actionName.UpdateError,
                                 payload: { ...err },
                             });
-                            callback();
+                            callback(data);
                         }
                         convertAndDownloadPdf(data?.pdf, "ECI_Pdf.pdf", isDownload)
                     }

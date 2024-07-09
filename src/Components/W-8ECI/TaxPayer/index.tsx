@@ -21,6 +21,7 @@ import { Info, Delete } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import checksolid from "../../../assets/img/check-solid.png";
 import "./index.scss";
+import PopupModal from "../../../Redux/Actions/poupModal";
 import { useNavigate } from "react-router-dom";
 import { TaxPayerSchema } from "../../../schemas/w8ECI";
 import { GetHelpVideoDetails, W8_state_ECI, getAllCountries, getTinTypes, postW8ECI_EForm } from "../../../Redux/Actions";
@@ -34,6 +35,10 @@ import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 export default function Tin(props: any) {
 
   const { authDetails } = useAuth();
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || '{}')
   const isIndividual = obValues?.businessTypeId == 1;
   const isEntity = obValues?.businessTypeId == 2;
@@ -159,9 +164,14 @@ export default function Tin(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform" onClick={() => {
-              dispatch(GetEciPdf(authDetails?.accountHolderId))
-            }}>View Form</div>
+            <div className="viewform"  onClick={() => {
+              dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
+        }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[5].id === 7 ? (
@@ -1182,8 +1192,13 @@ export default function Tin(props: any) {
                         <Button
                           variant="contained"
                           onClick={() => {
-                            dispatch(GetEciPdf(authDetails?.accountHolderId))
-                          }}
+                            dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                      }}
                           style={{ color: "white", marginLeft: "15px" }}
                         >
                           View Form
@@ -1244,6 +1259,7 @@ export default function Tin(props: any) {
             </div>
           </div>
         </div>
+        <PopupModal data={popupState} setPopupState={setPopupState} />
       </section>
     </>
   );

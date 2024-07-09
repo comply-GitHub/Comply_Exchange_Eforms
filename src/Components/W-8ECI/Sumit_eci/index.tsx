@@ -16,7 +16,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { SubmitSchemaECI } from "../../../schemas/w8ECI";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
-
+import PopupModal from "../../../Redux/Actions/poupModal";
 
 
 
@@ -27,6 +27,10 @@ const Declaration = (props: any) => {
     setOpen(false);
   };
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   useEffect(() => {
     document.title = "Electronic Signature Confirmation"
   }, [])
@@ -424,8 +428,13 @@ const Declaration = (props: any) => {
                     }} formTypeId={FormTypeId.W8ECI} />
                     <Button
                       onClick={() => {
-                        dispatch(GetEciPdf(authDetails?.accountHolderId))
-                      }}
+                        dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                          setPopupState({
+                              status:true,
+                              data: callbackData?.pdf
+                          })
+                      }))
+                  }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >
@@ -481,6 +490,7 @@ const Declaration = (props: any) => {
           </Paper>
 
         </div>
+        <PopupModal data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
   );

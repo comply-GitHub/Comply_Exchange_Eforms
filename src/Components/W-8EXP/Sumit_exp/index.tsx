@@ -17,7 +17,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { SubmitSchemaECI } from "../../../schemas/w8ECI";
 import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
-
+import PopupModal from "../../../Redux/Actions/poupModal";
 const Declaration = (props: any) => {
   const { open, setOpen } = props;
   const { authDetails } = useAuth();
@@ -33,6 +33,11 @@ const Declaration = (props: any) => {
   useEffect(() => {
     document.title = "Electronic Signature Confirmation"
   }, [])
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
 
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -416,9 +421,14 @@ const Declaration = (props: any) => {
                       })
                     }} formTypeId={FormTypeId.W8EXP} />
                     <Button
-                      onClick={() => {
-                        dispatch(GetExpPdf(authDetails?.accountHolderId));
-                      }}
+                     onClick={() => {
+                      dispatch(GetExpPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                       setPopupState({
+                           status:true,
+                           data: callbackData?.pdf
+                       })
+                   }))
+                   }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >
@@ -474,6 +484,7 @@ const Declaration = (props: any) => {
           </Paper>
 
         </div>
+        <PopupModal data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
   );

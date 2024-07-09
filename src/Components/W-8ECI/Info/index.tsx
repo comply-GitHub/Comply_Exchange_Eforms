@@ -37,7 +37,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
-
+import PopupModal from "../../../Redux/Actions/poupModal";
 export default function Tin(props: any) {
   const { authDetails } = useAuth();
   const obValues = JSON.parse(
@@ -50,7 +50,10 @@ export default function Tin(props: any) {
   const W8ECI = useSelector((state: any) => state.W8ECI);
   const isIndividual = prevValues?.businessTypeId == 1;
   const isEntity = prevValues?.businessTypeId == 2;
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const [initialValue, setInitialValue] = useState({
     formTypeSelectionId: obValues?.businessTypeId,
     streetNumberName:
@@ -211,8 +214,13 @@ export default function Tin(props: any) {
                   <div
                     className="viewform"
                     onClick={() => {
-                      dispatch(GetEciPdf(authDetails?.accountHolderId));
-                    }}
+                      dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                }}
                   >
                     View Form
                   </div>
@@ -600,8 +608,13 @@ export default function Tin(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetEciPdf(authDetails?.accountHolderId));
-                          }}
+                            dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                      }}
                         >
                           View Form
                         </Button>
@@ -679,6 +692,7 @@ export default function Tin(props: any) {
                 </div>
               </div>
             </section>
+            <PopupModal data={popupState} setPopupState={setPopupState} />
           </Form>
         )}
       </Formik>

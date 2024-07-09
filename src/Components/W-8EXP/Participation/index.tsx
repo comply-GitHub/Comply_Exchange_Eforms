@@ -26,6 +26,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
+import PopupModal from "../../../Redux/Actions/poupModal";
 export default function Penalties() {
 
   const { authDetails } = useAuth();
@@ -35,7 +36,10 @@ export default function Penalties() {
   const [expanded, setExpanded] = React.useState<string | false>("");
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const W8EXPData = useSelector((state: any) => state.W8EXP);
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -146,8 +150,13 @@ export default function Penalties() {
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
                   <div className="viewform" onClick={() => {
-                    dispatch(GetExpPdf(authDetails?.accountHolderId));
-                  }}>View Form</div>
+             dispatch(GetExpPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
+          }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                     {GethelpData && GethelpData[5].id === 7 ? (
@@ -709,6 +718,20 @@ export default function Penalties() {
                           })
                         }} formTypeId={FormTypeId.W8EXP} />
                         <Button
+                       onClick={() => {
+                        dispatch(GetExpPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                         setPopupState({
+                             status:true,
+                             data: callbackData?.pdf
+                         })
+                     }))
+                     }}
+                        variant="contained"
+                        style={{ color: "white", marginLeft: "15px" }}
+                      >
+                        View form
+                      </Button>
+                        <Button
                           onClick={() => {
                             submitForm().then(() => {
                               Redirect("/Exp/Tax_Purpose_Exp/Chapter4_Exp/Tin_Exp/Certificate_Exp/Participation_Exp/Submit_Exp",authDetails?.agentId,history,true)
@@ -759,6 +782,7 @@ export default function Penalties() {
           </Form>
         )}
       </Formik>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
       {/* <Declaration
         open={open2}
         setOpen={setOpen2}

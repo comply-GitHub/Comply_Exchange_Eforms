@@ -33,14 +33,17 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
-
+import PopupModal from "../../../Redux/Actions/poupModal";
 export default function Tin(props: any) {
 
   const { authDetails } = useAuth();
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || '{}')
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
 
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const skippedSteps = useSelector((state: any) => state.SkippedSteps);
   const [isGiinEnabled, setIsGiinEnabled] = useState(false);
   const GIINTypes = useSelector((state: any) => state?.GIINTypes)
@@ -200,8 +203,13 @@ export default function Tin(props: any) {
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
             <div className="viewform" onClick={() => {
-              dispatch(GetExpPdf(authDetails?.accountHolderId));
-            }}>View Form</div>
+             dispatch(GetExpPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
+          }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[5].id === 7 ? (
@@ -1305,8 +1313,13 @@ export default function Tin(props: any) {
                         <Button
                           variant="contained"
                           onClick={() => {
-                            dispatch(GetExpPdf(authDetails?.accountHolderId));
-                          }}
+                            dispatch(GetExpPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                             setPopupState({
+                                 status:true,
+                                 data: callbackData?.pdf
+                             })
+                         }))
+                         }}
                           style={{ color: "white", marginLeft: "15px" }}
                         >
                           View Form
@@ -1361,6 +1374,7 @@ export default function Tin(props: any) {
             </div>
           </div>
         </div>
+        <PopupModal data={popupState} setPopupState={setPopupState} />
       </section>
     </>
   );

@@ -34,6 +34,7 @@ import {
   GetChapter3Status,
   postW8EXPForm,
 } from "../../../Redux/Actions";
+import PopupModal from "../../../Redux/Actions/poupModal";
 import { TaxPurposeSchema } from "../../../schemas/w8Exp";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import useAuth from "../../../customHooks/useAuth";
@@ -86,7 +87,10 @@ export default function Fedral_tax(props: any) {
   const [toolInfo, setToolInfo] = useState("");
   const history = useNavigate();
   const [expanded, setExpanded] = React.useState<string | false>("");
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -146,8 +150,13 @@ export default function Fedral_tax(props: any) {
             <div className="viewInstructions">View Instructions</div>
             <div className="viewform"
               onClick={() => {
-                dispatch(GetExpPdf(authDetails?.accountHolderId));
-              }}>View Form</div>
+                dispatch(GetExpPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                 setPopupState({
+                     status:true,
+                     data: callbackData?.pdf
+                 })
+             }))
+             }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[6].id === 8 ? (
@@ -3085,8 +3094,13 @@ export default function Fedral_tax(props: any) {
                           <Button
                             // type="submit"
                             onClick={() => {
-                              dispatch(GetExpPdf(authDetails?.accountHolderId));
-                            }}
+                              dispatch(GetExpPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                               setPopupState({
+                                   status:true,
+                                   data: callbackData?.pdf
+                               })
+                           }))
+                           }}
                             disabled={isSubmitting}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
@@ -3144,6 +3158,7 @@ export default function Fedral_tax(props: any) {
             </div>
           </div>
         </div>
+        <PopupModal data={popupState} setPopupState={setPopupState} />
       </section>
     </>
   );

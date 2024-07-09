@@ -31,6 +31,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
+import PopupModal from "../../../Redux/Actions/poupModal";
 export default function Penalties() {
 
   const { authDetails } = useAuth();
@@ -82,6 +83,10 @@ export default function Penalties() {
   const [clickCount, setClickCount] = useState(1);
   const dispatch = useDispatch();
   const history = useNavigate();
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
 
   const viewPdf = () => {
     history("/w8Eci_pdf", { replace: true });
@@ -148,9 +153,14 @@ export default function Penalties() {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
-                  <div className="viewform" onClick={() => {
-                    dispatch(GetEciPdf(authDetails?.accountHolderId))
-                  }}>View Form</div>
+                  <div className="viewform"   onClick={() => {
+              dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
+        }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                     {GethelpData && GethelpData[5].id === 7 ? (
@@ -723,6 +733,21 @@ export default function Penalties() {
                           })
                         }} formTypeId={FormTypeId.W8ECI} />
                         <Button
+                        variant="contained"
+                        style={{ color: "white", marginLeft: "15px" }}
+                        onClick={() => {
+                          dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
+                    }}
+                      >
+                        View form
+                      </Button>
+                       
+                        <Button
                           onClick={() => {
                             submitForm().then(() => {
                               Redirect("/W-8ECI/Certification/Participation/Submit_Eci",authDetails?.agentId,history,false)
@@ -773,6 +798,7 @@ export default function Penalties() {
           </Form>
         )}
       </Formik>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
       {/* <Declaration
         open={open2}
         setOpen={setOpen2}

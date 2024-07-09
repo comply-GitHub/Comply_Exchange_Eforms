@@ -10,7 +10,7 @@ import Paper from "@mui/material/Paper";
 import DoneIcon from "@mui/icons-material/Done";
 
 import { useRef } from "react";
-
+import PopupModal from "../../../Redux/Actions/poupModal";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -24,6 +24,10 @@ export default function Term() {
   const history = useNavigate();
   const pdfRef = useRef(null);
   const pdfRefnew = useRef(null);
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -120,8 +124,13 @@ export default function Term() {
                 <Button
                   // type="submit"
                   onClick={() => {
-                    dispatch(GetExpPdf(authDetails?.accountHolderId, () => { }, () => { }, true));
-                  }}
+                    dispatch(GetExpPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                     setPopupState({
+                         status:true,
+                         data: callbackData?.pdf
+                     })
+                 }))
+                 }}
                   style={{
                     border: "1px solid #0095dd",
                     background: "black",
@@ -214,6 +223,7 @@ export default function Term() {
           </div>
         </footer>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

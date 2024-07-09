@@ -34,7 +34,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
 import View_Insructions from "../../viewInstruction";
-
+import PopupModal from "../../../Redux/Actions/poupModal";
 export default function Factors() {
   const [initialValue, setInitialValue] = useState({
     isAppplicationCheck: false,
@@ -85,6 +85,11 @@ export default function Factors() {
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
+
+    const [popupState, setPopupState] = useState({
+      data:"",
+      status:false
+  })
 
     const [canvaBx, setCanvaBx] = useState(false);
   const handleCanvaOpen = () => {
@@ -178,9 +183,14 @@ export default function Factors() {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-                  <div className="viewform" onClick={() => {
-                    dispatch(GetEciPdf(authDetails?.accountHolderId))
-                  }}>View Form</div>
+                  <div className="viewform"  onClick={() => {
+              dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
+        }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                     {GethelpData && GethelpData[5].id === 7 ? (
@@ -521,8 +531,13 @@ export default function Factors() {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetEciPdf(authDetails?.accountHolderId))
-                          }}
+                            dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                      }}
                         >
                           View form
                         </Button>
@@ -575,6 +590,7 @@ export default function Factors() {
                   </div>
                 </div>
               </div>
+              <PopupModal data={popupState} setPopupState={setPopupState} />
             </section>
           </Form>
         )}

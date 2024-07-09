@@ -41,6 +41,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
+import PopupModal from "../../../Redux/Actions/poupModal";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const {
@@ -92,6 +93,11 @@ export default function Fedral_tax(props: any) {
   useEffect(() => {
     document.title = "Chapter III"
   }, [])
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
 
   useEffect(() => {
     dispatch(getAllCountries());
@@ -1895,8 +1901,13 @@ export default function Fedral_tax(props: any) {
                             disabled={isSubmitting}
                             variant="contained"
                             onClick={() => {
-                              dispatch(GetEciPdf(authDetails?.accountHolderId))
-                            }}
+                              dispatch(GetEciPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
+                        }}
                             style={{ color: "white", marginLeft: "15px" }}
                           >
                             View Form
@@ -1953,6 +1964,7 @@ export default function Fedral_tax(props: any) {
             </div>
           </div>
         </div>
+        <PopupModal data={popupState} setPopupState={setPopupState} />
       </section >
     </>
   );

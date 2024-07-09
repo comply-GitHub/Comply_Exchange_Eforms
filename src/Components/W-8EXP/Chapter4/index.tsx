@@ -49,6 +49,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetExpPdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
+import PopupModal from "../../../Redux/Actions/poupModal";
 export default function Fedral_tax(props: any) {
   const dispatch = useDispatch();
   const { authDetails } = useAuth();
@@ -139,7 +140,10 @@ export default function Fedral_tax(props: any) {
     dispatch(GetChapter4Statuses(FormTypeId.W8EXP));
     LoadData();
   }, []);
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const getCountriesReducer = useSelector(
     (state: any) => state.getCountriesReducer
   );
@@ -186,9 +190,14 @@ export default function Fedral_tax(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
-            <div className="viewform" onClick={() => {
-              dispatch(GetExpPdf(authDetails?.accountHolderId));
-            }}>View Form</div>
+            <div className="viewform"   onClick={() => {
+                        dispatch(GetExpPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                         setPopupState({
+                             status:true,
+                             data: callbackData?.pdf
+                         })
+                     }))
+                     }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[3].id === 5 ? (
@@ -1395,8 +1404,13 @@ export default function Fedral_tax(props: any) {
                             disabled={isSubmitting}
                             variant="contained"
                             onClick={() => {
-                              dispatch(GetExpPdf(authDetails?.accountHolderId));
-                            }}
+                              dispatch(GetExpPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                               setPopupState({
+                                   status:true,
+                                   data: callbackData?.pdf
+                               })
+                           }))
+                           }}
                             style={{ color: "white", marginLeft: "15px" }}
                           >
                             View Form
@@ -1465,6 +1479,7 @@ export default function Fedral_tax(props: any) {
             </div >
           </div >
         </div >
+        <PopupModal data={popupState} setPopupState={setPopupState} />
       </section >
     </>
   );

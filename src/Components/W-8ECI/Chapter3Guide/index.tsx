@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Accordion, AccordionSummary, Typography, AccordionDetails, Button } from '@mui/material';
 import Link from "@mui/material/Link";
 import { ExpandMore, Info } from "@mui/icons-material";
 import { useNavigate } from 'react-router';
-
+import PopupModal from "../../../Redux/Actions/poupModal";
+import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
 const Chapter3StatusGuide = () => {
     const history= useNavigate();
     const [expanded, setExpanded] = React.useState<string | false>("");
@@ -21,7 +22,10 @@ const Chapter3StatusGuide = () => {
             setExpandedState(newExpanded ? panel : false);
         };
 
-        
+        const [popupState, setPopupState] = useState({
+            data:"",
+            status:false
+        })   
 
  const viewPdf=()=>{
     history("/w8BenE_pdf", { replace: true });
