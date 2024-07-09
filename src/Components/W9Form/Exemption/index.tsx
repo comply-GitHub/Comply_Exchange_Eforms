@@ -36,7 +36,8 @@ import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
-import { TRUE } from "sass";
+
+import PopupModa from "../../../Redux/Actions/poupModal";
 export default function FCTA_Reporting(props: any) {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -53,7 +54,10 @@ export default function FCTA_Reporting(props: any) {
   }
   const [clickCount, setClickCount] = useState(0);
   const [report, setReport] = useState<string>("");
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -106,9 +110,14 @@ export default function FCTA_Reporting(props: any) {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={() => {
-            dispatch(GetW9Pdf(authDetails?.accountHolderId))
-          }}>View Form</div>
+          <div className="viewform"  onClick={() => {
+                          dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                      }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
@@ -412,8 +421,13 @@ export default function FCTA_Reporting(props: any) {
                   variant="contained"
                   style={{ color: "white", marginLeft: "10px" }}
                   onClick={() => {
-                    dispatch(GetW9Pdf(authDetails?.accountHolderId))
-                  }}
+                    dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                }}
                 >
                   View Form
                 </Button>
@@ -469,6 +483,7 @@ export default function FCTA_Reporting(props: any) {
           </Form>
         )}
       </Formik>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
 
   )

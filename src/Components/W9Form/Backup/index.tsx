@@ -32,6 +32,8 @@ import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
+import PopupModa from "../../../Redux/Actions/poupModal";
+
 export default function Backup_witholding(props: any) {
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
@@ -74,6 +76,10 @@ export default function Backup_witholding(props: any) {
   const handleCanvaClose = () => {
     setCanvaBx(false);
   }
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
@@ -112,9 +118,14 @@ export default function Backup_witholding(props: any) {
         <div className="overlay-div">
           <div className="overlay-div-group">
             <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-            <div className="viewform" onClick={() => {
-              dispatch(GetW9Pdf(authDetails?.accountHolderId))
-            }} >View Form</div>
+            <div className="viewform"  onClick={() => {
+                                                            dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                                                setPopupState({
+                                                                    status:true,
+                                                                    data: callbackData?.pdf
+                                                                })
+                                                            }))
+                                                        }} >View Form</div>
             <div className="helpvideo">
               {GethelpData && GethelpData[8].id === 10 ? (
                 <a
@@ -984,8 +995,13 @@ export default function Backup_witholding(props: any) {
                   variant="contained"
                   style={{ color: "white", marginLeft: "10px" }}
                   onClick={() => {
-                    dispatch(GetW9Pdf(authDetails?.accountHolderId))
-                  }}
+                    dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                }}
                 >
                   View Form
                 </Button>
@@ -1078,7 +1094,7 @@ export default function Backup_witholding(props: any) {
           )}
         </Formik>
       </section>
-
+      <PopupModa data={popupState} setPopupState={setPopupState} />
 
     </>
   );

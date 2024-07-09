@@ -39,6 +39,7 @@ import {
   GetHelpVideoDetails,
   GetLimitationBenefits,
 } from "../../../../../Redux/Actions";
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 import Redirect from "../../../../../Router/RouterSkip";
 import View_Insructions from "../../../../viewInstruction";
 export default function FCTA_Reporting(props: any) {
@@ -74,6 +75,10 @@ export default function FCTA_Reporting(props: any) {
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
 
   
@@ -152,9 +157,14 @@ export default function FCTA_Reporting(props: any) {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={() => {
-            dispatch(GetBenPdf(authDetails?.accountHolderId))
-          }}>
+          <div className="viewform"  onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
+        }}>
             View Form
           </div>
           <div className="helpvideo">
@@ -727,8 +737,13 @@ values.ownerResidentId !== "---" && values.isSubmissionClaimTreaty === "yes" ?(
                         style={{ color: "white", marginLeft: "15px" }}
                         variant="contained"
                         onClick={() => {
-                          dispatch(GetBenPdf(authDetails?.accountHolderId))
-                        }}
+                          dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
+                    }}
                       >
                         VIEW FORM
                       </Button>
@@ -795,6 +810,7 @@ values.ownerResidentId !== "---" && values.isSubmissionClaimTreaty === "yes" ?(
           </div>
         </div>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

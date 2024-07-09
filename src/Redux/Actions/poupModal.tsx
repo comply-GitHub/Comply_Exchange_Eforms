@@ -45,22 +45,7 @@ export default function Index(props:any) {
 
   return (
     <React.Fragment>
-      {/* <Dialog 
-        open={data?.status}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-          <iframe width='100%' height='100%' src={`${data?.data}`}></iframe>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Back</Button>
-        </DialogActions>
-      </Dialog> */}
+      
       <Modal
         open={data?.status}
         onClose={handleClose}
@@ -68,7 +53,7 @@ export default function Index(props:any) {
         aria-describedby="child-modal-description"
       >
         <>
-        <Box sx={{ ...style, width: "96%" , height:'96%'}}>
+        <Box sx={{ ...style, width: "99%" , height:'96%'}}>
         <iframe width='100%' height='96%' src={`${data?.data}`}></iframe>
         <Typography  style={{justifyContent:"center",display:"flex",marginTop:"6px"}}>
         <Button  variant="contained" onClick={handleClose}>Back</Button>

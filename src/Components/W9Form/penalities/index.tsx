@@ -33,6 +33,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { partCertiSchema_W9 } from "../../../schemas/w8Ben";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import moment from "moment";
+import PopupModa from "../../../Redux/Actions/poupModal";
 import SecurityCodeRecover from "../../Reusable/SecurityCodeRecover";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
@@ -106,6 +107,10 @@ export default function Penalties() {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
 
   const viewPdf = () => {
     history("/w8BenE_pdf", { replace: true });
@@ -187,8 +192,13 @@ export default function Penalties() {
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
                   <div className="viewform"
                     onClick={() => {
-                      dispatch(GetW9Pdf(authDetails?.accountHolderId))
-                    }}>View Form</div>
+                      dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                          setPopupState({
+                              status:true,
+                              data: callbackData?.pdf
+                          })
+                      }))
+                  }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                     {GethelpData && GethelpData[3].id === 5 ? (
@@ -763,9 +773,14 @@ export default function Penalties() {
                         }}
                       >
                         <Button
-                          onClick={() => {
-                            dispatch(GetW9Pdf(authDetails?.accountHolderId))
-                          }}
+                        onClick={() => {
+                          dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                      }}
                           variant="contained"
                           style={{ color: "white" }}
                         >
@@ -868,6 +883,7 @@ export default function Penalties() {
         )}
       </Formik >
 
+      <PopupModa data={popupState} setPopupState={setPopupState} />
       <Declaration
         open={open2}
         setOpen={setOpen2}

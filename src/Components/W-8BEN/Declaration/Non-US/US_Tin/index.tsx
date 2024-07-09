@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import {
   W8_state, getTinTypes, getAllCountries, GetHelpVideoDetails, postW8BENForm, LoadExistingFormData,
 } from "../../../../../Redux/Actions";
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 import { useDispatch, useSelector } from "react-redux";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -123,6 +124,10 @@ export default function Tin(props: any) {
   const handleCanvaOpen = () => {
     setCanvaBx(true);
   }
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const handleCanvaClose = () => {
     setCanvaBx(false);
   }
@@ -177,9 +182,14 @@ export default function Tin(props: any) {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={() => {
-            dispatch(GetBenPdf(authDetails?.accountHolderId))
-          }}>View Form</div>
+          <div className="viewform"   onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
+        }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[3].id === 5 ? (
@@ -1136,8 +1146,13 @@ export default function Tin(props: any) {
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() => {
-                          dispatch(GetBenPdf(authDetails?.accountHolderId))
-                        }}
+                          dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
+                    }}
                       >
                         View Form
                       </Button>
@@ -1201,6 +1216,7 @@ export default function Tin(props: any) {
           </div>
         </div>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

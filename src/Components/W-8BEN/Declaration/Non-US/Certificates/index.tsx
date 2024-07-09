@@ -10,6 +10,7 @@ import {
   Paper,
   Checkbox,
 } from "@mui/material";
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik } from "formik";
 import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
@@ -39,6 +40,11 @@ export default function Certifications(props: any) {
   const handleCanvaClose = () => {
     setCanvaBx(false);
   }
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   useEffect(() => {
     document.title = "Certification I"
   }, [])
@@ -95,8 +101,13 @@ export default function Certifications(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetBenPdf(authDetails?.accountHolderId))
-          }}>View Form</div>
+              dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
+        }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[4].id === 6 ? (
@@ -655,11 +666,16 @@ export default function Certifications(props: any) {
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() => {
-                          dispatch(GetBenPdf(authDetails?.accountHolderId))
-                        }}
+                          dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
+                    }}
                       >
-                        {" "}
-                        View form{" "}
+                      
+                        View form
                       </Button>
                       <Button
                         type="submit"
@@ -707,6 +723,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

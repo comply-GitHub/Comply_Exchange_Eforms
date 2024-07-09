@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 import { GetBenPdf } from '../../../../../Redux/Actions/PfdActions';
 import GlobalValues, { FormTypeId } from '../../../../../Utils/constVals';
 import { GetAccountHolderDisregardedEntity, PostAccountHolderDisregardedEntity, post8233_EForm_Documentation,postW8BENForm } from '../../../../../Redux/Actions';
-
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 const AttachDocumentEXP = () => {
 
     const { authDetails } = useAuth();
@@ -23,7 +23,10 @@ const AttachDocumentEXP = () => {
     //         }))
     //     }
     // }, [authDetails])
-
+    const [popupState, setPopupState] = useState({
+        data:"",
+        status:false
+    })
 
     const handleBackRoute = () => {
         const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
@@ -91,11 +94,17 @@ const AttachDocumentEXP = () => {
                 ContinueRoute="/W-8BEN/Declaration/US_Tin/Certificates"
                 BackRoute={handleBackRoute()}
                 GetPdf={() => {
-                    dispatch(GetBenPdf(authDetails?.accountHolderId))
+                    dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
                 }}
                 ContinueFunction={continueFunction}
                 SaveAndExitFunction={saveAndExitFunction}
             />
+              <PopupModal data={popupState} setPopupState={setPopupState} />
         </div>
     )
 }

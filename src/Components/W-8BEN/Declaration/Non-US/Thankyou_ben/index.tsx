@@ -5,7 +5,7 @@ import FormW8IMY from "../../../../../formPDF/W8IMY";
 // import FormEXP from "../../formPDF/formEXP";
 
 import { Typography, Button } from "@mui/material";
-
+import PopupModal from "../../../../../Redux/Actions/poupModal"
 import Paper from "@mui/material/Paper";
 import DoneIcon from "@mui/icons-material/Done";
 import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
@@ -21,6 +21,10 @@ export default function Term() {
   const history = useNavigate();
   const pdfRef = useRef(null);
   const pdfRefnew = useRef(null);
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
   const [notView, setNotView] = useState(false);
@@ -120,10 +124,14 @@ export default function Term() {
 
                 <div style={{ marginTop: "25px" }}>
                   <Button
-                    //type="submit"
                     onClick={() => {
-                      dispatch(GetBenPdf(authDetails?.accountHolderId, () => { }, () => { }, true))
-                    }}
+                      dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                }}
                     style={{
                       border: "1px solid #0095dd",
                       background: "black",
@@ -215,6 +223,7 @@ export default function Term() {
           </div>
         </footer>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

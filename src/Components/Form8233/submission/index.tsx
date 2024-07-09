@@ -27,6 +27,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetForm8233Pdf } from "../../../Redux/Actions/PfdActions";
 import SecurityCodeRecover from "../../Reusable/SecurityCodeRecover";
 import Redirect from "../../../Router/RouterSkip";
+import PopupModa from "../../../Redux/Actions/poupModal"
 export default function Penalties() {
   const { authDetails } = useAuth();
 
@@ -66,6 +67,10 @@ export default function Penalties() {
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
   const dispatch = useDispatch();
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const history = useNavigate();
   const [showRecoverSection, setShowRecoverSection] = useState(false);
   const [isSecurityWordMatched, setIsSecurityWordMatched] = useState(false);
@@ -143,9 +148,14 @@ export default function Penalties() {
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
                   <div className="viewform"
-                    onClick={() => {
-                      dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
-                    }}>View Form</div>
+                   onClick={() => {
+                    dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                }}>View Form</div>
                   <div className="helpvideo">
 
                     {GethelpData && GethelpData[9].id === 12 ? (
@@ -637,6 +647,20 @@ export default function Penalties() {
                             );
                           })
                         }} formTypeId={FormTypeId.F8233} ></SaveAndExit>
+                         <Button
+                          variant="contained"
+                          style={{ color: "white", marginLeft: "15px" }}
+                          onClick={() => {
+                            dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
+                        }}
+                        >
+                          View Form
+                        </Button>
                         <Button
                           type="submit"
                           variant="contained"
@@ -684,12 +708,7 @@ export default function Penalties() {
         )}
       </Formik>
 
-      {/* <Declaration
-        open={open2}
-        setOpen={setOpen2}
-        handleClickOpen={handleClickOpen2}
-        handleClose={handleClose2}
-      /> */}
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </>
   );
 }

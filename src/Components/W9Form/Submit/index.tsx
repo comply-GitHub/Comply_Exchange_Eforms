@@ -16,13 +16,18 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 import useAuth from "../../../customHooks/useAuth";
 import Redirect from "../../../Router/RouterSkip";
-
+import PopupModa from "../../../Redux/Actions/poupModal";
 const Declaration = (props: any) => {
   const { authDetails } = useAuth();
   const { open, setOpen } = props;
   const handleClose = () => {
     setOpen(false);
   };
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -406,9 +411,14 @@ const Declaration = (props: any) => {
                       })
                     }} formTypeId={FormTypeId.W9} />
                     <Button
-                      onClick={() => {
-                        dispatch(GetW9Pdf(authDetails?.accountHolderId))
-                      }}
+                       onClick={() => {
+                        dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
+                    }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                     >
@@ -478,6 +488,7 @@ const Declaration = (props: any) => {
           </Paper>
 
         </div>
+        <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
   );

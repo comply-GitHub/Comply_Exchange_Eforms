@@ -14,6 +14,7 @@ import {
   Paper,
   Checkbox,
 } from "@mui/material";
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 import InfoIcon from "@mui/icons-material/Info";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -27,6 +28,7 @@ import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import View_Insructions from "../../../../viewInstruction";
+import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 export default function Presence(props: any) {
   const { authDetails } = useAuth();
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
@@ -49,7 +51,10 @@ export default function Presence(props: any) {
   useEffect(() => {
     document.title = "Steps | Substantial Presence Test"
   }, [])
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const [totalQualifyingDays, setTotalQualifyingDays] = useState(0 || PrevStepData.totalQualifyingDays);
   const calculateTotalQualifyingDays = (values: any) => {
     const total =
@@ -147,7 +152,14 @@ export default function Presence(props: any) {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-                <div className="viewform">View Form</div>
+                <div className="viewform"  onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
+        }}>View Form</div>
                 <div className="helpvideo">
 
                   {GethelpData && GethelpData[9].id === 12 ? (
@@ -566,6 +578,14 @@ export default function Presence(props: any) {
                         })
                       }} formTypeId={FormTypeId.BEN} />
                       <Button
+                       onClick={() => {
+                        dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                          setPopupState({
+                              status:true,
+                              data: callbackData?.pdf
+                          })
+                      }))
+                  }}
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                       >
@@ -627,6 +647,7 @@ export default function Presence(props: any) {
               </div>
             </div>
           </section>
+          <PopupModal data={popupState} setPopupState={setPopupState} />
         </Form>
       )}
     </Formik>

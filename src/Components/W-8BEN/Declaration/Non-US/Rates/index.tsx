@@ -12,6 +12,7 @@ import {
   Input,
   TextField,
 } from "@mui/material";
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "./index.scss";
@@ -40,6 +41,10 @@ export default function Factors() {
   const history = useNavigate();
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const location = useLocation();
   const [numPapers, setNumPapers] = useState(1);
   const addIncomeTypePaper = () => {
@@ -230,9 +235,14 @@ export default function Factors() {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={() => {
-            dispatch(GetBenPdf(authDetails?.accountHolderId))
-          }}>View Form</div>
+          <div className="viewform"  onClick={() => {
+                          dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
+                    }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[4].id === 6 ? (
@@ -640,8 +650,13 @@ export default function Factors() {
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() => {
-                          dispatch(GetBenPdf(authDetails?.accountHolderId))
-                        }}
+                          dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
+                    }}
                       >
                         View form
                       </Button>
@@ -714,6 +729,7 @@ export default function Factors() {
           </div>
         </div>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

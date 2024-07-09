@@ -11,13 +11,18 @@ import { Form, Formik } from "formik";
 import { W8_state_ECI, postW8BENForm } from "../../../../../Redux/Actions";
 import { useDispatch } from "react-redux";
 import useAuth from "../../../../../customHooks/useAuth";
-
+import PopupModal from "../../../../../Redux/Actions/poupModal";
+import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 const Declaration = (props: any) => {
   const location = useLocation();
   const { open, setOpen } = props;
   const handleClose = () => {
     setOpen(false);
   };
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -391,7 +396,14 @@ const Declaration = (props: any) => {
                     <Button
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
-                      onClick={viewPdf}
+                      onClick={() => {
+                        dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                          setPopupState({
+                              status:true,
+                              data: callbackData?.pdf
+                          })
+                      }))
+                  }}
                     >
                       View Form
                     </Button>
@@ -440,6 +452,7 @@ const Declaration = (props: any) => {
             </Formik>
           </Paper>
         </div>
+        <PopupModal data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
   );

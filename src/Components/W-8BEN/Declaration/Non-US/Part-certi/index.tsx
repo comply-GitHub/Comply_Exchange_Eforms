@@ -37,6 +37,7 @@ import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import moment from "moment";
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 import View_Insructions from "../../../../viewInstruction";
 type ValuePiece = Date | null;
@@ -114,7 +115,10 @@ export default function Penalties() {
     isCheckAcceptance: W8BENData?.isCheckAcceptance ? true : false
 
   };
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
 
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -169,9 +173,14 @@ export default function Penalties() {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-                  <div className="viewform" onClick={() => {
-                    dispatch(GetBenPdf(authDetails?.accountHolderId))
-                  }}>View Form</div>
+                  <div className="viewform"  onClick={() => {
+                          dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
+                    }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                     {GethelpData && GethelpData[4].id === 6 ? (
@@ -745,8 +754,13 @@ export default function Penalties() {
                       >
                         <Button
                           onClick={() => {
-                            dispatch(GetBenPdf(authDetails?.accountHolderId))
-                          }}
+                            dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                      }}
                           variant="contained"
                           style={{ color: "white" }}
                         >
@@ -829,7 +843,7 @@ export default function Penalties() {
           </Form>
         )}
       </Formik>
-
+      <PopupModal data={popupState} setPopupState={setPopupState} />
       <Declaration
         open={open2}
         setOpen={setOpen2}

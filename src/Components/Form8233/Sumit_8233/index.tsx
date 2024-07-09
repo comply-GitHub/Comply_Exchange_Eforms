@@ -15,7 +15,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import useAuth from "../../../customHooks/useAuth";
 import { GetForm8233Pdf } from "../../../Redux/Actions/PfdActions";
-
+import PopupModa from "../../../Redux/Actions/poupModal";
 
 
 const Declaration = (props: any) => {
@@ -36,6 +36,10 @@ const Declaration = (props: any) => {
     document.title = "Electronic Signature Confirmation"
   }, [])
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
@@ -426,8 +430,13 @@ const Declaration = (props: any) => {
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                       onClick={() => {
-                        dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
-                      }}
+                        dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
+                    }}
                     >
                       View Form
                     </Button>

@@ -22,6 +22,7 @@ import { Formik, Form } from "formik";
 import { SubstantialSchema } from "../../../schemas/8233";
 import { CREATE_8233, GetHelpVideoDetails, UpsertSubstantialUsPassiveNFE, post8233_EForm, postW8BEN_EForm } from "../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
+import PopupModa from "../../../Redux/Actions/poupModal";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../customHooks/useAuth";
@@ -31,12 +32,10 @@ export default function Presence(props: any) {
   const { authDetails } = useAuth();
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
 
-  // const initialValue = {
-  //   daysAvailableInThisYear: PrevStepData?.daysAvailableInThisYear,
-  //   daysAvailableIn_OneYearbefore: PrevStepData?.daysAvailableIn_OneYearbefore,
-  //   daysAvailableIn_TwoYearbefore: PrevStepData?.daysAvailableIn_TwoYearbefore,
-  //   totalQualifyingDays: PrevStepData?.totalQualifyingDays,
-  // };
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const [expanded, setExpanded] = React.useState<string | false>("");
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
@@ -138,8 +137,13 @@ export default function Presence(props: any) {
                 <div className="viewInstructions">View Instructions</div>
                 <div className="viewform"
                   onClick={() => {
-                    dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
-                  }}>View Form</div>
+                    dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                }}>View Form</div>
                 <div className="helpvideo">
                   {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                   {GethelpData && GethelpData[9].id === 12 ? (
@@ -553,9 +557,13 @@ export default function Presence(props: any) {
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() => {
-                          dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
-                        }}
-                      >
+                          dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                      }}                      >
                         View Form
                       </Button>
                       <Button
@@ -598,9 +606,12 @@ export default function Presence(props: any) {
                 </div>
               </div>
             </div>
+            <PopupModa data={popupState} setPopupState={setPopupState} />
           </section>
         </Form>
       )}
+      
     </Formik>
+    
   );
 }

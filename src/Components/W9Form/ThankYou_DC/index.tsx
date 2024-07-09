@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../../customHooks/useAuth";
 import { useDispatch } from "react-redux";
 import { GetBenPdf, GetW9DCPdf } from "../../../Redux/Actions/PfdActions";
-
+import PopupModal from "../../../Redux/Actions/poupModal"
 export default function Term() {
   //States  
   const { authDetails } = useAuth();
@@ -21,7 +21,10 @@ export default function Term() {
   const pdfRefnew = useRef(null);
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
 
   const auth = JSON.parse(authDetailsString);
@@ -115,8 +118,13 @@ export default function Term() {
                   <Button
                     //type="submit"
                     onClick={() => {
-                      dispatch(GetW9DCPdf(authDetails?.accountHolderId, () => { }, () => { }, true))
-                    }}
+                      dispatch(GetW9DCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                }}
                     style={{
                       border: "1px solid #0095dd",
                       backgroundColor: "#1976d2",
@@ -183,6 +191,7 @@ export default function Term() {
           </div>
         </footer>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

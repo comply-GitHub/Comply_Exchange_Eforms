@@ -36,9 +36,11 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "./index.scss";
+import PopupModal from "../../../Redux/Actions/poupModal"
 import useAuth from "../../../customHooks/useAuth";
 import { boolean } from "yup";
 import Redirect from "../../../Router/RouterSkip";
+import { GetW9DCPdf } from "../../../Redux/Actions/PfdActions";
 type ValuePiece = Date | null;
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
 export default function Certifications(props: any) {
@@ -49,7 +51,10 @@ export default function Certifications(props: any) {
   console.log(PrevStepData, "prevv")
   const urlValue = location.pathname.substring(1);
   const [IsCompDataValid,SetIsCompDataValid]=useState(false);
- 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
 // console.log(formattedDate); 
 const individualSelfType = {
   // firstName: SelfControllingData?.[0]?.firstName || "",
@@ -422,7 +427,14 @@ const individualSelfType = {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={viewPdf}>View Form</div>
+          <div className="viewform" onClick={() => {
+            dispatch(GetW9DCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
+      }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
@@ -532,7 +544,14 @@ const individualSelfType = {
 
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
-                          onClick={viewPdf}
+                          onClick={() => {
+                            dispatch(GetW9DCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                      }}
                         >
                           View form
                         </Button>
@@ -564,6 +583,7 @@ type="submit"
           </div>
         </div>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

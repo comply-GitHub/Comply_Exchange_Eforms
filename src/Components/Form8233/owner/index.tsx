@@ -31,13 +31,16 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { GetForm8233Pdf } from "../../../Redux/Actions/PfdActions";
 
-
+import PopupModal from "../../../Redux/Actions/poupModal"
 
 export default function Tin(props: any) {
 
   const { authDetails } = useAuth();
   const onBoardingFormValuesPrevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const AgentId = JSON.parse(localStorage.getItem("authDetails") ?? "null");
   const [dateOfEntryIntoUSState, setDateOfEntryIntoUSState] = useState("")
   const [dateNonImmigrationStatusExpireState, setDateNonImmigrationStatusExpireState] = useState("")
@@ -200,9 +203,14 @@ export default function Tin(props: any) {
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
                   <div className="viewform"
-                    onClick={() => {
-                      dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
-                    }}>View Form</div>
+                   onClick={() => {
+                    dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
                     {GethelpData && GethelpData[9].id === 12 ? (
@@ -1325,8 +1333,13 @@ export default function Tin(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
-                          }}
+                            dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
+                        }}
                         >
                           View Form
                         </Button>
@@ -1373,6 +1386,7 @@ export default function Tin(props: any) {
           </Form>
         )}
       </Formik>
+      <PopupModal data={popupState} setPopupState={setPopupState}/>
     </>
   );
 }

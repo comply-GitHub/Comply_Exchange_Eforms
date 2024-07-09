@@ -29,7 +29,7 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetW9DCPdf } from "../../../Redux/Actions/PfdActions";
 import useAuth from "../../../customHooks/useAuth";
 import Redirect from "../../../Router/RouterSkip";
-
+import PopupModal from "../../../Redux/Actions/poupModal";
 export default function Certifications(props: any) {
   const { authDetails } = useAuth();
   const location = useLocation();
@@ -61,6 +61,10 @@ export default function Certifications(props: any) {
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, [])
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const history = useNavigate()
   // const handleCheckbox2Change = () => {
   //   setCheckbox2(!checkbox2);
@@ -101,8 +105,13 @@ export default function Certifications(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetW9DCPdf(authDetails?.accountHolderId))
-          }}>View Form</div>
+            dispatch(GetW9DCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
+      }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
               <a
@@ -314,8 +323,13 @@ export default function Certifications(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetW9DCPdf(authDetails?.accountHolderId))
-                          }}
+                            dispatch(GetW9DCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                      }}
                         >
                           View form
                         </Button>
@@ -346,6 +360,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

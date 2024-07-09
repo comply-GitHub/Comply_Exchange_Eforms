@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import PopupModal from "../../../../Redux/Actions/poupModal";
 import { SubmitSchema } from "../../../../schemas/submit";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -18,6 +19,7 @@ import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import useAuth from "../../../../customHooks/useAuth";
 import View_Insructions from "../../../viewInstruction";
+import { GetW9DCPdf } from "../../../../Redux/Actions/PfdActions";
 export default function Declaration (props: any){
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
@@ -26,6 +28,10 @@ export default function Declaration (props: any){
   console.log("CRSClassificationData",CRSClassificationData)
   const { authDetails } = useAuth();
   const history = useNavigate();
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const dispatch = useDispatch();
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
   const handleChangeAccodionState = (panel: string, panelHeading: string) => (
@@ -87,7 +93,14 @@ export default function Declaration (props: any){
               <div className="overlay-div">
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform">View Form</div>
+          <div className="viewform" onClick={() => {
+            dispatch(GetW9DCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
+      }}>View Form</div>
           <div className="helpvideo">
             <a
               href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"
@@ -212,6 +225,14 @@ export default function Declaration (props: any){
                   >
                    
                     <Button
+                    onClick={() => {
+                      dispatch(GetW9DCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
                     >
@@ -235,6 +256,7 @@ export default function Declaration (props: any){
         </div>
    
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
   );

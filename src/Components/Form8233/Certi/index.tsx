@@ -14,7 +14,7 @@ import useAuth from "../../../customHooks/useAuth";
 import { GetForm8233Pdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
 import View_Insructions from "../../viewInstruction";
-
+import PopupModa from "../../../Redux/Actions/poupModal"
 export default function Certifications(props: any) {
   const { authDetails } = useAuth();
 
@@ -31,7 +31,10 @@ export default function Certifications(props: any) {
     document.title = "Comply Exchange"
     dispatch(GetHelpVideoDetails());
   }, []);
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
@@ -56,9 +59,17 @@ export default function Certifications(props: any) {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={() => {
-            dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
-          }}>View Form</div>
+          <div className="viewform" 
+          onClick={() => {
+            dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
+        }}
+          
+          >View Form</div>
           <div className="helpvideo">
 
             {GethelpData && GethelpData[9].id === 12 ? (
@@ -534,8 +545,13 @@ export default function Certifications(props: any) {
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() => {
-                          dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
-                        }}
+                          dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                      }}
                       >
                         View form
                       </Button>
@@ -581,6 +597,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

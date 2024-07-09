@@ -28,6 +28,7 @@ import { getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode, getAll
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import CloseIcon from '@mui/icons-material/Close';
 import useAuth from "../../../customHooks/useAuth";
+import PopupModa from "../../../Redux/Actions/poupModal"
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetForm8233Pdf } from "../../../Redux/Actions/PfdActions";
@@ -98,6 +99,10 @@ export default function Tin(props: any) {
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
   const dispatch = useDispatch();
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const [toolInfo, setToolInfo] = useState("");
 
   return (
@@ -171,9 +176,14 @@ export default function Tin(props: any) {
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
                   <div className="viewform"
-                    onClick={() => {
-                      dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
-                    }}>View Form</div>
+                     onClick={() => {
+                      dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                          setPopupState({
+                              status:true,
+                              data: callbackData?.pdf
+                          })
+                      }))
+                  }}>View Form</div>
                   <div className="helpvideo">
 
                     {GethelpData && GethelpData[9].id === 12 ? (
@@ -1299,8 +1309,13 @@ export default function Tin(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
-                          }}
+                            dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
+                        }}
                         >
                           View Form
                         </Button>
@@ -1345,6 +1360,7 @@ export default function Tin(props: any) {
                 </div>
               </div>
             </section>
+            <PopupModa data={popupState} setPopupState={setPopupState} />
           </Form>
         )}
       </Formik>

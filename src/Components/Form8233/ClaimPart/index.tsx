@@ -22,6 +22,7 @@ import useAuth from "../../../customHooks/useAuth";
 import { GetForm8233Pdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
 import View_Insructions from "../../viewInstruction";
+import PopupModa from "../../../Redux/Actions/poupModal";
 export default function Tin(props: any) {
 
   const { authDetails } = useAuth();
@@ -55,6 +56,10 @@ export default function Tin(props: any) {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
 
   const [canvaBx, setCanvaBx] = useState(false);
   const handleCanvaOpen = () => {
@@ -171,8 +176,13 @@ export default function Tin(props: any) {
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
                   <div className="viewform"
                     onClick={() => {
-                      dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
-                    }}>View Form</div>
+                      dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                          setPopupState({
+                              status:true,
+                              data: callbackData?.pdf
+                          })
+                      }))
+                  }}>View Form</div>
                   <div className="helpvideo">
 
                     {GethelpData && GethelpData[9].id === 12 ? (
@@ -1572,8 +1582,13 @@ export default function Tin(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
-                          }}
+                            dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
+                        }}
                         >
                           View Form
                         </Button>
@@ -1620,6 +1635,8 @@ export default function Tin(props: any) {
           </Form>
         )}
       </Formik>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
+    
     </>
   );
 }

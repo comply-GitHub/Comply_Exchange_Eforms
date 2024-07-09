@@ -6,6 +6,7 @@ import { Divider, Paper } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "./index.scss";
+import PopupModal from "../../../Redux/Actions/poupModal";
 import { GetBenPdf } from "../../../Redux/Actions/PfdActions";
 import {GetHelpVideoDetails,postW8BENForm} from "../../../Redux/Actions"
 import "bootstrap/dist/css/bootstrap.css";
@@ -33,6 +34,10 @@ export default function Term() {
   //   dispatch(postW8BENForm({AccountHolderBasicDetailId:authDetails?.accountHolderId,AgentId:authDetails?.agentId,FormTypeSelectionId:obValues.businessTypeId, IsUsSourcedIncome: true }));
   //   history("/W-8BEN/Declaration/US_Sourced");
   // };
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
 
   const handleUSButtonClick = () => {
     const successCallback = () => {
@@ -43,6 +48,7 @@ export default function Term() {
         // Optional: Handle error actions after form submission
         console.error("Error submitting form:", error);
     };
+   
 
     const formValues = {
         AccountHolderBasicDetailId: authDetails?.accountHolderId,
@@ -91,9 +97,16 @@ const handleNonUSButtonClick = () => {
       <div className="overlay-div">
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
-          <div className="viewform"  onClick={() => {
-              dispatch(GetBenPdf(authDetails?.accountHolderId))
-            }}>View Form</div>
+          <div className="viewform"  
+            onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
+        }}
+            >View Form</div>
           <div className="helpvideo">
           {GethelpData && GethelpData[4].id === 6 ? (
   <a
@@ -296,6 +309,7 @@ const handleNonUSButtonClick = () => {
           </div>
         </footer>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

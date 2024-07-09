@@ -16,9 +16,14 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../../customHooks/useAuth";
 import { GetForm8233Pdf } from "../../../Redux/Actions/PfdActions";
 import { useDispatch } from "react-redux";
+import PopupModa from "../../../Redux/Actions/poupModal";
 
 export default function Term() {
   //States
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const { authDetails } = useAuth();
   const Version =localStorage.getItem("Version");
   const dispatch = useDispatch();
@@ -122,8 +127,13 @@ export default function Term() {
 
                 <Button
                   onClick={() => {
-                    dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
-                  }}
+                    dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                }}
                   style={{
                     border: "1px solid #0095dd",
                     background: "black",

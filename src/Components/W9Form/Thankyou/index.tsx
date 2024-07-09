@@ -12,7 +12,7 @@ import useAuth from "../../../customHooks/useAuth";
 import { useDispatch } from "react-redux";
 import { GetBenPdf, GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
-
+import PopupModa from "../../../Redux/Actions/poupModal"
 export default function Term() {
   //States  
   const { authDetails } = useAuth();
@@ -23,7 +23,10 @@ export default function Term() {
   const pdfRefnew = useRef(null);
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
 
   const auth = JSON.parse(authDetailsString);
@@ -119,10 +122,16 @@ export default function Term() {
 
                 <div style={{ marginTop: "25px" }}>
                   <Button
-                    //type="submit"
+                   
+
                     onClick={() => {
-                      dispatch(GetW9Pdf(authDetails?.accountHolderId, () => { }, () => { }, true))
-                    }}
+                      dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                          setPopupState({
+                              status:true,
+                              data: callbackData?.pdf
+                          })
+                      }))
+                  }}
                     style={{
                       border: "1px solid #0095dd",
                       backgroundColor: "#1976d2",
@@ -254,6 +263,7 @@ export default function Term() {
           </div>
         </footer>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

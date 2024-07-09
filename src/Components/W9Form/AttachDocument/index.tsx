@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 import { GetW9Pdf } from '../../../Redux/Actions/PfdActions';
 import GlobalValues, { FormTypeId } from '../../../Utils/constVals';
 import { GetAccountHolderDisregardedEntity, PostAccountHolderDisregardedEntity, post8233_EForm_Documentation,postW9Form } from '../../../Redux/Actions';
-
+import PopupModa from "../../../Redux/Actions/poupModal";
 const AttachDocumentW9 = () => {
 
     const { authDetails } = useAuth();
@@ -14,7 +14,10 @@ const AttachDocumentW9 = () => {
     const history = useNavigate();
    
     const [initialValues, setInitialValues] = useState({});
-
+    const [popupState, setPopupState] = useState({
+        data:"",
+        status:false
+    })
     // useEffect(() => {
     //     if (authDetails?.accountHolderId) {
     //         dispatch(GetAccountHolderDisregardedEntity(authDetails?.accountHolderId, FormTypeId.FW81MY, (data: any) => {
@@ -79,11 +82,18 @@ const AttachDocumentW9 = () => {
                 ContinueRoute='/US_Purposes/Back/Exemption/Tax/Certificates'
                 BackRoute='/US_Purposes/Back/Exemption/Tax'
                 GetPdf={() => {
-                    dispatch(GetW9Pdf(authDetails?.accountHolderId))
+                    dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
                 }}
                 ContinueFunction={continueFunction}
                 SaveAndExitFunction={saveAndExitFunction}
             />
+
+<PopupModa data={popupState} setPopupState={setPopupState} />
         </div>
     )
 }

@@ -30,6 +30,8 @@ import { AccountHolderIncomeAllocationType } from "../../../../Interfaces/Accoun
 import { convertToFormData } from "../../../../Helpers/convertToFormData";
 import useAuth from "../../../../customHooks/useAuth";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
+import PopupModal from "../../../../Redux/Actions/poupModal";
+
 import View_Insructions from "../../../viewInstruction";
 export default function Factors() {
   const { authDetails } = useAuth();
@@ -56,7 +58,10 @@ export default function Factors() {
     // history("/w8Ben_pdf", { replace: true });
   }
 
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   useEffect(() => {
     document.title = "Income-Report"
   }, [])
@@ -186,9 +191,14 @@ export default function Factors() {
               <div className="overlay-div">
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform" onClick={() => {
-              dispatch(GetBenPdf(authDetails?.accountHolderId))
-            }}>View Form</div>
+          <div className="viewform"  onClick={() => {
+              dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
+        }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[3].id === 5 ? (
@@ -350,8 +360,13 @@ export default function Factors() {
                   variant="contained"
                   style={{ color: "white", marginLeft: "15px" }}
                   onClick={() => {
-                    dispatch(GetBenPdf(authDetails?.accountHolderId))
-                  }}
+                    dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
+              }}
                 >
                   View form
                 </Button>
@@ -399,6 +414,7 @@ export default function Factors() {
           </div>
         </div>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
 
     </section>
   );

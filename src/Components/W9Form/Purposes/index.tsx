@@ -39,6 +39,7 @@ import {
   GetHelpVideoDetails,
   getFederalTax,
 } from "../../../Redux/Actions";
+import PopupModa from "../../../Redux/Actions/poupModal";
 import { useNavigate } from "react-router-dom";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import View_Insructions from "../../viewInstruction";
@@ -156,6 +157,11 @@ export default function Fedral_tax(props: any) {
     "panel1"
   );
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
+
   const handleChangeAccodionState =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpandedState(newExpanded ? panel : false);
@@ -244,8 +250,13 @@ export default function Fedral_tax(props: any) {
             <div
               className="viewform"
               onClick={() => {
-                dispatch(GetW9Pdf(authDetails?.accountHolderId));
-              }}
+                dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                    setPopupState({
+                        status:true,
+                        data: callbackData?.pdf
+                    })
+                }))
+            }}
             >
               View Form
             </div>
@@ -1385,11 +1396,16 @@ export default function Fedral_tax(props: any) {
                             formTypeId={FormTypeId.W9}
                           />
                           <Button
-                            type="submit"
+                        
                             // disabled={isSubmitting}
                             onClick={() => {
-                              dispatch(GetW9Pdf(authDetails?.accountHolderId));
-                            }}
+                              dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                  setPopupState({
+                                      status:true,
+                                      data: callbackData?.pdf
+                                  })
+                              }))
+                          }}
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
                           >
@@ -1456,6 +1472,7 @@ export default function Fedral_tax(props: any) {
             </Form>
           )}
         </Formik>
+        <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </>
   );
