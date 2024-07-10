@@ -33,7 +33,7 @@ import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { US_TINSchema8IMY, statementSchema8IMY } from "../../../schemas/w81my";
 import { GetImyPdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
-
+import PopupModal from "../../../Redux/Actions/poupModal";
 interface FormValues {
   isWithholdingStatementClicked: boolean;
   previouslySubmittedAllocationStatement: boolean;
@@ -214,7 +214,10 @@ export default function AddMoreForm(props: any) {
   );
   const dispatch = useDispatch();
   const [toolInfo, setToolInfo] = useState("");
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
 
   //   const handleAddDocument = () => {
   //     const updatedItems = { 
@@ -362,7 +365,12 @@ export default function AddMoreForm(props: any) {
                 <div className="viewInstructions">View Instructions</div>
                 <div className="viewform"
                   onClick={() => {
-                    dispatch(GetImyPdf(authDetails?.accountHolderId))
+                    dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
                   }}>View Form</div>
                 <div className="helpvideo">
 
@@ -1041,7 +1049,12 @@ export default function AddMoreForm(props: any) {
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() => {
-                          dispatch(GetImyPdf(authDetails?.accountHolderId))
+                          dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
                         }}
                       >
                         View Form
@@ -1093,6 +1106,7 @@ export default function AddMoreForm(props: any) {
               </div>
             </div>
           </section>
+          <PopupModal data={popupState} setPopupState={setPopupState} />
         </Form>
       )}
     </Formik>

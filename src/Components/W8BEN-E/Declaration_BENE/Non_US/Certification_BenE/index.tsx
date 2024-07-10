@@ -31,6 +31,7 @@ import GlobalValues from "../../../../../Utils/constVals";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../../../customHooks/useAuth";
 import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 import Redirect from "../../../../../Router/RouterSkip";
 export default function Certifications(props: any) {
   const { authDetails } = useAuth();
@@ -38,6 +39,11 @@ export default function Certifications(props: any) {
   const dispatch = useDispatch();
   const [open2, setOpen2] = useState(false);
   const handleClickOpen2 = () => setOpen2(true);
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const handleClose2 = () => setOpen2(false);
   const [toolInfo, setToolInfo] = useState("");
   const [expanded, setExpanded] = React.useState<string | false>("");
@@ -88,7 +94,12 @@ export default function Certifications(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetBenEPdf(authDetails?.accountHolderId))
+           dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+            setPopupState({
+                status:true,
+                data: callbackData?.pdf
+            })
+        }))
           }}>View Form</div>
           <div className="helpvideo">
            
@@ -717,7 +728,12 @@ export default function Certifications(props: any) {
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() => {
-                          dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                          dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
                         }}
                       >
                         View form
@@ -777,6 +793,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

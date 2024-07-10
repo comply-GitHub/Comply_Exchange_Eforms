@@ -28,6 +28,8 @@ import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../customHooks/useAuth";
 import { GetImyPdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
+import PopupModal from "../../../Redux/Actions/poupModal";
+
 export default function Certifications(props: any) {
   const { authDetails } = useAuth();
   const history = useNavigate();
@@ -45,6 +47,10 @@ export default function Certifications(props: any) {
     cerConfirmReceivedElecForm: prevStepData?.cerConfirmReceivedElecForm ? prevStepData?.cerConfirmReceivedElecForm : false,
 
   };
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   useEffect(() => {
     document.title = "Certification I"
   }, [])
@@ -73,7 +79,12 @@ export default function Certifications(props: any) {
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform"
             onClick={() => {
-              dispatch(GetImyPdf(authDetails?.accountHolderId))
+              dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
             }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -391,7 +402,12 @@ export default function Certifications(props: any) {
                                 marginLeft: "5px",
                               }}
                               onClick={() => {
-                                dispatch(GetImyPdf(authDetails?.accountHolderId))
+                                dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                  setPopupState({
+                                      status:true,
+                                      data: callbackData?.pdf
+                                  })
+                              }))
                               }}
                             >
                               (view Electronic Form)
@@ -442,7 +458,12 @@ export default function Certifications(props: any) {
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() => {
-                          dispatch(GetImyPdf(authDetails?.accountHolderId))
+                          dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
                         }}
                       >
                         View form
@@ -491,6 +512,7 @@ export default function Certifications(props: any) {
 
         </div>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

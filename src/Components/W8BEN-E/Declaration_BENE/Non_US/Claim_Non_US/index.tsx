@@ -32,6 +32,7 @@ import {
   GetAgentCountriesImportantForEform,
   GetLimitationBenefits,
 } from "../../../../../Redux/Actions";
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 import { claimSchemaW8BenE } from "../../../../../schemas/w8BenE";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
@@ -48,7 +49,10 @@ export default function FCTA_Reporting(props: any) {
   const [toolInfo, setToolInfo] = useState("");
   const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState<string | false>("");
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const [initialValues, setInitialValues] = useState({
     isClaimTreaty: "No",
     ownerResidentId: "0",
@@ -118,7 +122,12 @@ export default function FCTA_Reporting(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetBenEPdf(authDetails?.accountHolderId))
+            dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
           }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -774,7 +783,12 @@ The treaty country chosen does not match the country selected earlier as the pri
                         style={{ color: "white", marginLeft: "15px" }}
                         variant="contained"
                         onClick={() => {
-                          dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                          dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
                         }}
                       >
                         VIEW FORM
@@ -845,6 +859,7 @@ The treaty country chosen does not match the country selected earlier as the pri
           </div>
         </div>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

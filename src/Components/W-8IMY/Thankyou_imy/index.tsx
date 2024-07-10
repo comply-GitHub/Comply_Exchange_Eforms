@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../../customHooks/useAuth";
 import { useDispatch } from "react-redux";
 import { GetImyPdf } from "../../../Redux/Actions/PfdActions";
-
+import PopupModal from "../../../Redux/Actions/poupModal";
 export default function Term() {
   //States
   const { authDetails } = useAuth();
@@ -33,7 +33,10 @@ export default function Term() {
   useEffect(() => {
     document.title = "Thank You"
   }, [])
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
 
   const handleDownload = () => {
     if (pdfUrl) {
@@ -124,7 +127,12 @@ export default function Term() {
                 <Button
                   //type="submit"
                   onClick={() => {
-                    dispatch(GetImyPdf(authDetails?.accountHolderId, () => { }, () => { }, true))
+                    dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
                   }}
                   style={{
                     border: "1px solid #0095dd",
@@ -219,6 +227,7 @@ export default function Term() {
           </div>
         </footer>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

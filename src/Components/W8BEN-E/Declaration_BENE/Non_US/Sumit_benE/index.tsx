@@ -16,7 +16,7 @@ import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import useAuth from "../../../../../customHooks/useAuth";
 import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
-
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 const Declaration = (props: any) => {
   const { open, setOpen } = props;
   const { authDetails } = useAuth();
@@ -53,6 +53,10 @@ useEffect(()=>{
     history("/w8BenE_pdf", { replace: true });
   }
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const initialValue = {
     isAgreeWithDeclaration: W8BENEData?.isAgreeWithDeclaration ? true : false,
     isConsentReceipentstatement: W8BENEData?.isConsentReceipentstatement ? true : false,
@@ -429,7 +433,12 @@ useEffect(()=>{
 
                     <Button
                       onClick={() => {
-                        dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                        dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                          setPopupState({
+                              status:true,
+                              data: callbackData?.pdf
+                          })
+                      }))
                       }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
@@ -491,6 +500,7 @@ useEffect(()=>{
 
         </div>
       </section>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </Fragment>
   );
 };

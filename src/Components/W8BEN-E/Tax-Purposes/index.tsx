@@ -33,6 +33,7 @@ import {
   GetChapter3Status,
   GetHelpVideoDetails
 } from "../../../Redux/Actions";
+import PopupModal from "../../../Redux/Actions/poupModal";
 import Infoicon from "../../../assets/img/info.png";
 import { TaxPurposeSchema } from "../../../schemas/w8BenE";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
@@ -158,6 +159,10 @@ export default function Fedral_tax(props: any) {
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpandedState(newExpanded ? panel : false);
     };
+    const [popupState, setPopupState] = useState({
+      data:"",
+      status:false
+  });
 
     const [canvaBx, setCanvaBx] = useState(false);
   const handleCanvaOpen = () => {
@@ -192,8 +197,13 @@ export default function Fedral_tax(props: any) {
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
             <div className="viewform"
              onClick={() => {
-              dispatch(GetBenEPdf(authDetails?.accountHolderId))
-            }}>View Form</div>
+              dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+               setPopupState({
+                   status:true,
+                   data: callbackData?.pdf
+               })
+           }))
+           }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
               {GethelpData && GethelpData[3].id === 5 ? (
@@ -2102,8 +2112,13 @@ export default function Fedral_tax(props: any) {
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
                             onClick={() => {
-                              dispatch(GetBenEPdf(authDetails?.accountHolderId))
-                            }}
+                              dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                               setPopupState({
+                                   status:true,
+                                   data: callbackData?.pdf
+                               })
+                           }))
+                           }}
                           >
                             View Form
                           </Button>
@@ -2164,6 +2179,7 @@ export default function Fedral_tax(props: any) {
             </div>
           </div>
         </div>
+        <PopupModal data={popupState} setPopupState={setPopupState} />
       </section>
     </>
   );

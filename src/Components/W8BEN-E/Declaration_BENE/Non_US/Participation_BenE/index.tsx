@@ -33,6 +33,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { partCertiSchema } from "../../../../../schemas/w8BenE";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import moment from "moment";
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 import SecurityCodeRecover from "../../../../Reusable/SecurityCodeRecover";
 import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
@@ -86,6 +87,10 @@ export default function Penalties() {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
 
   const viewPdf = () => {
     history("/w8BenE_pdf", { replace: true });
@@ -154,7 +159,12 @@ export default function Penalties() {
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
                   <div className="viewform" onClick={() => {
-                    dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                    dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
                   }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -737,7 +747,12 @@ export default function Penalties() {
                       >
                         <Button
                           onClick={() => {
-                            dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                            dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                           variant="contained"
                           style={{ color: "white" }}
@@ -836,7 +851,7 @@ export default function Penalties() {
           </Form>
         )}
       </Formik >
-
+      <PopupModal data={popupState} setPopupState={setPopupState} />
       <Declaration
         open={open2}
         setOpen={setOpen2}

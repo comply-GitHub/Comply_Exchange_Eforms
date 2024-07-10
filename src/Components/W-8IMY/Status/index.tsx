@@ -46,6 +46,7 @@ import TFI from "./TFI";
 import USBranch from "./USBranch";
 import WFP from "./WFP";
 import NWFP from "./NWFP";
+import PopupModal from "../../../Redux/Actions/poupModal";
 import { GetImyPdf } from "../../../Redux/Actions/PfdActions";
 export default function Fedral_tax(props: any) {
 
@@ -191,6 +192,10 @@ export default function Fedral_tax(props: any) {
   // };
 
   const [toolInfo, setToolInfo] = useState("");
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const history = useNavigate();
   const [expanded, setExpanded] = React.useState<string | false>("");
   const handleChangestatus =
@@ -253,7 +258,12 @@ export default function Fedral_tax(props: any) {
           <div className="overlay-div-group">
             <div className="viewInstructions">View Instructions</div>
             <div className="viewform" onClick={() => {
-              dispatch(GetImyPdf(authDetails?.accountHolderId))
+               dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
             }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -1973,7 +1983,12 @@ export default function Fedral_tax(props: any) {
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
                             onClick={() => {
-                              dispatch(GetImyPdf(authDetails?.accountHolderId))
+                              dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
                             }}
                           >
                             View Form
@@ -2054,6 +2069,7 @@ export default function Fedral_tax(props: any) {
             </div>
           </div>
         </div>
+        <PopupModal data={popupState} setPopupState={setPopupState} />
       </section>
     </>
   );

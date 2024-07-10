@@ -13,6 +13,7 @@ import { AppDispatch } from "../../../Redux/store";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import { ErrorModel } from "../../../Redux/Actions/errormodel";
 import { GetBenEPdf } from "../../../Redux/Actions/PfdActions";
+import PopupModal from "../../../Redux/Actions/poupModal";
 import useAuth from "../../../customHooks/useAuth";
 export default function Term() {
   const { authDetails } = useAuth();
@@ -25,6 +26,11 @@ export default function Term() {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
 
   const viewPdf = () => {
     history("/w8BenE_pdf", { replace: true });
@@ -63,7 +69,12 @@ export default function Term() {
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetBenEPdf(authDetails?.accountHolderId))
+             dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
           }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[3].id === 5 ? (
@@ -280,6 +291,7 @@ export default function Term() {
           </div>
         </footer>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

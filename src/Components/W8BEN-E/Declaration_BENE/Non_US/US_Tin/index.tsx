@@ -23,6 +23,7 @@ import {
   GetAgentSkippedSteps,
   GetAllGIINTypes,
 } from "../../../../../Redux/Actions";
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 import { useDispatch, useSelector } from "react-redux";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -62,6 +63,10 @@ export default function Tin(props: any) {
   );
 
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const skippedSteps = useSelector((state: any) => state.SkippedSteps);
   const [isGiinEnabled, setIsGiinEnabled] = useState(false);
 
@@ -193,7 +198,12 @@ export default function Tin(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetBenEPdf(authDetails?.accountHolderId))
+             dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
           }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -1335,7 +1345,12 @@ export default function Tin(props: any) {
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() => {
-                          dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                          dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
                         }}
                       >
                         View Form
@@ -1399,6 +1414,7 @@ export default function Tin(props: any) {
           </div>
         </div>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

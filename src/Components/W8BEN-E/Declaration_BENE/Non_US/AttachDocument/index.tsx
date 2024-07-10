@@ -6,12 +6,17 @@ import { useNavigate } from 'react-router';
 import { GetBenEPdf } from '../../../../../Redux/Actions/PfdActions';
 import GlobalValues, { FormTypeId } from '../../../../../Utils/constVals';
 import { post8233_EForm_Documentation,postW8BEN_EForm } from '../../../../../Redux/Actions';
-
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 const AttachDocumentW9 = () => {
 
     const { authDetails } = useAuth();
     const dispatch = useDispatch();
     const history = useNavigate();
+    
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
    
     const [initialValues, setInitialValues] = useState({});
 
@@ -84,11 +89,17 @@ const AttachDocumentW9 = () => {
                 BackRoute={handleBackRoute()}
                 
                 GetPdf={() => {
-                    dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                    dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
                 }}
                 ContinueFunction={continueFunction}
                 SaveAndExitFunction={saveAndExitFunction}
             />
+            <PopupModal data={popupState} setPopupState={setPopupState} />
         </div>
     )
 }

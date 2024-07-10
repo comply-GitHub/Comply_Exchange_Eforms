@@ -7,7 +7,7 @@ import { GetImyPdf } from '../../../Redux/Actions/PfdActions';
 import GlobalValues, { FormTypeId } from '../../../Utils/constVals';
 import { GetAccountHolderDisregardedEntity, PostAccountHolderDisregardedEntity, postW81MY_EForm } from '../../../Redux/Actions';
 import { convertToFormData_ArrayOfObject } from '../../../Helpers/convertToFormData';
-
+import PopupModal from "../../../Redux/Actions/poupModal";
 const DisregardedEntityImy = () => {
 
     const { authDetails } = useAuth();
@@ -25,6 +25,11 @@ const DisregardedEntityImy = () => {
             }))
         }
     }, [authDetails])
+
+    const [popupState, setPopupState] = useState({
+        data:"",
+        status:false
+    })
 
     const continueFunction = (values: any, successCallback: Function, errorCallback: Function) => {
         const temp = {
@@ -82,11 +87,17 @@ const DisregardedEntityImy = () => {
                 ContinueRoute='/IMY/Tax_Purpose_Exp/Chapter4_IMY/TaxPayer_IMY'
                 BackRoute='/IMY/Tax_Purpose_Exp/Chapter4_IMY'
                 GetPdf={() => {
-                    dispatch(GetImyPdf(authDetails?.accountHolderId))
+                    dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
                 }}
                 ContinueFunction={continueFunction}
                 SaveAndExitFunction={saveAndExitFunction}
             />
+             <PopupModal data={popupState} setPopupState={setPopupState} />
         </div>
     )
 }

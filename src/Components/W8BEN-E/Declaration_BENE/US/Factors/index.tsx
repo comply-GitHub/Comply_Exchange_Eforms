@@ -28,9 +28,13 @@ import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import { AccountHolderIncomeAllocationType } from "../../../../../Interfaces/AccountHolderAllocationType";
 import { convertToFormData } from "../../../../../Helpers/convertToFormData";
 import useAuth from "../../../../../customHooks/useAuth";
+import PopupModal from "../../../../../Redux/Actions/poupModal";
+
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
 export default function Factors() {
+
+
   const { authDetails } = useAuth();
   const history = useNavigate();
   const location = useLocation();
@@ -49,6 +53,11 @@ export default function Factors() {
       mirroredText.innerText = inputValue;
     }
   };
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const viewPdf = () => {
     history("/w8BenE_pdf", { replace: true });
   }
@@ -171,7 +180,12 @@ export default function Factors() {
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetBenEPdf(authDetails?.accountHolderId))
+             dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
           }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -342,7 +356,12 @@ export default function Factors() {
                   variant="contained"
                   style={{ color: "white", marginLeft: "15px" }}
                   onClick={() => {
-                    dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                    dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
                   }}
                 >
                   View form
@@ -393,7 +412,7 @@ export default function Factors() {
           </div>
         </div>
       </div>
-
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

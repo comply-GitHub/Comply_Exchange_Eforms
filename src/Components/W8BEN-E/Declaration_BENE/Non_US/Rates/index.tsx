@@ -29,6 +29,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import { getAllCountriesIncomeCode, GetHelpVideoDetails } from "../../../../../Redux/Actions";
 import IncomeType from "./IncomeType";
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../../../customHooks/useAuth";
@@ -72,6 +73,11 @@ export default function Factors() {
     dispatch(getAllCountriesIncomeCode());
     dispatch(GetHelpVideoDetails());
   }, [])
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
 
   useEffect(() => {
     dispatch(GetSpecialRateAndCondition(authDetails?.accountHolderId, (res: any[]) => {
@@ -211,7 +217,12 @@ export default function Factors() {
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetBenEPdf(authDetails?.accountHolderId))
+            dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
           }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -615,7 +626,12 @@ export default function Factors() {
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() => {
-                          dispatch(GetBenEPdf(authDetails?.accountHolderId))
+                          dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
                         }}
                       >
                         View form
@@ -692,6 +708,7 @@ export default function Factors() {
           </div>
         </div>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

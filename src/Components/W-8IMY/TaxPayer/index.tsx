@@ -19,6 +19,7 @@ import { CREATE_8233, GetAgentSkippedSteps, GetAllGIINTypes, GetHelpVideoDetails
 import { Info, DeleteOutline, Delete } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import "./index.scss";
+import PopupModal from "../../../Redux/Actions/poupModal";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
@@ -63,6 +64,11 @@ export default function Tin(props: any) {
   // useEffect(()=>{
   //   document.title = ""
   // },[])
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
 
   const [ustinArray, setUStinArray] = useState([]);
   const [ustinValue, setUStinvalue] = useState([]);
@@ -199,7 +205,12 @@ export default function Tin(props: any) {
                   <div className="viewInstructions">View Instructions</div>
                   <div className="viewform"
                     onClick={() => {
-                      dispatch(GetImyPdf(authDetails?.accountHolderId))
+                      dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
                     }}
                   >View Form</div>
                   <div className="helpvideo">
@@ -1520,7 +1531,12 @@ export default function Tin(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetImyPdf(authDetails?.accountHolderId))
+                            dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View Form
@@ -1565,6 +1581,7 @@ export default function Tin(props: any) {
                   </div>
                 </div>
               </div>
+              <PopupModal data={popupState} setPopupState={setPopupState} />
             </section>
           </Form>
         )}

@@ -15,7 +15,7 @@ import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { GetImyPdf } from "../../../Redux/Actions/PfdActions";
-
+import PopupModal from "../../../Redux/Actions/poupModal";
 const Declaration = (props: any) => {
   const { authDetails } = useAuth();
   const { open, setOpen } = props;
@@ -38,6 +38,10 @@ const Declaration = (props: any) => {
     document.title = "Electronic Signature Confirmation"
   }, [])
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -422,7 +426,12 @@ const Declaration = (props: any) => {
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                       onClick={() => {
-                        dispatch(GetImyPdf(authDetails?.accountHolderId))
+                        dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                          setPopupState({
+                              status:true,
+                              data: callbackData?.pdf
+                          })
+                      }))
                       }}
                     >
                       View Form
@@ -479,6 +488,7 @@ const Declaration = (props: any) => {
 
         </div>
       </section>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </Fragment>
   );
 };

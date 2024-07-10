@@ -1,6 +1,8 @@
 import Utils from "../../Utils";
 import { ErrorModel } from "./errormodel";
 import PoupModal from "./poupModal";
+import CircularProgress from '@mui/material/CircularProgress';
+import Stack from '@mui/material/Stack';
 
 const convertAndDownloadPdf = (base64String: string, fileName: string, isDownload = false) => {
     try {
@@ -238,7 +240,7 @@ export const GetBenEPdf = (accountHolderId: number, callback: Function = (data: 
                                 type: Utils.actionName.UpdateError,
                                 payload: { ...err },
                             });
-                            callback();
+                            callback(data);
                         }
                         convertAndDownloadPdf(data?.pdf, "BENE_Pdf.pdf", isDownload)
                     }
@@ -295,7 +297,7 @@ export const GetExpPdf = (accountHolderId: number, callback: Function = (data: a
                                 type: Utils.actionName.UpdateError,
                                 payload: { ...err },
                             });
-                            callback();
+                            callback(data);
                         }
                         convertAndDownloadPdf(data?.pdf, "EXP_Pdf.pdf", isDownload)
                     }
@@ -352,7 +354,7 @@ export const GetImyPdf = (accountHolderId: number, callback: Function = (data: a
                                 type: Utils.actionName.UpdateError,
                                 payload: { ...err },
                             });
-                            callback();
+                            callback(data);
                         }
                         convertAndDownloadPdf(data?.pdf, "IMY_Pdf.pdf", isDownload)
                     }

@@ -36,6 +36,8 @@ import { partCertiSchema8IMY } from "../../../schemas/w81my";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import { GetImyPdf } from "../../../Redux/Actions/PfdActions";
 import SecurityCodeRecover from "../../Reusable/SecurityCodeRecover";
+import PopupModal from "../../../Redux/Actions/poupModal";
+
 export default function Penalties() {
   const { authDetails } = useAuth();
   const [open2, setOpen2] = useState(false);
@@ -72,7 +74,10 @@ export default function Penalties() {
     };
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const [initialValue, setInitialValues] = useState({
     signedBy: W8IMYData?.signedBy ?? "",
     enterconfirmationCode: "",
@@ -168,7 +173,12 @@ export default function Penalties() {
                   <div className="viewInstructions">View Instructions</div>
                   <div className="viewform"
                     onClick={() => {
-                      dispatch(GetImyPdf(authDetails?.accountHolderId))
+                      dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
                     }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -748,7 +758,12 @@ export default function Penalties() {
                           variant="contained"
                           style={{ color: "white" }}
                           onClick={() => {
-                            dispatch(GetImyPdf(authDetails?.accountHolderId))
+                            dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View Form
@@ -817,7 +832,7 @@ export default function Penalties() {
           </Form>
         )}
       </Formik>
-
+      <PopupModal data={popupState} setPopupState={setPopupState} />
       <Declaration
         open={open2}
         setOpen={setOpen2}

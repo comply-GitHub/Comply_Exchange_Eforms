@@ -12,6 +12,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import { useRef } from "react";
 
 import "bootstrap/dist/css/bootstrap.css";
+import PopupModal from "../../../../../Redux/Actions/poupModal";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../../../customHooks/useAuth";
 import { useDispatch } from "react-redux";
@@ -27,6 +28,11 @@ const Version = JSON.parse(localStorage.getItem("Version") || 'null') || {};
 export default function Term() {
   //States  
   const { authDetails } = useAuth();
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
+
   const dispatch = useDispatch();
   const history = useNavigate();
   const pdfRef = useRef(null);
@@ -126,7 +132,12 @@ export default function Term() {
                 <Button
                   // type="submit"
                   onClick={() => {
-                    dispatch(GetBenEPdf(authDetails?.accountHolderId, () => { }, () => { }, true))
+                    dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
                   }}
                   style={{
                     border: "1px solid #0095dd",
@@ -223,6 +234,7 @@ export default function Term() {
           </div>
         </footer>
       </div>
+      <PopupModal data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }
