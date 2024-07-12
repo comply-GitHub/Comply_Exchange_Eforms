@@ -670,7 +670,7 @@ export default function Tin(props: any) {
                           onClick={() => {
                             
                             Redirect(
-                              "/W-8ECI/Tax_Purpose",
+                              "/Certificates",
                               authDetails?.agentId,
                               history,
                               true

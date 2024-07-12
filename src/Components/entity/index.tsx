@@ -2994,7 +2994,7 @@ export default function Entity() {
                                 title={
                                   <>
                                     <Typography color="inherit">
-                                      Address Details
+                                    Alternate Mailing Address
                                     </Typography>
                                     <a onClick={() => setToolInfo("mail")}>
                                       <Typography

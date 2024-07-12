@@ -4074,14 +4074,84 @@ export default function IndividualUs() {
                               Is there an alternative mailing or business
                               address in the U.S.?
                               <span style={{ color: "red" }}>*</span>
-                              <Info
-                                style={{
-                                  color: "#ffc107",
-                                  fontSize: "15px",
-                                  marginBottom: "12px",
-                                }}
-                              />
+                              <Tooltip
+                                      style={{
+                                        backgroundColor: "black",
+                                        color: "white",
+                                      }}
+                                      title={
+                                        <>
+                                          <Typography color="inherit">
+                                           Alternate Mailing Address
+                                          </Typography>
+                                          <a
+                                            onClick={() => setToolInfo("AMA")}
+                                          >
+                                            <Typography
+                                              style={{
+                                                cursor: "pointer",
+                                                textDecorationLine: "underline",
+                                              }}
+                                              align="center"
+                                            >
+                                              {" "}
+                                              View More...
+                                            </Typography>
+                                          </a>
+                                        </>
+                                      }
+                                    >
+                                      <Info
+                                        style={{
+                                          color: "#ffc107",
+                                          fontSize: "15px",
+                                          marginLeft: "5px",
+                                          cursor: "pointer",
+                                          verticalAlign: "super",
+                                        }}
+                                      />
+                                    </Tooltip>
+                            
                             </Typography>
+
+                            {toolInfo === "AMA" ? (
+                                    <div className="post">
+                                      <Paper
+                                        style={{
+                                          backgroundColor: "#dedcb1",
+                                          padding: "10px",
+                                        }}
+                                      >
+                                        <Typography>
+                                    Please check this box if you have an alternative mailing address away from the permanent residential address entered here.
+ 
+ 
+ 
+                                        </Typography>
+                                        <Typography style={{ marginTop: "10px" }}>
+                                        You will be asked to enter the alternative address later in the process and in some circumstances you may need to provide additional information.
+                                          submission.
+                                        </Typography>
+
+         
+
+                                        <Link
+                                          underline="none"
+                                          style={{
+                                            marginTop: "10px",
+                                            fontSize: "16px", cursor: "pointer", color: "#0000C7"
+                                          }}
+                                          onClick={() => {
+                                            setToolInfo("");
+                                          }}
+                                        >
+                                          --Show Less--
+                                        </Link>
+                                      </Paper>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
                             <div className="d-flex">
                               <FormControl
                                 error={Boolean(

@@ -209,7 +209,7 @@ export default function FCTA_Reporting(props: any) {
                 <div style={{ padding: "10px 0px" }}>
                   <Paper elevation={6} style={{ padding: "17px", }}>
                     <div style={{ backgroundColor: "#ffff" }}>
-                      {values.isExemptionFATCAReportings == false && clickCount === 1 ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                      {values.isExemptionFATCAReportings == "No" ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                         <Typography>
                           FATCA100
                           <span className="mx-1">

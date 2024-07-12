@@ -142,7 +142,7 @@ export default function Certifications(props: any) {
             <Paper >
               <Formik
                 validateOnChange={true}
-                validateOnBlur={false}
+                validateOnBlur={true}
                 initialValues={initialValue}
                 enableReinitialize
                 validationSchema={certificateSchema_w9}
@@ -526,7 +526,7 @@ export default function Certifications(props: any) {
                         </div>
                       </Paper>
 
-<>{console.log(errors,"ERRORS")}</>
+
                       <div
                         style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}
                       >

@@ -53,7 +53,7 @@ export default function Tin(props: any) {
       notAvailable: W8ECIData?.notAvailable ? W8ECIData?.notAvailable : false,
       notAvailableReason: W8ECIData?.notAvailableReason ?? "",
       foreignTINCountry: W8ECIData?.foreignTINCountry ?? obValues?.foreignTINCountryId ?? obValues.permanentResidentialCountryId,
-      foreignTIN: W8ECIData?.foreignTIN ?? "",
+      foreignTIN: W8ECIData?.foreignTIN ?? obValues?.foreignTIN ?? obValues.foreignTIN,
       isFTINLegally: W8ECIData?.isFTINLegally ? W8ECIData?.isFTINLegally : false,
       isNotAvailable: W8ECIData?.isNotAvailable ? "Yes" : W8ECIData?.alternativeTINFormat ? "No" : "",
       fTinNotAvailableReason: W8ECIData?.fTinNotAvailableReason ?? "",

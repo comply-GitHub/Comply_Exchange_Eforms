@@ -363,6 +363,12 @@ export default function Tin(props: any) {
                                 value={values.usTinTypeId}
                                 onChange={(e) => {
                                   handleChange(e);
+                                  if(values?.usTinTypeId == "7" ){
+                                  setFieldValue("usTin" ,"" )
+                                   }
+                                   if(values?.usTinTypeId == "6"){
+                                    setFieldValue("usTin" ,"" )
+                                   }
                                   setTimeout(() => { setFieldValue("ReasionForForegionTIN_NotAvailable", ""); }, 200)
                                   if (
                                     e.target.value === "1" ||
@@ -584,6 +590,12 @@ export default function Tin(props: any) {
                                 value={values?.usTinTypeId}
                                 onChange={(e) => {
                                   handleChange(e);
+                                  if(values?.usTinTypeId == "7" ){
+                                    setFieldValue("usTin" ,"" )
+                                   }
+                                   if(values?.usTinTypeId == "6"){
+                                    setFieldValue("usTin" ,"" )
+                                   }
                                 }}
                               >
                                 <option value={0}>---select---</option>
@@ -645,6 +657,7 @@ export default function Tin(props: any) {
 
                                   onChange={(e) => {
                                     handleChange(e); //condition
+                                    
 
                                     if (!values.notAvailable) {
                                       setFieldValue("usTin", "");

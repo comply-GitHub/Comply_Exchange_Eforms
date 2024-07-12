@@ -22,7 +22,7 @@ const authDetailsString = localStorage.getItem("authDetails") || "{}";
 const auth = JSON.parse(authDetailsString);
 
 const userType = auth?.configurations?.userType;
-const Version = JSON.parse(localStorage.getItem("Version") || 'null') || {};
+const Version =localStorage.getItem("Version");
 
 
 export default function Term() {

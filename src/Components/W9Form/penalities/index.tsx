@@ -824,7 +824,7 @@ export default function Penalties() {
 
 
                         <Button
-                          type="submit"
+                          // type="submit"
                           onClick={() => {
                             submitForm().then((data: any) => {
                               
@@ -832,7 +832,7 @@ export default function Penalties() {
 
                             })
                           }}
-                          // disabled={!isValid}
+                          disabled={!isValid}
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                         >
