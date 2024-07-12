@@ -10,6 +10,7 @@ import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
 import { W8_state_ECI, PostDualCert } from "../../../../../Redux/Actions";
 import { useDispatch } from "react-redux";
+import PopupModa from "../../../../../Redux/Actions/poupModal"
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import { GetBENDCPdf } from "../../../../../Redux/Actions/PfdActions";
@@ -40,6 +41,11 @@ const Declaration = (props: any) => {
   const agentDefaultDetails = JSON.parse(
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
 
   const PrevStepData = JSON.parse(localStorage.getItem("DualCertData") || "{}");
   console.log(PrevStepData, "op")
@@ -408,7 +414,13 @@ const Declaration = (props: any) => {
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
                       onClick={() => {
-                        dispatch(GetBENDCPdf(authDetails?.accountHolderId))
+                        dispatch(GetBENDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                          setPopupState({
+                              status:true,
+                              data: callbackData?.pdf
+                          })
+                      }))
+                       
                       }}
                     >
                       View Form

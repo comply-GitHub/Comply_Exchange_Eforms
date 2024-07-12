@@ -22,6 +22,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../../customHooks/useAuth";
 import { GetHelpVideoDetails, postSCEntityEForm, postSCIndividualEForm } from "../../../Redux/Actions";
 import SideBar from "../../Reusable/SideBar";
+import PopupModa from "../../../Redux/Actions/poupModal"
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { certificateSchema_BEN_DC } from "../../../schemas/w8Exp";
@@ -82,7 +83,10 @@ export default function Certifications(props: any) {
   const handleClickOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
   const [toolInfo, setToolInfo] = useState("");
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const viewPdf = () => {
     history("w9_pdf");
   }
@@ -293,7 +297,12 @@ export default function Certifications(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId))
+                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View form
@@ -355,6 +364,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

@@ -34,7 +34,7 @@ import { GetAgentCountriesImportantForEform, GetHelpVideoDetails, UpsertSelfCert
 import { EntityUS_TINSchema } from "../../../schemas/cayman";
 import { error } from "console";
 import { GetCaymanEntityPdf } from "../../../Redux/Actions/PfdActions";
-
+import PopupModa from "../../../Redux/Actions/poupModal";
 export default function Tin(props: any) {
 
   const { authDetails } = useAuth();
@@ -150,6 +150,10 @@ export default function Tin(props: any) {
         .GetAgentCountriesImportantForEformData
   );
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const [canvaBx, setCanvaBx] = useState(false);
   const handleCanvaOpen = () => {
     setCanvaBx(true);
@@ -1694,7 +1698,12 @@ export default function Tin(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId))
+                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View Form
@@ -1739,6 +1748,7 @@ export default function Tin(props: any) {
                   </div>
                 </div>
               </div>
+              <PopupModa data={popupState} setPopupState={setPopupState} />
             </section>
           </Form>
         )}

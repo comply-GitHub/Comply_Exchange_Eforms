@@ -8,6 +8,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox, Link, Input, FormControl, Tooltip } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
+import PopupModa from "../../../../Redux/Actions/poupModal"
 import { useDispatch, useSelector } from "react-redux";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
@@ -65,6 +66,11 @@ export default function Final(props: any) {
     isControllingPersonsInformation: false,
     fullNameOfSponsorsEntity: "",
   };
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   useEffect(() => {
     localStorage.setItem('FATCAClassificationData', JSON.stringify(initialValue));
   }, [initialValue]);
@@ -856,7 +862,12 @@ export default function Final(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px", fontSize: "12px", }}
                           onClick={() => {
-                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId))
+                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View Form
@@ -902,6 +913,7 @@ export default function Final(props: any) {
           </div>
 
         </div>
+        <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
   );

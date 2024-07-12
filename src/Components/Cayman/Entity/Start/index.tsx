@@ -34,6 +34,7 @@ import { GetBenEPdf, GetCaymanEntityPdf, GetW9Pdf } from "../../../../Redux/Acti
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import DatePicker from 'react-date-picker';
+import PopupModa from "../../../../Redux/Actions/poupModal"
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { EntityStartSchema } from "../../../../schemas/cayman";
@@ -62,7 +63,10 @@ export default function Fedral_tax(props: any) {
   const [taxJuridictionListItemArray, setTaxJuridictionListItemArray] = useState<any>([]);
 
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const chapter3DataEntity = useSelector((state: any) => state.CaymanEntity.chapter3Data);
   const [initialValue, setInitialValue] = useState({
     agentId: authDetails?.agentId,
@@ -2762,7 +2766,12 @@ export default function Fedral_tax(props: any) {
                             variant="contained"
                             style={{ color: "white", marginLeft: "15px" }}
                             onClick={() => {
-                              dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId))
+                              dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
                             }}
                           >
                             View Form
@@ -2824,6 +2833,7 @@ export default function Fedral_tax(props: any) {
             </div>
           </div>
         </div>
+        <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </>
   );

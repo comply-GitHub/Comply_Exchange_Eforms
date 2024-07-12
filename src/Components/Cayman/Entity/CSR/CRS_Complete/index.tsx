@@ -15,13 +15,17 @@ import { FormTypeId } from "../../../../../Utils/constVals";
 import SideBar from "../../../../Reusable/SideBar";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import { postSCFATCAClassification, postSCStepsDetails } from "../../../../../Redux/Actions";
+import PopupModa from "../../../../../Redux/Actions/poupModal"
 import { GetCaymanEntityPdf } from "../../../../../Redux/Actions/PfdActions";
 export default function Declaration(props: any) {
 
   const PrevStepData = JSON.parse(localStorage.getItem("FATCASelfCertData") || "{}");
   const PrevStepData1 = JSON.parse(localStorage.getItem("CRSSelfCertData") || "{}");
   const CRSData = localStorage.getItem("lastClickedPanelHeading");
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const fatcaData = useSelector((state: any) => state?.CaymanEntity?.FATCAClassificationData);
   const FATCAClassificationData = (fatcaData ? fatcaData : PrevStepData);
 
@@ -357,7 +361,13 @@ export default function Declaration(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px", fontSize: "12px", }}
                           onClick={() => {
-                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId))
+                           
+                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View Form
@@ -411,6 +421,7 @@ export default function Declaration(props: any) {
           </div>
 
         </div>
+        <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
   );

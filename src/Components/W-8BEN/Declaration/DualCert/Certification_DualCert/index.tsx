@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import View_Insructions from "../../../../viewInstruction";
 import { useLocation } from "react-router-dom";
+import PopupModa from "../../../../../Redux/Actions/poupModal";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import useAuth from "../../../../../customHooks/useAuth";
@@ -42,6 +43,10 @@ export default function Certifications(props: any) {
 
   };
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const dispatch = useDispatch();
   const [checkbox2, setCheckbox2] = useState(false);
   const [checkbox5, setCheckbox5] = useState(false);
@@ -99,7 +104,13 @@ export default function Certifications(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetBENDCPdf(authDetails?.accountHolderId))
+           
+            dispatch(GetBENDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
           }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
@@ -367,6 +378,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

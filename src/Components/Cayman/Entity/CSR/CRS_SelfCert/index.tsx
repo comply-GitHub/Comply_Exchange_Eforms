@@ -11,6 +11,7 @@ import { Form, Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { ExpandMore } from "@mui/icons-material";
 import Utils from "../../../../../Utils";
+import PopupModa from "../../../../../Redux/Actions/poupModal"
 import SideBar from "../../../../Reusable/SideBar";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import { SubmitSchema } from "../../../../../schemas/submit";
@@ -75,6 +76,10 @@ export default function Declaration(props: any) {
     isNotConsentReceipentstatement: false
   };
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
 
   useEffect(() => {
     document.title = "CRS Classification"
@@ -388,7 +393,12 @@ export default function Declaration(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px", fontSize: "12px", }}
                           onClick={() => {
-                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId))
+                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View Form
@@ -414,6 +424,7 @@ export default function Declaration(props: any) {
 
         </div>
       </section>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </Fragment>
   );
 };

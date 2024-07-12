@@ -11,6 +11,7 @@ import {
   FormControl,
   Input,
 } from "@mui/material";
+import PopupModa from "../../../../../Redux/Actions/poupModal"
 import { Info } from "@mui/icons-material";
 import "./index.scss"
 import { ContentCopy } from "@mui/icons-material";
@@ -37,6 +38,7 @@ import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import moment from "moment";
+
 import { GetBENDCPdf } from "../../../../../Redux/Actions/PfdActions";
 type ValuePiece = Date | null;
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
@@ -80,6 +82,10 @@ export default function Penalties() {
     document.title = "Certification II"
   }, [])
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   useEffect(() => {
 
     dispatch(GetHelpVideoDetails());
@@ -764,7 +770,13 @@ export default function Penalties() {
                       >
                         <Button
                           onClick={() => {
-                            dispatch(GetBENDCPdf(authDetails?.accountHolderId))
+                            dispatch(GetBENDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                           
                           }}
                           variant="contained"
                           style={{ color: "white" }}
@@ -845,6 +857,7 @@ export default function Penalties() {
           </Form>
         )}
       </Formik>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
 
       <Declaration
         open={open2}

@@ -8,6 +8,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { useDispatch, useSelector } from "react-redux";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
@@ -25,7 +26,10 @@ import SideBar from "../../../Reusable/SideBar";
 export default function Classification(props: any) {
   const { authDetails } = useAuth();
   const PrevStepData = JSON.parse(localStorage.getItem("SelfCertData") || "{}");
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
@@ -496,7 +500,12 @@ export default function Classification(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px", fontSize: "12px", }}
                           onClick={() => {
-                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId))
+                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View Form
@@ -522,6 +531,7 @@ export default function Classification(props: any) {
 
         </div>
       </section>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </Fragment>
   );
 };

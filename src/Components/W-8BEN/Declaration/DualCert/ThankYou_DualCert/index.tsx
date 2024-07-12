@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import DoneIcon from "@mui/icons-material/Done";
 
 import { useRef } from "react";
-
+import PopupModa from "../../../../../Redux/Actions/poupModal"
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
 import W8Ben from "../../../../../formPDF/W8BEN";
@@ -42,6 +42,10 @@ export default function Term() {
   useEffect(() => {
     document.title = "Thank You"
   }, [])
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
 
 
   return (
@@ -116,7 +120,13 @@ export default function Term() {
                   <Button
                     //type="submit"
                     onClick={() => {
-                      dispatch(GetBENDCPdf(authDetails?.accountHolderId, () => { }, () => { }, true))
+                      dispatch(GetBENDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                      
                     }}
                     style={{
                       border: "1px solid #0095dd",
@@ -183,6 +193,7 @@ export default function Term() {
           </div>
         </footer>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

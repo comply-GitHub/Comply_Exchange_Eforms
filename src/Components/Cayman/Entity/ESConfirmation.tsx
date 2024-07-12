@@ -11,6 +11,7 @@ import { Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import useAuth from "../../../customHooks/useAuth";
 import SideBar from "../../Reusable/SideBar";
+import PopupModa from "../../../Redux/Actions/poupModal"
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
 import { SubmitSchema } from "../../../schemas/submit";
@@ -39,6 +40,10 @@ const Declaration = (props: any) => {
     document.title = "Electronic Signature Confirmation"
   }, [])
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
@@ -459,7 +464,12 @@ const Declaration = (props: any) => {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId))
+                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View Form
@@ -521,6 +531,7 @@ const Declaration = (props: any) => {
             </div>
           </div>
         </div>
+        <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
   );

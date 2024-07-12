@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import {
   W8_state, getTinTypes, getAllCountries, GetHelpVideoDetails, PostDualCert, LoadExistingFormData,
 } from "../../../../../Redux/Actions";
+import PopupModa from "../../../../../Redux/Actions/poupModal"
 import { useDispatch, useSelector } from "react-redux";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -86,7 +87,10 @@ export default function Tin(props: any) {
     // history("/w8Ben_pdf", { replace: true });
     history("/w8Ben_pdf");
   }
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   function getUStinValue() {
     let val: number = 1;
     ustinValue.map((item: any) => {
@@ -187,8 +191,15 @@ export default function Tin(props: any) {
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetBENDCPdf(authDetails?.accountHolderId))
-          }}>View Form</div>
+           
+            dispatch(GetBENDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
+         
+         }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[3].id === 5 ? (
@@ -1203,6 +1214,7 @@ export default function Tin(props: any) {
           </div>
         </div>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

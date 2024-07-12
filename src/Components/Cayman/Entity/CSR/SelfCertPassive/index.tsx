@@ -30,7 +30,8 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "./index.scss";
-import { boolean } from "yup";
+import { PostDualCert } from "../../../../../Redux/Actions";
+import PopupModa from "../../../../../Redux/Actions/poupModal"
 import useAuth from "../../../../../customHooks/useAuth";
 import { GetDualCertDetailsPerson, GetHelpVideoDetails, UpsertDualCertDetailsControllingPerson, getAllCountries } from "../../../../../Redux/Actions";
 import { FormTypeId } from "../../../../../Utils/constVals";
@@ -141,6 +142,10 @@ export default function Certifications(props: any) {
 
 
   });
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
 
   const [incomeTypeData, setIncomeTypeData] = useState(SelfCertControllingPerson?.length > 1 ? [...SelfCertControllingPerson] : [{ ...individualSelfType }]);
 
@@ -495,7 +500,12 @@ export default function Certifications(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId))
+                            dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View form
@@ -528,6 +538,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }
