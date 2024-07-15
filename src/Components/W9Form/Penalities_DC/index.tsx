@@ -34,6 +34,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { partCertiSchema } from "../../../schemas/w8Ben";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import moment from "moment";
+import PopupModa from "../../../Redux/Actions/poupModal";
 import SecurityCodeRecover from "../../Reusable/SecurityCodeRecover";
 import useAuth from "../../../customHooks/useAuth";
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
@@ -84,6 +85,10 @@ export default function Penalties() {
   const onBoardingFormValues = JSON.parse(
     localStorage.getItem("agentDetails") ?? "null"
   );
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   console.log(PrevStepData, ";;")
   const W9Data = useSelector((state: any) => state.W9Data);
   const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
@@ -170,7 +175,12 @@ export default function Penalties() {
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
                   <div className="viewform"
                     onClick={() => {
-                      dispatch(GetW9DCPdf(authDetails?.accountHolderId))
+                      dispatch(GetW9DCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
                     }}
                   >View Form</div>
                   <div className="helpvideo">
@@ -740,7 +750,13 @@ export default function Penalties() {
                       >
                         <Button
                           onClick={() => {
-                            dispatch(GetW9DCPdf(authDetails?.accountHolderId))
+                            dispatch(GetW9DCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                            
                           }}
                           variant="contained"
                           style={{ color: "white" }}
@@ -814,7 +830,7 @@ export default function Penalties() {
           </Form>
         )}
       </Formik >
-
+      <PopupModa data={popupState} setPopupState={setPopupState} />
       <Declaration
         open={open2}
         setOpen={setOpen2}

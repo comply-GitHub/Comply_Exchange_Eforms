@@ -527,7 +527,7 @@ export const GetECIDCPdf = (accountHolderId: number, callback: Function = (data:
                                 type: Utils.actionName.UpdateError,
                                 payload: { ...err },
                             });
-                            callback();
+                            callback(data);
                         }
                         convertAndDownloadPdf(data?.pdf, "ECI-DC.pdf", isDownload)
                     }
@@ -584,7 +584,7 @@ export const GetBENDCPdf = (accountHolderId: number, callback: Function = (data:
                                 type: Utils.actionName.UpdateError,
                                 payload: { ...err },
                             });
-                            callback();
+                            callback(data);
                         }
                         convertAndDownloadPdf(data?.pdf, "BEN-DC.pdf", isDownload)
                     }
@@ -642,7 +642,7 @@ export const GetBENEDCPdf = (accountHolderId: number, callback: Function = (data
                                 type: Utils.actionName.UpdateError,
                                 payload: { ...err },
                             });
-                            callback();
+                            callback(data);
                         }
                         convertAndDownloadPdf(data?.pdf, "BENE-DC.pdf", isDownload)
                     }
@@ -698,7 +698,7 @@ export const GetEXPDCPdf = (accountHolderId: number, callback: Function = (data:
                                 type: Utils.actionName.UpdateError,
                                 payload: { ...err },
                             });
-                            callback();
+                            callback(data);
                         }
                         convertAndDownloadPdf(data?.pdf, "EXP-DC.pdf", isDownload)
                     }
@@ -754,7 +754,7 @@ export const GetIMYDCPdf = (accountHolderId: number, callback: Function = (data:
                                 type: Utils.actionName.UpdateError,
                                 payload: { ...err },
                             });
-                            callback();
+                            callback(data);
                         }
                         convertAndDownloadPdf(data?.pdf, "IMY-DC.pdf", isDownload)
                     }
