@@ -18,7 +18,7 @@ import Paper from "@mui/material/Paper";
 import DoneIcon from "@mui/icons-material/Done";
 
 import { useRef } from "react";
-
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -39,7 +39,10 @@ export default function Term() {
 
   const auth = JSON.parse(authDetailsString);
   const userType = auth?.configurations?.userType;
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   useEffect(()=>{
     document.title = "Thank You"
   },[])
@@ -133,7 +136,12 @@ export default function Term() {
                 <Button
                   //type="submit"
                   onClick={() => {
-                    dispatch(GetBENEDCPdf(authDetails?.accountHolderId))
+                    dispatch(GetBENEDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
                   }}
                   style={{
                     border: "1px solid #0095dd",
@@ -200,6 +208,7 @@ export default function Term() {
           </div>
         </footer>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

@@ -21,6 +21,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useNavigate } from "react-router-dom";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import View_Insructions from "../../../viewInstruction";
 import { useLocation } from "react-router-dom";
@@ -42,6 +43,10 @@ export default function Certifications(props: any) {
     confirmYouhaveRewiedElectronicForm: PrevStepData?.confirmYouhaveRewiedElectronicForm || false,
 
   };
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
 
   const dispatch = useDispatch();
   const [checkbox2, setCheckbox2] = useState(false);
@@ -100,7 +105,13 @@ export default function Certifications(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+           
+            dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
           }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
@@ -258,7 +269,12 @@ export default function Certifications(props: any) {
                               Check to confirm you have reviewed the Electronic Form  <span
                                 style={{ color: "blue", fontSize: "14px", marginLeft: "5px", cursor: "pointer" }}
                                 onClick={() => {
-                                  dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                                  dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                    setPopupState({
+                                        status:true,
+                                        data: callbackData?.pdf
+                                    })
+                                }))
                                 }}
                               >
                                 (View Electronic Form)
@@ -314,7 +330,12 @@ export default function Certifications(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                            dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View form
@@ -372,6 +393,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

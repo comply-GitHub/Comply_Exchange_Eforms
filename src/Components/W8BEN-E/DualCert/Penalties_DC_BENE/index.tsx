@@ -17,6 +17,7 @@ import { useLocation } from "react-router-dom";
 import Infoicon from "../../../../assets/img/info.png";                               
 import { Info } from "@mui/icons-material";          
 import DatePicker from "react-date-picker";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import "react-date-picker/dist/DatePicker.css";     
 import "react-calendar/dist/Calendar.css";
 import InfoIcon from "@mui/icons-material/Info";
@@ -40,6 +41,7 @@ import useAuth from "../../../../customHooks/useAuth";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import View_Insructions from "../../../viewInstruction";
+import { GetBENEDCPdf } from "../../../../Redux/Actions/PfdActions";
 type ValuePiece = Date | null;
 console.log(Date, "date");
 type Value2 = ValuePiece | [ValuePiece, ValuePiece];
@@ -94,6 +96,10 @@ export default function Penalties() {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
 
   const [canvaBx, setCanvaBx] = useState(false);
   const handleCanvaOpen = () => {
@@ -740,7 +746,14 @@ export default function Penalties() {
                         }}
                       >
                         <Button
-
+ onClick={() => {
+  dispatch(GetBENEDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+    setPopupState({
+        status:true,
+        data: callbackData?.pdf
+    })
+}))
+}}
                           variant="contained"
                           style={{ color: "white" }}
                         >
@@ -802,7 +815,7 @@ export default function Penalties() {
           </Form>
         )}
       </Formik >
-
+      <PopupModa data={popupState} setPopupState={setPopupState} />
       <Declaration
         open={open2}
         setOpen={setOpen2}

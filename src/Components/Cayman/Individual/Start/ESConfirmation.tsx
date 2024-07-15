@@ -17,7 +17,7 @@ import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import View_Insructions from "../../../viewInstruction";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
 import { GetCaymanIndividualPdf } from "../../../../Redux/Actions/PfdActions";
-
+import PopupModa from "../../../../Redux/Actions/poupModal";
 
 
 const Declaration = (props: any) => {
@@ -37,7 +37,10 @@ const Declaration = (props: any) => {
   useEffect(() => {
     document.title = "Electronic Signature Confirmation"
   }, [])
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
@@ -82,7 +85,13 @@ const Declaration = (props: any) => {
           <div className="overlay-div-group">
             <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
             <div className="viewform" onClick={(e) => {
-              dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId));
+              dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
+             
             }}>View Form</div>
             <div className="helpvideo">
               {GethelpData && GethelpData[8].id === 10 ? (
@@ -482,7 +491,13 @@ const Declaration = (props: any) => {
                         }} formTypeId={FormTypeId.CaymanIndividual} ></SaveAndExit>
                         <Button
                           onClick={(e) => {
-                            dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId));
+                            dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                           
                           }}
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
@@ -538,6 +553,7 @@ const Declaration = (props: any) => {
             </div>
           </div>
         </div>
+        <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
   );

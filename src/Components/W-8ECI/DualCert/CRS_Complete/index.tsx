@@ -10,6 +10,7 @@ import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { Form, Formik } from "formik";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { postSCFATCAClassification,PostDualCert } from "../../../../Redux/Actions";
 import { useDispatch ,useSelector} from "react-redux";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
@@ -46,6 +47,10 @@ export default function Declaration (props: any){
       localStorage.removeItem("clickedPanelHeading");
     }
   };
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const isContinueEnabled = expandedState !== "panel1";
   const [isAccordionVisible, setIsAccordionVisible] = useState<boolean>(false);
   
@@ -88,7 +93,12 @@ export default function Declaration (props: any){
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform"  onClick={() => {
-            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+             dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
           }}>View Form</div>
           <div className="helpvideo">
             <a
@@ -217,7 +227,12 @@ export default function Declaration (props: any){
                    
                     <Button
                   onClick={() => {
-                    dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                    dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
                   }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
@@ -245,6 +260,7 @@ export default function Declaration (props: any){
         </div>
    
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
   );

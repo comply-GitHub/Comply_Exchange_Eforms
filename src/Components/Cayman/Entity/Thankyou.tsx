@@ -3,7 +3,7 @@ import FormW8IMY from "../../../formPDF/W8IMY";
 // import Form1 from "../../formPDF/form1";
 // import Formw9 from "../../formPDF/formw9";
 // import FormEXP from "../../formPDF/formEXP";
-
+import PopupModa from "../../../Redux/Actions/poupModal";
 import { Typography, Button } from "@mui/material";
 
 import Paper from "@mui/material/Paper";
@@ -20,7 +20,10 @@ import { useDispatch } from "react-redux";
 export default function Term() {
   //States
   const { authDetails } = useAuth();
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const dispatch = useDispatch();
   const history = useNavigate();
   const pdfRef = useRef(null);
@@ -123,7 +126,13 @@ export default function Term() {
 
                 <Button
                   onClick={() => {
-                    dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
+                    dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
+                    
                   }}
                   style={{
                     border: "1px solid #0095dd",
@@ -191,6 +200,7 @@ export default function Term() {
           </div>
         </footer>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
 
 

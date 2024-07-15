@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import SelfCertType from "./selfCert";
 import { Form, Formik } from "formik";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { W8_state_ECI, PostDualCert, GetHelpVideoDetails, getAllCountries, UpsertDualCertDetailsControllingPerson, GetDualCertDetailsPerson } from "../../../../Redux/Actions";
 import { SelfCertSchema_w9_DC } from "../../../../schemas/w8Exp";
 import InfoIcon from "@mui/icons-material/Info";
@@ -184,6 +185,11 @@ const individualSelfType = {
       setOpen("");
     } else setOpen(val);
   };
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   useEffect(() => {
     document.title = "Controlling Person(s) of a Passive NFE"
   }, [])
@@ -424,7 +430,12 @@ const individualSelfType = {
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform"  onClick={() => {
-                              dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                              dispatch(GetEXPDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
                             }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
@@ -536,7 +547,12 @@ const individualSelfType = {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                            dispatch(GetEXPDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View form
@@ -569,6 +585,7 @@ type="submit"
           </div>
         </div>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

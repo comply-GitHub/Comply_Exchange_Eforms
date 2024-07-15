@@ -20,6 +20,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InfoIcon from "@mui/icons-material/Info";
 import Infoicon from "../../../../assets/img/info.png";
 import { Formik, Form } from "formik";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { useDispatch, useSelector } from "react-redux";
 import { ContentCopy } from "@mui/icons-material";
 import { useNavigate } from "react-router";
@@ -35,6 +36,10 @@ export default function Penalties() {
   const location = useLocation();
   const { authDetails } = useAuth();
   const [open2, setOpen2] = useState(false);
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const handleClickOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
   const [expanded, setExpanded] = React.useState<string | false>("");
@@ -151,7 +156,12 @@ export default function Penalties() {
                 <div className="overlay-div-group">
                   <div className="viewInstructions">View Instructions</div>
                   <div className="viewform"  onClick={() => {
-                            dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                            dispatch(GetEXPDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -726,7 +736,12 @@ export default function Penalties() {
                             disabled={isSubmitting}
                             variant="contained"
                             onClick={() => {
-                              dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                              dispatch(GetEXPDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
                             }}
                             style={{ color: "white", marginLeft: "15px" }}
                           >
@@ -781,6 +796,7 @@ export default function Penalties() {
           </Form>
         )}
       </Formik>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
       {/* <Declaration
         open={open2}
         setOpen={setOpen2}

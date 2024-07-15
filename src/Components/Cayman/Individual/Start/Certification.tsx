@@ -13,6 +13,7 @@ import {
   Checkbox,
   Divider,
 } from "@mui/material";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik } from "formik";
 import { certificateSchema_BEN_DC } from "../../../../schemas/w8Exp";
@@ -78,6 +79,10 @@ export default function Certifications(props: any) {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const [open2, setOpen2] = useState(false);
   const handleClickOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
@@ -98,7 +103,13 @@ export default function Certifications(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={(e) => {
-            dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId));
+             dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
+           
           }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
@@ -253,7 +264,12 @@ export default function Certifications(props: any) {
                               Check to confirm you have reviewed the Electronic Form  <span
                                 style={{ color: "blue", fontSize: "14px", marginLeft: "5px", cursor: "pointer" }}
                                 onClick={(e) => {
-                                  dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId));
+                                  dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                    setPopupState({
+                                        status:true,
+                                        data: callbackData?.pdf
+                                    })
+                                }))
                                 }}
                               >
                                 (View Electronic Form)
@@ -306,7 +322,12 @@ export default function Certifications(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={(e) => {
-                            dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId));
+                            dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View form
@@ -368,6 +389,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

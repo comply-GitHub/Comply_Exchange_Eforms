@@ -13,6 +13,7 @@ import {
   Checkbox,
   Divider,
 } from "@mui/material";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik } from "formik";
 import { PostDualCert, GetHelpVideoDetails } from "../../../../Redux/Actions";
@@ -42,6 +43,10 @@ export default function Certifications(props: any) {
   };
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const [checkbox2, setCheckbox2] = useState(false);
   const [checkbox5, setCheckbox5] = useState(false);
   const [isSaveButtonEnabled, setIsSaveButtonEnabled] = useState(false);
@@ -98,7 +103,14 @@ export default function Certifications(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform"  onClick={() => {
-                            dispatch(GetBENEDCPdf(authDetails?.accountHolderId))
+              dispatch(GetBENEDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                setPopupState({
+                    status:true,
+                    data: callbackData?.pdf
+                })
+            }))
+             
+                           
                           }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
@@ -309,7 +321,12 @@ export default function Certifications(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetBENEDCPdf(authDetails?.accountHolderId))
+                            dispatch(GetBENEDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View form
@@ -341,6 +358,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

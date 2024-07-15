@@ -17,6 +17,7 @@ import {
 import InfoIcon from "@mui/icons-material/Info";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { GetHelpVideoDetails, postSCIndividualEForm } from "../../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import useAuth from "../../../../customHooks/useAuth";
@@ -67,6 +68,10 @@ export default function Presence(props: any) {
     dispatch(GetHelpVideoDetails());
   }, [])
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   useEffect(() => {
     document.title = "Steps | Substantial Presence Test"
   }, [])
@@ -156,7 +161,12 @@ export default function Presence(props: any) {
               <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
                 <div className="viewform" onClick={(e) => {
-                  dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId));
+                   dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                    setPopupState({
+                        status:true,
+                        data: callbackData?.pdf
+                    })
+                }))
                 }}>View Form</div>
                 <div className="helpvideo">
 
@@ -574,7 +584,12 @@ export default function Presence(props: any) {
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={(e) => {
-                          dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId));
+                          dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
                         }}
                       >
                         View Form
@@ -636,6 +651,7 @@ export default function Presence(props: any) {
               </div>
             </div>
           </section>
+          <PopupModa data={popupState} setPopupState={setPopupState} />
         </Form>
       )}
     </Formik>

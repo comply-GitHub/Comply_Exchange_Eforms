@@ -31,11 +31,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import View_Insructions from "../../../viewInstruction";
 import { GetCaymanIndividualPdf } from "../../../../Redux/Actions/PfdActions";
-
+import PopupModa from "../../../../Redux/Actions/poupModal";
 export default function Tin(props: any) {
 
   const { authDetails } = useAuth();
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const onBoardingFormValues = JSON.parse(localStorage.getItem("agentDetails") ?? "null");
 
   const onBoardingFormValuesPrevStepData = JSON.parse(localStorage.getItem("PrevStepData") ?? "null");
@@ -193,7 +196,12 @@ export default function Tin(props: any) {
                 <div className="overlay-div-group">
                   <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
                   <div className="viewform" onClick={(e) => {
-                    dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId));
+                    dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
                   }}>View Form</div>
                   <div className="helpvideo">
 
@@ -1421,6 +1429,7 @@ export default function Tin(props: any) {
                   </div>
                 </div>
               </div>
+              <PopupModa data={popupState} setPopupState={setPopupState} />
             </section>
           </Form>
         )}

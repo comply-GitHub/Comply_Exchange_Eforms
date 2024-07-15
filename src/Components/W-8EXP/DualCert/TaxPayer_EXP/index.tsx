@@ -22,6 +22,7 @@ import { Formik, Form } from "formik";
 import checksolid from "../../../assets/img/check-solid.png";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { TaxPayerSchema } from "../../../../schemas/w8ECI";
 import { GetHelpVideoDetails, W8_state_ECI, getAllCountries, getTinTypes, PostDualCert } from "../../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -120,6 +121,10 @@ export default function Tin(props: any) {
   const handleTaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTax(event.target.value);
   };
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const [expanded, setExpanded] = React.useState<string | false>("");
   const [ustinValue, setUStinvalue] = useState([]);
   const [ustinArray, setUStinArray] = useState([]);
@@ -162,7 +167,12 @@ export default function Tin(props: any) {
             <div className="viewInstructions">View Instructions</div>
             <div className="viewform"
               onClick={() => {
-                dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                dispatch(GetEXPDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                  setPopupState({
+                      status:true,
+                      data: callbackData?.pdf
+                  })
+              }))
               }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -1186,7 +1196,12 @@ export default function Tin(props: any) {
                         <Button
                           variant="contained"
                           onClick={() => {
-                            dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                            dispatch(GetEXPDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                           style={{ color: "white", marginLeft: "15px" }}
                         >
@@ -1242,6 +1257,7 @@ export default function Tin(props: any) {
             </div>
           </div>
         </div>
+        <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </>
   );

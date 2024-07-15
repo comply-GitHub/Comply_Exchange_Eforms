@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { SubmitSchema } from "../../../../schemas/submit";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -32,7 +33,11 @@ export default function Declaration (props: any){
   }
   const handleCanvaClose = () => {
     setCanvaBx(false);
-  }
+  };
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const handleChangeAccodionState = (panel: string, panelHeading: string) => (
     event: React.SyntheticEvent,
     newExpanded: boolean
@@ -94,7 +99,12 @@ export default function Declaration (props: any){
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={() => {
-                              dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                               dispatch(GetEXPDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
                             }}>View Form</div>
           <div className="helpvideo">
             <a
@@ -364,6 +374,7 @@ export default function Declaration (props: any){
    
       </div>
       </section>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </Fragment>
 
   );

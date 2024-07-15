@@ -12,6 +12,7 @@ import { useRef } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { GetEciPdf, GetIMYDCPdf } from "../../../../Redux/Actions/PfdActions";
 import useAuth from "../../../../customHooks/useAuth";
 
@@ -21,6 +22,10 @@ export default function Term() {
   const dispatch = useDispatch();
   const history = useNavigate();
   const pdfRef = useRef(null);
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const pdfRefnew = useRef(null);
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -122,7 +127,12 @@ export default function Term() {
                 <Button
                   //type="submit"
                   onClick={() => {
-                    dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                    dispatch(GetIMYDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
                   }}
                   style={{
                     border: "1px solid #0095dd",
@@ -189,6 +199,7 @@ export default function Term() {
           </div>
         </footer>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

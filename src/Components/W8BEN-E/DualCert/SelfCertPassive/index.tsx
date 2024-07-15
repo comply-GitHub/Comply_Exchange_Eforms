@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import SelfCertType from "./selfCert";
 import { Form, Formik } from "formik";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { W8_state_ECI, PostDualCert, GetHelpVideoDetails, getAllCountries, UpsertDualCertDetailsControllingPerson, GetDualCertDetailsPerson } from "../../../../Redux/Actions";
 import { SelfCertSchema_w9_DC } from "../../../../schemas/w8Exp";
 import InfoIcon from "@mui/icons-material/Info";
@@ -155,7 +156,10 @@ const individualSelfType = {
     setIncomeTypeData([...temp]);
   }
   
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   
   const AddIncomeType = () => {
     setIncomeTypeData((prev) => {
@@ -424,7 +428,13 @@ const individualSelfType = {
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform"  onClick={() => {
-                      dispatch(GetBENEDCPdf(authDetails?.accountHolderId))
+                       dispatch(GetBENEDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                     
                     }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
@@ -537,7 +547,13 @@ const individualSelfType = {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetBENEDCPdf(authDetails?.accountHolderId))
+                            dispatch(GetBENEDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                           
                           }}
                         >
                           View form

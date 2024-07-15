@@ -15,6 +15,7 @@ import {
   Checkbox,
   MenuItem,
 } from "@mui/material";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "@mui/material/Link";
 import Tooltip from "@mui/material/Tooltip";
@@ -58,6 +59,10 @@ export default function Fedral_tax(props: any) {
   const [IsIndividual, setIsIndividual] = useState(obValues?.businessTypeId == 1);
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const [selectedfile, setSelectedFile] = useState<any>(null);
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
 
   const initialValue = {
     
@@ -161,7 +166,12 @@ export default function Fedral_tax(props: any) {
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
             <div className="viewform"  onClick={() => {
-            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+             dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
           }}>View Form</div>
             <div className="helpvideo">
               {GethelpData && GethelpData[5].id === 7 ? (
@@ -1662,7 +1672,12 @@ export default function Fedral_tax(props: any) {
                             disabled={isSubmitting}
                             variant="contained"
                             onClick={() => {
-                              dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                              dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
                             }}
                             style={{ color: "white", marginLeft: "15px" }}
                           >
@@ -1720,6 +1735,7 @@ export default function Fedral_tax(props: any) {
             </div>
           </div>
         </div>
+        <PopupModa data={popupState} setPopupState={setPopupState} />
       </section >
     </>
   );

@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { SubmitSchema } from "../../../../schemas/submit";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -30,6 +31,10 @@ const Declaration = (props: any) => {
   useEffect(() => {
     document.title = "Electronic Signature Confirmation"
   }, [])
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
 
   const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
 
@@ -426,7 +431,12 @@ const Declaration = (props: any) => {
                     }} formTypeId={FormTypeId.W8ECI} />
                     <Button
                       onClick={() => {
-                        dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                        dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                          setPopupState({
+                              status:true,
+                              data: callbackData?.pdf
+                          })
+                      }))
                       }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
@@ -484,6 +494,7 @@ const Declaration = (props: any) => {
 
         </div>
       </section>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </Fragment>
   );
 };

@@ -812,7 +812,7 @@ export const GetCaymanIndividualPdf = (accountHolderId: number, callback: Functi
                                 type: Utils.actionName.UpdateError,
                                 payload: { ...err },
                             });
-                            callback();
+                            callback(data);
                         }
                         convertAndDownloadPdf(data?.pdf, "SC-CaymanIndividual.pdf", isDownload)
                     }
@@ -869,7 +869,7 @@ export const GetCaymanEntityPdf = (accountHolderId: number, callback: Function =
                                 type: Utils.actionName.UpdateError,
                                 payload: { ...err },
                             });
-                            callback();
+                            callback(data);
                         }
                         convertAndDownloadPdf(data?.pdf, "SC-CaymanEntity.pdf", isDownload)
                     }

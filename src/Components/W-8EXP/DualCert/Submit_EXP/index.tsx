@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { SubmitSchema } from "../../../../schemas/submit";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -27,6 +28,10 @@ const Declaration = (props: any) => {
     setOpen(false);
   };
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   useEffect(() => {
     document.title = "Electronic Signature Confirmation"
   }, [])
@@ -426,7 +431,12 @@ const Declaration = (props: any) => {
                     }} formTypeId={FormTypeId.W8EXP} />
                     <Button
                       onClick={() => {
-                        dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                        dispatch(GetEXPDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                          setPopupState({
+                              status:true,
+                              data: callbackData?.pdf
+                          })
+                      }))
                       }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
@@ -483,6 +493,7 @@ const Declaration = (props: any) => {
           </Paper>
 
         </div>
+        <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
   );

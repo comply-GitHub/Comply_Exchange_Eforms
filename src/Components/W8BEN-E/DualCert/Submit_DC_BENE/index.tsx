@@ -10,6 +10,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { W8_state_ECI, PostDualCert } from "../../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import useAuth from "../../../../customHooks/useAuth";
@@ -34,7 +35,10 @@ const Declaration = (props: any) => {
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsCheckboxChecked(event.target.checked);
   };
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const history = useNavigate();
   const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
@@ -429,7 +433,13 @@ const Declaration = (props: any) => {
                     }} formTypeId={FormTypeId.BENE} />
                     <Button
                      onClick={() => {
-                      dispatch(GetBENEDCPdf(authDetails?.accountHolderId))
+                      dispatch(GetBENEDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                     
                     }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
@@ -487,6 +497,7 @@ const Declaration = (props: any) => {
 
         </div>
       </section>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </Fragment>
   );
 };

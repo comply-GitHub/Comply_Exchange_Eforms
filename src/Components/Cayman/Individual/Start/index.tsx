@@ -49,7 +49,7 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import View_Insructions from "../../../viewInstruction";
 import Utils from "../../../../Utils";
-
+import PopupModa from "../../../../Redux/Actions/poupModal";
 interface FormValues {
   accountHolderBasicDetailId: number,
   agentId: number,
@@ -268,7 +268,10 @@ export default function Index() {
     history("w9_pdf");
   }
 
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const handleFileChange = (e: any) => {
     if (localStorage.getItem("submittinSCInvidual") === "true") {
       return;
@@ -297,7 +300,13 @@ export default function Index() {
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           {/* <div className="viewform" onClick={viewPdf}>View Form</div> */}
           <div className="viewform" onClick={(e) => {
-            dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId));
+             dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
+           
           }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -1673,7 +1682,13 @@ export default function Index() {
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={(e) => {
-                          dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId));
+                          dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                            setPopupState({
+                                status:true,
+                                data: callbackData?.pdf
+                            })
+                        }))
+                         
                         }}
                       >
                         View form
@@ -1748,6 +1763,7 @@ export default function Index() {
           </div>
         </div>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

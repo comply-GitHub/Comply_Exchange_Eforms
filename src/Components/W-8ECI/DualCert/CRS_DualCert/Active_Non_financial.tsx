@@ -12,6 +12,7 @@ import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { Form, Formik } from "formik";
 import { W8_state_ECI,PostDualCert } from "../../../../Redux/Actions";
 import { useDispatch } from "react-redux";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import { ExpandMore } from "@mui/icons-material";
 import BreadCrumbComponent from "../../../reusables/breadCrumb";
@@ -59,6 +60,11 @@ export default function Declaration (props: any){
       localStorage.removeItem("clickedPanelHeading");
     }
   };
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   useEffect(() => {
     console.log("expandedState",expandedState)
     if(expandedState=== 'panel1'){
@@ -94,7 +100,12 @@ export default function Declaration (props: any){
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform"  onClick={() => {
-            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+            dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
           }}>View Form</div>
           <div className="helpvideo">
             <a
@@ -352,6 +363,7 @@ export default function Declaration (props: any){
         </div>
    
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
   );

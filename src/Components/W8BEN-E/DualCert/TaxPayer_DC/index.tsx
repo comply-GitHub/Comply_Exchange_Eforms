@@ -20,6 +20,7 @@ import {
   IconButton
 } from "@mui/material";
 import "./index.scss";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import Infoicon from "../../../../assets/img/info.png";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -147,7 +148,10 @@ export default function TaxPayer(props: any) {
       values.usTin = values.usTin + "-";
     }
   };
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const [TinTax, setTinTax] = useState(false);
   const W8BENEData = useSelector((state: any) => state.W8BENE);
   const handlePayloadUpdate = (data: any, index: number) => {
@@ -1142,7 +1146,12 @@ export default function TaxPayer(props: any) {
                 })
               }} formTypeId={FormTypeId.BENE} />
               <Button variant="contained" onClick={() => {
-                      dispatch(GetBENEDCPdf(authDetails?.accountHolderId))
+                       dispatch(GetBENEDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
                     }} style={{ color: "white", marginLeft: "15px" }}>
                 View Form
               </Button>
@@ -1168,5 +1177,6 @@ export default function TaxPayer(props: any) {
           </Form>
         )}
       </Formik>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>)
 }

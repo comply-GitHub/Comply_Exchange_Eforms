@@ -12,6 +12,7 @@ import {
   Input,
 } from "@mui/material";
 // import { Info } from "@mui/icons-material";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import InfoIcon from "@mui/icons-material/Info";
 import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -77,6 +78,10 @@ export default function Penalties() {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const dispatch = useDispatch();
   const history = useNavigate();
   const [showRecoverSection, setShowRecoverSection] = useState(false);
@@ -151,7 +156,13 @@ export default function Penalties() {
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
                   <div className="viewform" onClick={(e) => {
-                    dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId));
+                  
+                      dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
                   }}>View Form</div>
                   <div className="helpvideo">
 
@@ -738,7 +749,7 @@ export default function Penalties() {
           </Form>
         )}
       </Formik>
-
+      <PopupModa data={popupState} setPopupState={setPopupState} />
       {/* <Declaration
         open={open2}
         setOpen={setOpen2}

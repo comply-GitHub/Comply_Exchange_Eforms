@@ -28,6 +28,7 @@ import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import { GetIMYDCPdf } from "../../../../Redux/Actions/PfdActions";
 import useAuth from "../../../../customHooks/useAuth";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 
 export default function Certifications(props: any) {
   const location = useLocation();
@@ -59,7 +60,11 @@ export default function Certifications(props: any) {
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
   }, [])
-  const history = useNavigate()
+  const history = useNavigate();
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   // const handleCheckbox2Change = () => {
   //   setCheckbox2(!checkbox2);
   //   setCheckbox5(false);
@@ -99,7 +104,13 @@ export default function Certifications(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={() => {
-                            dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                            dispatch(GetIMYDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
+                           
                           }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
@@ -252,7 +263,12 @@ export default function Certifications(props: any) {
                             >
                               Check to confirm you have reviewed the Electronic Form  <span
                               onClick={() => {
-                                dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                                dispatch(GetIMYDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                  setPopupState({
+                                      status:true,
+                                      data: callbackData?.pdf
+                                  })
+                              }))
                               }}
                                 style={{ color: "blue", fontSize: "14px", marginLeft: "5px", cursor: "pointer" }}
                               >
@@ -308,7 +324,12 @@ export default function Certifications(props: any) {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                            dispatch(GetIMYDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View form
@@ -341,6 +362,7 @@ export default function Certifications(props: any) {
           </div>
         </div>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

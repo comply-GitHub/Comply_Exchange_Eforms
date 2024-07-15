@@ -10,6 +10,7 @@ import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { Form, Formik } from "formik";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { W8_state_ECI,PostDualCert } from "../../../../Redux/Actions";
 import { useDispatch } from "react-redux";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
@@ -46,7 +47,10 @@ export default function Declaration (props: any){
     isConsentReceipentstatement: false,
     isNotConsentReceipentstatement: false
     };
-
+    const [popupState, setPopupState] = useState({
+      data:"",
+      status:false
+  });
 
   return (
     <Fragment>
@@ -58,7 +62,12 @@ export default function Declaration (props: any){
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform"   onClick={() => {
-                              dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                             dispatch(GetEXPDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                             }}>View Form</div>
           <div className="helpvideo">
             <a
@@ -343,6 +352,7 @@ export default function Declaration (props: any){
         </div>
    
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
   );

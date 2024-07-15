@@ -9,6 +9,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Button, Typography, Paper, Checkbox } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { Form, Formik } from "formik";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { W8_state_ECI, PostDualCert } from "../../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import useAuth from "../../../../customHooks/useAuth";
@@ -16,9 +17,6 @@ import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { SubmitSchemaECI } from "../../../../schemas/w8ECI";
 import { GetEciPdf, GetIMYDCPdf } from "../../../../Redux/Actions/PfdActions";
-
-
-
 
 const Declaration = (props: any) => {
   const { open, setOpen } = props;
@@ -30,7 +28,10 @@ const Declaration = (props: any) => {
   useEffect(() => {
     document.title = "Electronic Signature Confirmation"
   }, [])
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -428,7 +429,13 @@ const Declaration = (props: any) => {
                     }} formTypeId={FormTypeId.FW81MY} />
                     <Button
                      onClick={() => {
-                      dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                      dispatch(GetIMYDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
+                     
                     }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" }}
@@ -491,6 +498,7 @@ const Declaration = (props: any) => {
 
         </div>
       </section>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </Fragment>
   );
 };

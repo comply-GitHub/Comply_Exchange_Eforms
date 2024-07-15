@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { SubmitSchema } from "../../../../schemas/submit";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -71,7 +72,10 @@ export default function Declaration (props: any){
         localStorage.removeItem("SubHeading4");
       }
     },[expandedState])
-
+    const [popupState, setPopupState] = useState({
+      data:"",
+      status:false
+  });
     useEffect(() => {
       document.title = "CRS Classification"
     }, [])
@@ -85,7 +89,12 @@ export default function Declaration (props: any){
         <div className="overlay-div-group">
           <div className="viewInstructions">View Instructions</div>
           <div className="viewform"  onClick={() => {
-                      dispatch(GetBENEDCPdf(authDetails?.accountHolderId))
+                      dispatch(GetBENEDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
                     }}>View Form</div>
           <div className="helpvideo">
             <a
@@ -393,7 +402,12 @@ export default function Declaration (props: any){
                    
                     <Button
                      onClick={() => {
-                      dispatch(GetBENEDCPdf(authDetails?.accountHolderId))
+                      dispatch(GetBENEDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
                     }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
@@ -420,6 +434,7 @@ export default function Declaration (props: any){
         </div>
    
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
   );

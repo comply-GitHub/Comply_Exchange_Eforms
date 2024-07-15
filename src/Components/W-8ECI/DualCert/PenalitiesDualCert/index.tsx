@@ -18,6 +18,7 @@ import { Info } from "@mui/icons-material";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InfoIcon from "@mui/icons-material/Info";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import Infoicon from "../../../../assets/img/info.png";
 import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -73,7 +74,11 @@ export default function Penalties() {
   }
   const handleCanvaClose = () => {
     setCanvaBx(false);
-  }
+  };
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
   const [initialValue, setInitialValues] = useState({
@@ -163,7 +168,12 @@ export default function Penalties() {
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
                   <div className="viewform" onClick={() => {
-                    dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                      dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
                   }}>View Form</div>
                   <div className="helpvideo">
                     {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -783,6 +793,7 @@ export default function Penalties() {
           </Form>
         )}
       </Formik>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
       {/* <Declaration
         open={open2}
         setOpen={setOpen2}

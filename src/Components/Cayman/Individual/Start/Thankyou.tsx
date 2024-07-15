@@ -14,10 +14,15 @@ import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../../customHooks/useAuth";
 import { useDispatch } from "react-redux";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { GetCaymanIndividualPdf } from "../../../../Redux/Actions/PfdActions";
 
 export default function Term() {
   //States
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const { authDetails } = useAuth();
   const Version =localStorage.getItem("Version");
   const dispatch = useDispatch();
@@ -130,7 +135,12 @@ export default function Term() {
               <div style={{ marginTop: "25px" }}>
                 <Button
                   onClick={(e) => {
-                    dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, () => { }, () => { }, true));
+                    dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
                   }}
                   style={{
                     border: "1px solid #0095dd",
@@ -198,6 +208,7 @@ export default function Term() {
           </div>
         </footer>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
 
 

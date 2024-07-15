@@ -32,10 +32,14 @@ import useAuth from "../../../../customHooks/useAuth";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import { GetECIDCPdf } from "../../../../Redux/Actions/PfdActions";
 import View_Insructions from "../../../viewInstruction";
-// import { GetEciPdf } from "../../../Redux/Actions/PfdActions";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 export default function Tin(props: any) {
 
   const { authDetails } = useAuth();
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || '{}')
   const isIndividual = obValues?.businessTypeId == 1;
   const isEntity = obValues?.businessTypeId == 2;
@@ -171,7 +175,12 @@ export default function Tin(props: any) {
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
             <div className="viewform"
               onClick={() => {
-                dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                  setPopupState({
+                      status:true,
+                      data: callbackData?.pdf
+                  })
+              }))
               }}>View Form</div>
             <div className="helpvideo">
               {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
@@ -1198,7 +1207,12 @@ export default function Tin(props: any) {
                         <Button
                           variant="contained"
                           onClick={() => {
-                            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                            dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                           style={{ color: "white", marginLeft: "15px" }}
                         >
@@ -1254,6 +1268,7 @@ export default function Tin(props: any) {
             </div>
           </div>
         </div>
+        <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </>
   );

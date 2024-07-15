@@ -36,6 +36,7 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "./index.scss";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import useAuth from "../../../../customHooks/useAuth";
 import { boolean } from "yup";
 import Redirect from "../../../../Router/RouterSkip";
@@ -314,6 +315,10 @@ const individualSelfType = {
     history("w9_pdf");
   }
 
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   useEffect(() => {
     // Promise.all(incomeTypeData.map(x => SelfCertSchema_w9_DC().validate(x))).then(() => {
     //   setTinTax(true);
@@ -424,7 +429,12 @@ const individualSelfType = {
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={() => {
-                    dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                      dispatch(GetIMYDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
                   }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
@@ -536,7 +546,12 @@ const individualSelfType = {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                            dispatch(GetIMYDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View form
@@ -569,6 +584,7 @@ type="submit"
           </div>
         </div>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

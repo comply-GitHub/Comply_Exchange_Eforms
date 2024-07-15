@@ -8,7 +8,7 @@ import { Typography, Button } from "@mui/material";
 
 import Paper from "@mui/material/Paper";
 import DoneIcon from "@mui/icons-material/Done";
-
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { useRef } from "react";
 
 import "bootstrap/dist/css/bootstrap.css";
@@ -23,6 +23,12 @@ export default function Term() {
   const dispatch = useDispatch();
   const history = useNavigate();
   const pdfRef = useRef(null);
+
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
+
   const pdfRefnew = useRef(null);
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -126,7 +132,12 @@ export default function Term() {
                   <Button
                     //type="submit"
                     onClick={() => {
-                      dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                      dispatch(GetEXPDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                        setPopupState({
+                            status:true,
+                            data: callbackData?.pdf
+                        })
+                    }))
                     }}
                     style={{
                       border: "1px solid #0095dd",
@@ -193,6 +204,7 @@ export default function Term() {
           </div>
         </footer>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

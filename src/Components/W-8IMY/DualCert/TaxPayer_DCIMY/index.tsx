@@ -20,6 +20,7 @@ import {
   IconButton
 } from "@mui/material";
 import "./index.scss";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import Infoicon from "../../../../assets/img/info.png";
 import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -48,7 +49,10 @@ export default function TaxPayer(props: any) {
   const onBoardingFormValues = JSON.parse(
     localStorage.getItem("agentDetails") ?? "null"
   );
-
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
 
 
   const [yesCount, setYesCount] = useState(0)
@@ -370,7 +374,12 @@ export default function TaxPayer(props: any) {
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={() => {
-                    dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                     dispatch(GetIMYDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
                   }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
@@ -1135,7 +1144,12 @@ export default function TaxPayer(props: any) {
                 })
               }} formTypeId={FormTypeId.W9} /> */}
               <Button variant="contained" onClick={() => {
-                    dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+                    dispatch(GetIMYDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
                   }}style={{ color: "white", marginLeft: "15px" }}>
                 View Form
               </Button>
@@ -1157,7 +1171,7 @@ export default function TaxPayer(props: any) {
                
               </Button>
             </div>
-
+            <PopupModa data={popupState} setPopupState={setPopupState} />
           </Form>
         )}
       </Formik>

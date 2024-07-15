@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { SubmitSchema } from "../../../../schemas/submit";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -25,6 +26,10 @@ export default function Declaration (props: any){
   const { authDetails } = useAuth();
   const history = useNavigate();
   const dispatch = useDispatch();
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+})
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
   const [canvaBx, setCanvaBx] = useState(false);
   const handleCanvaOpen = () => {
@@ -94,7 +99,12 @@ export default function Declaration (props: any){
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform"  onClick={() => {
-            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+            dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
           }}>View Form</div>
           <div className="helpvideo">
             <a
@@ -363,6 +373,7 @@ export default function Declaration (props: any){
         </div>
    
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
       </section>
     </Fragment>
 

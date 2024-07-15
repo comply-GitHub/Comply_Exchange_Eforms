@@ -29,6 +29,7 @@ import { useLocation } from "react-router-dom";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
 import { useNavigate } from "react-router-dom";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { ControlPointOutlined, Info, RemoveCircleOutlineOutlined } from "@mui/icons-material";
 import { CardHeader } from "reactstrap";
 import moment from "moment";
@@ -187,6 +188,10 @@ const individualSelfType = {
   useEffect(() => {
     document.title = "Controlling Person(s) of a Passive NFE"
   }, [])
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
     dispatch(getAllCountries());
@@ -424,7 +429,12 @@ const individualSelfType = {
         <div className="overlay-div-group">
           <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform" onClick={() => {
-            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+             dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
           }}>View Form</div>
           <div className="helpvideo">
             {GethelpData && GethelpData[8].id === 10 ? (
@@ -536,14 +546,19 @@ const individualSelfType = {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                           onClick={() => {
-                            dispatch(GetECIDCPdf(authDetails?.accountHolderId))
+                            dispatch(GetECIDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                              setPopupState({
+                                  status:true,
+                                  data: callbackData?.pdf
+                              })
+                          }))
                           }}
                         >
                           View form
                         </Button>
                         <Button
 
-//disabled={!isValid || !TinTax}
+
 disabled={!IsCompDataValid }
 type="submit"
                           variant="contained"
@@ -569,6 +584,7 @@ type="submit"
           </div>
         </div>
       </div>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </section>
   );
 }

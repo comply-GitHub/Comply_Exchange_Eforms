@@ -10,6 +10,7 @@ import { Button, Typography, Paper, Checkbox, Link } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import GlobalValues, { FormTypeId } from "../../../../Utils/constVals";
 import { Form, Formik } from "formik";
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { postSCFATCAClassification,PostDualCert } from "../../../../Redux/Actions";
 import { useDispatch ,useSelector} from "react-redux";
 import SaveAndExit from "../../../Reusable/SaveAndExit/Index";
@@ -31,7 +32,11 @@ export default function Declaration (props: any){
   }
   const handleCanvaClose = () => {
     setCanvaBx(false);
-  }
+  };
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const CRSClassificationData = useSelector((state:any) => state?.CRSEntityReducer?.CRSClassificationData);
   const [expandedState, setExpandedState] = React.useState<string | false>("panel1");
   const handleChangeAccodionState = (panel: string, panelHeading: string) => (
@@ -88,7 +93,12 @@ export default function Declaration (props: any){
                 <div className="overlay-div-group">
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform"  onClick={() => {
-                              dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                               dispatch(GetEXPDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                setPopupState({
+                                    status:true,
+                                    data: callbackData?.pdf
+                                })
+                            }))
                             }}>View Form</div>
           <div className="helpvideo">
             <a
@@ -217,7 +227,12 @@ export default function Declaration (props: any){
                    
                     <Button
                   onClick={() => {
-                    dispatch(GetEXPDCPdf(authDetails?.accountHolderId))
+                    dispatch(GetEXPDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                      setPopupState({
+                          status:true,
+                          data: callbackData?.pdf
+                      })
+                  }))
                   }}
                       variant="contained"
                       style={{ color: "white", marginLeft: "15px" ,fontSize:"12px",}}
@@ -246,6 +261,7 @@ export default function Declaration (props: any){
    
       </div>
       </section>
+      <PopupModa data={popupState} setPopupState={setPopupState} />
     </Fragment>
   );
 };

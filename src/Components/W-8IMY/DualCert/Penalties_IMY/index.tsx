@@ -13,6 +13,7 @@ import {
   Input,
 } from "@mui/material";
 import "./index.scss"
+import PopupModa from "../../../../Redux/Actions/poupModal";
 import { useLocation } from "react-router-dom";
 import Infoicon from "../../../../assets/img/info.png";                               
 import { Info } from "@mui/icons-material";          
@@ -50,6 +51,10 @@ export default function Penalties() {
   const [open2, setOpen2] = useState(false);
   const handleClickOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
+  const [popupState, setPopupState] = useState({
+    data:"",
+    status:false
+});
   const [expanded, setExpanded] = React.useState<string | false>("");
   const [showRecoverSection, setShowRecoverSection] = useState(false);
   const [isSecurityWordMatched, setIsSecurityWordMatched] = useState(false);
@@ -734,7 +739,12 @@ export default function Penalties() {
                       >
                         <Button
 onClick={() => {
-  dispatch(GetIMYDCPdf(authDetails?.accountHolderId))
+  dispatch(GetIMYDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+    setPopupState({
+        status:true,
+        data: callbackData?.pdf
+    })
+}))
 }}
                           variant="contained"
                           style={{ color: "white" }}
@@ -830,7 +840,7 @@ onClick={() => {
           </Form>
         )}
       </Formik >
-
+      <PopupModa data={popupState} setPopupState={setPopupState} />
       <Declaration
         open={open2}
         setOpen={setOpen2}
