@@ -254,38 +254,39 @@ export default function FCTA_Reporting(props: any) {
                 }) => (
                   <Form onSubmit={handleSubmit}>
 
-                    {values.isSubmissionClaimTreaty ==="yes" ? (
-                      <div
-                        style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
-                      >
-                        <Typography>
-                          Treaty107
-                          <span className="mx-1">
-                            <img
-                              src={Infoicon}
-                              style={{
-                                color: "#ffc107",
-                                height: "22px",
-                                width: "20px",
-                                boxShadow: "inherit",
-
-                                cursor: "pointer",
-                                marginBottom: "3px",
-                              }}
-                            />
-                            The country selected does not match the resident
-                            country selected earlier in the process. Your agent
-                            may contact you for further information.
-                          </span>
-                        </Typography>
-                        
-                      </div>
-                    ) : (
-                      ""
-                    )}
+                 
 
                     {values.ownerResidentId &&
 values.ownerResidentId !== "---" && values.isSubmissionClaimTreaty === "yes" ?(
+
+
+  <>
+    <div
+      style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
+    >
+      <Typography>
+        Treaty107
+        <span className="mx-1">
+          <img
+            src={Infoicon}
+            style={{
+              color: "#ffc107",
+              height: "22px",
+              width: "20px",
+              boxShadow: "inherit",
+
+              cursor: "pointer",
+              marginBottom: "3px",
+            }}
+          />
+          The country selected does not match the resident
+          country selected earlier in the process. Your agent
+          may contact you for further information.
+        </span>
+      </Typography>
+      
+    </div>
+
                       <>
                       
                       {values.ownerResidentId !== AgentData.permanentResidentialCountryId  ? (
@@ -324,6 +325,8 @@ values.ownerResidentId !== "---" && values.isSubmissionClaimTreaty === "yes" ?(
                                           )}
                       
                       </>
+  
+  </>
                     ):""}
 
 

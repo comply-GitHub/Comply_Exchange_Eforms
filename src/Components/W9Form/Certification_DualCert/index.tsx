@@ -270,6 +270,14 @@ export default function Certifications(props: any) {
                             >
                               Check to confirm you have reviewed the Electronic Form  <span
                                 style={{ color: "blue", fontSize: "14px", marginLeft: "5px", cursor: "pointer" }}
+                                onClick={() => {
+                                  dispatch(GetW9DCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                    setPopupState({
+                                        status:true,
+                                        data: callbackData?.pdf
+                                    })
+                                }))
+                            }}
                               >
                                 (View Electronic Form)
                               </span>

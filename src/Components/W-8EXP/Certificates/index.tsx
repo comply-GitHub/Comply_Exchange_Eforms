@@ -389,8 +389,13 @@ export default function Certifications(props: any) {
                             Check to confirm you have reviewed the Electronic Form
                             <Link
                               onClick={() => {
-                                dispatch(GetExpPdf(authDetails?.accountHolderId));
-                              }}
+                                dispatch(GetExpPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                 setPopupState({
+                                     status:true,
+                                     data: callbackData?.pdf
+                                 })
+                             }))
+                             }}
                               style={{
                                 color: "blue",
                                 fontSize: "16px",

@@ -798,7 +798,7 @@ export default function Tin(props: any) {
                             }}
                           >
                             <option value={0}>---select---</option>
-                            <option value={257}>United Kingdom</option>
+                            {/* <option value={257}>United Kingdom</option> */}
                             {getCountriesReducer.allCountriesData
                               ?.filter(
                                 (x: any) =>

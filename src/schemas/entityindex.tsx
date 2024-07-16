@@ -194,7 +194,13 @@ export const EntitySchema = (Cert: string, payment: boolean, income: boolean, is
       .required("Please enter Last name")
       // .min(3, "Last Name should be minimum of 3 characters")
       .max(50, "Last Name should be maximum of 50 characters"),
-    contactEmail: Yup.string().email('Invalid email address').required('Email is required'),
+    contactEmail: Yup.string()
+    .email('Invalid email address')
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|co\.uk|in)$/,
+      'Invalid email address'
+    )
+    .required('Email is required'),
     paymentTypeId: payment === true ? Yup.number()
       .required("Please select an option")
       .notOneOf([0], "Please select a valid option") : Yup.number(),

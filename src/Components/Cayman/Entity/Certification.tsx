@@ -226,9 +226,18 @@ export default function Certifications(props: any) {
                               style={{ fontSize: "2rem" }} />
                             <Typography className="mx-2"
                               style={{ fontSize: "14px", color: "black", marginTop: "10px", textAlign: "justify" }}
+                             
                             >
                               Check to confirm you have reviewed the Electronic Form  <span
                                 style={{ color: "blue", fontSize: "14px", marginLeft: "5px", cursor: "pointer" }}
+                                onClick={() => {
+                                  dispatch(GetCaymanEntityPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                    setPopupState({
+                                        status:true,
+                                        data: callbackData?.pdf
+                                    })
+                                }))
+                                }}
                               >
                                 (View Electronic Form)
                               </span>
