@@ -124,14 +124,26 @@ export default function Term() {
                   <Button
                    
 
-                    onClick={() => {
-                      dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
-                          setPopupState({
-                              status:true,
-                              data: callbackData?.pdf
-                          })
-                      }))
-                  }}
+
+
+                  onClick={() => {
+                    dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any) => {
+                        const pdfData = callbackData?.pdf;
+            
+                        // Create a blob from the PDF data
+                      
+            
+                        // Trigger file download
+                        const link = document.createElement('a');
+                        link.href = pdfData;
+                        link.download = 'document.pdf'; 
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+            
+                       
+                    }));
+                }}
                     style={{
                       border: "1px solid #0095dd",
                       backgroundColor: "#1976d2",

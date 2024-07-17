@@ -134,14 +134,33 @@ export default function Term() {
 
               <div style={{ marginTop: "25px" }}>
                 <Button
-                  onClick={(e) => {
-                    dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any)=>{
-                      setPopupState({
-                          status:true,
-                          data: callbackData?.pdf
-                      })
-                  }))
-                  }}
+                  // onClick={(e) => {
+                  //   dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                  //     setPopupState({
+                  //         status:true,
+                  //         data: callbackData?.pdf
+                  //     })
+                  // }))
+                  // }}
+
+                  onClick={() => {
+                    dispatch(GetCaymanIndividualPdf(authDetails?.accountHolderId, (callbackData:any) => {
+                        const pdfData = callbackData?.pdf;
+            
+                        // Create a blob from the PDF data
+                      
+            
+                        // Trigger file download
+                        const link = document.createElement('a');
+                        link.href = pdfData;
+                        link.download = 'document.pdf'; 
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+            
+                       
+                    }));
+                }}
                   style={{
                     border: "1px solid #0095dd",
                     background: "black",
@@ -158,7 +177,7 @@ export default function Term() {
                   }}
                   className="btn btn_submit  btn-primary-agent"
                 >
-                  Download
+                  Download PDF
                 </Button>
               </div>
               <div style={{ marginTop: "25px" }}>

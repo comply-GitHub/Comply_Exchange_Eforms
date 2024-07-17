@@ -633,15 +633,21 @@ export default function Certifications(props: any) {
                             Form
                             <Link
                               onClick={() => {
-                                history("/w8BenE_pdf");
+                                dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                  setPopupState({
+                                      status:true,
+                                      data: callbackData?.pdf
+                                  })
+                              }))
                               }}
                               style={{
                                 color: "blue",
                                 fontSize: "16px",
                                 marginLeft: "5px",
+                                cursor:"pointer",textDecorationLine:"none"
                               }}
                             >
-                              (view Electronic Form)
+                              (View Electronic Form)
                             </Link>
                           </Typography>
                         </Typography>

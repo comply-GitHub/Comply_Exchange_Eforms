@@ -15,6 +15,7 @@ import {
   RadioGroup,
   Radio,
 } from "@mui/material";
+import InputMask from 'react-input-mask';
 import { CREATE_8233, GetHelpVideoDetails, post8233_EForm } from "../../../Redux/Actions";
 import { Info, DeleteOutline, Delete } from "@mui/icons-material";
 import { Formik, Form } from "formik";
@@ -417,13 +418,16 @@ export default function Tin(props: any) {
 
                             <div className="col-lg-5 col-12">
                               <Typography style={{ fontSize: "14px" }}>U.S. TIN</Typography>
-                              <Input
+                              <InputMask
                                 disabled
                                 fullWidth
 
                                 placeholder="ENTER US TIN"
                                 defaultValue="ENTER US TIN"
                                 value={values.usTin}
+                                mask={
+                                  values.usTin ? "99-9999999" : "999-99-9999"
+                                }
                                 // onBlur={handleBlur}
                                 onChange={(e: any) => {
                                   handleChange(e);
@@ -623,11 +627,14 @@ export default function Tin(props: any) {
 
                             <div className="col-lg-5 col-12">
                               <Typography style={{ fontSize: "14px" }}>U.S. TIN</Typography>
-                              <Input
+                              <InputMask
                                 disabled={values.notAvailable}
                                 fullWidth
                                 type="text"
                                 name="usTin"
+                                mask={
+                                  values.usTin ? "99-9999999" : "999-99-9999"
+                                }
                                 value={values.usTin}
                                 onBlur={handleBlur}
                                 onChange={handleChange}
