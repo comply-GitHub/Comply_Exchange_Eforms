@@ -172,7 +172,7 @@ export default function FCTA_Reporting(props: any) {
                     history,
                     false
                   );
-                  // history("/US_Purposes/Back/Exemption/Tax")
+                  
                 },
                   (error: any) => {
                     reject(error);

@@ -148,7 +148,7 @@ export default function Penalties() {
             <>{console.log(errors, "errors")}</>
             <section
               className="inner_content"
-              style={{ backgroundColor: "#0c3d69", }}
+              
             >
               <div className="overlay-div">
                 <div className="overlay-div-group">

@@ -2006,6 +2006,8 @@ export default function Entity() {
                                   setFieldValue("foreignTIN", "");
                                 } else if (values.foreignTINCountryId == 0 || values.foreignTINNotAvailable == true) {
                                   setFieldValue("foreignTIN", "");
+                                }else if (e.target.value) {
+                                  setFieldValue("foreignTIN", "");
                                 }
                               }}
                               value={values.foreignTINCountryId}
@@ -2052,7 +2054,12 @@ export default function Entity() {
                               }}
                               id="outlined"
                               name="foreignTIN"
-                              inputProps={{ maxLength: 11 }}
+                              inputProps={{
+                                maxLength:
+                                  values.foreignTINCountryId == 257 && !values.alternativeTINFormat
+                                    ? 10
+                                    : 20,
+                              }}
                               placeholder="Enter foreign TIN"
                               onChange={handleChange}
                               value={values.foreignTIN}
@@ -2113,10 +2120,10 @@ export default function Entity() {
                                 id="alternativeTINFormat"
                                 aria-labelledby="demo-row-radio-buttons-group-label"
                                 value={values.alternativeTINFormat}
-                                // disabled={
-                                //   values.foreignTINCountryId == 0 ||
-                                //   values.foreignTINCountryId != 257
-                                // }
+                                disabled={
+                                  values.foreignTINCountryId == 0 ||
+                                  values.foreignTINCountryId != 257
+                                }
                                 checked={values.alternativeTINFormat}
                                 onChange={(e) => {
                                   handleChange(e);

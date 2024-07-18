@@ -224,7 +224,8 @@ export const IncomeSchema = () => {
 export const IncomeReportTypeSchema = () => {
   return Yup.object().shape({
     itemIncomeType: Yup.number().required("Field Cannot be Empty").notOneOf([0], "Please select a valid option"),
-    //incomeDescription: Yup.string().required("Field Cannot be Empty"),
+    incomeDescription: Yup.string().required("Field Cannot be Empty"),
+    
   });
 };
 

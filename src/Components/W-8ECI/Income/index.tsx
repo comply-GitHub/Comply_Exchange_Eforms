@@ -548,7 +548,7 @@ export default function Factors() {
                               Redirect("/Attach_document_ECI",authDetails?.agentId,history);
                             })
                           }}
-                          disabled={!isValid || !incomeTypesValid}
+                          disabled={!isValid && values.isAppplicationCheck === true || !incomeTypesValid && values.isAppplicationCheck === true}
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                         >
@@ -580,9 +580,7 @@ export default function Factors() {
                             marginBottom: "20px",
                           }}
                         >
-                          <span style={{ marginRight: "5px" }}>
-                            <ArrowBackIcon />
-                          </span>{" "}
+                          
                           Back
                         </Button>
                       </Typography>

@@ -1220,7 +1220,213 @@ export default function Factors() {
                           </FormControl>
                           <Divider className="dividr" />
 
-                       
+                          {values.isTaxLiabilityJurisdictions == "yes" ? (
+                            <>
+                              <Typography className="mt-3">
+                                Please select the country where the individual
+                                has a tax liability:
+                                <span style={{ color: "red" }}>*</span>
+                              </Typography>
+                              <FormControl className="form">
+                                <select
+                                  style={{
+                                    padding: " 0 10px",
+                                    color: "#121112",
+                                    fontStyle: "italic",
+                                    height: "36px",
+                                  }}
+                                  name="permanentResidentialCountryId"
+                                  id="Income"
+                                  // defaultValue={1}
+                                  onChange={handleChange}
+                                  value={values.permanentResidentialCountryId}
+                                >
+                                  <option value={0}>---select---</option>
+                                  <option value={45}>-canada-</option>
+                                  <option value={257}>United Kingdom</option>
+                                  <option value={258}>United States</option>
+                                  <option value="">-----</option>
+                                  {GetAgentCountriesImportantForEformData?.map(
+                                    (ele: any) => (
+                                      <option key={ele?.id} value={ele?.id}>
+                                        {ele?.name}
+                                      </option>
+                                    )
+                                  )}
+                                </select>
+                              </FormControl>
+                              
+
+                              <Typography>
+                                Please enter the tax reference number:
+                                {values.permanentResidentialCountryId == 257 ? (
+                                  <span>
+                                    <Tooltip
+                                      style={{
+                                        backgroundColor: "black",
+                                        color: "white",
+                                      }}
+                                      title={
+                                        <>
+                                          <Typography color="inherit"></Typography>
+                                          <a
+                                            onClick={() =>
+                                              setToolInfo("refrence")
+                                            }
+                                          >
+                                            <Typography
+                                              style={{
+                                                cursor: "pointer",
+                                                textDecorationLine: "underline",
+                                              }}
+                                              align="center"
+                                            >
+                                              {" "}
+                                              View More...
+                                            </Typography>
+                                          </a>
+                                        </>
+                                      }
+                                    >
+                                      <Info
+                                        style={{
+                                          color: "#ffc107",
+                                          fontSize: "16px",
+                                          cursor: "pointer",
+                                          verticalAlign: "super",
+                                        }}
+                                      />
+                                    </Tooltip>
+                                  </span>
+                                ) : (
+                                  ""
+                                )}
+                                <span style={{ color: "red" }}>*</span>
+                              </Typography>
+                              {toolInfo === "refrence" ? (
+                                <div>
+                                  <Paper
+                                    style={{
+                                      backgroundColor: "#dedcb1",
+                                      padding: "15px",
+                                      marginBottom: "10px",
+                                    }}
+                                  >
+                                    <Typography>
+                                      United Kingdom TIN Format is 9999999999
+                                      <br />
+                                      9- Numeric value only
+                                      <br />
+                                      A- Alphabetic character only
+                                      <br />
+                                      *- Alphanumeric character only ?-
+                                      Characters optional after this
+                                      <br />
+                                      IF TIN format is not available, please
+                                      check the below box and continue
+                                    </Typography>
+
+                                    <Link
+                                      href="#"
+                                      underline="none"
+                                      style={{
+                                        marginTop: "10px",
+                                        fontSize: "16px",
+                                        color: "#0000C7"
+
+                                      }}
+                                      onClick={() => {
+                                        setToolInfo("");
+                                      }}
+                                    >
+                                      --Show Less--
+                                    </Link>
+                                  </Paper>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                              <div className="d-flex">
+                                <FormControl className="form">
+                                  {  values.isTINFormatNotAvailable == true || values.permanentResidentialCountryId == 0 ? (
+                                    <Input
+                                      name="taxReferenceNumber"
+                                      onChange={handleChange}
+                                      value={values.taxReferenceNumber}
+                                      disabled
+                                      className="input"
+                                    />
+                                  ) : (
+                                    <Input
+                                      name="taxReferenceNumber"
+                                      onChange={handleChange}
+                                      value={values.taxReferenceNumber}
+                                      className="number"
+                                    />
+                                  )}
+                                </FormControl>
+                                {/* {values.permanentResidentialCountryId == 257?( */}
+                                <div className="d-flex">
+                                  <Checkbox
+                                    name="isTINFormatNotAvailable"
+                                    onChange={(e) => {
+                                      handleChange(e);
+                                      setFieldValue("taxReferenceNumber", "");
+                                    }}
+                                    value={values.isTINFormatNotAvailable}
+                                    required
+                                  />
+                                  <div className="mt-2">
+                                    TIN format not available
+                                  </div>
+                                </div>
+                               
+                              </div>
+                              <Divider className="dividr mt-2" />
+                              <Typography
+                                style={{
+                                  fontSize: "17px",
+                                  marginTop: "10px",
+
+                                  marginBottom: "10px",
+                                }}
+                              >
+                                Does the individual the submission represents
+                                have tax liability in any other jurisdictions?
+                              </Typography>
+
+                              <FormControl>
+                                <RadioGroup
+                                  row
+                                  aria-labelledby="demo-row-radio-buttons-group-label"
+                                  id="isTaxLiabilityJurisdictions"
+                                  defaultValue={"no"}
+                                  value={values.isTaxLiabilityJurisdictions}
+                                  onChange={handleChange}
+                                >
+                                  <FormControlLabel
+                                    control={<Radio />}
+                                    value="yes"
+                                    name="isTaxLiabilityJurisdictions"
+                                    label="Yes"
+                                  />
+                                  <FormControlLabel
+                                    control={<Radio />}
+                                    defaultValue={"no"}
+                                    value="no"
+                                    name="isTaxLiabilityJurisdictions"
+                                    label="No"
+                                  />
+                                </RadioGroup>
+                                <p className="error">
+                                  {errors.isTaxLiabilityJurisdictions}
+                                </p>
+                              </FormControl>
+                              <Divider className="dividr" />
+                            </>
+                          ) : (
+                            ""
+                          )}
 
                           <Typography
                             style={{

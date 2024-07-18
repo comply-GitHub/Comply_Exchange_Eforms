@@ -2626,7 +2626,7 @@ export default function IndividualUs() {
                               </div>
 
                               <>
-                                <div className="col-lg-6 col-6 col-md-3 ">
+                                <div className="col-lg-6 col-6 col-md-3 mt-3">
                                   <FormControl className="w-100">
                                     <Typography align="left" className="d-flex w-100">
                                       Foreign TIN Country
@@ -2647,6 +2647,8 @@ export default function IndividualUs() {
                                         if (Number(e.target.value) === 0) {
                                           setFieldValue("foreignTIN", "");
                                         } else if (values.foreignTINCountryId == 0 || values.foreignTINNotAvailable == true) {
+                                          setFieldValue("foreignTIN", "");
+                                        }else if (e.target.value) {
                                           setFieldValue("foreignTIN", "");
                                         }
                                       }}
@@ -2672,11 +2674,11 @@ export default function IndividualUs() {
                                   </FormControl>
                                 </div>
 
-                                <div className="col-lg-6 col-12 col-md-3">
+                                <div className="col-lg-6 col-12 col-md-3 mt-3">
                                   <FormControl className="w-100">
                                     <Typography align="left">
                                       Foreign TIN
-                                      {values.foreignTINCountryId == 1 ? (
+                                      {values.foreignTINCountryId == 257 ? (
                                         <span>
                                           {" "}
                                           <Tooltip
@@ -2702,7 +2704,7 @@ export default function IndividualUs() {
                                                 color: "#ffc107",
                                                 fontSize: "15px",
                                                 verticalAlign: "super",
-                                                marginLeft: "5px",
+                                             
                                                 cursor: "pointer",
                                               }}
                                             />
@@ -2739,7 +2741,12 @@ export default function IndividualUs() {
                                         // setFieldValue("foreignTIN", "");
                                       }}
                                       // onKeyDown={(e) => formatTin(e, values)}
-                                      inputProps={{ maxLength: 11 }}
+                                      inputProps={{
+                                        maxLength:
+                                          values.foreignTINCountryId == 257 && !values.alternativeTINFormat
+                                            ? 10
+                                            : 20,
+                                      }}
                                       value={values.foreignTIN}
                                     />
                                   </FormControl>
@@ -2848,13 +2855,13 @@ export default function IndividualUs() {
                                         id="alternativeTINFormat"
                                         aria-labelledby="demo-row-radio-buttons-group-label"
                                         value={values.alternativeTINFormat}
-                                        // disabled={
-                                        //   values.foreignTINCountryId == 0 ||
-                                        //   values.foreignTINCountryId != 257
-                                        // }
+                                        disabled={
+                                          values.foreignTINCountryId == 0 ||
+                                          values.foreignTINCountryId != 257
+                                        }
 
                                         checked={values.alternativeTINFormat}
-                                        disabled={values.foreignTINCountryId == 0}
+                                        // disabled={values.foreignTINCountryId == 0}
                                         onChange={(e) => {
                                           handleChange(e);
                                           if (e.target.value)
@@ -3145,6 +3152,8 @@ export default function IndividualUs() {
                                       setFieldValue("foreignTIN", "");
                                     } else if (values.foreignTINCountryId == 0 || values.foreignTINNotAvailable == true) {
                                       setFieldValue("foreignTIN", "");
+                                    }else if (e.target.value) {
+                                      setFieldValue("foreignTIN", "");
                                     }
                                   }}
                                   value={values.foreignTINCountryId}
@@ -3232,7 +3241,12 @@ export default function IndividualUs() {
                                   placeholder="Enter foreign TIN"
                                   onChange={handleChange}
                                   // onKeyDown={(e) => formatTin(e, values)}
-                                  inputProps={{ maxLength: 11 }}
+                                  inputProps={{
+                                    maxLength:
+                                      values.foreignTINCountryId == 257 && !values.alternativeTINFormat
+                                        ? 10
+                                        : 20,
+                                  }}
                                   value={values.foreignTIN}
                                 />
                               </FormControl>
@@ -3346,7 +3360,10 @@ export default function IndividualUs() {
                                     // }
 
                                     checked={values.alternativeTINFormat}
-                                    disabled={values.foreignTINCountryId == 0}
+                                    disabled={
+                                      values.foreignTINCountryId == 0 ||
+                                      values.foreignTINCountryId != 257
+                                    }
                                     onChange={(e) => {
                                       handleChange(e);
                                       if (e.target.value)

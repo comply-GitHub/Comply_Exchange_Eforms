@@ -66,7 +66,7 @@ export default function Tin(props: any) {
     stateProvinceId:
       W8ECI?.stateProvinceId ?? obValues.permanentResidentialStateorProvince,
     zipPostalCode:
-      W8ECI?.zipPostalCode ?? obValues.permanentresidentialzippostalcode,
+      W8ECI?.zipPostalCode ?? obValues.permanentResidentialZipPostalCode,
   });
 
   const LoadData = () => {
@@ -82,7 +82,7 @@ export default function Tin(props: any) {
       stateProvinceId:
         W8ECI?.stateProvinceId ?? obValues.permanentResidentialStateorProvince,
       zipPostalCode:
-        W8ECI?.zipPostalCode ?? obValues.permanentresidentialzippostalcode,
+        W8ECI?.zipPostalCode ?? obValues.permanentResidentialZipPostalCode,
     });
   };
 
@@ -204,8 +204,8 @@ export default function Tin(props: any) {
         }) => (
           <Form onSubmit={handleSubmit}>
             <section
-              className="inner_ncontent"
-              style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
+              className="inner_content"
+              style={{marginBottom: "10px" }}
             >
               <>{console.log("values", values, "errors", errors)}</>
               <div className="overlay-div">
