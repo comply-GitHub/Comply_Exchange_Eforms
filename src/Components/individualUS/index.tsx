@@ -2874,6 +2874,7 @@ export default function IndividualUs() {
                                         }}
                                       />
 
+
                                       {errors.alternativeTINFormat &&
                                         touched.alternativeTINFormat ? (
                                         <div>
@@ -2885,6 +2886,25 @@ export default function IndividualUs() {
                                         ""
                                       )}
                                     </FormControl>
+                                    {values.alternativeTINFormat == true ? (
+                                  <Delete
+                                    onClick={() => {
+                                      handleChange(
+                                        "alternativeTINFormat"
+                                      )("");
+                                      setFieldValue("fTinNotAvailableReason", "")
+                                      setFieldValue("foreignTIN", "");
+                                      setToolInfo("");
+                                    }}
+                                    style={{
+                                      color: "red",
+                                      fontSize: "20px",
+                                      marginTop: "11px",
+                                    }}
+                                  />
+                                ) : (
+                                  ""
+                                )}
                                   </div>
                                 </div>
                               </>
@@ -3386,6 +3406,25 @@ export default function IndividualUs() {
                                     ""
                                   )}
                                 </FormControl>
+                                {values.alternativeTINFormat == true ? (
+                                  <Delete
+                                    onClick={() => {
+                                      handleChange(
+                                        "alternativeTINFormat"
+                                      )("");
+                                      setFieldValue("fTinNotAvailableReason", "")
+                                      setFieldValue("foreignTIN", "");
+                                      setToolInfo("");
+                                    }}
+                                    style={{
+                                      color: "red",
+                                      fontSize: "20px",
+                                      marginTop: "11px",
+                                    }}
+                                  />
+                                ) : (
+                                  ""
+                                )}
                               </div>
                             </div>
                             <div className="col-12">
@@ -6101,14 +6140,11 @@ export default function IndividualUs() {
                                   value={values.paymentTypeId}
                                 >
                                   <option value="">---select---</option>
-                                  {GetAgentPaymentTypeData?.map((ele: any) => (
-                                    <option
-                                      key={ele?.paymentTypeId}
-                                      value={ele?.paymentTypeId}
-                                    >
-                                      {ele?.name}
-                                    </option>
-                                  ))}
+                                  {GetAgentPaymentTypeData?.filter((ele: any) => !ele.hide).map((ele: any) => (
+    <option key={ele?.paymentTypeId} value={ele?.paymentTypeId}>
+      {ele?.name}
+    </option>
+  ))}
                                 </select>
 
                                 {/* <Delete

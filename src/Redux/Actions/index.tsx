@@ -531,7 +531,7 @@ export const GetAgentPaymentType = (agentId: Number, callback: Function): any =>
   return (dispatch: any) => {
     Utils.api.getApiCall(
       Utils.EndPoint.GetAgentPaymentType,
-      `?agentId=${agentId}`,
+      `?id=${agentId}`,
       (resData) => {
         const { data } = resData;
         if (resData.status === 200) {

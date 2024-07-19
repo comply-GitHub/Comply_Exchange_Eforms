@@ -2147,6 +2147,25 @@ export default function Entity() {
                                 ""
                               )}
                             </FormControl>
+                            {values.alternativeTINFormat == true ? (
+                                  <Delete
+                                    onClick={() => {
+                                      handleChange(
+                                        "alternativeTINFormat"
+                                      )("");
+                                      setFieldValue("fTinNotAvailableReason", "")
+                                      setFieldValue("foreignTIN", "");
+                                      setToolInfo("");
+                                    }}
+                                    style={{
+                                      color: "red",
+                                      fontSize: "20px",
+                                      marginTop: "11px",
+                                    }}
+                                  />
+                                ) : (
+                                  ""
+                                )}
                           </div>
                           {/* <div className="col-lg-3 col-6 col-md-3 ">
                             <FormControl className="w-100">
@@ -4907,14 +4926,11 @@ export default function Entity() {
                                 value={values.paymentTypeId}
                               >
                                 <option value="">---select---</option>
-                                {GetAgentPaymentTypeData?.map((ele: any) => (
-                                  <option
-                                    key={ele?.paymentTypeId}
-                                    value={ele?.paymentTypeId}
-                                  >
-                                    {ele?.name}
-                                  </option>
-                                ))}
+                                {GetAgentPaymentTypeData?.filter((ele: any) => !ele.hide).map((ele: any) => (
+    <option key={ele?.paymentTypeId} value={ele?.paymentTypeId}>
+      {ele?.name}
+    </option>
+  ))}
                               </select>
 
                               {/* <Delete

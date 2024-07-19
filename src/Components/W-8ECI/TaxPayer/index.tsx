@@ -258,9 +258,9 @@ export default function Tin(props: any) {
                       {toolInfo === "ForeignTin" ? (
                         <div className="mt-5">
                           <Paper
-                            style={{ padding: "15px" }}
+                            style={{ padding: "15px",backgroundColor:"#c9dcdf"  }}
                           >
-                            <div className="d-flex" style={{ justifyContent: "space-between" }}>
+                            <div className="d-flex" style={{ justifyContent: "space-between",backgroundColor:"#c9dcdf" }}>
                               <Typography style={{ color: "#0c5460" }}>
                                 United Kingdom TIN Format is 9999999999 false <br /> 9- Numeric value only <br /> A- Alphabetic character only <br /> *- Alphanumeric character only <br /> ?- Characters optional after this <br /> IF TIN format is not available, please check the below box and continue
                               </Typography>
@@ -679,6 +679,9 @@ export default function Tin(props: any) {
                               value={values.foreignTINCountry}
                               onChange={(e) => {
                                 handleChange(e);
+                                if (e.target.value) {
+                                  setFieldValue("foreignTIN", "");
+                                }
                               }}
                             >
                               <option value={0}>---select---</option>
@@ -853,7 +856,12 @@ export default function Tin(props: any) {
                                 value={values.foreignTIN}
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                inputProps={{ maxLength: 10 }}
+                                inputProps={{
+                                  maxLength:
+                                    values.foreignTINCountry == 257 && values.isNotAvailable =="No"
+                                      ? 10
+                                      : 20,
+                                }}
                                 placeholder="ENTER FOREIGN TIN"
 
 
@@ -883,6 +891,12 @@ export default function Tin(props: any) {
                                 value={values.foreignTIN}
                                 onBlur={handleBlur}
                                 onChange={handleChange}
+                                inputProps={{
+                                  maxLength:
+                                    values.foreignTINCountry == 257 && values.isNotAvailable == "No"
+                                      ? 10
+                                      : 20,
+                                }}
                                 error={Boolean(
                                   touched.foreignTIN && errors.foreignTIN
                                 )}

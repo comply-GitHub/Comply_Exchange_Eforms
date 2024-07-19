@@ -57,7 +57,7 @@ export const EntitySchema = (Cert: string, payment: boolean, income: boolean, is
         })
       .test({
         name: "length",
-        message: "GIIN lenth should be 16 character",
+        message: "GIIN length should be 16 character",
         test: (value, context) => {
           const { isUSEntity } = context.parent;
           if (isGiinEnabled && isUSEntity === "no") {

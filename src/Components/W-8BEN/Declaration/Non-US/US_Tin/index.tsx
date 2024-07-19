@@ -597,6 +597,9 @@ export default function Tin(props: any) {
                             onChange={(e) => {
 
                               handleChange(e);
+                              if (e.target.value) {
+                                setFieldValue("foreignTIN", "");
+                              }
 
                             }}
                           >
@@ -781,7 +784,12 @@ export default function Tin(props: any) {
                               value={values.foreignTIN}
                               onBlur={handleBlur}
                               onChange={handleChange}
-                              inputProps={{ maxLength: 20 }}
+                              inputProps={{
+                                maxLength:
+                                  values.foreignTINCountry == 257 && values.isNotAvailable =="No"
+                                    ? 10
+                                    : 20,
+                              }}
                               placeholder="ENTER FOREIGN TIN"
                               error={Boolean(
                                 touched.foreignTIN && errors.foreignTIN
@@ -808,7 +816,12 @@ export default function Tin(props: any) {
                             name="foreignTIN"
                             value={values.foreignTIN}
                             onBlur={handleBlur}
-                            inputProps={{ maxLength: 20 }}
+                            inputProps={{
+                              maxLength:
+                                values.foreignTINCountry == 257 && values.isNotAvailable =="No"
+                                  ? 10
+                                  : 20,
+                            }}
                             onChange={handleChange}
                             error={Boolean(
                               touched.foreignTIN && errors.foreignTIN
