@@ -98,6 +98,8 @@ export default function IndividualUs() {
   const [agentDetail, setAgentData] = useState<any>({});
   const [stateList1, setallStateById1] = useState([]);
   const [stateList2, setallStateById2] = useState([]);
+  // const [foreignTinFormat, setForeignTinFormat] = useState("");
+  // const [foreignTINCountryId, setForeignTINCountryId] = useState(0);
 
   const allCountriesData = useSelector(
     (state: any) => state.getCountriesAgentWiseReducer
@@ -111,6 +113,9 @@ export default function IndividualUs() {
   const IncomeMandatory = auth?.configurations?.requestincometypeAndWhenYesMakeMandatory;
   const Payment = auth?.configurations?.requestBankAccountInformation;
   const PaymentMandatry = auth?.configurations?.requestBankAccountInformationAndWhenYesMakeMandatory;
+
+
+ 
 
   const [payload, setPayload] = useState({
     id: 0,
@@ -280,6 +285,16 @@ export default function IndividualUs() {
       values.usTin = values.usTin + "-";
     }
   };
+ 
+
+ 
+
+  // const validationSchema = Yup.object().shape({
+  //   foreignTIN: Yup.string()
+  //     .max(20, "TIN too long")
+  //     .test("is-valid-tin", "Invalid TIN format", validateTIN),
+  // });
+
 
   const formatSortCode = (e: any, values: any): any => {
     if (e.key === "Backspace" || e.key === "Delete") return;
@@ -526,6 +541,21 @@ export default function IndividualUs() {
     } else setOpen(val);
   };
 
+
+  // useEffect(() => {
+  //   const countryData = getCountriesAgentWiseReducer.agentWiseCountriesData.find(
+  //     (country:any) => country.id === foreignTINCountryId
+  //   );
+  //   if (countryData) {
+  //     setForeignTinFormat(countryData.foreignTinFormat);
+  //   }
+  // }, [foreignTINCountryId, getCountriesAgentWiseReducer]);
+
+  // const validateTIN = (value:any) => {
+  //   if (!value) return true;
+  //   const formatRegex = new RegExp(`^${foreignTinFormat.replace(/9/g, '\\d').replace(/A/g, '[A-Za-z]').replace(/\*/g, '[A-Za-z0-9]')}$`);
+  //   return formatRegex.test(value);
+  // };
   const addIncomeType = () => {
     // console.log("==", incomeArr);
     //alert(incomeArr);
@@ -729,7 +759,7 @@ export default function IndividualUs() {
   };
 
 
-
+ 
 
   const Version =localStorage.getItem("Version");
   useEffect(() => {
@@ -1014,6 +1044,7 @@ export default function IndividualUs() {
               }
 
               }
+              
               validationSchema={individualSchema(userType, PaymentMandatry, IncomeMandatory)}
 
             >
@@ -1027,8 +1058,28 @@ export default function IndividualUs() {
                 isSubmitting,
                 setFieldValue,
                 isValid
-              }) => (
+              }) =>  {
+               
 
+  console.log('Selected Country ID:', values.foreignTINCountryId);
+ 
+  const foreignTINCountryIdNumber = Number(values.foreignTINCountryId);
+
+  // Find the selected country
+  const selectedCountry = getCountriesAgentWiseReducer.agentWiseCountriesData
+    ?.find((country: any) => {
+      console.log("Country ID:", country.id, "Type of ID:", typeof country.id);
+      console.log("Foreign TIN Country ID:", foreignTINCountryIdNumber, "Type of Foreign TIN ID:", typeof foreignTINCountryIdNumber);
+      return Number(country.id) === foreignTINCountryIdNumber;
+    });
+  
+  // Extract the foreignTinFormatToolTip field from the selected country, if available
+  const selectedCountryTitle = selectedCountry ? selectedCountry.foreignTinFormatToolTip : "";
+  const selectedCountryMask = selectedCountry ? selectedCountry.foreignTinFormat : "";
+    
+                
+                return (
+             
                 <Form onSubmit={handleSubmit}>
                   {/* {values.isUSIndividual == "yes" ?(
                     window.history.pushState({}, "", "/EntityUS")
@@ -1178,13 +1229,12 @@ export default function IndividualUs() {
                           className="d-flex"
                           style={{ justifyContent: "space-between" }}
                         >
+                         
                           <Typography style={{ color: "#0c5460" }}>
-                            United Kingdom TIN Format is 9999999999 false 9-
-                            Numeric value only A- Alphabetic character only *-
-                            Alphanumeric character only ?- Characters optional
-                            after this IF TIN format is not available, please
-                            check the below box and continue
+                            {selectedCountryTitle}
+                           
                           </Typography>
+
 
                           <Typography>
                             <CloseIcon
@@ -2678,44 +2728,30 @@ export default function IndividualUs() {
                                   <FormControl className="w-100">
                                     <Typography align="left">
                                       Foreign TIN
-                                      {values.foreignTINCountryId == 257 ? (
-                                        <span>
-                                          {" "}
-                                          <Tooltip
-                                            style={{
-                                              backgroundColor: "black",
-                                              color: "white",
-                                            }}
-                                            title={
-                                              <>
-                                                <a
-                                                  onClick={() =>
-                                                    setToolInfo("ForeignTin")
-                                                  }
-                                                ></a>
-                                              </>
-                                            }
-                                          >
-                                            <Info
-                                              onClick={() =>
-                                                setToolInfo("ForeignTin")
-                                              }
-                                              style={{
-                                                color: "#ffc107",
-                                                fontSize: "15px",
-                                                verticalAlign: "super",
-                                             
-                                                cursor: "pointer",
-                                              }}
-                                            />
-                                          </Tooltip>
-                                        </span>
-                                      ) : (
-                                        ""
-                                      )}
+                                      {selectedCountry && selectedCountry.foreignTinFormatToolTip !== null &&(
+              <span>
+                <Tooltip
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                  }}
+                  title={selectedCountry.foreignTinFormatToolTip}
+                >
+                  <Info
+                    onClick={() => setToolInfo("ForeignTin")}
+                    style={{
+                      color: "#ffc107",
+                      fontSize: "15px",
+                      verticalAlign: "super",
+                      cursor: "pointer",
+                    }}
+                  />
+                </Tooltip>
+              </span>
+            )}
                                     </Typography>
 
-                                    <Input
+                                    <InputMask
                                       disabled={
                                         values.foreignTINCountryId == 0 ||
                                         (values.foreignTINCountryId != 0 &&
@@ -2735,18 +2771,18 @@ export default function IndividualUs() {
                                       id="outlined"
                                       name="foreignTIN"
                                       placeholder="Enter foreign TIN"
-                                      // onChange={handleChange}
-                                      onChange={(e) => {
+                                      mask={selectedCountryMask ? selectedCountryMask : "********************"}
+                                      onChange={(e:any) => {
                                         handleChange(e);
                                         // setFieldValue("foreignTIN", "");
                                       }}
                                       // onKeyDown={(e) => formatTin(e, values)}
-                                      inputProps={{
-                                        maxLength:
-                                          values.foreignTINCountryId == 257 && !values.alternativeTINFormat
-                                            ? 10
-                                            : 20,
-                                      }}
+                                      // inputProps={{
+                                      //   maxLength:
+                                      //     values.foreignTINCountryId == 257 && !values.alternativeTINFormat
+                                      //       ? 10
+                                      //       : 20,
+                                      // }}
                                       value={values.foreignTIN}
                                     />
                                   </FormControl>
@@ -3202,73 +3238,63 @@ export default function IndividualUs() {
                               <FormControl className="w-100">
                                 <Typography align="left">
                                   Foreign TIN
-                                  {values.foreignTINCountryId == 1 ? (
-                                    <span>
-                                      {" "}
-                                      <Tooltip
-                                        style={{
-                                          backgroundColor: "black",
-                                          color: "white",
-                                        }}
-                                        title={
-                                          <>
-                                            <a
-                                              onClick={() =>
-                                                setToolInfo("ForeignTin")
-                                              }
-                                            ></a>
-                                          </>
-                                        }
-                                      >
-                                        <Info
-                                          onClick={() =>
-                                            setToolInfo("ForeignTin")
-                                          }
-                                          style={{
-                                            color: "#ffc107",
-                                            fontSize: "15px",
-                                            verticalAlign: "super",
-                                            marginLeft: "5px",
-                                            cursor: "pointer",
-                                          }}
-                                        />
-                                      </Tooltip>
-                                    </span>
-                                  ) : (
-                                    ""
-                                  )}
-                                </Typography>
+                                  {selectedCountry && selectedCountry.foreignTinFormatToolTip !== null &&(
+              <span>
+                <Tooltip
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                  }}
+                  title={selectedCountry.foreignTinFormatToolTip}
+                >
+                  <Info
+                    onClick={() => setToolInfo("ForeignTin")}
+                    style={{
+                      color: "#ffc107",
+                      fontSize: "15px",
+                      verticalAlign: "super",
+                      cursor: "pointer",
+                    }}
+                  />
+                </Tooltip>
+              </span>
+            )}
+                                    </Typography>
 
-                                <Input
-                                  disabled={
-                                    values.foreignTINCountryId == 0 ||
-                                    (values.foreignTINCountryId != 0 &&
-                                      values.foreignTINNotAvailable == true)
-                                  }
-                                  style={{
-                                    border: " 1px solid #d9d9d9 ",
-                                    height: " 36px",
-                                    lineHeight: "36px ",
-                                    background: "#fff ",
-                                    fontSize: "13px",
-                                    color: " #000 ",
-                                    fontStyle: "normal",
-                                    borderRadius: "1px",
-                                    padding: " 0 10px ",
-                                  }}
-                                  id="outlined"
-                                  name="foreignTIN"
-                                  placeholder="Enter foreign TIN"
-                                  onChange={handleChange}
-                                  // onKeyDown={(e) => formatTin(e, values)}
-                                  inputProps={{
-                                    maxLength:
-                                      values.foreignTINCountryId == 257 && !values.alternativeTINFormat
-                                        ? 10
-                                        : 20,
-                                  }}
-                                  value={values.foreignTIN}
-                                />
+                                    <InputMask
+                                      disabled={
+                                        values.foreignTINCountryId == 0 ||
+                                        (values.foreignTINCountryId != 0 &&
+                                          values.foreignTINNotAvailable === true)
+                                      }
+                                      style={{
+                                        border: " 1px solid #d9d9d9 ",
+                                        height: " 36px",
+                                        lineHeight: "36px ",
+                                        background: "#fff ",
+                                        fontSize: "13px",
+                                        color: " #000 ",
+                                        fontStyle: "normal",
+                                        borderRadius: "1px",
+                                        padding: " 0 10px ",
+                                      }}
+                                      id="outlined"
+                                      name="foreignTIN"
+                                      placeholder="Enter foreign TIN"
+                                      mask={selectedCountryMask ? selectedCountryMask : "********************"}
+                                      onChange={(e:any) => {
+                                        handleChange(e);
+                                        // setFieldValue("foreignTIN", "");
+                                      }}
+                                      // onKeyDown={(e) => formatTin(e, values)}
+                                      // inputProps={{
+                                      //   maxLength:
+                                      //     values.foreignTINCountryId == 257 && !values.alternativeTINFormat
+                                      //       ? 10
+                                      //       : 20,
+                                      // }}
+                                      value={values.foreignTIN}
+                                    />
                               </FormControl>
                               {/* <div className="d-flex">
                                                 
@@ -7229,10 +7255,11 @@ export default function IndividualUs() {
                 </Form>
 
 
+                    
 
-
-              )}
+              )}}
             </Formik>
+            
           </Paper>
         </div>
       </div>

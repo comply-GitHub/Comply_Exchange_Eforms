@@ -17,9 +17,10 @@ import { Formik, Form } from "formik";
 import "./index.scss";
 import checksolid from "../../../../../assets/img/check-solid.png";
 import { useNavigate } from "react-router-dom";
+import InputMask from 'react-input-mask';
 import {
   W8_state, getTinTypes, getAllCountries, GetHelpVideoDetails, postW8BENForm, LoadExistingFormData,
-} from "../../../../../Redux/Actions";
+  getAllCountriesAgentWise} from "../../../../../Redux/Actions";
 import PopupModal from "../../../../../Redux/Actions/poupModal";
 import { useDispatch, useSelector } from "react-redux";
 import Accordion from "@mui/material/Accordion";
@@ -124,6 +125,13 @@ export default function Tin(props: any) {
   const handleCanvaOpen = () => {
     setCanvaBx(true);
   }
+
+  useEffect(() => {
+    if (authDetails?.agentId) {
+      
+      dispatch(getAllCountriesAgentWise(authDetails?.agentId));
+    }
+  }, [authDetails])
   const [popupState, setPopupState] = useState({
     data:"",
     status:false
@@ -131,6 +139,10 @@ export default function Tin(props: any) {
   const handleCanvaClose = () => {
     setCanvaBx(false);
   }
+
+  const getCountriesAgentWiseReducer = useSelector(
+    (state: any) => state.getCountriesAgentWiseReducer
+  );
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   console.log(obValues.taxpayerIdTypeID, "pp")
@@ -273,7 +285,23 @@ export default function Tin(props: any) {
                   submitForm,
                   isSubmitting,
                   isValid
-                }) => (
+                }) =>  {
+                  
+                  const foreignTINCountryIdNumber = Number(values.foreignTINCountry);
+
+                  // Find the selected country
+                  const selectedCountry = getCountriesAgentWiseReducer.agentWiseCountriesData
+                    ?.find((country: any) => {
+                      console.log("Country ID:", country.id, "Type of ID:", typeof country.id);
+                      console.log("Foreign TIN Country ID:", foreignTINCountryIdNumber, "Type of Foreign TIN ID:", typeof foreignTINCountryIdNumber);
+                      return Number(country.id) === foreignTINCountryIdNumber;
+                    });
+                  
+                  // Extract the foreignTinFormatToolTip field from the selected country, if available
+                  const selectedCountryTitle = selectedCountry ? selectedCountry.foreignTinFormatToolTip : "";
+                  const selectedCountryMask = selectedCountry ? selectedCountry.foreignTinFormat : "";
+                  
+                  return(
                   <Form onSubmit={handleSubmit}>
                     {(() => {
                       console.log(values, errors, "form");
@@ -292,13 +320,10 @@ export default function Tin(props: any) {
                             style={{ justifyContent: "space-between" }}
                           >
                             <Typography style={{ color: "#0c5460" }}>
-                              United Kingdom TIN Format is 9999999999 false{" "}
-                              <br /> 9- Numeric value only <br /> A- Alphabetic
-                              character only <br /> *- Alphanumeric character
-                              only <br /> ?- Characters optional after this{" "}
-                              <br /> IF TIN format is not available, please
-                              check the below box and continue
-                            </Typography>
+                            {selectedCountryTitle}
+                           
+                          </Typography>
+
                             <Typography>
                               <CloseIcon
                                 style={{
@@ -605,16 +630,21 @@ export default function Tin(props: any) {
                           >
                             <option value={0}>---select---</option>
                             {/* <option value={257}>United Kingdom</option> */}
-                            {getCountriesReducer.allCountriesData
-                              ?.filter(
-                                (x: any) =>
-                                  x.name?.toLowerCase() !== "united states"
-                              )
-                              ?.map((ele: any) => (
-                                <option key={ele?.id} value={ele?.id}>
-                                  {ele?.name}
-                                </option>
-                              ))}
+                            {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
+                                      </option>
+                                    ))}
+                                  <option value={500}>---</option>
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
+                                      </option>
+                                    ))}
                           </select>
                           {/* <p className="error">{errors.foreignTINCountry}</p> */}
 
@@ -738,43 +768,31 @@ export default function Tin(props: any) {
                           <Typography style={{ fontSize: "14px" }}>
                             Foreign TIN{" "}
                             <span style={{ color: "red" }}>*</span>
-                            {values.foreignTINCountry == "257" ? (
-                              <span>
-                                {" "}
-                                <Tooltip
-                                  style={{
-                                    backgroundColor: "black",
-                                    color: "white",
-                                  }}
-                                  title={
-                                    <>
-                                      <a
-                                        onClick={() =>
-                                          setToolInfo("ForeignTin")
-                                        }
-                                      ></a>
-                                    </>
-                                  }
-                                >
-                                  <Info
-                                    onClick={() => setToolInfo("ForeignTin")}
-                                    style={{
-                                      color: "#ffc107",
-                                      fontSize: "15px",
-                                      verticalAlign: "super",
-                                      marginLeft: "5px",
-                                      cursor: "pointer",
-                                    }}
-                                  />
-                                </Tooltip>
-                              </span>
-                            ) : (
-                              ""
-                            )}
+                            {selectedCountry && selectedCountry.foreignTinFormatToolTip !== null &&(
+                                 <span>
+                                 <Tooltip
+                                   style={{
+                                     backgroundColor: "black",
+                                     color: "white",
+                                   }}
+                                   title={selectedCountry.foreignTinFormatToolTip}
+                                 >
+                                   <Info
+                                     onClick={() => setToolInfo("refrence")}
+                                     style={{
+                                       color: "#ffc107",
+                                       fontSize: "15px",
+                                       verticalAlign: "super",
+                                       cursor: "pointer",
+                                     }}
+                                   />
+                                 </Tooltip>
+                               </span>
+                             )}
                           </Typography>
 
                           {values.isNotAvailable === "No" ? (
-                            <Input
+                            <InputMask
                               fullWidth
                               type="text"
                               disabled={
@@ -784,12 +802,7 @@ export default function Tin(props: any) {
                               value={values.foreignTIN}
                               onBlur={handleBlur}
                               onChange={handleChange}
-                              inputProps={{
-                                maxLength:
-                                  values.foreignTINCountry == 257 && values.isNotAvailable =="No"
-                                    ? 10
-                                    : 20,
-                              }}
+                              mask={selectedCountryMask ? selectedCountryMask : "********************"}
                               placeholder="ENTER FOREIGN TIN"
                               error={Boolean(
                                 touched.foreignTIN && errors.foreignTIN
@@ -804,7 +817,7 @@ export default function Tin(props: any) {
                               }}
                             />
                           ) : (
-                          <Input
+                          <InputMask
                             fullWidth
                             type="text"
                             disabled={
@@ -816,12 +829,7 @@ export default function Tin(props: any) {
                             name="foreignTIN"
                             value={values.foreignTIN}
                             onBlur={handleBlur}
-                            inputProps={{
-                              maxLength:
-                                values.foreignTINCountry == 257 && values.isNotAvailable =="No"
-                                  ? 10
-                                  : 20,
-                            }}
+                            mask={selectedCountryMask ? selectedCountryMask : "********************"}
                             onChange={handleChange}
                             error={Boolean(
                               touched.foreignTIN && errors.foreignTIN
@@ -1223,7 +1231,7 @@ export default function Tin(props: any) {
                       </Button>
                     </Typography>
                   </Form>
-                )}
+                )}}
               </Formik>
             </Paper>
           </div>

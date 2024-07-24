@@ -940,7 +940,21 @@ export default function Entity() {
                 handleChange,
                 isSubmitting,
                 setFieldValue,
-              }) => (
+              }) => { 
+                const foreignTINCountryIdNumber = Number(values.foreignTINCountryId);
+
+                // Find the selected country
+                const selectedCountry = getCountriesAgentWiseReducer.agentWiseCountriesData
+                  ?.find((country: any) => {
+                    console.log("Country ID:", country.id, "Type of ID:", typeof country.id);
+                    console.log("Foreign TIN Country ID:", foreignTINCountryIdNumber, "Type of Foreign TIN ID:", typeof foreignTINCountryIdNumber);
+                    return Number(country.id) === foreignTINCountryIdNumber;
+                  });
+                
+                // Extract the foreignTinFormatToolTip field from the selected country, if available
+                const selectedCountryTitle = selectedCountry ? selectedCountry.foreignTinFormatToolTip : "";
+                const selectedCountryMask = selectedCountry ? selectedCountry.foreignTinFormat : "";
+              return  (
                 <Form onSubmit={handleSubmit}>
                   {values.permanentResidentialCountryId == 186 ? (
                     <div
@@ -1221,7 +1235,7 @@ export default function Entity() {
                     ""
                   )}
 
-                  {toolInfo === "ForeignTin" ? (
+{toolInfo === "ForeignTin" ? (
                     <div className="mt-5">
                       <Paper
                         style={{ backgroundColor: "#d1ecf1", padding: "15px" }}
@@ -1230,13 +1244,12 @@ export default function Entity() {
                           className="d-flex"
                           style={{ justifyContent: "space-between" }}
                         >
+                         
                           <Typography style={{ color: "#0c5460" }}>
-                            United Kingdom TIN Format is 9999999999 false 9-
-                            Numeric value only A- Alphabetic character only *-
-                            Alphanumeric character only ?- Characters optional
-                            after this IF TIN format is not available, please
-                            check the below box and continue
+                            {selectedCountryTitle}
+                           
                           </Typography>
+
 
                           <Typography>
                             <CloseIcon
@@ -2034,36 +2047,65 @@ export default function Entity() {
 
                         <div className="col-lg-3 col-6 col-md-3">
                           <FormControl className="w-100">
-                            <Typography align="left">Foreign TIN</Typography>
-                            <Input
-                              disabled={
-                                values.foreignTINCountryId == 0 ||
-                                (values.foreignTINCountryId != 0 &&
-                                  values.foreignTINNotAvailable == true)
-                              }
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                height: " 36px",
-                                lineHeight: "36px ",
-                                background: "#fff ",
-                                fontSize: "13px",
-                                color: " #000 ",
-                                fontStyle: "normal",
-                                borderRadius: "1px",
-                                padding: " 0 10px ",
-                              }}
-                              id="outlined"
-                              name="foreignTIN"
-                              inputProps={{
-                                maxLength:
-                                  values.foreignTINCountryId == 257 && !values.alternativeTINFormat
-                                    ? 10
-                                    : 20,
-                              }}
-                              placeholder="Enter foreign TIN"
-                              onChange={handleChange}
-                              value={values.foreignTIN}
-                            />
+                            <Typography align="left">Foreign TIN
+
+                            {selectedCountry && selectedCountry.foreignTinFormatToolTip !== null &&(
+              <span>
+                <Tooltip
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                  }}
+                  title={selectedCountry.foreignTinFormatToolTip}
+                >
+                  <Info
+                    onClick={() => setToolInfo("ForeignTin")}
+                    style={{
+                      color: "#ffc107",
+                      fontSize: "15px",
+                      verticalAlign: "super",
+                      cursor: "pointer",
+                    }}
+                  />
+                </Tooltip>
+              </span>
+            )}
+                                    </Typography>
+
+                                    <InputMask
+                                      disabled={
+                                        values.foreignTINCountryId == 0 ||
+                                        (values.foreignTINCountryId != 0 &&
+                                          values.foreignTINNotAvailable === true)
+                                      }
+                                      style={{
+                                        border: " 1px solid #d9d9d9 ",
+                                        height: " 36px",
+                                        lineHeight: "36px ",
+                                        background: "#fff ",
+                                        fontSize: "13px",
+                                        color: " #000 ",
+                                        fontStyle: "normal",
+                                        borderRadius: "1px",
+                                        padding: " 0 10px ",
+                                      }}
+                                      id="outlined"
+                                      name="foreignTIN"
+                                      placeholder="Enter foreign TIN"
+                                      mask={selectedCountryMask ? selectedCountryMask : "********************"}
+                                      onChange={(e:any) => {
+                                        handleChange(e);
+                                        // setFieldValue("foreignTIN", "");
+                                      }}
+                                      // onKeyDown={(e) => formatTin(e, values)}
+                                      // inputProps={{
+                                      //   maxLength:
+                                      //     values.foreignTINCountryId == 257 && !values.alternativeTINFormat
+                                      //       ? 10
+                                      //       : 20,
+                                      // }}
+                                      value={values.foreignTIN}
+                                    />
                           </FormControl>
                           <div className="d-flex">
                             <Typography
@@ -6259,7 +6301,7 @@ export default function Entity() {
                     )}
                   </div>
                 </Form>
-              )}
+              )}}
             </Formik>
           </Paper>
         </div>

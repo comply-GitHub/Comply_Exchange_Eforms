@@ -14,6 +14,8 @@ import {
   Input,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
+import InputMask from 'react-input-mask';
 import { Divider } from "@mui/material";
 import { Info } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -34,7 +36,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
-import { GetAgentCountriesImportantForEform } from "../../../../../Redux/Actions";
+import { GetAgentCountriesImportantForEform,getAllCountriesAgentWise } from "../../../../../Redux/Actions";
 import moment from "moment";
 import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
 import Infoicon from "../../../../../assets/img/info.png";
@@ -43,6 +45,7 @@ import useAuth from "../../../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../../../Utils/constVals";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import View_Insructions from "../../../../viewInstruction";
+import { number } from "yup";
 export default function Factors() {
   const { authDetails } = useAuth();
   const location = useLocation();
@@ -112,6 +115,15 @@ export default function Factors() {
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
+
+    useEffect(() => {
+      if (authDetails?.agentId) {
+       
+        dispatch(getAllCountriesAgentWise(authDetails?.agentId));
+
+
+      }
+    }, [authDetails])
   const W8Data = useSelector((state: any) => state.w8Data);
 
   const [tax, setTax] = useState<string>("");
@@ -162,6 +174,9 @@ export default function Factors() {
   };
 
   const [toolInfo, setToolInfo] = useState("");
+  const getCountriesAgentWiseReducer = useSelector(
+    (state: any) => state.getCountriesAgentWiseReducer
+  );
   useEffect(() => {
     dispatch(GetAgentCountriesImportantForEform());
   }, []);
@@ -320,7 +335,22 @@ export default function Factors() {
                   isSubmitting,
                   setFieldValue,
                   submitForm,
-                }) => (
+                }) => {
+                  
+                  const foreignTINCountryIdNumber = Number(values.permanentResidentialCountryId);
+
+                  // Find the selected country
+                  const selectedCountry = getCountriesAgentWiseReducer.agentWiseCountriesData
+                    ?.find((country: any) => {
+                      console.log("Country ID:", country.id, "Type of ID:", typeof country.id);
+                      console.log("Foreign TIN Country ID:", foreignTINCountryIdNumber, "Type of Foreign TIN ID:", typeof foreignTINCountryIdNumber);
+                      return Number(country.id) === foreignTINCountryIdNumber;
+                    });
+                  
+                  // Extract the foreignTinFormatToolTip field from the selected country, if available
+                  const selectedCountryTitle = selectedCountry ? selectedCountry.foreignTinFormatToolTip : "";
+                  const selectedCountryMask = selectedCountry ? selectedCountry.foreignTinFormat : "";
+                  return(
                   <Form onSubmit={handleSubmit}>
                     <>{console.log("VALUESSS", values)}</>
 
@@ -1242,65 +1272,49 @@ export default function Factors() {
                                   value={values.permanentResidentialCountryId}
                                 >
                                   <option value={0}>---select---</option>
-                                  <option value={45}>-canada-</option>
-                                  <option value={257}>United Kingdom</option>
-                                  <option value={258}>United States</option>
-                                  <option value="">-----</option>
-                                  {GetAgentCountriesImportantForEformData?.map(
-                                    (ele: any) => (
-                                      <option key={ele?.id} value={ele?.id}>
-                                        {ele?.name}
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
                                       </option>
-                                    )
-                                  )}
+                                    ))}
+                                  <option value={500}>---</option>
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
+                                      </option>
+                                    ))}
                                 </select>
                               </FormControl>
                               
 
-                              <Typography>
+                              <Typography className="mt-2">
                                 Please enter the tax reference number:
-                                {values.permanentResidentialCountryId == 257 ? (
-                                  <span>
-                                    <Tooltip
-                                      style={{
-                                        backgroundColor: "black",
-                                        color: "white",
-                                      }}
-                                      title={
-                                        <>
-                                          <Typography color="inherit"></Typography>
-                                          <a
-                                            onClick={() =>
-                                              setToolInfo("refrence")
-                                            }
-                                          >
-                                            <Typography
-                                              style={{
-                                                cursor: "pointer",
-                                                textDecorationLine: "underline",
-                                              }}
-                                              align="center"
-                                            >
-                                              {" "}
-                                              View More...
-                                            </Typography>
-                                          </a>
-                                        </>
-                                      }
-                                    >
-                                      <Info
-                                        style={{
-                                          color: "#ffc107",
-                                          fontSize: "16px",
-                                          cursor: "pointer",
-                                          verticalAlign: "super",
-                                        }}
-                                      />
-                                    </Tooltip>
-                                  </span>
-                                ) : (
-                                  ""
-                                )}
+                               
+                                  {selectedCountry && selectedCountry.foreignTinFormatToolTip !== null &&(
+              <span>
+                <Tooltip
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                  }}
+                  title={selectedCountry.foreignTinFormatToolTip}
+                >
+                  <Info
+                    onClick={() => setToolInfo("refrence")}
+                    style={{
+                      color: "#ffc107",
+                      fontSize: "15px",
+                      verticalAlign: "super",
+                      cursor: "pointer",
+                    }}
+                  />
+                </Tooltip>
+              </span>
+            )}
                                 <span style={{ color: "red" }}>*</span>
                               </Typography>
                               {toolInfo === "refrence" ? (
@@ -1312,43 +1326,29 @@ export default function Factors() {
                                       marginBottom: "10px",
                                     }}
                                   >
-                                    <Typography>
-                                      United Kingdom TIN Format is 9999999999
-                                      <br />
-                                      9- Numeric value only
-                                      <br />
-                                      A- Alphabetic character only
-                                      <br />
-                                      *- Alphanumeric character only ?-
-                                      Characters optional after this
-                                      <br />
-                                      IF TIN format is not available, please
-                                      check the below box and continue
-                                    </Typography>
+                                    <Typography style={{ color: "#0c5460" }}>
+                                     {selectedCountryTitle}
+                           
+                                         </Typography>
 
-                                    <Link
-                                      href="#"
-                                      underline="none"
-                                      style={{
-                                        marginTop: "10px",
-                                        fontSize: "16px",
-                                        color: "#0000C7"
-
-                                      }}
-                                      onClick={() => {
-                                        setToolInfo("");
-                                      }}
-                                    >
-                                      --Show Less--
-                                    </Link>
+                          <CloseIcon
+                              style={{
+                                color: "#0c5460",
+                                cursor: "pointer",
+                                fontSize: "medium",
+                              }}
+                              onClick={() => {
+                                setToolInfo("");
+                              }}
+                            />
                                   </Paper>
                                 </div>
                               ) : (
                                 ""
                               )}
                               <div className="d-flex">
-                                <FormControl className="form">
-                                  {  values.isTINFormatNotAvailable == true || values.permanentResidentialCountryId == 0 ? (
+                                <FormControl className="form mt-2">
+                                  {values.permanentResidentialCountryId == 0 ? (
                                     <Input
                                       name="taxReferenceNumber"
                                       onChange={handleChange}
@@ -1357,15 +1357,29 @@ export default function Factors() {
                                       className="input"
                                     />
                                   ) : (
-                                    <Input
+                                    <InputMask
+                                    style={{
+                                      border: " 1px solid #d9d9d9 ",
+                                      height: " 36px",
+                                      lineHeight: "36px ",
+                                      background: "#fff ",
+                                      fontSize: "13px",
+                                      color: " #000 ",
+                                      fontStyle: "normal",
+                                      borderRadius: "1px",
+                                      padding: " 0 10px ",
+                                    }}
                                       name="taxReferenceNumber"
                                       onChange={handleChange}
                                       value={values.taxReferenceNumber}
                                       className="number"
+                                      mask={
+                                        values.isTINFormatNotAvailable ? '' : selectedCountryMask ? selectedCountryMask : "********************"
+                                      }
                                     />
                                   )}
                                 </FormControl>
-                                {/* {values.permanentResidentialCountryId == 257?( */}
+                              
                                 <div className="d-flex">
                                   <Checkbox
                                     name="isTINFormatNotAvailable"
@@ -1823,65 +1837,48 @@ export default function Factors() {
                                   value={values.permanentResidentialCountryId}
                                 >
                                   <option value={0}>---select---</option>
-                                  <option value={45}>-canada-</option>
-                                  <option value={257}>United Kingdom</option>
-                                  <option value={258}>United States</option>
-                                  <option value="">-----</option>
-                                  {GetAgentCountriesImportantForEformData?.map(
-                                    (ele: any) => (
-                                      <option key={ele?.id} value={ele?.id}>
-                                        {ele?.name}
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
                                       </option>
-                                    )
-                                  )}
+                                    ))}
+                                  <option value={500}>---</option>
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
+                                      </option>
+                                    ))}
                                 </select>
                               </FormControl>
                               <Divider className="dividr" />
 
-                              <Typography>
+                              <Typography className="mt-2">
                                 Please enter the tax reference number:
-                                {values.permanentResidentialCountryId == 257 ? (
-                                  <span>
-                                    <Tooltip
-                                      style={{
-                                        backgroundColor: "black",
-                                        color: "white",
-                                      }}
-                                      title={
-                                        <>
-                                          <Typography color="inherit"></Typography>
-                                          <a
-                                            onClick={() =>
-                                              setToolInfo("refrence")
-                                            }
-                                          >
-                                            <Typography
-                                              style={{
-                                                cursor: "pointer",
-                                                textDecorationLine: "underline",
-                                              }}
-                                              align="center"
-                                            >
-                                              {" "}
-                                              View More...
-                                            </Typography>
-                                          </a>
-                                        </>
-                                      }
-                                    >
-                                      <Info
-                                        style={{
-                                          color: "#ffc107",
-                                          fontSize: "16px",
-                                          cursor: "pointer",
-                                          verticalAlign: "super",
-                                        }}
-                                      />
-                                    </Tooltip>
-                                  </span>
-                                ) : (
-                                  ""
-                                )}
+                                {selectedCountry && selectedCountry.foreignTinFormatToolTip !== null &&(
+                                 <span>
+                                 <Tooltip
+                                   style={{
+                                     backgroundColor: "black",
+                                     color: "white",
+                                   }}
+                                   title={selectedCountry.foreignTinFormatToolTip}
+                                 >
+                                   <Info
+                                     onClick={() => setToolInfo("refrence")}
+                                     style={{
+                                       color: "#ffc107",
+                                       fontSize: "15px",
+                                       verticalAlign: "super",
+                                       cursor: "pointer",
+                                     }}
+                                   />
+                                 </Tooltip>
+                               </span>
+                             )}
                                 <span style={{ color: "red" }}>*</span>
                               </Typography>
                               {toolInfo === "refrence" ? (
@@ -1893,43 +1890,29 @@ export default function Factors() {
                                       marginBottom: "10px",
                                     }}
                                   >
-                                    <Typography>
-                                      United Kingdom TIN Format is 9999999999
-                                      <br />
-                                      9- Numeric value only
-                                      <br />
-                                      A- Alphabetic character only
-                                      <br />
-                                      *- Alphanumeric character only ?-
-                                      Characters optional after this
-                                      <br />
-                                      IF TIN format is not available, please
-                                      check the below box and continue
-                                    </Typography>
+                                     <Typography style={{ color: "#0c5460" }}>
+                                     {selectedCountryTitle}
+                           
+                                         </Typography>
 
-                                    <Link
-                                      href="#"
-                                      underline="none"
-                                      style={{
-                                        marginTop: "10px",
-                                        fontSize: "16px",
-                                        color: "#0000C7"
-
-                                      }}
-                                      onClick={() => {
-                                        setToolInfo("");
-                                      }}
-                                    >
-                                      --Show Less--
-                                    </Link>
+                                    <CloseIcon
+                              style={{
+                                color: "#0c5460",
+                                cursor: "pointer",
+                                fontSize: "medium",
+                              }}
+                              onClick={() => {
+                                setToolInfo("");
+                              }}
+                            />
                                   </Paper>
                                 </div>
                               ) : (
                                 ""
                               )}
                               <div className="d-flex">
-                                <FormControl className="form">
-                                  {  values.isTINFormatNotAvailable == true? (
+                              <FormControl className="form mt-2">
+                                  {values.permanentResidentialCountryId == 0 ? (
                                     <Input
                                       name="taxReferenceNumber"
                                       onChange={handleChange}
@@ -1938,15 +1921,28 @@ export default function Factors() {
                                       className="input"
                                     />
                                   ) : (
-                                    <Input
+                                    <InputMask
+                                    style={{
+                                      border: " 1px solid #d9d9d9 ",
+                                      height: " 36px",
+                                      lineHeight: "36px ",
+                                      background: "#fff ",
+                                      fontSize: "13px",
+                                      color: " #000 ",
+                                      fontStyle: "normal",
+                                      borderRadius: "1px",
+                                      padding: " 0 10px ",
+                                    }}
                                       name="taxReferenceNumber"
                                       onChange={handleChange}
                                       value={values.taxReferenceNumber}
                                       className="number"
+                                      mask={
+                                        values.isTINFormatNotAvailable ? '' : selectedCountryMask ? selectedCountryMask : "********************"
+                                      }
                                     />
                                   )}
                                 </FormControl>
-                                {/* {values.permanentResidentialCountryId == 257?( */}
                                 <div className="d-flex">
                                   <Checkbox
                                     name="isTINFormatNotAvailable"
@@ -1961,12 +1957,7 @@ export default function Factors() {
                                     TIN format not available
                                   </div>
                                 </div>
-                                {/* // ):<div className="d-flex">
-                              //   <Checkbox name="isTINFormatNotAvailable" onChange={handleChange} value={values.isTINFormatNotAvailable}  disabled required />
-                              //   <div className="mt-2" style={{color:"grey"}}>
-                              //     TIN format not available
-                              //   </div>
-                              // </div>} */}
+                               
                               </div>
                               <Typography
                                 style={{
@@ -2295,7 +2286,7 @@ export default function Factors() {
                       </Button>
                     </Typography>
                   </Form>
-                )}
+                )}}
               </Formik>
             </Paper>
           </div>
