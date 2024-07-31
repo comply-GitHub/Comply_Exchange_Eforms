@@ -256,8 +256,8 @@ export default function FCTA_Reporting(props: any) {
 
                  
 
-                    {values.ownerResidentId &&
-values.ownerResidentId !== "---" && values.isSubmissionClaimTreaty === "yes" ?(
+{values.ownerResidentId &&
+values.ownerResidentId !== "---" && values.isSubmissionClaimTreaty === "yes" && values.ownerResidentId !== AgentData.permanentResidentialCountryId ?(
 
 
   <>
@@ -286,11 +286,7 @@ values.ownerResidentId !== "---" && values.isSubmissionClaimTreaty === "yes" ?(
       </Typography>
       
     </div>
-
-                      <>
-                      
-                      {values.ownerResidentId !== AgentData.permanentResidentialCountryId  ? (
-                                            <div
+    <div
                                               style={{ backgroundColor: "#e8e1e1", padding: "10px" }}
                                             >
                                              
@@ -320,9 +316,10 @@ values.ownerResidentId !== "---" && values.isSubmissionClaimTreaty === "yes" ?(
                                                 </span>
                                               </Typography>
                                             </div>
-                                          ) : (
-                                            ""
-                                          )}
+
+                      <>
+                      
+                     
                       
                       </>
   

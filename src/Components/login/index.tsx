@@ -85,6 +85,7 @@ const Login = () => {
               console.log(resp,"RESPPPP")
               localStorage.setItem("userType", resp.userType);
               localStorage.setItem("Version", settingsData.versionofApplication);
+              localStorage.setItem("DispalyView", settingsData.displayFormInstructions);
               // localStorage.setItem("loginTime", JSON.stringify(new Date()));
 
               // if (resp.userType === "GEN") {

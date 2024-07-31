@@ -9,7 +9,7 @@ export default function View_Insructions(props: any) {
     // const handleCanvaClose = () => {
     //   setCanvaBx(false);
     // }
-
+    const ViewInstructionData = JSON.parse(localStorage.getItem("DispalyView") || "{}");
     
     // useEffect(()=>{
     //   document.title = ""
@@ -40,7 +40,7 @@ export default function View_Insructions(props: any) {
 
               </div>
             </div>
-            <div className="card mb-3 rounded-0">
+           {ViewInstructionData === true ?( <div className="card mb-3 rounded-0">
               <div className="card-header  p-0">
                 <h6 className="offcanvas-title w-100 text-center py-2 px-3" id="offcanvasNavbarLabel" style={{ background: "#e7e7e7" }}>IRS Form Instructions</h6>
               </div>
@@ -92,7 +92,8 @@ export default function View_Insructions(props: any) {
 
                 </ul>
               </div>
-            </div>
+            </div>):""}
+            
           </div>
         </div>
         {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}</>;

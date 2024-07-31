@@ -75,7 +75,7 @@ export const tinSchema = () => {
       .notOneOf([0], "Required Field"),
     tIN_USTIN: Yup.string().when("taxpayerIdTypeID", {
       is: (taxpayerIdTypeID: any) =>
-        (taxpayerIdTypeID != 1 && taxpayerIdTypeID != 7 && taxpayerIdTypeID != 8),
+        (taxpayerIdTypeID != 1 || taxpayerIdTypeID != 7 ||taxpayerIdTypeID != 8),
       then: () => Yup.string().required("Please enter TIN ")
     }),
   });
