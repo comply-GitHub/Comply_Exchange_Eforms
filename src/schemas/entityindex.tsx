@@ -1,5 +1,6 @@
 import * as Yup from "yup";
-import { isAlphaNumeric } from "../Helpers/convertToFormData";
+// import { isAlphaNumeric } from "../Helpers/convertToFormData";
+const isAlphaNumeric = (value:any) => /^[a-zA-Z0-9]+$/.test(value);
 
 export const EntitySchema = (Cert: string, payment: boolean, income: boolean, isGiinEnabled: boolean) => {
   return Yup.object().shape({
@@ -33,81 +34,54 @@ export const EntitySchema = (Cert: string, payment: boolean, income: boolean, is
         (vatId != 0 && vatId != 2),
       then: () => Yup.string().required("Please Enter Vat Id")
     }) : Yup.string(),
-    giinId: Yup.string().nullable()
-      .test(
-        {
-          name: "Uppercase",
-          message: "GIIN is required and must be all uppercase",
-          test: (value, context) => {
-
-            const { isUSEntity } = context.parent;
-
-            if (isGiinEnabled && isUSEntity === "no") {
-              if (value) {
-                const hasLowerCase = /[a-z]/.test(value);
-                return !hasLowerCase;
-              } else {
-                return false;
-              }
-
-            } else {
-              return true;
-            }
+    giinId: Yup.string()
+    .nullable()
+    .test({
+      name: 'Uppercase',
+      message: 'GIIN is required and must be all uppercase',
+      test: (value, context) => {
+        const { isUSEntity } = context.parent;
+        if (isGiinEnabled && isUSEntity === 'no') {
+          if (value) {
+            const hasLowerCase = /[a-z]/.test(value);
+            return !hasLowerCase;
+          } else {
+            return false;
           }
-        })
-      .test({
-        name: "length",
-        message: "GIIN length should be 16 character",
-        test: (value, context) => {
-          const { isUSEntity } = context.parent;
-          if (isGiinEnabled && isUSEntity === "no") {
-            return value?.length == 16
-          }
-          else
-            return true
+        } else {
+          return true;
         }
-      })
-      .test({
-        name: "format",
-        message: "GIIN format should be valid",
-        test: (value, context) => {
-          const { isUSEntity } = context.parent;
-
-          if (isGiinEnabled && isUSEntity === "no") {
-            if (!value) {
-              return false;
-            }
-            let case1 = isAlphaNumeric(value?.slice(0, 6));
-            if (!case1) {
-              //console.log("case1")
-              return false;
-            }
-            let case2 = isAlphaNumeric(value?.slice(6, 11));
-            if (!case2) {
-              //console.log("case2")
-              return false;
-            }
-            let case3Data = ["LE", "SL", "ME", "BR", "SP"];
-            let case3 = case3Data.includes(value?.slice(11, 13));
-            if (!case3) {
-              //console.log("case3")
-              return false;
-            }
-
-            let case4 = Number.parseInt(value?.slice(13, 16));
-            if (Number.isNaN(case4)) {
-              //console.log("case4")
-              return false;
-            }
-
-            return true
-
-          }
-          else
-            return true
+      },
+    })
+    .test({
+      name: 'length',
+      message: 'GIIN length should be 19 characters',
+      test: (value, context) => {
+        const { isUSEntity } = context.parent;
+        if (isGiinEnabled && isUSEntity === 'no') {
+          return value?.length === 19;
+        } else {
+          return true;
         }
-      }),
-
+      },
+    })
+    .test({
+      name: 'format',
+      message: 'GIIN format should be valid',
+      test: (value, context) => {
+        const { isUSEntity } = context.parent;
+        if (isGiinEnabled && isUSEntity === 'no') {
+          if (!value) {
+            return false;
+          }
+          // Check for the exact format based on the mask
+          const regex = /^[0-9]{3}[A-Z]{3}\.[0-9]{5}\.[A-Z]{2}\.[0-9]{3}$/;
+          return regex.test(value);
+        } else {
+          return true;
+        }
+      },
+    }),
     // countryOfCitizenshipId: Yup.number()
     // .required('Please select a country'),
     // dob: Yup.date()

@@ -59,6 +59,7 @@ import { AppDispatch } from "../../Redux/store";
 import GlobalValues from "../../Utils/constVals";
 import Utils from "../../Utils";
 import useAuth from "../../customHooks/useAuth";
+import { textTransform } from "html2canvas/dist/types/css/property-descriptors/text-transform";
 
 export default function Entity() {
   const { authDetails } = useAuth();
@@ -2426,7 +2427,7 @@ export default function Entity() {
                                     ""
                                   )}
                                 </Typography>
-                                <Input
+                                <InputMask
                                   style={{
                                     border: " 1px solid #d9d9d9 ",
                                     height: " 36px",
@@ -2441,9 +2442,16 @@ export default function Entity() {
                                   id="outlined"
                                   name="giinId"
                                   placeholder="Enter GIIN"
-                                  onChange={handleChange}
-                                  // inputProps={{ maxLength: 11 }}
+                                  onChange={(e:any) => {
+                                    const { name, value } = e.target;
+                                    // Transform the value to uppercase
+                                    const upperCaseValue = value.toUpperCase();
+                                    // Update Formik's field value with the transformed value
+                                    setFieldValue(name, upperCaseValue);
+                                  }}
+                                  inputProps={{ maxLength: 16 , autoCapitalize: 'characters' , style: { textTransform: 'uppercase' }}}
                                   onBlur={handleBlur}
+                                  mask="999aaa.99999.aa.999"
                                   error={Boolean(touched.giinId && errors.giinId)}
                                   value={values.giinId}
                                 />
