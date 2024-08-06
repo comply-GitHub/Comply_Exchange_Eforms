@@ -9,11 +9,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Info } from "@mui/icons-material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useNavigate } from "react-router-dom";
 import { getAllCountries } from "../../../../Redux/Actions";
-import checksolid from "../../../../assets/img/check-solid.png";
-// import check from "../../../assets/img/check.png";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -76,7 +72,10 @@ const DynamicForm: React.FC<InputProps> = ({
   useEffect(() => {
     setAllocation(formList.reduce((sum: any, obj: any) => sum + obj.number, 0));
   }, [formList]);
+
+
   useEffect(() => {}, [allocation]);
+
   const getCountriesReducer = useSelector(
     (state: any) => state.getCountriesReducer
   );
@@ -95,7 +94,6 @@ const DynamicForm: React.FC<InputProps> = ({
   };
   
   const handleRemove = (index: any) => {
-    console.log(index, "INDDD");
     let arr = [...formList];
     arr.splice(index, 1);
     setFormList(arr);
@@ -111,8 +109,8 @@ const DynamicForm: React.FC<InputProps> = ({
   
 
   function handleIcomeText(e:any, index:any){
-    let value = e.target.value;
-if(selectedOption =="1"){
+  let value = e.target.value;
+  if(selectedOption =="1"){
   setFormList((prevFormList: any) =>
     prevFormList.map((prevForm: any, i: any) =>
       i === index
@@ -120,7 +118,8 @@ if(selectedOption =="1"){
         : prevForm
     )
   )
-}else{
+  }
+  else{
   setFormList((prevFormList: any) =>
     prevFormList.map((prevForm: any, i: any) =>
       i === index
@@ -151,9 +150,10 @@ if(selectedOption =="1"){
     } else {
       let total = 0;
       let res = false;
+    
       for (let dt of formList) {
         total += dt.number;
-        if (!dt.option2) {
+        if (!+dt.option2) {
           res = true;
         }
       }
@@ -722,18 +722,19 @@ if(selectedOption =="1"){
                         height: "50px",
                         marginBottom: "20px",
                       }}
-                      name="interestDividendPaymentId"
-                      id="Income"
+                      name="option2"
+                      id="option2"
                       value={form.option2}
-                      onChange={(e) =>
-                        setFormList((prevFormList: any) =>
-                          prevFormList.map((prevForm: any, i: any) =>
-                            i === index
-                              ? { ...prevForm, option2: e.target.value }
-                              : prevForm
-                          )
-                        )
-                      }
+                      onChange={(e: any) => handleIcomeText(e, index) }
+                      // onChange={(e) =>
+                      //   setFormList((prevFormList: any) =>
+                      //     prevFormList.map((prevForm: any, i: any) =>
+                      //       i === index
+                      //         ? { ...prevForm, option2: e.target.value }
+                      //         : prevForm
+                      //     )
+                      //   )
+                      // }
                     >
                       <option value="">---select---</option>
                       <option value={257}>United Kingdom</option>
