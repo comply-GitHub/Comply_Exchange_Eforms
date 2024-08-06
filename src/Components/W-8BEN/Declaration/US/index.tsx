@@ -38,9 +38,15 @@ export default function Factors() {
   const history = useNavigate();
   const location = useLocation();
   const [allocation, setAllocation] = useState(0); // State to track allocation input
+  const [incomeText, setIncomeText] = useState([]);
+  const [incomeTextEnbl, setIncomeTextEnbl] = useState(true);
+  const [service, setService] = useState([]);
+  const [serviceEnbl, setServiceEnbl] = useState(true);
   const [formList, setFormList] = useState<FormData[]>([]);
   const dispatch = useDispatch();
+  
   const PrevData = JSON.parse(localStorage.getItem("Formvalues") || "{}");
+  const value = JSON.parse(localStorage.getItem("optionValue") || "{}");
   console.log(PrevData,"12333")
   const IncomeTypes = ["Others", "Goods", "Services"]
 
@@ -342,7 +348,8 @@ export default function Factors() {
                 )}
 
                 <div className="mt-2">
-                  <DynamicForm formList={formList} setFormList={setFormList} allocation={allocation} setAllocation={setAllocation} />
+                  <DynamicForm formList={formList} setFormList={setFormList} allocation={allocation} setAllocation={setAllocation} incomeText={incomeText} setIncomeText={setIncomeText} incomeTextEnbl={incomeTextEnbl} setIncomeTextEnbl={setIncomeTextEnbl}  service={service} setService={setService} 
+  serviceEnbl={serviceEnbl} setServiceEnbl={setServiceEnbl} />
                 </div>
               </div>
               <div
@@ -370,19 +377,28 @@ export default function Factors() {
                 >
                   View form
                 </Button>
-                <Button
-                  disabled={allocation !== 100}
+               {value == 1 ?( <Button
+                  disabled={incomeTextEnbl}
                   onClick={handleSubmit}
                   variant="contained"
                   style={{ color: "white", marginLeft: "15px" }}
                 >
                   Confirm
-                </Button>
+                </Button>):
+                <Button
+                disabled={serviceEnbl}
+                onClick={handleSubmit}
+                variant="contained"
+                style={{ color: "white", marginLeft: "15px" }}
+              >
+                Confirm
+              </Button>
+                }
               </div>
               <Typography
                 align="center"
                 style={{
-                  //color: "#f5f5f5",
+                
                   color: "#505E50",  
                   justifyContent: "center",
                   alignItems: "center",

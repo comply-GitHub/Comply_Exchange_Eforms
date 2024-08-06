@@ -16,6 +16,7 @@ import useAuth from "../../../customHooks/useAuth";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 export default function Term() {
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
+ 
   const history = useNavigate();
   const dispatch = useDispatch();
   const { authDetails } = useAuth();

@@ -768,10 +768,18 @@ export default function IndividualUs() {
         setIncomeErrors("Income field is mandatory")
         return;
       }
-      setIncomeErrors("")
+     
     })
 
   }, [selectedValues])
+  useEffect(() => {
+    const savedSelectedValues = localStorage.getItem('selectedValues');
+    if (savedSelectedValues) {
+      const parsedValues = JSON.parse(savedSelectedValues);
+      setSelectedValues(parsedValues);
+      setIncomeArr(parsedValues.map(() => 0));
+    }
+  }, []);
 
   const handleIcome = (e: any, i: number) => {
     const newValue = e.target.value;
@@ -989,7 +997,7 @@ export default function IndividualUs() {
                   alternativeNumber: values?.alternativeNumber,
                   alternativeNumberId1: values?.alternativeNumberId1,
                   alternativeNumber1: values?.alternativeNumber1,
-                  incomeTypeId: incomeArr,
+                  incomeTypeId: selectedValues,
                   paymentTypeId: values?.paymentTypeId,
                   accountHolderName:
                     values?.accountHolderName === ""
@@ -1032,6 +1040,7 @@ export default function IndividualUs() {
                     })
                     localStorage.setItem("authDetails", JSON.stringify({ ...authDetails, accountHolderId: data.accountHolderID }));
                   }
+                  localStorage.setItem('selectedValues', JSON.stringify(selectedValues));
                   localStorage.setItem("agentDetails", JSON.stringify({ ...payload, id: data.accountHolderID }));
                   localStorage.setItem("accountHolderDetails", JSON.stringify({ ...payload, id: data.accountHolderID }));
                   localStorage.setItem("isFormFilling", "true");
@@ -5726,7 +5735,7 @@ export default function IndividualUs() {
                                             name="incomeTypeId"
                                             onBlur={handleBlur}
 
-                                            id="Income"
+                                            id="incomeTypeId"
                                             onChange={(e: any) => handleIcome(e, i)}
                                             value={selectedValues[i]}
                                           >

@@ -552,6 +552,16 @@ export default function Entity() {
     redirectFunc();
   };
 
+
+  useEffect(() => {
+    const savedSelectedValues = localStorage.getItem('selectedValues');
+    if (savedSelectedValues) {
+      const parsedValues = JSON.parse(savedSelectedValues);
+      setSelectedValues(parsedValues);
+      setIncomeArr(parsedValues.map(() => 0));
+    }
+  }, []);
+
   const returnFieldName = (
     handleBlur: any,
     touched: any,
@@ -878,7 +888,7 @@ export default function Entity() {
                   alternativeNumber: values?.alternativeNumber,
                   alternativeNumberId1: values?.alternativeNumberId1,
                   alternativeNumber1: values?.alternativeNumber1,
-                  incomeTypeId: incomeArr,
+                  incomeTypeId: selectedValues,
                   paymentTypeId: values?.paymentTypeId,
                   accountHolderName:
                     values?.accountHolderName === ""
@@ -918,6 +928,7 @@ export default function Entity() {
                       type: Utils.actionName.UpdateAuthDetails,
                       payload: { ...authDetails, accountHolderId: data.accountHolderID }
                     })
+                    localStorage.setItem('selectedValues', JSON.stringify(selectedValues));
                     localStorage.setItem("authDetails", JSON.stringify({ ...authDetails, accountHolderId: data.accountHolderID }));
                   }
                   localStorage.setItem("agentDetails", JSON.stringify({ ...payload, id: data.accountHolderID }));

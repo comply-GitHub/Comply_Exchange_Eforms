@@ -29,6 +29,15 @@ interface InputProps {
   setFormList: any;
   allocation: any;
   setAllocation: any;
+  incomeText:any;
+  setIncomeText:any;
+  incomeTextEnbl:any;
+  setIncomeTextEnbl:any;
+  service:any;
+  setService:any;
+  serviceEnbl:any;
+  setServiceEnbl:any;
+
 }
 
 const DynamicForm: React.FC<InputProps> = ({
@@ -36,9 +45,19 @@ const DynamicForm: React.FC<InputProps> = ({
   setFormList,
   allocation,
   setAllocation,
+  incomeText,
+  setIncomeText,
+  incomeTextEnbl,
+  setIncomeTextEnbl,
+  service,
+  setService,
+  serviceEnbl,
+  setServiceEnbl
 }) => {
+  console.log("incomeTextEnbl====================", incomeTextEnbl)
+  console.log("serviceEnbl====================", serviceEnbl)
   const dispatch = useDispatch();
-  //   const [formList, setFormList] = useState<FormData[]>([]);
+
   const initialFormData: FormData = {
     option1: "0",
     option2: "0",
@@ -62,21 +81,91 @@ const DynamicForm: React.FC<InputProps> = ({
     (state: any) => state.getCountriesReducer
   );
   const handleAddDefaultOption = () => {
-    setFormList([initialFormData]); // Add default option to formList
+    setFormList([initialFormData]); 
   };
 
   const handleAdd = () => {
     setFormList([...formList, formData]);
     setFormData(initialFormData);
+    if (selectedOption === "1") {
+      setIncomeText((prev: any) => [...prev, { text: "" }]);
+    } else {
+      setService((prev: any) => [...prev, { option2: "" }]);
+    }
   };
-
+  
   const handleRemove = (index: any) => {
     console.log(index, "INDDD");
     let arr = [...formList];
     arr.splice(index, 1);
     setFormList(arr);
+  
+    if (selectedOption === "1") {
+      let tempData = incomeText.filter((dt: any, ind: any) => ind !== index);
+      setIncomeText(tempData);
+    } else {
+      let tempData = service.filter((dt: any, ind: any) => ind !== index);
+      setService(tempData);
+    }
   };
+  
 
+  function handleIcomeText(e:any, index:any){
+    let value = e.target.value;
+if(selectedOption =="1"){
+  setFormList((prevFormList: any) =>
+    prevFormList.map((prevForm: any, i: any) =>
+      i === index
+        ? { ...prevForm, text: value }
+        : prevForm
+    )
+  )
+}else{
+  setFormList((prevFormList: any) =>
+    prevFormList.map((prevForm: any, i: any) =>
+      i === index
+        ? { ...prevForm, option2: value }
+        : prevForm
+    )
+  )
+}
+   
+  }
+
+  useEffect(() => {
+    if (selectedOption === "1") {
+      let total = 0;
+      let res = false;
+      for (let dt of formList) {
+        total += dt.number;
+        if (!dt.text) {
+          res = true;
+        }
+      }
+  
+      if (total === 100 && res === false) {
+        setIncomeTextEnbl(false);
+      } else {
+        setIncomeTextEnbl(true);
+      }
+    } else {
+      let total = 0;
+      let res = false;
+      for (let dt of formList) {
+        total += dt.number;
+        if (!dt.option2) {
+          res = true;
+        }
+      }
+  
+      if (total === 100 && res === false) {
+        setServiceEnbl(false);
+      } else {
+        setServiceEnbl(true);
+      }
+    }
+  }, [formList, selectedOption]);
+  
   return (
     <div>
       {formList.map((form: any, index: any) => (
@@ -519,36 +608,36 @@ const DynamicForm: React.FC<InputProps> = ({
                 ) : (
                   ""
                 )}
-                <FormControl className="w-100">
-                  <select
-                    className="col-md-6 col-12"
-                    style={{
-                      padding: " 0 10px",
-                      color: "#121112",
-                      fontStyle: "italic",
-                      height: "50px",
-                      marginBottom: "20px",
-                    }}
-                    // name="interestDividendPaymentId"
-                    // id="Income"
-                    value={form.option1}
-                    onChange={(e) => {
-                      setSelectedOption(e.target.value);
-                      setFormList((prevFormList: any) =>
-                        prevFormList.map((prevForm: any, i: any) =>
-                          i === index
-                            ? { ...prevForm, option1: e.target.value }
-                            : "0"
-                        )
-                      );
-                    }}
-                  >
-                    <option value="0">---select---</option>
-                    <option value="1">Other</option>
-                    <option value="2">Goods</option>
-                    <option value="3">Services</option>
-                  </select>
-                </FormControl>
+               <FormControl className="w-100">
+  <select
+    className="col-md-6 col-12"
+    style={{
+      padding: "0 10px",
+      color: "#121112",
+      fontStyle: "italic",
+      height: "50px",
+      marginBottom: "20px",
+    }}
+    value={form.option1}
+    onChange={(e) => {
+      localStorage.setItem('optionValue', e.target.value);
+      setSelectedOption(e.target.value);
+      setFormList((prevFormList: any) =>
+        prevFormList.map((prevForm: any, i: any) =>
+          i === index
+            ? { ...prevForm, option1: e.target.value }
+            : prevForm 
+        )
+      );
+    }}
+  >
+    <option value="0">---select---</option>
+    <option value="1">Other</option>
+    <option value="2">Goods</option>
+    <option value="3">Services</option>
+  </select>
+</FormControl>
+
               </div>
               {selectedOption === "1" && (
                 <>
@@ -570,17 +659,11 @@ const DynamicForm: React.FC<InputProps> = ({
                        
                       }}
                       type="text"
+                      required
                       value={form.text}
-                      onChange={(e: any) =>
-                        setFormList((prevFormList: any) =>
-                          prevFormList.map((prevForm: any, i: any) =>
-                            i === index
-                              ? { ...prevForm, text: e.target.value }
-                              : prevForm
-                          )
-                        )
-                      }
+                      onChange={(e: any) => handleIcomeText(e, index) }
                     />
+                  
                   </FormControl>
                   <Typography
                     align="left"
@@ -815,14 +898,12 @@ const DynamicForm: React.FC<InputProps> = ({
               marginLeft: "10px",
             }}
           >
-            {allocation}
+          {allocation}
           </Typography>
         </div>
       </div>
       <div>
-        {/* <button type="submit" onClick={(e)=>{handleSubmit(e,formList)}}>
-          Submit
-        </button> */}
+       
       </div>
     </div>
   );

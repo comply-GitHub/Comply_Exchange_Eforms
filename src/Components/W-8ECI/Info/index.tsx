@@ -309,23 +309,30 @@ export default function Tin(props: any) {
                               // onBlur={handleBlur}
                               value={values.eciUsTinTypeId}
                             >
-                              <option value={0}>---select---</option>
-                              {ustinValue?.map((ele: any) => (
-                                // ele?.nonUSIndividual &&
-                                //   values?.isUSIndividual == "no" ||
-                                // ele?.usIndividual &&
-                                //   values?.isUSIndividual == "Yes" ?
-                                // (
-                                <option
-                                  key={ele?.taxpayerIdTypeID}
-                                  value={ele?.taxpayerIdTypeID}
-                                >
-                                  {ele?.taxpayerIdTypeName}
-                                </option>
-                                // ) : (
-                                //   ""
-                                // );
-                              ))}
+                             {prevValues?.businessTypeId === 1 ? (
+  <>
+    <option value="0">---select---</option>
+    {ustinValue
+      ?.filter((ele: any) => ele?.taxpayerIdTypeID === 6)
+      .map((ele: any) => (
+        <option key={ele?.taxpayerIdTypeID} value={ele?.taxpayerIdTypeID}>
+          {ele?.taxpayerIdTypeName}
+        </option>
+      ))}
+  </>
+) : prevValues?.businessTypeId === 2 ? (
+  <>
+   <option value="0">---select---</option>
+    {ustinValue
+      ?.filter((ele: any) => ele?.taxpayerIdTypeID === 2)
+      .map((ele: any) => (
+        <option key={ele?.taxpayerIdTypeID} value={ele?.taxpayerIdTypeID}>
+          {ele?.taxpayerIdTypeName}
+        </option>
+      ))}
+  </>
+) : null}
+
                             </select>
                             <p className="error">
                               {touched?.eciUsTinTypeId
