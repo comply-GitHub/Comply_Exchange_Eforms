@@ -148,7 +148,7 @@ export default function Tin(props: any) {
 
     <section
       className="inner_content"
-      style={{ backgroundColor: "#0c3d69", marginBottom: "10px", height: "100%" }}
+      style={{ marginBottom: "10px", height: "100%" }}
     >
       <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
       {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}

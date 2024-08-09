@@ -394,7 +394,7 @@ const AttachDocument = ({
                       <a
                         href={GethelpData[9].fieldValue}
                         onClick={(e) => {
-                          e.preventDefault(); // Prevent the default anchor behavior
+                          e.preventDefault(); 
                           window.open(
                             GethelpData[9].fieldValue,
                             'popupWindow',
@@ -414,9 +414,7 @@ const AttachDocument = ({
               <div className="row w-100">
                 <div className="col-4">
                   <div style={{ padding: "15px 0px", height: "100%" }}>
-                    <BreadCrumbComponent
-                      breadCrumbCode={BreadCrumbOrder}
-                      formName={FormTypeId}
+                    <BreadCrumbComponent breadCrumbCode={BreadCrumbOrder} formName={FormTypeId}
                     />
                   </div>
                 </div>

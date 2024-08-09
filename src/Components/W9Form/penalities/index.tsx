@@ -124,9 +124,6 @@ export default function Penalties() {
         initialValues={initialValue}
         validationSchema={partCertiSchema_W9}
         onSubmit={(values, { setSubmitting }) => {
-          // if (clickCount === 0) {
-          //   setClickCount(clickCount + 1);
-          // } else {
           const returnPromise = new Promise((resolve, reject) => {
             const new_obj = { ...PrevStepData, stepName: `/${urlValue}` };
             const result = { ...new_obj, ...values };
@@ -143,7 +140,6 @@ export default function Penalties() {
             dispatch(
               postW9Form(result, (data: any) => {
                 setSubmitting(true);
-                // history("/W9_Submit");
                 Redirect(
                   "/W9_Submit",
                   authDetails?.agentId,
@@ -163,8 +159,7 @@ export default function Penalties() {
 
           return returnPromise;
         }
-      }
-        // }
+        }
       >
         {({
           errors,
@@ -183,13 +178,13 @@ export default function Penalties() {
             <>{console.log(values, "val", errors, "err")}</>
             <section
               className="inner_content"
-              style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
+              style={{ marginBottom: "10px" }}
             >
                <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
       {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
               <div className="overlay-div">
                 <div className="overlay-div-group">
-                <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
+                <div className="viewInstructions" onClick={() => { handleCanvaOpen()}}>View Instructions</div>
                   <div className="viewform"
                     onClick={() => {
                       dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{

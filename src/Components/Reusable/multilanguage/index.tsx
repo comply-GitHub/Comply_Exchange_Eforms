@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {GetAllLanguage,} from "../../../Redux/Actions";
 import "./index.css";
+
 declare global {
   interface Window {
     google: any;
@@ -8,8 +10,17 @@ declare global {
   }
 }
 
+
 const GoogleTranslate = () => {
-  const [translate, setTranslate] = useState(false);
+  const dispatch = useDispatch();
+
+useEffect(() => {
+  document.title = "Login | Comply Exchange";
+  localStorage.clear();
+  dispatch(GetAllLanguage());
+ 
+}, []);
+ 
   function getIsoCodes(array: any): string {
     return array?.map((obj: { isoCode: any }) => obj.isoCode).join(",");
   }
@@ -57,7 +68,7 @@ const GoogleTranslate = () => {
 
   return (
     <>
-      {/* <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" id="google_translate_element"></script>  */}
+     
       <div id="google_translate_element"></div>
     </>
   );

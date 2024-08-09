@@ -10,6 +10,7 @@ export default function Nav() {
   const [languageDropdown, setLanguageDropDown] = useState(false);
   const [logoUrl,setLogoUrl]=useState(
     require("../../assets/img/logo.png")
+    
 )
   const [logoNavigateUrl,setLogoNavigateUrl]=useState("/login")
   const hiddenRoutes = ["login", ""];
@@ -19,15 +20,11 @@ export default function Nav() {
   const history = useNavigate();
 
   const handleSignout = (e) => {
-    //clear call data
+  
     localStorage.clear();
-    //dispatch actions to clear store
-
-    //redirect to login
+   
     window.location.replace("/login");
-    // history(
-    //   "login"
-    // )
+
   };
 
   const returnTransale = () => {
@@ -38,8 +35,7 @@ export default function Nav() {
   useEffect(() => {
     console.log(authDetails, "languageDropdown");
     setLanguageDropDown(authDetails?.configurations?.languageDropdown);
-    // setLogoUrl(authDetails?.configurations?.logoId)
-    // setLogoNavigateUrl(authDetails?.configurations?.logoNavigateURL)
+   
   }, [authDetails]);
   return (
     <div
@@ -58,9 +54,9 @@ export default function Nav() {
           style={{ width: "250px", padding: "20px" }}
           className="navbar img-fluid"
           loading="eager"
-          // src={require("../../assets/img/logo.png")}
+      
           src={logoUrl}
-          // style={{ maxWidth: "65px", padding: "0px" }}
+
         />
         </Link>
         <div className="my-auto" style={{ height: "40px", display: "flex" ,marginRight:"25px"}}>
