@@ -109,7 +109,7 @@ export default function FCTA_Reporting(props: any) {
 
       <div className="overlay-div">
         <div className="overlay-div-group">
-          <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
+          <div className="viewInstructions" onClick={() => { handleCanvaOpen() }}>View Instructions</div>
           <div className="viewform"  onClick={() => {
                           dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
                               setPopupState({
@@ -123,7 +123,7 @@ export default function FCTA_Reporting(props: any) {
               <a
                 href={GethelpData[8].fieldValue}
                 onClick={(e) => {
-                  e.preventDefault(); // Prevent the default anchor behavior
+                  e.preventDefault();
                   window.open(
                     GethelpData[8].fieldValue,
                     'popupWindow',
@@ -207,7 +207,7 @@ export default function FCTA_Reporting(props: any) {
               </div>
               <div className="col-8 mt-3" >
                 <div style={{ padding: "10px 0px" }}>
-                  <Paper elevation={6} style={{ padding: "17px", }}>
+                  <Paper elevation={6} style={{ padding: "17px"}}>
                     <div style={{ backgroundColor: "#ffff" }}>
                       {values.isExemptionFATCAReportings == "No" ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                         <Typography>

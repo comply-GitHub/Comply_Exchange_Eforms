@@ -13,6 +13,7 @@ import {
   eFormSignIn1,
   loginAction,
   getSettings,
+  GET_AGENT_BY_ID,
 } from "../../Redux/Actions";
 import GoogleTranslate from "../Reusable/multilanguage";
 // import { CSSTransition, TransitionGroup } from "react-transition-group";
@@ -62,6 +63,8 @@ const Login = () => {
     dispatch(GetAllLanguage());
     dispatch(getSettings());
   }, []);
+
+  
 
   const redirectFunc = (defaultSelection:any) => {
     if(defaultSelection=="individual")

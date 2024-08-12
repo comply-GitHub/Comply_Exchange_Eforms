@@ -2111,9 +2111,7 @@ export const GetAccountHolderIncomeAllocation = (_id: Number, FormTypeId: number
 
 export const GET_AGENT_BY_ID = (_id: Number, callback: Function): any => {
   return (dispatch: any) => {
-    // const token = localStorage.getItem('accessToken');
-
-    // alert(token);
+ 
 
     Utils.api.getApiCall(
       Utils.EndPoint.GET_AGENT_BY_ID,

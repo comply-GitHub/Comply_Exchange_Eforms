@@ -387,6 +387,12 @@ export default function Entity() {
     }
   }
 
+  const getAgentByIdReducer = useSelector(
+    (state: any) => state.GetAllAgentByIdReducer.agentDataById
+  );
+console.log(getAgentByIdReducer,"getAgentByIdReducer")
+
+  localStorage.setItem("RetroactiveStatement",( getAgentByIdReducer?.showRetroactiveStatementOnlyShowApplyForW8Forms ));
   const onNumberChange = (e: any, values: any): any => {
     const value = e.target.value
 

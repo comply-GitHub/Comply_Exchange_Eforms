@@ -5,6 +5,7 @@ const { LOGIN, formPDFFieldData, GetCountries, GetAgentWiseCountries, GetControl
   GetAgentCapacityHiddenForEform,
   GetAgentExemptionCodeHidden,
   GetDocumentList,
+  GET_AGENT_BY_ID,
   GetDocumentListType,
   GetAgentChapter4EntityTypeHiddenForEform,
   GetAgentChapter3EntityTypeHiddenForEform,
@@ -47,6 +48,15 @@ let initialState: any = [];
 export const GetAllLanguageReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case GetAllLanguage:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}
+
+export const GetAllAgentByIdReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case GET_AGENT_BY_ID:
       return { ...state, ...action.payload };
     default:
       return state;

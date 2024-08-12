@@ -406,7 +406,12 @@ export default function IndividualUs() {
   }, []);
 
 
+  const getAgentByIdReducer = useSelector(
+    (state: any) => state.GetAllAgentByIdReducer.agentDataById
+  );
+console.log(getAgentByIdReducer,"getAgentByIdReducer")
 
+  localStorage.setItem("RetroactiveStatement",( getAgentByIdReducer?.showRetroactiveStatementOnlyShowApplyForW8Forms ));
 
 
   const onUidBlur = (e: any, values: any): any => {
@@ -1809,7 +1814,7 @@ export default function IndividualUs() {
                                 value={values?.cityOfBirth}
 
                               />
-                              {/* {(errors?.cityOfBirth && touched?.cityOfBirth) ? <p className="error">{errors?.cityOfBirth}</p> : <></>} */}
+                             
                               {errors?.cityOfBirth && touched?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
                                 <p className="error">{errors?.cityOfBirth}</p>
                               )}
@@ -1818,7 +1823,7 @@ export default function IndividualUs() {
                         </div>
                       ) : (
                         <>
-                          {/* <> {console.log("1123", errors)}</> */}
+                          
                           <div className="row">
                             <div className="col-lg-3 col-6 col-md-3 mt-2">
                               <FormControl className="w-100">

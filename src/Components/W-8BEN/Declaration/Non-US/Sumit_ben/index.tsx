@@ -439,7 +439,7 @@ const Declaration = (props: any) => {
                       }}
                       onClick={() => {
                         history(
-                          "/W-8BEN/Declaration/US_Tin/Certification_Substitute"
+                          "/W-8BEN/Declaration/US_Tin/Certification_Substitute/participation"
                         );
                       }}
                     >
