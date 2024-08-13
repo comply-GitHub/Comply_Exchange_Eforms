@@ -11,6 +11,7 @@ import {
   Checkbox,
   Tooltip,
   Link,
+  FormControl,
   Input,
 } from "@mui/material";
 import { Info } from "@mui/icons-material";
@@ -22,7 +23,7 @@ import { Formik, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { ContentCopy } from "@mui/icons-material";
 import { useNavigate } from "react-router";
-import { partCertiSchema } from "../../../schemas/w8ECI";
+import { partCertiSchema,partCertiSchema_W8Eci } from "../../../schemas/w8ECI";
 import { W8_state_ECI, GetHelpVideoDetails, postW8ECI_EForm } from "../../../Redux/Actions";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import useAuth from "../../../customHooks/useAuth";
@@ -41,7 +42,7 @@ export default function Penalties() {
   const [expanded, setExpanded] = React.useState<string | false>("");
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const W8ECIData = useSelector((state: any) => state.W8ECI);
-
+  const RetroactiveStatementValue = localStorage.getItem("RetroactiveStatement");
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -75,7 +76,18 @@ export default function Penalties() {
       day: '2-digit',
       year: 'numeric',
     }),
-    isAcceptanceDeclarations: W8ECIData?.isAcceptanceDeclarations ?? false
+    isAcceptanceDeclarations: PrevStepData?.isAcceptanceDeclarations  ? true : false,
+    name:PrevStepData?.name ?? "",
+    isCircumstanceenable: PrevStepData?.isCircumstanceenable ? true : false,
+    enterDate: PrevStepData?.enterDate ?? "",
+    changedDetails:PrevStepData?.changedDetails ?? "",
+    writtenExplanation: PrevStepData?.writtenExplanation ?? "",
+    affidavitSignedBy: PrevStepData?.affidavitSignedBy ?? "",
+    affidavitConfirmationCode:PrevStepData?.affidavitConfirmationCode ?? "",
+    affidavitDate:PrevStepData?.affidavitDate ?? "",
+    acceptanceConfirmation: PrevStepData?.acceptanceConfirmation ? true : false
+
+
   });
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
@@ -100,7 +112,8 @@ export default function Penalties() {
         initialValues={initialValue}
         enableReinitialize
         validateOnMount={true}
-        validationSchema={partCertiSchema}
+        validationSchema={RetroactiveStatementValue == "true" ? partCertiSchema_W8Eci(RetroactiveStatementValue) : partCertiSchema}
+       
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
           let temp = {
@@ -586,14 +599,14 @@ export default function Penalties() {
                                 values.date
                               }
                               onBlur={handleBlur}
-                              disabled
+                              
                             />
 
                             {/* {values.date ?(""):<p className="error">{errors.date}</p>} */}
                           </Typography>
                         </div>
                       </div>
-
+                      {RetroactiveStatementValue== "false" ?( <>
                       <Typography style={{ display: "flex", marginLeft: "10px" }}>
                         <Checkbox
                           name="isAcceptanceDeclarations"
@@ -708,6 +721,495 @@ export default function Penalties() {
                       ) : (
                         ""
                       )}
+                       </>):""}
+
+                       {RetroactiveStatementValue== "true"  ?(
+<div style={{marginLeft:"10px",marginTop:"20px"}}>
+ <Typography style={{fontWeight:"bold",fontSize:"25px"}} className="my-2">
+ Affidavit of Unchanged Status - Retroactive Statement
+ </Typography>
+
+ <div className="col-md-6 col-12 p-0 mt-2">
+                          <Typography style={{ fontSize: "15px" }}>
+                            Name(As entered on the form):
+                           </Typography>
+
+                          <Input
+                            className="inputTextField"
+                            id="outlined"
+                            fullWidth
+                            type="text"
+                            name="name"
+                            value={values.name}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            error={Boolean(touched.name && errors.name)}
+                          />
+                          <p className="error">{touched.name && typeof (errors.name) === "string" ? errors.name : ""}</p>
+                        </div>
+                        <Typography className="mt-2" style={{ fontSize: "12px" ,color:"grey"}}> 
+                        I declare, under penalties of perjury, that I have examined the Form W-8BEN submission that I am providing and that the information and certifications contained therein remain the same and unchanged throughout the period beginning on 07/03/2019 to the date of the submission here and that they were true, correct and complete during the entire period.If any information or certifications were not true, correct and complete for that entire period enter the date from when they were, providing additional written information below supporting the changes in circumstances back to the account opening date provided above.
+                        </Typography>
+
+                        <Typography className="mt-2" style={{ display: "flex"}}>
+                        <Checkbox
+                          name="isCircumstanceenable"
+                          value={values.isCircumstanceenable}
+                          checked={values.isCircumstanceenable}
+                          onChange={handleChange}
+                        />
+                        <Typography
+                          style={{
+                            fontSize: "15px",
+                            color: "black",
+                            marginTop:"10px"
+
+                          }}
+                        >
+                          
+                          Please "check" box if you have any change in circumstance to declare
+                                
+                          {errors.isCircumstanceenable &&
+                            touched.isCircumstanceenable ? (
+                            <div>
+                              <Typography color="error">
+                                {errors.isCircumstanceenable}
+                              </Typography>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                         
+                        </Typography>
+                      </Typography>
+                      <div className="col-md-6 col-12 p-0 mt-1">
+                          <Typography style={{ fontSize: "15px" }}>
+                          Enter the date here:<span style={{color:"red"}}>*</span>
+                           </Typography>
+
+                          <Input
+                            className="inputTextField"
+                            fullWidth
+                            type="date"
+                            name="enterDate"
+                            value={values.enterDate}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            error={Boolean(touched.enterDate && errors.enterDate)}
+                          />
+                          <p className="error">{touched.enterDate && typeof (errors.enterDate) === "string" ? errors.enterDate : ""}</p>
+                        </div>
+
+                        <div className="col-md-6 col-12 p-0">
+                          <Typography style={{ fontSize: "15px" }}>
+                          Select which details have changed:<span style={{color:"red"}}>*</span>
+                           </Typography>
+
+                          <select
+                            className="inputTextField"
+                            id="outlined"
+                            style={{width:"100%"}}
+                            name="changedDetails"
+                            value={values.changedDetails}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                           
+                          >
+                          <option value="0">--Select--</option>
+                          <option value={1}>Business status for U.S tax purposes</option>
+                          <option value={2}>Country of residence</option>
+                          <option value={3}>Name</option>
+                          <option value={4}>Tax indentification Number</option>
+                          </select>
+                          <p className="error">{touched.changedDetails && typeof (errors.changedDetails) === "string" ? errors.changedDetails : ""}</p>
+                        </div>
+                        <div className="col-md-6 col-12 p-0">
+                          <Typography style={{ fontSize: "15px" }}>
+                          Please provide a written explanation below:<span style={{color:"red"}}>*</span>
+                           </Typography>
+
+                          <Input
+                            multiline
+                            className="inputTextField"
+                            id="outlined"
+                            fullWidth
+                            type="date"
+                            name="writtenExplanation"
+                            value={values.writtenExplanation}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            error={Boolean(touched.writtenExplanation && errors.writtenExplanation)}
+                          />
+                          <p className="error">{touched.writtenExplanation && typeof (errors.writtenExplanation) === "string" ? errors.writtenExplanation : ""}</p>
+                        </div>
+
+                        <div
+                        className="row"
+                        style={{
+                          marginLeft: "1px",
+
+                          marginTop: "10px",
+                        }}
+                      >
+                        <div className="col-md-6 col-12 p-0">
+                          <Typography style={{ fontSize: "15px" }}>
+                            Signed by<span style={{ color: "red" }}>*</span>
+                            <span>
+                              <Tooltip
+                                style={{ backgroundColor: "black", color: "white" }}
+                                title={
+                                  <>
+                                    <Typography color="inherit">
+                                      Signature information
+                                    </Typography>
+                                    <a onClick={() => setToolInfo("basic")}>
+                                      <Typography
+                                        style={{
+                                          cursor: "pointer",
+                                          textDecorationLine: "underline",
+                                        }}
+                                        align="center"
+                                      >
+                                        {" "}
+                                        View More...
+                                      </Typography>
+                                    </a>
+                                  </>
+                                }
+                              >
+                                <InfoIcon
+                                  style={{
+                                    color: "#ffc107",
+                                    fontSize: "15px",
+                                    cursor: "pointer",
+                                    verticalAlign: "super",
+                                  }}
+                                />
+                              </Tooltip>
+                            </span>
+                          </Typography>
+                          {toolInfo === "basic" ? (
+                            <div>
+                              <Paper
+                                style={{
+                                  backgroundColor: "#dedcb1",
+                                  padding: "15px",
+                                  marginBottom: "10px",
+                                  width: "70%",
+                                }}
+                              >
+                                <Typography>
+                                  Please enter the name of the authorized signatory.
+                                </Typography>
+
+                                <Typography style={{ marginTop: "10px" }}>
+                                  See 'More Info' for further information on
+                                  signature requirements.
+                                </Typography>
+                                <Typography style={{ marginTop: "10px" }}>
+                                  On submission an electronic version of this form
+                                  will be sent directly to the requester for their
+                                  acceptance and further validation. After
+                                  submission you will be able to save and print a
+                                  copy for your own records.
+                                </Typography>
+                                <Typography style={{ marginTop: "10px" }}>
+                                  We will confirm receipt of the electronic form.
+                                  Please note that acceptance of the confirmation
+                                  declaration for electronic signature and the
+                                  certification statement are performed under
+                                  penalty of perjury.
+                                </Typography>
+
+                                <Link
+                                  href="#"
+                                  underline="none"
+                                  style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
+                                  onClick={() => {
+                                    setToolInfo("");
+                                  }}
+                                >
+                                  --Show Less--
+                                </Link>
+                              </Paper>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+
+                          <Input
+                            className="inputTextField"
+                            id="outlined"
+                            fullWidth
+                            type="text"
+                            name="affidavitSignedBy"
+                            value={values.affidavitSignedBy}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            error={Boolean(touched.affidavitSignedBy && errors.affidavitSignedBy)}
+                          />
+                          <p className="error">{touched.affidavitSignedBy && typeof (errors.affidavitSignedBy) === "string" ? errors.affidavitSignedBy : ""}</p>
+                        </div>
+
+                        <div className="col-md-6 col-12">
+                          <Typography style={{ fontSize: "15px" }}>
+                            Enter Confirmation Code:
+                            <span style={{ color: "red" }}>*</span>
+                            <span>
+                              <Tooltip
+                                style={{ backgroundColor: "black", color: "white" }}
+                                title={
+                                  <>
+                                    <Typography color="inherit">
+                                      Exemptions - Backup Withholding
+                                    </Typography>
+                                    <a onClick={() => setToolInfo("password")}>
+                                      <Typography
+                                        style={{
+                                          cursor: "pointer",
+                                          textDecorationLine: "underline",
+                                        }}
+                                        align="center"
+                                      >
+                                        {" "}
+                                        View More...
+                                      </Typography>
+                                    </a>
+                                  </>
+                                }
+                              >
+                                <InfoIcon
+                                  style={{
+                                    color: "#ffc107",
+                                    fontSize: "15px",
+                                    cursor: "pointer",
+                                    verticalAlign: "super",
+                                  }}
+                                />
+                              </Tooltip>
+                            </span>
+                          </Typography>
+
+                          {toolInfo === "password" ? (
+                            <div>
+                              <Paper
+                                style={{
+                                  backgroundColor: "#dedcb1",
+                                  padding: "15px",
+                                  marginBottom: "10px",
+                                }}
+                              >
+                                <Typography>
+                                  To authenticate the electronic signature you must
+                                  enter the alpha numeric token you received at the
+                                  start of the process. If you cannot remember your
+                                  confirmation code, you can click the 'Recover
+                                  Password' link to answer your security question
+                                  again and receive it.
+                                </Typography>
+
+                                <Typography style={{ marginTop: "10px" }}>
+                                  If you do not wish to submit the electronic form
+                                  at this stage, you will need to exit the process
+                                  and undertake again at a later date.
+                                </Typography>
+
+                                <Link
+                                  href="#"
+                                  underline="none"
+                                  style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
+                                  onClick={() => {
+                                    setToolInfo("");
+                                  }}
+                                >
+                                  --Show Less--
+                                </Link>
+                              </Paper>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          <div>
+                            <Input
+                              className="inputTextField"
+                              id="outlined"
+                              fullWidth
+                              name="affidavitConfirmationCode"
+                              value={values.affidavitConfirmationCode}
+                              onBlur={handleBlur}
+                              onChange={(e) => {
+                                handleChange(e)
+                               
+                              }}
+                              error={Boolean(
+                                touched.affidavitConfirmationCode && errors.affidavitConfirmationCode
+                              )}
+                              type="password"
+
+                              style={{ width: "100%" }}
+                            />
+                           
+                          </div>
+                        </div>
+                        <div className="col-12 col-md-6 p-0 mt-1">
+                          <Typography align="left" style={{ padding: "0px" }}>
+                            <Typography style={{ fontSize: "15px" }}>
+                              Date <span style={{ color: "red" }}>*</span>
+                            </Typography>
+                    
+                            <FormControl style={{ width: "100%" }}>
+                              <Input
+                                className="inputTextField"
+                                id="outlined"
+                                type="date"
+                                fullWidth
+                                name="affidavitDate"
+                                value={values.affidavitDate}
+                                onBlur={handleBlur}
+                                onChange={(e) => {
+                                  handleChange(e)
+                                 
+                                }}
+                                error={Boolean(
+                                  touched.affidavitDate && errors.affidavitDate
+                                )}
+                              
+                              />
+
+                            </FormControl>
+
+                          
+                          </Typography>
+                        </div>
+                      </div>
+                    
+
+
+                      <div
+                        className="row"
+                        style={{
+                        
+
+                        }}
+                      >
+                        
+                      </div>
+
+                      <Typography style={{ display: "flex" }}>
+                        <Checkbox
+                          name="acceptanceConfirmation"
+                          value={values.acceptanceConfirmation}
+                          checked={values.acceptanceConfirmation}
+                          onChange={handleChange}
+                        />
+                        <Typography
+                          style={{
+                            fontSize: "15px",
+                            color: "black",
+                            marginTop:"5px"
+
+                          }}
+                        >
+                          Please "check" box to confirm your acceptance with the
+                          above declarations{" "}
+                          {errors.acceptanceConfirmation &&
+                            touched.acceptanceConfirmation ? (
+                            <div>
+                              <Typography color="error">
+                                {errors.acceptanceConfirmation}
+                              </Typography>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          <span>
+                            <Tooltip
+                              style={{ backgroundColor: "black", color: "white" }}
+                              title={
+                                <>
+                                  <Typography color="inherit">
+                                    Certification information
+                                  </Typography>
+                                  <a onClick={() => setToolInfo("check")}>
+                                    <Typography
+                                      style={{
+                                        cursor: "pointer",
+                                        textDecorationLine: "underline",
+                                      }}
+                                      align="center"
+                                    >
+                                      {" "}
+                                      View More...
+                                    </Typography>
+                                  </a>
+                                </>
+                              }
+                            >
+                              <InfoIcon
+                                style={{
+                                  color: "#ffc107",
+                                  fontSize: "15px",
+                                  cursor: "pointer",
+                                  verticalAlign: "super",
+                                }}
+                              />
+                            </Tooltip>
+                          </span>
+                        </Typography>
+                      </Typography>
+                      {toolInfo === "check" ? (
+                        <div>
+                          <Paper
+                            style={{
+                              backgroundColor: "#dedcb1",
+                              padding: "15px",
+                              marginBottom: "10px",
+                            }}
+                          >
+                            <Typography>
+                              This submission <span>must</span> be signed and dated
+                              by the beneficial owner of the income, or, if the
+                              beneficial owner is not an individual, by an
+                              authorized representative or officer of the beneficial
+                              owner.
+                            </Typography>
+                            <Typography>
+                              If this submission is being completed by an agent
+                              acting under a duly authorized power of attorney for
+                              the beneficial owner or account holder, the form must
+                              be accompanied by the power of attorney in proper form
+                              or a copy thereof specifically authorizing the agent
+                              to represent the principal in making, executing, and
+                              presenting the form.
+                            </Typography>
+
+                            <Typography style={{ marginTop: "10px" }}>
+                              Form 2848, Power of Attorney and Declaration of
+                              Representative, can be used for this purpose. The
+                              agent, as well as the beneficial owner or account
+                              holder, may incur liability for the penalties provided
+                              for an erroneous, false, or fraudulent form.
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              Ref: EH015
+                            </Typography>
+
+                            <Link
+                              href="#"
+                              underline="none"
+                              style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
+                              onClick={() => {
+                                setToolInfo("");
+                              }}
+                            >
+                              --Show Less--
+                            </Link>
+                          </Paper>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+</div>):""}
 
                       <div
                         style={{
@@ -754,7 +1256,7 @@ export default function Penalties() {
                               // history("/W-8ECI/Certification/Participation/Submit_Eci");
                             })
                           }}
-                          // type="submit"
+
                           disabled={!isValid}
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
@@ -776,8 +1278,8 @@ export default function Penalties() {
                       <Typography align="center">
                         <Button
                           onClick={() => {
-                            Redirect("/W-8ECI/Certification/Participation/Submit_Eci",authDetails?.agentId,history,true)
-                            // history("/W-8ECI/Certification")
+                            Redirect("/W-8ECI/Certification",authDetails?.agentId,history,true)
+                           
                           }}
                           variant="contained"
                           style={{

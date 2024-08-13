@@ -13,3 +13,15 @@
     opacity: 1;
     -webkit-text-fill-color:rgb(12 12 12 / 96%);
 }
+input[type=date] {
+   
+    background: white !important;
+    text-transform: uppercase !important;
+}
+.css-1hhziy4-MuiInputBase-root-MuiInput-root input[type=date] {
+    // padding-inline: 10px !important;
+    /* border: thin solid gray !important; */
+    background: white !important;
+    border: none;
+    text-transform: uppercase !important;
+}

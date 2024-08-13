@@ -74,8 +74,7 @@ export default function Penalties() {
   
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
   const RetroactiveStatementValue = localStorage.getItem("RetroactiveStatement");
-  console.log(RetroactiveStatementValue,"RetroactiveStatementValue")
-
+  
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -106,24 +105,23 @@ export default function Penalties() {
   const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
   const Values = JSON.parse(localStorage.getItem("agentDetails") || '{}')
   const initialValue = {
-    signedBy: W8BENData?.signedBy ?? "",
-    EnterconfirmationCode: "",
-    confirmationCode: W8BENData?.confirmationCode ?? "",
-    date: W8BENData?.date ?? new Date().toLocaleDateString('en-US', {
+    signedBy: PrevStepData?.signedBy ?? "",
+    confirmationCode: PrevStepData?.confirmationCode ?? "",
+    date: PrevStepData?.date ?? new Date().toLocaleDateString('en-US', {
       month: '2-digit',
       day: '2-digit',
       year: 'numeric',
     }),
-    isCheckAcceptance: W8BENData?.isCheckAcceptance ? true : false,
-    name:"",
-    isCircumstanceenable:false,
-    enterDate:"",
-    changedDetails:"",
-    writtenExplanation:"",
-    affidavitSignedBy:"",
-    affidavitConfirmationCode:"",
-    affidavitDate:"",
-    acceptanceConfirmation:false
+    isAcceptanceDeclarations: PrevStepData?.isAcceptanceDeclarations ? true : false,
+    name:PrevStepData?.name ?? "",
+    isCircumstanceenable: PrevStepData?.isCircumstanceenable ? true : false,
+    enterDate: PrevStepData?.enterDate ?? "",
+    changedDetails:PrevStepData?.changedDetails ?? "",
+    writtenExplanation: PrevStepData?.writtenExplanation ?? "",
+    affidavitSignedBy: PrevStepData?.affidavitSignedBy ?? "",
+    affidavitConfirmationCode:PrevStepData?.affidavitConfirmationCode ?? "",
+    affidavitDate:PrevStepData?.affidavitDate ?? "",
+    acceptanceConfirmation: PrevStepData?.acceptanceConfirmation ? true : false
 
 
 
@@ -137,7 +135,7 @@ export default function Penalties() {
   const history = useNavigate();
 
   const viewPdf = () => {
-    // history("/w8Ben_pdf", { replace: true });
+      
     history("/w8Ben_pdf");
   }
   return (
@@ -151,8 +149,6 @@ export default function Penalties() {
         validationSchema={RetroactiveStatementValue == "true" ? partCertiSchema_W8Ben(RetroactiveStatementValue) : partCertiSchema}
         onSubmit={(values, { setSubmitting }) => {
 
-
-        
           const new_obj = { ...PrevStepData, stepName: `/${urlValue}`, date: moment(values.date).format(), FormTypeSelectionId: obValues.businessTypeId, }
           const result = { ...new_obj, ...values, FormTypeSelectionId: Values.businessTypeId, AgentId: authDetails.agentId, AccountHolderBasicDetailId: authDetails.accountHolderId };
           dispatch(
@@ -557,9 +553,9 @@ export default function Penalties() {
                    {RetroactiveStatementValue== "false" ?( <>
                     <Typography style={{ display: "flex", marginLeft: "10px" }}>
                         <Checkbox
-                          name="isCheckAcceptance"
-                          value={values.isCheckAcceptance}
-                          checked={values.isCheckAcceptance}
+                          name="isAcceptanceDeclarations"
+                          value={values.isAcceptanceDeclarations}
+                          checked={values.isAcceptanceDeclarations}
                           onChange={handleChange}
                         />
                         <Typography
@@ -572,11 +568,11 @@ export default function Penalties() {
                         >
                           Please "check" box to confirm your acceptance with the
                           above declarations{" "}
-                          {errors.isCheckAcceptance &&
-                            touched.isCheckAcceptance ? (
+                          {errors.isAcceptanceDeclarations &&
+                            touched.isAcceptanceDeclarations ? (
                             <div>
                               <Typography color="error">
-                                {errors.isCheckAcceptance}
+                                {errors.isAcceptanceDeclarations}
                               </Typography>
                             </div>
                           ) : (

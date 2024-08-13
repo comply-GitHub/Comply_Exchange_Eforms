@@ -314,7 +314,7 @@ export default function Tin(props: any) {
                       ) : (
                         ""
                       )}
-                      <>{console.log(errors, values)}</>
+                      <>{console.log(errors, values,"errors")}</>
                       <div style={{ margin: "10px" }}>
                         <Typography
                           align="left"

@@ -519,78 +519,54 @@ export const US_TINSchemaW8BenE = (isGiinEnabled: boolean) => {
           .required("Please Select"),
     }),
 
-    giinId: Yup.string().nullable()
-      .test(
-        {
-          name: "Uppercase",
-          message: "GIIN is required and must be all uppercase",
-          test: (value, context) => {
-            let { giinNotAvailable, giinTypeId } = context.parent;
-            if (isGiinEnabled && giinNotAvailable !== true && (giinTypeId === 1 || giinTypeId === "1")) {
-              if (value) {
-                const hasLowerCase = /[a-z]/.test(value);
-                return !hasLowerCase;
-              } else {
-                return false;
-              }
-
-            } else {
-              return true;
-            }
+    giinId: Yup.string()
+    .nullable()
+    .test({
+      name: 'Uppercase',
+      message: 'GIIN is required and must be all uppercase',
+      test: (value, context) => {
+        const { isUSEntity } = context.parent;
+        if (isGiinEnabled && isUSEntity === 'no') {
+          if (value) {
+            const hasLowerCase = /[a-z]/.test(value);
+            return !hasLowerCase;
+          } else {
+            return false;
           }
-        })
-      .test({
-        name: "length",
-        message: "GIIN length should be 16 character",
-        test: (value, context) => {
-          let { giinNotAvailable, giinTypeId } = context.parent;
-          if (isGiinEnabled && giinNotAvailable !== true && (giinTypeId === 1 || giinTypeId === "1")) {
-            return value?.length == 16
-          }
-          else
-            return true
+        } else {
+          return true;
         }
-      })
-
-      .test({
-        name: "format",
-        message: "GIIN format should be valid",
-        test: (value, context) => {
-          let { giinNotAvailable, giinTypeId } = context.parent;
-          if (isGiinEnabled && giinNotAvailable !== true && (giinTypeId === 1 || giinTypeId === "1")) {
-            if (!value) {
-              return false;
-            }
-            let case1 = isAlphaNumeric(value?.slice(0, 6));
-            if (!case1) {
-              //console.log("case1")
-              return false;
-            }
-            let case2 = isAlphaNumeric(value?.slice(6, 11));
-            if (!case2) {
-              //console.log("case2")
-              return false;
-            }
-            let case3Data = ["LE", "SL", "ME", "BR", "SP"];
-            let case3 = case3Data.includes(value?.slice(11, 13));
-            if (!case3) {
-              //console.log("case3")
-              return false;
-            }
-
-            let case4 = Number.parseInt(value?.slice(13, 16));
-            if (Number.isNaN(case4)) {
-              //console.log("case4")
-              return false;
-            }
-
-            return true
-
-          }
-          else
-            return true
+      },
+    })
+    .test({
+      name: 'length',
+      message: 'GIIN length should be 19 characters',
+      test: (value, context) => {
+        const { isUSEntity } = context.parent;
+        if (isGiinEnabled && isUSEntity === 'no') {
+          return value?.length === 19;
+        } else {
+          return true;
         }
-      }),
+      },
+    })
+    .test({
+      name: 'format',
+      message: 'GIIN format should be valid',
+      test: (value, context) => {
+        const { isUSEntity } = context.parent;
+        if (isGiinEnabled && isUSEntity === 'no') {
+          if (!value) {
+            return false;
+          }
+          // Check for the exact format based on the mask
+          const regex = /^[0-9]{3}[A-Z]{3}\.[0-9]{5}\.[A-Z]{2}\.[0-9]{3}$/;
+          return regex.test(value);
+        } else {
+          return true;
+        }
+      },
+    }),
   });
 };
 
@@ -648,7 +624,79 @@ export const partCertiSchema = () => {
     ),
   });
 };
+export const partCertiSchema_W8Bene = (RetroactiveStatementValue:any) => {
 
+  return Yup.object().shape({
+    signedBy: Yup.string().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.required("Please enter name of the person signing the form"),
+    }),
+    
+    confirmationCode: Yup.string().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.test(
+        'match',
+        'Confirmation code does not match',
+        function (value) {
+          const storedConfirmationCode = obValues.confirmationCode;
+          return !storedConfirmationCode || value === storedConfirmationCode;
+        },
+      )
+    }),
+
+    date: Yup.date(),
+    isAcceptanceDeclarations: Yup.boolean().when([], {
+      is: () => !RetroactiveStatementValue,
+      then: schema => schema.oneOf(
+      [true],
+      "Please mark the checkbox")
+  }),
+
+    name: Yup.string().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.required("Name is required"),
+    }),
+    isCircumstanceenable: Yup.boolean().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.oneOf([true], "This field is required"),
+    }),
+    enterDate: Yup.date().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.required("Date is required"),
+    }),
+    changedDetails: Yup.string().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.required("Changed details are required"),
+    }),
+    writtenExplanation: Yup.string().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.required("Written explanation is required"),
+    }),
+    affidavitSignedBy: Yup.string().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.required("Affidavit signed by is required"),
+    }),
+    affidavitConfirmationCode: Yup.string().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.test(
+        'match',
+        'Confirmation code does not match',
+        function (value) {
+          const storedConfirmationCode = obValues.confirmationCode;
+          return !storedConfirmationCode || value === storedConfirmationCode;
+        },
+      ),
+    }),
+    affidavitDate: Yup.date().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.required("Affidavit date is required"),
+    }),
+    acceptanceConfirmation: Yup.boolean().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.oneOf([true], "Acceptance confirmation is required"),
+    }),
+  });
+};
 
 export const rateSchema = () => {
   return Yup.object().shape({

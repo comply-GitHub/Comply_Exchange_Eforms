@@ -67,16 +67,7 @@ export default function Certifications(props: any) {
   const handleClose2 = () => setOpen2(false);
   const [toolInfo, setToolInfo] = useState("");
   const [expanded, setExpanded] = React.useState<string | false>("");
-  const [initialValue, setInitialValue] = useState({
-    isBeneficialOwnerIncome: false,
-    isAmountCertificationUS: false,
-    isBeneficialOwnerGrossIncome: false,
-    isBeneficialOwnerNotUSPerson: false,
-    isAuthorizeWithHoldingAgent: false,
-    isCapacityForm: false,
-
-    isElectronicForm: false,
-  });
+ 
   const urlValue = location.pathname.substring(1);
   const agentDefaultDetails = JSON.parse(
     localStorage.getItem("agentDefaultDetails") || "{}"
@@ -88,6 +79,17 @@ export default function Certifications(props: any) {
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
+
+    const [initialValue, setInitialValue] = useState({
+      isBeneficialOwnerIncome: PrevStepData?.isBeneficialOwnerIncome  || false,
+      isAmountCertificationUS: PrevStepData?.isAmountCertificationUS  || false,
+      isBeneficialOwnerGrossIncome: PrevStepData?.isBeneficialOwnerGrossIncome  || false,
+      isBeneficialOwnerNotUSPerson: PrevStepData?.isBeneficialOwnerNotUSPerson  || false,
+      isAuthorizeWithHoldingAgent: PrevStepData?.isAuthorizeWithHoldingAgent || false,
+      isCapacityForm: PrevStepData?.isCapacityForm  || false,
+      isElectronicForm: PrevStepData?.isElectronicForm  || false,
+    });
+
   const viewPdf = () => {
     // history("/w8Ben_pdf", { replace: true });
     history("/w8Ben_pdf");
@@ -346,7 +348,7 @@ export default function Certifications(props: any) {
                         <Typography style={{ display: "flex" }}>
                           <Checkbox
                             name="isBeneficialOwnerIncome"
-                            value={values.isBeneficialOwnerIncome}
+                            checked={values.isBeneficialOwnerIncome}
                             onBlur={handleBlur}
                             onChange={handleChange}
                             size="medium"
@@ -370,7 +372,7 @@ export default function Certifications(props: any) {
                           </Typography>
                         </Typography>
                         <p className="error">
-                          {touched.isBeneficialOwnerGrossIncome ? errors.isBeneficialOwnerIncome : ""}
+                           {touched.isBeneficialOwnerGrossIncome && typeof errors.isBeneficialOwnerGrossIncome === 'string' ? errors.isBeneficialOwnerGrossIncome : null}
                         </p>
                         <Divider
                           style={{
@@ -382,7 +384,7 @@ export default function Certifications(props: any) {
                         <Typography style={{ display: "flex" }}>
                           <Checkbox
                             name="isAmountCertificationUS"
-                            value={values.isAmountCertificationUS}
+                            checked={values.isAmountCertificationUS}
                             onBlur={handleBlur}
                             onChange={handleChange}
                             size="medium"
@@ -402,7 +404,8 @@ export default function Certifications(props: any) {
                           </Typography>
                         </Typography>
                         <p className="error">
-                          {touched.isAmountCertificationUS ? errors.isAmountCertificationUS : ""}
+                        {touched.isAmountCertificationUS && typeof errors.isAmountCertificationUS === 'string' ? errors.isAmountCertificationUS : null}
+                          
                         </p>
                         <Divider
                           style={{
@@ -414,7 +417,7 @@ export default function Certifications(props: any) {
                         <Typography style={{ display: "flex" }}>
                           <Checkbox
                             name="isBeneficialOwnerGrossIncome"
-                            value={values.isBeneficialOwnerGrossIncome}
+                            checked={values.isBeneficialOwnerGrossIncome}
                             onBlur={handleBlur}
                             onChange={handleChange}
                             size="medium"
@@ -462,7 +465,7 @@ export default function Certifications(props: any) {
                           </Typography>
                         </div>
                         <p className="error">
-                          {touched.isBeneficialOwnerGrossIncome ? errors.isBeneficialOwnerGrossIncome : ""}
+                        {touched.isBeneficialOwnerGrossIncome && typeof errors.isBeneficialOwnerGrossIncome === 'string' ? errors.isBeneficialOwnerGrossIncome : null}
                         </p>
                         <Divider
                           style={{
@@ -474,7 +477,7 @@ export default function Certifications(props: any) {
                         <Typography style={{ display: "flex" }}>
                           <Checkbox
                             name="isBeneficialOwnerNotUSPerson"
-                            value={values.isBeneficialOwnerNotUSPerson}
+                            checked={values.isBeneficialOwnerNotUSPerson}
                             onBlur={handleBlur}
                             onChange={handleChange}
                             size="medium"
@@ -497,7 +500,7 @@ export default function Certifications(props: any) {
                           </Typography>
                         </Typography>
                         <p className="error">
-                          {touched.isBeneficialOwnerNotUSPerson ? errors.isBeneficialOwnerNotUSPerson : ""}
+                        {touched.isBeneficialOwnerNotUSPerson && typeof errors.isBeneficialOwnerNotUSPerson === 'string' ? errors.isBeneficialOwnerNotUSPerson : null}
                         </p>
                         <Divider
                           style={{
@@ -509,7 +512,7 @@ export default function Certifications(props: any) {
                         <Typography style={{ display: "flex" }}>
                           <Checkbox
                             name="isAuthorizeWithHoldingAgent"
-                            value={values.isAuthorizeWithHoldingAgent}
+                            checked={values.isAuthorizeWithHoldingAgent}
                             onBlur={handleBlur}
                             onChange={handleChange}
                             size="medium"
@@ -530,7 +533,8 @@ export default function Certifications(props: any) {
                           </Typography>
                         </Typography>
                         <p className="error">
-                          {touched.isAuthorizeWithHoldingAgent ? errors.isAuthorizeWithHoldingAgent : ""}
+                        {touched.isAuthorizeWithHoldingAgent && typeof errors.isAuthorizeWithHoldingAgent === 'string' ? errors.isAuthorizeWithHoldingAgent : null}
+                          
                         </p>
                         <Divider
                           style={{
@@ -542,7 +546,7 @@ export default function Certifications(props: any) {
                         <Typography style={{ display: "flex" }}>
                           <Checkbox
                             name="isCapacityForm"
-                            value={values.isCapacityForm}
+                            checked={values.isCapacityForm}
                             onBlur={handleBlur}
                             onChange={handleChange}
                             size="medium"
@@ -570,7 +574,8 @@ export default function Certifications(props: any) {
                             </span>
                           </Typography>
                         </Typography>
-                        <p className="error">{touched.isCapacityForm ? errors.isCapacityForm : ""}</p>
+                        {touched.isCapacityForm && typeof errors.isCapacityForm === 'string' ? errors.isCapacityForm : null}
+                       
                         <Divider
                           style={{
                             marginTop: "1rem",
@@ -585,7 +590,7 @@ export default function Certifications(props: any) {
                         <Typography style={{ display: "flex" }}>
                           <Checkbox
                             name="isElectronicForm"
-                            value={values.isElectronicForm}
+                            checked={values.isElectronicForm}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             size="medium"
@@ -616,7 +621,8 @@ export default function Certifications(props: any) {
                             </span>
                           </Typography>
                         </Typography>
-                        <p className="error">{touched.isElectronicForm ? errors.isElectronicForm : ""}</p>
+                        {touched.isElectronicForm && typeof errors.isElectronicForm === 'string' ? errors.isElectronicForm : null}
+                       
                         <Divider
                           style={{
                             marginTop: "1rem",

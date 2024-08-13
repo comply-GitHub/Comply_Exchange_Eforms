@@ -293,6 +293,80 @@ export const partCertiSchema = () => {
   });
 };
 
+
+export const partCertiSchema_W8Eci = (RetroactiveStatementValue:any) => {
+
+  return Yup.object().shape({
+    signedBy: Yup.string().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.required("Please enter name of the person signing the form"),
+    }),
+    
+    confirmationCode: Yup.string().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.test(
+        'match',
+        'Confirmation code does not match',
+        function (value) {
+          const storedConfirmationCode = obValues.confirmationCode;
+          return !storedConfirmationCode || value === storedConfirmationCode;
+        },
+      )
+    }),
+
+    date: Yup.date(),
+    isAcceptanceDeclarations: Yup.boolean().when([], {
+      is: () => !RetroactiveStatementValue,
+      then: schema => schema.oneOf(
+      [true],
+      "Please mark the checkbox")
+  }),
+
+    name: Yup.string().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.required("Name is required"),
+    }),
+    isCircumstanceenable: Yup.boolean().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.oneOf([true], "This field is required"),
+    }),
+    enterDate: Yup.date().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.required("Date is required"),
+    }),
+    changedDetails: Yup.string().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.required("Changed details are required"),
+    }),
+    writtenExplanation: Yup.string().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.required("Written explanation is required"),
+    }),
+    affidavitSignedBy: Yup.string().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.required("Affidavit signed by is required"),
+    }),
+    affidavitConfirmationCode: Yup.string().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.test(
+        'match',
+        'Confirmation code does not match',
+        function (value) {
+          const storedConfirmationCode = obValues.confirmationCode;
+          return !storedConfirmationCode || value === storedConfirmationCode;
+        },
+      ),
+    }),
+    affidavitDate: Yup.date().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.required("Affidavit date is required"),
+    }),
+    acceptanceConfirmation: Yup.boolean().when([], {
+      is: () => RetroactiveStatementValue,
+      then: schema => schema.oneOf([true], "Acceptance confirmation is required"),
+    }),
+  });
+};
 export const SubmitSchemaECI = () => {
   return Yup.object().shape({
     isAgreeWithDeclaration: Yup.boolean().oneOf(
