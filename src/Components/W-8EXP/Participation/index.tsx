@@ -774,6 +774,7 @@ const RetroactiveStatementValue = localStorage.getItem("RetroactiveStatement");
                             fullWidth
                             type="date"
                             name="enterDate"
+                            disabled={!values.isCircumstanceenable}
                             value={values.enterDate}
                             onBlur={handleBlur}
                             onChange={handleChange}
@@ -791,6 +792,7 @@ const RetroactiveStatementValue = localStorage.getItem("RetroactiveStatement");
                             className="inputTextField"
                             id="outlined"
                             style={{width:"100%"}}
+                            disabled={!values.isCircumstanceenable}
                             name="changedDetails"
                             value={values.changedDetails}
                             onBlur={handleBlur}
@@ -816,6 +818,7 @@ const RetroactiveStatementValue = localStorage.getItem("RetroactiveStatement");
                             id="outlined"
                             fullWidth
                             type="date"
+                            disabled={!values.isCircumstanceenable}
                             name="writtenExplanation"
                             value={values.writtenExplanation}
                             onBlur={handleBlur}
@@ -927,6 +930,7 @@ const RetroactiveStatementValue = localStorage.getItem("RetroactiveStatement");
                             name="affidavitSignedBy"
                             value={values.affidavitSignedBy}
                             onBlur={handleBlur}
+                            disabled={!values.isCircumstanceenable}
                             onChange={handleChange}
                             error={Boolean(touched.affidavitSignedBy && errors.affidavitSignedBy)}
                           />
@@ -1018,6 +1022,7 @@ const RetroactiveStatementValue = localStorage.getItem("RetroactiveStatement");
                               fullWidth
                               name="affidavitConfirmationCode"
                               value={values.affidavitConfirmationCode}
+                              disabled={!values.isCircumstanceenable}
                               onBlur={handleBlur}
                               onChange={(e) => {
                                 handleChange(e)
@@ -1046,6 +1051,7 @@ const RetroactiveStatementValue = localStorage.getItem("RetroactiveStatement");
                                 type="date"
                                 fullWidth
                                 name="affidavitDate"
+                                disabled={!values.isCircumstanceenable}
                                 value={values.affidavitDate}
                                 onBlur={handleBlur}
                                 onChange={(e) => {

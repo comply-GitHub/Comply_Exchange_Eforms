@@ -12,6 +12,7 @@
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled input{
     opacity: 1;
     -webkit-text-fill-color:rgb(12 12 12 / 96%) !important;
+    margin-left: 10px;
 }
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled  {
     opacity: 1;
@@ -24,9 +25,14 @@ input[type=date] {
     text-transform: uppercase !important;
 }
 .css-1hhziy4-MuiInputBase-root-MuiInput-root input[type=date] {
-    // padding-inline: 10px !important;
-    /* border: thin solid gray !important; */
+   
     background: white !important;
     border: none;
     text-transform: uppercase !important;
+}
+.css-het9lb-MuiInputBase-root-MuiInput-root textarea {
+    margin-left: 10px;
+}
+.MuiInputBase-input-MuiInput-input-MuiInputBase-inputMultiline-css-66dh3a-MuiInputBase-input-MuiInput-input{
+    margin-left: 10px;
 }

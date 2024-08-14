@@ -792,6 +792,7 @@ export default function Penalties() {
                             fullWidth
                             type="date"
                             name="enterDate"
+                            disabled={!values.isCircumstanceenable}
                             value={values.enterDate}
                             onBlur={handleBlur}
                             onChange={handleChange}
@@ -810,6 +811,7 @@ export default function Penalties() {
                             id="outlined"
                             style={{width:"100%"}}
                             name="changedDetails"
+                            disabled={!values.isCircumstanceenable}
                             value={values.changedDetails}
                             onBlur={handleBlur}
                             onChange={handleChange}
@@ -833,6 +835,7 @@ export default function Penalties() {
                             className="inputTextField"
                             id="outlined"
                             fullWidth
+                            disabled={!values.isCircumstanceenable}
                             type="date"
                             name="writtenExplanation"
                             value={values.writtenExplanation}
@@ -946,6 +949,7 @@ export default function Penalties() {
                             value={values.affidavitSignedBy}
                             onBlur={handleBlur}
                             onChange={handleChange}
+                            disabled={!values.isCircumstanceenable}
                             error={Boolean(touched.affidavitSignedBy && errors.affidavitSignedBy)}
                           />
                           <p className="error">{touched.affidavitSignedBy && typeof (errors.affidavitSignedBy) === "string" ? errors.affidavitSignedBy : ""}</p>
@@ -1034,6 +1038,7 @@ export default function Penalties() {
                               className="inputTextField"
                               id="outlined"
                               fullWidth
+                              disabled={!values.isCircumstanceenable}
                               name="affidavitConfirmationCode"
                               value={values.affidavitConfirmationCode}
                               onBlur={handleBlur}
@@ -1062,6 +1067,7 @@ export default function Penalties() {
                                 className="inputTextField"
                                 id="outlined"
                                 type="date"
+                                disabled={!values.isCircumstanceenable}
                                 fullWidth
                                 name="affidavitDate"
                                 value={values.affidavitDate}
@@ -1101,6 +1107,7 @@ export default function Penalties() {
                           value={values.acceptanceConfirmation}
                           checked={values.acceptanceConfirmation}
                           onChange={handleChange}
+                          disabled={!values.isCircumstanceenable}
                         />
                         <Typography
                           style={{

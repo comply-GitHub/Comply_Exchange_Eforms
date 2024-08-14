@@ -23,11 +23,6 @@ import { ContentCopy } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { W8_state, GetHelpVideoDetails, postW81MY_EForm } from "../../../Redux/Actions";
 import { useNavigate } from "react-router";
-import checksolid from "../../../../../assets/img/check-solid.png";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { partCertiSchema } from "../../../schemas/w8Ben";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import useAuth from "../../../customHooks/useAuth";
@@ -80,8 +75,8 @@ export default function Penalties() {
     status:false
 })
   const [initialValue, setInitialValues] = useState({
-    signedBy: W8IMYData?.signedBy ?? "",
-    confirmationCode: W8IMYData?.confirmationCode ?? "",
+    signedBy: PrevStepData?.signedBy ?? "",
+    confirmationCode: PrevStepData?.confirmationCode ?? "",
     date: new Date().toLocaleDateString('en-US', {
       month: '2-digit',
       day: '2-digit',
@@ -111,8 +106,8 @@ export default function Penalties() {
   return (
     <>
       <Formik
-        validateOnChange={false}
-        validateOnBlur={false}
+        validateOnChange={true}
+        validateOnBlur={true}
         initialValues={initialValue}
        
         validationSchema={RetroactiveStatementValue == "true" ? partCertiSchema_W8Imy(RetroactiveStatementValue) : partCertiSchema8IMY}
@@ -224,7 +219,7 @@ export default function Penalties() {
 
                   <div style={{ padding: "13px" }}>
                     <Paper style={{ padding: "10px" }}>
-                      {obValues.contactFirstName.trim() + " " + obValues.contactLastName.trim() !== values.signedBy && values.signedBy !=="" ? (
+                      {obValues.contactFirstName + " " + obValues.contactLastName !== values.signedBy && values.signedBy !=="" ? (
                         <div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                           <Typography>
                             SIG101
@@ -807,11 +802,9 @@ export default function Penalties() {
                                 
                           {errors.isCircumstanceenable &&
                             touched.isCircumstanceenable ? (
-                            <div>
-                              <Typography color="error">
+                              <p className="error">
                                 {errors.isCircumstanceenable}
-                              </Typography>
-                            </div>
+                            </p>
                           ) : (
                             ""
                           )}
@@ -827,6 +820,7 @@ export default function Penalties() {
                             className="inputTextField"
                             fullWidth
                             type="date"
+                            disabled={!values.isCircumstanceenable}
                             name="enterDate"
                             value={values.enterDate}
                             onBlur={handleBlur}
@@ -848,6 +842,7 @@ export default function Penalties() {
                             name="changedDetails"
                             value={values.changedDetails}
                             onBlur={handleBlur}
+                            disabled={!values.isCircumstanceenable}
                             onChange={handleChange}
                            
                           >
@@ -869,6 +864,7 @@ export default function Penalties() {
                             className="inputTextField"
                             id="outlined"
                             fullWidth
+                            disabled={!values.isCircumstanceenable}
                             type="date"
                             name="writtenExplanation"
                             value={values.writtenExplanation}
@@ -979,6 +975,7 @@ export default function Penalties() {
                             fullWidth
                             type="text"
                             name="affidavitSignedBy"
+                            disabled={!values.isCircumstanceenable}
                             value={values.affidavitSignedBy}
                             onBlur={handleBlur}
                             onChange={handleChange}
@@ -1081,7 +1078,7 @@ export default function Penalties() {
                                 touched.affidavitConfirmationCode && errors.affidavitConfirmationCode
                               )}
                               type="password"
-
+                              disabled={!values.isCircumstanceenable}
                               style={{ width: "100%" }}
                             />
                            
@@ -1097,6 +1094,7 @@ export default function Penalties() {
                               <Input
                                 className="inputTextField"
                                 id="outlined"
+                                disabled={!values.isCircumstanceenable}
                                 type="date"
                                 fullWidth
                                 name="affidavitDate"
@@ -1133,6 +1131,7 @@ export default function Penalties() {
 
                       <Typography style={{ display: "flex" }}>
                         <Checkbox
+                        disabled={!values.isCircumstanceenable}
                           name="acceptanceConfirmation"
                           value={values.acceptanceConfirmation}
                           checked={values.acceptanceConfirmation}
@@ -1150,11 +1149,10 @@ export default function Penalties() {
                           above declarations{" "}
                           {errors.acceptanceConfirmation &&
                             touched.acceptanceConfirmation ? (
-                            <div>
-                              <Typography color="error">
+                              <p className="error">
                                 {errors.acceptanceConfirmation}
-                              </Typography>
-                            </div>
+                              </p>
+                      
                           ) : (
                             ""
                           )}
@@ -1256,7 +1254,7 @@ export default function Penalties() {
                         <Button
 
                           variant="contained"
-                          style={{ color: "white" }}
+                          style={{ color: "white", marginRight: "15px" }}
                           onClick={() => {
                             dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
                               setPopupState({

@@ -37,7 +37,6 @@ import useAuth from "../../../../../customHooks/useAuth";
 import SaveAndExit from "../../../../Reusable/SaveAndExit/Index";
 import { GetBenEPdf } from "../../../../../Redux/Actions/PfdActions";
 import Redirect from "../../../../../Router/RouterSkip";
-import { kMaxLength } from "buffer";
 export default function Tin(props: any) {
   const history = useNavigate();
   const { authDetails } = useAuth();

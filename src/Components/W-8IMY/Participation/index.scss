@@ -19,9 +19,14 @@ input[type=date] {
     text-transform: uppercase !important;
 }
 .css-1hhziy4-MuiInputBase-root-MuiInput-root input[type=date] {
-    // padding-inline: 10px !important;
-    /* border: thin solid gray !important; */
+ 
     background: white !important;
     border: none;
     text-transform: uppercase !important;
+}
+.css-het9lb-MuiInputBase-root-MuiInput-root input {
+    margin-left: 10px;
+}
+.css-het9lb-MuiInputBase-root-MuiInput-root textarea {
+    margin-left: 10px;
 }

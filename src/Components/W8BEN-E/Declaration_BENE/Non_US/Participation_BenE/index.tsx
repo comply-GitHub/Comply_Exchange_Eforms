@@ -820,6 +820,7 @@ export default function Penalties() {
                             fullWidth
                             type="date"
                             name="enterDate"
+                            disabled={!values.isCircumstanceenable}
                             value={values.enterDate}
                             onBlur={handleBlur}
                             onChange={handleChange}
@@ -836,6 +837,7 @@ export default function Penalties() {
                           <select
                             className="inputTextField"
                             id="outlined"
+                            disabled={!values.isCircumstanceenable}
                             style={{width:"100%"}}
                             name="changedDetails"
                             value={values.changedDetails}
@@ -861,6 +863,7 @@ export default function Penalties() {
                             className="inputTextField"
                             id="outlined"
                             fullWidth
+                            disabled={!values.isCircumstanceenable}
                             type="date"
                             name="writtenExplanation"
                             value={values.writtenExplanation}
@@ -973,6 +976,7 @@ export default function Penalties() {
                             name="affidavitSignedBy"
                             value={values.affidavitSignedBy}
                             onBlur={handleBlur}
+                            disabled={!values.isCircumstanceenable}
                             onChange={handleChange}
                             error={Boolean(touched.affidavitSignedBy && errors.affidavitSignedBy)}
                           />
@@ -1065,6 +1069,7 @@ export default function Penalties() {
                               name="affidavitConfirmationCode"
                               value={values.affidavitConfirmationCode}
                               onBlur={handleBlur}
+                              disabled={!values.isCircumstanceenable}
                               onChange={(e) => {
                                 handleChange(e)
                                
@@ -1094,6 +1099,7 @@ export default function Penalties() {
                                 name="affidavitDate"
                                 value={values.affidavitDate}
                                 onBlur={handleBlur}
+                                disabled={!values.isCircumstanceenable}
                                 onChange={(e) => {
                                   handleChange(e)
                                  
@@ -1126,6 +1132,7 @@ export default function Penalties() {
                       <Typography style={{ display: "flex" }}>
                         <Checkbox
                           name="acceptanceConfirmation"
+                          disabled={!values.isCircumstanceenable}
                           value={values.acceptanceConfirmation}
                           checked={values.acceptanceConfirmation}
                           onChange={handleChange}
