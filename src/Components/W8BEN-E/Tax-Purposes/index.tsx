@@ -65,11 +65,11 @@ export default function Fedral_tax(props: any) {
     localStorage.getItem("agentDefaultDetails") || "{}"
   );
 
-  const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
+ 
 
   const [initialValue, setInitialValue] = useState({
     agentId: authDetails?.agentId,
-    formTypeSelectionId: 2,
+    // formTypeSelectionId: 2,
     accountHolderBasicDetailId: authDetails?.accountHolderId,
     businessName: obValues.entityName,
     businessDisgradedEntity: "",
@@ -239,17 +239,17 @@ export default function Fedral_tax(props: any) {
                 <Formik
                   enableReinitialize
                   validateOnChange={true}
-                  validateOnBlur={false}
+                  validateOnBlur={true}
                   validateOnMount={true}
                   initialValues={initialValue}
                   validationSchema={TaxPurposeSchema}
                   onSubmit={(values, { setSubmitting }) => {
-                    setSubmitting(true);
+                   
                     const submitPromise = new Promise((resolve, reject) => {
 
                       setSubmitting(true);
                       const temp = {
-                        ...PrevStepData, ...values,
+                        ...values,
                         agentId: authDetails?.agentId,
                         accountHolderBasicDetailId: authDetails?.accountHolderId,
                         isSubmissionSingleUSOwner: values.isSubmissionSingleUSOwner === "yes" ? true : false,
