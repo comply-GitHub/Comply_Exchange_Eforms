@@ -17,7 +17,7 @@ import PopupModal from "../../../Redux/Actions/poupModal";
 import useAuth from "../../../customHooks/useAuth";
 export default function Term() {
   const { authDetails } = useAuth();
-  //States
+  
   useEffect(() => {
     document.title="Comply Exchange"
     dispatch(GetHelpVideoDetails());
@@ -81,7 +81,7 @@ export default function Term() {
               <a
                 href={GethelpData[3].fieldValue}
                 onClick={(e) => {
-                  e.preventDefault(); // Prevent the default anchor behavior
+                  e.preventDefault(); 
                   window.open(
                     GethelpData[3].fieldValue,
                     'popupWindow',

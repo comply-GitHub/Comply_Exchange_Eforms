@@ -38,7 +38,7 @@ export default function Factors() {
   const { authDetails } = useAuth();
   const history = useNavigate();
   const location = useLocation();
-  const [allocation, setAllocation] = useState(0); // State to track allocation input
+  const [allocation, setAllocation] = useState(0); 
   const [formList, setFormList] = useState<FormData[]>([]);
   const dispatch = useDispatch();
 
@@ -46,7 +46,7 @@ export default function Factors() {
 
   const handleAllocationChange = (event: ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
-    // setAllocation(inputValue);
+  
 
     const mirroredText = document.getElementById("mirroredText");
     if (mirroredText) {

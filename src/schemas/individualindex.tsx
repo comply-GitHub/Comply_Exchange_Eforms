@@ -17,9 +17,14 @@ export const individualSchema = (Cert: string, payment: boolean, income: boolean
       .required("Please Enter Last Name"),
     // .min(3, "Last Name should be minimum of 3 characters")
     // .max(50, "Last Name should be maximum of 50 characters"),
-    uniqueIdentifier: Yup.string().trim()
-      .required("Please Enter unique Identifier"),
-     
+    uniqueIdentifier: Yup.string()
+    .required("Please Enter unique Identifier")
+    .matches(/^[0-9]+$/, "Unique Identifier must be a number") // Ensures only numbers are allowed
+    .test(
+      'len',
+      'Unique Identifier must be exactly 10 digits',
+      (val) => !!val && val.length === 10 // Check if val exists and has exactly 10 digits
+    ),
   
     countryOfCitizenshipId: Cert==="SC" ? Yup.number() : Yup.number().when("isUSIndividual", {
       is: "no",
@@ -165,8 +170,8 @@ vat:Cert === "GEN" ? Yup.string().when("vatId", {
     accountHolderName: Yup.string().when("paymentTypeId", {
       is: (paymentTypeId: any) => paymentTypeId === 1 || paymentTypeId === 2,
       then: () =>
-        Yup.string().trim()
-          .notOneOf(["", ""], "Please enter Account holder Name")
+        Yup.string().trim().nullable()
+          // .notOneOf(["", ""], "Please enter Account holder Name")
           .required("Please enter Account holder Name")
     }),
 

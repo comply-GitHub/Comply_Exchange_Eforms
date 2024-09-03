@@ -18,9 +18,8 @@ export const EntitySchema = (Cert: string, payment: boolean, income: boolean, is
     }),
     taxpayerIdTypeID: Cert === "SC" ? Yup.number() : Yup.number().notOneOf([0], "Please select a valid option"),
     uniqueIdentifier: Yup.string()
-      .required("Please Enter unique Identifier")
-      // .min(3, "Too short")
-      .max(50, "Too long"),
+    .required("Please Enter unique Identifier")
+    .matches(/^\d{10}$/, "Unique Identifier must be exactly 10 digits"),
     vatId: Cert === "SC" ? Yup.number() : Cert === "GEN" ? Yup.number().when("isUSIndividual", {
       is: 'no',
       then: () =>
@@ -181,8 +180,8 @@ export const EntitySchema = (Cert: string, payment: boolean, income: boolean, is
     accountHolderName: Yup.string().when("paymentTypeId", {
       is: (paymentTypeId: any) => paymentTypeId === 1 || paymentTypeId === 2,
       then: () =>
-        Yup.string().trim()
-          .notOneOf(["", ""], "Please enter Account holder Name")
+        Yup.string().trim().nullable()
+          // .notOneOf(["", ""], "Please enter Account holder Name")
           .required("Please enter Account Holder Name")
 
     }),

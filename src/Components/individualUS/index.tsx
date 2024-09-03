@@ -435,35 +435,35 @@ export default function IndividualUs() {
 
 
 
-  const onNumberChange = (e: any, values: any): any => {
-    const value = e.target.value
+  // const onNumberChange = (e: any, values: any): any => {
+  //   const value = e.target.value
 
-    if (agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat === undefined) return;
+  //   if (agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat === undefined) return;
 
-    var format = "S";
-    const formatVal = agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat;
+  //   var format = "S";
+  //   const formatVal = agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat;
 
-    if (formatVal.length == 0) return;
+  //   if (formatVal.length == 0) return;
 
-    setPayload({ ...payload, uniqueIdentifier: payload.uniqueIdentifier });
-    if ((checkNUmberOnly(value) && formatVal.split('')[0] == "9")
-      || (checkCharecterOnly(value) && formatVal.split('')[0] == "S")
-      || formatVal.split('')[0] == "*"
-    ) {
+  //   setPayload({ ...payload, uniqueIdentifier: payload.uniqueIdentifier });
+  //   if ((checkNUmberOnly(value) && formatVal.split('')[0] == "9")
+  //     || (checkCharecterOnly(value) && formatVal.split('')[0] == "S")
+  //     || formatVal.split('')[0] == "*"
+  //   ) {
 
-      if (values.uniqueIdentifier.length <= formatVal.length) {
-        setPreVal(values.uniqueIdentifier);
-      }
-      else {
-        values.uniqueIdentifier = holdPreviousVal;
-      }
-    } else {
+  //     if (values.uniqueIdentifier.length <= formatVal.length) {
+  //       setPreVal(values.uniqueIdentifier);
+  //     }
+  //     else {
+  //       values.uniqueIdentifier = holdPreviousVal;
+  //     }
+  //   } else {
 
-      values.uniqueIdentifier = holdPreviousVal;
+  //     values.uniqueIdentifier = holdPreviousVal;
 
-    }
+  //   }
 
-  }
+  // }
 
   const checkCharecterOnly = (val: any): any => {
 
@@ -729,11 +729,7 @@ export default function IndividualUs() {
 
 
 
-  const setAccountHolder = (e: any, values: any): any => {
-    if (values.accountHolderName === "") {
-      values.accountHolderName = values.firstName + values.lastName;
-    } else values.accountHolderName = e.target.value;
-  };
+
 
   function returnTinValues(value: any) {
     if (value?.isUSIndividual === "yes") {
@@ -1005,8 +1001,7 @@ export default function IndividualUs() {
                   paymentTypeId: values?.paymentTypeId,
                   accountHolderName:
                     values?.accountHolderName === ""
-                      ? values?.firstName + " " + values?.lastName
-                      : values?.accountHolderName,
+                      ? "": values.accountHolderName,
                   accountBankName: values?.accountBankName,
                   accountBankBranchLocationId:
                     values?.accountBankBranchLocationId,
@@ -1578,8 +1573,14 @@ export default function IndividualUs() {
                                 name="uniqueIdentifier"
                                 id="outlined"
                                 placeholder="Enter Instructor Identifier"
-                                onChange={handleChange}
-                                onKeyUp={(e: any) => onNumberChange(e, values)}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                              
+                                   if (/^\d*$/.test(value) && value.length <= 10) {
+                                    handleChange(e);
+                                  }
+                                }}
+                                // onKeyUp={(e: any) => onNumberChange(e, values)}
                                 // onBlur={(e: any) => onUidBlur(e, values)}
                                 onBlur={handleBlur}
                                 error={Boolean(errors.uniqueIdentifier && touched.uniqueIdentifier)}
@@ -1648,7 +1649,7 @@ export default function IndividualUs() {
                                   // onChange={handleChange}
                                   onChange={(e) => {
                                     handleChange(e);
-                                    setFieldValue('accountHolderName', `${values.firstName} ${e.target.value} `);
+                                    // setFieldValue('accountHolderName', `${values.firstName} ${e.target.value} `);
                                   }}
                                   onBlur={handleBlur}
                                   error={Boolean(
@@ -1888,7 +1889,7 @@ export default function IndividualUs() {
                                     placeholder="Enter Last Name"
                                     onChange={(e) => {
                                       handleChange(e);
-                                      setFieldValue('accountHolderName', `${values.firstName} ${e.target.value} `);
+                                      // setFieldValue('accountHolderName', `${values.firstName} ${e.target.value} `);
                                     }}
                                     onBlur={handleBlur}
                                     error={Boolean(
@@ -2137,8 +2138,15 @@ export default function IndividualUs() {
                                 name="uniqueIdentifier"
                                 id="outlined"
                                 placeholder="Enter Instructor Identifier"
-                                onChange={handleChange}
-                                onKeyUp={(e: any) => onNumberChange(e, values)}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                              
+                                  
+                                  if (/^\d*$/.test(value) && value.length <= 10) {
+                                    handleChange(e);
+                                  }
+                                }}
+                                // onKeyUp={(e: any) => onNumberChange(e, values)}
                                 // onBlur={(e: any) => onUidBlur(e, values)}
                                 onBlur={handleBlur}
                                 error={Boolean(errors.uniqueIdentifier && touched.uniqueIdentifier)}
@@ -2206,7 +2214,7 @@ export default function IndividualUs() {
                                   placeholder="Enter Last Name"
                                   onChange={(e) => {
                                     handleChange(e);
-                                    setFieldValue('accountHolderName', `${values.firstName} ${e.target.value} `);
+                                    // setFieldValue('accountHolderName', `${values.firstName} ${e.target.value} `);
                                   }}
                                   // onBlur={handleBlur}
                                   error={Boolean(
@@ -2333,7 +2341,7 @@ export default function IndividualUs() {
                                   placeholder="Enter Last Name"
                                   onChange={(e) => {
                                     handleChange(e);
-                                    setFieldValue('accountHolderName', `${values.firstName} ${e.target.value} `);
+                                    // setFieldValue('accountHolderName', `${values.firstName} ${e.target.value} `);
                                   }}
                                   onBlur={handleBlur}
                                   error={Boolean(
@@ -6729,7 +6737,7 @@ export default function IndividualUs() {
                                     <FormControl className="w-100">
                                       <Typography align="left">
                                         Apt/Suite
-                                        {/* <span style={{ color: 'red' }}>*</span> */}
+                                       
                                       </Typography>
                                       <Input
                                         style={{
@@ -6791,7 +6799,7 @@ export default function IndividualUs() {
                                         className="d-flex w-100 "
                                       >
                                         State or Province:
-                                        {/* <span style={{ color: 'red' }}>*</span> */}
+                                        <span style={{ color: 'red' }}>*</span>
                                       </Typography>
 
                                       <FormControl className="w-100">
@@ -6803,7 +6811,7 @@ export default function IndividualUs() {
                                             height: "36px",
                                           }}
                                           name="payStateOrProvince"
-                                          // id="Income"
+                                       
                                           onChange={handleChange}
                                           onBlur={handleBlur}
                                           value={values.payStateOrProvince}
@@ -6822,6 +6830,7 @@ export default function IndividualUs() {
                                             )
                                           )}
                                         </select>
+                                        {errors.payStateOrProvince && touched.payStateOrProvince ? <p className="error">{errors.payStateOrProvince}</p> : <></>}
                                       </FormControl>
                                     </div>
                                   ) : (
@@ -6969,13 +6978,13 @@ export default function IndividualUs() {
                                           values.accountHolderName
                                         }
                                       />
-                                      {(() => {
+                                      {/* {(() => {
                                         let data = (values.accountHolderName === "" ?
                                           (values.firstName !== "" ? setFieldValue("accountHolderName", values.firstName +
                                             " " + values.lastName) : "")
                                           : values.accountHolderName)
                                         return <></>
-                                      })()}
+                                      })()} */}
                                       {errors.accountHolderName && touched.accountHolderName ? <p className="error">{errors.accountHolderName}</p> : <></>}
 
                                     </FormControl>

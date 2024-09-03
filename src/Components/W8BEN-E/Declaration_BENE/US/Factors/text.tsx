@@ -750,8 +750,7 @@ const DynamicForm: React.FC<InputProps> = ({
                   </Typography>
                   <FormControl className="w-50">
                     <input
-                      // onChange={handleAllocationChange}
-                      // value={allocation}
+                     
                       className="col-md-6 col-12"
                       style={{
                         padding: " 0 10px",
@@ -812,9 +811,7 @@ const DynamicForm: React.FC<InputProps> = ({
         </div>
       </div>
       <div>
-        {/* <button type="submit" onClick={(e)=>{handleSubmit(e,formList)}}>
-          Submit
-        </button> */}
+      
       </div>
     </div>
   );

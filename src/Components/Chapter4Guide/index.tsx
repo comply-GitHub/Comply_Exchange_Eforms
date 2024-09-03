@@ -36,9 +36,7 @@ export default function Chapter4(props: any) {
   const handleCanvaClose = () => {
     setCanvaBx(false);
   }
-  // useEffect(() => {
-  // document.title=""
-  // },[]);
+
   const [isContinueEnabled, setIsContinueEnabled] = React.useState(false);
   const [isBackVisible, setIsBackVisible] = React.useState(false);
   const [expanded, setExpanded] = React.useState<string | false>("");
@@ -68,11 +66,11 @@ export default function Chapter4(props: any) {
                 <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
           <div className="viewform">View Form</div>
           <div className="helpvideo">
-            {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
+           
             <a
               href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-"
               onClick={(e) => {
-                e.preventDefault(); // Prevent the default anchor behavior
+                e.preventDefault(); 
                 window.open(
 "https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-",
 "popupWindow"

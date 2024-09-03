@@ -411,7 +411,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
     if (formatVal.length == 0) return;
 
     setPayload({ ...payload, uniqueIdentifier: payload.uniqueIdentifier });
-    if ((checkNUmberOnly(value) && formatVal.split('')[0] == "9")
+    if ((checkNUmberOnly(value) && formatVal.split('')[0] == "10")
       || (checkCharecterOnly(value) && formatVal.split('')[0] == "S")
       || formatVal.split('')[0] == "*"
     ) {
@@ -1629,8 +1629,16 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
 
                             name="uniqueIdentifier"
                             placeholder="Enter Instructor Identifier"
-                            onChange={handleChange}
-                            onKeyUp={(e) => onNumberChange(e, values)}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                          
+                              
+                              if (/^\d*$/.test(value) && value.length <= 10) {
+                                handleChange(e);
+                              }
+                            }}
+                            // onChange={handleChange}
+                            // onKeyUp={(e) => onNumberChange(e, values)}
                             // onBlur={(e) => onUidBlur(e, values)}
                             onBlur={handleBlur}
                             error={Boolean(
@@ -5755,7 +5763,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                     name="isCorrectPaymentPurposes2"
                                     onChange={handleCheckboxChange('isCorrectPaymentPurposes2')}
                                     checked={values.isCorrectPaymentPurposes2}
-                                  />
+                            />
                               <Typography
                                 align="left"
                                 style={{ marginTop: "10px" }}
@@ -5822,7 +5830,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                               </div>
                               <div className="col-lg-3 col-6 col-md-3 mt-2">
                                 <FormControl className="w-100">
-                                  <Typography> Bank name</Typography>
+                                  <Typography>Bank name</Typography>
                                   <Input
                                     style={{
                                       border: " 1px solid #d9d9d9 ",
