@@ -50,7 +50,17 @@ export default function Term() {
     } else {
     }
   };
-
+  const handleSignout = (e: any) => {
+    //clear call data
+    localStorage.clear();
+    //dispatch actions to clear store
+  
+    //redirect to login
+    window.location.replace("/login")
+    // history(
+    //   "login"
+    // )
+  }
 
 
   return (
@@ -174,8 +184,9 @@ export default function Term() {
                   </Button>
                   <Button
                     type="submit"
-                    onClick={() => {
-                      history("/Certificates");
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSignout(e);
                     }}
                     style={{
                       border: "1px solid #0095dd",

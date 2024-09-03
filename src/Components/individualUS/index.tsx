@@ -115,7 +115,7 @@ export default function IndividualUs() {
   const PaymentMandatry = auth?.configurations?.requestBankAccountInformationAndWhenYesMakeMandatory;
 
 
- 
+
 
   const [payload, setPayload] = useState({
     id: 0,
@@ -189,7 +189,7 @@ export default function IndividualUs() {
     sortCode: "",
     bsb: "",
     capacityId: 1,
-    isCorrectPaymentPurposes: false,
+    isCorrectPaymentPurposes2: false,
     isConfirmed: false,
   });
 
@@ -266,6 +266,7 @@ export default function IndividualUs() {
     bsb: "",
     capacityId: 1,
     isCorrectPaymentPurposes: false,
+    isCorrectPaymentPurposes2: false,
     isConfirmed: false,
     taxpayerIdTypeName: ""
   });
@@ -285,9 +286,9 @@ export default function IndividualUs() {
       values.usTin = values.usTin + "-";
     }
   };
- 
 
- 
+
+
 
   // const validationSchema = Yup.object().shape({
   //   foreignTIN: Yup.string()
@@ -409,9 +410,9 @@ export default function IndividualUs() {
   const getAgentByIdReducer = useSelector(
     (state: any) => state.GetAllAgentByIdReducer.agentDataById
   );
-console.log(getAgentByIdReducer,"getAgentByIdReducer")
+  console.log(getAgentByIdReducer, "getAgentByIdReducer")
 
-  localStorage.setItem("RetroactiveStatement",( getAgentByIdReducer?.showRetroactiveStatementOnlyShowApplyForW8Forms ));
+  localStorage.setItem("RetroactiveStatement", (getAgentByIdReducer?.showRetroactiveStatementOnlyShowApplyForW8Forms));
 
 
   const onUidBlur = (e: any, values: any): any => {
@@ -764,16 +765,16 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
   };
 
 
- 
 
-  const Version =localStorage.getItem("Version");
+
+  const Version = localStorage.getItem("Version");
   useEffect(() => {
     selectedValues.forEach((ele, i) => {
       if (ele === "0") {
         setIncomeErrors("Income field is mandatory")
         return;
       }
-     
+
     })
 
   }, [selectedValues])
@@ -822,8 +823,6 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
 
     return val;
   }
-
-
 
   return (
     <section
@@ -895,11 +894,11 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                     onClick={(e) => {
                       e.preventDefault(); // Prevent the default anchor behavior
                       window.open(
-                      GethelpData[1].fieldValue,
-                      'popupWindow',
-                      `width=${GethelpData[1].width},height=${GethelpData[1].height},top=${GethelpData[1].top},left=${GethelpData[1].left}`
-                    )
-                  }}
+                        GethelpData[1].fieldValue,
+                        'popupWindow',
+                        `width=${GethelpData[1].width},height=${GethelpData[1].height},top=${GethelpData[1].top},left=${GethelpData[1].left}`
+                      )
+                    }}
                   >
                     Help Video
                   </a>
@@ -934,7 +933,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
 
                 }
 
-                // console.log(values, "AHD values")
+
                 const payload = {
                   id: authDetails?.accountHolderId,
                   agentId: authDetails?.agentId,
@@ -1029,7 +1028,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                   sortCode: values?.sortCode,
                   bsb: values?.bsb,
                   capacityId: values?.capacityId,
-                  isCorrectPaymentPurposes: values?.isCorrectPaymentPurposes,
+                  isCorrectPaymentPurposes: values?.isCorrectPaymentPurposes2,
                   isConfirmed: values?.isConfirmed,
                   taxpayerIdTypeName: values?.taxpayerIdTypeName,
                   usTinTypeId: values?.taxpayerIdTypeID,
@@ -1049,6 +1048,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                   localStorage.setItem("agentDetails", JSON.stringify({ ...payload, id: data.accountHolderID }));
                   localStorage.setItem("accountHolderDetails", JSON.stringify({ ...payload, id: data.accountHolderID }));
                   localStorage.setItem("isFormFilling", "true");
+                  localStorage.setItem("Form", "individual");
 
                   redirectFunc();
                 }));
@@ -1056,11 +1056,8 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                 setSubmitting(false);
 
               }
-
               }
-              
               validationSchema={individualSchema(userType, PaymentMandatry, IncomeMandatory)}
-
             >
               {({
                 errors,
@@ -1072,149 +1069,144 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                 isSubmitting,
                 setFieldValue,
                 isValid
-              }) =>  {
-               
+              }) => {
 
-  console.log('Selected Country ID:', values.foreignTINCountryId);
- 
-  const foreignTINCountryIdNumber = Number(values.foreignTINCountryId);
 
-  // Find the selected country
-  const selectedCountry = getCountriesAgentWiseReducer.agentWiseCountriesData
-    ?.find((country: any) => {
-      console.log("Country ID:", country.id, "Type of ID:", typeof country.id);
-      console.log("Foreign TIN Country ID:", foreignTINCountryIdNumber, "Type of Foreign TIN ID:", typeof foreignTINCountryIdNumber);
-      return Number(country.id) === foreignTINCountryIdNumber;
-    });
-  
-  // Extract the foreignTinFormatToolTip field from the selected country, if available
-  const selectedCountryTitle = selectedCountry ? selectedCountry.foreignTinFormatToolTip : "";
-  const selectedCountryMask = selectedCountry ? selectedCountry.foreignTinFormat : "";
-    
-                
+                console.log('Selected isCorrectPaymentPurposes2 ID:', values.isCorrectPaymentPurposes2);
+                console.log('Selected isCorrectPaymentPurposes2 ID:', typeof values.isCorrectPaymentPurposes2);
+
+
+                const foreignTINCountryIdNumber = Number(values.foreignTINCountryId);
+
+                // Find the selected country
+                const selectedCountry = getCountriesAgentWiseReducer.agentWiseCountriesData
+                  ?.find((country: any) => {
+                    console.log("Country ID:", country.id, "Type of ID:", typeof country.id);
+                    console.log("Foreign TIN Country ID:", foreignTINCountryIdNumber, "Type of Foreign TIN ID:", typeof foreignTINCountryIdNumber);
+                    return Number(country.id) === foreignTINCountryIdNumber;
+                  });
+
+                // Extract the foreignTinFormatToolTip field from the selected country, if available
+                const selectedCountryTitle = selectedCountry ? selectedCountry.foreignTinFormatToolTip : "";
+                const selectedCountryMask = selectedCountry ? selectedCountry.foreignTinFormat : "";
+
+
+                const handleCheckboxChange = (name:any) => (event:any) => {
+                  const isChecked = event.target.checked;
+                  if (isChecked) {
+                    values.isCorrectPaymentPurposes2 = true;
+                    console.log(values.isCorrectPaymentPurposes2, "true");
+                  } else {
+                    values.isCorrectPaymentPurposes2 = false;
+                    console.log(values.isCorrectPaymentPurposes2, "false");
+                  }
+                };
+
+
                 return (
-             
-                <Form onSubmit={handleSubmit}>
-                  {/* {values.isUSIndividual == "yes" ?(
+
+                  <Form onSubmit={handleSubmit}>
+                    {/* {values.isUSIndividual == "yes" ?(
                     window.history.pushState({}, "", "/EntityUS")
                   ):window.history.pushState({}, "", "/EntityNONUS")} */}
-                  <>{console.log("values", values)}</>
+                    <>{console.log("values", values)}</>
 
 
-                  {values.permanentResidentialCountryId == 186 ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
-                    <Typography>
-                      A111
-                      <span className="mx-1">
-                        <img src={Infoicon} style={{
-                          color: "#ffc107", height: "22px",
-                          width: "20px",
-                          boxShadow: "inherit",
-                          cursor: "pointer",
-                          marginBottom: "3px"
+                    {values.permanentResidentialCountryId == 186 ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                      <Typography>
+                        A111
+                        <span className="mx-1">
+                          <img src={Infoicon} style={{
+                            color: "#ffc107", height: "22px",
+                            width: "20px",
+                            boxShadow: "inherit",
+                            cursor: "pointer",
+                            marginBottom: "3px"
 
-                        }} />
-                      </span>
-                      <span className="mx-1" style={{ marginTop: "1px" }}> You have selected "other" and entered a country for your permanent residency address not recognised by the system. Your agent may need to obtain further information from you.</span>
-                    </Typography>
+                          }} />
+                        </span>
+                        <span className="mx-1" style={{ marginTop: "1px" }}> You have selected "other" and entered a country for your permanent residency address not recognised by the system. Your agent may need to obtain further information from you.</span>
+                      </Typography>
 
-                  </div>) : ""}
-                  {values.isAddressPostOfficeBox === "yes" ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
-                    <Typography>
-                      A101
-                      <span className="mx-1">
-                        <img src={Infoicon} style={{
-                          color: "#ffc107", height: "22px",
-                          width: "20px",
-                          boxShadow: "inherit",
-                          cursor: "pointer",
-                          marginBottom: "3px"
+                    </div>) : ""}
+                    {values.isAddressPostOfficeBox === "yes" ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                      <Typography>
+                        A101
+                        <span className="mx-1">
+                          <img src={Infoicon} style={{
+                            color: "#ffc107", height: "22px",
+                            width: "20px",
+                            boxShadow: "inherit",
+                            cursor: "pointer",
+                            marginBottom: "3px"
 
-                        }} />
+                          }} />
 
-                      </span>
-                      <span className="mx-1" style={{ marginTop: "1px" }}> You have indicated that your permanent residency address is a PO Box. This may not be accepted as a valid address. Your agent may need to obtain further information from you.</span>
-                    </Typography>
+                        </span>
+                        <span className="mx-1" style={{ marginTop: "1px" }}> You have indicated that your permanent residency address is a PO Box. This may not be accepted as a valid address. Your agent may need to obtain further information from you.</span>
+                      </Typography>
 
-                  </div>) : ""}
+                    </div>) : ""}
 
-                  {values.isCareOfAddress === "yes" ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
-                    <Typography>
-                      A102
+                    {values.isCareOfAddress === "yes" ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                      <Typography>
+                        A102
 
-                      <span className="mx-1">
-                        <img src={Infoicon} style={{
-                          color: "#ffc107", height: "22px",
-                          width: "20px",
-                          boxShadow: "inherit",
-
-
-
-                          cursor: "pointer",
-                          marginBottom: "3px"
-
-                        }} />
-
-                      </span>
-                      <span className="mx-1" style={{ marginTop: "1px" }}> You have indicated that your permanent residency address may be located at a Care of Address. This may not be accepted as a valid address. Your agent may need to obtain further information from you.</span>
-                    </Typography>
+                        <span className="mx-1">
+                          <img src={Infoicon} style={{
+                            color: "#ffc107", height: "22px",
+                            width: "20px",
+                            boxShadow: "inherit",
 
 
 
+                            cursor: "pointer",
+                            marginBottom: "3px"
+
+                          }} />
+
+                        </span>
+                        <span className="mx-1" style={{ marginTop: "1px" }}> You have indicated that your permanent residency address may be located at a Care of Address. This may not be accepted as a valid address. Your agent may need to obtain further information from you.</span>
+                      </Typography>
 
 
 
 
 
-                  </div>) : ""}
 
-                  {values.isUSIndividual === "yes" && values.permanentResidentialCountryId && values.permanentResidentialCountryId != 258 ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
-                    <Typography>
-                      A103
-                      <span className="mx-1">
-                        <img src={Infoicon} style={{
-                          color: "#ffc107", height: "22px",
-                          width: "20px",
-                          boxShadow: "inherit",
-                          cursor: "pointer",
-                          marginBottom: "3px"
-                        }} />
 
-                      </span>
-                      <span style={{ fontWeight: "Bold" }}>
-                        Potential Address Mismatch
-                      </span>
-                    </Typography>
 
-                    <Typography className="mt-3">
-                      You have identified that you are submitting a form on behalf of a U.S. Individual or a US Entity and indicated that the Permanent Residential Address used for U.S tax purposes is not in the U.S.
-                    </Typography>
-                    <Typography className="mt-2">
-                      You will be asked to supply additional information later in the process and your agent may need to contact you for further information.
+                    </div>) : ""}
 
-                    </Typography>
+                    {values.isUSIndividual === "yes" && values.permanentResidentialCountryId && values.permanentResidentialCountryId != 258 ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                      <Typography>
+                        A103
+                        <span className="mx-1">
+                          <img src={Infoicon} style={{
+                            color: "#ffc107", height: "22px",
+                            width: "20px",
+                            boxShadow: "inherit",
+                            cursor: "pointer",
+                            marginBottom: "3px"
+                          }} />
 
-                  </div>) : ""}
+                        </span>
+                        <span style={{ fontWeight: "Bold" }}>
+                          Potential Address Mismatch
+                        </span>
+                      </Typography>
 
-                  {values.isUSIndividual === "no" && values.permanentResidentialCountryId && values.permanentResidentialCountryId == 258 ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
-                    <Typography>
-                      A113
-                      <span className="mx-1">
-                        <img src={Infoicon} style={{
-                          color: "#ffc107", height: "22px",
-                          width: "20px",
-                          boxShadow: "inherit",
-                          cursor: "pointer",
-                          marginBottom: "3px"
+                      <Typography className="mt-3">
+                        You have identified that you are submitting a form on behalf of a U.S. Individual or a US Entity and indicated that the Permanent Residential Address used for U.S tax purposes is not in the U.S.
+                      </Typography>
+                      <Typography className="mt-2">
+                        You will be asked to supply additional information later in the process and your agent may need to contact you for further information.
 
-                        }} />
+                      </Typography>
 
-                      </span>
-                      <span className="mx-1" style={{ marginTop: "1px" }}>You are submitting a form on behalf of a Non U.S Individual or a Non U.S Entity and indicated that the Permanent Residential Address used for U.S tax purposes is in the United States.</span>
-                    </Typography>
+                    </div>) : ""}
 
-                  </div>) : ""}
-                  {values.isUSIndividual === "no" && values.permanentResidentialCountryId && values.permanentResidentialCountryId === 256 ? (
-                    <div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                    {values.isUSIndividual === "no" && values.permanentResidentialCountryId && values.permanentResidentialCountryId == 258 ? (<div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                       <Typography>
                         A113
                         <span className="mx-1">
@@ -1228,278 +1220,297 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                           }} />
 
                         </span>
-                        <span className="mx-1" style={{ marginTop: "1px" }}>You have identified that you are submitting a form on behalf of a NON U.S. Individual or a NON US Entity and selected a form type W-8. You have indicated that the Permanent Residential Address for U.S tax purposes IS IN the United States. You will be asked to supply additional information later in the process and your agent may need to contact you for further information.</span>
+                        <span className="mx-1" style={{ marginTop: "1px" }}>You are submitting a form on behalf of a Non U.S Individual or a Non U.S Entity and indicated that the Permanent Residential Address used for U.S tax purposes is in the United States.</span>
                       </Typography>
 
-                    </div>
-                  ) : ""}
+                    </div>) : ""}
+                    {values.isUSIndividual === "no" && values.permanentResidentialCountryId && values.permanentResidentialCountryId === 256 ? (
+                      <div className="my-4 mx-3" style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
+                        <Typography>
+                          A113
+                          <span className="mx-1">
+                            <img src={Infoicon} style={{
+                              color: "#ffc107", height: "22px",
+                              width: "20px",
+                              boxShadow: "inherit",
+                              cursor: "pointer",
+                              marginBottom: "3px"
 
-                  {toolInfo === "ForeignTin" ? (
-                    <div className="mt-5">
-                      <Paper
-                        style={{ backgroundColor: "#d1ecf1", padding: "15px" }}
-                      >
-                        <div
-                          className="d-flex"
-                          style={{ justifyContent: "space-between" }}
-                        >
-                         
-                          <Typography style={{ color: "#0c5460" }}>
-                            {selectedCountryTitle}
-                           
-                          </Typography>
+                            }} />
 
+                          </span>
+                          <span className="mx-1" style={{ marginTop: "1px" }}>You have identified that you are submitting a form on behalf of a NON U.S. Individual or a NON US Entity and selected a form type W-8. You have indicated that the Permanent Residential Address for U.S tax purposes IS IN the United States. You will be asked to supply additional information later in the process and your agent may need to contact you for further information.</span>
+                        </Typography>
 
-                          <Typography>
-                            <CloseIcon
-                              style={{
-                                color: "#0c5460",
-                                cursor: "pointer",
-                                fontSize: "medium",
-                              }}
-                              onClick={() => {
-                                setToolInfo("");
-                              }}
-                            />
-                          </Typography>
-                        </div>
-                      </Paper>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-
-                  {toolInfo === "identity" ? (
-                    <div className="mt-5">
-                      <Paper
-                        style={{ backgroundColor: "#d1ecf1", padding: "15px" }}
-                      >
-                        <div
-                          className="d-flex"
-                          style={{ justifyContent: "space-between" }}
-                        >
-                          <Typography style={{ color: "#0c5460" }}>
-                            Instructor Identifier Format is ?********** 9-
-                            Numeric value only A- Alphabetic character only *-
-                            Alphanumeric character only ?- Characters optional
-                            after this
-                          </Typography>
-
-                          <Typography>
-                            <CloseIcon
-                              style={{
-                                color: "#0c5460",
-                                cursor: "pointer",
-                                fontSize: "medium",
-                              }}
-                              onClick={() => {
-                                setToolInfo("");
-                              }}
-                            />
-                          </Typography>
-                        </div>
-                      </Paper>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-
-                  <>{console.log(values, "hbd", errors, "errors")}</>
-                  <CardHeader
-                    className="flex-row-reverse"
-                    title={
-                      <div
-                        style={{
-                          marginLeft: "13px",
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "left",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => handleOpen("basics")}
-                        >
-                          Basic Details
-                          <Tooltip
-                            style={{ backgroundColor: "black", color: "white" }}
-                            title={
-                              <>
-                                <Typography color="inherit">
-                                  Basic details - individual
-                                </Typography>
-                                <a
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setToolInfo("basic");
-                                  }}
-
-                                >
-                                  <Typography
-                                    style={{
-                                      cursor: "pointer",
-                                      textDecorationLine: "underline",
-                                    }}
-                                    align="center"
-                                  >
-                                    {" "}
-                                    View More...
-                                  </Typography>
-                                </a>
-                              </>
-                            }
-                          >
-                            <Info
-                              onClick={(e) => {
-                                e.stopPropagation();
-
-                              }}
-
-                              style={{
-
-                                color: "#ffc107",
-                                fontSize: "15px",
-                                marginLeft: "5px",
-                                cursor: "pointer",
-                              }}
-                            />
-                          </Tooltip>
-                        </div>
-                        <p className="error mb-0">
-                          {errors?.isUSIndividual && touched?.isUSIndividual ||
-                            errors?.firstName && touched?.firstName ||
-                            errors?.lastName && touched?.lastName ||
-                            errors?.countryOfCitizenshipId && touched?.countryOfCitizenshipId ||
-                            errors?.dob && touched?.dob ||
-                            errors?.uniqueIdentifier && touched?.uniqueIdentifier ||
-                            errors?.countryOfBirthId && touched?.countryOfBirthId ||
-                            errors?.cityOfBirth && touched?.cityOfBirth
-                            ? "Mandatory Information Required"
-                            : ""}
-                        </p>
                       </div>
-                    }
-                    action={
-                      <IconButton
-                        onClick={() => handleOpen("basics")}
-                        aria-label="expand"
-                        size="small"
-                        style={{ marginTop: "3px" }}
-                      >
-                        {open === "basics" ? (
-                          <RemoveCircleOutlineOutlined />
-                        ) : (
-                          <ControlPointOutlined />
-                        )}
-                      </IconButton>
-                    }
-                  ></CardHeader>
-                  {toolInfo === "basic" ? (
-                    <div>
-                      <Paper
-                        style={{ backgroundColor: "#dedcb1", padding: "15px" }}
-                      >
-                        <Typography>
-                          Basic details - are you a U.S. Individual?
-                        </Typography>
-                        <Typography style={{ marginTop: "10px" }}>
-                          Select 'Yes' for:
-                        </Typography>
-                        <Typography>
-                          An individual who was born in the U.S., Puerto Rico,
-                          Guam, or the U.S. Virgin Islands, or who retains U.S.
-                          Green Card entitlement, or who has a parent who is a
-                          U.S. citizen.
-                        </Typography>
-                        <Typography style={{ marginTop: "10px" }}>
-                          Select 'No' for: An individual who was not born in the
-                          U.S., Puerto Rico, Guam, or the U.S. Virgin Islands,
-                          who does not retain U.S. Green Card entitlement, and
-                          whose parents are not considered U.S. persons
-                        </Typography>
-                        <Typography style={{ marginTop: "10px" }}>
-                          Ref: EH165
-                        </Typography>
-                        <Link
+                    ) : ""}
 
-                          underline="none"
-                          style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
-                          onClick={() => {
-                            setToolInfo("");
-                          }}
+                    {toolInfo === "ForeignTin" ? (
+                      <div className="mt-5">
+                        <Paper
+                          style={{ backgroundColor: "#d1ecf1", padding: "15px" }}
                         >
-                          --Show Less--
-                        </Link>
-                      </Paper>
-                    </div>
-                  ) : (
-                    ""
-                  )}
+                          <div
+                            className="d-flex"
+                            style={{ justifyContent: "space-between" }}
+                          >
 
-                  {userType === "DC" || userType === "SC" ? (<>
+                            <Typography style={{ color: "#0c5460" }}>
+                              {selectedCountryTitle}
 
-                    <Collapse
-                      className="px-5 mx-2"
-                      in={open === "basics"}
-                      timeout="auto"
-                      unmountOnExit
-                    >
-                      <FormControl className="w-100">
-                        <div className="row">
-                          <div>
-                            <Typography
-                              align="left"
-                              style={{ marginTop: "20px" }}
-                            >
-                              Are you a U.S. Individual?
-                              <span style={{ color: "red" }}>*</span>
                             </Typography>
 
-                            <div className="d-flex">
-                              <FormControl error={Boolean(errors.isUSIndividual)}>
-                                <RadioGroup
-                                  id="isUSIndividual"
-                                  row
-                                  aria-labelledby="demo-row-radio-buttons-group-label"
-                                  value={values.isUSIndividual}
-                                  onChange={(e) => {
-                                    console.log(e.target.value, "event")
-                                    handleChange(e);
-                                    // if (e.target.value == "yes") {
-                                    //   window.history.pushState({}, "", "/IndividualUs")
-                                    // } else {
-                                    //   window.history.pushState({}, "", "/IndividualNonUS")
-                                    // }
 
-                                    // onChangeUsInit(values);
+                            <Typography>
+                              <CloseIcon
+                                style={{
+                                  color: "#0c5460",
+                                  cursor: "pointer",
+                                  fontSize: "medium",
+                                }}
+                                onClick={() => {
+                                  setToolInfo("");
+                                }}
+                              />
+                            </Typography>
+                          </div>
+                        </Paper>
+                      </div>
+                    ) : (
+                      ""
+                    )}
 
-                                  }}
-                                >
-                                  <FormControlLabel
-                                    control={<Radio />}
-                                    value="yes"
-                                    name="isUSIndividual"
-                                    label="Yes"
-                                  />
-                                  <FormControlLabel
-                                    control={<Radio />}
-                                    value="no"
-                                    name="isUSIndividual"
-                                    label="No"
-                                  />
-                                </RadioGroup>
-                                {errors.isUSIndividual ? (
-                                  <div>
-                                    <Typography color="error">
-                                      {errors.isUSIndividual}
+                    {toolInfo === "identity" ? (
+                      <div className="mt-5">
+                        <Paper
+                          style={{ backgroundColor: "#d1ecf1", padding: "15px" }}
+                        >
+                          <div
+                            className="d-flex"
+                            style={{ justifyContent: "space-between" }}
+                          >
+                            <Typography style={{ color: "#0c5460" }}>
+                              Instructor Identifier Format is ?********** 9-
+                              Numeric value only A- Alphabetic character only *-
+                              Alphanumeric character only ?- Characters optional
+                              after this
+                            </Typography>
+
+                            <Typography>
+                              <CloseIcon
+                                style={{
+                                  color: "#0c5460",
+                                  cursor: "pointer",
+                                  fontSize: "medium",
+                                }}
+                                onClick={() => {
+                                  setToolInfo("");
+                                }}
+                              />
+                            </Typography>
+                          </div>
+                        </Paper>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+
+                    <>{console.log(values, "hbd", errors, "errors")}</>
+                    <CardHeader
+                      className="flex-row-reverse"
+                      title={
+                        <div
+                          style={{
+                            marginLeft: "13px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "left",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => handleOpen("basics")}
+                          >
+                            Basic Details
+                            <Tooltip
+                              style={{ backgroundColor: "black", color: "white" }}
+                              title={
+                                <>
+                                  <Typography color="inherit">
+                                    Basic details - individual
+                                  </Typography>
+                                  <a
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setToolInfo("basic");
+                                    }}
+
+                                  >
+                                    <Typography
+                                      style={{
+                                        cursor: "pointer",
+                                        textDecorationLine: "underline",
+                                      }}
+                                      align="center"
+                                    >
+                                      {" "}
+                                      View More...
                                     </Typography>
-                                  </div>
-                                ) : (
-                                  ""
-                                )}
-                              </FormControl>
-                              {/* <Typography className="my-auto">Yes</Typography>
+                                  </a>
+                                </>
+                              }
+                            >
+                              <Info
+                                onClick={(e) => {
+                                  e.stopPropagation();
+
+                                }}
+
+                                style={{
+
+                                  color: "#ffc107",
+                                  fontSize: "15px",
+                                  marginLeft: "5px",
+                                  cursor: "pointer",
+                                }}
+                              />
+                            </Tooltip>
+                          </div>
+                          <p className="error mb-0">
+                            {errors?.isUSIndividual && touched?.isUSIndividual ||
+                              errors?.firstName && touched?.firstName ||
+                              errors?.lastName && touched?.lastName ||
+                              errors?.countryOfCitizenshipId && touched?.countryOfCitizenshipId ||
+                              errors?.dob && touched?.dob ||
+                              errors?.uniqueIdentifier && touched?.uniqueIdentifier ||
+                              errors?.countryOfBirthId && touched?.countryOfBirthId ||
+                              errors?.cityOfBirth && touched?.cityOfBirth
+                              ? "Mandatory Information Required"
+                              : ""}
+                          </p>
+                        </div>
+                      }
+                      action={
+                        <IconButton
+                          onClick={() => handleOpen("basics")}
+                          aria-label="expand"
+                          size="small"
+                          style={{ marginTop: "3px" }}
+                        >
+                          {open === "basics" ? (
+                            <RemoveCircleOutlineOutlined />
+                          ) : (
+                            <ControlPointOutlined />
+                          )}
+                        </IconButton>
+                      }
+                    ></CardHeader>
+                    {toolInfo === "basic" ? (
+                      <div>
+                        <Paper
+                          style={{ backgroundColor: "#dedcb1", padding: "15px" }}
+                        >
+                          <Typography>
+                            Basic details - are you a U.S. Individual?
+                          </Typography>
+                          <Typography style={{ marginTop: "10px" }}>
+                            Select 'Yes' for:
+                          </Typography>
+                          <Typography>
+                            An individual who was born in the U.S., Puerto Rico,
+                            Guam, or the U.S. Virgin Islands, or who retains U.S.
+                            Green Card entitlement, or who has a parent who is a
+                            U.S. citizen.
+                          </Typography>
+                          <Typography style={{ marginTop: "10px" }}>
+                            Select 'No' for: An individual who was not born in the
+                            U.S., Puerto Rico, Guam, or the U.S. Virgin Islands,
+                            who does not retain U.S. Green Card entitlement, and
+                            whose parents are not considered U.S. persons
+                          </Typography>
+                          <Typography style={{ marginTop: "10px" }}>
+                            Ref: EH165
+                          </Typography>
+                          <Link
+
+                            underline="none"
+                            style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
+                            onClick={() => {
+                              setToolInfo("");
+                            }}
+                          >
+                            --Show Less--
+                          </Link>
+                        </Paper>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+
+                    {userType === "DC" || userType === "SC" ? (<>
+
+                      <Collapse
+                        className="px-5 mx-2"
+                        in={open === "basics"}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        <FormControl className="w-100">
+                          <div className="row">
+                            <div>
+                              <Typography
+                                align="left"
+                                style={{ marginTop: "20px" }}
+                              >
+                                Are you a U.S. Individual?
+                                <span style={{ color: "red" }}>*</span>
+                              </Typography>
+
+                              <div className="d-flex">
+                                <FormControl error={Boolean(errors.isUSIndividual)}>
+                                  <RadioGroup
+                                    id="isUSIndividual"
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    value={values.isUSIndividual}
+                                    onChange={(e) => {
+                                      console.log(e.target.value, "event")
+                                      handleChange(e);
+                                      // if (e.target.value == "yes") {
+                                      //   window.history.pushState({}, "", "/IndividualUs")
+                                      // } else {
+                                      //   window.history.pushState({}, "", "/IndividualNonUS")
+                                      // }
+
+                                      // onChangeUsInit(values);
+
+                                    }}
+                                  >
+                                    <FormControlLabel
+                                      control={<Radio />}
+                                      value="yes"
+                                      name="isUSIndividual"
+                                      label="Yes"
+                                    />
+                                    <FormControlLabel
+                                      control={<Radio />}
+                                      value="no"
+                                      name="isUSIndividual"
+                                      label="No"
+                                    />
+                                  </RadioGroup>
+                                  {errors.isUSIndividual ? (
+                                    <div>
+                                      <Typography color="error">
+                                        {errors.isUSIndividual}
+                                      </Typography>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+                                </FormControl>
+                                {/* <Typography className="my-auto">Yes</Typography>
                                               <Radio
                                                 checked={values.isUSEntity}
                                                 onChange={handleChange}
@@ -1516,144 +1527,205 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                                 name="isUSEntity"
                                                 inputProps={{ "aria-label": "No" }}
                                               /> */}
+                              </div>
+                            </div>
+
+                            <div className="col-lg-3 col-12 col-md-6">
+                              <Typography className="d-flex w-100">
+                                Unique Identifier
+                                <span style={{ color: "red" }}>*</span>
+                                <Tooltip
+                                  style={{
+                                    backgroundColor: "black",
+                                    color: "white",
+                                  }}
+                                  title={
+                                    <>
+                                      <a
+
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setToolInfo("identity");
+                                        }}
+                                      ></a>
+                                    </>
+                                  }
+                                >
+                                  <Info
+                                    onClick={() => setToolInfo("identity")}
+                                    style={{
+                                      color: "#ffc107",
+                                      fontSize: "15px",
+                                      marginLeft: "5px",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                </Tooltip>
+                              </Typography>
+                              <Input
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  height: " 36px",
+                                  lineHeight: "36px ",
+                                  background: "#fff ",
+                                  fontSize: "13px",
+                                  color: " #000 ",
+                                  fontStyle: "normal",
+                                  borderRadius: "1px",
+                                  padding: " 0 10px ",
+                                }}
+                                className="w-100 input"
+                                name="uniqueIdentifier"
+                                id="outlined"
+                                placeholder="Enter Instructor Identifier"
+                                onChange={handleChange}
+                                onKeyUp={(e: any) => onNumberChange(e, values)}
+                                // onBlur={(e: any) => onUidBlur(e, values)}
+                                onBlur={handleBlur}
+                                error={Boolean(errors.uniqueIdentifier && touched.uniqueIdentifier)}
+                                value={values.uniqueIdentifier}
+                              // inputProps={{maxLength :agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat.length}}
+                              />
+                              {errors.uniqueIdentifier && touched.uniqueIdentifier ? <p className="error">{errors.uniqueIdentifier}</p> : <></>}
                             </div>
                           </div>
-
-                          <div className="col-lg-3 col-12 col-md-6">
-                            <Typography className="d-flex w-100">
-                              Unique Identifier
-                              <span style={{ color: "red" }}>*</span>
-                              <Tooltip
-                                style={{
-                                  backgroundColor: "black",
-                                  color: "white",
-                                }}
-                                title={
-                                  <>
-                                    <a
-
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setToolInfo("identity");
-                                      }}
-                                    ></a>
-                                  </>
-                                }
-                              >
-                                <Info
-                                  onClick={() => setToolInfo("identity")}
-                                  style={{
-                                    color: "#ffc107",
-                                    fontSize: "15px",
-                                    marginLeft: "5px",
-                                    cursor: "pointer",
-                                  }}
-                                />
-                              </Tooltip>
-                            </Typography>
-                            <Input
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                height: " 36px",
-                                lineHeight: "36px ",
-                                background: "#fff ",
-                                fontSize: "13px",
-                                color: " #000 ",
-                                fontStyle: "normal",
-                                borderRadius: "1px",
-                                padding: " 0 10px ",
-                              }}
-                              className="w-100 input"
-                              name="uniqueIdentifier"
-                              id="outlined"
-                              placeholder="Enter Instructor Identifier"
-                              onChange={handleChange}
-                              onKeyUp={(e: any) => onNumberChange(e, values)}
-                              // onBlur={(e: any) => onUidBlur(e, values)}
-                              onBlur={handleBlur}
-                              error={Boolean(errors.uniqueIdentifier && touched.uniqueIdentifier)}
-                              value={values.uniqueIdentifier}
-                            // inputProps={{maxLength :agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat.length}}
-                            />
-                            {errors.uniqueIdentifier && touched.uniqueIdentifier ? <p className="error">{errors.uniqueIdentifier}</p> : <></>}
-                          </div>
-                        </div>
-                      </FormControl>
+                        </FormControl>
 
 
-                      {values.isUSIndividual === "no" ? (
-                        <div className="row">
-                          <div className="col-lg-3 col-6 col-md-3 mt-2">
-                            <FormControl className="w-100">
-                              <Typography align="left">
-                                First Name<span style={{ color: "red" }}>*</span>
-                              </Typography>
-                              <Input
-                                style={{
-                                  border: " 1px solid #d9d9d9 ",
-                                  height: " 36px",
-                                  lineHeight: "36px ",
-                                  background: "#fff ",
-                                  fontSize: "13px",
-                                  color: " #000 ",
-                                  fontStyle: "normal",
-                                  borderRadius: "1px",
-                                  padding: " 0 10px ",
-                                }}
-                                id="outlined"
-                                name="firstName"
-                                placeholder="Enter First Name"
-                                onBlur={handleBlur}
-                                error={Boolean(errors.firstName && touched.firstName)}
-                                onChange={handleChange}
-
-                                value={values.firstName}
-
-                              />
-                              {errors.firstName && touched.firstName ? <p className="error">{errors.firstName}</p> : <></>}
-
-                            </FormControl>
-                          </div>
-                          <div className="col-lg-3 col-6 col-md-3 mt-2">
-                            <FormControl className="w-100">
-                              <Typography align="left">
-                                Last Name<span style={{ color: "red" }}>*</span>
-                              </Typography>
-                              <Input
-                                style={{
-                                  border: " 1px solid #d9d9d9 ",
-                                  height: " 36px",
-                                  lineHeight: "36px ",
-                                  background: "#fff ",
-                                  fontSize: "13px",
-                                  color: " #000 ",
-                                  fontStyle: "normal",
-                                  borderRadius: "1px",
-                                  padding: " 0 10px ",
-                                }}
-                                id="outlined"
-                                name="lastName"
-                                placeholder="Enter Last Name"
-                                // onChange={handleChange}
-                                onChange={(e) => {
-                                  handleChange(e);
-                                  setFieldValue('accountHolderName', `${values.firstName} ${e.target.value} `);
-                                }}
-                                onBlur={handleBlur}
-                                error={Boolean(
-                                  touched.lastName && errors.lastName
-                                )}
-                                value={values.lastName}
-                              />
-
-                              {errors.lastName && touched.lastName ? <p className="error">{errors.lastName}</p> : <></>}
-                            </FormControl>
-                          </div>
-                          {userType === "DC" && (<>
+                        {values.isUSIndividual === "no" ? (
+                          <div className="row">
                             <div className="col-lg-3 col-6 col-md-3 mt-2">
                               <FormControl className="w-100">
                                 <Typography align="left">
-                                  Country Of Citizenship
+                                  First Name<span style={{ color: "red" }}>*</span>
+                                </Typography>
+                                <Input
+                                  style={{
+                                    border: " 1px solid #d9d9d9 ",
+                                    height: " 36px",
+                                    lineHeight: "36px ",
+                                    background: "#fff ",
+                                    fontSize: "13px",
+                                    color: " #000 ",
+                                    fontStyle: "normal",
+                                    borderRadius: "1px",
+                                    padding: " 0 10px ",
+                                  }}
+                                  id="outlined"
+                                  name="firstName"
+                                  placeholder="Enter First Name"
+                                  onBlur={handleBlur}
+                                  error={Boolean(errors.firstName && touched.firstName)}
+                                  onChange={handleChange}
+
+                                  value={values.firstName}
+
+                                />
+                                {errors.firstName && touched.firstName ? <p className="error">{errors.firstName}</p> : <></>}
+
+                              </FormControl>
+                            </div>
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
+                              <FormControl className="w-100">
+                                <Typography align="left">
+                                  Last Name<span style={{ color: "red" }}>*</span>
+                                </Typography>
+                                <Input
+                                  style={{
+                                    border: " 1px solid #d9d9d9 ",
+                                    height: " 36px",
+                                    lineHeight: "36px ",
+                                    background: "#fff ",
+                                    fontSize: "13px",
+                                    color: " #000 ",
+                                    fontStyle: "normal",
+                                    borderRadius: "1px",
+                                    padding: " 0 10px ",
+                                  }}
+                                  id="outlined"
+                                  name="lastName"
+                                  placeholder="Enter Last Name"
+                                  // onChange={handleChange}
+                                  onChange={(e) => {
+                                    handleChange(e);
+                                    setFieldValue('accountHolderName', `${values.firstName} ${e.target.value} `);
+                                  }}
+                                  onBlur={handleBlur}
+                                  error={Boolean(
+                                    touched.lastName && errors.lastName
+                                  )}
+                                  value={values.lastName}
+                                />
+
+                                {errors.lastName && touched.lastName ? <p className="error">{errors.lastName}</p> : <></>}
+                              </FormControl>
+                            </div>
+                            {userType === "DC" && (<>
+                              <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                <FormControl className="w-100">
+                                  <Typography align="left">
+                                    Country Of Citizenship
+                                    <span style={{ color: "red" }}>*</span>
+                                  </Typography>
+
+                                  <select
+                                    style={{
+                                      padding: " 0 10px",
+                                      color: "#121112",
+                                      fontStyle: "italic",
+                                      height: "36px",
+                                    }}
+                                    name="countryOfCitizenshipId"
+                                    id="countryOfCitizenshipId"
+                                    onChange={(e) => {
+                                      handleChange(e);
+                                    }}
+                                    onBlur={handleBlur}
+                                    // error={Boolean(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
+                                    value={values.countryOfCitizenshipId}
+                                  >
+                                    <option value="">---select---</option>
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                      ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                      .map((ele: any) => (
+                                        <option key={ele.id} value={ele.id}>
+                                          {ele.name}
+                                        </option>
+                                      ))}
+                                    <option value={500}>---</option>
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                      ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                      .map((ele: any) => (
+                                        <option key={ele.id} value={ele.id}>
+                                          {ele.name}
+                                        </option>
+                                      ))}
+                                  </select>
+                                  {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ? <p className="error">{errors.countryOfCitizenshipId}</p> : <></>}
+
+                                </FormControl>
+                              </div>
+                            </>)}
+
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
+                              <FormControl className="w-100">
+                                <Typography align="left">
+                                  Date of Birth
+                                  <span style={{ color: "red" }}>*</span>
+                                </Typography>
+                                <Field
+                                  name="dob"
+                                  component={CustomDatePicker}
+                                  onBlur={handleBlur}
+                                />
+                                {errors.dob && touched.dob ? (<p className="error">{errors.dob}</p>) : ""}
+
+                              </FormControl>
+                            </div>
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
+                              <FormControl className="w-100">
+                                <Typography align="left">
+                                  Country Of Birth
                                   <span style={{ color: "red" }}>*</span>
                                 </Typography>
 
@@ -1664,14 +1736,14 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                     fontStyle: "italic",
                                     height: "36px",
                                   }}
-                                  name="countryOfCitizenshipId"
-                                  id="countryOfCitizenshipId"
+                                  name="countryOfBirthId"
+                                  id="countryOfBirthId"
                                   onChange={(e) => {
                                     handleChange(e);
                                   }}
                                   onBlur={handleBlur}
-                                  // error={Boolean(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
-                                  value={values.countryOfCitizenshipId}
+                                  // error={Number(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
+                                  value={values.countryOfBirthId}
                                 >
                                   <option value="">---select---</option>
                                   {getCountriesAgentWiseReducer.agentWiseCountriesData
@@ -1690,69 +1762,8 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                       </option>
                                     ))}
                                 </select>
-                                {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ? <p className="error">{errors.countryOfCitizenshipId}</p> : <></>}
 
-                              </FormControl>
-                            </div>
-                          </>)}
-
-                          <div className="col-lg-3 col-6 col-md-3 mt-2">
-                            <FormControl className="w-100">
-                              <Typography align="left">
-                                Date of Birth
-                                <span style={{ color: "red" }}>*</span>
-                              </Typography>
-                              <Field
-                                name="dob"
-                                component={CustomDatePicker}
-                                onBlur={handleBlur}
-                              />
-                              {errors.dob && touched.dob ? (<p className="error">{errors.dob}</p>) : ""}
-
-                            </FormControl>
-                          </div>
-                          <div className="col-lg-3 col-6 col-md-3 mt-2">
-                            <FormControl className="w-100">
-                              <Typography align="left">
-                                Country Of Birth
-                                <span style={{ color: "red" }}>*</span>
-                              </Typography>
-
-                              <select
-                                style={{
-                                  padding: " 0 10px",
-                                  color: "#121112",
-                                  fontStyle: "italic",
-                                  height: "36px",
-                                }}
-                                name="countryOfBirthId"
-                                id="countryOfBirthId"
-                                onChange={(e) => {
-                                  handleChange(e);
-                                }}
-                                onBlur={handleBlur}
-                                // error={Number(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
-                                value={values.countryOfBirthId}
-                              >
-                                <option value="">---select---</option>
-                                {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                  ?.filter((ele: any) => ele.isImportantCountry === "Yes")
-                                  .map((ele: any) => (
-                                    <option key={ele.id} value={ele.id}>
-                                      {ele.name}
-                                    </option>
-                                  ))}
-                                <option value={500}>---</option>
-                                {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                  ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
-                                  .map((ele: any) => (
-                                    <option key={ele.id} value={ele.id}>
-                                      {ele.name}
-                                    </option>
-                                  ))}
-                              </select>
-
-                              {/* <select
+                                {/* <select
                                       style={{
                                           padding: " 0 10px",
                                           color: "#7e7e7e",
@@ -1780,17 +1791,335 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                           )
                                       )}
                                   </select> */}
-                              {/* {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ?<p className="error">{errors.countryOfCitizenshipId}</p>:<></>} */}
-                              {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
-                              {errors?.countryOfBirthId && touched?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
-                                <p className="error">{errors?.countryOfBirthId}</p>
-                              )}
-                            </FormControl>
+                                {/* {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ?<p className="error">{errors.countryOfCitizenshipId}</p>:<></>} */}
+                                {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
+                                {errors?.countryOfBirthId && touched?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
+                                  <p className="error">{errors?.countryOfBirthId}</p>
+                                )}
+                              </FormControl>
+                            </div>
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
+                              <FormControl className="w-100">
+                                <Typography align="left">
+                                  Town/City of Birth<span style={{ color: "red" }}>*</span>
+                                </Typography>
+                                <Input
+                                  style={{
+                                    border: " 1px solid #d9d9d9 ",
+                                    height: " 36px",
+                                    lineHeight: "36px ",
+                                    background: "#fff ",
+                                    fontSize: "13px",
+                                    color: " #000 ",
+                                    fontStyle: "normal",
+                                    borderRadius: "1px",
+                                    padding: " 0 10px ",
+                                  }}
+                                  id="outlined"
+                                  name="cityOfBirth"
+                                  placeholder="Enter Town/City of Birth"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  error={Boolean(touched?.cityOfBirth && errors?.cityOfBirth)}
+
+                                  value={values?.cityOfBirth}
+
+                                />
+
+                                {errors?.cityOfBirth && touched?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
+                                  <p className="error">{errors?.cityOfBirth}</p>
+                                )}
+                              </FormControl>
+                            </div>
                           </div>
-                          <div className="col-lg-3 col-6 col-md-3 mt-2">
-                            <FormControl className="w-100">
-                              <Typography align="left">
-                                Town/City of Birth<span style={{ color: "red" }}>*</span>
+                        ) : (
+                          <>
+
+                            <div className="row">
+                              <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                <FormControl className="w-100">
+                                  <Typography align="left">
+                                    First Name<span style={{ color: "red" }}>*</span>
+                                  </Typography>
+                                  <Input
+                                    style={{
+                                      border: " 1px solid #d9d9d9 ",
+                                      height: " 36px",
+                                      lineHeight: "36px ",
+                                      background: "#fff ",
+                                      fontSize: "13px",
+                                      color: " #000 ",
+                                      fontStyle: "normal",
+                                      borderRadius: "1px",
+                                      padding: " 0 10px ",
+                                    }}
+                                    id="outlined"
+                                    name="firstName"
+                                    placeholder="Enter First Name"
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.firstName && touched.firstName)}
+                                    onChange={handleChange}
+                                    value={values.firstName}
+
+                                  />
+                                  {errors.firstName && touched.firstName ? <p className="error">{errors.firstName}</p> : <></>}
+
+                                </FormControl>
+                              </div>
+                              <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                <FormControl className="w-100">
+                                  <Typography align="left">
+                                    Last Name<span style={{ color: "red" }}>*</span>
+                                  </Typography>
+                                  <Input
+                                    style={{
+                                      border: " 1px solid #d9d9d9 ",
+                                      height: " 36px",
+                                      lineHeight: "36px ",
+                                      background: "#fff ",
+                                      fontSize: "13px",
+                                      color: " #000 ",
+                                      fontStyle: "normal",
+                                      borderRadius: "1px",
+                                      padding: " 0 10px ",
+                                    }}
+                                    id="outlined"
+                                    name="lastName"
+                                    placeholder="Enter Last Name"
+                                    onChange={(e) => {
+                                      handleChange(e);
+                                      setFieldValue('accountHolderName', `${values.firstName} ${e.target.value} `);
+                                    }}
+                                    onBlur={handleBlur}
+                                    error={Boolean(
+                                      touched.lastName && errors.lastName
+                                    )}
+                                    value={values.lastName}
+                                  />
+                                  {errors.lastName && touched.lastName ? <p className="error">{errors.lastName}</p> : <></>}
+
+                                </FormControl>
+                              </div>
+
+                              <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                <FormControl className="w-100">
+                                  <Typography align="left">
+                                    Date of Birth
+                                    <span style={{ color: "red" }}>*</span>
+                                  </Typography>
+                                  <Field
+                                    name="dob"
+                                    component={CustomDatePicker}
+                                    onBlur={handleBlur}
+                                  />
+
+                                  {/* <DatePicker
+                                                    className="dateclass"
+                                                    name="dob"
+                                                    onBlur={handleBlur}
+                                                    onChange={(date) => {
+                                                      onChange(date);
+                                                      setFieldValue("dob", date);
+                                                    }}
+                                                    maxDate={moment().toDate()}
+                                                    value={value}
+                                                    clearIcon={null}
+                                                    format="MM-dd-yy"
+                                                    dayPlaceholder="DD"
+                                                    monthPlaceholder="MM"
+                                                    yearPlaceholder="YYYY"
+                                                  /> */}
+
+
+                                  {errors.dob && touched.dob ? (<p className="error">{errors.dob}</p>) : ""}
+                                </FormControl>
+                              </div>
+                              <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                <FormControl className="w-100">
+                                  <Typography align="left">
+                                    Country Of Birth
+                                    <span style={{ color: "red" }}>*</span>
+                                  </Typography>
+
+                                  <select
+                                    style={{
+                                      padding: " 0 10px",
+                                      color: "#121112",
+                                      fontStyle: "italic",
+                                      height: "36px",
+                                    }}
+                                    name="countryOfBirthId"
+                                    id="countryOfBirthId"
+                                    onChange={(e) => {
+                                      handleChange(e);
+                                    }}
+                                    onBlur={handleBlur}
+
+                                    value={values.countryOfBirthId}
+                                  >
+                                    <option value="">---select---</option>
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                      ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                      .map((ele: any) => (
+                                        <option key={ele.id} value={ele.id}>
+                                          {ele.name}
+                                        </option>
+                                      ))}
+                                    <option value={500}>---</option>
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                      ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                      .map((ele: any) => (
+                                        <option key={ele.id} value={ele.id}>
+                                          {ele.name}
+                                        </option>
+                                      ))}
+                                  </select>
+                                  {errors?.countryOfBirthId && touched?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
+                                    <p className="error">{errors?.countryOfBirthId}</p>
+                                  )}
+                                  {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
+                                </FormControl>
+                              </div>
+                              <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                <FormControl className="w-100">
+                                  <Typography align="left">
+                                    Town/City of Birth<span style={{ color: "red" }}>*</span>
+                                  </Typography>
+                                  <Input
+                                    style={{
+                                      border: " 1px solid #d9d9d9 ",
+                                      height: " 36px",
+                                      lineHeight: "36px ",
+                                      background: "#fff ",
+                                      fontSize: "13px",
+                                      color: " #000 ",
+                                      fontStyle: "normal",
+                                      borderRadius: "1px",
+                                      padding: " 0 10px ",
+                                    }}
+                                    id="outlined"
+                                    name="cityOfBirth"
+                                    placeholder="Enter Town/City of Birth"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors?.cityOfBirth && touched?.cityOfBirth)}
+
+                                    value={values?.cityOfBirth}
+
+                                  />
+                                  {errors?.cityOfBirth && touched?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
+                                    <p className="error">{errors?.cityOfBirth}</p>
+                                  )}
+                                  {/* {errors.cityOfBirth && touched.cityOfBirth ? <p className="error">{errors.cityOfBirth}</p> : <></>} */}
+
+                                </FormControl>
+                              </div>
+                            </div>
+                          </>
+                        )}
+
+                      </Collapse>
+
+                    </>) :
+                      <Collapse
+                        className="px-5 mx-2"
+                        in={open === "basics"}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        <FormControl className="w-100">
+                          <div className="row">
+                            <div>
+                              <Typography
+                                align="left"
+                                style={{ marginTop: "20px" }}
+                              >
+                                Are you a U.S. Individual?
+                                <span style={{ color: "red" }}>*</span>
+                              </Typography>
+
+                              <div className="d-flex">
+                                <FormControl error={Boolean(errors.isUSIndividual)}>
+                                  <RadioGroup
+                                    id="isUSIndividual"
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    value={values.isUSIndividual}
+                                    onChange={(e) => {
+                                      handleChange(e);
+                                      // onChangeUsInit(values);
+                                    }}
+                                  >
+                                    <FormControlLabel
+                                      control={<Radio />}
+                                      value="yes"
+                                      name="isUSIndividual"
+                                      label="Yes"
+                                    />
+                                    <FormControlLabel
+                                      control={<Radio />}
+                                      value="no"
+                                      name="isUSIndividual"
+                                      label="No"
+                                    />
+                                  </RadioGroup>
+                                  {errors.isUSIndividual ? (
+                                    <div>
+                                      <Typography color="error">
+                                        {errors.isUSIndividual}
+                                      </Typography>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+                                </FormControl>
+                                {/* <Typography className="my-auto">Yes</Typography>
+                                            <Radio
+                                              checked={values.isUSEntity}
+                                              onChange={handleChange}
+                                              // setPayload({ ...payload, isUSEntity: true })
+                                              value={true}
+                                              name="isUSEntity"
+                                              inputProps={{ "aria-label": "Yes" }}
+                                            />
+                                            <Typography className="my-auto">No</Typography>
+                                            <Radio
+                                              checked={!values.isUSEntity}
+                                              onChange={handleChange}
+                                              value={false}
+                                              name="isUSEntity"
+                                              inputProps={{ "aria-label": "No" }}
+                                            /> */}
+                              </div>
+                            </div>
+
+                            <div className="col-lg-3 col-12 col-md-6">
+                              <Typography className="d-flex w-100">
+                                Unique Identifier
+                                <span style={{ color: "red" }}>*</span>
+                                <Tooltip
+                                  style={{
+                                    backgroundColor: "black",
+                                    color: "white",
+                                  }}
+                                  title={
+                                    <>
+                                      <a
+                                        onClick={() => setToolInfo("identity")}
+                                      ></a>
+                                    </>
+                                  }
+                                >
+                                  <Info
+                                    onClick={() => setToolInfo("identity")}
+                                    style={{
+                                      color: "#ffc107",
+                                      fontSize: "15px",
+                                      marginLeft: "5px",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                </Tooltip>
                               </Typography>
                               <Input
                                 style={{
@@ -1804,26 +2133,152 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                   borderRadius: "1px",
                                   padding: " 0 10px ",
                                 }}
+                                className="w-100 input"
+                                name="uniqueIdentifier"
                                 id="outlined"
-                                name="cityOfBirth"
-                                placeholder="Enter Town/City of Birth"
+                                placeholder="Enter Instructor Identifier"
                                 onChange={handleChange}
+                                onKeyUp={(e: any) => onNumberChange(e, values)}
+                                // onBlur={(e: any) => onUidBlur(e, values)}
                                 onBlur={handleBlur}
-                                error={Boolean(touched?.cityOfBirth && errors?.cityOfBirth)}
-
-                                value={values?.cityOfBirth}
-
+                                error={Boolean(errors.uniqueIdentifier && touched.uniqueIdentifier)}
+                                value={values.uniqueIdentifier}
+                              // inputProps={{maxLength :agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat.length}}
                               />
-                             
-                              {errors?.cityOfBirth && touched?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
-                                <p className="error">{errors?.cityOfBirth}</p>
-                              )}
-                            </FormControl>
+                              {errors.uniqueIdentifier && touched.uniqueIdentifier ? <p className="error">{errors.uniqueIdentifier}</p> : <></>}
+
+                            </div>
                           </div>
-                        </div>
-                      ) : (
-                        <>
-                          
+                        </FormControl>
+
+
+                        {values.isUSIndividual === "no" ? (
+                          <div className="row">
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
+                              <FormControl className="w-100">
+                                <Typography align="left">
+                                  First Name<span style={{ color: "red" }}>*</span>
+                                </Typography>
+                                <Input
+                                  style={{
+                                    border: " 1px solid #d9d9d9 ",
+                                    height: " 36px",
+                                    lineHeight: "36px ",
+                                    background: "#fff ",
+                                    fontSize: "13px",
+                                    color: " #000 ",
+                                    fontStyle: "normal",
+                                    borderRadius: "1px",
+                                    padding: " 0 10px ",
+                                  }}
+                                  id="outlined"
+                                  name="firstName"
+                                  placeholder="Enter First Name"
+                                  // onBlur={handleBlur}
+                                  error={Boolean(errors.firstName && touched.firstName)}
+                                  onChange={handleChange}
+                                  value={values.firstName}
+
+                                />
+                                {errors.firstName && touched.firstName ? <p className="error">{errors.firstName}</p> : <></>}
+
+                              </FormControl>
+                            </div>
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
+                              <FormControl className="w-100">
+                                <Typography align="left">
+                                  Last Name<span style={{ color: "red" }}>*</span>
+                                </Typography>
+                                <Input
+                                  style={{
+                                    border: " 1px solid #d9d9d9 ",
+                                    height: " 36px",
+                                    lineHeight: "36px ",
+                                    background: "#fff ",
+                                    fontSize: "13px",
+                                    color: " #000 ",
+                                    fontStyle: "normal",
+                                    borderRadius: "1px",
+                                    padding: " 0 10px ",
+                                  }}
+                                  id="outlined"
+                                  name="lastName"
+                                  placeholder="Enter Last Name"
+                                  onChange={(e) => {
+                                    handleChange(e);
+                                    setFieldValue('accountHolderName', `${values.firstName} ${e.target.value} `);
+                                  }}
+                                  // onBlur={handleBlur}
+                                  error={Boolean(
+                                    touched.lastName && errors.lastName
+                                  )}
+                                  value={values.lastName}
+                                />
+                                {errors.lastName && touched.lastName ? <p className="error">{errors.lastName}</p> : <></>}
+
+                              </FormControl>
+                            </div>
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
+                              <FormControl className="w-100">
+                                <Typography align="left">
+                                  Country Of Citizenship
+                                  <span style={{ color: "red" }}>*</span>
+                                </Typography>
+
+                                <select
+                                  style={{
+                                    padding: " 0 10px",
+                                    color: "#121112",
+                                    fontStyle: "italic",
+                                    height: "36px",
+                                  }}
+                                  name="countryOfCitizenshipId"
+                                  id="countryOfCitizenshipId"
+                                  onChange={(e) => {
+                                    handleChange(e); //condition
+                                  }}
+                                  onBlur={handleBlur}
+                                  // error={Boolean(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
+                                  value={values.countryOfCitizenshipId}
+                                >
+                                  <option value="">---select---</option>
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
+                                      </option>
+                                    ))}
+                                  <option value={500}>---</option>
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
+                                      </option>
+                                    ))}
+                                </select>
+                                {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ? <p className="error">{errors.countryOfCitizenshipId}</p> : <></>}
+
+                              </FormControl>
+                            </div>
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
+                              <FormControl className="w-100">
+                                <Typography align="left">
+                                  Date of Birth
+                                  <span style={{ color: "red" }}>*</span>
+                                </Typography>
+                                <Field
+                                  name="dob"
+                                  component={CustomDatePicker}
+                                  onBlur={handleBlur}
+                                />
+                                {errors.dob && touched.dob ? <p className="error">{errors.dob}</p> : <></>}
+
+                              </FormControl>
+                            </div>
+                          </div>
+                        ) : (
                           <div className="row">
                             <div className="col-lg-3 col-6 col-md-3 mt-2">
                               <FormControl className="w-100">
@@ -1846,10 +2301,11 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                   name="firstName"
                                   placeholder="Enter First Name"
                                   onBlur={handleBlur}
-                                  error={Boolean(errors.firstName && touched.firstName)}
+                                  error={Boolean(
+                                    touched.firstName && errors.firstName
+                                  )}
                                   onChange={handleChange}
                                   value={values.firstName}
-
                                 />
                                 {errors.firstName && touched.firstName ? <p className="error">{errors.firstName}</p> : <></>}
 
@@ -1889,203 +2345,34 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
 
                               </FormControl>
                             </div>
-
-                            <div className="col-lg-3 col-6 col-md-3 mt-2">
-                              <FormControl className="w-100">
-                                <Typography align="left">
-                                  Date of Birth
-                                  <span style={{ color: "red" }}>*</span>
-                                </Typography>
-                                <Field
-                                  name="dob"
-                                  component={CustomDatePicker}
-                                  onBlur={handleBlur}
-                                />
-
-                                {/* <DatePicker
-                                                    className="dateclass"
-                                                    name="dob"
-                                                    onBlur={handleBlur}
-                                                    onChange={(date) => {
-                                                      onChange(date);
-                                                      setFieldValue("dob", date);
-                                                    }}
-                                                    maxDate={moment().toDate()}
-                                                    value={value}
-                                                    clearIcon={null}
-                                                    format="MM-dd-yy"
-                                                    dayPlaceholder="DD"
-                                                    monthPlaceholder="MM"
-                                                    yearPlaceholder="YYYY"
-                                                  /> */}
-
-
-                                {errors.dob && touched.dob ? (<p className="error">{errors.dob}</p>) : ""}
-                              </FormControl>
-                            </div>
-                            <div className="col-lg-3 col-6 col-md-3 mt-2">
-                              <FormControl className="w-100">
-                                <Typography align="left">
-                                  Country Of Birth
-                                  <span style={{ color: "red" }}>*</span>
-                                </Typography>
-
-                                <select
-                                  style={{
-                                    padding: " 0 10px",
-                                    color: "#121112",
-                                    fontStyle: "italic",
-                                    height: "36px",
-                                  }}
-                                  name="countryOfBirthId"
-                                  id="countryOfBirthId"
-                                  onChange={(e) => {
-                                    handleChange(e);
-                                  }}
-                                  onBlur={handleBlur}
-
-                                  value={values.countryOfBirthId}
-                                >
-                                  <option value="">---select---</option>
-                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                    ?.filter((ele: any) => ele.isImportantCountry === "Yes")
-                                    .map((ele: any) => (
-                                      <option key={ele.id} value={ele.id}>
-                                        {ele.name}
-                                      </option>
-                                    ))}
-                                  <option value={500}>---</option>
-                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                    ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
-                                    .map((ele: any) => (
-                                      <option key={ele.id} value={ele.id}>
-                                        {ele.name}
-                                      </option>
-                                    ))}
-                                </select>
-                                {errors?.countryOfBirthId && touched?.countryOfBirthId && typeof errors?.countryOfBirthId === 'string' && (
-                                  <p className="error">{errors?.countryOfBirthId}</p>
-                                )}
-                                {/* {errors.countryOfBirthId && touched.countryOfBirthId ? <p className="error">{errors.countryOfBirthId}</p> : <></>} */}
-                              </FormControl>
-                            </div>
-                            <div className="col-lg-3 col-6 col-md-3 mt-2">
-                              <FormControl className="w-100">
-                                <Typography align="left">
-                                  Town/City of Birth<span style={{ color: "red" }}>*</span>
-                                </Typography>
-                                <Input
-                                  style={{
-                                    border: " 1px solid #d9d9d9 ",
-                                    height: " 36px",
-                                    lineHeight: "36px ",
-                                    background: "#fff ",
-                                    fontSize: "13px",
-                                    color: " #000 ",
-                                    fontStyle: "normal",
-                                    borderRadius: "1px",
-                                    padding: " 0 10px ",
-                                  }}
-                                  id="outlined"
-                                  name="cityOfBirth"
-                                  placeholder="Enter Town/City of Birth"
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  error={Boolean(errors?.cityOfBirth && touched?.cityOfBirth)}
-
-                                  value={values?.cityOfBirth}
-
-                                />
-                                {errors?.cityOfBirth && touched?.cityOfBirth && typeof errors?.cityOfBirth === 'string' && (
-                                  <p className="error">{errors?.cityOfBirth}</p>
-                                )}
-                                {/* {errors.cityOfBirth && touched.cityOfBirth ? <p className="error">{errors.cityOfBirth}</p> : <></>} */}
-
-                              </FormControl>
-                            </div>
                           </div>
-                        </>
-                      )}
+                        )}
 
-                    </Collapse>
+                      </Collapse>
+                    }
 
-                  </>) :
-                    <Collapse
-                      className="px-5 mx-2"
-                      in={open === "basics"}
-                      timeout="auto"
-                      unmountOnExit
-                    >
-                      <FormControl className="w-100">
-                        <div className="row">
-                          <div>
-                            <Typography
-                              align="left"
-                              style={{ marginTop: "20px" }}
+
+
+                    <hr className="w-100"></hr>
+                    {/* Tax Identifier Section */}
+                    <div>
+                      <CardHeader
+                        className="flex-row-reverse"
+                        title={
+                          <div
+                            style={{
+                              marginLeft: "13px",
+                            }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "left",
+                                cursor: "pointer",
+                              }}
+                              onClick={() => handleOpen("tax")}
                             >
-                              Are you a U.S. Individual?
-                              <span style={{ color: "red" }}>*</span>
-                            </Typography>
-
-                            <div className="d-flex">
-                              <FormControl error={Boolean(errors.isUSIndividual)}>
-                                <RadioGroup
-                                  id="isUSIndividual"
-                                  row
-                                  aria-labelledby="demo-row-radio-buttons-group-label"
-                                  value={values.isUSIndividual}
-                                  onChange={(e) => {
-                                    handleChange(e);
-                                    // onChangeUsInit(values);
-                                  }}
-                                >
-                                  <FormControlLabel
-                                    control={<Radio />}
-                                    value="yes"
-                                    name="isUSIndividual"
-                                    label="Yes"
-                                  />
-                                  <FormControlLabel
-                                    control={<Radio />}
-                                    value="no"
-                                    name="isUSIndividual"
-                                    label="No"
-                                  />
-                                </RadioGroup>
-                                {errors.isUSIndividual ? (
-                                  <div>
-                                    <Typography color="error">
-                                      {errors.isUSIndividual}
-                                    </Typography>
-                                  </div>
-                                ) : (
-                                  ""
-                                )}
-                              </FormControl>
-                              {/* <Typography className="my-auto">Yes</Typography>
-                                            <Radio
-                                              checked={values.isUSEntity}
-                                              onChange={handleChange}
-                                              // setPayload({ ...payload, isUSEntity: true })
-                                              value={true}
-                                              name="isUSEntity"
-                                              inputProps={{ "aria-label": "Yes" }}
-                                            />
-                                            <Typography className="my-auto">No</Typography>
-                                            <Radio
-                                              checked={!values.isUSEntity}
-                                              onChange={handleChange}
-                                              value={false}
-                                              name="isUSEntity"
-                                              inputProps={{ "aria-label": "No" }}
-                                            /> */}
-                            </div>
-                          </div>
-
-                          <div className="col-lg-3 col-12 col-md-6">
-                            <Typography className="d-flex w-100">
-                              Unique Identifier
-                              <span style={{ color: "red" }}>*</span>
+                              Tax Identification Numbers
                               <Tooltip
                                 style={{
                                   backgroundColor: "black",
@@ -2093,14 +2380,37 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                 }}
                                 title={
                                   <>
+                                    <Typography color="inherit">
+                                      Taxpayer information
+                                    </Typography>
                                     <a
-                                      onClick={() => setToolInfo("identity")}
-                                    ></a>
+
+
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setToolInfo("tin");
+                                      }}
+
+                                    >
+                                      <Typography
+                                        style={{
+                                          cursor: "pointer",
+                                          textDecorationLine: "underline",
+                                        }}
+                                        align="center"
+                                      >
+                                        {" "}
+                                        View More...
+                                      </Typography>
+                                    </a>
                                   </>
                                 }
                               >
                                 <Info
-                                  onClick={() => setToolInfo("identity")}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+
+                                  }}
                                   style={{
                                     color: "#ffc107",
                                     fontSize: "15px",
@@ -2109,468 +2419,682 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                   }}
                                 />
                               </Tooltip>
+                            </div>
+                            <p className="error mb-0">
+                              {errors?.taxpayerIdTypeID && touched?.taxpayerIdTypeID || errors?.usTin && touched?.usTin ||
+                                errors?.vatId && touched?.vatId || errors?.vat && touched?.vat
+                                ? "Mandatory Information Required"
+                                : ""}
+                            </p>
+                          </div>
+                        }
+                        action={
+                          <IconButton
+                            onClick={() => handleOpen("tax")}
+                            aria-label="expand"
+                            size="small"
+                            style={{ marginTop: "3px" }}
+                          >
+                            {open === "tax" ? (
+                              <RemoveCircleOutlineOutlined />
+                            ) : (
+                              <ControlPointOutlined />
+                            )}
+                          </IconButton>
+                        }
+                      ></CardHeader>
+                      {toolInfo === "tin" ? (
+                        <div>
+                          <Paper
+                            style={{
+                              backgroundColor: "#dedcb1",
+                              padding: "15px",
+                            }}
+                          >
+                            <Typography>
+                              Where applicable enter your US and Non-US (i.e.
+                              “Foreign”) taxpayer identification number(s) along
+                              with the US TIN Type and Foreign Country(ies)
+                              correlating to the FTIN(s).?
                             </Typography>
-                            <Input
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                height: " 36px",
-                                lineHeight: "36px ",
-                                background: "#fff ",
-                                fontSize: "13px",
-                                color: " #000 ",
-                                fontStyle: "normal",
-                                borderRadius: "1px",
-                                padding: " 0 10px ",
+                            <Typography style={{ marginTop: "10px" }}>
+                              Please note that some jurisdictions do not provide
+                              FTINs and this will be indicated if you select one
+                              of those jurisdictions. If you select a country that
+                              normally does provide an FTIN, but you do not wish
+                              to provide or cannot provide, you have the option to
+                              provide an explanation. Not providing a FTIN when it
+                              would normally be available may lead to the highest
+                              rate of withholding being applied, where treaty
+                              benefits could apply.
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              Note: the Foreign TIN box restricts formatting per
+                              the Foreign Country selected, based on OECD
+                              guidance. By ticking “TIN Format not available”,
+                              this disables the formatting so that any format may
+                              be input.
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              An individual’s US TIN type is generally a Social
+                              Security Number (SSN) or an Individual Tax
+                              Identification Number (ITIN).?
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              An entity’s US TIN may be an employer identification
+                              number (EIN): including a withholding foreign
+                              partnership/trust EIN (WP/T-EIN) or a qualified
+                              intermediary EIN (QI-EIN).{" "}
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              A TIN must be furnished on US tax returns when filed
+                              or when claiming treaty benefits. A US or Foreign
+                              TIN must generally be provided on a withholding
+                              certificate (i.e. W-8) if the beneficial owner is
+                              receiving effectively connected income (ECI),
+                              claiming tax treaty benefits (other than for income
+                              from marketable, actively traded, securities),
+                              claiming an exemption for ECI or claiming an
+                              exemption for certain annuities.
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              If you are required to have a US TIN but do not have
+                              one you may apply for an EIN on Form SS-4,
+                              Application for Employer Identification Number, a
+                              SSN on Form SS-5, Application for a Social Security
+                              Card or an ITIN on Form W-7, IRS Application for
+                              Individual Taxpayer Identification Number.
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              IRS Form Guidance:
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              See Regulations section 1.1441-1(e)(4) (vii) for
+                              when you are required to provide a U.S. TIN on a
+                              Form W-8 associated with a payment subject to
+                              chapter 3 withholding. A partner in a partnership
+                              conducting a trade or business in the United States
+                              will likely be allocated effectively connected
+                              taxable income. The partner is required to file a
+                              U.S. federal income tax return and must have a U.S.
+                              taxpayer identification number (TIN). You must
+                              provide a U.S. TIN if you are:
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              - Claiming an exemption from withholding under
+                              section 871(f) for certain annuities received under
+                              qualified plans, or{" "}
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              - Claiming benefits under an income tax treaty and
+                              have not provided a foreign TIN on line 9b.{" "}
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              However, a TIN is not required to be shown in order
+                              to claim treaty benefits on the following items of
+                              income:
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              - Dividends and interest from stocks and debt
+                              obligations that are actively traded;
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              - investment company registered under the Investment
+                              Company Act of 1940 (mutual fund);
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              - Dividends, interest, or royalties from units of
+                              beneficial interest in a unit investment trust that
+                              are (or were upon issuance) publicly offered and are
+                              registered with the SEC under the Securities Act of
+                              1933;
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              - and Income related to loans of any of the above
+                              securities.
+                            </Typography>
+
+                            <Link
+
+                              underline="none"
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
+                              onClick={() => {
+                                setToolInfo("");
                               }}
-                              className="w-100 input"
-                              name="uniqueIdentifier"
-                              id="outlined"
-                              placeholder="Enter Instructor Identifier"
-                              onChange={handleChange}
-                              onKeyUp={(e: any) => onNumberChange(e, values)}
-                              // onBlur={(e: any) => onUidBlur(e, values)}
-                              onBlur={handleBlur}
-                              error={Boolean(errors.uniqueIdentifier && touched.uniqueIdentifier)}
-                              value={values.uniqueIdentifier}
-                            // inputProps={{maxLength :agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat.length}}
-                            />
-                            {errors.uniqueIdentifier && touched.uniqueIdentifier ? <p className="error">{errors.uniqueIdentifier}</p> : <></>}
-
-                          </div>
-                        </div>
-                      </FormControl>
-
-
-                      {values.isUSIndividual === "no" ? (
-                        <div className="row">
-                          <div className="col-lg-3 col-6 col-md-3 mt-2">
-                            <FormControl className="w-100">
-                              <Typography align="left">
-                                First Name<span style={{ color: "red" }}>*</span>
-                              </Typography>
-                              <Input
-                                style={{
-                                  border: " 1px solid #d9d9d9 ",
-                                  height: " 36px",
-                                  lineHeight: "36px ",
-                                  background: "#fff ",
-                                  fontSize: "13px",
-                                  color: " #000 ",
-                                  fontStyle: "normal",
-                                  borderRadius: "1px",
-                                  padding: " 0 10px ",
-                                }}
-                                id="outlined"
-                                name="firstName"
-                                placeholder="Enter First Name"
-                                // onBlur={handleBlur}
-                                error={Boolean(errors.firstName && touched.firstName)}
-                                onChange={handleChange}
-                                value={values.firstName}
-
-                              />
-                              {errors.firstName && touched.firstName ? <p className="error">{errors.firstName}</p> : <></>}
-
-                            </FormControl>
-                          </div>
-                          <div className="col-lg-3 col-6 col-md-3 mt-2">
-                            <FormControl className="w-100">
-                              <Typography align="left">
-                                Last Name<span style={{ color: "red" }}>*</span>
-                              </Typography>
-                              <Input
-                                style={{
-                                  border: " 1px solid #d9d9d9 ",
-                                  height: " 36px",
-                                  lineHeight: "36px ",
-                                  background: "#fff ",
-                                  fontSize: "13px",
-                                  color: " #000 ",
-                                  fontStyle: "normal",
-                                  borderRadius: "1px",
-                                  padding: " 0 10px ",
-                                }}
-                                id="outlined"
-                                name="lastName"
-                                placeholder="Enter Last Name"
-                                onChange={(e) => {
-                                  handleChange(e);
-                                  setFieldValue('accountHolderName', `${values.firstName} ${e.target.value} `);
-                                }}
-                                // onBlur={handleBlur}
-                                error={Boolean(
-                                  touched.lastName && errors.lastName
-                                )}
-                                value={values.lastName}
-                              />
-                              {errors.lastName && touched.lastName ? <p className="error">{errors.lastName}</p> : <></>}
-
-                            </FormControl>
-                          </div>
-                          <div className="col-lg-3 col-6 col-md-3 mt-2">
-                            <FormControl className="w-100">
-                              <Typography align="left">
-                                Country Of Citizenship
-                                <span style={{ color: "red" }}>*</span>
-                              </Typography>
-
-                              <select
-                                style={{
-                                  padding: " 0 10px",
-                                  color: "#121112",
-                                  fontStyle: "italic",
-                                  height: "36px",
-                                }}
-                                name="countryOfCitizenshipId"
-                                id="countryOfCitizenshipId"
-                                onChange={(e) => {
-                                  handleChange(e); //condition
-                                }}
-                                onBlur={handleBlur}
-                                // error={Boolean(touched.countryOfCitizenshipId && errors.countryOfCitizenshipId)}
-                                value={values.countryOfCitizenshipId}
-                              >
-                                <option value="">---select---</option>
-                                {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                  ?.filter((ele: any) => ele.isImportantCountry === "Yes")
-                                  .map((ele: any) => (
-                                    <option key={ele.id} value={ele.id}>
-                                      {ele.name}
-                                    </option>
-                                  ))}
-                                <option value={500}>---</option>
-                                {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                  ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
-                                  .map((ele: any) => (
-                                    <option key={ele.id} value={ele.id}>
-                                      {ele.name}
-                                    </option>
-                                  ))}
-                              </select>
-                              {errors.countryOfCitizenshipId && touched.countryOfCitizenshipId ? <p className="error">{errors.countryOfCitizenshipId}</p> : <></>}
-
-                            </FormControl>
-                          </div>
-                          <div className="col-lg-3 col-6 col-md-3 mt-2">
-                            <FormControl className="w-100">
-                              <Typography align="left">
-                                Date of Birth
-                                <span style={{ color: "red" }}>*</span>
-                              </Typography>
-                              <Field
-                                name="dob"
-                                component={CustomDatePicker}
-                                onBlur={handleBlur}
-                              />
-                              {errors.dob && touched.dob ? <p className="error">{errors.dob}</p> : <></>}
-
-                            </FormControl>
-                          </div>
+                            >
+                              --Show Less--
+                            </Link>
+                          </Paper>
                         </div>
                       ) : (
-                        <div className="row">
-                          <div className="col-lg-3 col-6 col-md-3 mt-2">
-                            <FormControl className="w-100">
-                              <Typography align="left">
-                                First Name<span style={{ color: "red" }}>*</span>
-                              </Typography>
-                              <Input
-                                style={{
-                                  border: " 1px solid #d9d9d9 ",
-                                  height: " 36px",
-                                  lineHeight: "36px ",
-                                  background: "#fff ",
-                                  fontSize: "13px",
-                                  color: " #000 ",
-                                  fontStyle: "normal",
-                                  borderRadius: "1px",
-                                  padding: " 0 10px ",
-                                }}
-                                id="outlined"
-                                name="firstName"
-                                placeholder="Enter First Name"
-                                onBlur={handleBlur}
-                                error={Boolean(
-                                  touched.firstName && errors.firstName
-                                )}
-                                onChange={handleChange}
-                                value={values.firstName}
-                              />
-                              {errors.firstName && touched.firstName ? <p className="error">{errors.firstName}</p> : <></>}
-
-                            </FormControl>
-                          </div>
-                          <div className="col-lg-3 col-6 col-md-3 mt-2">
-                            <FormControl className="w-100">
-                              <Typography align="left">
-                                Last Name<span style={{ color: "red" }}>*</span>
-                              </Typography>
-                              <Input
-                                style={{
-                                  border: " 1px solid #d9d9d9 ",
-                                  height: " 36px",
-                                  lineHeight: "36px ",
-                                  background: "#fff ",
-                                  fontSize: "13px",
-                                  color: " #000 ",
-                                  fontStyle: "normal",
-                                  borderRadius: "1px",
-                                  padding: " 0 10px ",
-                                }}
-                                id="outlined"
-                                name="lastName"
-                                placeholder="Enter Last Name"
-                                onChange={(e) => {
-                                  handleChange(e);
-                                  setFieldValue('accountHolderName', `${values.firstName} ${e.target.value} `);
-                                }}
-                                onBlur={handleBlur}
-                                error={Boolean(
-                                  touched.lastName && errors.lastName
-                                )}
-                                value={values.lastName}
-                              />
-                              {errors.lastName && touched.lastName ? <p className="error">{errors.lastName}</p> : <></>}
-
-                            </FormControl>
-                          </div>
-                        </div>
+                        ""
                       )}
 
-                    </Collapse>
-                  }
-
-
-
-                  <hr className="w-100"></hr>
-                  {/* Tax Identifier Section */}
-                  <div>
-                    <CardHeader
-                      className="flex-row-reverse"
-                      title={
-                        <div
-                          style={{
-                            marginLeft: "13px",
-                          }}
+                      {userType === "DC" || userType === "SC" ? (
+                        <Collapse
+                          className="px-5 mx-2"
+                          in={open === "tax"}
+                          timeout="auto"
+                          unmountOnExit
                         >
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "left",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => handleOpen("tax")}
-                          >
-                            Tax Identification Numbers
-                            <Tooltip
-                              style={{
-                                backgroundColor: "black",
-                                color: "white",
-                              }}
-                              title={
-                                <>
-                                  <Typography color="inherit">
-                                    Taxpayer information
-                                  </Typography>
-                                  <a
+                          {values.isUSIndividual === "no" ? (
+                            <div className="col-6">
 
-
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setToolInfo("tin");
-                                    }}
-
-                                  >
-                                    <Typography
-                                      style={{
-                                        cursor: "pointer",
-                                        textDecorationLine: "underline",
-                                      }}
-                                      align="center"
-                                    >
-                                      {" "}
-                                      View More...
+                              <div className="row d-flex mt-3">
+                                <div className="col-lg-6 col-12 col-md-3 ">
+                                  <FormControl className="w-100">
+                                    <Typography align="left" className="d-flex w-100">
+                                      U.S. TIN Type
+                                      <span
+                                        style={{
+                                          color: "red",
+                                          verticalAlign: "super",
+                                        }}
+                                      >
+                                        *
+                                      </span>
                                     </Typography>
-                                  </a>
+                                    <select
+                                      style={{
+                                        padding: " 0 10px",
+                                        color: "#121112",
+                                        fontStyle: "italic",
+                                        height: "36px",
+                                      }}
+                                      name="taxpayerIdTypeID"
+                                      id="Income"
+                                      defaultValue={0}
+                                      onBlur={handleBlur}
+                                      onChange={(e: any) => {
+                                        handleChange(e);
+
+                                        var nm = getTaxPayerName(e.target.value);
+
+                                        setFieldValue("taxpayerIdTypeName", nm);
+
+                                        if (
+                                          e.target.value == 0 ||
+                                          e.target.value == 1 ||
+                                          e.target.value == 3 ||
+                                          e.target.value == 4 ||
+                                          e.target.value == 7 ||
+                                          e.target.value == 8
+                                        )
+                                          setFieldValue("usTin", "");
+                                      }}
+                                      value={values.taxpayerIdTypeID}
+                                    >
+
+                                      {/* <>{console.log(ustinValue, "")}</> */}
+                                      <option value={0}>---select---</option>
+
+                                      {notUsIndividual?.map((ele: any) => (
+                                        // ele?.nonUSIndividual &&
+                                        //   values?.isUSIndividual == "no" ||
+                                        // ele?.usIndividual &&
+                                        //   values?.isUSIndividual == "Yes" ?
+                                        // (
+                                        <option
+
+                                          key={ele?.taxpayerIdTypeID}
+                                          value={ele?.taxpayerIdTypeID}
+                                        >
+                                          {ele?.taxpayerIdTypeName}
+                                        </option>
+                                        // ) : (
+                                        //   ""
+                                        // );
+                                      ))}
+                                    </select>
+                                    {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ? <p className="error">{errors.taxpayerIdTypeID}</p> : <></>}
+                                    {/* <p className="error">{errors.taxpayerIdTypeID}</p> */}
+                                  </FormControl>
+                                </div>
+
+                                <div className="col-lg-6 col-6 col-md-3">
+                                  <FormControl className="w-100" >
+                                    <Typography className="d-flex w-100" align="left">
+                                      U.S. TIN
+                                      <span
+                                        style={{
+                                          color: "red",
+                                          verticalAlign: "super",
+                                        }}
+                                      >
+                                        *
+                                      </span>
+                                    </Typography>
+                                    <InputMask
+                                      disabled={
+                                        values.taxpayerIdTypeID == 8 ||
+                                        values.taxpayerIdTypeID == 7 ||
+                                        values.taxpayerIdTypeID == 1 ||
+                                        values.taxpayerIdTypeID == 0
+                                      }
+                                      style={{
+                                        border: " 1px solid #d9d9d9 ",
+                                        height: " 36px",
+                                        lineHeight: "36px ",
+                                        background: "#fff ",
+                                        fontSize: "13px",
+                                        color: " #000 ",
+                                        fontStyle: "normal",
+                                        borderRadius: "1px",
+                                        padding: " 0 10px ",
+                                      }}
+                                      id="outlined"
+                                      mask={
+                                        values.taxpayerIdTypeID == 2 ? "99-9999999" : "999-99-9999"
+                                      }
+                                      name="usTin"
+                                      placeholder="Enter U.S. TIN"
+                                      // onKeyDown={(e: any) => formatTin(e, values)}
+                                      onChange={handleChange}
+                                      // inputProps={{ maxLength: 11 }}
+                                      onBlur={handleBlur}
+                                      // error={Boolean(touched.usTin && errors.usTin)}
+                                      value={values.usTin}
+                                    />
+                                    {errors.usTin && touched.usTin ? <p className="error">{errors.usTin}</p> : <></>}
+
+                                  </FormControl>
+                                </div>
+
+                                <>
+                                  <div className="col-lg-6 col-6 col-md-3 mt-3">
+                                    <FormControl className="w-100">
+                                      <Typography align="left" className="d-flex w-100">
+                                        Foreign TIN Country
+                                        {/* <span style={{ color: 'red' }}>*</span> */}
+                                      </Typography>
+                                      <select
+                                        style={{
+                                          padding: " 0 10px",
+                                          color: "#121112",
+                                          fontStyle: "italic",
+                                          height: "36px",
+                                        }}
+                                        name="foreignTINCountryId"
+                                        id="Income"
+                                        defaultValue={0}
+                                        onChange={(e) => {
+                                          handleChange(e);
+                                          if (Number(e.target.value) === 0) {
+                                            setFieldValue("foreignTIN", "");
+                                          } else if (values.foreignTINCountryId == 0 || values.foreignTINNotAvailable == true) {
+                                            setFieldValue("foreignTIN", "");
+                                          } else if (e.target.value) {
+                                            setFieldValue("foreignTIN", "");
+                                          }
+                                        }}
+                                        value={values.foreignTINCountryId}
+                                      >
+                                        <option value={0}>---select---</option>
+                                        {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                          ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                          .map((ele: any) => (
+                                            <option key={ele.id} value={ele.id}>
+                                              {ele.name}
+                                            </option>
+                                          ))}
+                                        <option value={500}>---</option>
+                                        {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                          ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                          .map((ele: any) => (
+                                            <option key={ele.id} value={ele.id}>
+                                              {ele.name}
+                                            </option>
+                                          ))}
+                                      </select>
+                                    </FormControl>
+                                  </div>
+
+                                  <div className="col-lg-6 col-12 col-md-3 mt-3">
+                                    <FormControl className="w-100">
+                                      <Typography align="left">
+                                        Foreign TIN
+                                        {selectedCountry && selectedCountry.foreignTinFormatToolTip !== null && (
+                                          <span>
+                                            <Tooltip
+                                              style={{
+                                                backgroundColor: "black",
+                                                color: "white",
+                                              }}
+                                              title={selectedCountry.foreignTinFormatToolTip}
+                                            >
+                                              <Info
+                                                onClick={() => setToolInfo("ForeignTin")}
+                                                style={{
+                                                  color: "#ffc107",
+                                                  fontSize: "15px",
+                                                  verticalAlign: "super",
+                                                  cursor: "pointer",
+                                                }}
+                                              />
+                                            </Tooltip>
+                                          </span>
+                                        )}
+                                      </Typography>
+
+                                      <InputMask
+                                        disabled={
+                                          values.foreignTINCountryId == 0 ||
+                                          (values.foreignTINCountryId != 0 &&
+                                            values.foreignTINNotAvailable === true)
+                                        }
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          height: " 36px",
+                                          lineHeight: "36px ",
+                                          background: "#fff ",
+                                          fontSize: "13px",
+                                          color: " #000 ",
+                                          fontStyle: "normal",
+                                          borderRadius: "1px",
+                                          padding: " 0 10px ",
+                                        }}
+                                        id="outlined"
+                                        name="foreignTIN"
+                                        placeholder="Enter foreign TIN"
+                                        mask={selectedCountryMask ? selectedCountryMask : "********************"}
+                                        onChange={(e: any) => {
+                                          handleChange(e);
+                                          // setFieldValue("foreignTIN", "");
+                                        }}
+                                        // onKeyDown={(e) => formatTin(e, values)}
+                                        // inputProps={{
+                                        //   maxLength:
+                                        //     values.foreignTINCountryId == 257 && !values.alternativeTINFormat
+                                        //       ? 10
+                                        //       : 20,
+                                        // }}
+                                        value={values.foreignTIN}
+                                      />
+                                    </FormControl>
+                                    {/* <div className="d-flex">
+                                                  
+                                                  <Typography
+                                                    style={{ fontSize: "13px", marginTop: "10px" }}
+                                                  >
+                                                    Not Available{" "}
+                                                  </Typography>
+                                                  <Radio
+                                                    disabled={values.foreignTINCountryId == 0}
+                                                    // foreignTINNotAvailable
+                                                    name="radio-buttons"
+                                                    checked={values.foreignTINNotAvailable}
+                                                    onChange={(e) => {
+                                                      handleChange(e); //condition
+                                                    }}
+                                                    // setPayload({
+                                                    //   ...payload,
+                                                    //   foreignTINNotAvailable:
+                                                    //     !payload.foreignTINNotAvailable,
+                                                    //   alternativeTINFormat:
+                                                    //     payload.foreignTINNotAvailable,
+                                                    // })
+                                                    // value="no"
+                  
+                                                    inputProps={{ "aria-label": "No" }}
+                                                  />
+                                                  <Typography
+                                                    style={{ fontSize: "13px", marginTop: "10px" }}
+                                                  >
+                                                    Alternative TIN Format
+                                                  </Typography>
+                                                  <Radio
+                                                    disabled={
+                                                      values.foreignTINCountryId == 0 ||
+                                                      values.foreignTINCountryId != 257
+                                                    }
+                                                    name="radio-buttons"
+                                                    checked={values.alternativeTINFormat}
+                                                    onChange={() =>
+                                                      setPayload({
+                                                        ...payload,
+                                                        alternativeTINFormat:
+                                                          !payload.alternativeTINFormat,
+                                                        foreignTINNotAvailable:
+                                                          payload.alternativeTINFormat,
+                                                      })
+                                                    }
+                                                    inputProps={{ "aria-label": "Yes" }}
+                                                  />
+                                                </div> */}
+                                    <div className="d-flex">
+                                      <Typography
+                                        style={{ fontSize: "13px", marginTop: "10px" }}
+                                      >
+                                        Not Available{" "}
+                                      </Typography>
+                                      <FormControl
+                                        error={Boolean(
+                                          touched.foreignTINNotAvailable &&
+                                          errors.foreignTINNotAvailable
+                                        )}
+                                      >
+                                        <Checkbox
+                                          id="foreignTINNotAvailable"
+                                          aria-labelledby="demo-row-radio-buttons-group-label"
+                                          value={values.foreignTINNotAvailable}
+                                          checked={values.foreignTINNotAvailable}
+                                          disabled={values.foreignTINCountryId == 0}
+                                          onChange={(e) => {
+                                            handleChange(e);
+                                            if (e.target.value)
+                                              setFieldValue(
+                                                "alternativeTINFormat",
+                                                false
+                                              );
+                                            setFieldValue("foreignTIN", "");
+                                          }}
+                                        />
+
+                                        {errors.foreignTINNotAvailable &&
+                                          touched.foreignTINNotAvailable ? (
+                                          <div>
+                                            <Typography color="error">
+                                              {errors.foreignTINNotAvailable}
+                                            </Typography>
+                                          </div>
+                                        ) : (
+                                          ""
+                                        )}
+                                      </FormControl>
+                                      <Typography
+                                        style={{ fontSize: "13px", marginTop: "10px" }}
+                                      >
+                                        Alternative TIN Format
+                                      </Typography>
+                                      <FormControl
+                                        error={Boolean(
+                                          touched.alternativeTINFormat &&
+                                          errors.alternativeTINFormat
+                                        )}
+                                      >
+                                        <Checkbox
+                                          id="alternativeTINFormat"
+                                          aria-labelledby="demo-row-radio-buttons-group-label"
+                                          value={values.alternativeTINFormat}
+                                          disabled={
+                                            values.foreignTINCountryId == 0 ||
+                                            values.foreignTINCountryId != 257
+                                          }
+
+                                          checked={values.alternativeTINFormat}
+                                          // disabled={values.foreignTINCountryId == 0}
+                                          onChange={(e) => {
+                                            handleChange(e);
+                                            if (e.target.value)
+                                              setFieldValue(
+                                                "foreignTINNotAvailable",
+                                                false
+                                              );
+                                            setFieldValue("foreignTIN", "");
+                                            // if(e.target.value) setFieldValue('alternativeTINFormat',!values.alternativeTINFormat)
+                                          }}
+                                        />
+
+
+                                        {errors.alternativeTINFormat &&
+                                          touched.alternativeTINFormat ? (
+                                          <div>
+                                            <Typography color="error">
+                                              {errors.alternativeTINFormat}
+                                            </Typography>
+                                          </div>
+                                        ) : (
+                                          ""
+                                        )}
+                                      </FormControl>
+                                      {values.alternativeTINFormat == true ? (
+                                        <Delete
+                                          onClick={() => {
+                                            handleChange(
+                                              "alternativeTINFormat"
+                                            )("");
+                                            setFieldValue("fTinNotAvailableReason", "")
+                                            setFieldValue("foreignTIN", "");
+                                            setToolInfo("");
+                                          }}
+                                          style={{
+                                            color: "red",
+                                            fontSize: "20px",
+                                            marginTop: "11px",
+                                          }}
+                                        />
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
+                                  </div>
                                 </>
-                              }
-                            >
-                              <Info
-                                onClick={(e) => {
-                                  e.stopPropagation();
 
-                                }}
-                                style={{
-                                  color: "#ffc107",
-                                  fontSize: "15px",
-                                  marginLeft: "5px",
-                                  cursor: "pointer",
-                                }}
-                              />
-                            </Tooltip>
-                          </div>
-                          <p className="error mb-0">
-                            {errors?.taxpayerIdTypeID && touched?.taxpayerIdTypeID || errors?.usTin && touched?.usTin ||
-                              errors?.vatId && touched?.vatId || errors?.vat && touched?.vat
-                              ? "Mandatory Information Required"
-                              : ""}
-                          </p>
-                        </div>
-                      }
-                      action={
-                        <IconButton
-                          onClick={() => handleOpen("tax")}
-                          aria-label="expand"
-                          size="small"
-                          style={{ marginTop: "3px" }}
-                        >
-                          {open === "tax" ? (
-                            <RemoveCircleOutlineOutlined />
+
+
+
+                              </div>
+                            </div>
+
                           ) : (
-                            <ControlPointOutlined />
+                            <div className="col-12 d-flex">
+                              <div className="col-lg-3 col-6 col-md-3 ">
+                                <Typography align="left" className="d-flex w-100">
+                                  U.S. TIN Type
+                                  <span
+                                    style={{ color: "red", verticalAlign: "super" }}
+                                  >
+                                    *
+                                  </span>
+                                </Typography>
+
+                                <FormControl className="w-100">
+                                  <select
+                                    style={{
+                                      padding: " 0 10px",
+                                      color: "#121112",
+                                      fontStyle: "italic",
+                                      height: "36px",
+                                    }}
+                                    name="taxpayerIdTypeID"
+                                    id="Income"
+                                    defaultValue={3}
+                                    onBlur={handleBlur}
+                                    onChange={(e: any) => {
+                                      handleChange(e);
+
+                                      if (
+                                        e.target.value == 0 ||
+                                        e.target.value == 1 ||
+                                        e.target.value == 3 ||
+                                        e.target.value == 7 ||
+                                        e.target.value == 8
+                                      )
+                                        setFieldValue("usTin", "");
+                                    }}
+                                    value={values.taxpayerIdTypeID}
+                                  >
+                                    <option value="0">---select---</option>
+
+                                    {ustinValue?.map((ele: any) => (
+                                      // ele?.nonUSIndividual &&
+                                      //   values?.isUSIndividual == "no" ||
+                                      // ele?.usIndividual &&
+                                      //   values?.isUSIndividual == "Yes" ?
+                                      // (
+                                      <option
+                                        key={ele?.taxpayerIdTypeID}
+                                        value={ele?.taxpayerIdTypeID}
+                                      >
+                                        {ele?.taxpayerIdTypeName}
+                                      </option>
+                                      // ) : (
+                                      //   ""
+                                      // );
+                                    ))}
+                                  </select>
+                                  {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ? <p className="error">{errors.taxpayerIdTypeID}</p> : <></>}
+
+                                </FormControl>
+                              </div>
+                              <div className="col-lg-3 col-6 col-md-3 mx-2">
+                                <Typography align="left" className="d-flex w-100">
+                                  U.S. TIN{" "}
+                                  <span
+                                    style={{ color: "red", verticalAlign: "super" }}
+                                  >
+                                    *
+                                  </span>
+                                </Typography>
+                                <FormControl className="w-100">
+                                  <InputMask
+                                    disabled={
+                                      // values.taxpayerIdTypeID == 3 ||
+                                      values.taxpayerIdTypeID == 1 ||
+                                      values.taxpayerIdTypeID == 7 ||
+                                      values.taxpayerIdTypeID == 8 ||
+                                      values.taxpayerIdTypeID == 0
+                                    }
+                                    style={{
+                                      border: " 1px solid #d9d9d9 ",
+                                      height: " 36px",
+                                      lineHeight: "36px ",
+                                      background: "#fff ",
+                                      fontSize: "13px",
+                                      color: " #000 ",
+                                      fontStyle: "normal",
+                                      borderRadius: "1px",
+                                      padding: " 0 10px ",
+                                    }}
+                                    id="outlined"
+                                    name="usTin"
+                                    placeholder="Enter U.S. TIN"
+                                    // onKeyDown={(e: any) => formatTin(e, values)}
+                                    onChange={handleChange}
+                                    mask={
+                                      values.taxpayerIdTypeID == 2 ? "99-9999999" : "999-99-9999"
+                                    }
+                                    onBlur={handleBlur}
+                                    error={Boolean(touched.usTin && errors.usTin)}
+                                    value={values.usTin}
+                                  />
+                                  {errors.usTin && touched.usTin ? <p className="error">{errors.usTin}</p> : <></>}
+
+                                </FormControl>
+                              </div>
+                            </div>
                           )}
-                        </IconButton>
-                      }
-                    ></CardHeader>
-                    {toolInfo === "tin" ? (
-                      <div>
-                        <Paper
-                          style={{
-                            backgroundColor: "#dedcb1",
-                            padding: "15px",
-                          }}
+
+                        </Collapse>) : <>
+                        <Collapse
+                          className="px-5 mx-2"
+                          in={open === "tax"}
+                          timeout="auto"
+                          unmountOnExit
                         >
-                          <Typography>
-                            Where applicable enter your US and Non-US (i.e.
-                            “Foreign”) taxpayer identification number(s) along
-                            with the US TIN Type and Foreign Country(ies)
-                            correlating to the FTIN(s).?
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            Please note that some jurisdictions do not provide
-                            FTINs and this will be indicated if you select one
-                            of those jurisdictions. If you select a country that
-                            normally does provide an FTIN, but you do not wish
-                            to provide or cannot provide, you have the option to
-                            provide an explanation. Not providing a FTIN when it
-                            would normally be available may lead to the highest
-                            rate of withholding being applied, where treaty
-                            benefits could apply.
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            Note: the Foreign TIN box restricts formatting per
-                            the Foreign Country selected, based on OECD
-                            guidance. By ticking “TIN Format not available”,
-                            this disables the formatting so that any format may
-                            be input.
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            An individual’s US TIN type is generally a Social
-                            Security Number (SSN) or an Individual Tax
-                            Identification Number (ITIN).?
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            An entity’s US TIN may be an employer identification
-                            number (EIN): including a withholding foreign
-                            partnership/trust EIN (WP/T-EIN) or a qualified
-                            intermediary EIN (QI-EIN).{" "}
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            A TIN must be furnished on US tax returns when filed
-                            or when claiming treaty benefits. A US or Foreign
-                            TIN must generally be provided on a withholding
-                            certificate (i.e. W-8) if the beneficial owner is
-                            receiving effectively connected income (ECI),
-                            claiming tax treaty benefits (other than for income
-                            from marketable, actively traded, securities),
-                            claiming an exemption for ECI or claiming an
-                            exemption for certain annuities.
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            If you are required to have a US TIN but do not have
-                            one you may apply for an EIN on Form SS-4,
-                            Application for Employer Identification Number, a
-                            SSN on Form SS-5, Application for a Social Security
-                            Card or an ITIN on Form W-7, IRS Application for
-                            Individual Taxpayer Identification Number.
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            IRS Form Guidance:
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            See Regulations section 1.1441-1(e)(4) (vii) for
-                            when you are required to provide a U.S. TIN on a
-                            Form W-8 associated with a payment subject to
-                            chapter 3 withholding. A partner in a partnership
-                            conducting a trade or business in the United States
-                            will likely be allocated effectively connected
-                            taxable income. The partner is required to file a
-                            U.S. federal income tax return and must have a U.S.
-                            taxpayer identification number (TIN). You must
-                            provide a U.S. TIN if you are:
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            - Claiming an exemption from withholding under
-                            section 871(f) for certain annuities received under
-                            qualified plans, or{" "}
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            - Claiming benefits under an income tax treaty and
-                            have not provided a foreign TIN on line 9b.{" "}
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            However, a TIN is not required to be shown in order
-                            to claim treaty benefits on the following items of
-                            income:
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            - Dividends and interest from stocks and debt
-                            obligations that are actively traded;
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            - investment company registered under the Investment
-                            Company Act of 1940 (mutual fund);
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            - Dividends, interest, or royalties from units of
-                            beneficial interest in a unit investment trust that
-                            are (or were upon issuance) publicly offered and are
-                            registered with the SEC under the Securities Act of
-                            1933;
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            - and Income related to loans of any of the above
-                            securities.
-                          </Typography>
-
-                          <Link
-
-                            underline="none"
-                            style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
-                            onClick={() => {
-                              setToolInfo("");
-                            }}
-                          >
-                            --Show Less--
-                          </Link>
-                        </Paper>
-                      </div>
-                    ) : (
-                      ""
-                    )}
-
-                    {userType === "DC" || userType === "SC" ? (
-                      <Collapse
-                        className="px-5 mx-2"
-                        in={open === "tax"}
-                        timeout="auto"
-                        unmountOnExit
-                      >
-                        {values.isUSIndividual === "no" ? (
-                          <div className="col-6">
-
+                          {values.isUSIndividual === "no" ? (
                             <div className="row d-flex mt-3">
-                              <div className="col-lg-6 col-12 col-md-3 ">
+                              <div className="col-lg-3 col-6 col-md-3 ">
                                 <FormControl className="w-100">
                                   <Typography align="left" className="d-flex w-100">
                                     U.S. TIN Type
@@ -2636,11 +3160,10 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                     ))}
                                   </select>
                                   {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ? <p className="error">{errors.taxpayerIdTypeID}</p> : <></>}
-                                  {/* <p className="error">{errors.taxpayerIdTypeID}</p> */}
                                 </FormControl>
                               </div>
 
-                              <div className="col-lg-6 col-6 col-md-3">
+                              <div className="col-lg-3 col-6 col-md-3">
                                 <FormControl className="w-100" >
                                   <Typography className="d-flex w-100" align="left">
                                     U.S. TIN
@@ -2672,16 +3195,15 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                       padding: " 0 10px ",
                                     }}
                                     id="outlined"
-                                    mask={
-                                      values.taxpayerIdTypeID == 2 ? "99-9999999" : "999-99-9999"
-                                    }
                                     name="usTin"
                                     placeholder="Enter U.S. TIN"
                                     // onKeyDown={(e: any) => formatTin(e, values)}
                                     onChange={handleChange}
-                                    // inputProps={{ maxLength: 11 }}
+                                    mask={
+                                      values.taxpayerIdTypeID == 2 ? "99-9999999" : "999-99-9999"
+                                    }
                                     onBlur={handleBlur}
-                                    // error={Boolean(touched.usTin && errors.usTin)}
+                                    error={Boolean(touched.usTin && errors.usTin)}
                                     value={values.usTin}
                                   />
                                   {errors.usTin && touched.usTin ? <p className="error">{errors.usTin}</p> : <></>}
@@ -2689,628 +3211,117 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                 </FormControl>
                               </div>
 
-                              <>
-                                <div className="col-lg-6 col-6 col-md-3 mt-3">
-                                  <FormControl className="w-100">
-                                    <Typography align="left" className="d-flex w-100">
-                                      Foreign TIN Country
-                                      {/* <span style={{ color: 'red' }}>*</span> */}
-                                    </Typography>
-                                    <select
-                                      style={{
-                                        padding: " 0 10px",
-                                        color: "#121112",
-                                        fontStyle: "italic",
-                                        height: "36px",
-                                      }}
-                                      name="foreignTINCountryId"
-                                      id="Income"
-                                      defaultValue={0}
-                                      onChange={(e) => {
-                                        handleChange(e);
-                                        if (Number(e.target.value) === 0) {
-                                          setFieldValue("foreignTIN", "");
-                                        } else if (values.foreignTINCountryId == 0 || values.foreignTINNotAvailable == true) {
-                                          setFieldValue("foreignTIN", "");
-                                        }else if (e.target.value) {
-                                          setFieldValue("foreignTIN", "");
-                                        }
-                                      }}
-                                      value={values.foreignTINCountryId}
-                                    >
-                                      <option value={0}>---select---</option>
-                                      {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                        ?.filter((ele: any) => ele.isImportantCountry === "Yes")
-                                        .map((ele: any) => (
-                                          <option key={ele.id} value={ele.id}>
-                                            {ele.name}
-                                          </option>
-                                        ))}
-                                      <option value={500}>---</option>
-                                      {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                        ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
-                                        .map((ele: any) => (
-                                          <option key={ele.id} value={ele.id}>
-                                            {ele.name}
-                                          </option>
-                                        ))}
-                                    </select>
-                                  </FormControl>
-                                </div>
-
-                                <div className="col-lg-6 col-12 col-md-3 mt-3">
-                                  <FormControl className="w-100">
-                                    <Typography align="left">
-                                      Foreign TIN
-                                      {selectedCountry && selectedCountry.foreignTinFormatToolTip !== null &&(
-              <span>
-                <Tooltip
-                  style={{
-                    backgroundColor: "black",
-                    color: "white",
-                  }}
-                  title={selectedCountry.foreignTinFormatToolTip}
-                >
-                  <Info
-                    onClick={() => setToolInfo("ForeignTin")}
-                    style={{
-                      color: "#ffc107",
-                      fontSize: "15px",
-                      verticalAlign: "super",
-                      cursor: "pointer",
-                    }}
-                  />
-                </Tooltip>
-              </span>
-            )}
-                                    </Typography>
-
-                                    <InputMask
-                                      disabled={
-                                        values.foreignTINCountryId == 0 ||
-                                        (values.foreignTINCountryId != 0 &&
-                                          values.foreignTINNotAvailable === true)
+                              <div className="col-lg-3 col-6 col-md-3 ">
+                                <FormControl className="w-100">
+                                  <Typography align="left" className="d-flex w-100">
+                                    Foreign TIN Country
+                                    {/* <span style={{ color: 'red' }}>*</span> */}
+                                  </Typography>
+                                  <select
+                                    style={{
+                                      padding: " 0 10px",
+                                      color: "#121112",
+                                      fontStyle: "italic",
+                                      height: "36px",
+                                    }}
+                                    name="foreignTINCountryId"
+                                    id="Income"
+                                    defaultValue={0}
+                                    onChange={(e) => {
+                                      handleChange(e);
+                                      if (Number(e.target.value) === 0) {
+                                        setFieldValue("foreignTIN", "");
+                                      } else if (values.foreignTINCountryId == 0 || values.foreignTINNotAvailable == true) {
+                                        setFieldValue("foreignTIN", "");
+                                      } else if (e.target.value) {
+                                        setFieldValue("foreignTIN", "");
                                       }
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                      }}
-                                      id="outlined"
-                                      name="foreignTIN"
-                                      placeholder="Enter foreign TIN"
-                                      mask={selectedCountryMask ? selectedCountryMask : "********************"}
-                                      onChange={(e:any) => {
-                                        handleChange(e);
-                                        // setFieldValue("foreignTIN", "");
-                                      }}
-                                      // onKeyDown={(e) => formatTin(e, values)}
-                                      // inputProps={{
-                                      //   maxLength:
-                                      //     values.foreignTINCountryId == 257 && !values.alternativeTINFormat
-                                      //       ? 10
-                                      //       : 20,
-                                      // }}
-                                      value={values.foreignTIN}
-                                    />
-                                  </FormControl>
-                                  {/* <div className="d-flex">
-                                                  
-                                                  <Typography
-                                                    style={{ fontSize: "13px", marginTop: "10px" }}
-                                                  >
-                                                    Not Available{" "}
-                                                  </Typography>
-                                                  <Radio
-                                                    disabled={values.foreignTINCountryId == 0}
-                                                    // foreignTINNotAvailable
-                                                    name="radio-buttons"
-                                                    checked={values.foreignTINNotAvailable}
-                                                    onChange={(e) => {
-                                                      handleChange(e); //condition
-                                                    }}
-                                                    // setPayload({
-                                                    //   ...payload,
-                                                    //   foreignTINNotAvailable:
-                                                    //     !payload.foreignTINNotAvailable,
-                                                    //   alternativeTINFormat:
-                                                    //     payload.foreignTINNotAvailable,
-                                                    // })
-                                                    // value="no"
-                  
-                                                    inputProps={{ "aria-label": "No" }}
-                                                  />
-                                                  <Typography
-                                                    style={{ fontSize: "13px", marginTop: "10px" }}
-                                                  >
-                                                    Alternative TIN Format
-                                                  </Typography>
-                                                  <Radio
-                                                    disabled={
-                                                      values.foreignTINCountryId == 0 ||
-                                                      values.foreignTINCountryId != 257
-                                                    }
-                                                    name="radio-buttons"
-                                                    checked={values.alternativeTINFormat}
-                                                    onChange={() =>
-                                                      setPayload({
-                                                        ...payload,
-                                                        alternativeTINFormat:
-                                                          !payload.alternativeTINFormat,
-                                                        foreignTINNotAvailable:
-                                                          payload.alternativeTINFormat,
-                                                      })
-                                                    }
-                                                    inputProps={{ "aria-label": "Yes" }}
-                                                  />
-                                                </div> */}
-                                  <div className="d-flex">
-                                    <Typography
-                                      style={{ fontSize: "13px", marginTop: "10px" }}
-                                    >
-                                      Not Available{" "}
-                                    </Typography>
-                                    <FormControl
-                                      error={Boolean(
-                                        touched.foreignTINNotAvailable &&
-                                        errors.foreignTINNotAvailable
-                                      )}
-                                    >
-                                      <Checkbox
-                                        id="foreignTINNotAvailable"
-                                        aria-labelledby="demo-row-radio-buttons-group-label"
-                                        value={values.foreignTINNotAvailable}
-                                        checked={values.foreignTINNotAvailable}
-                                        disabled={values.foreignTINCountryId == 0}
-                                        onChange={(e) => {
-                                          handleChange(e);
-                                          if (e.target.value)
-                                            setFieldValue(
-                                              "alternativeTINFormat",
-                                              false
-                                            );
-                                          setFieldValue("foreignTIN", "");
-                                        }}
-                                      />
-
-                                      {errors.foreignTINNotAvailable &&
-                                        touched.foreignTINNotAvailable ? (
-                                        <div>
-                                          <Typography color="error">
-                                            {errors.foreignTINNotAvailable}
-                                          </Typography>
-                                        </div>
-                                      ) : (
-                                        ""
-                                      )}
-                                    </FormControl>
-                                    <Typography
-                                      style={{ fontSize: "13px", marginTop: "10px" }}
-                                    >
-                                      Alternative TIN Format
-                                    </Typography>
-                                    <FormControl
-                                      error={Boolean(
-                                        touched.alternativeTINFormat &&
-                                        errors.alternativeTINFormat
-                                      )}
-                                    >
-                                      <Checkbox
-                                        id="alternativeTINFormat"
-                                        aria-labelledby="demo-row-radio-buttons-group-label"
-                                        value={values.alternativeTINFormat}
-                                        disabled={
-                                          values.foreignTINCountryId == 0 ||
-                                          values.foreignTINCountryId != 257
-                                        }
-
-                                        checked={values.alternativeTINFormat}
-                                        // disabled={values.foreignTINCountryId == 0}
-                                        onChange={(e) => {
-                                          handleChange(e);
-                                          if (e.target.value)
-                                            setFieldValue(
-                                              "foreignTINNotAvailable",
-                                              false
-                                            );
-                                          setFieldValue("foreignTIN", "");
-                                          // if(e.target.value) setFieldValue('alternativeTINFormat',!values.alternativeTINFormat)
-                                        }}
-                                      />
-
-
-                                      {errors.alternativeTINFormat &&
-                                        touched.alternativeTINFormat ? (
-                                        <div>
-                                          <Typography color="error">
-                                            {errors.alternativeTINFormat}
-                                          </Typography>
-                                        </div>
-                                      ) : (
-                                        ""
-                                      )}
-                                    </FormControl>
-                                    {values.alternativeTINFormat == true ? (
-                                  <Delete
-                                    onClick={() => {
-                                      handleChange(
-                                        "alternativeTINFormat"
-                                      )("");
-                                      setFieldValue("fTinNotAvailableReason", "")
-                                      setFieldValue("foreignTIN", "");
-                                      setToolInfo("");
                                     }}
-                                    style={{
-                                      color: "red",
-                                      fontSize: "20px",
-                                      marginTop: "11px",
-                                    }}
-                                  />
-                                ) : (
-                                  ""
-                                )}
-                                  </div>
-                                </div>
-                              </>
-
-
-
-
-                            </div>
-                          </div>
-
-                        ) : (
-                          <div className="col-12 d-flex">
-                            <div className="col-lg-3 col-6 col-md-3 ">
-                              <Typography align="left" className="d-flex w-100">
-                                U.S. TIN Type
-                                <span
-                                  style={{ color: "red", verticalAlign: "super" }}
-                                >
-                                  *
-                                </span>
-                              </Typography>
-
-                              <FormControl className="w-100">
-                                <select
-                                  style={{
-                                    padding: " 0 10px",
-                                    color: "#121112",
-                                    fontStyle: "italic",
-                                    height: "36px",
-                                  }}
-                                  name="taxpayerIdTypeID"
-                                  id="Income"
-                                  defaultValue={3}
-                                  onBlur={handleBlur}
-                                  onChange={(e: any) => {
-                                    handleChange(e);
-
-                                    if (
-                                      e.target.value == 0 ||
-                                      e.target.value == 1 ||
-                                      e.target.value == 3 ||
-                                      e.target.value == 7 ||
-                                      e.target.value == 8
-                                    )
-                                      setFieldValue("usTin", "");
-                                  }}
-                                  value={values.taxpayerIdTypeID}
-                                >
-                                  <option value="0">---select---</option>
-
-                                  {ustinValue?.map((ele: any) => (
-                                    // ele?.nonUSIndividual &&
-                                    //   values?.isUSIndividual == "no" ||
-                                    // ele?.usIndividual &&
-                                    //   values?.isUSIndividual == "Yes" ?
-                                    // (
-                                    <option
-                                      key={ele?.taxpayerIdTypeID}
-                                      value={ele?.taxpayerIdTypeID}
-                                    >
-                                      {ele?.taxpayerIdTypeName}
-                                    </option>
-                                    // ) : (
-                                    //   ""
-                                    // );
-                                  ))}
-                                </select>
-                                {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ? <p className="error">{errors.taxpayerIdTypeID}</p> : <></>}
-
-                              </FormControl>
-                            </div>
-                            <div className="col-lg-3 col-6 col-md-3 mx-2">
-                              <Typography align="left" className="d-flex w-100">
-                                U.S. TIN{" "}
-                                <span
-                                  style={{ color: "red", verticalAlign: "super" }}
-                                >
-                                  *
-                                </span>
-                              </Typography>
-                              <FormControl className="w-100">
-                                <InputMask
-                                  disabled={
-                                    // values.taxpayerIdTypeID == 3 ||
-                                    values.taxpayerIdTypeID == 1 ||
-                                    values.taxpayerIdTypeID == 7 ||
-                                    values.taxpayerIdTypeID == 8 ||
-                                    values.taxpayerIdTypeID == 0
-                                  }
-                                  style={{
-                                    border: " 1px solid #d9d9d9 ",
-                                    height: " 36px",
-                                    lineHeight: "36px ",
-                                    background: "#fff ",
-                                    fontSize: "13px",
-                                    color: " #000 ",
-                                    fontStyle: "normal",
-                                    borderRadius: "1px",
-                                    padding: " 0 10px ",
-                                  }}
-                                  id="outlined"
-                                  name="usTin"
-                                  placeholder="Enter U.S. TIN"
-                                  // onKeyDown={(e: any) => formatTin(e, values)}
-                                  onChange={handleChange}
-                                  mask={
-                                    values.taxpayerIdTypeID == 2 ? "99-9999999" : "999-99-9999"
-                                  }
-                                  onBlur={handleBlur}
-                                  error={Boolean(touched.usTin && errors.usTin)}
-                                  value={values.usTin}
-                                />
-                                {errors.usTin && touched.usTin ? <p className="error">{errors.usTin}</p> : <></>}
-
-                              </FormControl>
-                            </div>
-                          </div>
-                        )}
-
-                      </Collapse>) : <>
-                      <Collapse
-                        className="px-5 mx-2"
-                        in={open === "tax"}
-                        timeout="auto"
-                        unmountOnExit
-                      >
-                        {values.isUSIndividual === "no" ? (
-                          <div className="row d-flex mt-3">
-                            <div className="col-lg-3 col-6 col-md-3 ">
-                              <FormControl className="w-100">
-                                <Typography align="left" className="d-flex w-100">
-                                  U.S. TIN Type
-                                  <span
-                                    style={{
-                                      color: "red",
-                                      verticalAlign: "super",
-                                    }}
+                                    value={values.foreignTINCountryId}
                                   >
-                                    *
-                                  </span>
-                                </Typography>
-                                <select
-                                  style={{
-                                    padding: " 0 10px",
-                                    color: "#121112",
-                                    fontStyle: "italic",
-                                    height: "36px",
-                                  }}
-                                  name="taxpayerIdTypeID"
-                                  id="Income"
-                                  defaultValue={0}
-                                  onBlur={handleBlur}
-                                  onChange={(e: any) => {
-                                    handleChange(e);
+                                    <option value={0}>---select---</option>
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                      ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                      .map((ele: any) => (
+                                        <option key={ele.id} value={ele.id}>
+                                          {ele.name}
+                                        </option>
+                                      ))}
+                                    <option value={500}>---</option>
+                                    {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                      ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                      .map((ele: any) => (
+                                        <option key={ele.id} value={ele.id}>
+                                          {ele.name}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </FormControl>
+                              </div>
 
-                                    var nm = getTaxPayerName(e.target.value);
+                              <div className="col-lg-3 col-6 col-md-3">
+                                <FormControl className="w-100">
+                                  <Typography align="left">
+                                    Foreign TIN
+                                    {selectedCountry && selectedCountry.foreignTinFormatToolTip !== null && (
+                                      <span>
+                                        <Tooltip
+                                          style={{
+                                            backgroundColor: "black",
+                                            color: "white",
+                                          }}
+                                          title={selectedCountry.foreignTinFormatToolTip}
+                                        >
+                                          <Info
+                                            onClick={() => setToolInfo("ForeignTin")}
+                                            style={{
+                                              color: "#ffc107",
+                                              fontSize: "15px",
+                                              verticalAlign: "super",
+                                              cursor: "pointer",
+                                            }}
+                                          />
+                                        </Tooltip>
+                                      </span>
+                                    )}
+                                  </Typography>
 
-                                    setFieldValue("taxpayerIdTypeName", nm);
-
-                                    if (
-                                      e.target.value == 0 ||
-                                      e.target.value == 1 ||
-                                      e.target.value == 3 ||
-                                      e.target.value == 4 ||
-                                      e.target.value == 7 ||
-                                      e.target.value == 8
-                                    )
-                                      setFieldValue("usTin", "");
-                                  }}
-                                  value={values.taxpayerIdTypeID}
-                                >
-
-                                  {/* <>{console.log(ustinValue, "")}</> */}
-                                  <option value={0}>---select---</option>
-
-                                  {notUsIndividual?.map((ele: any) => (
-                                    // ele?.nonUSIndividual &&
-                                    //   values?.isUSIndividual == "no" ||
-                                    // ele?.usIndividual &&
-                                    //   values?.isUSIndividual == "Yes" ?
-                                    // (
-                                    <option
-
-                                      key={ele?.taxpayerIdTypeID}
-                                      value={ele?.taxpayerIdTypeID}
-                                    >
-                                      {ele?.taxpayerIdTypeName}
-                                    </option>
-                                    // ) : (
-                                    //   ""
-                                    // );
-                                  ))}
-                                </select>
-                                {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ? <p className="error">{errors.taxpayerIdTypeID}</p> : <></>}
-                              </FormControl>
-                            </div>
-
-                            <div className="col-lg-3 col-6 col-md-3">
-                              <FormControl className="w-100" >
-                                <Typography className="d-flex w-100" align="left">
-                                  U.S. TIN
-                                  <span
-                                    style={{
-                                      color: "red",
-                                      verticalAlign: "super",
-                                    }}
-                                  >
-                                    *
-                                  </span>
-                                </Typography>
-                                <InputMask
-                                  disabled={
-                                    values.taxpayerIdTypeID == 8 ||
-                                    values.taxpayerIdTypeID == 7 ||
-                                    values.taxpayerIdTypeID == 1 ||
-                                    values.taxpayerIdTypeID == 0
-                                  }
-                                  style={{
-                                    border: " 1px solid #d9d9d9 ",
-                                    height: " 36px",
-                                    lineHeight: "36px ",
-                                    background: "#fff ",
-                                    fontSize: "13px",
-                                    color: " #000 ",
-                                    fontStyle: "normal",
-                                    borderRadius: "1px",
-                                    padding: " 0 10px ",
-                                  }}
-                                  id="outlined"
-                                  name="usTin"
-                                  placeholder="Enter U.S. TIN"
-                                  // onKeyDown={(e: any) => formatTin(e, values)}
-                                  onChange={handleChange}
-                                  mask={
-                                    values.taxpayerIdTypeID == 2 ? "99-9999999" : "999-99-9999"
-                                  }
-                                  onBlur={handleBlur}
-                                  error={Boolean(touched.usTin && errors.usTin)}
-                                  value={values.usTin}
-                                />
-                                {errors.usTin && touched.usTin ? <p className="error">{errors.usTin}</p> : <></>}
-
-                              </FormControl>
-                            </div>
-
-                            <div className="col-lg-3 col-6 col-md-3 ">
-                              <FormControl className="w-100">
-                                <Typography align="left" className="d-flex w-100">
-                                  Foreign TIN Country
-                                  {/* <span style={{ color: 'red' }}>*</span> */}
-                                </Typography>
-                                <select
-                                  style={{
-                                    padding: " 0 10px",
-                                    color: "#121112",
-                                    fontStyle: "italic",
-                                    height: "36px",
-                                  }}
-                                  name="foreignTINCountryId"
-                                  id="Income"
-                                  defaultValue={0}
-                                  onChange={(e) => {
-                                    handleChange(e);
-                                    if (Number(e.target.value) === 0) {
-                                      setFieldValue("foreignTIN", "");
-                                    } else if (values.foreignTINCountryId == 0 || values.foreignTINNotAvailable == true) {
-                                      setFieldValue("foreignTIN", "");
-                                    }else if (e.target.value) {
-                                      setFieldValue("foreignTIN", "");
+                                  <InputMask
+                                    disabled={
+                                      values.foreignTINCountryId == 0 ||
+                                      (values.foreignTINCountryId != 0 &&
+                                        values.foreignTINNotAvailable === true)
                                     }
-                                  }}
-                                  value={values.foreignTINCountryId}
-                                >
-                                  <option value={0}>---select---</option>
-                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                    ?.filter((ele: any) => ele.isImportantCountry === "Yes")
-                                    .map((ele: any) => (
-                                      <option key={ele.id} value={ele.id}>
-                                        {ele.name}
-                                      </option>
-                                    ))}
-                                  <option value={500}>---</option>
-                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                    ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
-                                    .map((ele: any) => (
-                                      <option key={ele.id} value={ele.id}>
-                                        {ele.name}
-                                      </option>
-                                    ))}
-                                </select>
-                              </FormControl>
-                            </div>
-
-                            <div className="col-lg-3 col-6 col-md-3">
-                              <FormControl className="w-100">
-                                <Typography align="left">
-                                  Foreign TIN
-                                  {selectedCountry && selectedCountry.foreignTinFormatToolTip !== null &&(
-              <span>
-                <Tooltip
-                  style={{
-                    backgroundColor: "black",
-                    color: "white",
-                  }}
-                  title={selectedCountry.foreignTinFormatToolTip}
-                >
-                  <Info
-                    onClick={() => setToolInfo("ForeignTin")}
-                    style={{
-                      color: "#ffc107",
-                      fontSize: "15px",
-                      verticalAlign: "super",
-                      cursor: "pointer",
-                    }}
-                  />
-                </Tooltip>
-              </span>
-            )}
-                                    </Typography>
-
-                                    <InputMask
-                                      disabled={
-                                        values.foreignTINCountryId == 0 ||
-                                        (values.foreignTINCountryId != 0 &&
-                                          values.foreignTINNotAvailable === true)
-                                      }
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                      }}
-                                      id="outlined"
-                                      name="foreignTIN"
-                                      placeholder="Enter foreign TIN"
-                                      mask={selectedCountryMask ? selectedCountryMask : "********************"}
-                                      onChange={(e:any) => {
-                                        handleChange(e);
-                                        // setFieldValue("foreignTIN", "");
-                                      }}
-                                      // onKeyDown={(e) => formatTin(e, values)}
-                                      // inputProps={{
-                                      //   maxLength:
-                                      //     values.foreignTINCountryId == 257 && !values.alternativeTINFormat
-                                      //       ? 10
-                                      //       : 20,
-                                      // }}
-                                      value={values.foreignTIN}
-                                    />
-                              </FormControl>
-                              {/* <div className="d-flex">
+                                    style={{
+                                      border: " 1px solid #d9d9d9 ",
+                                      height: " 36px",
+                                      lineHeight: "36px ",
+                                      background: "#fff ",
+                                      fontSize: "13px",
+                                      color: " #000 ",
+                                      fontStyle: "normal",
+                                      borderRadius: "1px",
+                                      padding: " 0 10px ",
+                                    }}
+                                    id="outlined"
+                                    name="foreignTIN"
+                                    placeholder="Enter foreign TIN"
+                                    mask={selectedCountryMask ? selectedCountryMask : "********************"}
+                                    onChange={(e: any) => {
+                                      handleChange(e);
+                                      // setFieldValue("foreignTIN", "");
+                                    }}
+                                    // onKeyDown={(e) => formatTin(e, values)}
+                                    // inputProps={{
+                                    //   maxLength:
+                                    //     values.foreignTINCountryId == 257 && !values.alternativeTINFormat
+                                    //       ? 10
+                                    //       : 20,
+                                    // }}
+                                    value={values.foreignTIN}
+                                  />
+                                </FormControl>
+                                {/* <div className="d-flex">
                                                 
                                                 <Typography
                                                   style={{ fontSize: "13px", marginTop: "10px" }}
@@ -3360,209 +3371,654 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                                   inputProps={{ "aria-label": "Yes" }}
                                                 />
                                               </div> */}
-                              <div className="d-flex">
-                                <Typography
-                                  style={{ fontSize: "13px", marginTop: "10px" }}
-                                >
-                                  Not Available{" "}
-                                </Typography>
-                                <FormControl
-                                  error={Boolean(
-                                    touched.foreignTINNotAvailable &&
-                                    errors.foreignTINNotAvailable
-                                  )}
-                                >
-                                  <Checkbox
-                                    id="foreignTINNotAvailable"
-                                    aria-labelledby="demo-row-radio-buttons-group-label"
-                                    value={values.foreignTINNotAvailable}
-                                    checked={values.foreignTINNotAvailable}
-                                    disabled={values.foreignTINCountryId == 0}
-                                    onChange={(e) => {
-                                      handleChange(e);
-                                      if (e.target.value)
-                                        setFieldValue(
-                                          "alternativeTINFormat",
-                                          false
-                                        );
-                                    }}
-                                  />
-
-                                  {errors.foreignTINNotAvailable &&
-                                    touched.foreignTINNotAvailable ? (
-                                    <div>
-                                      <Typography color="error">
-                                        {errors.foreignTINNotAvailable}
-                                      </Typography>
-                                    </div>
-                                  ) : (
-                                    ""
-                                  )}
-                                </FormControl>
-                                <Typography
-                                  style={{ fontSize: "13px", marginTop: "10px" }}
-                                >
-                                  Alternative TIN Format
-                                </Typography>
-                                <FormControl
-                                  error={Boolean(
-                                    touched.alternativeTINFormat &&
-                                    errors.alternativeTINFormat
-                                  )}
-                                >
-                                  <Checkbox
-                                    id="alternativeTINFormat"
-                                    aria-labelledby="demo-row-radio-buttons-group-label"
-                                    value={values.alternativeTINFormat}
-                                    // disabled={
-                                    //   values.foreignTINCountryId == 0 ||
-                                    //   values.foreignTINCountryId != 257
-                                    // }
-
-                                    checked={values.alternativeTINFormat}
-                                    disabled={
-                                      values.foreignTINCountryId == 0 ||
-                                      values.foreignTINCountryId != 257
-                                    }
-                                    onChange={(e) => {
-                                      handleChange(e);
-                                      if (e.target.value)
-                                        setFieldValue(
-                                          "foreignTINNotAvailable",
-                                          false
-                                        );
-                                      // if(e.target.value) setFieldValue('alternativeTINFormat',!values.alternativeTINFormat)
-                                    }}
-                                  />
-
-                                  {errors.alternativeTINFormat &&
-                                    touched.alternativeTINFormat ? (
-                                    <div>
-                                      <Typography color="error">
-                                        {errors.alternativeTINFormat}
-                                      </Typography>
-                                    </div>
-                                  ) : (
-                                    ""
-                                  )}
-                                </FormControl>
-                                {values.alternativeTINFormat == true ? (
-                                  <Delete
-                                    onClick={() => {
-                                      handleChange(
-                                        "alternativeTINFormat"
-                                      )("");
-                                      setFieldValue("fTinNotAvailableReason", "")
-                                      setFieldValue("foreignTIN", "");
-                                      setToolInfo("");
-                                    }}
-                                    style={{
-                                      color: "red",
-                                      fontSize: "20px",
-                                      marginTop: "11px",
-                                    }}
-                                  />
-                                ) : (
-                                  ""
-                                )}
-                              </div>
-                            </div>
-                            <div className="col-12">
-                              <div className="row">
-                                <div className="col-lg-3 col-6 col-md-3 ">
+                                <div className="d-flex">
                                   <Typography
-                                    align="left"
-                                    className="d-flex w-100"
+                                    style={{ fontSize: "13px", marginTop: "10px" }}
                                   >
-                                    Value Added Tax Number (VAT)
-                                    <span style={{ color: "red" }}>*</span>
+                                    Not Available{" "}
                                   </Typography>
-
-                                  <FormControl className="w-100">
-                                    <select
-                                      style={{
-                                        padding: " 0 10px",
-                                        color: "#121112",
-                                        fontStyle: "italic",
-                                        height: "36px",
-                                      }}
-                                      name="vatId"
-                                      onBlur={handleBlur}
-                                      defaultValue={0}
-                                      onChange={(e: any) => {
+                                  <FormControl
+                                    error={Boolean(
+                                      touched.foreignTINNotAvailable &&
+                                      errors.foreignTINNotAvailable
+                                    )}
+                                  >
+                                    <Checkbox
+                                      id="foreignTINNotAvailable"
+                                      aria-labelledby="demo-row-radio-buttons-group-label"
+                                      value={values.foreignTINNotAvailable}
+                                      checked={values.foreignTINNotAvailable}
+                                      disabled={values.foreignTINCountryId == 0}
+                                      onChange={(e) => {
                                         handleChange(e);
-
-                                        if (
-                                          e.target.value == 2 ||
-                                          e.target.value == 0
-                                        )
-                                          setFieldValue("vat", "");
-                                        if (e.target.value == 1)
-                                          setFieldValue("vat", vatdata);
+                                        if (e.target.value)
+                                          setFieldValue(
+                                            "alternativeTINFormat",
+                                            false
+                                          );
                                       }}
-                                      value={values.vatId}
-                                    >
-                                      <option value={0}>---select---</option>
-                                      <option value={1}>My VAT Number is</option>
-                                      <option value={2}>
-                                        I Do Not Have A VAT Number
-                                      </option>
-                                    </select>
-
-                                    {errors.vatId && touched.vatId ? <p className="error">{errors.vatId}</p> : <></>}
-                                  </FormControl>
-                                </div>
-
-                                <div className="col-lg-3 col-6 col-md-3 ">
-                                  <FormControl className="w-100">
-                                    <Typography align="left">
-                                      Value Added Tax Number (VAT)
-                                      {/* <span style={{ color: 'red' }}>*</span> */}
-                                    </Typography>
-                                    <Input
-                                      disabled={
-                                        values.vatId == 0 || values.vatId == 2
-                                      }
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                      }}
-                                      id="outlined"
-                                      name="vat"
-                                      placeholder="Enter Value Added Tax Number"
-                                      // onKeyDown={formatTin}
-                                      onChange={(e: any) => {
-                                        handleChange(e);
-                                        setVatData(e.target.value);
-                                      }}
-                                      // inputProps={{ maxLength: 9 }}
-                                      onBlur={handleBlur}
-                                      error={Boolean(touched.vat && errors.vat)}
-                                      value={values.vat}
                                     />
-                                    {errors.vat && touched.vat ? <p className="error">{errors.vat}</p> : <></>}
+
+                                    {errors.foreignTINNotAvailable &&
+                                      touched.foreignTINNotAvailable ? (
+                                      <div>
+                                        <Typography color="error">
+                                          {errors.foreignTINNotAvailable}
+                                        </Typography>
+                                      </div>
+                                    ) : (
+                                      ""
+                                    )}
                                   </FormControl>
+                                  <Typography
+                                    style={{ fontSize: "13px", marginTop: "10px" }}
+                                  >
+                                    Alternative TIN Format
+                                  </Typography>
+                                  <FormControl
+                                    error={Boolean(
+                                      touched.alternativeTINFormat &&
+                                      errors.alternativeTINFormat
+                                    )}
+                                  >
+                                    <Checkbox
+                                      id="alternativeTINFormat"
+                                      aria-labelledby="demo-row-radio-buttons-group-label"
+                                      value={values.alternativeTINFormat}
+                                      // disabled={
+                                      //   values.foreignTINCountryId == 0 ||
+                                      //   values.foreignTINCountryId != 257
+                                      // }
+
+                                      checked={values.alternativeTINFormat}
+                                      disabled={
+                                        values.foreignTINCountryId == 0 ||
+                                        values.foreignTINCountryId != 257
+                                      }
+                                      onChange={(e) => {
+                                        handleChange(e);
+                                        if (e.target.value)
+                                          setFieldValue(
+                                            "foreignTINNotAvailable",
+                                            false
+                                          );
+                                        // if(e.target.value) setFieldValue('alternativeTINFormat',!values.alternativeTINFormat)
+                                      }}
+                                    />
+
+                                    {errors.alternativeTINFormat &&
+                                      touched.alternativeTINFormat ? (
+                                      <div>
+                                        <Typography color="error">
+                                          {errors.alternativeTINFormat}
+                                        </Typography>
+                                      </div>
+                                    ) : (
+                                      ""
+                                    )}
+                                  </FormControl>
+                                  {values.alternativeTINFormat == true ? (
+                                    <Delete
+                                      onClick={() => {
+                                        handleChange(
+                                          "alternativeTINFormat"
+                                        )("");
+                                        setFieldValue("fTinNotAvailableReason", "")
+                                        setFieldValue("foreignTIN", "");
+                                        setToolInfo("");
+                                      }}
+                                      style={{
+                                        color: "red",
+                                        fontSize: "20px",
+                                        marginTop: "11px",
+                                      }}
+                                    />
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                              </div>
+                              <div className="col-12">
+                                <div className="row">
+                                  <div className="col-lg-3 col-6 col-md-3 ">
+                                    <Typography
+                                      align="left"
+                                      className="d-flex w-100"
+                                    >
+                                      Value Added Tax Number (VAT)
+                                      <span style={{ color: "red" }}>*</span>
+                                    </Typography>
+
+                                    <FormControl className="w-100">
+                                      <select
+                                        style={{
+                                          padding: " 0 10px",
+                                          color: "#121112",
+                                          fontStyle: "italic",
+                                          height: "36px",
+                                        }}
+                                        name="vatId"
+                                        onBlur={handleBlur}
+                                        defaultValue={0}
+                                        onChange={(e: any) => {
+                                          handleChange(e);
+
+                                          if (
+                                            e.target.value == 2 ||
+                                            e.target.value == 0
+                                          )
+                                            setFieldValue("vat", "");
+                                          if (e.target.value == 1)
+                                            setFieldValue("vat", vatdata);
+                                        }}
+                                        value={values.vatId}
+                                      >
+                                        <option value={0}>---select---</option>
+                                        <option value={1}>My VAT Number is</option>
+                                        <option value={2}>
+                                          I Do Not Have A VAT Number
+                                        </option>
+                                      </select>
+
+                                      {errors.vatId && touched.vatId ? <p className="error">{errors.vatId}</p> : <></>}
+                                    </FormControl>
+                                  </div>
+
+                                  <div className="col-lg-3 col-6 col-md-3 ">
+                                    <FormControl className="w-100">
+                                      <Typography align="left">
+                                        Value Added Tax Number (VAT)
+                                        {/* <span style={{ color: 'red' }}>*</span> */}
+                                      </Typography>
+                                      <Input
+                                        disabled={
+                                          values.vatId == 0 || values.vatId == 2
+                                        }
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          height: " 36px",
+                                          lineHeight: "36px ",
+                                          background: "#fff ",
+                                          fontSize: "13px",
+                                          color: " #000 ",
+                                          fontStyle: "normal",
+                                          borderRadius: "1px",
+                                          padding: " 0 10px ",
+                                        }}
+                                        id="outlined"
+                                        name="vat"
+                                        placeholder="Enter Value Added Tax Number"
+                                        // onKeyDown={formatTin}
+                                        onChange={(e: any) => {
+                                          handleChange(e);
+                                          setVatData(e.target.value);
+                                        }}
+                                        // inputProps={{ maxLength: 9 }}
+                                        onBlur={handleBlur}
+                                        error={Boolean(touched.vat && errors.vat)}
+                                        value={values.vat}
+                                      />
+                                      {errors.vat && touched.vat ? <p className="error">{errors.vat}</p> : <></>}
+                                    </FormControl>
+                                  </div>
                                 </div>
                               </div>
                             </div>
+                          ) : (
+                            <div className="col-12 d-flex">
+                              <div className="col-lg-3 col-6 col-md-3 ">
+                                <Typography align="left" className="d-flex w-100">
+                                  U.S. TIN Type
+                                  <span
+                                    style={{ color: "red", verticalAlign: "super" }}
+                                  >
+                                    *
+                                  </span>
+                                </Typography>
+
+                                <FormControl className="w-100">
+                                  <select
+                                    style={{
+                                      padding: " 0 10px",
+                                      color: "#121112",
+                                      fontStyle: "italic",
+                                      height: "36px",
+                                    }}
+                                    name="taxpayerIdTypeID"
+                                    id="Income"
+                                    onBlur={handleBlur}
+                                    defaultValue={3}
+                                    onChange={(e: any) => {
+                                      handleChange(e);
+
+                                      if (
+                                        e.target.value == 0 ||
+                                        e.target.value == 1 ||
+                                        e.target.value == 3 ||
+                                        e.target.value == 7 ||
+                                        e.target.value == 8
+                                      )
+                                        setFieldValue("usTin", "");
+                                    }}
+                                    value={values.taxpayerIdTypeID}
+                                  >
+                                    <option value="0">---select---</option>
+
+                                    {ustinValue?.map((ele: any) => (
+                                      // ele?.nonUSIndividual &&
+                                      //   values?.isUSIndividual == "no" ||
+                                      // ele?.usIndividual &&
+                                      //   values?.isUSIndividual == "Yes" ?
+                                      // (
+                                      <option
+                                        key={ele?.taxpayerIdTypeID}
+                                        value={ele?.taxpayerIdTypeID}
+                                      >
+                                        {ele?.taxpayerIdTypeName}
+                                      </option>
+                                      // ) : (
+                                      //   ""
+                                      // );
+                                    ))}
+                                  </select>
+                                  {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ? <p className="error">{errors.taxpayerIdTypeID}</p> : <></>}
+
+                                </FormControl>
+                              </div>
+                              <div className="col-lg-3 col-6 col-md-3 mx-2">
+                                <Typography align="left" className="d-flex w-100">
+                                  U.S. TIN{" "}
+                                  <span
+                                    style={{ color: "red", verticalAlign: "super" }}
+                                  >
+                                    *
+                                  </span>
+                                </Typography>
+                                <FormControl className="w-100">
+                                  <InputMask
+                                    disabled={
+                                      // values.taxpayerIdTypeID == 3 ||
+                                      values.taxpayerIdTypeID == 1 ||
+                                      values.taxpayerIdTypeID == 7 ||
+                                      values.taxpayerIdTypeID == 8 ||
+                                      values.taxpayerIdTypeID == 0
+                                    }
+                                    style={{
+                                      border: " 1px solid #d9d9d9 ",
+                                      height: " 36px",
+                                      lineHeight: "36px ",
+                                      background: "#fff ",
+                                      fontSize: "13px",
+                                      color: " #000 ",
+                                      fontStyle: "normal",
+                                      borderRadius: "1px",
+                                      padding: " 0 10px ",
+                                    }}
+                                    id="outlined"
+                                    name="usTin"
+                                    placeholder="Enter U.S. TIN"
+                                    // onKeyDown={(e: any) => formatTin(e, values)}
+                                    onChange={handleChange}
+                                    mask={
+                                      values.taxpayerIdTypeID == 2 ? "99-9999999" : "999-99-9999"
+                                    }
+                                    onBlur={handleBlur}
+                                    error={Boolean(touched.usTin && errors.usTin)}
+                                    value={values.usTin}
+                                  />
+                                  {errors.usTin && touched.usTin ? <p className="error">{errors.usTin}</p> : <></>}
+
+                                </FormControl>
+                              </div>
+                            </div>
+                          )}
+                        </Collapse>
+                      </>}
+                      <hr className="w-100"></hr>
+
+                      <CardHeader
+                        className="flex-row-reverse"
+                        title={
+                          <div
+                            style={{
+                              marginLeft: "13px",
+                            }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "left",
+                                cursor: "pointer",
+                              }}
+                              onClick={() => handleOpen("pra")}
+                            >
+                              Permanent Residence Address
+                              <Tooltip
+                                style={{
+                                  backgroundColor: "black",
+                                  color: "white",
+                                }}
+                                title={
+                                  <>
+                                    <Typography color="inherit">
+                                      Address Details
+                                    </Typography>
+                                    <a
+
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setToolInfo("Address");
+                                      }}
+
+                                    >
+
+                                      <Typography
+                                        style={{
+                                          cursor: "pointer",
+                                          textDecorationLine: "underline",
+                                        }}
+                                        align="center"
+                                      >
+                                        {" "}
+                                        View More...
+                                      </Typography>
+                                    </a>
+                                  </>
+                                }
+                              >
+                                <Info
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+
+                                  }}
+                                  style={{
+                                    color: "#ffc107",
+                                    fontSize: "15px",
+                                    marginLeft: "5px",
+                                    cursor: "pointer",
+                                  }}
+                                />
+                              </Tooltip>
+                            </div>
+                            <p className="error mb-0">
+                              {errors?.permanentResidentialCountryId && touched?.permanentResidentialCountryId ||
+                                errors?.permanentResidentialStreetNumberandName && touched?.permanentResidentialStreetNumberandName ||
+                                errors?.permanentResidentialCityorTown && touched?.permanentResidentialCityorTown ||
+                                errors?.permanentResidentialZipPostalCode && touched?.permanentResidentialZipPostalCode ||
+                                errors?.isAddressRuralRoute && touched?.isAddressRuralRoute ||
+                                errors?.isalternativebusinessaddress && touched?.isalternativebusinessaddress ||
+                                errors?.isAddressPostOfficeBox && touched?.isAddressPostOfficeBox ||
+                                errors?.isCareOfAddress && touched?.isCareOfAddress ||
+                                errors?.permanentResidentialCountryId1 && touched?.permanentResidentialCountryId1 ||
+                                errors?.permanentResidentialStreetNumberandName1 && touched?.permanentResidentialStreetNumberandName1 ||
+                                errors?.permanentResidentialCityorTown1 && touched?.permanentResidentialCityorTown1 ||
+                                errors?.permanentResidentialZipPostalCode1 && touched?.permanentResidentialZipPostalCode1
+                                ? "Mandatory Information Required"
+                                : ""}
+                            </p>
                           </div>
-                        ) : (
-                          <div className="col-12 d-flex">
-                            <div className="col-lg-3 col-6 col-md-3 ">
-                              <Typography align="left" className="d-flex w-100">
-                                U.S. TIN Type
-                                <span
-                                  style={{ color: "red", verticalAlign: "super" }}
-                                >
-                                  *
-                                </span>
+                        }
+                        action={
+                          <IconButton
+                            onClick={() => handleOpen("pra")}
+                            aria-label="expand"
+                            size="small"
+                            style={{ marginTop: "3px" }}
+                          >
+                            {open === "pra" ? (
+                              <RemoveCircleOutlineOutlined />
+                            ) : (
+                              <ControlPointOutlined />
+                            )}
+                          </IconButton>
+                        }
+                      ></CardHeader>
+
+                      {toolInfo === "Address" ? (
+                        <div>
+                          <Paper
+                            style={{
+                              backgroundColor: "#dedcb1",
+                              padding: "15px",
+                            }}
+                          >
+                            <Typography>
+                              Please enter the permanent residence address of the
+                              individual, business or organization the submission
+                              represents. This should be in the country where that
+                              payee’s income tax submission is made.
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              If there is a mailing address that differs from the
+                              permanent address, then please enter that as well.
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              IRS Guidance:
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              Non-US Person, W-8 submissions, should not use a
+                              Post Office (PO Box), a Care-of-address, or mailing
+                              address of a financial organization as these may not
+                              be considered valid. If you do, the agent receiving
+                              the form may require additional information from you
+                              to help validate your residency status. Ref: EH005
+                            </Typography>
+
+                            <Link
+                              underline="none"
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
+                              onClick={() => {
+                                setToolInfo("");
+                              }}
+                            >
+                              --Show Less--
+                            </Link>
+                          </Paper>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                      <Collapse
+                        className="px-5 mx-2"
+                        in={open === "pra"}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        <div className="d-flex">
+                          <div className="col-lg-3 col-6 col-md-3">
+                            <Typography align="left" className="d-flex w-100 ">
+                              Country:
+                              <span style={{ color: "red" }}>*</span>
+                            </Typography>
+
+                            <FormControl className="w-100">
+                              <select
+                                style={{
+                                  padding: " 0 10px",
+                                  color: "#121112",
+                                  fontStyle: "italic",
+                                  height: "36px",
+                                }}
+                                name="permanentResidentialCountryId"
+                                id="Income"
+                                defaultValue={1}
+                                onChange={(e) => {
+                                  handleChange(e);
+                                  // dispatch(getAllStateByCountryId(e.target.value));
+                                  setFieldValue('permanentResidentialStateorProvince', '');
+                                  dispatch(
+                                    getAllStateByCountryId1(e.target.value, (data: []) => {
+                                      setallStateById1(data);
+                                    }));
+
+
+                                }}
+                                onBlur={handleBlur}
+                                value={values.permanentResidentialCountryId}
+                              >
+                                <option value={0}>---select---</option>
+
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                  ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                  .map((ele: any) => (
+                                    <option key={ele.id} value={ele.id}>
+                                      {ele.name}
+                                    </option>
+                                  ))}
+                                <option value={500}>---</option>
+                                {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                  ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                  .map((ele: any) => (
+                                    <option key={ele.id} value={ele.id}>
+                                      {ele.name}
+                                    </option>
+                                  ))}
+                              </select>
+                              {errors.permanentResidentialCountryId && touched.permanentResidentialCountryId ? <p className="error">{errors.permanentResidentialCountryId}</p> : <></>}
+
+                            </FormControl>
+                          </div>
+                          {values.permanentResidentialCountryId == 186 ? (<div className="col-lg-3 col-6 col-md-3 mx-3">
+                            <FormControl className="w-100">
+                              <Typography align="left">
+                                Other:
+                                <span style={{ color: "red" }}>*</span>
+                              </Typography>
+                              <Input
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  height: " 36px",
+                                  lineHeight: "36px ",
+                                  background: "#fff ",
+                                  fontSize: "13px",
+                                  color: " #000 ",
+                                  fontStyle: "normal",
+                                  borderRadius: "1px",
+                                  padding: " 0 10px ",
+                                }}
+                                id="outlined"
+                                name="otherCountry"
+                                placeholder="Enter Other Country Name"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(
+                                  touched.otherCountry &&
+                                  errors.otherCountry
+                                )}
+                                value={
+                                  values.otherCountry
+                                }
+                              />
+                              {errors.otherCountry && touched.otherCountry ? <p className="error">{errors.otherCountry}</p> : <></>}
+
+                            </FormControl>
+                          </div>) : ""}
+
+
+                        </div>
+
+                        <div className="row">
+                          <div className="col-lg-3 col-6 col-md-3 mt-2">
+                            <FormControl className="w-100">
+                              <Typography align="left">
+                                Street Number and Name:
+                                <span style={{ color: "red" }}>*</span>
+                              </Typography>
+                              <Input
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  height: " 36px",
+                                  lineHeight: "36px ",
+                                  background: "#fff ",
+                                  fontSize: "13px",
+                                  color: " #000 ",
+                                  fontStyle: "normal",
+                                  borderRadius: "1px",
+                                  padding: " 0 10px ",
+                                }}
+                                id="outlined"
+                                name="permanentResidentialStreetNumberandName"
+                                placeholder="Enter Street Number and Name"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(
+                                  touched.permanentResidentialStreetNumberandName &&
+                                  errors.permanentResidentialStreetNumberandName
+                                )}
+                                value={
+                                  values.permanentResidentialStreetNumberandName
+                                }
+                              />
+                              {errors.permanentResidentialStreetNumberandName && touched.permanentResidentialStreetNumberandName ? <p className="error">{errors.permanentResidentialStreetNumberandName}</p> : <></>}
+
+                            </FormControl>
+                          </div>
+                          <div className="col-lg-3 col-6 col-md-3 mt-2">
+                            <FormControl className="w-100">
+                              <Typography align="left">Apt/Suite:</Typography>
+                              <Input
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  height: " 36px",
+                                  lineHeight: "36px ",
+                                  background: "#fff ",
+                                  fontSize: "13px",
+                                  color: " #000 ",
+                                  fontStyle: "normal",
+                                  borderRadius: "1px",
+                                  padding: " 0 10px ",
+                                }}
+                                id="outlined"
+                                name="permanentResidentialAptSuite"
+                                placeholder="Enter Apt/Suite"
+                                onChange={handleChange}
+                                value={values.permanentResidentialAptSuite}
+                              />
+
+                              {errors.permanentResidentialAptSuite && touched.permanentResidentialAptSuite ? <p className="error">{errors.permanentResidentialAptSuite}</p> : <></>}
+
+                            </FormControl>
+                          </div>
+                          <div className="col-lg-3 col-6 col-md-3 mt-2">
+                            <FormControl className="w-100">
+                              <Typography align="left">
+                                City or Town:
+                                <span style={{ color: "red" }}>*</span>
+                              </Typography>
+                              <Input
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  height: " 36px",
+                                  lineHeight: "36px ",
+                                  background: "#fff ",
+                                  fontSize: "13px",
+                                  color: " #000 ",
+                                  fontStyle: "normal",
+                                  borderRadius: "1px",
+                                  padding: " 0 10px ",
+                                }}
+                                id="outlined"
+                                name="permanentResidentialCityorTown"
+                                placeholder="Enter City or Town"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(
+                                  touched.permanentResidentialCityorTown &&
+                                  errors.permanentResidentialCityorTown
+                                )}
+                                value={values.permanentResidentialCityorTown}
+                              />
+                              {errors.permanentResidentialCityorTown && touched.permanentResidentialCityorTown ? <p className="error">{errors.permanentResidentialCityorTown}</p> : <></>}
+
+                            </FormControl>
+                          </div>
+                          {stateList1 &&
+                            stateList1
+                              ?.length > 0 ? (
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
+                              <Typography align="left" className="d-flex w-100 ">
+                                State or Province:
+                                {/* <span style={{ color: 'red' }}>*</span> */}
                               </Typography>
 
                               <FormControl className="w-100">
@@ -3573,64 +4029,40 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                     fontStyle: "italic",
                                     height: "36px",
                                   }}
-                                  name="taxpayerIdTypeID"
-                                  id="Income"
-                                  onBlur={handleBlur}
-                                  defaultValue={3}
-                                  onChange={(e: any) => {
-                                    handleChange(e);
-
-                                    if (
-                                      e.target.value == 0 ||
-                                      e.target.value == 1 ||
-                                      e.target.value == 3 ||
-                                      e.target.value == 7 ||
-                                      e.target.value == 8
-                                    )
-                                      setFieldValue("usTin", "");
-                                  }}
-                                  value={values.taxpayerIdTypeID}
+                                  name="permanentResidentialStateorProvince"
+                                  // id="Income"
+                                  onChange={handleChange}
+                                  value={
+                                    values.permanentResidentialStateorProvince
+                                  }
                                 >
-                                  <option value="0">---select---</option>
-
-                                  {ustinValue?.map((ele: any) => (
-                                    // ele?.nonUSIndividual &&
-                                    //   values?.isUSIndividual == "no" ||
-                                    // ele?.usIndividual &&
-                                    //   values?.isUSIndividual == "Yes" ?
-                                    // (
-                                    <option
-                                      key={ele?.taxpayerIdTypeID}
-                                      value={ele?.taxpayerIdTypeID}
-                                    >
-                                      {ele?.taxpayerIdTypeName}
-                                    </option>
-                                    // ) : (
-                                    //   ""
-                                    // );
-                                  ))}
+                                  <option value="0">
+                                    <em>---select---</em>
+                                  </option>
+                                  {stateList1?.map(
+                                    (ele: any) => (
+                                      <option key={ele?.id} value={ele?.name}>
+                                        {ele?.name}
+                                      </option>
+                                    )
+                                  )}
+                                  {/* <option key={GetStateByCountryIdReducer?.allCountriesStateIdData?.id} value={GetStateByCountryIdReducer?.allCountriesStateIdData?.name}>{GetStateByCountryIdReducer?.allCountriesStateIdData?.name}</option> */}
+                                  {/* {getCountriesReducer.allCountriesData?.map((ele:any) => (
+                                                <option key={ele?.id} value={ele?.id}>{ele?.name}</option>
+                                                    ))} */}
                                 </select>
-                                {errors.taxpayerIdTypeID && touched.taxpayerIdTypeID ? <p className="error">{errors.taxpayerIdTypeID}</p> : <></>}
-
                               </FormControl>
                             </div>
-                            <div className="col-lg-3 col-6 col-md-3 mx-2">
-                              <Typography align="left" className="d-flex w-100">
-                                U.S. TIN{" "}
-                                <span
-                                  style={{ color: "red", verticalAlign: "super" }}
-                                >
-                                  *
-                                </span>
-                              </Typography>
+                          ) : (
+                            <div className="col-lg-3 col-6 col-md-3 mt-2">
                               <FormControl className="w-100">
-                                <InputMask
+                                <Typography align="left">
+                                  State or Province:
+                                  {/* <span style={{ color: 'red' }}>*</span> */}
+                                </Typography>
+                                <Input
                                   disabled={
-                                    // values.taxpayerIdTypeID == 3 ||
-                                    values.taxpayerIdTypeID == 1 ||
-                                    values.taxpayerIdTypeID == 7 ||
-                                    values.taxpayerIdTypeID == 8 ||
-                                    values.taxpayerIdTypeID == 0
+                                    values.permanentResidentialCountryId == 0
                                   }
                                   style={{
                                     border: " 1px solid #d9d9d9 ",
@@ -3643,416 +4075,25 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                     borderRadius: "1px",
                                     padding: " 0 10px ",
                                   }}
-                                  id="outlined"
-                                  name="usTin"
-                                  placeholder="Enter U.S. TIN"
-                                  // onKeyDown={(e: any) => formatTin(e, values)}
+                                  // id="outlined"
+                                  name="permanentResidentialStateorProvince"
+                                  placeholder="Enter State or Province"
                                   onChange={handleChange}
-                                  mask={
-                                    values.taxpayerIdTypeID == 2 ? "99-9999999" : "999-99-9999"
+                                  value={
+                                    values.permanentResidentialStateorProvince
                                   }
-                                  onBlur={handleBlur}
-                                  error={Boolean(touched.usTin && errors.usTin)}
-                                  value={values.usTin}
                                 />
-                                {errors.usTin && touched.usTin ? <p className="error">{errors.usTin}</p> : <></>}
-
                               </FormControl>
                             </div>
-                          </div>
-                        )}
-                      </Collapse>
-                    </>}
-                    <hr className="w-100"></hr>
-
-                    <CardHeader
-                      className="flex-row-reverse"
-                      title={
-                        <div
-                          style={{
-                            marginLeft: "13px",
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "left",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => handleOpen("pra")}
-                          >
-                            Permanent Residence Address
-                            <Tooltip
-                              style={{
-                                backgroundColor: "black",
-                                color: "white",
-                              }}
-                              title={
-                                <>
-                                  <Typography color="inherit">
-                                    Address Details
-                                  </Typography>
-                                  <a
-
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setToolInfo("Address");
-                                    }}
-
-                                  >
-
-                                    <Typography
-                                      style={{
-                                        cursor: "pointer",
-                                        textDecorationLine: "underline",
-                                      }}
-                                      align="center"
-                                    >
-                                      {" "}
-                                      View More...
-                                    </Typography>
-                                  </a>
-                                </>
-                              }
-                            >
-                              <Info
-                                onClick={(e) => {
-                                  e.stopPropagation();
-
-                                }}
-                                style={{
-                                  color: "#ffc107",
-                                  fontSize: "15px",
-                                  marginLeft: "5px",
-                                  cursor: "pointer",
-                                }}
-                              />
-                            </Tooltip>
-                          </div>
-                          <p className="error mb-0">
-                            {errors?.permanentResidentialCountryId && touched?.permanentResidentialCountryId ||
-                              errors?.permanentResidentialStreetNumberandName && touched?.permanentResidentialStreetNumberandName ||
-                              errors?.permanentResidentialCityorTown && touched?.permanentResidentialCityorTown ||
-                              errors?.permanentResidentialZipPostalCode && touched?.permanentResidentialZipPostalCode ||
-                              errors?.isAddressRuralRoute && touched?.isAddressRuralRoute ||
-                              errors?.isalternativebusinessaddress && touched?.isalternativebusinessaddress ||
-                              errors?.isAddressPostOfficeBox && touched?.isAddressPostOfficeBox ||
-                              errors?.isCareOfAddress && touched?.isCareOfAddress ||
-                              errors?.permanentResidentialCountryId1 && touched?.permanentResidentialCountryId1 ||
-                              errors?.permanentResidentialStreetNumberandName1 && touched?.permanentResidentialStreetNumberandName1 ||
-                              errors?.permanentResidentialCityorTown1 && touched?.permanentResidentialCityorTown1 ||
-                              errors?.permanentResidentialZipPostalCode1 && touched?.permanentResidentialZipPostalCode1
-                              ? "Mandatory Information Required"
-                              : ""}
-                          </p>
-                        </div>
-                      }
-                      action={
-                        <IconButton
-                          onClick={() => handleOpen("pra")}
-                          aria-label="expand"
-                          size="small"
-                          style={{ marginTop: "3px" }}
-                        >
-                          {open === "pra" ? (
-                            <RemoveCircleOutlineOutlined />
-                          ) : (
-                            <ControlPointOutlined />
                           )}
-                        </IconButton>
-                      }
-                    ></CardHeader>
 
-                    {toolInfo === "Address" ? (
-                      <div>
-                        <Paper
-                          style={{
-                            backgroundColor: "#dedcb1",
-                            padding: "15px",
-                          }}
-                        >
-                          <Typography>
-                            Please enter the permanent residence address of the
-                            individual, business or organization the submission
-                            represents. This should be in the country where that
-                            payee’s income tax submission is made.
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            If there is a mailing address that differs from the
-                            permanent address, then please enter that as well.
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            IRS Guidance:
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            Non-US Person, W-8 submissions, should not use a
-                            Post Office (PO Box), a Care-of-address, or mailing
-                            address of a financial organization as these may not
-                            be considered valid. If you do, the agent receiving
-                            the form may require additional information from you
-                            to help validate your residency status. Ref: EH005
-                          </Typography>
-
-                          <Link
-                            underline="none"
-                            style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
-                            onClick={() => {
-                              setToolInfo("");
-                            }}
-                          >
-                            --Show Less--
-                          </Link>
-                        </Paper>
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                    <Collapse
-                      className="px-5 mx-2"
-                      in={open === "pra"}
-                      timeout="auto"
-                      unmountOnExit
-                    >
-                      <div className="d-flex">
-                        <div className="col-lg-3 col-6 col-md-3">
-                          <Typography align="left" className="d-flex w-100 ">
-                            Country:
-                            <span style={{ color: "red" }}>*</span>
-                          </Typography>
-
-                          <FormControl className="w-100">
-                            <select
-                              style={{
-                                padding: " 0 10px",
-                                color: "#121112",
-                                fontStyle: "italic",
-                                height: "36px",
-                              }}
-                              name="permanentResidentialCountryId"
-                              id="Income"
-                              defaultValue={1}
-                              onChange={(e) => {
-                                handleChange(e);
-                                // dispatch(getAllStateByCountryId(e.target.value));
-                                setFieldValue('permanentResidentialStateorProvince', '');
-                                dispatch(
-                                  getAllStateByCountryId1(e.target.value, (data: []) => {
-                                    setallStateById1(data);
-                                  }));
-
-
-                              }}
-                              onBlur={handleBlur}
-                              value={values.permanentResidentialCountryId}
-                            >
-                              <option value={0}>---select---</option>
-
-                              {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                ?.filter((ele: any) => ele.isImportantCountry === "Yes")
-                                .map((ele: any) => (
-                                  <option key={ele.id} value={ele.id}>
-                                    {ele.name}
-                                  </option>
-                                ))}
-                              <option value={500}>---</option>
-                              {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
-                                .map((ele: any) => (
-                                  <option key={ele.id} value={ele.id}>
-                                    {ele.name}
-                                  </option>
-                                ))}
-                            </select>
-                            {errors.permanentResidentialCountryId && touched.permanentResidentialCountryId ? <p className="error">{errors.permanentResidentialCountryId}</p> : <></>}
-
-                          </FormControl>
-                        </div>
-                        {values.permanentResidentialCountryId == 186 ? (<div className="col-lg-3 col-6 col-md-3 mx-3">
-                          <FormControl className="w-100">
-                            <Typography align="left">
-                              Other:
-                              <span style={{ color: "red" }}>*</span>
-                            </Typography>
-                            <Input
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                height: " 36px",
-                                lineHeight: "36px ",
-                                background: "#fff ",
-                                fontSize: "13px",
-                                color: " #000 ",
-                                fontStyle: "normal",
-                                borderRadius: "1px",
-                                padding: " 0 10px ",
-                              }}
-                              id="outlined"
-                              name="otherCountry"
-                              placeholder="Enter Other Country Name"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              error={Boolean(
-                                touched.otherCountry &&
-                                errors.otherCountry
-                              )}
-                              value={
-                                values.otherCountry
-                              }
-                            />
-                            {errors.otherCountry && touched.otherCountry ? <p className="error">{errors.otherCountry}</p> : <></>}
-
-                          </FormControl>
-                        </div>) : ""}
-
-
-                      </div>
-
-                      <div className="row">
-                        <div className="col-lg-3 col-6 col-md-3 mt-2">
-                          <FormControl className="w-100">
-                            <Typography align="left">
-                              Street Number and Name:
-                              <span style={{ color: "red" }}>*</span>
-                            </Typography>
-                            <Input
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                height: " 36px",
-                                lineHeight: "36px ",
-                                background: "#fff ",
-                                fontSize: "13px",
-                                color: " #000 ",
-                                fontStyle: "normal",
-                                borderRadius: "1px",
-                                padding: " 0 10px ",
-                              }}
-                              id="outlined"
-                              name="permanentResidentialStreetNumberandName"
-                              placeholder="Enter Street Number and Name"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              error={Boolean(
-                                touched.permanentResidentialStreetNumberandName &&
-                                errors.permanentResidentialStreetNumberandName
-                              )}
-                              value={
-                                values.permanentResidentialStreetNumberandName
-                              }
-                            />
-                            {errors.permanentResidentialStreetNumberandName && touched.permanentResidentialStreetNumberandName ? <p className="error">{errors.permanentResidentialStreetNumberandName}</p> : <></>}
-
-                          </FormControl>
-                        </div>
-                        <div className="col-lg-3 col-6 col-md-3 mt-2">
-                          <FormControl className="w-100">
-                            <Typography align="left">Apt/Suite:</Typography>
-                            <Input
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                height: " 36px",
-                                lineHeight: "36px ",
-                                background: "#fff ",
-                                fontSize: "13px",
-                                color: " #000 ",
-                                fontStyle: "normal",
-                                borderRadius: "1px",
-                                padding: " 0 10px ",
-                              }}
-                              id="outlined"
-                              name="permanentResidentialAptSuite"
-                              placeholder="Enter Apt/Suite"
-                              onChange={handleChange}
-                              value={values.permanentResidentialAptSuite}
-                            />
-
-                            {errors.permanentResidentialAptSuite && touched.permanentResidentialAptSuite ? <p className="error">{errors.permanentResidentialAptSuite}</p> : <></>}
-
-                          </FormControl>
-                        </div>
-                        <div className="col-lg-3 col-6 col-md-3 mt-2">
-                          <FormControl className="w-100">
-                            <Typography align="left">
-                              City or Town:
-                              <span style={{ color: "red" }}>*</span>
-                            </Typography>
-                            <Input
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                height: " 36px",
-                                lineHeight: "36px ",
-                                background: "#fff ",
-                                fontSize: "13px",
-                                color: " #000 ",
-                                fontStyle: "normal",
-                                borderRadius: "1px",
-                                padding: " 0 10px ",
-                              }}
-                              id="outlined"
-                              name="permanentResidentialCityorTown"
-                              placeholder="Enter City or Town"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              error={Boolean(
-                                touched.permanentResidentialCityorTown &&
-                                errors.permanentResidentialCityorTown
-                              )}
-                              value={values.permanentResidentialCityorTown}
-                            />
-                            {errors.permanentResidentialCityorTown && touched.permanentResidentialCityorTown ? <p className="error">{errors.permanentResidentialCityorTown}</p> : <></>}
-
-                          </FormControl>
-                        </div>
-                        {stateList1 &&
-                          stateList1
-                            ?.length > 0 ? (
-                          <div className="col-lg-3 col-6 col-md-3 mt-2">
-                            <Typography align="left" className="d-flex w-100 ">
-                              State or Province:
-                              {/* <span style={{ color: 'red' }}>*</span> */}
-                            </Typography>
-
-                            <FormControl className="w-100">
-                              <select
-                                style={{
-                                  padding: " 0 10px",
-                                  color: "#121112",
-                                  fontStyle: "italic",
-                                  height: "36px",
-                                }}
-                                name="permanentResidentialStateorProvince"
-                                // id="Income"
-                                onChange={handleChange}
-                                value={
-                                  values.permanentResidentialStateorProvince
-                                }
-                              >
-                                <option value="0">
-                                  <em>---select---</em>
-                                </option>
-                                {stateList1?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.name}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
-                                {/* <option key={GetStateByCountryIdReducer?.allCountriesStateIdData?.id} value={GetStateByCountryIdReducer?.allCountriesStateIdData?.name}>{GetStateByCountryIdReducer?.allCountriesStateIdData?.name}</option> */}
-                                {/* {getCountriesReducer.allCountriesData?.map((ele:any) => (
-                                                <option key={ele?.id} value={ele?.id}>{ele?.name}</option>
-                                                    ))} */}
-                              </select>
-                            </FormControl>
-                          </div>
-                        ) : (
                           <div className="col-lg-3 col-6 col-md-3 mt-2">
                             <FormControl className="w-100">
                               <Typography align="left">
-                                State or Province:
-                                {/* <span style={{ color: 'red' }}>*</span> */}
+                                Zip / Postal Code:
+                                <span style={{ color: "red" }}>*</span>
                               </Typography>
                               <Input
-                                disabled={
-                                  values.permanentResidentialCountryId == 0
-                                }
                                 style={{
                                   border: " 1px solid #d9d9d9 ",
                                   height: " 36px",
@@ -4064,231 +4105,201 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                   borderRadius: "1px",
                                   padding: " 0 10px ",
                                 }}
-                                // id="outlined"
-                                name="permanentResidentialStateorProvince"
-                                placeholder="Enter State or Province"
+                                id="outlined"
+                                name="permanentResidentialZipPostalCode"
+                                placeholder="Enter Zip or Postal Code"
                                 onChange={handleChange}
-                                value={
-                                  values.permanentResidentialStateorProvince
-                                }
+                                onBlur={handleBlur}
+                                error={Boolean(
+                                  touched.permanentResidentialZipPostalCode &&
+                                  errors.permanentResidentialZipPostalCode
+                                )}
+                                value={values.permanentResidentialZipPostalCode}
                               />
-                            </FormControl>
-                          </div>
-                        )}
+                              {errors.permanentResidentialZipPostalCode && touched.permanentResidentialZipPostalCode ? <p className="error">{errors.permanentResidentialZipPostalCode}</p> : <></>}
 
-                        <div className="col-lg-3 col-6 col-md-3 mt-2">
-                          <FormControl className="w-100">
-                            <Typography align="left">
-                              Zip / Postal Code:
-                              <span style={{ color: "red" }}>*</span>
-                            </Typography>
-                            <Input
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                height: " 36px",
-                                lineHeight: "36px ",
-                                background: "#fff ",
-                                fontSize: "13px",
-                                color: " #000 ",
-                                fontStyle: "normal",
-                                borderRadius: "1px",
-                                padding: " 0 10px ",
-                              }}
-                              id="outlined"
-                              name="permanentResidentialZipPostalCode"
-                              placeholder="Enter Zip or Postal Code"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              error={Boolean(
-                                touched.permanentResidentialZipPostalCode &&
-                                errors.permanentResidentialZipPostalCode
-                              )}
-                              value={values.permanentResidentialZipPostalCode}
-                            />
-                            {errors.permanentResidentialZipPostalCode && touched.permanentResidentialZipPostalCode ? <p className="error">{errors.permanentResidentialZipPostalCode}</p> : <></>}
-
-                          </FormControl>
-                        </div>
-                      </div>
-                      {values.permanentResidentialCountryId == 45 ? (
-                        <div>
-                          <Typography style={{ marginTop: "20px" }}>
-                            Is this address a rural route number?
-                            <span style={{ color: "red" }}>*</span>
-                          </Typography>
-
-                          <div className="d-flex">
-                            <FormControl
-                              error={Boolean(
-                                touched.isAddressRuralRoute &&
-                                errors.isAddressRuralRoute
-                              )}
-                            >
-                              <RadioGroup
-                                row
-                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                name="row-radio-buttons-group"
-                                value={values.isAddressRuralRoute}
-                                onChange={handleChange}
-                              >
-                                <FormControlLabel
-                                  value="yes"
-                                  control={<Radio />}
-                                  label="Yes"
-                                  name="isAddressRuralRoute"
-                                />
-                                <FormControlLabel
-                                  value="no"
-                                  control={<Radio />}
-                                  label="No"
-                                  name="isAddressRuralRoute"
-                                />
-                              </RadioGroup>
-                              {errors.isAddressRuralRoute &&
-                                touched.isAddressRuralRoute ? (
-                                <div>
-                                  <Typography color="error">
-                                    {errors.isAddressRuralRoute}
-                                  </Typography>
-                                </div>
-                              ) : (
-                                ""
-                              )}
                             </FormControl>
                           </div>
                         </div>
-                      ) : (
-                        ""
-                      )}
-                      <div className="d-flex">
-                        {values.isUSIndividual == "yes" ? (
+                        {values.permanentResidentialCountryId == 45 ? (
                           <div>
-                            <Typography
-                              align="left"
-                              style={{ marginTop: "20px" }}
-                            >
-                              Is there an alternative mailing or business
-                              address in the U.S.?
+                            <Typography style={{ marginTop: "20px" }}>
+                              Is this address a rural route number?
                               <span style={{ color: "red" }}>*</span>
-                              <Tooltip
-                                      style={{
-                                        backgroundColor: "black",
-                                        color: "white",
-                                      }}
-                                      title={
-                                        <>
-                                          <Typography color="inherit">
-                                           Alternate Mailing Address
-                                          </Typography>
-                                          <a
-                                            onClick={() => setToolInfo("AMA")}
-                                          >
-                                            <Typography
-                                              style={{
-                                                cursor: "pointer",
-                                                textDecorationLine: "underline",
-                                              }}
-                                              align="center"
-                                            >
-                                              {" "}
-                                              View More...
-                                            </Typography>
-                                          </a>
-                                        </>
-                                      }
-                                    >
-                                      <Info
-                                        style={{
-                                          color: "#ffc107",
-                                          fontSize: "15px",
-                                          marginLeft: "5px",
-                                          cursor: "pointer",
-                                          verticalAlign: "super",
-                                        }}
-                                      />
-                                    </Tooltip>
-                            
                             </Typography>
 
-                            {toolInfo === "AMA" ? (
-                                    <div className="post">
-                                      <Paper
-                                        style={{
-                                          backgroundColor: "#dedcb1",
-                                          padding: "10px",
-                                        }}
-                                      >
-                                        <Typography>
-                                    Please check this box if you have an alternative mailing address away from the permanent residential address entered here.
- 
- 
- 
-                                        </Typography>
-                                        <Typography style={{ marginTop: "10px" }}>
-                                        You will be asked to enter the alternative address later in the process and in some circumstances you may need to provide additional information.
-                                          submission.
-                                        </Typography>
-
-         
-
-                                        <Link
-                                          underline="none"
-                                          style={{
-                                            marginTop: "10px",
-                                            fontSize: "16px", cursor: "pointer", color: "#0000C7"
-                                          }}
-                                          onClick={() => {
-                                            setToolInfo("");
-                                          }}
-                                        >
-                                          --Show Less--
-                                        </Link>
-                                      </Paper>
-                                    </div>
-                                  ) : (
-                                    ""
-                                  )}
                             <div className="d-flex">
                               <FormControl
                                 error={Boolean(
-                                  touched.isalternativebusinessaddress &&
-                                  errors.isalternativebusinessaddress
+                                  touched.isAddressRuralRoute &&
+                                  errors.isAddressRuralRoute
                                 )}
                               >
                                 <RadioGroup
-                                  id="isalternativebusinessaddress"
                                   row
                                   aria-labelledby="demo-row-radio-buttons-group-label"
-                                  value={values.isalternativebusinessaddress}
+                                  name="row-radio-buttons-group"
+                                  value={values.isAddressRuralRoute}
                                   onChange={handleChange}
                                 >
-
-
                                   <FormControlLabel
-                                    control={<Radio />}
                                     value="yes"
-                                    name="isalternativebusinessaddress"
+                                    control={<Radio />}
                                     label="Yes"
+                                    name="isAddressRuralRoute"
                                   />
                                   <FormControlLabel
-                                    control={<Radio />}
                                     value="no"
-                                    name="isalternativebusinessaddress"
+                                    control={<Radio />}
                                     label="No"
+                                    name="isAddressRuralRoute"
                                   />
                                 </RadioGroup>
-                                {errors.isalternativebusinessaddress &&
-                                  touched.isalternativebusinessaddress ? (
+                                {errors.isAddressRuralRoute &&
+                                  touched.isAddressRuralRoute ? (
                                   <div>
                                     <Typography color="error">
-                                      {errors.isalternativebusinessaddress}
+                                      {errors.isAddressRuralRoute}
                                     </Typography>
                                   </div>
                                 ) : (
                                   ""
                                 )}
                               </FormControl>
-                              {/* <FormControl
+                            </div>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                        <div className="d-flex">
+                          {values.isUSIndividual == "yes" ? (
+                            <div>
+                              <Typography
+                                align="left"
+                                style={{ marginTop: "20px" }}
+                              >
+                                Is there an alternative mailing or business
+                                address in the U.S.?
+                                <span style={{ color: "red" }}>*</span>
+                                <Tooltip
+                                  style={{
+                                    backgroundColor: "black",
+                                    color: "white",
+                                  }}
+                                  title={
+                                    <>
+                                      <Typography color="inherit">
+                                        Alternate Mailing Address
+                                      </Typography>
+                                      <a
+                                        onClick={() => setToolInfo("AMA")}
+                                      >
+                                        <Typography
+                                          style={{
+                                            cursor: "pointer",
+                                            textDecorationLine: "underline",
+                                          }}
+                                          align="center"
+                                        >
+                                          {" "}
+                                          View More...
+                                        </Typography>
+                                      </a>
+                                    </>
+                                  }
+                                >
+                                  <Info
+                                    style={{
+                                      color: "#ffc107",
+                                      fontSize: "15px",
+                                      marginLeft: "5px",
+                                      cursor: "pointer",
+                                      verticalAlign: "super",
+                                    }}
+                                  />
+                                </Tooltip>
+
+                              </Typography>
+
+                              {toolInfo === "AMA" ? (
+                                <div className="post">
+                                  <Paper
+                                    style={{
+                                      backgroundColor: "#dedcb1",
+                                      padding: "10px",
+                                    }}
+                                  >
+                                    <Typography>
+                                      Please check this box if you have an alternative mailing address away from the permanent residential address entered here.
+
+
+
+                                    </Typography>
+                                    <Typography style={{ marginTop: "10px" }}>
+                                      You will be asked to enter the alternative address later in the process and in some circumstances you may need to provide additional information.
+                                      submission.
+                                    </Typography>
+
+
+
+                                    <Link
+                                      underline="none"
+                                      style={{
+                                        marginTop: "10px",
+                                        fontSize: "16px", cursor: "pointer", color: "#0000C7"
+                                      }}
+                                      onClick={() => {
+                                        setToolInfo("");
+                                      }}
+                                    >
+                                      --Show Less--
+                                    </Link>
+                                  </Paper>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                              <div className="d-flex">
+                                <FormControl
+                                  error={Boolean(
+                                    touched.isalternativebusinessaddress &&
+                                    errors.isalternativebusinessaddress
+                                  )}
+                                >
+                                  <RadioGroup
+                                    id="isalternativebusinessaddress"
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    value={values.isalternativebusinessaddress}
+                                    onChange={handleChange}
+                                  >
+
+
+                                    <FormControlLabel
+                                      control={<Radio />}
+                                      value="yes"
+                                      name="isalternativebusinessaddress"
+                                      label="Yes"
+                                    />
+                                    <FormControlLabel
+                                      control={<Radio />}
+                                      value="no"
+                                      name="isalternativebusinessaddress"
+                                      label="No"
+                                    />
+                                  </RadioGroup>
+                                  {errors.isalternativebusinessaddress &&
+                                    touched.isalternativebusinessaddress ? (
+                                    <div>
+                                      <Typography color="error">
+                                        {errors.isalternativebusinessaddress}
+                                      </Typography>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+                                </FormControl>
+                                {/* <FormControl
                                             error={Boolean(
                                               touched.isalternativebusinessaddress &&
                                                 errors.isalternativebusinessaddress
@@ -4332,8 +4343,8 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                               ""
                                             )}
                                           </FormControl> */}
-                            </div>
-                            {/* <Typography
+                              </div>
+                              {/* <Typography
                                                 align="left"
                                                 style={{ marginTop: "20px" }}
                                               >
@@ -4350,7 +4361,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                                 />
                                               </Typography> */}
 
-                            {/* <div className="d-flex">
+                              {/* <div className="d-flex">
                                                 <Typography className="my-auto">Yes</Typography>
                                                 <Radio
                                                   checked={values.isalternativebusinessaddress}
@@ -4381,21 +4392,177 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                                   {errors.isalternativebusinessaddress}
                                                 </p>
                                               </div> */}
-                          </div>
-                        ) : (
-                          <div className="col-12">
-                            <div
-                              className=" d-lg-flex justify-content-between"
-                              style={{ justifyContent: "between" }}
-                            >
-                              <>
+                            </div>
+                          ) : (
+                            <div className="col-12">
+                              <div
+                                className=" d-lg-flex justify-content-between"
+                                style={{ justifyContent: "between" }}
+                              >
+                                <>
+                                  {userType === "DC" && (
+                                    <div className="col-4">
+                                      <Typography
+                                        align="left"
+                                        style={{ marginTop: "20px" }}
+                                      >
+                                        Is this address a PO Box?
+                                        <span style={{ color: "red" }}>*</span>
+                                        <Tooltip
+                                          style={{
+                                            backgroundColor: "black",
+                                            color: "white",
+                                          }}
+                                          title={
+                                            <>
+                                              <Typography color="inherit">
+                                                PO BOX Address
+                                              </Typography>
+                                              <a onClick={() => setToolInfo("PO")}>
+                                                <Typography
+                                                  style={{
+                                                    cursor: "pointer",
+                                                    textDecorationLine: "underline",
+                                                  }}
+                                                  align="center"
+                                                >
+                                                  {" "}
+                                                  View More...
+                                                </Typography>
+                                              </a>
+                                            </>
+                                          }
+                                        >
+                                          <Info
+                                            style={{
+                                              color: "#ffc107",
+                                              fontSize: "15px",
+                                              marginLeft: "5px",
+                                              cursor: "pointer",
+                                              verticalAlign: "super",
+                                            }}
+                                          />
+                                        </Tooltip>
+                                      </Typography>
+                                      {toolInfo === "PO" ? (
+                                        <div className="post">
+                                          <Paper
+                                            style={{
+                                              backgroundColor: "#dedcb1",
+                                              padding: "10px",
+                                            }}
+                                          >
+                                            <Typography>
+                                              A Post Office Box is a mail box
+                                              located at a post office (versus at a
+                                              permanent residence).
+                                            </Typography>
+                                            <Typography
+                                              style={{ marginTop: "10px" }}
+                                            >
+                                              You should not use a P.O. Box or an
+                                              in-care-of-address (other than a
+                                              registered address). If you do, we may
+                                              need to contact you for further
+                                              information to help validate the
+                                              submission.
+                                            </Typography>
+
+                                            <Typography
+                                              style={{ marginTop: "10px" }}
+                                            >
+                                              If you reside in a country that does
+                                              not use street addresses, you may
+                                              enter a descriptive address.
+                                            </Typography>
+
+                                            <Link
+                                              underline="none"
+                                              style={{
+                                                marginTop: "10px",
+                                                fontSize: "16px",
+                                                cursor: "pointer",
+                                                color: "#0000C7"
+                                              }}
+                                              onClick={() => {
+                                                setToolInfo("");
+                                              }}
+                                            >
+                                              --Show Less--
+                                            </Link>
+                                          </Paper>
+                                        </div>
+                                      ) : (
+                                        ""
+                                      )}
+                                      <FormControl
+                                        error={Boolean(
+                                          touched.isAddressPostOfficeBox &&
+                                          errors.isAddressPostOfficeBox
+                                        )}
+                                      >
+                                        <RadioGroup
+                                          id="isAddressPostOfficeBox"
+                                          row
+                                          aria-labelledby="demo-row-radio-buttons-group-label"
+                                          value={values.isAddressPostOfficeBox}
+                                          onChange={handleChange}
+                                        >
+                                          <FormControlLabel
+                                            control={<Radio />}
+                                            value="yes"
+                                            name="isAddressPostOfficeBox"
+                                            label="Yes"
+                                          />
+                                          <FormControlLabel
+                                            control={<Radio />}
+                                            value="no"
+                                            name="isAddressPostOfficeBox"
+                                            label="No"
+                                          />
+                                        </RadioGroup>
+                                        {errors.isAddressPostOfficeBox &&
+                                          touched.isAddressPostOfficeBox ? (
+                                          <div>
+                                            <Typography color="error">
+                                              {errors.isAddressPostOfficeBox}
+                                            </Typography>
+                                          </div>
+                                        ) : (
+                                          ""
+                                        )}
+                                      </FormControl>
+                                      {/* <RadioGroup
+                                                row
+                                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                                name="row-radio-buttons-group"
+                                              >
+                                                <FormControlLabel
+                                                  value={false}
+                                                  control={<Radio />}
+                                                  label="No"
+                                                  checked={!values.isAddressPostOfficeBox}
+                                                  onChange={handleChange}
+                                                />
+                                                <FormControlLabel
+                                                  value={true}
+                                                  control={<Radio />}
+                                                  label="Yes"
+                                                  checked={values.isAddressPostOfficeBox}
+                                                  onChange={handleChange}
+                                                />
+                                              </RadioGroup>
+                                              <p className="error">
+                                                {errors.isAddressPostOfficeBox}
+                                              </p> */}
+                                    </div>
+                                  )}
+
+                                </>
                                 {userType === "DC" && (
                                   <div className="col-4">
-                                    <Typography
-                                      align="left"
-                                      style={{ marginTop: "20px" }}
-                                    >
-                                      Is this address a PO Box?
+                                    <Typography style={{ marginTop: "20px" }}>
+                                      Is this an In Care Of address?
                                       <span style={{ color: "red" }}>*</span>
                                       <Tooltip
                                         style={{
@@ -4405,9 +4572,11 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                         title={
                                           <>
                                             <Typography color="inherit">
-                                              PO BOX Address
+                                              In Care Of Address
                                             </Typography>
-                                            <a onClick={() => setToolInfo("PO")}>
+                                            <a
+                                              onClick={() => setToolInfo("CareOf")}
+                                            >
                                               <Typography
                                                 style={{
                                                   cursor: "pointer",
@@ -4433,7 +4602,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                         />
                                       </Tooltip>
                                     </Typography>
-                                    {toolInfo === "PO" ? (
+                                    {toolInfo === "CareOf" ? (
                                       <div className="post">
                                         <Paper
                                           style={{
@@ -4442,13 +4611,12 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                           }}
                                         >
                                           <Typography>
-                                            A Post Office Box is a mail box
-                                            located at a post office (versus at a
-                                            permanent residence).
+                                            An In Care Of Address denotes that
+                                            something is to be delivered to an
+                                            address where the recipient does not
+                                            normally receive mail.{" "}
                                           </Typography>
-                                          <Typography
-                                            style={{ marginTop: "10px" }}
-                                          >
+                                          <Typography style={{ marginTop: "10px" }}>
                                             You should not use a P.O. Box or an
                                             in-care-of-address (other than a
                                             registered address). If you do, we may
@@ -4457,21 +4625,17 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                             submission.
                                           </Typography>
 
-                                          <Typography
-                                            style={{ marginTop: "10px" }}
-                                          >
-                                            If you reside in a country that does
-                                            not use street addresses, you may
-                                            enter a descriptive address.
+                                          <Typography style={{ marginTop: "10px" }}>
+                                            If you reside in a country that does not
+                                            use street addresses, you may enter a
+                                            descriptive address.{" "}
                                           </Typography>
 
                                           <Link
                                             underline="none"
                                             style={{
                                               marginTop: "10px",
-                                              fontSize: "16px",
-                                              cursor: "pointer",
-                                              color: "#0000C7"
+                                              fontSize: "16px", cursor: "pointer", color: "#0000C7"
                                             }}
                                             onClick={() => {
                                               setToolInfo("");
@@ -4484,140 +4648,137 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                     ) : (
                                       ""
                                     )}
-                                    <FormControl
-                                      error={Boolean(
-                                        touched.isAddressPostOfficeBox &&
-                                        errors.isAddressPostOfficeBox
-                                      )}
-                                    >
-                                      <RadioGroup
-                                        id="isAddressPostOfficeBox"
-                                        row
-                                        aria-labelledby="demo-row-radio-buttons-group-label"
-                                        value={values.isAddressPostOfficeBox}
-                                        onChange={handleChange}
+
+                                    <div className="d-flex">
+                                      <FormControl
+                                        error={Boolean(
+                                          touched.isCareOfAddress &&
+                                          errors.isCareOfAddress
+                                        )}
                                       >
-                                        <FormControlLabel
-                                          control={<Radio />}
-                                          value="yes"
-                                          name="isAddressPostOfficeBox"
-                                          label="Yes"
-                                        />
-                                        <FormControlLabel
-                                          control={<Radio />}
-                                          value="no"
-                                          name="isAddressPostOfficeBox"
-                                          label="No"
-                                        />
-                                      </RadioGroup>
-                                      {errors.isAddressPostOfficeBox &&
-                                        touched.isAddressPostOfficeBox ? (
-                                        <div>
-                                          <Typography color="error">
-                                            {errors.isAddressPostOfficeBox}
-                                          </Typography>
-                                        </div>
-                                      ) : (
-                                        ""
-                                      )}
-                                    </FormControl>
-                                    {/* <RadioGroup
-                                                row
-                                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                                name="row-radio-buttons-group"
-                                              >
-                                                <FormControlLabel
-                                                  value={false}
-                                                  control={<Radio />}
-                                                  label="No"
-                                                  checked={!values.isAddressPostOfficeBox}
-                                                  onChange={handleChange}
-                                                />
-                                                <FormControlLabel
-                                                  value={true}
-                                                  control={<Radio />}
-                                                  label="Yes"
-                                                  checked={values.isAddressPostOfficeBox}
-                                                  onChange={handleChange}
-                                                />
-                                              </RadioGroup>
-                                              <p className="error">
-                                                {errors.isAddressPostOfficeBox}
-                                              </p> */}
+                                        <RadioGroup
+                                          id="isCareOfAddress"
+                                          row
+                                          aria-labelledby="demo-row-radio-buttons-group-label"
+                                          value={values.isCareOfAddress}
+                                          onChange={handleChange}
+                                        >
+                                          <FormControlLabel
+                                            control={<Radio />}
+                                            value="yes"
+                                            name="isCareOfAddress"
+                                            label="Yes"
+                                          />
+                                          <FormControlLabel
+                                            control={<Radio />}
+                                            value="no"
+                                            name="isCareOfAddress"
+                                            label="No"
+                                          />
+                                        </RadioGroup>
+                                        {errors.isCareOfAddress &&
+                                          touched.isCareOfAddress ? (
+                                          <div>
+                                            <Typography color="error">
+                                              {errors.isCareOfAddress}
+                                            </Typography>
+                                          </div>
+                                        ) : (
+                                          ""
+                                        )}
+                                      </FormControl>
+                                      {/* <RadioGroup
+                                                    row
+                                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                                    name="row-radio-buttons-group"
+                                                  >
+                                                    <FormControlLabel
+                                                      value={false}
+                                                      control={<Radio />}
+                                                      label="No"
+                                                      checked={!values.isCareOfAddress}
+                                                      onChange={handleChange}
+                                                    />foreignTINNotAvailable
+                                                    <FormControlLabel
+                                                      value={true}
+                                                      control={<Radio />}
+                                                      label="Yes"
+                                                      checked={values.isCareOfAddress}
+                                                      onChange={handleChange}
+                                                    />
+                                                  </RadioGroup>
+                                                  <p className="error">
+                                                    {errors.isCareOfAddress}
+                                                  </p> */}
+                                    </div>
                                   </div>
                                 )}
 
-                              </>
-                              {userType === "DC" && (
                                 <div className="col-4">
                                   <Typography style={{ marginTop: "20px" }}>
-                                    Is this an In Care Of address?
+                                    Is there an alternative mailing or business
+                                    address in the U.S.?
                                     <span style={{ color: "red" }}>*</span>
-                                    <Tooltip
-                                      style={{
-                                        backgroundColor: "black",
-                                        color: "white",
-                                      }}
-                                      title={
-                                        <>
-                                          <Typography color="inherit">
-                                            In Care Of Address
-                                          </Typography>
-                                          <a
-                                            onClick={() => setToolInfo("CareOf")}
-                                          >
-                                            <Typography
-                                              style={{
-                                                cursor: "pointer",
-                                                textDecorationLine: "underline",
-                                              }}
-                                              align="center"
-                                            >
-                                              {" "}
-                                              View More...
-                                            </Typography>
-                                          </a>
-                                        </>
-                                      }
-                                    >
-                                      <Info
+                                    <span>
+                                      <Tooltip
                                         style={{
-                                          color: "#ffc107",
-                                          fontSize: "15px",
-                                          marginLeft: "5px",
-                                          cursor: "pointer",
-                                          verticalAlign: "super",
+                                          backgroundColor: "black",
+                                          color: "white",
                                         }}
-                                      />
-                                    </Tooltip>
+                                        title={
+                                          <>
+                                            <Typography color="inherit">
+                                              Alternate Mailing Address
+                                            </Typography>
+                                            <a
+                                              onClick={() => setToolInfo("mail")}
+                                            >
+                                              <Typography
+                                                style={{
+                                                  cursor: "pointer",
+                                                  textDecorationLine: "underline",
+                                                }}
+                                                align="center"
+                                              >
+                                                {" "}
+                                                View More...
+                                              </Typography>
+                                            </a>
+                                          </>
+                                        }
+                                      >
+                                        <Info
+                                          style={{
+                                            color: "#ffc107",
+                                            fontSize: "15px",
+                                            marginLeft: "5px",
+                                            cursor: "pointer",
+                                            verticalAlign: "super",
+                                          }}
+                                        // onClick={clickInfo}
+                                        />
+                                      </Tooltip>
+                                    </span>
                                   </Typography>
-                                  {toolInfo === "CareOf" ? (
+                                  {toolInfo === "mail" ? (
                                     <div className="post">
                                       <Paper
                                         style={{
                                           backgroundColor: "#dedcb1",
-                                          padding: "10px",
+                                          padding: "15px",
                                         }}
                                       >
                                         <Typography>
-                                          An In Care Of Address denotes that
-                                          something is to be delivered to an
-                                          address where the recipient does not
-                                          normally receive mail.{" "}
+                                          Please check this box if you have an
+                                          alternative mailing address away from
+                                          the permanent residential address
+                                          entered here.
                                         </Typography>
                                         <Typography style={{ marginTop: "10px" }}>
-                                          You should not use a P.O. Box or an
-                                          in-care-of-address (other than a
-                                          registered address). If you do, we may
-                                          need to contact you for further
-                                          information to help validate the
-                                          submission.
-                                        </Typography>
-
-                                        <Typography style={{ marginTop: "10px" }}>
-                                          If you reside in a country that does not
-                                          use street addresses, you may enter a
-                                          descriptive address.{" "}
+                                          You will be asked to enter the
+                                          alternative address later in the process
+                                          and in some circumstances you may need
+                                          to provide additional information.
                                         </Typography>
 
                                         <Link
@@ -4641,194 +4802,44 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                   <div className="d-flex">
                                     <FormControl
                                       error={Boolean(
-                                        touched.isCareOfAddress &&
-                                        errors.isCareOfAddress
+                                        touched.isalternativebusinessaddress &&
+                                        errors.isalternativebusinessaddress
                                       )}
                                     >
                                       <RadioGroup
-                                        id="isCareOfAddress"
+                                        id="isalternativebusinessaddress"
                                         row
                                         aria-labelledby="demo-row-radio-buttons-group-label"
-                                        value={values.isCareOfAddress}
+                                        value={
+                                          values.isalternativebusinessaddress
+                                        }
                                         onChange={handleChange}
                                       >
                                         <FormControlLabel
                                           control={<Radio />}
                                           value="yes"
-                                          name="isCareOfAddress"
+                                          name="isalternativebusinessaddress"
                                           label="Yes"
                                         />
                                         <FormControlLabel
                                           control={<Radio />}
                                           value="no"
-                                          name="isCareOfAddress"
+                                          name="isalternativebusinessaddress"
                                           label="No"
                                         />
                                       </RadioGroup>
-                                      {errors.isCareOfAddress &&
-                                        touched.isCareOfAddress ? (
+                                      {errors.isalternativebusinessaddress &&
+                                        touched.isalternativebusinessaddress ? (
                                         <div>
                                           <Typography color="error">
-                                            {errors.isCareOfAddress}
+                                            {errors.isalternativebusinessaddress}
                                           </Typography>
                                         </div>
                                       ) : (
                                         ""
                                       )}
                                     </FormControl>
-                                    {/* <RadioGroup
-                                                    row
-                                                    aria-labelledby="demo-row-radio-buttons-group-label"
-                                                    name="row-radio-buttons-group"
-                                                  >
-                                                    <FormControlLabel
-                                                      value={false}
-                                                      control={<Radio />}
-                                                      label="No"
-                                                      checked={!values.isCareOfAddress}
-                                                      onChange={handleChange}
-                                                    />foreignTINNotAvailable
-                                                    <FormControlLabel
-                                                      value={true}
-                                                      control={<Radio />}
-                                                      label="Yes"
-                                                      checked={values.isCareOfAddress}
-                                                      onChange={handleChange}
-                                                    />
-                                                  </RadioGroup>
-                                                  <p className="error">
-                                                    {errors.isCareOfAddress}
-                                                  </p> */}
-                                  </div>
-                                </div>
-                              )}
-
-                              <div className="col-4">
-                                <Typography style={{ marginTop: "20px" }}>
-                                  Is there an alternative mailing or business
-                                  address in the U.S.?
-                                  <span style={{ color: "red" }}>*</span>
-                                  <span>
-                                    <Tooltip
-                                      style={{
-                                        backgroundColor: "black",
-                                        color: "white",
-                                      }}
-                                      title={
-                                        <>
-                                          <Typography color="inherit">
-                                            Alternate Mailing Address
-                                          </Typography>
-                                          <a
-                                            onClick={() => setToolInfo("mail")}
-                                          >
-                                            <Typography
-                                              style={{
-                                                cursor: "pointer",
-                                                textDecorationLine: "underline",
-                                              }}
-                                              align="center"
-                                            >
-                                              {" "}
-                                              View More...
-                                            </Typography>
-                                          </a>
-                                        </>
-                                      }
-                                    >
-                                      <Info
-                                        style={{
-                                          color: "#ffc107",
-                                          fontSize: "15px",
-                                          marginLeft: "5px",
-                                          cursor: "pointer",
-                                          verticalAlign: "super",
-                                        }}
-                                      // onClick={clickInfo}
-                                      />
-                                    </Tooltip>
-                                  </span>
-                                </Typography>
-                                {toolInfo === "mail" ? (
-                                  <div className="post">
-                                    <Paper
-                                      style={{
-                                        backgroundColor: "#dedcb1",
-                                        padding: "15px",
-                                      }}
-                                    >
-                                      <Typography>
-                                        Please check this box if you have an
-                                        alternative mailing address away from
-                                        the permanent residential address
-                                        entered here.
-                                      </Typography>
-                                      <Typography style={{ marginTop: "10px" }}>
-                                        You will be asked to enter the
-                                        alternative address later in the process
-                                        and in some circumstances you may need
-                                        to provide additional information.
-                                      </Typography>
-
-                                      <Link
-                                        underline="none"
-                                        style={{
-                                          marginTop: "10px",
-                                          fontSize: "16px", cursor: "pointer", color: "#0000C7"
-                                        }}
-                                        onClick={() => {
-                                          setToolInfo("");
-                                        }}
-                                      >
-                                        --Show Less--
-                                      </Link>
-                                    </Paper>
-                                  </div>
-                                ) : (
-                                  ""
-                                )}
-
-                                <div className="d-flex">
-                                  <FormControl
-                                    error={Boolean(
-                                      touched.isalternativebusinessaddress &&
-                                      errors.isalternativebusinessaddress
-                                    )}
-                                  >
-                                    <RadioGroup
-                                      id="isalternativebusinessaddress"
-                                      row
-                                      aria-labelledby="demo-row-radio-buttons-group-label"
-                                      value={
-                                        values.isalternativebusinessaddress
-                                      }
-                                      onChange={handleChange}
-                                    >
-                                      <FormControlLabel
-                                        control={<Radio />}
-                                        value="yes"
-                                        name="isalternativebusinessaddress"
-                                        label="Yes"
-                                      />
-                                      <FormControlLabel
-                                        control={<Radio />}
-                                        value="no"
-                                        name="isalternativebusinessaddress"
-                                        label="No"
-                                      />
-                                    </RadioGroup>
-                                    {errors.isalternativebusinessaddress &&
-                                      touched.isalternativebusinessaddress ? (
-                                      <div>
-                                        <Typography color="error">
-                                          {errors.isalternativebusinessaddress}
-                                        </Typography>
-                                      </div>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </FormControl>
-                                  {/* <Typography className="my-auto">Yes</Typography>
+                                    {/* <Typography className="my-auto">Yes</Typography>
                                                   <Radio
                                                     checked={values.isalternativebusinessaddress}
                                                     onChange={() =>
@@ -4857,682 +4868,76 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                                   <p className="error">
                                                     {errors.isalternativebusinessaddress}
                                                   </p> */}
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        )}
-                      </div>
-                      {values.isalternativebusinessaddress == "yes" ? (
-                        <>
-                          <div className="col-lg-3 col-6 col-md-3">
-                            <Typography align="left" className="d-flex w-100 ">
-                              Country:
-                              <span style={{ color: "red" }}>*</span>
-                            </Typography>
+                          )}
+                        </div>
+                        {values.isalternativebusinessaddress == "yes" ? (
+                          <>
+                            <div className="col-lg-3 col-6 col-md-3">
+                              <Typography align="left" className="d-flex w-100 ">
+                                Country:
+                                <span style={{ color: "red" }}>*</span>
+                              </Typography>
 
-                            <FormControl className="w-100">
-                              <select
-                                style={{
-                                  padding: " 0 10px",
-                                  color: "#121112",
-                                  fontStyle: "italic",
-                                  height: "36px",
-                                }}
-                                name="permanentResidentialCountryId1"
-                                // id="Income"
-                                defaultValue={0}
-
-                                onChange={(e) => {
-                                  handleChange(e);
-                                  setFieldValue('permanentResidentialStateorProvince1', '');
-                                  dispatch(
-                                    getAllStateByCountryId1(e.target.value, (data: []) => {
-                                      setallStateById2(data);
-
-                                    }));
-
-
-                                }}
-
-                                onBlur={handleBlur}
-                                value={values.permanentResidentialCountryId1}
-                              >
-                                <option value={0}>---select---</option>
-                                {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                  ?.filter((ele: any) => ele.isImportantCountry === "Yes")
-                                  .map((ele: any) => (
-                                    <option key={ele.id} value={ele.id}>
-                                      {ele.name}
-                                    </option>
-                                  ))}
-                                <option value={500}>---</option>
-                                {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                  ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
-                                  .map((ele: any) => (
-                                    <option key={ele.id} value={ele.id}>
-                                      {ele.name}
-                                    </option>
-                                  ))}
-                              </select>
-                              {errors.permanentResidentialCountryId1 && touched.permanentResidentialCountryId1 ? <p className="error">{errors.permanentResidentialCountryId1}</p> : <></>}
-
-                            </FormControl>
-                          </div>
-                          <div className="row">
-                            <div className="col-lg-3 col-6 col-md-3 mt-2">
                               <FormControl className="w-100">
-                                <Typography align="left">
-                                  Street Number and Name:
-                                  <span style={{ color: "red" }}>*</span>
-                                </Typography>
-                                <Input
+                                <select
                                   style={{
-                                    border: " 1px solid #d9d9d9 ",
-                                    height: " 36px",
-                                    lineHeight: "36px ",
-                                    background: "#fff ",
-                                    fontSize: "13px",
-                                    color: " #000 ",
-                                    fontStyle: "normal",
-                                    borderRadius: "1px",
-                                    padding: " 0 10px ",
+                                    padding: " 0 10px",
+                                    color: "#121112",
+                                    fontStyle: "italic",
+                                    height: "36px",
                                   }}
-                                  id="outlined"
-                                  name="permanentResidentialStreetNumberandName1"
-                                  placeholder="Enter Street Number and Name"
-                                  onChange={handleChange}
+                                  name="permanentResidentialCountryId1"
+                                  // id="Income"
+                                  defaultValue={0}
+
+                                  onChange={(e) => {
+                                    handleChange(e);
+                                    setFieldValue('permanentResidentialStateorProvince1', '');
+                                    dispatch(
+                                      getAllStateByCountryId1(e.target.value, (data: []) => {
+                                        setallStateById2(data);
+
+                                      }));
+
+
+                                  }}
+
                                   onBlur={handleBlur}
-                                  error={Boolean(
-                                    touched.permanentResidentialStreetNumberandName1 &&
-                                    errors.permanentResidentialStreetNumberandName1
-                                  )}
-                                  value={
-                                    values.permanentResidentialStreetNumberandName1
-                                  }
-                                />
-                                {errors.permanentResidentialStreetNumberandName1 && touched.permanentResidentialStreetNumberandName1 ? <p className="error">{errors.permanentResidentialStreetNumberandName1}</p> : <></>}
-
-                              </FormControl>
-                            </div>
-                            <div className="col-lg-3 col-6 col-md-3 mt-2">
-                              <FormControl className="w-100">
-                                <Typography align="left">Apt/Suite:</Typography>
-                                <Input
-                                  style={{
-                                    border: " 1px solid #d9d9d9 ",
-                                    height: " 36px",
-                                    lineHeight: "36px ",
-                                    background: "#fff ",
-                                    fontSize: "13px",
-                                    color: " #000 ",
-                                    fontStyle: "normal",
-                                    borderRadius: "1px",
-                                    padding: " 0 10px ",
-                                  }}
-                                  id="outlined"
-                                  name="permanentResidentialAptSuite1"
-                                  placeholder="Enter Apt/Suite"
-                                  onChange={handleChange}
-                                  value={values.permanentResidentialAptSuite1}
-                                />
-                              </FormControl>
-                            </div>
-                            <div className="col-lg-3 col-6 col-md-3 mt-2">
-                              <FormControl className="w-100">
-                                <Typography align="left">
-                                  City or Town:
-                                  <span style={{ color: "red" }}>*</span>
-                                </Typography>
-                                <Input
-                                  style={{
-                                    border: " 1px solid #d9d9d9 ",
-                                    height: " 36px",
-                                    lineHeight: "36px ",
-                                    background: "#fff ",
-                                    fontSize: "13px",
-                                    color: " #000 ",
-                                    fontStyle: "normal",
-                                    borderRadius: "1px",
-                                    padding: " 0 10px ",
-                                  }}
-                                  id="outlined"
-                                  name="permanentResidentialCityorTown1"
-                                  placeholder="Enter City or Town"
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  error={Boolean(
-                                    touched.permanentResidentialCityorTown1 &&
-                                    errors.permanentResidentialCityorTown1
-                                  )}
-                                  value={values.permanentResidentialCityorTown1}
-                                />
-                                {errors.permanentResidentialCityorTown1 && touched.permanentResidentialCityorTown1 ? <p className="error">{errors.permanentResidentialCityorTown1}</p> : <></>}
-
-                              </FormControl>
-                            </div>
-                            {stateList2 &&
-                              stateList2.length > 0 ? (
-                              <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                <Typography
-                                  align="left"
-                                  className="d-flex w-100 "
+                                  value={values.permanentResidentialCountryId1}
                                 >
-                                  State or Province:
-                                  {/* <span style={{ color: 'red' }}>*</span> */}
-                                </Typography>
+                                  <option value={0}>---select---</option>
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
+                                      </option>
+                                    ))}
+                                  <option value={500}>---</option>
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
+                                      </option>
+                                    ))}
+                                </select>
+                                {errors.permanentResidentialCountryId1 && touched.permanentResidentialCountryId1 ? <p className="error">{errors.permanentResidentialCountryId1}</p> : <></>}
 
-                                <FormControl className="w-100">
-                                  <select
-                                    style={{
-                                      padding: " 0 10px",
-                                      color: "#121112",
-                                      fontStyle: "italic",
-                                      height: "36px",
-                                    }}
-                                    name="permanentResidentialStateorProvince1"
-                                    // id="Income"
-                                    onChange={handleChange}
-                                    value={
-                                      values.permanentResidentialStateorProvince1
-                                    }
-                                  >
-                                    <option value="0">
-                                      <em>---select---</em>
-                                    </option>
-                                    {stateList2?.map(
-                                      (ele: any) => (
-                                        <option key={ele?.id} value={ele?.name}>
-                                          {ele?.name}
-                                        </option>
-                                      )
-                                    )}
-                                  </select>
-                                </FormControl>
-                              </div>
-                            ) : (
+                              </FormControl>
+                            </div>
+                            <div className="row">
                               <div className="col-lg-3 col-6 col-md-3 mt-2">
                                 <FormControl className="w-100">
                                   <Typography align="left">
-                                    State or Province:
-                                    {/* <span style={{ color: 'red' }}>*</span> */}
+                                    Street Number and Name:
+                                    <span style={{ color: "red" }}>*</span>
                                   </Typography>
                                   <Input
-                                    disabled={
-                                      values.permanentResidentialCountryId1 == 0
-                                    }
-                                    style={{
-                                      border: " 1px solid #d9d9d9 ",
-                                      height: " 36px",
-                                      lineHeight: "36px ",
-                                      background: "#fff ",
-                                      fontSize: "13px",
-                                      color: " #000 ",
-                                      fontStyle: "normal",
-                                      borderRadius: "1px",
-                                      padding: " 0 10px ",
-                                    }}
-                                    // id="outlined"
-                                    name="permanentResidentialStateorProvince1"
-                                    placeholder="Enter State or Province"
-                                    onChange={handleChange}
-                                    value={
-                                      values.permanentResidentialStateorProvince1
-                                    }
-                                  />
-                                </FormControl>
-                              </div>
-                            )}
-                            <div className="col-lg-3 col-6 col-md-3 mt-2">
-                              <FormControl className="w-100">
-                                <Typography align="left">
-                                  Zip / Postal Code:
-                                  <span style={{ color: "red" }}>*</span>
-                                </Typography>
-                                <Input
-                                  style={{
-                                    border: " 1px solid #d9d9d9 ",
-                                    height: " 36px",
-                                    lineHeight: "36px ",
-                                    background: "#fff ",
-                                    fontSize: "13px",
-                                    color: " #000 ",
-                                    fontStyle: "normal",
-                                    borderRadius: "1px",
-                                    padding: " 0 10px ",
-                                  }}
-                                  id="outlined"
-                                  name="permanentResidentialZipPostalCode1"
-                                  placeholder="Enter Zip or Postal Code"
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  error={Boolean(
-                                    touched.permanentResidentialZipPostalCode1 &&
-                                    errors.permanentResidentialZipPostalCode1
-                                  )}
-                                  value={
-                                    values.permanentResidentialZipPostalCode1
-                                  }
-                                />
-                                {errors.permanentResidentialZipPostalCode1 && touched.permanentResidentialZipPostalCode1 ? <p className="error">{errors.permanentResidentialZipPostalCode1}</p> : <></>}
-
-                              </FormControl>
-                            </div>
-                          </div>
-                        </>
-                      ) : (
-                        ""
-                      )}
-                    </Collapse>
-
-                    <hr className="w-100"></hr>
-
-                    <CardHeader
-                      className="flex-row-reverse"
-                      title={
-                        <div
-                          style={{
-                            marginLeft: "13px",
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "left",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => handleOpen("cd")}
-                          >
-                            Contact Details
-                            <Tooltip
-                              style={{
-                                backgroundColor: "black",
-                                color: "white",
-                              }}
-                              title={
-                                <>
-                                  <Typography color="inherit">
-                                    Contact Details
-                                  </Typography>
-                                  <a
-
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setToolInfo("Contact");
-                                    }}
-
-
-                                  >
-                                    <Typography
-                                      style={{
-                                        cursor: "pointer",
-                                        textDecorationLine: "underline",
-                                      }}
-                                      align="center"
-                                    >
-                                      {" "}
-                                      View More...
-                                    </Typography>
-                                  </a>
-                                </>
-                              }
-                            >
-                              <Info
-                                onClick={(e) => {
-                                  e.stopPropagation();
-
-                                }}
-                                style={{
-                                  color: "#ffc107",
-                                  fontSize: "15px",
-                                  marginLeft: "5px",
-                                  cursor: "pointer",
-                                }}
-                              />
-                            </Tooltip>
-                          </div>
-                          <p className="error mb-0">
-                            {errors?.contactFirstName && touched?.contactFirstName ||
-                              errors?.contactLastName && touched?.contactLastName ||
-                              errors?.contactEmail && touched?.contactEmail
-                              ? "Mandatory Information Required"
-                              : ""}
-                          </p>
-                        </div>
-                      }
-                      action={
-                        <IconButton
-                          onClick={() => handleOpen("cd")}
-                          aria-label="expand"
-                          size="small"
-                          style={{ marginTop: "3px" }}
-                        >
-                          {open === "cd" ? (
-                            <RemoveCircleOutlineOutlined />
-                          ) : (
-                            <ControlPointOutlined />
-                          )}
-                        </IconButton>
-                      }
-                    ></CardHeader>
-                    {toolInfo === "Contact" ? (
-                      <div>
-                        <Paper
-                          style={{
-                            backgroundColor: "#dedcb1",
-                            padding: "15px",
-                          }}
-                        >
-                          <Typography>
-                            Please enter your contact details here and the
-                            capacity in which you will be signing the
-                            submission.
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            On confirmation an email will be sent to the address
-                            entered and contain a PIN that must be entered at
-                            the point of signature.
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            If you have not received the email within a few
-                            minutes, it probably means your local email service
-                            has detected an automated email and captured the
-                            email in a local spam or quarantine folder. Please
-                            see 'more' below for further information or contact:
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            If you do not receive the email containing your
-                            confirmation code:
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            The email is dispatched to the email address given
-                            as soon as you confirm the details entered into this
-                            screen and move across to the next part of the
-                            submission process. Delivery should take place
-                            within a few minutes, although on occasion it may
-                            take a little longer because of issues outside of
-                            our control.
-                          </Typography>
-                          <Typography style={{ marginTop: "10px" }}>
-                            The following factors may impact delivery of the
-                            email: internet traffic, your internal email service
-                            delay, the way your internal email service is
-                            configured to accept automatically generated emails,
-                            or possibly the security settings of your browser.
-                          </Typography>
-
-                          <Typography style={{ marginTop: "10px" }}>
-                            Please also check your spam or junk email folder.
-                          </Typography>
-                          <Link
-                            underline="none"
-                            style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
-                            onClick={() => {
-                              setToolInfo("");
-                            }}
-                          >
-                            --Show Less--
-                          </Link>
-                        </Paper>
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                    <Collapse
-                      className="px-5 mx-2"
-                      in={open === "cd"}
-                      timeout="auto"
-                      unmountOnExit
-                    >
-                      <div className="row">
-                        <div className="col-lg-3 col-6 col-md-3 mt-2">
-                          <FormControl className="w-100">
-                            <Typography align="left">
-                              First Name<span style={{ color: "red" }}>*</span>
-                            </Typography>
-                            <Input
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                height: " 36px",
-                                lineHeight: "36px ",
-                                background: "#fff ",
-                                fontSize: "13px",
-                                color: " #000 ",
-                                fontStyle: "normal",
-                                borderRadius: "1px",
-                                padding: " 0 10px ",
-                              }}
-                              id="outlined"
-                              name="contactFirstName"
-                              placeholder="Enter First Name"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              error={Boolean(
-                                touched.contactFirstName &&
-                                errors.contactFirstName
-                              )}
-                              value={values.contactFirstName}
-                            />
-                            {errors.contactFirstName && touched.contactFirstName ? <p className="error">{errors.contactFirstName}</p> : <></>}
-
-                          </FormControl>
-                        </div>
-                        <div className="col-lg-3 col-6 col-md-3 mt-2">
-                          <FormControl className="w-100">
-                            <Typography align="left">
-                              Last Name<span style={{ color: "red" }}>*</span>
-                            </Typography>
-                            <Input
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                height: " 36px",
-                                lineHeight: "36px ",
-                                background: "#fff ",
-                                fontSize: "13px",
-                                color: " #000 ",
-                                fontStyle: "normal",
-                                borderRadius: "1px",
-                                padding: " 0 10px ",
-                              }}
-                              id="outlined"
-                              name="contactLastName"
-                              placeholder="Enter Last Name"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              error={Boolean(
-                                touched.contactLastName &&
-                                errors.contactLastName
-                              )}
-                              value={values.contactLastName}
-                            />
-                            {errors.contactLastName && touched.contactLastName ? <p className="error">{errors.contactLastName}</p> : <></>}
-
-                          </FormControl>
-                        </div>
-                        <div className="col-lg-3 col-6 col-md-3 mt-2 mx-2">
-                              <FormControl className="w-98">
-                                <Typography align="left">
-                                  Email<span style={{ color: "red" }}>*</span>
-                                </Typography>
-                                <Input
-                                  style={{
-                                    border: " 1px solid #d9d9d9 ",
-                                    height: " 36px",
-                                    lineHeight: "36px ",
-                                    background: "#fff ",
-                                    fontSize: "13px",
-                                    color: " #000 ",
-                                    fontStyle: "normal",
-                                    borderRadius: "1px",
-                                    padding: " 0 10px ",
-                                  }}
-                                  name="contactEmail"
-                                  id="outlined"
-                                  placeholder="example@domain.com"
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  error={Boolean(
-                                    touched.contactEmail && errors.contactEmail
-                                  )}
-                                  value={values.contactEmail}
-                                />
-                                {errors.contactEmail && touched.contactEmail ? <p className="error">{errors.contactEmail}</p> : <></>}
-
-                              </FormControl>
-                            </div>
-                       
-
-                        <div className="col-lg-3 col-6 col-md-3 mt-2">
-                          <FormControl className="w-100">
-                            <Typography align="left">
-                              Primary Contact Number
-                            </Typography>
-                            <select
-                              style={{
-                                padding: " 0 10px",
-                                color: "#121112",
-                                fontStyle: "italic",
-                                height: "36px",
-                              }}
-                              name="primaryContactNumberId"
-                              id="Income"
-                              onChange={handleChange}
-                              value={values.primaryContactNumberId}
-                            >
-                              <option value={0}>---select---</option>
-                              {/* <option value={1}>--Select1--</option> */}
-                              {getCountriesCodeReducer.allCountriesCodeData?.map(
-                                (ele: any) => (
-                                  <option key={ele?.id} value={ele?.id}>
-                                    {ele?.name}
-                                  </option>
-                                )
-                              )}
-                            </select>
-                            <Input
-                              className="mt-2"
-                              disabled={values.primaryContactNumberId == 0}
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                height: " 36px",
-                                lineHeight: "36px ",
-                                background: "#fff ",
-                                fontSize: "13px",
-                                color: " #000 ",
-                                fontStyle: "normal",
-                                borderRadius: "1px",
-                                padding: " 0 10px ",
-                              }}
-                              id="outlined"
-                              name="primaryContactNumber"
-                              placeholder="Enter Primary Number"
-                              onChange={handleChange}
-                              value={values.primaryContactNumber}
-                            />
-                          </FormControl>
-                        </div>
-                        <div className="col-lg-3 col-6 col-md-3 mt-2">
-                          <FormControl className="w-100">
-                            <Typography align="left">
-                              Alternative Number
-                            </Typography>
-                            <select
-                              style={{
-                                padding: " 0 10px",
-                                color: "#121112",
-                                fontStyle: "italic",
-                                height: "36px",
-                              }}
-                              name="alternativeNumberId"
-                              id="Income"
-                              onChange={handleChange}
-                              value={values.alternativeNumberId}
-                            >
-                              <option value={0}>---select---</option>
-                              {/* <option value={1}>--Select1--</option> */}
-                              {getCountriesCodeReducer.allCountriesCodeData?.map(
-                                (ele: any) => (
-                                  <option key={ele?.id} value={ele?.id}>
-                                    {ele?.name}
-                                  </option>
-                                )
-                              )}
-                            </select>
-                            <Input
-                              className="mt-2"
-                              disabled={values.alternativeNumberId == 0}
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                height: " 36px",
-                                lineHeight: "36px ",
-                                background: "#fff ",
-                                fontSize: "13px",
-                                color: " #000 ",
-                                fontStyle: "normal",
-                                borderRadius: "1px",
-                                padding: " 0 10px ",
-                              }}
-                              id="outlined"
-                              name="alternativeNumber"
-                              placeholder="Enter Alternate Mobile No"
-                              onChange={handleChange}
-                              value={values.alternativeNumber}
-                            />
-                          </FormControl>
-                          <div>
-                            {alternateNo ? (
-                              <div className="mt-2">
-                                <FormControl className="w-100">
-                                  {/* <Typography align="left">
-                                                  Secondary Contact Number
-                                                </Typography> */}
-                                  <span className="w-100 d-flex">
-                                    <select
-                                      className="w-100"
-                                      style={{
-                                        padding: " 0 10px",
-                                        color: "#121112",
-                                        fontStyle: "italic",
-                                        height: "36px",
-                                      }}
-                                      name="alternativeNumberId1"
-                                      id="Income"
-                                      onChange={handleChange}
-                                      value={values.alternativeNumberId1}
-                                    >
-                                      <option value={0}>---select---</option>
-                                      {/* <option value={1}>--Select1--</option> */}
-                                      {getCountriesCodeReducer.allCountriesCodeData?.map(
-                                        (ele: any) => (
-                                          <option key={ele?.id} value={ele?.id}>
-                                            {ele?.name}
-                                          </option>
-                                        )
-                                      )}
-                                    </select>
-                                    <Delete
-                                      sx={{
-                                        right: {
-                                          xs: "-10%",
-                                          md: "-10%",
-                                          lg: "-8%",
-                                          xl: "-5%",
-                                        },
-                                      }}
-                                      style={{
-                                        color: "red",
-                                        fontSize: "20px",
-                                        marginTop: "5px",
-                                        position: "absolute",
-                                      }}
-                                      onClick={() => {
-                                        setAlternateNo(false);
-                                      }}
-                                    />
-                                  </span>
-                                  <Input
-                                    className="mt-2"
-                                    disabled={values.alternativeNumberId1 == 0}
                                     style={{
                                       border: " 1px solid #d9d9d9 ",
                                       height: " 36px",
@@ -5545,499 +4950,1292 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                       padding: " 0 10px ",
                                     }}
                                     id="outlined"
-                                    name="alternativeNumber1"
-                                    placeholder="Enter Alternate Mobile No"
+                                    name="permanentResidentialStreetNumberandName1"
+                                    placeholder="Enter Street Number and Name"
                                     onChange={handleChange}
-                                    value={values.alternativeNumber1}
+                                    onBlur={handleBlur}
+                                    error={Boolean(
+                                      touched.permanentResidentialStreetNumberandName1 &&
+                                      errors.permanentResidentialStreetNumberandName1
+                                    )}
+                                    value={
+                                      values.permanentResidentialStreetNumberandName1
+                                    }
+                                  />
+                                  {errors.permanentResidentialStreetNumberandName1 && touched.permanentResidentialStreetNumberandName1 ? <p className="error">{errors.permanentResidentialStreetNumberandName1}</p> : <></>}
+
+                                </FormControl>
+                              </div>
+                              <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                <FormControl className="w-100">
+                                  <Typography align="left">Apt/Suite:</Typography>
+                                  <Input
+                                    style={{
+                                      border: " 1px solid #d9d9d9 ",
+                                      height: " 36px",
+                                      lineHeight: "36px ",
+                                      background: "#fff ",
+                                      fontSize: "13px",
+                                      color: " #000 ",
+                                      fontStyle: "normal",
+                                      borderRadius: "1px",
+                                      padding: " 0 10px ",
+                                    }}
+                                    id="outlined"
+                                    name="permanentResidentialAptSuite1"
+                                    placeholder="Enter Apt/Suite"
+                                    onChange={handleChange}
+                                    value={values.permanentResidentialAptSuite1}
                                   />
                                 </FormControl>
                               </div>
-                            ) : (
-                              <Typography
-                                style={{
-                                  color: "#007bff",
-                                  cursor: "pointer",
-                                  fontSize: "12px",
-                                  marginTop: "8px",
-                                }}
-                                onClick={() => setAlternateNo(true)}
-                              >
-                                <a>Add Alternative Number</a>
-                              </Typography>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </Collapse>
-
-                    <hr className="w-100 "></hr>
-                    {Income === true ? (
-                      <>
-                        {values.isUSIndividual == "yes" ? (
-                          <>
-                            <CardHeader
-                              className="flex-row-reverse"
-                              title={
-                                <div
-                                  style={{
-                                    marginLeft: "13px",
-                                  }}
-                                >
-                                  <div
+                              <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                <FormControl className="w-100">
+                                  <Typography align="left">
+                                    City or Town:
+                                    <span style={{ color: "red" }}>*</span>
+                                  </Typography>
+                                  <Input
                                     style={{
-                                      display: "flex",
-                                      alignItems: "left",
-
-                                      cursor: "pointer",
+                                      border: " 1px solid #d9d9d9 ",
+                                      height: " 36px",
+                                      lineHeight: "36px ",
+                                      background: "#fff ",
+                                      fontSize: "13px",
+                                      color: " #000 ",
+                                      fontStyle: "normal",
+                                      borderRadius: "1px",
+                                      padding: " 0 10px ",
                                     }}
-                                    onClick={() => handleOpen("it")}
+                                    id="outlined"
+                                    name="permanentResidentialCityorTown1"
+                                    placeholder="Enter City or Town"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(
+                                      touched.permanentResidentialCityorTown1 &&
+                                      errors.permanentResidentialCityorTown1
+                                    )}
+                                    value={values.permanentResidentialCityorTown1}
+                                  />
+                                  {errors.permanentResidentialCityorTown1 && touched.permanentResidentialCityorTown1 ? <p className="error">{errors.permanentResidentialCityorTown1}</p> : <></>}
+
+                                </FormControl>
+                              </div>
+                              {stateList2 &&
+                                stateList2.length > 0 ? (
+                                <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                  <Typography
+                                    align="left"
+                                    className="d-flex w-100 "
                                   >
-                                    Income Type
-                                    {IncomeMandatory === true ? ("") :
-                                      <span
-                                        style={{
-                                          fontSize: "13px",
-                                          color: "grey",
-                                          marginLeft: "4px",
-                                          marginTop: "11px",
-                                        }}
-                                      >
-                                        (Optional)
-                                      </span>
-                                    }
-                                    <Tooltip
-                                      style={{
-                                        backgroundColor: "black",
-                                        color: "white",
-                                      }}
-                                      title={
-                                        <>
-                                          <Typography color="inherit">
-                                            Q&A, Income Type
-                                          </Typography>
-                                          <a
-
-
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              setToolInfo("income");
-                                            }}
-
-                                          >
-                                            <Typography
-                                              style={{
-                                                cursor: "pointer",
-                                                textDecorationLine: "underline",
-                                              }}
-                                              align="center"
-                                            >
-                                              {" "}
-                                              View More...
-                                            </Typography>
-                                          </a>
-                                        </>
-                                      }
-                                    >
-                                      <Info
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-
-                                        }}
-                                        style={{
-                                          color: "#ffc107",
-                                          fontSize: "15px",
-                                          marginLeft: "5px",
-                                          cursor: "pointer",
-                                        }}
-                                      />
-                                    </Tooltip>
-                                  </div>
-                                  {touched.incomeTypeId && incomeErrors.length > 0 && IncomeMandatory === true ?
-                                    <p className="error mb-0">Mandatory Information Required</p>
-                                    : null
-                                  }
-                                </div>
-                              }
-                              action={
-                                <IconButton
-                                  onClick={() => handleOpen("it")}
-                                  aria-label="expand"
-                                  size="small"
-                                  style={{ marginTop: "3px" }}
-                                >
-                                  {open === "it" ? (
-                                    <RemoveCircleOutlineOutlined />
-                                  ) : (
-                                    <ControlPointOutlined />
-                                  )}
-                                </IconButton>
-                              }
-                            ></CardHeader>
-
-                            {toolInfo === "income" ? (
-                              <div>
-                                <Paper
-                                  style={{
-                                    backgroundColor: "#dedcb1",
-                                    padding: "15px",
-                                  }}
-                                >
-                                  <Typography>
-                                    Income type or code is requested as part of the
-                                    tax form completion process for purposes of
-                                    calculating withholding rates, where applicable,
-                                    and to further determine how you should be
-                                    reported on. You should select the type of code
-                                    that best defines the payments that you expect
-                                    to receive. Income Types, associated with Form
-                                    1099 reporting, can include things like:
-                                    Interest, Dividends, Rents, Royalties, Prizes
-                                    and Awards. Income Codes, associated with Form
-                                    1042-S reporting, can be found here:
-                                    <Link href="https://www.irs.gov/pub/irs-pdf/p515.pdf" target="_blank" rel="noopener noreferrer">https://www.irs.gov/pub/irs-pdf/p515.pdf</Link>
+                                    State or Province:
+                                    {/* <span style={{ color: 'red' }}>*</span> */}
                                   </Typography>
 
-                                  <Link
-                                    underline="none"
-                                    style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
-                                    onClick={() => {
-                                      setToolInfo("");
-                                    }}
-                                  >
-                                    --Show Less--
-                                  </Link>
-                                </Paper>
-                              </div>
-                            ) : (
-                              ""
-                            )}
-
-                            <Collapse
-                              className="px-5 mx-2"
-                              in={open === "it"}
-                              timeout="auto"
-                              unmountOnExit
-                            >
-                              <Typography className="d-flex w-100 pb-2">
-                                Income Type
-                              </Typography>
-                              {/* <>{console.log(incomeArr, "qqq")}</> */}
-                              {incomeArr.length &&
-                                incomeArr.map((ind, i) => {
-
-                                  return (
-                                    <div className="col-lg-3 col-6 col-md-3 ">
-                                      <FormControl className="w-100 d-flex" key={i}>
-                                        <span className="w-100 d-flex pb-2">
-                                          <select
-                                            className="w-100"
-                                            style={{
-                                              padding: " 0 10px",
-                                              color: "#121112",
-                                              fontStyle: "italic",
-                                              height: "36px",
-                                            }}
-                                            name="incomeTypeId"
-                                            onBlur={handleBlur}
-
-                                            id="incomeTypeId"
-                                            onChange={(e: any) => handleIcome(e, i)}
-                                            value={selectedValues[i]}
-                                          >
-                                            <option value="0">---select---</option>
-
-                                            {GetAgentUSVisaTypeHiddenForEform?.map(
-                                              (ele: any) => (
-                                                <option
-                                                  key={ele?.incomeTypeId}
-                                                  value={ele?.incomeTypeId}
-                                                >
-                                                  {ele?.name}
-                                                </option>
-                                              )
-                                            )}
-                                          </select>
-                                          {incomeArr.length > 1 && (
-                                            <Delete
-                                              onClick={() => handleDelete(i)}
-                                              style={{
-                                                color: "red",
-                                                fontSize: "20px",
-                                                marginTop: "8px",
-                                                marginLeft: "4px",
-                                              }}
-                                            />
-                                          )}
-                                        </span>
-                                        {selectedValues[i] === '0' && IncomeMandatory === true && incomeErrors.length > 0 && touched.incomeTypeId ? (
-                                          <p className="error">Please select an income type.</p>
-                                        ) : ""}
-                                        {/* {errors.incomeTypeId && touched.incomeTypeId ?(  <p className="error">{errors.incomeTypeId}</p>):""} */}
-                                      </FormControl>
-                                    </div>
-                                  );
-                                })}
-
-                              {incomeArr.length < 5 ? (
-                                <Typography
-                                  style={{
-                                    color: "#007bff",
-                                    cursor: "pointer",
-                                    fontSize: "12px",
-                                  }}
-                                  onClick={addIncomeType}
-                                >
-                                  <a>Add Income Type</a>
-                                </Typography>
+                                  <FormControl className="w-100">
+                                    <select
+                                      style={{
+                                        padding: " 0 10px",
+                                        color: "#121112",
+                                        fontStyle: "italic",
+                                        height: "36px",
+                                      }}
+                                      name="permanentResidentialStateorProvince1"
+                                      // id="Income"
+                                      onChange={handleChange}
+                                      value={
+                                        values.permanentResidentialStateorProvince1
+                                      }
+                                    >
+                                      <option value="0">
+                                        <em>---select---</em>
+                                      </option>
+                                      {stateList2?.map(
+                                        (ele: any) => (
+                                          <option key={ele?.id} value={ele?.name}>
+                                            {ele?.name}
+                                          </option>
+                                        )
+                                      )}
+                                    </select>
+                                  </FormControl>
+                                </div>
                               ) : (
-                                ""
+                                <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                  <FormControl className="w-100">
+                                    <Typography align="left">
+                                      State or Province:
+                                      {/* <span style={{ color: 'red' }}>*</span> */}
+                                    </Typography>
+                                    <Input
+                                      disabled={
+                                        values.permanentResidentialCountryId1 == 0
+                                      }
+                                      style={{
+                                        border: " 1px solid #d9d9d9 ",
+                                        height: " 36px",
+                                        lineHeight: "36px ",
+                                        background: "#fff ",
+                                        fontSize: "13px",
+                                        color: " #000 ",
+                                        fontStyle: "normal",
+                                        borderRadius: "1px",
+                                        padding: " 0 10px ",
+                                      }}
+                                      // id="outlined"
+                                      name="permanentResidentialStateorProvince1"
+                                      placeholder="Enter State or Province"
+                                      onChange={handleChange}
+                                      value={
+                                        values.permanentResidentialStateorProvince1
+                                      }
+                                    />
+                                  </FormControl>
+                                </div>
                               )}
-                            </Collapse>
+                              <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                <FormControl className="w-100">
+                                  <Typography align="left">
+                                    Zip / Postal Code:
+                                    <span style={{ color: "red" }}>*</span>
+                                  </Typography>
+                                  <Input
+                                    style={{
+                                      border: " 1px solid #d9d9d9 ",
+                                      height: " 36px",
+                                      lineHeight: "36px ",
+                                      background: "#fff ",
+                                      fontSize: "13px",
+                                      color: " #000 ",
+                                      fontStyle: "normal",
+                                      borderRadius: "1px",
+                                      padding: " 0 10px ",
+                                    }}
+                                    id="outlined"
+                                    name="permanentResidentialZipPostalCode1"
+                                    placeholder="Enter Zip or Postal Code"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(
+                                      touched.permanentResidentialZipPostalCode1 &&
+                                      errors.permanentResidentialZipPostalCode1
+                                    )}
+                                    value={
+                                      values.permanentResidentialZipPostalCode1
+                                    }
+                                  />
+                                  {errors.permanentResidentialZipPostalCode1 && touched.permanentResidentialZipPostalCode1 ? <p className="error">{errors.permanentResidentialZipPostalCode1}</p> : <></>}
+
+                                </FormControl>
+                              </div>
+                            </div>
                           </>
                         ) : (
-                          <>
-                            <CardHeader
-                              className="flex-row-reverse"
-                              title={
-                                <div
-                                  style={{
-                                    marginLeft: "13px",
-                                  }}
-                                >
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "left",
+                          ""
+                        )}
+                      </Collapse>
 
-                                      cursor: "pointer"
-                                    }}
-                                    onClick={() => handleOpen("it")}
-                                  >
-                                    Income Code
-                                    {IncomeMandatory === true ? ("") :
-                                      <span
-                                        style={{
-                                          fontSize: "13px",
-                                          color: "grey",
-                                          marginLeft: "4px",
-                                          marginTop: "11px",
+                      <hr className="w-100"></hr>
 
-                                        }}
-                                      >
-                                        (Optional)
-                                      </span>
-                                    }
-                                    <Tooltip
-                                      style={{
-                                        backgroundColor: "black",
-                                        color: "white",
+                      <CardHeader
+                        className="flex-row-reverse"
+                        title={
+                          <div
+                            style={{
+                              marginLeft: "13px",
+                            }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "left",
+                                cursor: "pointer",
+                              }}
+                              onClick={() => handleOpen("cd")}
+                            >
+                              Contact Details
+                              <Tooltip
+                                style={{
+                                  backgroundColor: "black",
+                                  color: "white",
+                                }}
+                                title={
+                                  <>
+                                    <Typography color="inherit">
+                                      Contact Details
+                                    </Typography>
+                                    <a
+
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setToolInfo("Contact");
                                       }}
-                                      title={
-                                        <>
-                                          <Typography color="inherit">
-                                            Q&A, Income Type
-                                          </Typography>
-                                          <a
-                                            onClick={(e) => {
-                                              e.stopPropagation();
-                                              setToolInfo("income");
-                                            }}   >
-                                            <Typography
-                                              style={{
-                                                cursor: "pointer",
-                                                textDecorationLine: "underline",
-                                              }}
-                                              align="center"
-                                            >
-                                              {" "}
-                                              View More...
-                                            </Typography>
-                                          </a>
-                                        </>
-                                      }
-                                    >
-                                      <Info
-                                        onClick={(e) => {
-                                          e.stopPropagation();
 
+
+                                    >
+                                      <Typography
+                                        style={{
+                                          cursor: "pointer",
+                                          textDecorationLine: "underline",
+                                        }}
+                                        align="center"
+                                      >
+                                        {" "}
+                                        View More...
+                                      </Typography>
+                                    </a>
+                                  </>
+                                }
+                              >
+                                <Info
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+
+                                  }}
+                                  style={{
+                                    color: "#ffc107",
+                                    fontSize: "15px",
+                                    marginLeft: "5px",
+                                    cursor: "pointer",
+                                  }}
+                                />
+                              </Tooltip>
+                            </div>
+                            <p className="error mb-0">
+                              {errors?.contactFirstName && touched?.contactFirstName ||
+                                errors?.contactLastName && touched?.contactLastName ||
+                                errors?.contactEmail && touched?.contactEmail
+                                ? "Mandatory Information Required"
+                                : ""}
+                            </p>
+                          </div>
+                        }
+                        action={
+                          <IconButton
+                            onClick={() => handleOpen("cd")}
+                            aria-label="expand"
+                            size="small"
+                            style={{ marginTop: "3px" }}
+                          >
+                            {open === "cd" ? (
+                              <RemoveCircleOutlineOutlined />
+                            ) : (
+                              <ControlPointOutlined />
+                            )}
+                          </IconButton>
+                        }
+                      ></CardHeader>
+                      {toolInfo === "Contact" ? (
+                        <div>
+                          <Paper
+                            style={{
+                              backgroundColor: "#dedcb1",
+                              padding: "15px",
+                            }}
+                          >
+                            <Typography>
+                              Please enter your contact details here and the
+                              capacity in which you will be signing the
+                              submission.
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              On confirmation an email will be sent to the address
+                              entered and contain a PIN that must be entered at
+                              the point of signature.
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              If you have not received the email within a few
+                              minutes, it probably means your local email service
+                              has detected an automated email and captured the
+                              email in a local spam or quarantine folder. Please
+                              see 'more' below for further information or contact:
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              If you do not receive the email containing your
+                              confirmation code:
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              The email is dispatched to the email address given
+                              as soon as you confirm the details entered into this
+                              screen and move across to the next part of the
+                              submission process. Delivery should take place
+                              within a few minutes, although on occasion it may
+                              take a little longer because of issues outside of
+                              our control.
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                              The following factors may impact delivery of the
+                              email: internet traffic, your internal email service
+                              delay, the way your internal email service is
+                              configured to accept automatically generated emails,
+                              or possibly the security settings of your browser.
+                            </Typography>
+
+                            <Typography style={{ marginTop: "10px" }}>
+                              Please also check your spam or junk email folder.
+                            </Typography>
+                            <Link
+                              underline="none"
+                              style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
+                              onClick={() => {
+                                setToolInfo("");
+                              }}
+                            >
+                              --Show Less--
+                            </Link>
+                          </Paper>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                      <Collapse
+                        className="px-5 mx-2"
+                        in={open === "cd"}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        <div className="row">
+                          <div className="col-lg-3 col-6 col-md-3 mt-2">
+                            <FormControl className="w-100">
+                              <Typography align="left">
+                                First Name<span style={{ color: "red" }}>*</span>
+                              </Typography>
+                              <Input
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  height: " 36px",
+                                  lineHeight: "36px ",
+                                  background: "#fff ",
+                                  fontSize: "13px",
+                                  color: " #000 ",
+                                  fontStyle: "normal",
+                                  borderRadius: "1px",
+                                  padding: " 0 10px ",
+                                }}
+                                id="outlined"
+                                name="contactFirstName"
+                                placeholder="Enter First Name"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(
+                                  touched.contactFirstName &&
+                                  errors.contactFirstName
+                                )}
+                                value={values.contactFirstName}
+                              />
+                              {errors.contactFirstName && touched.contactFirstName ? <p className="error">{errors.contactFirstName}</p> : <></>}
+
+                            </FormControl>
+                          </div>
+                          <div className="col-lg-3 col-6 col-md-3 mt-2">
+                            <FormControl className="w-100">
+                              <Typography align="left">
+                                Last Name<span style={{ color: "red" }}>*</span>
+                              </Typography>
+                              <Input
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  height: " 36px",
+                                  lineHeight: "36px ",
+                                  background: "#fff ",
+                                  fontSize: "13px",
+                                  color: " #000 ",
+                                  fontStyle: "normal",
+                                  borderRadius: "1px",
+                                  padding: " 0 10px ",
+                                }}
+                                id="outlined"
+                                name="contactLastName"
+                                placeholder="Enter Last Name"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(
+                                  touched.contactLastName &&
+                                  errors.contactLastName
+                                )}
+                                value={values.contactLastName}
+                              />
+                              {errors.contactLastName && touched.contactLastName ? <p className="error">{errors.contactLastName}</p> : <></>}
+
+                            </FormControl>
+                          </div>
+                          <div className="col-lg-3 col-6 col-md-3 mt-2 mx-2">
+                            <FormControl className="w-98">
+                              <Typography align="left">
+                                Email<span style={{ color: "red" }}>*</span>
+                              </Typography>
+                              <Input
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  height: " 36px",
+                                  lineHeight: "36px ",
+                                  background: "#fff ",
+                                  fontSize: "13px",
+                                  color: " #000 ",
+                                  fontStyle: "normal",
+                                  borderRadius: "1px",
+                                  padding: " 0 10px ",
+                                }}
+                                name="contactEmail"
+                                id="outlined"
+                                placeholder="example@domain.com"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(
+                                  touched.contactEmail && errors.contactEmail
+                                )}
+                                value={values.contactEmail}
+                              />
+                              {errors.contactEmail && touched.contactEmail ? <p className="error">{errors.contactEmail}</p> : <></>}
+
+                            </FormControl>
+                          </div>
+
+
+                          <div className="col-lg-3 col-6 col-md-3 mt-2">
+                            <FormControl className="w-100">
+                              <Typography align="left">
+                                Primary Contact Number
+                              </Typography>
+                              <select
+                                style={{
+                                  padding: " 0 10px",
+                                  color: "#121112",
+                                  fontStyle: "italic",
+                                  height: "36px",
+                                }}
+                                name="primaryContactNumberId"
+                                id="Income"
+                                onChange={handleChange}
+                                value={values.primaryContactNumberId}
+                              >
+                                <option value={0}>---select---</option>
+                                {/* <option value={1}>--Select1--</option> */}
+                                {getCountriesCodeReducer.allCountriesCodeData?.map(
+                                  (ele: any) => (
+                                    <option key={ele?.id} value={ele?.id}>
+                                      {ele?.name}
+                                    </option>
+                                  )
+                                )}
+                              </select>
+                              <Input
+                                className="mt-2"
+                                disabled={values.primaryContactNumberId == 0}
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  height: " 36px",
+                                  lineHeight: "36px ",
+                                  background: "#fff ",
+                                  fontSize: "13px",
+                                  color: " #000 ",
+                                  fontStyle: "normal",
+                                  borderRadius: "1px",
+                                  padding: " 0 10px ",
+                                }}
+                                id="outlined"
+                                name="primaryContactNumber"
+                                placeholder="Enter Primary Number"
+                                onChange={handleChange}
+                                value={values.primaryContactNumber}
+                              />
+                            </FormControl>
+                          </div>
+                          <div className="col-lg-3 col-6 col-md-3 mt-2">
+                            <FormControl className="w-100">
+                              <Typography align="left">
+                                Alternative Number
+                              </Typography>
+                              <select
+                                style={{
+                                  padding: " 0 10px",
+                                  color: "#121112",
+                                  fontStyle: "italic",
+                                  height: "36px",
+                                }}
+                                name="alternativeNumberId"
+                                id="Income"
+                                onChange={handleChange}
+                                value={values.alternativeNumberId}
+                              >
+                                <option value={0}>---select---</option>
+                                {/* <option value={1}>--Select1--</option> */}
+                                {getCountriesCodeReducer.allCountriesCodeData?.map(
+                                  (ele: any) => (
+                                    <option key={ele?.id} value={ele?.id}>
+                                      {ele?.name}
+                                    </option>
+                                  )
+                                )}
+                              </select>
+                              <Input
+                                className="mt-2"
+                                disabled={values.alternativeNumberId == 0}
+                                style={{
+                                  border: " 1px solid #d9d9d9 ",
+                                  height: " 36px",
+                                  lineHeight: "36px ",
+                                  background: "#fff ",
+                                  fontSize: "13px",
+                                  color: " #000 ",
+                                  fontStyle: "normal",
+                                  borderRadius: "1px",
+                                  padding: " 0 10px ",
+                                }}
+                                id="outlined"
+                                name="alternativeNumber"
+                                placeholder="Enter Alternate Mobile No"
+                                onChange={handleChange}
+                                value={values.alternativeNumber}
+                              />
+                            </FormControl>
+                            <div>
+                              {alternateNo ? (
+                                <div className="mt-2">
+                                  <FormControl className="w-100">
+                                    {/* <Typography align="left">
+                                                  Secondary Contact Number
+                                                </Typography> */}
+                                    <span className="w-100 d-flex">
+                                      <select
+                                        className="w-100"
+                                        style={{
+                                          padding: " 0 10px",
+                                          color: "#121112",
+                                          fontStyle: "italic",
+                                          height: "36px",
+                                        }}
+                                        name="alternativeNumberId1"
+                                        id="Income"
+                                        onChange={handleChange}
+                                        value={values.alternativeNumberId1}
+                                      >
+                                        <option value={0}>---select---</option>
+                                        {/* <option value={1}>--Select1--</option> */}
+                                        {getCountriesCodeReducer.allCountriesCodeData?.map(
+                                          (ele: any) => (
+                                            <option key={ele?.id} value={ele?.id}>
+                                              {ele?.name}
+                                            </option>
+                                          )
+                                        )}
+                                      </select>
+                                      <Delete
+                                        sx={{
+                                          right: {
+                                            xs: "-10%",
+                                            md: "-10%",
+                                            lg: "-8%",
+                                            xl: "-5%",
+                                          },
                                         }}
                                         style={{
-                                          color: "#ffc107",
-                                          fontSize: "15px",
-                                          marginLeft: "5px",
-                                          cursor: "pointer",
+                                          color: "red",
+                                          fontSize: "20px",
+                                          marginTop: "5px",
+                                          position: "absolute",
+                                        }}
+                                        onClick={() => {
+                                          setAlternateNo(false);
                                         }}
                                       />
-                                    </Tooltip>
-                                  </div>
-                                  {touched.incomeTypeId && incomeErrors.length > 0 && IncomeMandatory === true ?
-                                    <p className="error mb-0">Mandatory Information Required</p>
-                                    : null
-                                  }
+                                    </span>
+                                    <Input
+                                      className="mt-2"
+                                      disabled={values.alternativeNumberId1 == 0}
+                                      style={{
+                                        border: " 1px solid #d9d9d9 ",
+                                        height: " 36px",
+                                        lineHeight: "36px ",
+                                        background: "#fff ",
+                                        fontSize: "13px",
+                                        color: " #000 ",
+                                        fontStyle: "normal",
+                                        borderRadius: "1px",
+                                        padding: " 0 10px ",
+                                      }}
+                                      id="outlined"
+                                      name="alternativeNumber1"
+                                      placeholder="Enter Alternate Mobile No"
+                                      onChange={handleChange}
+                                      value={values.alternativeNumber1}
+                                    />
+                                  </FormControl>
                                 </div>
-                              }
-                              action={
-                                <IconButton
-                                  onClick={() => handleOpen("it")}
-                                  aria-label="expand"
-                                  size="small"
-                                  style={{ marginTop: "3px" }}
-                                >
-                                  {open === "it" ? (
-                                    <RemoveCircleOutlineOutlined />
-                                  ) : (
-                                    <ControlPointOutlined />
-                                  )}
-                                </IconButton>
-                              }
-                            ></CardHeader>
-
-                            {toolInfo === "income" ? (
-                              <div>
-                                <Paper
-                                  style={{
-                                    backgroundColor: "#dedcb1",
-                                    padding: "15px",
-                                  }}
-                                >
-                                  <Typography>
-                                    Income type or code is requested as part of the
-                                    tax form completion process for purposes of
-                                    calculating withholding rates, where applicable,
-                                    and to further determine how you should be
-                                    reported on. You should select the type of code
-                                    that best defines the payments that you expect
-                                    to receive. Income Types, associated with Form
-                                    1099 reporting, can include things like:
-                                    Interest, Dividends, Rents, Royalties, Prizes
-                                    and Awards. Income Codes, associated with Form
-                                    1042-S reporting, can be found here:
-                                    <Link href="https://www.irs.gov/pub/irs-pdf/p515.pdf" target="_blank" rel="noopener noreferrer">https://www.irs.gov/pub/irs-pdf/p515.pdf</Link>
-                                  </Typography>
-
-                                  <Link
-                                    underline="none"
-                                    style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
-                                    onClick={() => {
-                                      setToolInfo("");
-                                    }}
-                                  >
-                                    --Show Less--
-                                  </Link>
-                                </Paper>
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                            <Collapse
-                              className="px-5 mx-2"
-                              in={open === "it"}
-                              timeout="auto"
-                              unmountOnExit
-                            >
-                              <Typography className="d-flex w-100 pb-2">
-                                Income Code
-                              </Typography>
-                              {incomeArr.length && incomeArr.length <= 4 &&
-                                incomeArr.map((ind, i) => {
-                                  // console.log(ind, i,"udvgjudgvfjdbgjfd")
-                                  return (
-                                    <div className="col-lg-3 col-6 col-md-3 ">
-                                      <FormControl className="w-100 d-flex" key={i}>
-                                        <span className="w-100 d-flex pb-2">
-                                          <select
-                                            className="w-100"
-                                            style={{
-                                              padding: " 0 10px",
-                                              color: "#121112",
-                                              fontStyle: "italic",
-                                              height: "36px",
-                                            }}
-                                            name="incomeTypeId"
-                                            onBlur={handleBlur}
-                                            onChange={(e: any) => handleIcome(e, i)}
-                                            value={selectedValues[i]}
-                                          >
-                                            <option value="0">---select---</option>
-                                            {GetAllIncomeCodesAgentWiseReducer.allCountriesIncomeCodeDataAgentWise?.map(
-                                              (ele: any) => (
-                                                <option
-                                                  key={ele?.id}
-                                                  value={ele?.id}
-                                                >
-                                                  {ele?.name}
-                                                </option>
-                                              )
-                                            )}
-                                          </select>
-                                          {incomeArr.length > 1 && (
-                                            <Delete
-                                              onClick={() => handleDelete(i)}
-                                              style={{
-                                                color: "red",
-                                                fontSize: "20px",
-                                                marginTop: "8px",
-                                                marginLeft: "4px",
-                                              }}
-                                            />
-                                          )}
-                                        </span>
-                                        {selectedValues[i] === '0' && IncomeMandatory === true && incomeErrors.length > 0 && touched.incomeTypeId ? (
-                                          <p className="error">Please select an income type.</p>
-                                        ) : ""}
-                                      </FormControl>
-                                    </div>
-                                  );
-                                })}
-
-
-                              {incomeArr.length < 5 ? (
+                              ) : (
                                 <Typography
                                   style={{
                                     color: "#007bff",
                                     cursor: "pointer",
                                     fontSize: "12px",
+                                    marginTop: "8px",
                                   }}
-                                  onClick={addIncomeType}
+                                  onClick={() => setAlternateNo(true)}
                                 >
-                                  <a>Add Income code</a>
+                                  <a>Add Alternative Number</a>
                                 </Typography>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </Collapse>
+
+                      <hr className="w-100 "></hr>
+                      {Income === true ? (
+                        <>
+                          {values.isUSIndividual == "yes" ? (
+                            <>
+                              <CardHeader
+                                className="flex-row-reverse"
+                                title={
+                                  <div
+                                    style={{
+                                      marginLeft: "13px",
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "left",
+
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() => handleOpen("it")}
+                                    >
+                                      Income Type
+                                      {IncomeMandatory === true ? ("") :
+                                        <span
+                                          style={{
+                                            fontSize: "13px",
+                                            color: "grey",
+                                            marginLeft: "4px",
+                                            marginTop: "11px",
+                                          }}
+                                        >
+                                          (Optional)
+                                        </span>
+                                      }
+                                      <Tooltip
+                                        style={{
+                                          backgroundColor: "black",
+                                          color: "white",
+                                        }}
+                                        title={
+                                          <>
+                                            <Typography color="inherit">
+                                              Q&A, Income Type
+                                            </Typography>
+                                            <a
+
+
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                setToolInfo("income");
+                                              }}
+
+                                            >
+                                              <Typography
+                                                style={{
+                                                  cursor: "pointer",
+                                                  textDecorationLine: "underline",
+                                                }}
+                                                align="center"
+                                              >
+                                                {" "}
+                                                View More...
+                                              </Typography>
+                                            </a>
+                                          </>
+                                        }
+                                      >
+                                        <Info
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+
+                                          }}
+                                          style={{
+                                            color: "#ffc107",
+                                            fontSize: "15px",
+                                            marginLeft: "5px",
+                                            cursor: "pointer",
+                                          }}
+                                        />
+                                      </Tooltip>
+                                    </div>
+                                    {touched.incomeTypeId && incomeErrors.length > 0 && IncomeMandatory === true ?
+                                      <p className="error mb-0">Mandatory Information Required</p>
+                                      : null
+                                    }
+                                  </div>
+                                }
+                                action={
+                                  <IconButton
+                                    onClick={() => handleOpen("it")}
+                                    aria-label="expand"
+                                    size="small"
+                                    style={{ marginTop: "3px" }}
+                                  >
+                                    {open === "it" ? (
+                                      <RemoveCircleOutlineOutlined />
+                                    ) : (
+                                      <ControlPointOutlined />
+                                    )}
+                                  </IconButton>
+                                }
+                              ></CardHeader>
+
+                              {toolInfo === "income" ? (
+                                <div>
+                                  <Paper
+                                    style={{
+                                      backgroundColor: "#dedcb1",
+                                      padding: "15px",
+                                    }}
+                                  >
+                                    <Typography>
+                                      Income type or code is requested as part of the
+                                      tax form completion process for purposes of
+                                      calculating withholding rates, where applicable,
+                                      and to further determine how you should be
+                                      reported on. You should select the type of code
+                                      that best defines the payments that you expect
+                                      to receive. Income Types, associated with Form
+                                      1099 reporting, can include things like:
+                                      Interest, Dividends, Rents, Royalties, Prizes
+                                      and Awards. Income Codes, associated with Form
+                                      1042-S reporting, can be found here:
+                                      <Link href="https://www.irs.gov/pub/irs-pdf/p515.pdf" target="_blank" rel="noopener noreferrer">https://www.irs.gov/pub/irs-pdf/p515.pdf</Link>
+                                    </Typography>
+
+                                    <Link
+                                      underline="none"
+                                      style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
+                                      onClick={() => {
+                                        setToolInfo("");
+                                      }}
+                                    >
+                                      --Show Less--
+                                    </Link>
+                                  </Paper>
+                                </div>
                               ) : (
                                 ""
                               )}
-                            </Collapse>
 
-                          </>
-                        )}
-                        <hr className="w-100"></hr>
-                      </>
-                    ) : ""}
+                              <Collapse
+                                className="px-5 mx-2"
+                                in={open === "it"}
+                                timeout="auto"
+                                unmountOnExit
+                              >
+                                <Typography className="d-flex w-100 pb-2">
+                                  Income Type
+                                </Typography>
+                                {/* <>{console.log(incomeArr, "qqq")}</> */}
+                                {incomeArr.length &&
+                                  incomeArr.map((ind, i) => {
+
+                                    return (
+                                      <div className="col-lg-3 col-6 col-md-3 ">
+                                        <FormControl className="w-100 d-flex" key={i}>
+                                          <span className="w-100 d-flex pb-2">
+                                            <select
+                                              className="w-100"
+                                              style={{
+                                                padding: " 0 10px",
+                                                color: "#121112",
+                                                fontStyle: "italic",
+                                                height: "36px",
+                                              }}
+                                              name="incomeTypeId"
+                                              onBlur={handleBlur}
+
+                                              id="incomeTypeId"
+                                              onChange={(e: any) => handleIcome(e, i)}
+                                              value={selectedValues[i]}
+                                            >
+                                              <option value="0">---select---</option>
+
+                                              {GetAgentUSVisaTypeHiddenForEform?.map(
+                                                (ele: any) => (
+                                                  <option
+                                                    key={ele?.incomeTypeId}
+                                                    value={ele?.incomeTypeId}
+                                                  >
+                                                    {ele?.name}
+                                                  </option>
+                                                )
+                                              )}
+                                            </select>
+                                            {incomeArr.length > 1 && (
+                                              <Delete
+                                                onClick={() => handleDelete(i)}
+                                                style={{
+                                                  color: "red",
+                                                  fontSize: "20px",
+                                                  marginTop: "8px",
+                                                  marginLeft: "4px",
+                                                }}
+                                              />
+                                            )}
+                                          </span>
+                                          {selectedValues[i] === '0' && IncomeMandatory === true && incomeErrors.length > 0 && touched.incomeTypeId ? (
+                                            <p className="error">Please select an income type.</p>
+                                          ) : ""}
+                                          {/* {errors.incomeTypeId && touched.incomeTypeId ?(  <p className="error">{errors.incomeTypeId}</p>):""} */}
+                                        </FormControl>
+                                      </div>
+                                    );
+                                  })}
+
+                                {incomeArr.length < 5 ? (
+                                  <Typography
+                                    style={{
+                                      color: "#007bff",
+                                      cursor: "pointer",
+                                      fontSize: "12px",
+                                    }}
+                                    onClick={addIncomeType}
+                                  >
+                                    <a>Add Income Type</a>
+                                  </Typography>
+                                ) : (
+                                  ""
+                                )}
+                              </Collapse>
+                            </>
+                          ) : (
+                            <>
+                              <CardHeader
+                                className="flex-row-reverse"
+                                title={
+                                  <div
+                                    style={{
+                                      marginLeft: "13px",
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "left",
+
+                                        cursor: "pointer"
+                                      }}
+                                      onClick={() => handleOpen("it")}
+                                    >
+                                      Income Code
+                                      {IncomeMandatory === true ? ("") :
+                                        <span
+                                          style={{
+                                            fontSize: "13px",
+                                            color: "grey",
+                                            marginLeft: "4px",
+                                            marginTop: "11px",
+
+                                          }}
+                                        >
+                                          (Optional)
+                                        </span>
+                                      }
+                                      <Tooltip
+                                        style={{
+                                          backgroundColor: "black",
+                                          color: "white",
+                                        }}
+                                        title={
+                                          <>
+                                            <Typography color="inherit">
+                                              Q&A, Income Type
+                                            </Typography>
+                                            <a
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                setToolInfo("income");
+                                              }}   >
+                                              <Typography
+                                                style={{
+                                                  cursor: "pointer",
+                                                  textDecorationLine: "underline",
+                                                }}
+                                                align="center"
+                                              >
+                                                {" "}
+                                                View More...
+                                              </Typography>
+                                            </a>
+                                          </>
+                                        }
+                                      >
+                                        <Info
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+
+                                          }}
+                                          style={{
+                                            color: "#ffc107",
+                                            fontSize: "15px",
+                                            marginLeft: "5px",
+                                            cursor: "pointer",
+                                          }}
+                                        />
+                                      </Tooltip>
+                                    </div>
+                                    {touched.incomeTypeId && incomeErrors.length > 0 && IncomeMandatory === true ?
+                                      <p className="error mb-0">Mandatory Information Required</p>
+                                      : null
+                                    }
+                                  </div>
+                                }
+                                action={
+                                  <IconButton
+                                    onClick={() => handleOpen("it")}
+                                    aria-label="expand"
+                                    size="small"
+                                    style={{ marginTop: "3px" }}
+                                  >
+                                    {open === "it" ? (
+                                      <RemoveCircleOutlineOutlined />
+                                    ) : (
+                                      <ControlPointOutlined />
+                                    )}
+                                  </IconButton>
+                                }
+                              ></CardHeader>
+
+                              {toolInfo === "income" ? (
+                                <div>
+                                  <Paper
+                                    style={{
+                                      backgroundColor: "#dedcb1",
+                                      padding: "15px",
+                                    }}
+                                  >
+                                    <Typography>
+                                      Income type or code is requested as part of the
+                                      tax form completion process for purposes of
+                                      calculating withholding rates, where applicable,
+                                      and to further determine how you should be
+                                      reported on. You should select the type of code
+                                      that best defines the payments that you expect
+                                      to receive. Income Types, associated with Form
+                                      1099 reporting, can include things like:
+                                      Interest, Dividends, Rents, Royalties, Prizes
+                                      and Awards. Income Codes, associated with Form
+                                      1042-S reporting, can be found here:
+                                      <Link href="https://www.irs.gov/pub/irs-pdf/p515.pdf" target="_blank" rel="noopener noreferrer">https://www.irs.gov/pub/irs-pdf/p515.pdf</Link>
+                                    </Typography>
+
+                                    <Link
+                                      underline="none"
+                                      style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
+                                      onClick={() => {
+                                        setToolInfo("");
+                                      }}
+                                    >
+                                      --Show Less--
+                                    </Link>
+                                  </Paper>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                              <Collapse
+                                className="px-5 mx-2"
+                                in={open === "it"}
+                                timeout="auto"
+                                unmountOnExit
+                              >
+                                <Typography className="d-flex w-100 pb-2">
+                                  Income Code
+                                </Typography>
+                                {incomeArr.length && incomeArr.length <= 4 &&
+                                  incomeArr.map((ind, i) => {
+                                    // console.log(ind, i,"udvgjudgvfjdbgjfd")
+                                    return (
+                                      <div className="col-lg-3 col-6 col-md-3 ">
+                                        <FormControl className="w-100 d-flex" key={i}>
+                                          <span className="w-100 d-flex pb-2">
+                                            <select
+                                              className="w-100"
+                                              style={{
+                                                padding: " 0 10px",
+                                                color: "#121112",
+                                                fontStyle: "italic",
+                                                height: "36px",
+                                              }}
+                                              name="incomeTypeId"
+                                              onBlur={handleBlur}
+                                              onChange={(e: any) => handleIcome(e, i)}
+                                              value={selectedValues[i]}
+                                            >
+                                              <option value="0">---select---</option>
+                                              {GetAllIncomeCodesAgentWiseReducer.allCountriesIncomeCodeDataAgentWise?.map(
+                                                (ele: any) => (
+                                                  <option
+                                                    key={ele?.id}
+                                                    value={ele?.id}
+                                                  >
+                                                    {ele?.name}
+                                                  </option>
+                                                )
+                                              )}
+                                            </select>
+                                            {incomeArr.length > 1 && (
+                                              <Delete
+                                                onClick={() => handleDelete(i)}
+                                                style={{
+                                                  color: "red",
+                                                  fontSize: "20px",
+                                                  marginTop: "8px",
+                                                  marginLeft: "4px",
+                                                }}
+                                              />
+                                            )}
+                                          </span>
+                                          {selectedValues[i] === '0' && IncomeMandatory === true && incomeErrors.length > 0 && touched.incomeTypeId ? (
+                                            <p className="error">Please select an income type.</p>
+                                          ) : ""}
+                                        </FormControl>
+                                      </div>
+                                    );
+                                  })}
 
 
-                    {/* <hr className="w-100"></hr> */}
-                    {/* Payment type */}
-                    {Payment === true ? (
-                      <>
-                        <CardHeader
-                          className="flex-row-reverse"
-                          title={
-                            <div
-                              style={{
-                                marginLeft: "13px",
-                              }}
-                            >
+                                {incomeArr.length < 5 ? (
+                                  <Typography
+                                    style={{
+                                      color: "#007bff",
+                                      cursor: "pointer",
+                                      fontSize: "12px",
+                                    }}
+                                    onClick={addIncomeType}
+                                  >
+                                    <a>Add Income code</a>
+                                  </Typography>
+                                ) : (
+                                  ""
+                                )}
+                              </Collapse>
+
+                            </>
+                          )}
+                          <hr className="w-100"></hr>
+                        </>
+                      ) : ""}
+
+
+                      {/* <hr className="w-100"></hr> */}
+                      {/* Payment type */}
+                      {Payment === true ? (
+                        <>
+                          <CardHeader
+                            className="flex-row-reverse"
+                            title={
                               <div
                                 style={{
-                                  display: "flex",
-                                  alignItems: "left",
-
-                                  cursor: "pointer",
+                                  marginLeft: "13px",
                                 }}
-                                onClick={() => handleOpen("pt")}
                               >
-                                Payment Type
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "left",
 
-                                {PaymentMandatry === true ? ("") :
+                                    cursor: "pointer",
+                                  }}
+                                  onClick={() => handleOpen("pt")}
+                                >
+                                  Payment Type
+
+                                  {PaymentMandatry === true ? ("") :
+                                    <span
+                                      style={{
+                                        fontSize: "13px",
+                                        color: "grey",
+                                        marginLeft: "4px",
+                                        marginTop: "11px",
+                                      }}
+                                    >
+                                      (Optional)
+                                    </span>
+                                  }
+                                  <Tooltip
+                                    style={{ backgroundColor: "black", color: "white" }}
+                                    title={
+                                      <>
+                                        <Typography color="inherit">
+                                          TT-134 Q&A, Account{" "}
+                                        </Typography>
+                                        <Typography color="inherit">
+                                          {" "}
+                                          information
+                                        </Typography>
+                                        <a
+
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setToolInfo("account");
+                                          }}
+
+
+                                        >
+                                          <Typography
+                                            style={{
+                                              cursor: "pointer",
+                                              textDecorationLine: "underline",
+                                            }}
+                                            align="center"
+                                          >
+                                            {" "}
+                                            View More...
+                                          </Typography>
+                                        </a>
+                                      </>
+                                    }
+                                  >
+                                    <Info
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+
+                                      }}
+                                      style={{
+                                        color: "#ffc107",
+                                        fontSize: "15px",
+                                        marginLeft: "5px",
+                                        cursor: "pointer",
+                                      }}
+                                    />
+                                  </Tooltip>
+                                </div>
+                                <p className="error mb-0">
+                                  {errors?.paymentTypeId && touched?.paymentTypeId
+                                    ? "Mandatory Information Required"
+                                    : ""}
+                                </p>
+                              </div>
+                            }
+                            action={
+                              <IconButton
+                                onClick={() => handleOpen("pt")}
+                                aria-label="expand"
+                                size="small"
+                                style={{ marginTop: "3px" }}
+                              >
+                                {open === "pt" ? (
+                                  <RemoveCircleOutlineOutlined />
+                                ) : (
+                                  <ControlPointOutlined />
+                                )}
+                              </IconButton>
+                            }
+                          ></CardHeader>
+                          {toolInfo === "account" ? (
+                            <div>
+                              <Paper
+                                style={{
+                                  backgroundColor: "#dedcb1",
+                                  padding: "15px",
+                                }}
+                              >
+                                <Typography>
+                                  As part of the tax form completion process, your
+                                  withholding agent has requested that you provide
+                                  banking details associated with your account. Here,
+                                  you will be asked to select the method for which
+                                  payment will be remitted, as permitted by the
+                                  withholding agent. Allowable options can include:
+                                  ACH, Wire or Check
+                                </Typography>
+
+                                <Link
+                                  underline="none"
+                                  style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
+                                  onClick={() => {
+                                    setToolInfo("");
+                                  }}
+                                >
+                                  --Show Less--
+                                </Link>
+                              </Paper>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          <Collapse
+                            className="px-5 mx-2"
+                            in={open === "pt"}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <div className="col-lg-3 col-6 col-md-3 ">
+                              <Typography className="d-flex w-100 pb-2">
+                                Payment Type
+                                <span style={{ color: "red" }}>*</span>
+                              </Typography>
+
+                              <FormControl className="w-100 d-flex">
+                                <span className="w-100 d-flex">
+                                  <select
+                                    className="w-100"
+                                    style={{
+                                      padding: " 0 10px",
+                                      color: "#121112",
+                                      fontStyle: "italic",
+                                      height: "36px",
+                                    }}
+                                    name="paymentTypeId"
+                                    onBlur={handleBlur}
+                                    id="Payment"
+                                    onChange={handleChange}
+                                    value={values.paymentTypeId}
+                                  >
+                                    <option value="">---select---</option>
+                                    {GetAgentPaymentTypeData?.filter((ele: any) => !ele.hide).map((ele: any) => (
+                                      <option key={ele?.paymentTypeId} value={ele?.paymentTypeId}>
+                                        {ele?.name}
+                                      </option>
+                                    ))}
+                                  </select>
+
+                                  {/* <Delete
+                                                style={{
+                                                  color: "red",
+                                                  fontSize: "20px",
+                                                  marginTop: "8px",
+                                                  marginLeft: "4px",
+                                                }}
+                                              /> */}
+                                </span>
+                                {errors.paymentTypeId && touched.paymentTypeId ? (<p className="error">{errors.paymentTypeId}</p>) : ""}
+                              </FormControl>
+                            </div>
+                          </Collapse>
+                          <hr className="w-100"></hr>
+                        </>
+                      ) : ""}
+
+
+
+                      {values.paymentTypeId ? (
+                        <>
+                          <CardHeader
+                            className="flex-row-reverse"
+                            title={
+                              <div
+                                style={{
+                                  marginLeft: "13px",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "left",
+                                    cursor: "pointer",
+                                  }}
+                                  onClick={() => handleOpen("ai")}
+                                >
+                                  Account Information
                                   <span
                                     style={{
                                       fontSize: "13px",
@@ -6046,410 +6244,224 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                       marginTop: "11px",
                                     }}
                                   >
-                                    (Optional)
+                                    (Mandatory)
                                   </span>
-                                }
-                                <Tooltip
-                                  style={{ backgroundColor: "black", color: "white" }}
-                                  title={
-                                    <>
-                                      <Typography color="inherit">
-                                        TT-134 Q&A, Account{" "}
-                                      </Typography>
-                                      <Typography color="inherit">
-                                        {" "}
-                                        information
-                                      </Typography>
-                                      <a
-
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          setToolInfo("account");
-                                        }}
-
-
-                                      >
-                                        <Typography
-                                          style={{
-                                            cursor: "pointer",
-                                            textDecorationLine: "underline",
-                                          }}
-                                          align="center"
-                                        >
-                                          {" "}
-                                          View More...
-                                        </Typography>
-                                      </a>
-                                    </>
-                                  }
-                                >
-                                  <Info
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-
-                                    }}
+                                  <Tooltip
                                     style={{
-                                      color: "#ffc107",
-                                      fontSize: "15px",
-                                      marginLeft: "5px",
-                                      cursor: "pointer",
+                                      backgroundColor: "black",
+                                      color: "white",
                                     }}
-                                  />
-                                </Tooltip>
-                              </div>
-                              <p className="error mb-0">
-                                {errors?.paymentTypeId && touched?.paymentTypeId
-                                  ? "Mandatory Information Required"
-                                  : ""}
-                              </p>
-                            </div>
-                          }
-                          action={
-                            <IconButton
-                              onClick={() => handleOpen("pt")}
-                              aria-label="expand"
-                              size="small"
-                              style={{ marginTop: "3px" }}
-                            >
-                              {open === "pt" ? (
-                                <RemoveCircleOutlineOutlined />
-                              ) : (
-                                <ControlPointOutlined />
-                              )}
-                            </IconButton>
-                          }
-                        ></CardHeader>
-                        {toolInfo === "account" ? (
-                          <div>
-                            <Paper
-                              style={{
-                                backgroundColor: "#dedcb1",
-                                padding: "15px",
-                              }}
-                            >
-                              <Typography>
-                                As part of the tax form completion process, your
-                                withholding agent has requested that you provide
-                                banking details associated with your account. Here,
-                                you will be asked to select the method for which
-                                payment will be remitted, as permitted by the
-                                withholding agent. Allowable options can include:
-                                ACH, Wire or Check
-                              </Typography>
-
-                              <Link
-                                underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
-                                onClick={() => {
-                                  setToolInfo("");
-                                }}
-                              >
-                                --Show Less--
-                              </Link>
-                            </Paper>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        <Collapse
-                          className="px-5 mx-2"
-                          in={open === "pt"}
-                          timeout="auto"
-                          unmountOnExit
-                        >
-                          <div className="col-lg-3 col-6 col-md-3 ">
-                            <Typography className="d-flex w-100 pb-2">
-                              Payment Type
-                              <span style={{ color: "red" }}>*</span>
-                            </Typography>
-
-                            <FormControl className="w-100 d-flex">
-                              <span className="w-100 d-flex">
-                                <select
-                                  className="w-100"
-                                  style={{
-                                    padding: " 0 10px",
-                                    color: "#121112",
-                                    fontStyle: "italic",
-                                    height: "36px",
-                                  }}
-                                  name="paymentTypeId"
-                                  onBlur={handleBlur}
-                                  id="Payment"
-                                  onChange={handleChange}
-                                  value={values.paymentTypeId}
-                                >
-                                  <option value="">---select---</option>
-                                  {GetAgentPaymentTypeData?.filter((ele: any) => !ele.hide).map((ele: any) => (
-    <option key={ele?.paymentTypeId} value={ele?.paymentTypeId}>
-      {ele?.name}
-    </option>
-  ))}
-                                </select>
-
-                                {/* <Delete
-                                                style={{
-                                                  color: "red",
-                                                  fontSize: "20px",
-                                                  marginTop: "8px",
-                                                  marginLeft: "4px",
-                                                }}
-                                              /> */}
-                              </span>
-                              {errors.paymentTypeId && touched.paymentTypeId ? (<p className="error">{errors.paymentTypeId}</p>) : ""}
-                            </FormControl>
-                          </div>
-                        </Collapse>
-                        <hr className="w-100"></hr>
-                      </>
-                    ) : ""}
-
-
-
-                    {values.paymentTypeId ? (
-                      <>
-                        <CardHeader
-                          className="flex-row-reverse"
-                          title={
-                            <div
-                              style={{
-                                marginLeft: "13px",
-                              }}
-                            >
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "left",
-                                  cursor: "pointer",
-                                }}
-                                onClick={() => handleOpen("ai")}
-                              >
-                                Account Information
-                                <span
-                                  style={{
-                                    fontSize: "13px",
-                                    color: "grey",
-                                    marginLeft: "4px",
-                                    marginTop: "11px",
-                                  }}
-                                >
-                                  (Mandatory)
-                                </span>
-                                <Tooltip
-                                  style={{
-                                    backgroundColor: "black",
-                                    color: "white",
-                                  }}
-                                  title={
-                                    <>
-                                      <Typography color="inherit">
-                                        TT-126 Q&A, Account information
-                                      </Typography>
-                                      <a
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          setToolInfo("information");
-                                        }}
-
-
-                                      >
-                                        <Typography
-                                          style={{
-                                            cursor: "pointer",
-                                            textDecorationLine: "underline",
-                                          }}
-                                          align="center"
-                                        >
-                                          {" "}
-                                          View More...
+                                    title={
+                                      <>
+                                        <Typography color="inherit">
+                                          TT-126 Q&A, Account information
                                         </Typography>
-                                      </a>
-                                    </>
-                                  }
-                                >
-                                  <Info
-                                    onClick={(e) => {
-                                      e.stopPropagation();
+                                        <a
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setToolInfo("information");
+                                          }}
 
-                                    }}
-                                    style={{
-                                      color: "#ffc107",
-                                      fontSize: "15px",
-                                      marginLeft: "5px",
-                                      cursor: "pointer",
-                                    }}
-                                  />
-                                </Tooltip>
-                              </div>
-                              <p className="error mb-0">
-                                {errors?.accountHolderName && touched?.accountHolderName ||
-                                  errors?.accountBankName && touched?.accountBankName ||
-                                  errors?.accountBankBranchLocationId && touched?.accountBankBranchLocationId ||
-                                  errors?.accountNumber && touched?.accountNumber ||
-                                  errors?.makePayable && touched?.makePayable ||
-                                  errors?.payResidentalCountryId && touched?.payResidentalCountryId ||
-                                  errors?.payStreetNumberAndName && touched?.payStreetNumberAndName ||
-                                  errors?.payCityorTown && touched?.payCityorTown ||
-                                  errors?.payStateOrProvince && touched?.payStateOrProvince ||
-                                  errors?.payZipPostalCode && touched?.payZipPostalCode ||
-                                  errors?.sortCode && touched?.sortCode ||
-                                  errors?.bsb && touched?.bsb ||
-                                  errors?.bankCode && touched?.bankCode ||
-                                  errors?.abaRouting && touched?.abaRouting
-                                  ? "Mandatory Information Required"
-                                  : ""}
-                              </p>
-                            </div>
-                          }
-                          action={
-                            <IconButton
-                              onClick={() => handleOpen("ai")}
-                              aria-label="expand"
-                              size="small"
-                              style={{ marginTop: "3px" }}
-                            >
-                              {open !== "ai" ? (
-                                <ControlPointOutlined />
-                              ) : (
-                                <RemoveCircleOutlineOutlined />
-                              )}
-                            </IconButton>
-                          }
-                        ></CardHeader>
-                        {toolInfo === "information" ? (
-                          <div>
-                            <Paper
-                              style={{
-                                backgroundColor: "#dedcb1",
-                                padding: "15px",
-                              }}
-                            >
-                              <Typography>
-                                If you have an account number, or several
-                                account numbers relating to the certificate
-                                submission please identify here.
-                              </Typography>
-                              <Typography>
-                                The account details provided will be used to:
-                              </Typography>
-                              <Typography>
-                                <ul>
-                                  <li>
-                                    Make payments to you if you are entitled to
-                                    any
-                                  </li>
-                                  <li>
-                                    Ensure your form is correctly matched to
-                                    your account
-                                  </li>
-                                  <li>
-                                    for further validation of new and existing
-                                    information
-                                  </li>
-                                  <li>
-                                    In some circumstance will allow us to
-                                    document multiple accounts with the same
-                                    certificate
-                                  </li>
-                                </ul>
-                              </Typography>
 
-                              <Typography style={{ marginTop: "10px" }}>
-                                Please see our privacy statement for further
-                                information.
-                              </Typography>
-                              <Typography style={{ marginTop: "10px" }}>
-                                See more information on what to do if you have a
-                                joint account.
-                              </Typography>
-                              <Typography style={{ marginTop: "10px" }}>
-                                Joint Accounts
-                              </Typography>
-                              <Typography style={{ marginTop: "10px" }}>
-                                Please note that if you are submitting a form on
-                                behalf of an entity, which is part of a joint
-                                account and in receipt of a payment, the joint
-                                account should submit their own form.
-                              </Typography>
-                              <Typography style={{ marginTop: "10px" }}>
-                                The form you are submitting ONLY represents the
-                                legal entity named on the form and DOES NOT
-                                represent the account or any joint account
-                                holders.
-                              </Typography>
-                              <Typography style={{ marginTop: "10px" }}>
-                                We can contact the joint account holder by email
-                                informing them that they may need to submit a
-                                form too.
-                              </Typography>
-                              <Typography style={{ marginTop: "10px" }}>
-                                Ref: EH025
-                              </Typography>
+                                        >
+                                          <Typography
+                                            style={{
+                                              cursor: "pointer",
+                                              textDecorationLine: "underline",
+                                            }}
+                                            align="center"
+                                          >
+                                            {" "}
+                                            View More...
+                                          </Typography>
+                                        </a>
+                                      </>
+                                    }
+                                  >
+                                    <Info
+                                      onClick={(e) => {
+                                        e.stopPropagation();
 
-                              <Link
-                                underline="none"
-                                style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
-                                onClick={() => {
-                                  setToolInfo("");
-                                }}
-                              >
-                                --Show Less--
-                              </Link>
-                            </Paper>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        <Collapse
-                          className="px-5 mx-2"
-                          in={open === "ai"}
-                          timeout="auto"
-                          unmountOnExit
-                        >
-                          {values.paymentTypeId == 1 ? (
-                            <>
-                              <div className="row">
-                                <Typography
-                                  style={{
-                                    fontSize: "20px",
-                                    color: "grey",
-                                    marginBottom: "20px",
-                                  }}
-                                >
-                                  Banking Information
-                                </Typography>
-                                <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <FormControl className="w-100">
-                                    <Typography align="left">
-                                      Account holder name
-                                      <span style={{ color: "red" }}>*</span>
-                                    </Typography>
-                                    <Input
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
                                       }}
-                                      id="outlined"
-                                      name="accountHolderName"
-                                      placeholder="Enter  Account holder name"
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      error={Boolean(
-                                        touched.accountHolderName &&
-                                        errors.accountHolderName
-                                      )}
-                                      value={
-                                        values.accountHolderName
-                                      }
+                                      style={{
+                                        color: "#ffc107",
+                                        fontSize: "15px",
+                                        marginLeft: "5px",
+                                        cursor: "pointer",
+                                      }}
                                     />
-                                    {/* {(() => {
+                                  </Tooltip>
+                                </div>
+                                <p className="error mb-0">
+                                  {errors?.accountHolderName && touched?.accountHolderName ||
+                                    errors?.accountBankName && touched?.accountBankName ||
+                                    errors?.accountBankBranchLocationId && touched?.accountBankBranchLocationId ||
+                                    errors?.accountNumber && touched?.accountNumber ||
+                                    errors?.makePayable && touched?.makePayable ||
+                                    errors?.payResidentalCountryId && touched?.payResidentalCountryId ||
+                                    errors?.payStreetNumberAndName && touched?.payStreetNumberAndName ||
+                                    errors?.payCityorTown && touched?.payCityorTown ||
+                                    errors?.payStateOrProvince && touched?.payStateOrProvince ||
+                                    errors?.payZipPostalCode && touched?.payZipPostalCode ||
+                                    errors?.sortCode && touched?.sortCode ||
+                                    errors?.bsb && touched?.bsb ||
+                                    errors?.isCorrectPaymentPurposes2 && touched?.isCorrectPaymentPurposes2 ||
+                                    errors?.bankCode && touched?.bankCode ||
+                                    errors?.abaRouting && touched?.abaRouting
+                                    ? "Mandatory Information Required"
+                                    : ""}
+                                </p>
+                              </div>
+                            }
+                            action={
+                              <IconButton
+                                onClick={() => handleOpen("ai")}
+                                aria-label="expand"
+                                size="small"
+                                style={{ marginTop: "3px" }}
+                              >
+                                {open !== "ai" ? (
+                                  <ControlPointOutlined />
+                                ) : (
+                                  <RemoveCircleOutlineOutlined />
+                                )}
+                              </IconButton>
+                            }
+                          ></CardHeader>
+                          {toolInfo === "information" ? (
+                            <div>
+                              <Paper
+                                style={{
+                                  backgroundColor: "#dedcb1",
+                                  padding: "15px",
+                                }}
+                              >
+                                <Typography>
+                                  If you have an account number, or several
+                                  account numbers relating to the certificate
+                                  submission please identify here.
+                                </Typography>
+                                <Typography>
+                                  The account details provided will be used to:
+                                </Typography>
+                                <Typography>
+                                  <ul>
+                                    <li>
+                                      Make payments to you if you are entitled to
+                                      any
+                                    </li>
+                                    <li>
+                                      Ensure your form is correctly matched to
+                                      your account
+                                    </li>
+                                    <li>
+                                      for further validation of new and existing
+                                      information
+                                    </li>
+                                    <li>
+                                      In some circumstance will allow us to
+                                      document multiple accounts with the same
+                                      certificate
+                                    </li>
+                                  </ul>
+                                </Typography>
+
+                                <Typography style={{ marginTop: "10px" }}>
+                                  Please see our privacy statement for further
+                                  information.
+                                </Typography>
+                                <Typography style={{ marginTop: "10px" }}>
+                                  See more information on what to do if you have a
+                                  joint account.
+                                </Typography>
+                                <Typography style={{ marginTop: "10px" }}>
+                                  Joint Accounts
+                                </Typography>
+                                <Typography style={{ marginTop: "10px" }}>
+                                  Please note that if you are submitting a form on
+                                  behalf of an entity, which is part of a joint
+                                  account and in receipt of a payment, the joint
+                                  account should submit their own form.
+                                </Typography>
+                                <Typography style={{ marginTop: "10px" }}>
+                                  The form you are submitting ONLY represents the
+                                  legal entity named on the form and DOES NOT
+                                  represent the account or any joint account
+                                  holders.
+                                </Typography>
+                                <Typography style={{ marginTop: "10px" }}>
+                                  We can contact the joint account holder by email
+                                  informing them that they may need to submit a
+                                  form too.
+                                </Typography>
+                                <Typography style={{ marginTop: "10px" }}>
+                                  Ref: EH025
+                                </Typography>
+
+                                <Link
+                                  underline="none"
+                                  style={{ marginTop: "10px", fontSize: "16px", cursor: "pointer", color: "#0000C7" }}
+                                  onClick={() => {
+                                    setToolInfo("");
+                                  }}
+                                >
+                                  --Show Less--
+                                </Link>
+                              </Paper>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                          <Collapse
+                            className="px-5 mx-2"
+                            in={open === "ai"}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            {values.paymentTypeId == 1 ? (
+                              <>
+                                <div className="row">
+                                  <Typography
+                                    style={{
+                                      fontSize: "20px",
+                                      color: "grey",
+                                      marginBottom: "20px",
+                                    }}
+                                  >
+                                    Banking Information
+                                  </Typography>
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                    <FormControl className="w-100">
+                                      <Typography align="left">
+                                        Account holder name
+                                        <span style={{ color: "red" }}>*</span>
+                                      </Typography>
+                                      <Input
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          height: " 36px",
+                                          lineHeight: "36px ",
+                                          background: "#fff ",
+                                          fontSize: "13px",
+                                          color: " #000 ",
+                                          fontStyle: "normal",
+                                          borderRadius: "1px",
+                                          padding: " 0 10px ",
+                                        }}
+                                        id="outlined"
+                                        name="accountHolderName"
+                                        placeholder="Enter  Account holder name"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(
+                                          touched.accountHolderName &&
+                                          errors.accountHolderName
+                                        )}
+                                        value={
+                                          values.accountHolderName
+                                        }
+                                      />
+                                      {/* {(() => {
                                                         let data = (values.accountHolderName === "" ?
                                                           (values.firstName !== "" ? setFieldValue("accountHolderName", values.firstName +
                                                             " " + values.lastName) : "")
@@ -6457,331 +6469,556 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                                         return <></>
                                                       })()} */}
 
-                                    {errors.accountHolderName && touched.accountHolderName ? <p className="error">{errors.accountHolderName}</p> : <></>}
+                                      {errors.accountHolderName && touched.accountHolderName ? <p className="error">{errors.accountHolderName}</p> : <></>}
 
-                                  </FormControl>
-                                </div>
-                                <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <FormControl className="w-100">
+                                    </FormControl>
+                                  </div>
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                    <FormControl className="w-100">
+                                      <Typography align="left">
+                                        Bank name
+                                        <span style={{ color: "red" }}>*</span>
+                                      </Typography>
+                                      <Input
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          height: " 36px",
+                                          lineHeight: "36px ",
+                                          background: "#fff ",
+                                          fontSize: "13px",
+                                          color: " #000 ",
+                                          fontStyle: "normal",
+                                          borderRadius: "1px",
+                                          padding: " 0 10px ",
+                                        }}
+                                        id="outlined"
+                                        name="accountBankName"
+                                        placeholder="Enter Bank name"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(
+                                          touched.accountBankName &&
+                                          errors.accountBankName
+                                        )}
+                                        value={values.accountBankName}
+                                      />
+                                      {values.accountBankName == "" && errors.accountBankName && touched.accountBankName ? <p className="error">{errors.accountBankName}</p> : <></>}
+                                    </FormControl>
+                                  </div>
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
                                     <Typography align="left">
-                                      Bank name
+                                      Bank Branch Location
                                       <span style={{ color: "red" }}>*</span>
                                     </Typography>
-                                    <Input
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                      }}
-                                      id="outlined"
-                                      name="accountBankName"
-                                      placeholder="Enter Bank name"
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      error={Boolean(
-                                        touched.accountBankName &&
-                                        errors.accountBankName
-                                      )}
-                                      value={values.accountBankName}
-                                    />
-                                    {values.accountBankName == "" && errors.accountBankName && touched.accountBankName ? <p className="error">{errors.accountBankName}</p> : <></>}
-                                  </FormControl>
+                                    <FormControl className="w-100">
+                                      <select
+                                        style={{
+                                          padding: "0 10px",
+                                          color: "#121112",
+                                          fontStyle: "italic",
+                                          height: "36px",
+                                        }}
+                                        id="demo-simple-select-standard"
+                                        name="accountBankBranchLocationId"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.accountBankBranchLocationId}
+                                      >
+                                        <option value={0}>---select---</option>
+                                        {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                          ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                          .map((ele: any) => (
+                                            <option key={ele.id} value={ele.id}>
+                                              {ele.name}
+                                            </option>
+                                          ))}
+                                        <option value={500}>---</option>
+                                        {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                          ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                          .map((ele: any) => (
+                                            <option key={ele.id} value={ele.id}>
+                                              {ele.name}
+                                            </option>
+                                          ))}
+                                      </select>
+                                      {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? <p className="error">{errors.accountBankBranchLocationId}</p> : <></>}
+
+                                    </FormControl>
+                                  </div>
+
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                    <FormControl className="w-100">
+                                      <Typography align="left">
+                                        Account Number
+                                        <span style={{ color: "red" }}>*</span>
+                                      </Typography>
+                                      <Input
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          height: " 36px",
+                                          lineHeight: "36px ",
+                                          background: "#fff ",
+                                          fontSize: "13px",
+                                          color: " #000 ",
+                                          fontStyle: "normal",
+                                          borderRadius: "1px",
+                                          padding: " 0 10px ",
+                                        }}
+                                        id="outlined"
+                                        name="accountNumber"
+                                        placeholder="Enter Account Number"
+                                        onChange={handleChange}
+                                        inputProps={{ maxLength: 10 }}
+                                        onBlur={handleBlur}
+                                        error={Boolean(
+                                          touched.accountNumber &&
+                                          errors.accountNumber
+                                        )}
+                                        value={values.accountNumber}
+                                      />
+                                      {errors.accountNumber && touched.accountNumber ? <p className="error">{errors.accountNumber}</p> : <></>}
+
+                                    </FormControl>
+                                  </div>
+                                  {returnFieldName(
+                                    handleBlur,
+                                    touched,
+                                    errors,
+                                    values,
+                                    handleChange
+                                  )}
                                 </div>
-                                <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <Typography align="left">
-                                    Bank Branch Location
+                              </>
+                            ) : (
+                              ""
+                            )}
+                            {values.paymentTypeId == 3 ? (
+                              <>
+                                <div className="row">
+                                  <Typography
+                                    style={{
+                                      fontSize: "20px",
+                                      color: "grey",
+                                      marginBottom: "20px",
+                                    }}
+                                  >
+                                    Payment Information
+                                  </Typography>
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                    <FormControl className="w-100">
+                                      <Typography align="left">
+                                        Make Payable To
+                                        <span style={{ color: "red" }}>*</span>
+                                      </Typography>
+                                      <Input
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          height: " 36px",
+                                          lineHeight: "36px ",
+                                          background: "#fff ",
+                                          fontSize: "13px",
+                                          color: " #000 ",
+                                          fontStyle: "normal",
+                                          borderRadius: "1px",
+                                          padding: " 0 10px ",
+                                        }}
+                                        id="outlined"
+                                        name="makePayable"
+                                        placeholder="Enter Make Payable To"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(
+                                          touched.makePayable &&
+                                          errors.makePayable
+                                        )}
+                                        value={values.makePayable}
+                                      />
+                                      {errors.makePayable && touched.makePayable ? <p className="error">{errors.makePayable}</p> : <></>}
+
+                                    </FormControl>
+                                  </div>
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                    <FormControl className="w-100">
+                                      <Typography align="left">
+                                        {" "}
+                                        Country
+                                        <span style={{ color: "red" }}>*</span>
+                                      </Typography>
+                                      <select
+                                        style={{
+                                          padding: " 0 10px",
+                                          color: "#121112",
+                                          fontStyle: "italic",
+                                          height: "36px",
+                                        }}
+                                        id="outlined"
+                                        name="payResidentalCountryId"
+                                        defaultValue={0}
+                                        // placeholder="Enter Residential Country"
+                                        // onChange={handleChange}
+                                        onChange={(e) => {
+                                          handleChange(e);
+                                          //alert(e.target.value);
+                                          setFieldValue("payStateOrProvince", "")
+                                          dispatch(getAllStateByCountryId(e.target.value));
+                                        }}
+                                        onBlur={handleBlur}
+                                        value={values.payResidentalCountryId}
+                                      >
+                                        <p className="error">
+                                          {errors.payResidentalCountryId}
+                                        </p>
+                                        <option value={0}>---select---</option>
+                                        {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                          ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                          .map((ele: any) => (
+                                            <option key={ele.id} value={ele.id}>
+                                              {ele.name}
+                                            </option>
+                                          ))}
+                                        <option value={500}>---</option>
+                                        {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                          ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                          .map((ele: any) => (
+                                            <option key={ele.id} value={ele.id}>
+                                              {ele.name}
+                                            </option>
+                                          ))}
+                                      </select>
+                                      {errors.payResidentalCountryId && touched.payResidentalCountryId ? <p className="error">{errors.payResidentalCountryId}</p> : <></>}
+
+                                    </FormControl>
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                    <FormControl className="w-100">
+                                      <Typography align="left">
+                                        Street Number And Name
+                                        <span style={{ color: "red" }}>*</span>
+                                      </Typography>
+                                      <Input
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          height: " 36px",
+                                          lineHeight: "36px ",
+                                          background: "#fff ",
+                                          fontSize: "13px",
+                                          color: " #000 ",
+                                          fontStyle: "normal",
+                                          borderRadius: "1px",
+                                          padding: " 0 10px ",
+                                        }}
+                                        id="outlined"
+                                        name="payStreetNumberAndName"
+                                        placeholder="Enter Street Number And Name"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(
+                                          touched.payStreetNumberAndName &&
+                                          errors.payStreetNumberAndName
+                                        )}
+                                        value={values.payStreetNumberAndName}
+                                      />
+                                      {errors.payStreetNumberAndName && touched.payStreetNumberAndName ? <p className="error">{errors.payStreetNumberAndName}</p> : <></>}
+
+                                    </FormControl>
+                                  </div>
+
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                    <FormControl className="w-100">
+                                      <Typography align="left">
+                                        Apt/Suite
+                                        {/* <span style={{ color: 'red' }}>*</span> */}
+                                      </Typography>
+                                      <Input
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          height: " 36px",
+                                          lineHeight: "36px ",
+                                          background: "#fff ",
+                                          fontSize: "13px",
+                                          color: " #000 ",
+                                          fontStyle: "normal",
+                                          borderRadius: "1px",
+                                          padding: " 0 10px ",
+                                        }}
+                                        id="outlined"
+                                        name="payAptSuite"
+                                        placeholder="Enter Apt/Suite"
+                                        onChange={handleChange}
+                                        value={values.payAptSuite}
+                                      />
+                                    </FormControl>
+                                  </div>
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                    <FormControl className="w-100">
+                                      <Typography align="left">
+                                        City OR Town
+                                        <span style={{ color: "red" }}>*</span>
+                                      </Typography>
+                                      <Input
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          height: " 36px",
+                                          lineHeight: "36px ",
+                                          background: "#fff ",
+                                          fontSize: "13px",
+                                          color: " #000 ",
+                                          fontStyle: "normal",
+                                          borderRadius: "1px",
+                                          padding: " 0 10px ",
+                                        }}
+                                        id="outlined"
+                                        name="payCityorTown"
+                                        placeholder="Enter  City OR Town"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(
+                                          touched.payCityorTown &&
+                                          errors.payCityorTown
+                                        )}
+                                        value={values.payCityorTown}
+                                      />
+                                      {errors.payCityorTown && touched.payCityorTown ? <p className="error">{errors.payCityorTown}</p> : <></>}
+
+                                    </FormControl>
+                                  </div>
+                                  {values.payResidentalCountryId == 258 || values.payResidentalCountryId == 45 ? (
+                                    <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                      <Typography
+                                        align="left"
+                                        className="d-flex w-100 "
+                                      >
+                                        State or Province:
+                                        {/* <span style={{ color: 'red' }}>*</span> */}
+                                      </Typography>
+
+                                      <FormControl className="w-100">
+                                        <select
+                                          style={{
+                                            padding: " 0 10px",
+                                            color: "#121112",
+                                            fontStyle: "italic",
+                                            height: "36px",
+                                          }}
+                                          name="payStateOrProvince"
+                                          // id="Income"
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          value={values.payStateOrProvince}
+                                        >
+                                          <option value="0">
+                                            <em>---select---</em>
+                                          </option>
+                                          {GetStateByCountryIdReducer1?.allCountriesStateIdData?.map(
+                                            (ele: any) => (
+                                              <option
+                                                key={ele?.id}
+                                                value={ele?.name}
+                                              >
+                                                {ele?.name}
+                                              </option>
+                                            )
+                                          )}
+                                        </select>
+                                      </FormControl>
+                                    </div>
+                                  ) : (
+                                    <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                      <FormControl className="w-100">
+                                        <Typography align="left">
+                                          State OR Province
+                                          <span style={{ color: "red" }}>*</span>
+                                        </Typography>
+                                        <Input
+                                          disabled={
+                                            values.payResidentalCountryId == 0
+                                          }
+                                          style={{
+                                            border: " 1px solid #d9d9d9 ",
+                                            height: " 36px",
+                                            lineHeight: "36px ",
+                                            background: "#fff ",
+                                            fontSize: "13px",
+                                            color: " #000 ",
+                                            fontStyle: "normal",
+                                            borderRadius: "1px",
+                                            padding: " 0 10px ",
+                                          }}
+                                          id="outlined"
+                                          name="payStateOrProvince"
+                                          placeholder="Enter  State OR Province"
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          error={Boolean(
+                                            touched.payStateOrProvince &&
+                                            errors.payStateOrProvince
+                                          )}
+                                          value={values.payStateOrProvince}
+                                        />
+
+                                        {errors.payStateOrProvince && touched.payStateOrProvince ? <p className="error">{errors.payStateOrProvince}</p> : <></>}
+
+                                      </FormControl>
+                                    </div>
+                                  )}
+
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                    <FormControl className="w-100">
+                                      <Typography align="left">
+                                        Zip/Postal Code
+                                        <span style={{ color: "red" }}>*</span>
+                                      </Typography>
+                                      <Input
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          height: " 36px",
+                                          lineHeight: "36px ",
+                                          background: "#fff ",
+                                          fontSize: "13px",
+                                          color: " #000 ",
+                                          fontStyle: "normal",
+                                          borderRadius: "1px",
+                                          padding: " 0 10px ",
+                                        }}
+                                        id="outlined"
+                                        name="payZipPostalCode"
+                                        placeholder="Enter Zip/Postal Code"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(
+                                          touched.payZipPostalCode &&
+                                          errors.payZipPostalCode
+                                        )}
+                                        value={values.payZipPostalCode}
+                                      />
+                                      {errors.payZipPostalCode && touched.payZipPostalCode ? <p className="error">{errors.payZipPostalCode}</p> : <></>}
+
+                                    </FormControl>
+                                  </div>
+                                </div>
+
+                                <div className="d-flex mt-3">
+                                  <Checkbox
+                                    name="isCorrectPaymentPurposes2"
+                                    // onChange={(e) => {
+                                    //   handleChange(e);                                      
+                                    // }}
+                                    // onBlur={handleBlur}
+                                    onChange={handleCheckboxChange('isCorrectPaymentPurposes2')}
+                                    checked={values.isCorrectPaymentPurposes2}
+                                  />
+                                  <Typography
+                                    align="left"
+                                    style={{ marginTop: "10px" }}
+                                  >
+                                    Please check the box to confirm that the above
+                                    details are correct for payment purposes.
                                     <span style={{ color: "red" }}>*</span>
                                   </Typography>
-                                  <FormControl className="w-100">
-                                    <select
-                                      style={{
-                                        padding: "0 10px",
-                                        color: "#121112",
-                                        fontStyle: "italic",
-                                        height: "36px",
-                                      }}
-                                      id="demo-simple-select-standard"
-                                      name="accountBankBranchLocationId"
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.accountBankBranchLocationId}
-                                    >
-                                      <option value={0}>---select---</option>
-                                      {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                        ?.filter((ele: any) => ele.isImportantCountry === "Yes")
-                                        .map((ele: any) => (
-                                          <option key={ele.id} value={ele.id}>
-                                            {ele.name}
-                                          </option>
-                                        ))}
-                                      <option value={500}>---</option>
-                                      {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                        ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
-                                        .map((ele: any) => (
-                                          <option key={ele.id} value={ele.id}>
-                                            {ele.name}
-                                          </option>
-                                        ))}
-                                    </select>
-                                    {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? <p className="error">{errors.accountBankBranchLocationId}</p> : <></>}
-
-                                  </FormControl>
                                 </div>
+                                {errors.isCorrectPaymentPurposes2 && touched.isCorrectPaymentPurposes2 ? (<p className="error">
+                                  {errors.isCorrectPaymentPurposes2}
+                                </p>) : ""}
+                              </>
+                            ) : (
+                              ""
+                            )}
 
-                                <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <FormControl className="w-100">
-                                    <Typography align="left">
-                                      Account Number
-                                      <span style={{ color: "red" }}>*</span>
-                                    </Typography>
-                                    <Input
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                      }}
-                                      id="outlined"
-                                      name="accountNumber"
-                                      placeholder="Enter Account Number"
-                                      onChange={handleChange}
-                                      inputProps={{ maxLength: 10 }}
-                                      onBlur={handleBlur}
-                                      error={Boolean(
-                                        touched.accountNumber &&
-                                        errors.accountNumber
-                                      )}
-                                      value={values.accountNumber}
-                                    />
-                                    {errors.accountNumber && touched.accountNumber ? <p className="error">{errors.accountNumber}</p> : <></>}
-
-                                  </FormControl>
-                                </div>
-                                {returnFieldName(
-                                  handleBlur,
-                                  touched,
-                                  errors,
-                                  values,
-                                  handleChange
-                                )}
-                              </div>
-                            </>
-                          ) : (
-                            ""
-                          )}
-                          {values.paymentTypeId == 3 ? (
-                            <>
-                              <div className="row">
-                                <Typography
-                                  style={{
-                                    fontSize: "20px",
-                                    color: "grey",
-                                    marginBottom: "20px",
-                                  }}
-                                >
-                                  Payment Information
-                                </Typography>
-                                <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <FormControl className="w-100">
-                                    <Typography align="left">
-                                      Make Payable To
-                                      <span style={{ color: "red" }}>*</span>
-                                    </Typography>
-                                    <Input
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                      }}
-                                      id="outlined"
-                                      name="makePayable"
-                                      placeholder="Enter Make Payable To"
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      error={Boolean(
-                                        touched.makePayable &&
-                                        errors.makePayable
-                                      )}
-                                      value={values.makePayable}
-                                    />
-                                    {errors.makePayable && touched.makePayable ? <p className="error">{errors.makePayable}</p> : <></>}
-
-                                  </FormControl>
-                                </div>
-                                <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <FormControl className="w-100">
-                                    <Typography align="left">
-                                      {" "}
-                                      Country
-                                      <span style={{ color: "red" }}>*</span>
-                                    </Typography>
-                                    <select
-                                      style={{
-                                        padding: " 0 10px",
-                                        color: "#121112",
-                                        fontStyle: "italic",
-                                        height: "36px",
-                                      }}
-                                      id="outlined"
-                                      name="payResidentalCountryId"
-                                      defaultValue={0}
-                                      // placeholder="Enter Residential Country"
-                                      // onChange={handleChange}
-                                      onChange={(e) => {
-                                        handleChange(e);
-                                        //alert(e.target.value);
-                                        setFieldValue("payStateOrProvince", "")
-                                        dispatch(getAllStateByCountryId(e.target.value));
-                                      }}
-                                      onBlur={handleBlur}
-                                      value={values.payResidentalCountryId}
-                                    >
-                                      <p className="error">
-                                        {errors.payResidentalCountryId}
-                                      </p>
-                                      <option value={0}>---select---</option>
-                                      {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                        ?.filter((ele: any) => ele.isImportantCountry === "Yes")
-                                        .map((ele: any) => (
-                                          <option key={ele.id} value={ele.id}>
-                                            {ele.name}
-                                          </option>
-                                        ))}
-                                      <option value={500}>---</option>
-                                      {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                        ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
-                                        .map((ele: any) => (
-                                          <option key={ele.id} value={ele.id}>
-                                            {ele.name}
-                                          </option>
-                                        ))}
-                                    </select>
-                                    {errors.payResidentalCountryId && touched.payResidentalCountryId ? <p className="error">{errors.payResidentalCountryId}</p> : <></>}
-
-                                  </FormControl>
-                                </div>
-                              </div>
-                              <div className="row">
-                                <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <FormControl className="w-100">
-                                    <Typography align="left">
-                                      Street Number And Name
-                                      <span style={{ color: "red" }}>*</span>
-                                    </Typography>
-                                    <Input
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                      }}
-                                      id="outlined"
-                                      name="payStreetNumberAndName"
-                                      placeholder="Enter Street Number And Name"
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      error={Boolean(
-                                        touched.payStreetNumberAndName &&
-                                        errors.payStreetNumberAndName
-                                      )}
-                                      value={values.payStreetNumberAndName}
-                                    />
-                                    {errors.payStreetNumberAndName && touched.payStreetNumberAndName ? <p className="error">{errors.payStreetNumberAndName}</p> : <></>}
-
-                                  </FormControl>
-                                </div>
-
-                                <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <FormControl className="w-100">
-                                    <Typography align="left">
-                                      Apt/Suite
-                                      {/* <span style={{ color: 'red' }}>*</span> */}
-                                    </Typography>
-                                    <Input
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                      }}
-                                      id="outlined"
-                                      name="payAptSuite"
-                                      placeholder="Enter Apt/Suite"
-                                      onChange={handleChange}
-                                      value={values.payAptSuite}
-                                    />
-                                  </FormControl>
-                                </div>
-                                <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <FormControl className="w-100">
-                                    <Typography align="left">
-                                      City OR Town
-                                      <span style={{ color: "red" }}>*</span>
-                                    </Typography>
-                                    <Input
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                      }}
-                                      id="outlined"
-                                      name="payCityorTown"
-                                      placeholder="Enter  City OR Town"
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      error={Boolean(
-                                        touched.payCityorTown &&
-                                        errors.payCityorTown
-                                      )}
-                                      value={values.payCityorTown}
-                                    />
-                                    {errors.payCityorTown && touched.payCityorTown ? <p className="error">{errors.payCityorTown}</p> : <></>}
-
-                                  </FormControl>
-                                </div>
-                                {values.payResidentalCountryId == 258 || values.payResidentalCountryId == 45 ? (
+                            {values.paymentTypeId == 2 ? (
+                              <>
+                                <div className="row">
+                                  <Typography
+                                    style={{
+                                      fontSize: "20px",
+                                      color: "grey",
+                                      marginBottom: "20px",
+                                    }}
+                                  >
+                                    Banking Information
+                                  </Typography>
                                   <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                    <Typography
-                                      align="left"
-                                      className="d-flex w-100 "
-                                    >
-                                      State or Province:
-                                      {/* <span style={{ color: 'red' }}>*</span> */}
-                                    </Typography>
+                                    <FormControl className="w-100">
+                                      <Typography align="left">
+                                        Account holder name
+                                        <span style={{ color: "red" }}>*</span>
+                                      </Typography>
+                                      <Input
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          height: " 36px",
+                                          lineHeight: "36px ",
+                                          background: "#fff ",
+                                          fontSize: "13px",
+                                          color: " #000 ",
+                                          fontStyle: "normal",
+                                          borderRadius: "1px",
+                                          padding: " 0 10px ",
+                                        }}
+                                        id="outlined"
+                                        name="accountHolderName"
+                                        placeholder="Enter Account holder name"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(
+                                          touched.accountHolderName &&
+                                          errors.accountHolderName
+                                        )}
+                                        value={
+                                          values.accountHolderName
+                                        }
+                                      />
+                                      {(() => {
+                                        let data = (values.accountHolderName === "" ?
+                                          (values.firstName !== "" ? setFieldValue("accountHolderName", values.firstName +
+                                            " " + values.lastName) : "")
+                                          : values.accountHolderName)
+                                        return <></>
+                                      })()}
+                                      {errors.accountHolderName && touched.accountHolderName ? <p className="error">{errors.accountHolderName}</p> : <></>}
 
+                                    </FormControl>
+                                  </div>
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                    <FormControl className="w-100">
+                                      <Typography align="left">
+                                        Bank name
+                                        <span style={{ color: "red" }}>*</span>
+                                      </Typography>
+                                      <Input
+                                        style={{
+                                          border: " 1px solid #d9d9d9 ",
+                                          height: " 36px",
+                                          lineHeight: "36px ",
+                                          background: "#fff ",
+                                          fontSize: "13px",
+                                          color: " #000 ",
+                                          fontStyle: "normal",
+                                          borderRadius: "1px",
+                                          padding: " 0 10px ",
+                                        }}
+                                        id="outlined"
+                                        name="accountBankName"
+                                        placeholder="Enter Bank name"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(
+                                          touched.accountBankName &&
+                                          errors.accountBankName
+                                        )}
+                                        value={values.accountBankName}
+                                      />
+
+                                      {errors.accountBankName && touched.accountBankName ? <p className="error">{errors.accountBankName}</p> : <></>}
+
+                                    </FormControl>
+                                  </div>
+                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                    <Typography align="left">
+                                      Bank Branch Location
+                                      <span style={{ color: "red" }}>*</span>
+                                    </Typography>
                                     <FormControl className="w-100">
                                       <select
                                         style={{
@@ -6790,302 +7027,43 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                           fontStyle: "italic",
                                           height: "36px",
                                         }}
-                                        name="payStateOrProvince"
-                                        // id="Income"
+                                        id="demo-simple-select-standard"
+                                        name="accountBankBranchLocationId"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        value={values.payStateOrProvince}
+                                        value={values.accountBankBranchLocationId}
                                       >
-                                        <option value="0">
-                                          <em>---select---</em>
+                                        <option
+                                          value=""
+                                          onClick={() => setBankLocation("")}
+                                        >
+                                          ---select---
                                         </option>
-                                        {GetStateByCountryIdReducer1?.allCountriesStateIdData?.map(
-                                          (ele: any) => (
-                                            <option
-                                              key={ele?.id}
-                                              value={ele?.name}
-                                            >
-                                              {ele?.name}
+                                        {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                          ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                          .map((ele: any) => (
+                                            <option key={ele.id} value={ele.id}>
+                                              {ele.name}
                                             </option>
-                                          )
-                                        )}
+                                          ))}
+                                        <option value={500}>---</option>
+                                        {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                          ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                          .map((ele: any) => (
+                                            <option key={ele.id} value={ele.id}>
+                                              {ele.name}
+                                            </option>
+                                          ))}
                                       </select>
-                                    </FormControl>
-                                  </div>
-                                ) : (
-                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                    <FormControl className="w-100">
-                                      <Typography align="left">
-                                        State OR Provience
-                                        <span style={{ color: "red" }}>*</span>
-                                      </Typography>
-                                      <Input
-                                        disabled={
-                                          values.payResidentalCountryId == 0
-                                        }
-                                        style={{
-                                          border: " 1px solid #d9d9d9 ",
-                                          height: " 36px",
-                                          lineHeight: "36px ",
-                                          background: "#fff ",
-                                          fontSize: "13px",
-                                          color: " #000 ",
-                                          fontStyle: "normal",
-                                          borderRadius: "1px",
-                                          padding: " 0 10px ",
-                                        }}
-                                        id="outlined"
-                                        name="payStateOrProvince"
-                                        placeholder="Enter  State OR Provience"
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(
-                                          touched.payStateOrProvince &&
-                                          errors.payStateOrProvince
-                                        )}
-                                        value={values.payStateOrProvince}
-                                      />
-
-                                      {errors.payStateOrProvince && touched.payStateOrProvince ? <p className="error">{errors.payStateOrProvince}</p> : <></>}
+                                      {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? <p className="error">{errors.accountBankBranchLocationId}</p> : <></>}
 
                                     </FormControl>
                                   </div>
-                                )}
 
-                                <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <FormControl className="w-100">
-                                    <Typography align="left">
-                                      Zip/Postal Code
-                                      <span style={{ color: "red" }}>*</span>
-                                    </Typography>
-                                    <Input
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                      }}
-                                      id="outlined"
-                                      name="payZipPostalCode"
-                                      placeholder="Enter Zip/Postal Code"
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      error={Boolean(
-                                        touched.payZipPostalCode &&
-                                        errors.payZipPostalCode
-                                      )}
-                                      value={values.payZipPostalCode}
-                                    />
-                                    {errors.payZipPostalCode && touched.payZipPostalCode ? <p className="error">{errors.payZipPostalCode}</p> : <></>}
-
-                                  </FormControl>
-                                </div>
-                              </div>
-
-                              <div className="d-flex mt-3">
-                                <Checkbox
-                                  // checked={values.isCorrectPaymentPurposes}
-                                  name="isCorrectPaymentPurposes"
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  // error={Boolean(touched.isCorrectPaymentPurposes && errors.isCorrectPaymentPurposes)}
-                                  value={values.isCorrectPaymentPurposes}
-                                />
-                                {touched.isCorrectPaymentPurposes && errors.isCorrectPaymentPurposes ? (<p className="error">
-                                  {errors.isCorrectPaymentPurposes}
-                                </p>) : ""}
-                                <Typography
-                                  align="left"
-                                  style={{ marginTop: "10px" }}
-                                >
-                                  Please check the box to confirm that the above
-                                  details are correct for payment purposes.
-                                  <span style={{ color: "red" }}>*</span>
-                                </Typography>
-                              </div>
-                            </>
-                          ) : (
-                            ""
-                          )}
-
-                          {values.paymentTypeId == 2 ? (
-                            <>
-                              <div className="row">
-                                <Typography
-                                  style={{
-                                    fontSize: "20px",
-                                    color: "grey",
-                                    marginBottom: "20px",
-                                  }}
-                                >
-                                  Banking Information
-                                </Typography>
-                                <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <FormControl className="w-100">
-                                    <Typography align="left">
-                                      Account holder name
-                                      <span style={{ color: "red" }}>*</span>
-                                    </Typography>
-                                    <Input
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                      }}
-                                      id="outlined"
-                                      name="accountHolderName"
-                                      placeholder="Enter Account holder name"
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      error={Boolean(
-                                        touched.accountHolderName &&
-                                        errors.accountHolderName
-                                      )}
-                                      value={
-                                        values.accountHolderName
-                                      }
-                                    />
-                                    {(() => {
-                                      let data = (values.accountHolderName === "" ?
-                                        (values.firstName !== "" ? setFieldValue("accountHolderName", values.firstName +
-                                          " " + values.lastName) : "")
-                                        : values.accountHolderName)
-                                      return <></>
-                                    })()}
-                                    {errors.accountHolderName && touched.accountHolderName ? <p className="error">{errors.accountHolderName}</p> : <></>}
-
-                                  </FormControl>
-                                </div>
-                                <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <FormControl className="w-100">
-                                    <Typography align="left">
-                                      Bank name
-                                      <span style={{ color: "red" }}>*</span>
-                                    </Typography>
-                                    <Input
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                      }}
-                                      id="outlined"
-                                      name="accountBankName"
-                                      placeholder="Enter Bank name"
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      error={Boolean(
-                                        touched.accountBankName &&
-                                        errors.accountBankName
-                                      )}
-                                      value={values.accountBankName}
-                                    />
-
-                                    {errors.accountBankName && touched.accountBankName ? <p className="error">{errors.accountBankName}</p> : <></>}
-
-                                  </FormControl>
-                                </div>
-                                <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <Typography align="left">
-                                    Bank Branch Location
-                                    <span style={{ color: "red" }}>*</span>
-                                  </Typography>
-                                  <FormControl className="w-100">
-                                    <select
-                                      style={{
-                                        padding: " 0 10px",
-                                        color: "#121112",
-                                        fontStyle: "italic",
-                                        height: "36px",
-                                      }}
-                                      id="demo-simple-select-standard"
-                                      name="accountBankBranchLocationId"
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      value={values.accountBankBranchLocationId}
-                                    >
-                                      <option
-                                        value=""
-                                        onClick={() => setBankLocation("")}
-                                      >
-                                        ---select---
-                                      </option>
-                                      {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                        ?.filter((ele: any) => ele.isImportantCountry === "Yes")
-                                        .map((ele: any) => (
-                                          <option key={ele.id} value={ele.id}>
-                                            {ele.name}
-                                          </option>
-                                        ))}
-                                      <option value={500}>---</option>
-                                      {getCountriesAgentWiseReducer.agentWiseCountriesData
-                                        ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
-                                        .map((ele: any) => (
-                                          <option key={ele.id} value={ele.id}>
-                                            {ele.name}
-                                          </option>
-                                        ))}
-                                    </select>
-                                    {errors.accountBankBranchLocationId && touched.accountBankBranchLocationId ? <p className="error">{errors.accountBankBranchLocationId}</p> : <></>}
-
-                                  </FormControl>
-                                </div>
-
-                                <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                  <FormControl className="w-100">
-                                    <Typography align="left">
-                                      Account Number
-                                      <span style={{ color: "red" }}>*</span>
-                                    </Typography>
-                                    <Input
-                                      style={{
-                                        border: " 1px solid #d9d9d9 ",
-                                        height: " 36px",
-                                        lineHeight: "36px ",
-                                        background: "#fff ",
-                                        fontSize: "13px",
-                                        color: " #000 ",
-                                        fontStyle: "normal",
-                                        borderRadius: "1px",
-                                        padding: " 0 10px ",
-                                      }}
-                                      id="outlined"
-                                      name="accountNumber"
-                                      placeholder="Enter Account Number"
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      error={Boolean(
-                                        touched.accountNumber &&
-                                        errors.accountNumber
-                                      )}
-                                      value={values.accountNumber}
-                                    />
-                                    {errors.accountNumber && touched.accountNumber ? <p className="error">{errors.accountNumber}</p> : <></>}
-
-                                  </FormControl>
-                                </div>
-
-                                {values.accountBankBranchLocationId == 258 ? (
                                   <div className="col-lg-3 col-6 col-md-3 mt-2">
                                     <FormControl className="w-100">
                                       <Typography align="left">
-                                        ABA / Routing
+                                        Account Number
                                         <span style={{ color: "red" }}>*</span>
                                       </Typography>
                                       <Input
@@ -7101,179 +7079,215 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                           padding: " 0 10px ",
                                         }}
                                         id="outlined"
-                                        name="abaRouting"
-                                        placeholder="Enter ABA / Routing"
+                                        name="accountNumber"
+                                        placeholder="Enter Account Number"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         error={Boolean(
-                                          touched.abaRouting &&
-                                          errors.abaRouting
+                                          touched.accountNumber &&
+                                          errors.accountNumber
                                         )}
-                                        value={values.abaRouting}
+                                        value={values.accountNumber}
                                       />
-                                      {errors.abaRouting && touched.abaRouting ? <p className="error">{errors.abaRouting}</p> : <></>}
+                                      {errors.accountNumber && touched.accountNumber ? <p className="error">{errors.accountNumber}</p> : <></>}
 
                                     </FormControl>
                                   </div>
-                                ) : (
-                                  ""
-                                )}
-                                {values.accountBankBranchLocationId == 257 ? (
-                                  <div className="col-lg-3 col-6 col-md-3 mt-2">
-                                    <FormControl className="w-100">
-                                      <Typography align="left">
-                                        IBAN
-                                        {/* <span style={{ color: 'red' }}>*</span> */}
-                                      </Typography>
-                                      <Input
-                                        style={{
-                                          border: " 1px solid #d9d9d9 ",
-                                          height: " 36px",
-                                          lineHeight: "36px ",
-                                          background: "#fff ",
-                                          fontSize: "13px",
-                                          color: " #000 ",
-                                          fontStyle: "normal",
-                                          borderRadius: "1px",
-                                          padding: " 0 10px ",
-                                        }}
-                                        id="outlined"
-                                        name="iban"
-                                        placeholder="Enter IBAN"
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        // error={Boolean(touched.iban && errors.iban)}
-                                        value={values.iban}
-                                      />
-                                      {/* <p className='error'>{errors.iban}</p> */}
-                                    </FormControl>
-                                    <FormControl className="w-100">
-                                      <Typography align="left">
-                                        Swift code
-                                        {/* <span style={{ color: 'red' }}>*</span> */}
-                                      </Typography>
-                                      <Input
-                                        style={{
-                                          border: " 1px solid #d9d9d9 ",
-                                          height: " 36px",
-                                          lineHeight: "36px ",
-                                          background: "#fff ",
-                                          fontSize: "13px",
-                                          color: " #000 ",
-                                          fontStyle: "normal",
-                                          borderRadius: "1px",
-                                          padding: " 0 10px ",
-                                        }}
-                                        id="outlined"
-                                        name="swiftCode"
-                                        placeholder="Enter Swift code"
-                                        onChange={handleChange}
-                                        // onBlur={handleBlur}
-                                        // error={Boolean(touched.swiftCode && errors.swiftCode)}
-                                        value={values.swiftCode}
-                                      />
-                                      {/* <p className='error'>{errors.swiftCode}</p> */}
-                                    </FormControl>
-                                  </div>
-                                ) : (
-                                  ""
-                                )}
-                              </div>
-                            </>
-                          ) : (
-                            ""
-                          )}
-                        </Collapse>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                    <div className="row d-flex mx-1 mt-3">
-                      <div
-                        className="d-flex p-0 flex-column"
-                        onClick={() => {
-                          setFieldValue("isConfirmed", !values.isConfirmed);
-                        }}
-                      >
-                        <div className="d-flex p-0">
-                          <div className="w-auto px-2">
-                            <Checkbox
-                              className="pr-0"
-                              checked={values.isConfirmed}
-                              name="isConfirmed"
-                              // error={Boolean(touched.isConfirmed && errors.isConfirmed)}
-                              onChange={handleChange}
-                              value={values.isConfirmed}
-                            />
-                          </div>
-                          <div className="w-auto d-flex p-0" style={{ marginLeft: "-0.5rem" }}>
-                            <Typography className="my-auto">
-                              I confirm the information above is correct.
-                            </Typography>
-                          </div>
-                        </div>
-                      </div>
-                      {errors.isConfirmed && touched.isConfirmed ? <p className="error">{errors.isConfirmed}</p> : <></>}
 
-                      {values.isConfirmed ? (
-                        <div className="text-center">
-                          <Button
-                            type="submit"
+                                  {values.accountBankBranchLocationId == 258 ? (
+                                    <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                      <FormControl className="w-100">
+                                        <Typography align="left">
+                                          ABA / Routing
+                                          <span style={{ color: "red" }}>*</span>
+                                        </Typography>
+                                        <Input
+                                          style={{
+                                            border: " 1px solid #d9d9d9 ",
+                                            height: " 36px",
+                                            lineHeight: "36px ",
+                                            background: "#fff ",
+                                            fontSize: "13px",
+                                            color: " #000 ",
+                                            fontStyle: "normal",
+                                            borderRadius: "1px",
+                                            padding: " 0 10px ",
+                                          }}
+                                          id="outlined"
+                                          name="abaRouting"
+                                          placeholder="Enter ABA / Routing"
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          error={Boolean(
+                                            touched.abaRouting &&
+                                            errors.abaRouting
+                                          )}
+                                          value={values.abaRouting}
+                                        />
+                                        {errors.abaRouting && touched.abaRouting ? <p className="error">{errors.abaRouting}</p> : <></>}
 
-                            // onClick={() => history("/Term")}
-                            style={{
-                              border: "1px solid #0095dd",
-                              background: "#0095dd",
-                              height: "45px",
-                              lineHeight: "normal",
-                              textAlign: "center",
-                              fontSize: "16px",
-                              textTransform: "uppercase",
-                              borderRadius: "0px",
-                              color: "#fff",
-                              padding: "0 35px",
-                              letterSpacing: "1px",
-                            }}
-                            className="btn btn_submit  btn-primary-agent"
-                          >
-                            Continue
-                          </Button>
-                        </div>
+                                      </FormControl>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+                                  {values.accountBankBranchLocationId == 257 ? (
+                                    <div className="col-lg-3 col-6 col-md-3 mt-2">
+                                      <FormControl className="w-100">
+                                        <Typography align="left">
+                                          IBAN
+                                          {/* <span style={{ color: 'red' }}>*</span> */}
+                                        </Typography>
+                                        <Input
+                                          style={{
+                                            border: " 1px solid #d9d9d9 ",
+                                            height: " 36px",
+                                            lineHeight: "36px ",
+                                            background: "#fff ",
+                                            fontSize: "13px",
+                                            color: " #000 ",
+                                            fontStyle: "normal",
+                                            borderRadius: "1px",
+                                            padding: " 0 10px ",
+                                          }}
+                                          id="outlined"
+                                          name="iban"
+                                          placeholder="Enter IBAN"
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          // error={Boolean(touched.iban && errors.iban)}
+                                          value={values.iban}
+                                        />
+                                        {/* <p className='error'>{errors.iban}</p> */}
+                                      </FormControl>
+                                      <FormControl className="w-100">
+                                        <Typography align="left">
+                                          Swift code
+                                          {/* <span style={{ color: 'red' }}>*</span> */}
+                                        </Typography>
+                                        <Input
+                                          style={{
+                                            border: " 1px solid #d9d9d9 ",
+                                            height: " 36px",
+                                            lineHeight: "36px ",
+                                            background: "#fff ",
+                                            fontSize: "13px",
+                                            color: " #000 ",
+                                            fontStyle: "normal",
+                                            borderRadius: "1px",
+                                            padding: " 0 10px ",
+                                          }}
+                                          id="outlined"
+                                          name="swiftCode"
+                                          placeholder="Enter Swift code"
+                                          onChange={handleChange}
+                                          // onBlur={handleBlur}
+                                          // error={Boolean(touched.swiftCode && errors.swiftCode)}
+                                          value={values.swiftCode}
+                                        />
+                                        {/* <p className='error'>{errors.swiftCode}</p> */}
+                                      </FormControl>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                              </>
+                            ) : (
+                              ""
+                            )}
+                          </Collapse>
+                        </>
                       ) : (
-                        <div className="text-center">
-                          <Button
-                            type="submit"
-                            disabled
-                            style={{
-                              border: "1px solid #0095dd",
-                              backgroundColor: "#D2D2D4",
-                              borderColor: "#d2d2d2",
-                              color: "#4a4a4a",
-                              height: "45px",
-                              lineHeight: "normal",
-                              textAlign: "center",
-                              fontSize: "16px",
-                              textTransform: "uppercase",
-                              borderRadius: "0px",
-                              padding: "0 35px",
-                              letterSpacing: "1px",
-                            }}
-                            className="btn btn_submit  btn-primary-agent"
-                          >
-                            Continue
-                          </Button>
-                        </div>
+                        ""
                       )}
+                      <div className="row d-flex mx-1 mt-3">
+                        <div
+                          className="d-flex p-0 flex-column"
+                          onClick={() => {
+                            setFieldValue("isConfirmed", !values.isConfirmed);
+                          }}
+                        >
+                          <div className="d-flex p-0">
+                            <div className="w-auto px-2">
+                              <Checkbox
+                                className="pr-0"
+                                checked={values.isConfirmed}
+                                name="isConfirmed"
+                                // error={Boolean(touched.isConfirmed && errors.isConfirmed)}
+                                onChange={handleChange}
+                                value={values.isConfirmed}
+                              />
+                            </div>
+                            <div className="w-auto d-flex p-0" style={{ marginLeft: "-0.5rem" }}>
+                              <Typography className="my-auto">
+                                I confirm the information above is correct.
+                              </Typography>
+                            </div>
+                          </div>
+                        </div>
+                        {errors.isConfirmed && touched.isConfirmed ? <p className="error">{errors.isConfirmed}</p> : <></>}
+
+                        {values.isConfirmed ? (
+                          <div className="text-center">
+                            <Button
+                              type="submit"
+
+                              // onClick={() => history("/Term")}
+                              style={{
+                                border: "1px solid #0095dd",
+                                background: "#0095dd",
+                                height: "45px",
+                                lineHeight: "normal",
+                                textAlign: "center",
+                                fontSize: "16px",
+                                textTransform: "uppercase",
+                                borderRadius: "0px",
+                                color: "#fff",
+                                padding: "0 35px",
+                                letterSpacing: "1px",
+                              }}
+                              className="btn btn_submit  btn-primary-agent"
+                            >
+                              Continue
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="text-center">
+                            <Button
+                              type="submit"
+                              disabled
+                              style={{
+                                border: "1px solid #0095dd",
+                                backgroundColor: "#D2D2D4",
+                                borderColor: "#d2d2d2",
+                                color: "#4a4a4a",
+                                height: "45px",
+                                lineHeight: "normal",
+                                textAlign: "center",
+                                fontSize: "16px",
+                                textTransform: "uppercase",
+                                borderRadius: "0px",
+                                padding: "0 35px",
+                                letterSpacing: "1px",
+                              }}
+                              className="btn btn_submit  btn-primary-agent"
+                            >
+                              Continue
+                            </Button>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </Form>
+                  </Form>
 
 
-                    
 
-              )}}
+
+                )
+              }}
             </Formik>
-            
+
           </Paper>
         </div>
       </div>

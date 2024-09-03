@@ -754,7 +754,7 @@ export default function Penalties() {
                       )}
                      </>):""}
 
-                     {RetroactiveStatementValue== "true"  ?(
+{RetroactiveStatementValue== "true"  ?(
 <div style={{marginLeft:"10px",marginTop:"20px"}}>
  <Typography style={{fontWeight:"bold",fontSize:"25px"}} className="my-2">
  Affidavit of Unchanged Status - Retroactive Statement

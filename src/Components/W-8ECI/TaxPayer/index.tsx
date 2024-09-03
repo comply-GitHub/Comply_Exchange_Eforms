@@ -24,7 +24,7 @@ import "./index.scss";
 import PopupModal from "../../../Redux/Actions/poupModal";
 import { useNavigate } from "react-router-dom";
 import { TaxPayerSchema } from "../../../schemas/w8ECI";
-import { GetHelpVideoDetails, W8_state_ECI, getAllCountries, getTinTypes, postW8ECI_EForm } from "../../../Redux/Actions";
+import { GetHelpVideoDetails, W8_state_ECI, getAllCountries, getTinTypes, postW8ECI_EForm,getAllCountriesAgentWise } from "../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import CloseIcon from '@mui/icons-material/Close';
@@ -139,9 +139,19 @@ export default function Tin(props: any) {
   const onBoardingFormValues = JSON.parse(
     localStorage.getItem("agentDetails") ?? "null"
   );
+  
+  useEffect(() => {
+    if (authDetails?.agentId) {
+      
+      dispatch(getAllCountriesAgentWise(authDetails?.agentId));
+    }
+  }, [authDetails])
 
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
+  );
+  const getCountriesAgentWiseReducer = useSelector(
+    (state: any) => state.getCountriesAgentWiseReducer
   );
 
   function getUStinValue() {
@@ -685,18 +695,21 @@ export default function Tin(props: any) {
                               }}
                             >
                               <option value={0}>---select---</option>
-                              <option value={257}>United Kingdom</option>
-                              {getCountriesReducer.allCountriesData?.filter(
-                                (x: any) =>
-                                  x.name?.toLowerCase() !== "united states"
-                              )
-                                ?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
+                              {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
+                                      </option>
+                                    ))}
+                                  <option value={500}>---</option>
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
+                                      </option>
+                                    ))}
                             </select>
                             {/* <p className="error">{errors.foreignTINCountry}</p> */}
 

@@ -217,7 +217,7 @@ export const EntitySchema = (Cert: string, payment: boolean, income: boolean, is
       then: () =>
         Yup.string()
           .required("Please enter Bank code")
-      // .min(5, "Bank code should be minimum of 5 characters"),
+      
     }),
 
     sortCode: Yup.string().when(
@@ -276,11 +276,11 @@ export const EntitySchema = (Cert: string, payment: boolean, income: boolean, is
       is: 3,
       then: () => Yup.string().required("Please enter zip or postal code"),
     }),
-    isCorrectPaymentPurposes: Yup.string()
-      .when("paymentTypeId", {
-        is: 3,
-        then: () => Yup.string().required("Verify please"),
-      }),
+    isCorrectPaymentPurposes2:Yup.boolean().when("paymentTypeId", {
+      is: 3,
+      then: () => Yup.boolean().required("Please Confirm payment purposes.").oneOf([true], "Please Confirm payment purposes."),
+    }),
+   
     bsb: Yup.string().when("accountBankBranchLocationId", {
       is: (accountBankBranchLocationId: any) =>
         accountBankBranchLocationId == 16,

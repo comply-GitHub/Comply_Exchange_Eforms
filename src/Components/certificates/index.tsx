@@ -43,6 +43,7 @@ export default function Certificates(props: any) {
   const [showInfoMore, setShowInfoMore] = useState(false);
   const [diableForm, setDisableForm] = useState("usIndividual");
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
+  const Forms = localStorage.getItem("Form") || "{}";
 
   const auth = JSON.parse(authDetailsString);
   const userType = auth?.configurations?.userType;
@@ -1007,9 +1008,7 @@ export default function Certificates(props: any) {
               <Button
                 style={{
                   marginTop: "35px",
-                  // border: "1px solid #0095dd",
-                  // backgroundColor: "#D2D2D4",
-                  // borderColor: "#d2d2d2",
+               
                   width: "10%",
                   color: "#ffff",
                   height: "44px",
@@ -1018,16 +1017,14 @@ export default function Certificates(props: any) {
                   fontSize: "17px",
                   textTransform: "uppercase",
                   borderRadius: "3px",
-                  // padding: "0 15px",
+                 
                   letterSpacing: "1px",
                 }}
                 size="small"
                 type="submit"
                 onClick={() => redirectToComponent(selectedCard)}
                 variant="contained"
-              // onClick={()=>(
-              //   history("/W9")
-              // )}
+             
               >
                 Continue
               </Button>
@@ -1072,8 +1069,13 @@ export default function Certificates(props: any) {
           <Typography align="center">
             <Button
               onClick={() => {
-                history("/Individual");
-              }}
+                if(Forms == "entity"){
+                  history("/Entity");
+                }
+                else{
+                  history("/Individual");
+                }
+   }}
               variant="contained"
               size="small"
               style={{

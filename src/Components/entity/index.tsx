@@ -178,9 +178,12 @@ export default function Entity() {
     payStateOrProvince: "",
     payZipPostalCode: "",
     isCorrectPaymentPurposes: false,
+    isCorrectPaymentPurposes2:false,
     isConfirmed: false,
   });
 
+
+  
   var [initialValues, setInitialValues] = useState({
     id: 0,
     agentId: authDetails?.agentId,
@@ -252,9 +255,12 @@ export default function Entity() {
     bsb: "",
     capacityId: 1,
     isCorrectPaymentPurposes: false,
+    isCorrectPaymentPurposes2:false,
     isConfirmed: false,
   });
 
+
+ 
   // useEffect(() => {
   //   apiGetUrl("GetCountries", "", {})
   //     .then((res) => {
@@ -311,6 +317,7 @@ export default function Entity() {
       );
     }
   }, [authDetails?.agentId])
+
 
   useEffect(() => {
     let temp1: any[] = skippedSteps.filter((x: any) => x.id == 8 && x.agentId == authDetails?.agentId);
@@ -711,11 +718,6 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
     }
   };
 
-  const clickInfo = () => {
-    alert(
-      "Instructor Identifier Format is ?*********************** \n 9- Numeric Value Only \n A - Alphabetical Character Only \n* = Alphanumeric Character only \n ? - Characters optional after this"
-    );
-  };
 
 
   useEffect(() => {
@@ -736,6 +738,8 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
       return newState;
     });
   };
+
+ 
   // console.log(errors,"error")
   return (
     <section
@@ -922,12 +926,12 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                   sortCode: values?.sortCode,
                   bsb: values?.bsb,
                   capacityId: values?.capacityId,
-                  isCorrectPaymentPurposes: values?.isCorrectPaymentPurposes,
+                  isCorrectPaymentPurposes: values?.isCorrectPaymentPurposes2 ,
                   isConfirmed: values?.isConfirmed,
                   usTinTypeId: +values?.taxpayerIdTypeID,
                 };
-
-
+              
+               
                 dispatch(postOnboarding(payload, (data: any) => {
                   console.log(data)
                   if (data.accountHolderID) {
@@ -941,6 +945,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                   localStorage.setItem("agentDetails", JSON.stringify({ ...payload, id: data.accountHolderID }));
                   localStorage.setItem("accountHolderDetails", JSON.stringify({ ...payload, id: data.accountHolderID }));
                   localStorage.setItem("isFormFilling", "true");
+                  localStorage.setItem("Form", "entity");
                   redirectFunc();
                 }));
 
@@ -960,7 +965,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                 setFieldValue,
               }) => { 
                 const foreignTINCountryIdNumber = Number(values.foreignTINCountryId);
-
+              
                 // Find the selected country
                 const selectedCountry = getCountriesAgentWiseReducer.agentWiseCountriesData
                   ?.find((country: any) => {
@@ -972,7 +977,20 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                 // Extract the foreignTinFormatToolTip field from the selected country, if available
                 const selectedCountryTitle = selectedCountry ? selectedCountry.foreignTinFormatToolTip : "";
                 const selectedCountryMask = selectedCountry ? selectedCountry.foreignTinFormat : "";
-              return  (
+            
+                const handleCheckboxChange = (name:any) => (event:any) => {
+                  const isChecked = event.target.checked;
+                  if (isChecked) {
+                    values.isCorrectPaymentPurposes2 = true;
+                    console.log(values.isCorrectPaymentPurposes2, "true");
+                  } else {
+                    values.isCorrectPaymentPurposes2 = false;
+                    console.log(values.isCorrectPaymentPurposes2, "false");
+                  }
+                };
+            
+            
+                return  (
                 <Form onSubmit={handleSubmit}>
                   {values.permanentResidentialCountryId == 186 ? (
                     <div
@@ -1713,7 +1731,9 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                             alignItems: "left",
                             cursor: "pointer",
                           }}
-                          onClick={() => handleOpen("tax")}
+                          onClick={() => handleOpen("tax")
+                            
+                          }
                         >
                           Tax Identification Numbers
                           <Tooltip
@@ -5109,6 +5129,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                 errors?.payZipPostalCode && touched?.payZipPostalCode||
                                 errors?.sortCode && touched?.sortCode||
                                 errors?.bsb && touched?.bsb||
+                                errors?.isCorrectPaymentPurposes2 && touched?.isCorrectPaymentPurposes2 ||
                                 errors?.bankCode && touched?.bankCode||
                                 errors?.abaRouting && touched?.abaRouting
                                 ? "Mandatory Information Required!"
@@ -5118,7 +5139,11 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                         }
                         action={
                           <IconButton
-                            onClick={() => handleOpen("ai")}
+                            onClick={() =>
+                              
+                              handleOpen("ai") 
+                             
+                            }
                             aria-label="expand"
                             size="small"
                             style={{ marginTop: "3px" }}
@@ -5396,7 +5421,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                         {/* Check */}
                         {values.paymentTypeId == 3 ? (
                           <>
-                            <div className="row">
+                            <div className="row"  >
                               <Typography
                                 style={{
                                   fontSize: "20px",
@@ -5617,7 +5642,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                 <div className="col-lg-3 col-6 col-md-3 mt-2">
                                   <FormControl className="w-100">
                                     <Typography align="left">
-                                      State OR Provience
+                                      State OR Province
                                       <span style={{ color: "red" }}>*</span>
                                     </Typography>
                                     <select
@@ -5655,7 +5680,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                 <div className="col-lg-3 col-6 col-md-3 mt-2">
                                   <FormControl className="w-100">
                                     <Typography align="left">
-                                      State OR Provience
+                                      State OR Province
                                       <span style={{ color: "red" }}>*</span>
                                     </Typography>
                                     <Input
@@ -5726,17 +5751,11 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                             </div>
 
                             <div className="d-flex mt-3">
-                              <Checkbox
-                                // checked={values.isCorrectPaymentPurposes}
-                                name="isCorrectPaymentPurposes"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                // error={Boolean(touched.isCorrectPaymentPurposes && errors.isCorrectPaymentPurposes)}
-                                value={values.isCorrectPaymentPurposes}
-                              />
-                              {touched.isCorrectPaymentPurposes && errors.isCorrectPaymentPurposes ? (<p className="error">
-                                {errors.isCorrectPaymentPurposes}
-                              </p>) : ""}
+                            <Checkbox
+                                    name="isCorrectPaymentPurposes2"
+                                    onChange={handleCheckboxChange('isCorrectPaymentPurposes2')}
+                                    checked={values.isCorrectPaymentPurposes2}
+                                  />
                               <Typography
                                 align="left"
                                 style={{ marginTop: "10px" }}
@@ -5746,6 +5765,9 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                 <span style={{ color: "red" }}>*</span>
                               </Typography>
                             </div>
+                              {errors.isCorrectPaymentPurposes2 && touched.isCorrectPaymentPurposes2 ? (<p className="error">
+                                {errors.isCorrectPaymentPurposes2}
+                              </p>) : ""}
                           </>
                         ) : (
                           ""

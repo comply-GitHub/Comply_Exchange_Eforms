@@ -600,8 +600,7 @@ export default function Certifications(props: any) {
                               marginTop: "7px",
                             }}
                           >
-                            I have been notified by IRS that I am currently
-                            subject to backup withholding.
+                            I certify that I have the capacity to sign for the entity identified on line 1 of this form.
                           </Typography>
                         </Typography>
                         <p className="error">{errors.isCertifyCapacitySign}</p>

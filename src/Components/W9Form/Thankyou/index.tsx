@@ -50,7 +50,13 @@ export default function Term() {
   useEffect(() => {
     document.title = "Thank You"
   }, [])
-
+  const handleSignout = (e: any) => {
+    
+    localStorage.clear();
+   
+    window.location.replace("/login")
+  
+  }
 
   return (
     <section
@@ -164,8 +170,9 @@ export default function Term() {
                   </Button>
                   <Button
                     type="submit"
-                    onClick={() => {
-                      history("/login");
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSignout(e);
                     }}
                     style={{
                       border: "1px solid #0095dd",

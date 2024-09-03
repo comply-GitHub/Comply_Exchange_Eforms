@@ -574,7 +574,10 @@ export default function Certifications(props: any) {
                             </span>
                           </Typography>
                         </Typography>
+
+                        <p className="error">
                         {touched.isCapacityForm && typeof errors.isCapacityForm === 'string' ? errors.isCapacityForm : null}
+                        </p>
                        
                         <Divider
                           style={{
@@ -583,9 +586,6 @@ export default function Certifications(props: any) {
                             backgroundColor: "black",
                           }}
                         />
-
-
-
 
                         <Typography style={{ display: "flex" }}>
                           <Checkbox
@@ -621,8 +621,9 @@ export default function Certifications(props: any) {
                             </span>
                           </Typography>
                         </Typography>
+                        <p className="error">
                         {touched.isElectronicForm && typeof errors.isElectronicForm === 'string' ? errors.isElectronicForm : null}
-                       
+                       </p>
                         <Divider
                           style={{
                             marginTop: "1rem",

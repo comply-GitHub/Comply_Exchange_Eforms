@@ -244,7 +244,10 @@ vat:Cert === "GEN" ? Yup.string().when("vatId", {
       is: 3,
       then: () => Yup.string().required("Please enter state or province"),
     }),
-
+    isCorrectPaymentPurposes2:Yup.boolean().when("paymentTypeId", {
+      is: 3,
+      then: () => Yup.boolean().required("Please Confirm payment purposes.").oneOf([true], "Please Confirm payment purposes."),
+    }),
     payZipPostalCode: Yup.string().when("paymentTypeId", {
       is: 3,
       then: () => Yup.string().required("Please enter zip or postal code"),

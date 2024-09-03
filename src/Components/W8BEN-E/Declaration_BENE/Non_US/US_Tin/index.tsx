@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 import {
   W8_state, getTinTypes, getAllCountries, GetHelpVideoDetails, postW8BEN_EForm,
   GetAgentSkippedSteps,
-  GetAllGIINTypes,
+  GetAllGIINTypes,getAllCountriesAgentWise
 } from "../../../../../Redux/Actions";
 import PopupModal from "../../../../../Redux/Actions/poupModal";
 import { useDispatch, useSelector } from "react-redux";
@@ -72,7 +72,12 @@ export default function Tin(props: any) {
   const W8BENEData = useSelector((state: any) => state.W8BENE);
 
   const PrevStepData = JSON.parse(localStorage.getItem("PrevStepData") || "{}");
-
+  useEffect(() => {
+    if (authDetails?.agentId) {
+      
+      dispatch(getAllCountriesAgentWise(authDetails?.agentId));
+    }
+  }, [authDetails])
   const LoadData = () => {
     const temp = {
       ...PrevStepData,
@@ -100,7 +105,9 @@ export default function Tin(props: any) {
   const viewPdf = () => {
     history("/w8BenE_pdf", { replace: true });
   }
-
+  const getCountriesAgentWiseReducer = useSelector(
+    (state: any) => state.getCountriesAgentWiseReducer
+  );
   function getUStinValue() {
     let val: number = 1;
     ustinValue.map((item: any) => {
@@ -798,16 +805,21 @@ export default function Tin(props: any) {
                           >
                             <option value={0}>---select---</option>
                             {/* <option value={257}>United Kingdom</option> */}
-                            {getCountriesReducer.allCountriesData
-                              ?.filter(
-                                (x: any) =>
-                                  x.name?.toLowerCase() !== "united states"
-                              )
-                              ?.map((ele: any) => (
-                                <option key={ele?.id} value={ele?.id}>
-                                  {ele?.name}
-                                </option>
-                              ))}
+                            {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
+                                      </option>
+                                    ))}
+                                  <option value={500}>---</option>
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
+                                      </option>
+                                    ))}
                           </select>
                           {/* <p className="error">{errors.foreignTINCountry}</p> */}
 

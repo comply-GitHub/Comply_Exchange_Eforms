@@ -18,15 +18,7 @@ export default function Term() {
   const Version =localStorage.getItem("Version");
   const ahdData: any = useSelector((state: any) => state?.accountHolder);
   const LoadRoute = () => {
-    // if(ahdData!==null && ahdData!==undefined){      
-    //   if(ahdData.businessTypeId===2){
-    //     GlobalValues.basePageRoute="/EntityUs";
-    //   }else{
-    //     GlobalValues.basePageRoute="/IndividualUs";        
-    //   }
-    // }else{
-    //   GlobalValues.basePageRoute="/IndividualUs";
-    // }
+   
   }
 
   useEffect(()=>{
@@ -36,6 +28,14 @@ export default function Term() {
   useEffect(() => {
     LoadRoute();
   }, [])
+
+  const handleSignout = (e:any) => {
+  
+    localStorage.clear();
+   
+    window.location.replace("/login");
+
+  };
 
   return (
     <section
@@ -66,9 +66,10 @@ export default function Term() {
           >
             <Button
               type="button"
-              // disabled
-              onClick={() => history(GlobalValues.basePageRoute)}
-              
+              onClick={(e) => {
+                e.preventDefault();
+                handleSignout(e);
+              }}
               className="btn btn_submit  btn-primary-agent"
             >
               Reject
