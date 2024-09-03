@@ -31,7 +31,7 @@ export default function Term() {
 
   const auth = JSON.parse(authDetailsString);
   const userType = auth?.configurations?.userType;
-
+  const Forms = localStorage.getItem("Form") ;
   const AgentDeatilsId = localStorage.getItem("agentDetails") || "{}";
 
   const authentication = JSON.parse(AgentDeatilsId);
@@ -51,10 +51,14 @@ export default function Term() {
     document.title = "Thank You"
   }, [])
   const handleSignout = (e: any) => {
-    
+    if(Forms == "entity"){
+      window.location.replace("/Entity");
+    }
+    else{
+      window.location.replace("/Individual");
+    }
     localStorage.clear();
-   
-    window.location.replace("/login")
+  
   
   }
 

@@ -24,6 +24,7 @@ export default function Term() {
   const history = useNavigate();
   const pdfRef = useRef(null);
   const Version =localStorage.getItem("Version");
+  const Forms = localStorage.getItem("Form") ;
   const pdfRefnew = useRef(null);
   const [notView, setNotView] = useState(false);
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
@@ -50,15 +51,15 @@ export default function Term() {
     }
   };
   const handleSignout = (e: any) => {
-    //clear call data
+    if(Forms == "entity"){
+      window.location.replace("/Entity");
+    }
+    else{
+      window.location.replace("/Individual");
+    }
     localStorage.clear();
-    //dispatch actions to clear store
-
-    //redirect to login
-    window.location.replace("/login")
-    // history(
-    //   "login"
-    // )
+  
+  
   }
 
 

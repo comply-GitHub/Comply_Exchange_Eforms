@@ -26,7 +26,7 @@ export default function Term() {
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const Version =localStorage.getItem("Version");
- 
+  const Forms = localStorage.getItem("Form") ;
 useEffect(()=>{
 document.title="Thank You"
 },[])
@@ -66,9 +66,14 @@ document.title="Thank You"
   };
   const handleSignout = (e: any) => {
  
+    if(Forms == "entity"){
+      window.location.replace("/Entity");
+    }
+    else{
+      window.location.replace("/Individual");
+    }
     localStorage.clear();
-  
-    window.location.replace("/login")
+ 
   
   }
 

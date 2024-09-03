@@ -33,7 +33,7 @@ export default function Term() {
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
-
+  const Forms = localStorage.getItem("Form") ;
   const auth = JSON.parse(authDetailsString);
   const userType = auth?.configurations?.userType;
 
@@ -55,16 +55,17 @@ export default function Term() {
   };
 
   const handleSignout = (e: any) => {
-    //clear call data
+    if(Forms == "entity"){
+      window.location.replace("/Entity");
+    }
+    else{
+      window.location.replace("/Individual");
+    }
     localStorage.clear();
-    //dispatch actions to clear store
-
-    //redirect to login
-    window.location.replace("/login")
-    // history(
-    //   "login"
-    // )
+  
+  
   }
+
 
 
 

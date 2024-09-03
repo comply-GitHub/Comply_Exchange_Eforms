@@ -38,6 +38,7 @@ export default function Term() {
   useEffect(() => {
     document.title = "Thank You"
   }, [])
+  const Forms = localStorage.getItem("Form") ;
   const Version =localStorage.getItem("Version");
   const handleDownload = () => {
     if (pdfUrl) {
@@ -52,15 +53,15 @@ export default function Term() {
   };
 
   const handleSignout = (e: any) => {
-    //clear call data
+    if(Forms == "entity"){
+      window.location.replace("/Entity");
+    }
+    else{
+      window.location.replace("/Individual");
+    }
     localStorage.clear();
-    //dispatch actions to clear store
-
-    //redirect to login
-    window.location.replace("/login")
-    // history(
-    //   "login"
-    // )
+  
+  
   }
 
 

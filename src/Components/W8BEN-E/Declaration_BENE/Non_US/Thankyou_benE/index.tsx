@@ -23,7 +23,7 @@ const auth = JSON.parse(authDetailsString);
 
 const userType = auth?.configurations?.userType;
 const Version =localStorage.getItem("Version");
-
+const Forms = localStorage.getItem("Form") ;
 
 export default function Term() {
   //States  
@@ -56,11 +56,15 @@ export default function Term() {
   };
 
   const handleSignout = (e: any) => {
-
+    if(Forms == "entity"){
+      window.location.replace("/Entity");
+    }
+    else{
+      window.location.replace("/Individual");
+    }
     localStorage.clear();
-    
-    window.location.replace("/login")
-   
+  
+  
   }
 
 

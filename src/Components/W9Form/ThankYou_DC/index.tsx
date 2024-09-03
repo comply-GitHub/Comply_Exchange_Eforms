@@ -26,7 +26,7 @@ export default function Term() {
     status:false
 })
   const authDetailsString = localStorage.getItem("authDetails") || "{}";
-
+  const Forms = localStorage.getItem("Form") ;
   const auth = JSON.parse(authDetailsString);
   const Version =localStorage.getItem("Version");
   const userType = auth?.configurations?.userType;
@@ -44,16 +44,17 @@ export default function Term() {
   useEffect(() => {
     document.title = "Thank You"
   }, [])
-  const handleSignout = (e: any) => {
-    //clear call data
-    localStorage.clear();
-    //dispatch actions to clear store
 
-    //redirect to login
-    window.location.replace("/login")
-    // history(
-    //   "login"
-    // )
+  const handleSignout = (e: any) => {
+    if(Forms == "entity"){
+      window.location.replace("/Entity");
+    }
+    else{
+      window.location.replace("/Individual");
+    }
+    localStorage.clear();
+  
+  
   }
 
   return (

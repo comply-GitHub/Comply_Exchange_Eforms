@@ -36,6 +36,7 @@ export default function Term() {
   }, [])
 
   const Version =localStorage.getItem("Version");
+  const Forms = localStorage.getItem("Form") ;
   const currentYear = new Date().getFullYear();
   const handleDownload = () => {
     if (pdfUrl) {
@@ -50,12 +51,18 @@ export default function Term() {
   };
 
   const handleSignout = (e: any) => {
-    //clear call data
-    localStorage.clear();
-    //dispatch actions to clear store
+   
 
-    //redirect to login
-    window.location.replace("/login")
+   
+  
+      if(Forms == "entity"){
+        window.location.replace("/Entity");
+      }
+      else{
+        window.location.replace("/Individual");
+      }
+      localStorage.clear();
+   
     // history(
     //   "login"
     // )

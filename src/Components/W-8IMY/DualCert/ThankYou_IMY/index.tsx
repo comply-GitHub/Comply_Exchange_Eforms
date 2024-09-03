@@ -33,6 +33,7 @@ export default function Term() {
 
   const auth = JSON.parse(authDetailsString);
   const userType = auth?.configurations?.userType;
+  const Forms = localStorage.getItem("Form") ;
 
   useEffect(()=>{
     document.title = "Thank You"
@@ -51,15 +52,15 @@ export default function Term() {
   };
 
   const handleSignout = (e: any) => {
-    //clear call data
+    if(Forms == "entity"){
+      window.location.replace("/Entity");
+    }
+    else{
+      window.location.replace("/Individual");
+    }
     localStorage.clear();
-    //dispatch actions to clear store
-
-    //redirect to login
-    window.location.replace("/login")
-    // history(
-    //   "login"
-    // )
+  
+  
   }
 
 
