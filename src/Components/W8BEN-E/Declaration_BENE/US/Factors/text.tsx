@@ -592,7 +592,7 @@ const DynamicForm: React.FC<InputProps> = ({
                   </Typography>
                   <FormControl className="w-50">
                     <input
-                      type="number"
+                      // type="number"
                       value={form.number}
                       onChange={(e) =>
                         setFormList((prevFormList: any) =>
@@ -600,7 +600,7 @@ const DynamicForm: React.FC<InputProps> = ({
                             i === index
                               ? {
                                 ...prevForm,
-                                number: isNaN(parseInt(e.target.value, 10)) ? "0" : parseInt(e.target.value, 10),
+                                number: isNaN(parseInt(e.target.value, 10)) ? "" : parseInt(e.target.value, 10),
                               }
                               : prevForm
                           )
@@ -671,7 +671,7 @@ const DynamicForm: React.FC<InputProps> = ({
                   </Typography>
                   <FormControl className="w-50">
                     <input
-                      type="number"
+                      // type="number"
                       value={form.number}
                       onChange={(e) =>
                         setFormList((prevFormList: any) =>
@@ -679,7 +679,7 @@ const DynamicForm: React.FC<InputProps> = ({
                             i === index
                               ? {
                                 ...prevForm,
-                                number: isNaN(parseInt(e.target.value, 10)) ? "0" : parseInt(e.target.value, 10),
+                                number: isNaN(parseInt(e.target.value, 10)) ? "" : parseInt(e.target.value, 10),
                               }
                               : prevForm
                           )
@@ -765,7 +765,7 @@ const DynamicForm: React.FC<InputProps> = ({
                             i === index
                               ? {
                                 ...prevForm,
-                                number: isNaN(parseInt(e.target.value, 10)) ? "0" : parseInt(e.target.value, 10),
+                                number: isNaN(parseInt(e.target.value, 10)) ? "" : parseInt(e.target.value, 10),
                               }
                               : prevForm
                           )

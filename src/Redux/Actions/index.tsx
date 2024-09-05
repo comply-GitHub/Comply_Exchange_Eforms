@@ -459,7 +459,7 @@ export const postOnboarding = (value: any, callback: Function): any => {
 export const GetAllLanguage = (): any => {
   return (dispatch: any) => {
     Utils.api.getApiCall(
-      Utils.EndPoint.GetAllLanguage, "",
+      Utils.EndPoint.GetAllLanguage,"",
       (resData) => {
         const { data } = resData;
         if (resData.status === 200) {

@@ -79,8 +79,6 @@ const EndPoint = {
  UpsertSelfCertDetails:"/DualCert/UpsertSelfCertDetails",
  UpsertCRSStepsDetails:"/DualCert/UpsertCRSStepsDetails",
  GetCRSStepsDetails:"/DualCert/GetCRSStepsDetails",
-
-// Form GetApis:
 GetDual:"/DualCert/GetDualCert",
 GetDualCertW9:"/DualCert/GetDualCertDetails",
 GetByW8BENEEntityNonUSFormId:"/W8BENEEntity/GetByW8BENEEntityNonUSFormId",
@@ -92,11 +90,6 @@ GetSupportingDocumentation:"/AccountHolderDetail/GetSupportingDocumentation",
 getSupportedFile:"/FileUpload/GetFileBase64",
 GetByCaymanIndividualNonUSId: "/CaymanIndividualNonUS/GetByCaymanIndividualNonUSId",
 GetByCaymanEntityNonUSId: "/CaymanEntityNonUS/GetByCaymanEntityNonUSId",
-
-
-
-
-//Pdf apis
 GetW9Pdf:"/W9IndividualEntity/GetW9Pdf",
 GetECIPdf:"/W8ECIIndividualEntity/GetECIPdf",
 GetBENPdf:"/W8BENIndividual/GetBENPdf",
@@ -142,16 +135,14 @@ GetCaymanEntityPdf:"/CaymanEntityNonUS/GetCaymanEntityPdf",
  formPDFFieldData:"/FormTypes/GetPDFFieldValuesbyFormID",
  getSelfCetHidden:"/AgentSelfCertification/GetAgentSelfCertificationHidden",
 
- // skipped steps
  GetAgentSkippedSteps:"/Agent/GetAgentSkippedSteps",
  GetControllingEntity:"/DualCert/GetControllingPersonLegalStatusEntity",
 
- // disregarded Entities 
  UpsertAccountHolderDisRegardedEntity:"/AccountHolderDetail/UpsertAccountHolderDisRegardedEntity",
  GetDisregardedEntity:"/AccountHolderDetail/GetDisregardedEntity",
  
  GetAllGIINTypes:"/USTinType/GetAllGIINTypes",
- // for warninngs
+
  InsertFormWarnings:"/FormWarnings/InsertFormWarnings",
 
 };
