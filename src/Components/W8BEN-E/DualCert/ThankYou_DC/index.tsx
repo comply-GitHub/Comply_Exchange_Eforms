@@ -1,22 +1,8 @@
-//  import React, { useState, useEffect } from "react";
-
-// export default function abc(){
-//     return(<>
-//     hiiii there  TaxPyer_DC
-//     </>)
-// }
-
 import React, { useEffect, useState } from "react";
 import FormW8ECI from "../../../../formPDF/W8ECI";
-// import Form1 from "../../formPDF/form1";
-// import Formw9 from "../../formPDF/formw9";
-// import FormEXP from "../../formPDF/formEXP";
-
 import { Typography, Button } from "@mui/material";
-
 import Paper from "@mui/material/Paper";
 import DoneIcon from "@mui/icons-material/Done";
-
 import { useRef } from "react";
 import PopupModa from "../../../../Redux/Actions/poupModal";
 import "bootstrap/dist/css/bootstrap.css";
@@ -26,7 +12,6 @@ import { GetBENEDCPdf, GetEciPdf } from "../../../../Redux/Actions/PfdActions";
 import useAuth from "../../../../customHooks/useAuth";
 
 export default function Term() {
-  //States
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
   const Version =localStorage.getItem("Version");
@@ -47,7 +32,7 @@ export default function Term() {
     document.title = "Thank You"
   },[])
 
-  const handleDownload = () => {
+const handleDownload = () => {
     if (pdfUrl) {
       const link = document.createElement("a");
       link.href = pdfUrl;
@@ -55,11 +40,12 @@ export default function Term() {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    } else {
-    }
-  };
+    } else 
+    {
+}
+};
 
-  const handleSignout = (e: any) => {
+const handleSignout = (e: any) => {
     if(Forms == "entity"){
       window.location.replace("/Entity");
     }
@@ -67,9 +53,7 @@ export default function Term() {
       window.location.replace("/Individual");
     }
     localStorage.clear();
-  
-  
-  }
+}
 
 
 
@@ -78,10 +62,6 @@ export default function Term() {
       className="inner_content"
       style={{ backgroundColor: "#0c3d69", marginBottom: "10px" }}
     >
-
-      {/* <div style={{ paddingBlockStart: "30px" }}>
-        <FormW8ECI/>
-      </div> */}
 
       <div className="container-fluid">
         <div className="col-lg-12 mt-20" style={{ padding: "18px" }}>
@@ -153,10 +133,6 @@ export default function Term() {
                     dispatch(GetBENEDCPdf(authDetails?.accountHolderId, (callbackData:any) => {
                         const pdfData = callbackData?.pdf;
             
-                        // Create a blob from the PDF data
-                      
-            
-                        // Trigger file download
                         const link = document.createElement('a');
                         link.href = pdfData;
                         link.download = 'document.pdf'; 

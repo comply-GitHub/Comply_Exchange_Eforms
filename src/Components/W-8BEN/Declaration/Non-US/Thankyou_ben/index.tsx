@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 import FormW8IMY from "../../../../../formPDF/W8IMY";
-// import Form1 from "../../formPDF/form1";
-// import Formw9 from "../../formPDF/formw9";
-// import FormEXP from "../../formPDF/formEXP";
-
 import { Typography, Button } from "@mui/material";
 import PopupModal from "../../../../../Redux/Actions/poupModal"
 import Paper from "@mui/material/Paper";
@@ -14,10 +10,10 @@ import { useDispatch } from "react-redux";
 import useAuth from "../../../../../customHooks/useAuth";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
-// import W8Ben from "../../../../../formPDF/W8BEN";
+
 
 export default function Term() {
-  //States
+  
   const history = useNavigate();
   const pdfRef = useRef(null);
   const pdfRefnew = useRef(null);
@@ -26,6 +22,7 @@ export default function Term() {
     status:false
 })
   const { authDetails } = useAuth();
+  
   const dispatch = useDispatch();
   const [notView, setNotView] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -71,7 +68,6 @@ export default function Term() {
     >
 
       <div style={{ paddingBlockStart: "30px" }}>
-        {/* <W8Ben/> */}
       </div>
 
       <div className="container-fluid">
@@ -85,7 +81,8 @@ export default function Term() {
                   fontWeight: "bold",
                   justifyContent: "center",
                 }}
-              />            </Typography>
+              />            
+              </Typography>
             <Typography
               style={{ fontSize: "20px", color: "grey" }}
               align="center"

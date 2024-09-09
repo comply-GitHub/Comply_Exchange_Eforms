@@ -8,10 +8,7 @@ import {
   Modal,
   Typography,
 } from "@mui/material";
-
 import { Form, Formik } from "formik";
-
-// import { MuiOtpInput } from "mui-one-time-password-input";
 import "./index.scss";
 import React, { ReactEventHandler, useEffect, useState } from "react";
 import SecurityCodeRecover from "../SecurityCodeRecover";

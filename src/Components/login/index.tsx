@@ -71,9 +71,13 @@ const Login = () => {
     {history("/Individual")}
     else{history("/Entity");}
   };
+
+
   const handleChange = (e: any) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
+
+  
 
   const handleSubmit = (e: any, isDefaultAgent: boolean = false) => {
     e.preventDefault();

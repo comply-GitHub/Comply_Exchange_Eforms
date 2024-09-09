@@ -49,7 +49,8 @@ import {
   GetHelpVideoDetails,
   GET_AGENT_BY_ID,
   getAllCountriesAgentWise,
-  getAllCountriesIncomeCodeAgentWise
+  getAllCountriesIncomeCodeAgentWise,
+  GetAllLanguage
 } from "../../Redux/Actions";
 import moment from "moment";
 import { AppDispatch } from "../../Redux/store";
@@ -395,7 +396,7 @@ export default function IndividualUs() {
     dispatch(getAllCountries());
 
 
-
+    dispatch(GetAllLanguage());
     dispatch(GetAgentIncomeTypeHiddenAllowAnoymo());
     dispatch(getAllCountriesCode());
     dispatch(GetHelpVideoDetails());
