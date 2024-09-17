@@ -17,6 +17,7 @@ export default function Term() {
   const history = useNavigate();
   const pdfRef = useRef(null);
   const pdfRefnew = useRef(null);
+  
   const [popupState, setPopupState] = useState({
     data:"",
     status:false
@@ -139,10 +140,6 @@ export default function Term() {
                   dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any) => {
                       const pdfData = callbackData?.pdf;
           
-                      // Create a blob from the PDF data
-                    
-          
-                      // Trigger file download
                       const link = document.createElement('a');
                       link.href = pdfData;
                       link.download = 'document.pdf'; 

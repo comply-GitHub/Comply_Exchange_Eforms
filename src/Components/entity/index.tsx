@@ -53,7 +53,8 @@ import {
   getAllCountriesAgentWise,
   getAllCountriesIncomeCodeAgentWise,
   GetAgentUSVisaTypeHiddenForEformAction,
-  GetAgentIncomeTypeHiddenAllowAnoymo
+  GetAgentIncomeTypeHiddenAllowAnoymo,
+  GetAllLanguage
 } from "../../Redux/Actions";
 import { AppDispatch } from "../../Redux/store";
 import GlobalValues from "../../Utils/constVals";
@@ -365,6 +366,7 @@ export default function Entity() {
 
   useEffect(() => {
     dispatch(getAllCountries());
+    dispatch(GetAllLanguage());
     dispatch(getAllCountriesCode());
     dispatch(getAllCountriesIncomeCode());
     dispatch(GetHelpVideoDetails());
@@ -2001,7 +2003,17 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                         <div className="col-lg-3 col-6 col-md-3">
                           <FormControl className="w-100">
                             <Typography align="left" className="d-flex w-100 ">
-                              U.S.TIN
+                              U.S.TIN  { values.taxpayerIdTypeID == 8 ||
+                                        values.taxpayerIdTypeID == 7 ||
+                                        values.taxpayerIdTypeID == 1 ||
+                                        values.taxpayerIdTypeID == 0 ? (""):<span
+                                        style={{
+                                          color: "red",
+                                          verticalAlign: "super",
+                                        }}
+                                      >
+                                        *
+                                      </span>}
                             </Typography>
                             <InputMask
                               disabled={
@@ -2566,11 +2578,11 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                           <FormControl className="w-100">
                             <Typography className="d-flex w-100 " align="left">
                               U.S. TIN
-                              <span
+                             {values.taxpayerIdTypeID == 0 || values.taxpayerIdTypeID == 1 ?( ""):<span
                                 style={{ color: "red", verticalAlign: "super" }}
                               >
                                 *
-                              </span>
+                              </span>}
                             </Typography>
                             <InputMask
                               disabled={values.taxpayerIdTypeID == 0 || values.taxpayerIdTypeID == 1 }
@@ -4563,6 +4575,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                           >
                             <Typography className="d-flex w-100 pb-2">
                               Income Type
+                              {IncomeMandatory === true ?(<span style={{ color: "red" }}>*</span>):""}
                             </Typography>
                             {/* <>{console.log(incomeArr, "qqq")}</> */}
                             {incomeArr.length &&
@@ -5001,7 +5014,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                         <div className="col-lg-3 col-6 col-md-3 ">
                           <Typography className="d-flex w-100 pb-2">
                             Payment Type
-                            <span style={{ color: "red" }}>*</span>
+                            {PaymentMandatry === true ?(<span style={{ color: "red" }}>*</span>):""}
                           </Typography>
 
                           <FormControl className="w-100 d-flex">

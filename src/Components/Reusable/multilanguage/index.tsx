@@ -69,7 +69,7 @@
 //   );
 // };
 
-// export default GoogleTranslate;
+// export default GoogleTranslate;                                                                                    
 
 
 import React, { useState, useEffect } from "react";
@@ -111,6 +111,7 @@ useEffect(() => {
 
   const googleTranslateElementInit = () => {
     languageList = getIsoCodes(allLangData);
+    
     console.log(languageList, "allLangData");
     const isoCode = allLangData && allLangData[0] && allLangData[0].isoCode.trim();
     return new window.google.translate.TranslateElement(

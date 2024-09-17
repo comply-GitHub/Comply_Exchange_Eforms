@@ -2664,14 +2664,17 @@ export default function IndividualUs() {
                                   <FormControl className="w-100" >
                                     <Typography className="d-flex w-100" align="left">
                                       U.S. TIN
-                                      <span
+                                     { values.taxpayerIdTypeID == 8 ||
+                                        values.taxpayerIdTypeID == 7 ||
+                                        values.taxpayerIdTypeID == 1 ||
+                                        values.taxpayerIdTypeID == 0 ? (""):<span
                                         style={{
                                           color: "red",
                                           verticalAlign: "super",
                                         }}
                                       >
                                         *
-                                      </span>
+                                      </span>}
                                     </Typography>
                                     <InputMask
                                       disabled={
@@ -3049,11 +3052,14 @@ export default function IndividualUs() {
                               <div className="col-lg-3 col-6 col-md-3 mx-2">
                                 <Typography align="left" className="d-flex w-100">
                                   U.S. TIN{" "}
-                                  <span
-                                    style={{ color: "red", verticalAlign: "super" }}
-                                  >
-                                    *
-                                  </span>
+                                 { values.taxpayerIdTypeID == 1 ||
+                                      values.taxpayerIdTypeID == 7 ||
+                                      values.taxpayerIdTypeID == 8 ||
+                                      values.taxpayerIdTypeID == 0 ?( ""):<span
+                                      style={{ color: "red", verticalAlign: "super" }}
+                                    >
+                                      *
+                                    </span>}
                                 </Typography>
                                 <FormControl className="w-100">
                                   <InputMask
@@ -3106,7 +3112,7 @@ export default function IndividualUs() {
                               <div className="col-lg-3 col-6 col-md-3 ">
                                 <FormControl className="w-100">
                                   <Typography align="left" className="d-flex w-100">
-                                    U.S. TIN Type
+                                    U.S. TIN Type 
                                     <span
                                       style={{
                                         color: "red",
@@ -3176,14 +3182,17 @@ export default function IndividualUs() {
                                 <FormControl className="w-100" >
                                   <Typography className="d-flex w-100" align="left">
                                     U.S. TIN
-                                    <span
+                                   {values.taxpayerIdTypeID == 8 ||
+                                      values.taxpayerIdTypeID == 7 ||
+                                      values.taxpayerIdTypeID == 1 ||
+                                      values.taxpayerIdTypeID == 0 ? ( ""):<span
                                       style={{
                                         color: "red",
                                         verticalAlign: "super",
                                       }}
                                     >
                                       *
-                                    </span>
+                                    </span>}
                                   </Typography>
                                   <InputMask
                                     disabled={
@@ -3637,11 +3646,17 @@ export default function IndividualUs() {
                               <div className="col-lg-3 col-6 col-md-3 mx-2">
                                 <Typography align="left" className="d-flex w-100">
                                   U.S. TIN{" "}
-                                  <span
-                                    style={{ color: "red", verticalAlign: "super" }}
-                                  >
-                                    *
-                                  </span>
+                                  {values.taxpayerIdTypeID == 8 ||
+                                      values.taxpayerIdTypeID == 7 ||
+                                      values.taxpayerIdTypeID == 1 ||
+                                      values.taxpayerIdTypeID == 0 ? ( ""):<span
+                                      style={{
+                                        color: "red",
+                                        verticalAlign: "super",
+                                      }}
+                                    >
+                                      *
+                                    </span>}
                                 </Typography>
                                 <FormControl className="w-100">
                                   <InputMask
@@ -5612,7 +5627,7 @@ export default function IndividualUs() {
                                       }}
                                       onClick={() => handleOpen("it")}
                                     >
-                                      Income Type
+                                      Income Type 
                                       {IncomeMandatory === true ? ("") :
                                         <span
                                           style={{
@@ -5739,7 +5754,8 @@ export default function IndividualUs() {
                                 unmountOnExit
                               >
                                 <Typography className="d-flex w-100 pb-2">
-                                  Income Type
+                                  Income Type 
+                                  {IncomeMandatory === true ?(<span style={{ color: "red" }}>*</span>):""}
                                 </Typography>
                                 {/* <>{console.log(incomeArr, "qqq")}</> */}
                                 {incomeArr.length &&
@@ -6180,7 +6196,7 @@ export default function IndividualUs() {
                             <div className="col-lg-3 col-6 col-md-3 ">
                               <Typography className="d-flex w-100 pb-2">
                                 Payment Type
-                                <span style={{ color: "red" }}>*</span>
+                               {PaymentMandatry === true ?(<span style={{ color: "red" }}>*</span>):""}
                               </Typography>
 
                               <FormControl className="w-100 d-flex">

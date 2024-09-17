@@ -2854,9 +2854,7 @@ export const getAllAccountStatement = (accountHolderId: number, formTypeId: numb
       `?AccountHolderId=${accountHolderId}&FormTypeId=${formTypeId}`,
       async (resData) => {
         const { data } = resData;
-
-
-        if (resData.status === 200) {
+       if (resData.status === 200) {
           dispatch({
             type: Utils.actionName.getAllAccountStatement,
             payload: {

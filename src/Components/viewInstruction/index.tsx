@@ -46,15 +46,7 @@ export default function View_Insructions(props: any) {
               </div>
               <div className="card-body">
                 <ul className="navbar-nav justify-content-center text-center w-100 ">
-                  {/* <li className="nav-item">
-                    <Link className="nav-link text-decoration-none" aria-current="page" href="/">W-8BEN - Foreign Status Individuals</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link  text-decoration-none" href="/">W-8BEN-E - Foreign Status Entities</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link  text-decoration-none" href="/">W-8IMY - Intermediaries</Link>
-                  </li> */}
+                 
           <li className="nav-item">
             <Link className="nav-link text-decoration-none"  href="http://www.irs.gov/pub/irs-pdf/iw8ben.pdf" target="_blank">W-8BEN - Foreign Status Individuals</Link>
             
