@@ -221,6 +221,31 @@ export default function Factors() {
     return returnPromise;
   }
 
+  const handleFormSubmission = () => {
+    const updatedData = {
+      ...PrevStepData,
+      agentId: authDetails?.agentId,
+      accountHolderBasicDetailId: authDetails?.accountHolderId,
+      stepName: null,
+    };
+  
+  
+    dispatch(
+      postW8BENForm(
+        updatedData,
+        (response:any) => {
+          // Success callback
+          console.log('Form submitted successfully:', response);
+          Redirect("/Attach_document_BEN", authDetails?.agentId, history);
+        },
+        (error:any) => {
+          // Error callback
+          console.error('Form submission failed:', error);
+        }
+      )
+    );
+  };
+  
   const viewPdf = () => {
     history("/w8Ben_pdf");
     // history("/w8Ben_pdf", { replace: true });
@@ -660,7 +685,8 @@ export default function Factors() {
                       >
                         View form
                       </Button>
-                      {values.isSubmissionSpecialRates == "yes" ? (<Button
+                      {values.isSubmissionSpecialRates == "yes" ? (
+                        <Button
                         //type="submit"
                         disabled={(!incomeTypesValid || !isValid) && values.isSubmissionSpecialRates !== "no"}
                         variant="contained"
@@ -676,13 +702,11 @@ export default function Factors() {
                         Continue
                       </Button>) : <>
                         <Button
-                         disabled={(!incomeTypesValid || !isValid) && values.isSubmissionSpecialRates !== "no"}
+                        
                           onClick={() =>
-                            submitForm().then((data) => {
-                              Redirect("/Attach_document_BEN", authDetails?.agentId, history)
-                            }).catch((err) => {
-                              console.log(err);
-                            })
+                           
+                            handleFormSubmission()
+                           
                           }
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}

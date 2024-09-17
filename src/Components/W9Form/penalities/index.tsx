@@ -228,7 +228,7 @@ export default function Penalties() {
                   <div style={{ padding: "14px" }}>
                     <Paper style={{ padding: "10px" }}>
 
-                      {accountDetails.firstName.trim() + " " + obValues.lastName.trim() !== values.signedBy  && values.signedBy !=="" ? (
+                      {accountDetails.firstName + " " + obValues.lastName !== values.signedBy  && values.signedBy !=="" ? (
                         <div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                           <Typography>
                             SIG101
