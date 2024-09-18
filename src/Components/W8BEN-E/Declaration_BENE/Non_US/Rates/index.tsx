@@ -206,6 +206,31 @@ export default function Factors() {
     return returnPromise;
   }
 
+  
+  const handleFormSubmission = () => {
+    const updatedData = {
+      ...PrevStepData,
+      agentId: authDetails?.agentId,
+      accountHolderBasicDetailId: authDetails?.accountHolderId,
+      stepName: null,
+    };
+  
+  
+    dispatch(
+      postW8BEN_EForm(
+        updatedData,
+        (response:any) => {
+          // Success callback
+          console.log('Form submitted successfully:', response);
+          Redirect("/Attach_document_BENE", authDetails?.agentId, history);
+        },
+        (error:any) => {
+          // Error callback
+          console.error('Form submission failed:', error);
+        }
+      )
+    );
+  };
 
 
   return (
@@ -652,13 +677,19 @@ export default function Factors() {
                         Continue
                       </Button>) : <>
                         <Button
-                          disabled={(!incomeTypesValid || !isValid) && values.isSubmissionSpecialRates !== "no"}
+                          // disabled={(!incomeTypesValid || !isValid) && values.isSubmissionSpecialRates !== "no"}
+                          // onClick={() =>
+                          //   submitForm().then((data) => {
+                          //     Redirect("/Attach_document_BENE",authDetails?.agentId,history)
+                          //   }).catch((err) => {
+                          //     console.log(err);
+                          //   })
+                          // }
+
                           onClick={() =>
-                            submitForm().then((data) => {
-                              Redirect("/Attach_document_BENE",authDetails?.agentId,history)
-                            }).catch((err) => {
-                              console.log(err);
-                            })
+                           
+                            handleFormSubmission()
+                           
                           }
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
