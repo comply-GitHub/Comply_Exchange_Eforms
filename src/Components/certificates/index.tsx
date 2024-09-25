@@ -11,7 +11,7 @@ import Form from "../reusables/Formguide";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../Redux/store";
-import { postFormSelection, GetHelpVideoDetails } from "../../Redux/Actions";
+import { postFormSelection, GetHelpVideoDetails,GetSelfCetHidden } from "../../Redux/Actions";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import checksolid from "../../assets/img/check-solid.png";
 import agreement from "../../assets/img/agreement.png";
@@ -31,9 +31,15 @@ export default function Certificates(props: any) {
   useEffect(() => {
     dispatch(GetHelpVideoDetails())
   }, [])
+
+  useEffect(()=>{
+    dispatch(GetSelfCetHidden(authDetails?.agentId))
+  },[authDetails])
   const isHide: any = useSelector(
     (state: any) => state?.GetSelfCetHiddenReducer?.getSelfCetHiddenData?.[0]
   );
+
+
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -126,7 +132,7 @@ export default function Certificates(props: any) {
       title: "W-9",
       userType: "gen",
       enabled: ["usIndividual", "usEntity"],
-      isHide: isHide?.enableW9,
+      isHide: !isHide?.enableW9, // Hide card if enableW9 is false
       description:
         "Used by individuals and entities to certify US Tax ID number",
     },
@@ -134,7 +140,7 @@ export default function Certificates(props: any) {
       id: "W-8BEN",
       title: "W-8BEN",
       userType: "gen",
-      isHide: isHide?.enableW8BEN,
+      isHide: !isHide?.enableW8BEN, // Hide card if enableW8BEN is false
       enabled: ["usNonIndividual"],
       description:
         "Used by individuals to certify beneficial owner, or account holder of financial institution, and claim treaty benefits",
@@ -143,7 +149,7 @@ export default function Certificates(props: any) {
       id: "W-8BEN-E",
       title: "W-8BEN-E",
       userType: "gen",
-      isHide: isHide?.enableW8BENE,
+      isHide: !isHide?.enableW8BENE, // Hide card if enableW8BENE is false
       enabled: ["usNonEntity"],
       description:
         "Used by entities to certify beneficial owner, or account holder of financial institution, and claim treaty benefits",
@@ -152,7 +158,7 @@ export default function Certificates(props: any) {
       id: "W-8ECI",
       title: "W-8ECI",
       userType: "gen",
-      isHide: isHide?.enableW8ECI,
+      isHide: !isHide?.enableW8ECI, // Hide card if enableW8ECI is false
       enabled: ["usNonIndividual", "usNonEntity"],
       description:
         "Used by individuals, or entities, to certify beneficial owner receiving U.S. sourced income that is effectively connected with a U.S. trade or business ",
@@ -161,25 +167,25 @@ export default function Certificates(props: any) {
       id: "W-8EXP",
       title: "W-8EXP",
       userType: "gen",
-      isHide: isHide?.enableW8EXP,
+      isHide: !isHide?.enableW8EXP, // Hide card if enableW8EXP is false
       enabled: ["usNonEntity"],
       description:
-        "Used by governments, or other tax exempt entities, to certify beneficial owner, or account holder of financial institution",
+        "Used by governments, or other tax-exempt entities, to certify beneficial owner, or account holder of financial institution",
     },
     {
       id: "W-8IMY",
       title: "W-8IMY",
       userType: "gen",
-      isHide: isHide?.enableW8IMY,
+      isHide: !isHide?.enableW8IMY, // Hide card if enableW8IMY is false
       enabled: ["usNonEntity"],
       description:
-        "Used by entities to certify intermediary, or flow through entity, receiving payments on behalf of another person",
+        "Used by entities to certify intermediary, or flow-through entity, receiving payments on behalf of another person",
     },
     {
       id: "form 8233",
       title: "Form 8233",
       userType: "gen",
-      isHide: isHide?.visibilty8233,
+      isHide: !isHide?.visibilty8233, // Hide card if visibilty8233 is false
       enabled: ["usNonIndividual"],
       description:
         "Used by individuals to certify beneficial owner claiming treaty exemption on compensation for personal services",
@@ -200,6 +206,7 @@ export default function Certificates(props: any) {
         "Used by an entity to declare any/all tax residencies, US FATCA Status, CRS Classification and/or Controlling Person(s)",
     },
   ];
+  
 
   return (
     <section
@@ -841,69 +848,63 @@ export default function Certificates(props: any) {
           </>)}
 
 
-          {userType !== 'SC' ? <>
-            {cards.map((card, index1) => (
-              card.userType !== 'SC' ? <>
-                <Card
-                  key={card?.id}
-                  className={card.enabled.includes(diableForm) ? "mx-3 mt-3" : "mx-3 mt-3 disabled"}
-                  sx={{
-                    width: "310px",
-                    border:
-                      selectedCard === card.id
-                        ? "7px solid #ffc107"
-                        : "7px solid transparent",
+         {userType !== 'SC' && (
+  <>
+    {cards
+      .filter((card) => !card.isHide && card.userType !== 'SC') 
+      .map((card, index1) => (
+        <Card
+          key={card?.id}
+          className={card.enabled.includes(diableForm) ? "mx-3 mt-3" : "mx-3 mt-3 disabled"}
+          sx={{
+            width: "310px",
+            border: selectedCard === card.id ? "7px solid #ffc107" : "7px solid transparent",
+          }}
+          onClick={() => handleCardSelect(card)}
+        >
+          <div
+            tabIndex={index1}
+            onFocus={() => handleCardSelect(card)}
+            onKeyDown={(e: any) => {
+              if (e.code.toLowerCase() === "enter" && e?.target?.tagName?.toUpperCase() === "DIV") {
+                redirectToComponent(selectedCard);
+              }
+            }}
+          >
+            <CardContent>
+              <div className="iconBox text-center">
+                <img src={docIcon} alt="" className="img-fluid mb-2" />
+              </div>
+              <div className="check-div">
+                {card.enabled.includes(diableForm) && <img src={checksolid} alt="Check" />}
+              </div>
+              <Typography align="center" variant="h6" component="div">
+                {card?.title}
+              </Typography>
+              <Typography align="center" style={{ fontSize: "13px", marginTop: "14px" }}>
+                {card?.description}
+                <br />
+              </Typography>
+              <Typography align="center">
+                <Button
+                  onClick={() => {
+                    setInfoMore(card?.id);
+                    setShowInfoMore(!showInfoMore);
                   }}
-                  onClick={() => handleCardSelect(card)}
+                  className="mt-4"
+                  size="small"
+                  style={{ fontWeight: "bold" }}
                 >
-                  <div
-                    tabIndex={index1}
-                    onFocus={() => handleCardSelect(card)}
-                    onKeyDown={(e: any) => {
-                      if (e.code.toLowerCase() === "enter" && e?.target?.tagName?.toUpperCase() === "DIV") {
-                        redirectToComponent(selectedCard)
-                      }
-                    }}
-                  >
-                    <CardContent>
-                      <div className="iconBox text-center" >
-                        <img src={docIcon} alt="" className="img-fluid mb-2" />
-                      </div>
-                      <div className="check-div">
-                        {card.enabled.includes(diableForm) ? (<img src={checksolid} />) : ""}
-                        disabled
-                      </div>
-                      <Typography align="center" variant="h6" component="div">
-                        {card?.title}
-                      </Typography>
+                  Read More
+                </Button>
+              </Typography>
+            </CardContent>
+          </div>
+        </Card>
+      ))}
+  </>
+)}
 
-                      <Typography
-                        align="center"
-                        style={{ fontSize: "13px", marginTop: "14px" }}
-                      >
-                        {card?.description}
-                        <br />
-                      </Typography>
-                      <Typography align="center">
-                        <Button
-                          onClick={() => {
-                            setInfoMore(card?.id);
-                            setShowInfoMore(!showInfoMore);
-                          }}
-                          className="mt-4"
-                          size="small"
-                          style={{ fontWeight: "bold" }}
-                        >
-                          Read More
-                        </Button>
-                      </Typography>
-                    </CardContent>
-                  </div>
-
-                </Card>
-              </> : ""
-            ))}
-          </> : ""}
 
 
           {/* <Card className="mx-3 mt-3"sx={{ width:"330px"}}>

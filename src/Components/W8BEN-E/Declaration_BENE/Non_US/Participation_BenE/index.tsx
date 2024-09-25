@@ -651,6 +651,16 @@ export default function Penalties() {
                         >
                           Please "check" box to confirm your acceptance with the
                           above declarations{" "}
+                          {errors.isAcceptanceDeclarations &&
+                            touched.isAcceptanceDeclarations ? (
+                            <div>
+                              <Typography color="error">
+                                {errors.isAcceptanceDeclarations}
+                              </Typography>
+                            </div>
+                          ) : (
+                            ""
+                          )}
                           
                           <span>
                             <Tooltip
@@ -686,16 +696,7 @@ export default function Penalties() {
                             </Tooltip>
                           </span>
                         </Typography>
-                        {errors.isAcceptanceDeclarations &&
-                            touched.isAcceptanceDeclarations ? (
-                            <div>
-                              <Typography color="error">
-                                {errors.isAcceptanceDeclarations}
-                              </Typography>
-                            </div>
-                          ) : (
-                            ""
-                          )}
+                      
                       </Typography>
                       {toolInfo === "check" ? (
                         <div>

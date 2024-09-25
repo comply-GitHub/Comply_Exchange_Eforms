@@ -732,6 +732,8 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
     })
 
   }, [selectedValues])
+
+  
   const handleIcome = (e: any, i: number) => {
     const newValue = e.target.value;
     setSelectedValues(prevState => {
@@ -837,6 +839,11 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
               validateOnBlur={true}
               validateOnMount={true}
               onSubmit={(values, { setSubmitting }) => {
+ 
+                if (IncomeMandatory === true && incomeErrors.length > 0) {
+                  return;
+
+                }
                 const payload = {
                   id: authDetails?.accountHolderId,
                   agentId: authDetails?.agentId,

@@ -82,7 +82,7 @@ export default function IndividualUs() {
   const history = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const [open, setOpen] = useState("");
-  const [incomeArr, setIncomeArr] = useState([0]);
+  const [incomeArr, setIncomeArr] = useState(["intrest"]);
   const [bankLocation, setBankLocation] = useState("");
   const [alternateNo, setAlternateNo] = useState(false);
   const [alternateIncome, setAlternateIncome] = useState(false);
@@ -563,10 +563,12 @@ export default function IndividualUs() {
   //   const formatRegex = new RegExp(`^${foreignTinFormat.replace(/9/g, '\\d').replace(/A/g, '[A-Za-z]').replace(/\*/g, '[A-Za-z0-9]')}$`);
   //   return formatRegex.test(value);
   // };
+
+  const [selectedValues, setSelectedValues] = useState(Array(incomeArr.length).fill("0"));
+  const [incomeErrors, setIncomeErrors] = useState("");
   const addIncomeType = () => {
-    // console.log("==", incomeArr);
-    //alert(incomeArr);
-    setIncomeArr((incomeArr) => [...incomeArr, 0]);
+ 
+    setIncomeArr((incomeArr) => [...incomeArr, ""]);
   };
 
   const handleDelete = (i: any) => {
@@ -749,8 +751,7 @@ export default function IndividualUs() {
     }
     return null;
   }
-  const [selectedValues, setSelectedValues] = useState(Array(incomeArr.length).fill("0"));
-  const [incomeErrors, setIncomeErrors] = useState("");
+
   // const Options = {userType, PaymentMandatry}
 
   const [canvaBx, setCanvaBx] = useState(false);
@@ -771,10 +772,12 @@ export default function IndividualUs() {
         setIncomeErrors("Income field is mandatory")
         return;
       }
-
+      setIncomeErrors("")
     })
 
   }, [selectedValues])
+
+
   useEffect(() => {
     const savedSelectedValues = localStorage.getItem('selectedValues');
     if (savedSelectedValues) {
@@ -5627,7 +5630,7 @@ export default function IndividualUs() {
                                       }}
                                       onClick={() => handleOpen("it")}
                                     >
-                                      Income Type 
+                                      Income Type
                                       {IncomeMandatory === true ? ("") :
                                         <span
                                           style={{
@@ -5689,7 +5692,7 @@ export default function IndividualUs() {
                                     </div>
                                     {touched.incomeTypeId && incomeErrors.length > 0 && IncomeMandatory === true ?
                                       <p className="error mb-0">Mandatory Information Required</p>
-                                      : null
+                                      : ""
                                     }
                                   </div>
                                 }
