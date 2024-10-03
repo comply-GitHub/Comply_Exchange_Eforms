@@ -23,6 +23,7 @@ import { firstStepBusinessSchema, firstStepSchema, tinSchema } from "../../../sc
 import { useNavigate } from "react-router-dom";
 import { getTinTypes, postW9Form, GetHelpVideoDetails, getW9Form } from "../../../Redux/Actions"
 import { useDispatch, useSelector } from "react-redux";
+import InputMask from 'react-input-mask';
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import View_Insructions from "../../viewInstruction";
 import { useLocation } from "react-router-dom";
@@ -467,7 +468,7 @@ export default function Tin(props: any) {
                         <div className="col-md-6 col-12">
 
                           <Typography>U.S. TIN</Typography>
-                          <Input
+                          <InputMask
                             name="tIN_USTIN"
                             value={values.tIN_USTIN}
                             id="tIN_USTIN"
@@ -478,7 +479,9 @@ export default function Tin(props: any) {
 
                            
                             className="input-w9-cstm"
-                            inputProps={{ maxLength: 11 }}
+                            mask={
+                              values.taxpayerIdTypeID == 2 ? "99-9999999" : "999-99-9999"
+                            }
                             onKeyDown={(e: any) => formatTin(e, values)}
                             fullWidth
 

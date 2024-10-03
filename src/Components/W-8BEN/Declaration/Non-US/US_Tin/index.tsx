@@ -802,7 +802,7 @@ export default function Tin(props: any) {
                               value={values.foreignTIN}
                               onBlur={handleBlur}
                               onChange={handleChange}
-                              mask={selectedCountryMask ? selectedCountryMask : "********************"}
+                              // mask={selectedCountryMask ? selectedCountryMask : ""}
                               placeholder="ENTER FOREIGN TIN"
                               error={Boolean(
                                 touched.foreignTIN && errors.foreignTIN
@@ -817,7 +817,7 @@ export default function Tin(props: any) {
                               }}
                             />
                           ) : (
-                          <InputMask
+                          <InputMask 
                             fullWidth
                             type="text"
                             disabled={
@@ -829,7 +829,7 @@ export default function Tin(props: any) {
                             name="foreignTIN"
                             value={values.foreignTIN}
                             onBlur={handleBlur}
-                            mask={selectedCountryMask ? selectedCountryMask : "********************"}
+                            mask={selectedCountryMask ? selectedCountryMask : ""}
                             onChange={handleChange}
                             error={Boolean(
                               touched.foreignTIN && errors.foreignTIN
