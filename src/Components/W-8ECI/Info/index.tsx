@@ -31,6 +31,7 @@ import {
   getAllStateByCountryId,
   postW8ECI_EForm,
 } from "../../../Redux/Actions";
+import InputMask from 'react-input-mask';
 import { useDispatch, useSelector } from "react-redux";
 // import useAuth from "../../../customHooks/useAuth";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
@@ -345,7 +346,7 @@ export default function Tin(props: any) {
                             <Typography>
                               U.S. TIN <span style={{ color: "red" }}>*</span>
                             </Typography>
-                            <Input
+                            <InputMask
                               disabled={
                                 values.eciUsTinTypeId == 0 ||
                                 values.eciUsTinTypeId == 1 ||
@@ -363,9 +364,11 @@ export default function Tin(props: any) {
                               id="outlined"
                               name="eciUsTin"
                               placeholder="Enter U.S. TIN"
-                              onKeyDown={(e) => formatTin(e, values)}
+                             
                               onChange={handleChange}
-                              inputProps={{ maxLength: 11 }}
+                              mask={
+                                values.eciUsTinTypeId == 2 ? "99-9999999" : "999-99-9999"
+                              }
                               // onBlur={handleBlur}
                               error={Boolean(errors.eciUsTin)}
                               value={values.eciUsTin}

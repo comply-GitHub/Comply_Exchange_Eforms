@@ -645,12 +645,17 @@ export const partCertiSchema_W8Bene = (RetroactiveStatementValue:any) => {
     }),
 
     date: Yup.date(),
-    isAcceptanceDeclarations: Yup.boolean().when([], {
-      is: () => !RetroactiveStatementValue,
-      then: schema => schema.oneOf(
-      [true],
-      "Please mark the checkbox")
-  }),
+  //   isAcceptanceDeclarations: Yup.boolean().when([], {
+  //     is: () => !RetroactiveStatementValue,
+  //     then: schema => schema.oneOf(
+  //     [true],
+  //     "Please mark the checkbox")
+  // }),
+  isAcceptanceDeclarations: Yup.boolean().oneOf(
+    [true],
+    "Please mark the checkbox")
+,
+
 
     name: Yup.string().when([], {
       is: () => RetroactiveStatementValue,

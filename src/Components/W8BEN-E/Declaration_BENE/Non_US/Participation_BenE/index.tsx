@@ -634,7 +634,8 @@ export default function Penalties() {
                           </Typography>
                         </div>
                       </div>
-                      {RetroactiveStatementValue== "false" ?( <>
+                      {RetroactiveStatementValue== "false" ?( 
+                        <>
                       <Typography style={{ display: "flex", marginLeft: "10px" }}>
                         <Checkbox
                           name="isAcceptanceDeclarations"
@@ -750,7 +751,124 @@ export default function Penalties() {
                       ) : (
                         ""
                       )}
-                      </>):""}
+                      </>):
+                         <>
+                         <Typography style={{ display: "flex", marginLeft: "10px",marginTop:"10px" }}>
+                           <Checkbox
+                             name="isAcceptanceDeclarations"
+                             value={values.isAcceptanceDeclarations}
+                             checked={values.isAcceptanceDeclarations}
+                             onChange={handleChange}
+                           />
+                           <Typography
+                             style={{
+                               fontSize: "15px",
+                               color: "black",
+   
+                             }}
+                           >
+                            I want to attach a retroactive statement
+                             {errors.isAcceptanceDeclarations &&
+                               touched.isAcceptanceDeclarations ? (
+                               <div>
+                                 <Typography color="error">
+                                   {errors.isAcceptanceDeclarations}
+                                 </Typography>
+                               </div>
+                             ) : (
+                               ""
+                             )}
+                             
+                             <span>
+                               <Tooltip
+                                 style={{ backgroundColor: "black", color: "white" }}
+                                 title={
+                                   <>
+                                     <Typography color="inherit">
+                                       Certification information
+                                     </Typography>
+                                     <a onClick={() => setToolInfo("check")}>
+                                       <Typography
+                                         style={{
+                                           cursor: "pointer",
+                                           textDecorationLine: "underline",
+                                         }}
+                                         align="center"
+                                       >
+                                         {" "}
+                                         View More...
+                                       </Typography>
+                                     </a>
+                                   </>
+                                 }
+                               >
+                                 <InfoIcon
+                                   style={{
+                                     color: "#ffc107",
+                                     fontSize: "18px",
+                                     cursor: "pointer",
+                                     verticalAlign: "super",
+                                   }}
+                                 />
+                               </Tooltip>
+                             </span>
+                           </Typography>
+                         
+                         </Typography>
+                         {toolInfo === "check" ? (
+                           <div>
+                             <Paper
+                               style={{
+                                 backgroundColor: "#dedcb1",
+                                 padding: "15px",
+                                 marginBottom: "10px",
+                               }}
+                             >
+                               <Typography>
+                                 This submission <span>must</span> be signed and dated
+                                 by the beneficial owner of the income, or, if the
+                                 beneficial owner is not an individual, by an
+                                 authorized representative or officer of the beneficial
+                                 owner.
+                               </Typography>
+                               <Typography>
+                                 If this submission is being completed by an agent
+                                 acting under a duly authorized power of attorney for
+                                 the beneficial owner or account holder, the form must
+                                 be accompanied by the power of attorney in proper form
+                                 or a copy thereof specifically authorizing the agent
+                                 to represent the principal in making, executing, and
+                                 presenting the form.
+                               </Typography>
+   
+                               <Typography style={{ marginTop: "10px" }}>
+                                 Form 2848, Power of Attorney and Declaration of
+                                 Representative, can be used for this purpose. The
+                                 agent, as well as the beneficial owner or account
+                                 holder, may incur liability for the penalties provided
+                                 for an erroneous, false, or fraudulent form.
+                               </Typography>
+                               <Typography style={{ marginTop: "10px" }}>
+                                 Ref: EH015
+                               </Typography>
+   
+                               <Link
+                                 href="#"
+                                 underline="none"
+                                 style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
+                                 onClick={() => {
+                                   setToolInfo("");
+                                 }}
+                               >
+                                 --Show Less--
+                               </Link>
+                             </Paper>
+                           </div>
+                         ) : (
+                           ""
+                         )}
+                         </>
+                      }
 
                       {RetroactiveStatementValue== "true"  ?(
 <div style={{marginLeft:"10px",marginTop:"20px"}}>

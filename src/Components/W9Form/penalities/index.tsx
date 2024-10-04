@@ -81,14 +81,14 @@ export default function Penalties() {
   const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
   const accountDetails = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
   const initialValue = {
-    signedBy:  W9Data?.signedBy && PrevStepData?.signedBy || "",
-    confirmationCode: W9Data?.confirmationCode || PrevStepData?.confirmationCode,
-    date: W9Data?.date ?? new Date().toLocaleDateString('en-US', {
+    signedBy:  PrevStepData?.signedBy && PrevStepData?.signedBy || "",
+    confirmationCode: PrevStepData?.confirmationCode || PrevStepData?.confirmationCode,
+    date: PrevStepData?.date || new Date().toLocaleDateString('en-US', {
       month: '2-digit',
       day: '2-digit',
       year: 'numeric',
     }),
-    isCheckAcceptance: (W9Data?.isCheckAcceptance ?? PrevStepData?.isCheckAcceptance) || false
+    isCheckAcceptance:PrevStepData?.isCheckAcceptance || false
 
   };
 
@@ -649,8 +649,8 @@ export default function Penalties() {
                       <Typography style={{ display: "flex", marginLeft: "10px" }}>
                         <Checkbox
                           name="isCheckAcceptance"
-                          value={values.isCheckAcceptance}
-                          // checked={values.isCheckAcceptance}
+                          // value={values.isCheckAcceptance}
+                          checked={values.isCheckAcceptance}
                           onChange={handleChange}
                         />
                         <Typography

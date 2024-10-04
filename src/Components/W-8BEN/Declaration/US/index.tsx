@@ -64,6 +64,23 @@ export default function Factors() {
     // history("/w8Ben_pdf", { replace: true });
   }
 
+
+
+  useEffect(() => {
+    const handleKeyDown = (event:any) => {
+      if (event.key === 'Enter') {
+        event.preventDefault(); // Prevents Enter key from triggering any action
+        console.log('Enter key press prevented globally.');
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   const [popupState, setPopupState] = useState({
     data:"",
     status:false

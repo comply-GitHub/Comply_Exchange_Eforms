@@ -25,10 +25,11 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { US_TINSchema } from "../../../schemas/8233";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode, getAllStateByCountryId, getTinTypes } from "../../../Redux/Actions";
+import { getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode, getAllStateByCountryId, getTinTypes,getAllCountriesAgentWise } from "../../../Redux/Actions";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import CloseIcon from '@mui/icons-material/Close';
 import useAuth from "../../../customHooks/useAuth";
+
 import PopupModa from "../../../Redux/Actions/poupModal"
 import SaveAndExit from "../../Reusable/SaveAndExit/Index";
 import GlobalValues, { FormTypeId } from "../../../Utils/constVals";
@@ -45,7 +46,7 @@ export default function Tin(props: any) {
     usTinTypeId: onBoardingFormValues?.taxpayerIdTypeID ? onBoardingFormValues?.taxpayerIdTypeID : onBoardingFormValuesPrevStepData?.usTINTypeId ? onBoardingFormValuesPrevStepData?.usTINTypeId : 0,
     usTin: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin.replace(/-/g, '') : onBoardingFormValuesPrevStepData?.usTin ? onBoardingFormValuesPrevStepData?.usTin : "",
     notAvailable: false,
-    ForeginTIN_CountryId: onBoardingFormValues?.countryOfCitizenshipId != 0 ? onBoardingFormValues?.countryOfCitizenshipId : onBoardingFormValuesPrevStepData?.ForeginTIN_CountryId,
+    ForeginTIN_CountryId: onBoardingFormValues?.foreignTINCountryId != 0 ? onBoardingFormValues?.foreignTINCountryId : onBoardingFormValuesPrevStepData?.ForeginTIN_CountryId,
     ForegionTIN: onBoardingFormValues?.foreignTIN ? onBoardingFormValues?.foreignTIN : onBoardingFormValuesPrevStepData?.ForegionTIN ? onBoardingFormValuesPrevStepData?.ForegionTIN : "",
     isFTINNotLegallyRequired: false,
     tinisFTINNotLegallyRequired: "",
@@ -91,6 +92,16 @@ export default function Tin(props: any) {
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
+    useEffect(() => {
+      if (authDetails?.agentId) {
+        
+        dispatch(getAllCountriesAgentWise(authDetails?.agentId));
+      }
+    }, [authDetails])
+
+    const getCountriesAgentWiseReducer = useSelector(
+      (state: any) => state.getCountriesAgentWiseReducer
+    );
   const getCountriesReducer = useSelector((state: any) => state.getCountriesReducer);
   const getCountriesCodeReducer = useSelector((state: any) => state.getCountriesCodeReducer);
   const GetAllIncomeCodesReducer = useSelector((state: any) => state.GetAllIncomeCodesReducer);
@@ -165,7 +176,26 @@ export default function Tin(props: any) {
           setFieldValue,
           submitForm,
           isValid
-        }) => (
+        }) =>{ 
+          
+          const foreignTINCountryIdNumber = Number(values.ForeginTIN_CountryId);
+
+          // Find the selected country
+          const selectedCountry = getCountriesAgentWiseReducer.agentWiseCountriesData
+            ?.find((country: any) => {
+              console.log("Country ID:", country.id, "Type of ID:", typeof country.id);
+              console.log("Foreign TIN Country ID:", foreignTINCountryIdNumber, "Type of Foreign TIN ID:", typeof foreignTINCountryIdNumber);
+              return Number(country.id) === foreignTINCountryIdNumber;
+            });
+          
+          // Extract the foreignTinFormatToolTip field from the selected country, if available
+          const selectedCountryTitle = selectedCountry ? selectedCountry.foreignTinFormatToolTip : "";
+          const selectedCountryMask = selectedCountry ? selectedCountry.foreignTinFormat : "";
+          
+          return (
+
+
+
           <Form onSubmit={handleSubmit}>
 
             <>{console.log(errors, values, "errorsssss")}</>
@@ -731,18 +761,21 @@ export default function Tin(props: any) {
                               }}
                             >
                               <option value={0}>---select---</option>
-                              <option value={257}>United Kingdom</option>
-                              {getCountriesReducer.allCountriesData?.filter(
-                                (x: any) =>
-                                  x.name?.toLowerCase() !== "united states"
-                              )
-                                ?.map(
-                                  (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
-                                      {ele?.name}
-                                    </option>
-                                  )
-                                )}
+                              {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry === "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
+                                      </option>
+                                    ))}
+                                  <option value={500}>---</option>
+                                  {getCountriesAgentWiseReducer.agentWiseCountriesData
+                                    ?.filter((ele: any) => ele.isImportantCountry !== "Yes")
+                                    .map((ele: any) => (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.name}
+                                      </option>
+                                    ))}
                             </select>
                             {errors?.ForeginTIN_CountryId && typeof errors?.ForeginTIN_CountryId === 'string' && (
                               <p className="error">{errors?.ForeginTIN_CountryId}</p>
@@ -885,7 +918,7 @@ export default function Tin(props: any) {
                             </Typography>
 
                             {values.tinisFTINNotLegallyRequired === "No" ? (
-                              <Input
+                              <InputMask
                                 fullWidth
                                 type="text"
                                 disabled={
@@ -898,13 +931,8 @@ export default function Tin(props: any) {
                                 name="ForegionTIN"
                                 value={values.ForegionTIN}
                                 onBlur={handleBlur}
-                                onChange={(e) => {
-                                  const re = /^[0-9\b]+$/;
-                                  if (e.target.value === '' || re.test(e.target.value)) {
-                                    handleChange(e)
-                                  }
-                                }}
-
+                                onChange={handleChange}
+                                mask={selectedCountryMask ? selectedCountryMask : ""}
                                 inputProps={{ maxLength: 10 }}
                                 placeholder="ENTER FOREIGN TIN"
 
@@ -922,7 +950,7 @@ export default function Tin(props: any) {
                                 }}
                               />
                             ) : (
-                              <Input
+                              <InputMask
                                 fullWidth
                                 type="text"
                                 disabled={
@@ -931,6 +959,7 @@ export default function Tin(props: any) {
                                   values.tinisFTINNotLegallyRequired === "NO"
                                 }
                                 placeholder="ENTER FOREIGN TIN"
+                                mask={selectedCountryMask ? selectedCountryMask : ""}
                                 name="ForegionTIN"
                                 value={values.ForegionTIN}
                                 onBlur={handleBlur}
@@ -1382,7 +1411,7 @@ export default function Tin(props: any) {
             </section>
             <PopupModa data={popupState} setPopupState={setPopupState} />
           </Form>
-        )}
+         )}}
       </Formik>
     </>
   );
