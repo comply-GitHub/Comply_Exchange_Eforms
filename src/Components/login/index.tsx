@@ -59,10 +59,20 @@ const Login = () => {
 
   useEffect(() => {
     document.title = "Login | Comply Exchange";
-    localStorage.clear();
-    dispatch(GetAllLanguage());
-    dispatch(getSettings());
-  }, []);
+    localStorage.clear()
+    const token = localStorage.getItem("token");
+  
+    // If the token exists, navigate to the correct page based on userType
+    if (token) {
+      const userType = localStorage.getItem("userType");
+      redirectFunc(userType === "individual" ? "individual" : "entity");
+    } else {
+      // If no token, then dispatch language and settings actions
+      dispatch(GetAllLanguage());
+      dispatch(getSettings());
+    }
+  }, [dispatch]);
+  
 
   
 
@@ -146,7 +156,7 @@ const Login = () => {
   };
 
   const handleClearData = () => {
-    localStorage.clear();
+    ;
   };
 
   return (
