@@ -21,7 +21,8 @@ export default function Nav() {
 
   const handleSignout = (e) => {
   
-    localStorage.clear();
+    localStorage.clear()
+console.log("Logged out");
    
     window.location.replace("/login");
 

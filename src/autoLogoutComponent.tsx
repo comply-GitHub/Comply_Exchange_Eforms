@@ -82,7 +82,8 @@ const WithAutoLogout = <P extends object>(
 
     const destroy = () => {
       window.location.replace(base_url + "/login");
-      localStorage.clear();
+      localStorage.clear()
+console.log("Logged out");
     };
 
     const setTimeouts = () => {

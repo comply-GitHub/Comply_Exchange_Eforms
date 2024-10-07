@@ -90,7 +90,8 @@ const GoogleTranslate = () => {
 
 useEffect(() => {
   document.title = "Login | Comply Exchange";
-  localStorage.clear();
+  // localStorage.clear()
+  // console.log("Logged out");
   dispatch(GetAllLanguage());
  
 }, [dispatch]);

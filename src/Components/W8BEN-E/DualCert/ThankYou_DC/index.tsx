@@ -52,7 +52,8 @@ const handleSignout = (e: any) => {
     else{
       window.location.replace("/Individual");
     }
-    localStorage.clear();
+    localStorage.clear()
+console.log("Logged out");
 }
 
 
@@ -129,19 +130,28 @@ const handleSignout = (e: any) => {
                   //type="submit"
                 
 
-                  onClick={() => {
-                    dispatch(GetBENEDCPdf(authDetails?.accountHolderId, (callbackData:any) => {
-                        const pdfData = callbackData?.pdf;
+                //   onClick={() => {
+                //     dispatch(GetBENEDCPdf(authDetails?.accountHolderId, (callbackData:any) => {
+                //         const pdfData = callbackData?.pdf;
             
-                        const link = document.createElement('a');
-                        link.href = pdfData;
-                        link.download = 'document.pdf'; 
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
+                //         const link = document.createElement('a');
+                //         link.href = pdfData;
+                //         link.download = 'document.pdf'; 
+                //         document.body.appendChild(link);
+                //         link.click();
+                //         document.body.removeChild(link);
             
                        
-                    }));
+                //     }));
+                // }}
+
+                onClick={() => {
+                  dispatch(GetBENEDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                    setPopupState({
+                        status:true,
+                        data: callbackData?.pdf
+                    })
+                }))
                 }}
                   style={{
                     border: "1px solid #0095dd",

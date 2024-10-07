@@ -17,7 +17,7 @@ import { Formik, Form } from "formik";
 import "./index.scss";
 import checksolid from "../../../../../assets/img/check-solid.png";
 import { useNavigate } from "react-router-dom";
-import InputMask from 'react-input-mask';
+
 import {
   W8_state, getTinTypes, getAllCountries, GetHelpVideoDetails, postW8BENForm, LoadExistingFormData,
   getAllCountriesAgentWise} from "../../../../../Redux/Actions";
@@ -27,6 +27,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import InputMask from 'react-input-mask';
 import BreadCrumbComponent from "../../../../reusables/breadCrumb";
 import CloseIcon from "@mui/icons-material/Close";
 import { GetBenPdf } from "../../../../../Redux/Actions/PfdActions";
@@ -530,7 +531,7 @@ export default function Tin(props: any) {
                                 U.S. TIN
                                 <span style={{ color: "red" }}>*</span>
                               </Typography>
-                              <Input
+                              <InputMask
                                 disabled={
                                   values.notAvailable ||
                                   values.usTinTypeId === "0" ||
@@ -544,7 +545,9 @@ export default function Tin(props: any) {
                                 value={values.usTin}
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                inputProps={{ maxLength: 10 }}
+                                mask={
+                                  values.usTinTypeId == 2 ? "99-9999999" : "999-99-9999"
+                                }
                                 error={Boolean(touched.usTin && errors.usTin)}
                                 style={{
                                   border: " 1px solid #d9d9d9 ",

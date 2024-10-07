@@ -52,7 +52,8 @@ export default function Term() {
     else{
       window.location.replace("/Individual");
     }
-    localStorage.clear();
+    localStorage.clear()
+console.log("Logged out");
   
   
   }

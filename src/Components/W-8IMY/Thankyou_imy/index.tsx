@@ -57,7 +57,8 @@ export default function Term() {
     else{
       window.location.replace("/Individual");
     }
-    localStorage.clear();
+    localStorage.clear()
+console.log("Logged out");
   
   
   }
@@ -136,7 +137,7 @@ export default function Term() {
 
               <div style={{ marginTop: "25px" }}>
                 <Button
-                  //type="submit"
+                
                   onClick={() => {
                     dispatch(GetImyPdf(authDetails?.accountHolderId, (callbackData:any)=>{
                       setPopupState({

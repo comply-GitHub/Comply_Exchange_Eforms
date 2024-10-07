@@ -14,7 +14,7 @@ import { GetBenPdf, GetW9Pdf } from "../../../Redux/Actions/PfdActions";
 import Redirect from "../../../Router/RouterSkip";
 import PopupModa from "../../../Redux/Actions/poupModal"
 export default function Term() {
-  //States  
+  
   const { authDetails } = useAuth();
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -36,6 +36,7 @@ export default function Term() {
 
   const authentication = JSON.parse(AgentDeatilsId);
   const businessType = authentication?.businessTypeId;
+
   const handleDownload = () => {
     if (pdfUrl) {
       const link = document.createElement("a");
@@ -47,9 +48,12 @@ export default function Term() {
     } else {
     }
   };
+  
   useEffect(() => {
     document.title = "Thank You"
   }, [])
+
+
   const handleSignout = (e: any) => {
     if(Forms == "entity"){
       window.location.replace("/Entity");
@@ -136,33 +140,21 @@ export default function Term() {
 
 
 
-                //   onClick={() => {
-                //     dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any) => {
-                //         const pdfData = callbackData?.pdf;
+                  onClick={() => {
+                    dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any) => {
+                        const pdfData = callbackData?.pdf;
             
-                //         // Create a blob from the PDF data
-                      
-            
-                //         // Trigger file download
-                //         const link = document.createElement('a');
-                //         link.href = pdfData;
-                //         link.download = 'document.pdf'; 
-                //         document.body.appendChild(link);
-                //         link.click();
-                //         document.body.removeChild(link);
+                        const link = document.createElement('a');
+                        link.href = pdfData;
+                        link.download = 'document.pdf'; 
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
             
                        
-                //     }));
-                // }}
-
-                onClick={() => {
-                  dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
-                    setPopupState({
-                        status:true,
-                        data: callbackData?.pdf
-                    })
-                }))
+                    }));
                 }}
+
                     style={{
                       border: "1px solid #0095dd",
                       backgroundColor: "#1976d2",

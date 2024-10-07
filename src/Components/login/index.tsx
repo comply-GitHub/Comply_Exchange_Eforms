@@ -59,7 +59,8 @@ const Login = () => {
 
   useEffect(() => {
     document.title = "Login | Comply Exchange";
-    localStorage.clear()
+    //     localStorage.clear()
+    // console.log("Logged out")
     const token = localStorage.getItem("token");
   
     // If the token exists, navigate to the correct page based on userType

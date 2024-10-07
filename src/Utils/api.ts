@@ -25,7 +25,8 @@ const checkUserValidation = (data: ApiResponse | null): boolean => {
 };
 
 const logOutApiCall = () => {
-  localStorage.clear();
+  localStorage.clear()
+console.log("Logged out");
   sessionStorage.clear();
   window.location.reload();
 };

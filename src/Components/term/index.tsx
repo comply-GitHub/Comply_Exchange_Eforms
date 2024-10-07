@@ -31,7 +31,8 @@ export default function Term() {
 
   const handleSignout = (e:any) => {
   
-    localStorage.clear();
+    localStorage.clear()
+console.log("Logged out");
    
     window.location.replace("/login");
 
