@@ -48,6 +48,10 @@ export default function Tin(props: any) {
   const prevValues = JSON.parse(
     localStorage.getItem("agentDetails") || "{}"
   );
+
+  const stateValues = JSON.parse(
+    localStorage.getItem("select") || "{}"
+  );
   const W8ECI = useSelector((state: any) => state.W8ECI);
   const isIndividual = prevValues?.businessTypeId == 1;
   const isEntity = prevValues?.businessTypeId == 2;
@@ -59,15 +63,15 @@ export default function Tin(props: any) {
     formTypeSelectionId: obValues?.businessTypeId,
     streetNumberName:
       W8ECI?.streetNumberName ??
-      obValues.permanentResidentialStreetNumberandName,
+      obValues.permanentResidentialStreetNumberandName1,
     eciUsTinTypeId: W8ECI?.eciUsTinTypeId ?? obValues.taxpayerIdTypeID,
     eciUsTin: W8ECI?.eciUsTin ?? obValues.usTin,
-    aptSuite: W8ECI?.aptSuite ?? obValues.permanentResidentialAptSuite,
-    cityTown: W8ECI?.cityTown ?? obValues.permanentResidentialCityorTown,
+    aptSuite: W8ECI?.aptSuite ?? obValues.permanentResidentialAptSuite1,
+    cityTown: W8ECI?.cityTown ?? obValues.permanentResidentialCityorTown1,
     stateProvinceId:
-      W8ECI?.stateProvinceId ?? obValues.permanentResidentialStateorProvince,
+      W8ECI?.stateProvinceId ?? obValues.permanentResidentialStateorProvince1,
     zipPostalCode:
-      W8ECI?.zipPostalCode ?? obValues.permanentResidentialZipPostalCode,
+      W8ECI?.zipPostalCode ?? obValues.permanentResidentialZipPostalCode1,
   });
 
   const LoadData = () => {
@@ -75,15 +79,15 @@ export default function Tin(props: any) {
       formTypeSelectionId: obValues?.businessTypeId,
       streetNumberName:
         W8ECI?.streetNumberName ??
-        obValues.permanentResidentialStreetNumberandName,
+        obValues.permanentResidentialStreetNumberandName1,
       eciUsTinTypeId: W8ECI?.eciUsTinTypeId ?? obValues.taxpayerIdTypeID,
       eciUsTin: W8ECI?.eciUsTin ?? obValues.usTin,
-      aptSuite: W8ECI?.aptSuite ?? obValues.permanentResidentialAptSuite,
-      cityTown: W8ECI?.cityTown ?? obValues.permanentResidentialCityorTown,
+      aptSuite: W8ECI?.aptSuite ?? obValues.permanentResidentialAptSuite1,
+      cityTown: W8ECI?.cityTown ?? obValues.permanentResidentialCityorTown1,
       stateProvinceId:
-        W8ECI?.stateProvinceId ?? obValues.permanentResidentialStateorProvince,
+        W8ECI?.stateProvinceId ?? obValues.permanentResidentialStateorProvince1,
       zipPostalCode:
-        W8ECI?.zipPostalCode ?? obValues.permanentResidentialZipPostalCode,
+        W8ECI?.zipPostalCode ?? obValues.permanentResidentialZipPostalCode1,
     });
   };
 
@@ -170,6 +174,7 @@ export default function Tin(props: any) {
             ...values,
             agentId: authDetails?.agentId,
             accountHolderBasicDetailId: authDetails?.accountHolderId,
+            // stateProvinceId:3,
           };
           setSubmitting(true);
 
@@ -310,7 +315,7 @@ export default function Tin(props: any) {
                               // onBlur={handleBlur}
                               value={values.eciUsTinTypeId}
                             >
-                             {prevValues?.businessTypeId === 1 ? (
+                            {prevValues?.businessTypeId === 1 ? (
   <>
     <option value="0">---select---</option>
     {ustinValue
@@ -493,7 +498,7 @@ export default function Tin(props: any) {
                               State or Province:
                               <span style={{ color: "red" }}>*</span>
                             </Typography>
-                            <FormControl className="w-100">
+                           {stateValues == 1 ?( <FormControl className="w-100">
                               <select
                                 style={{
                                   border: " 1px solid #d9d9d9 ",
@@ -520,29 +525,32 @@ export default function Tin(props: any) {
                                   )
                                 )}
                               </select>
+                            </FormControl>):
+                             <FormControl className="w-100">
+                             <Input
+                               // disabled={
+                               //   values.stateProvinceId == 0
+                               // }
+                               style={{
+                                 border: " 1px solid #d9d9d9 ",
+                                 padding: " 0 10px",
+                                 color: "#7e7e7e",
+                                 fontStyle: "italic",
+                                 height: "50px",
+                                 width: "100%",
+                               }}
+                               // id="outlined"
+                               name="stateProvinceId"
+                               placeholder="Enter State or Province"
+                               type="text"
+                               value={values.stateProvinceId}
+                               // onBlur={handleBlur}
+                               onChange={handleChange}
+                               error={Boolean(errors.stateProvinceId)}
+                             />
                             </FormControl>
-
-                            {/* <Input
-                              // disabled={
-                              //   values.stateProvinceId == 0
-                              // }
-                              style={{
-                                border: " 1px solid #d9d9d9 ",
-                                padding: " 0 10px",
-                                color: "#7e7e7e",
-                                fontStyle: "italic",
-                                height: "50px",
-                                width: "100%",
-                              }}
-                              // id="outlined"
-                              name="stateProvinceId"
-                              placeholder="Enter State or Province"
-                              type="text"
-                              value={values.stateProvinceId}
-                              // onBlur={handleBlur}
-                              onChange={handleChange}
-                              error={Boolean(errors.stateProvinceId)}
-                            /> */}
+                            }
+                           
                           </div>
 
                           <div className="col-4">
@@ -629,7 +637,7 @@ export default function Tin(props: any) {
                           View Form
                         </Button>
                         <Button
-                          // type="submit"
+                       
                           disabled={!isValid}
                           onClick={() => {
                             submitForm()

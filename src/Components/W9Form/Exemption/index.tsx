@@ -13,6 +13,7 @@ import {
   RadioGroup,
   Radio,
   FormControlLabel,
+  Link
 } from "@mui/material";
 import Infoicon from "../../../assets/img/info.png";
 import InfoIcon from "@mui/icons-material/Info";
@@ -65,6 +66,7 @@ export default function FCTA_Reporting(props: any) {
   const handleReportChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setReport((event.target as HTMLInputElement).value);
   };
+  const [toolInfo, setToolInfo] = useState("");
   var getReducerData = useSelector(
     (state: any) => state?.GetByW9FormReducer?.GetByW9FormData
   );
@@ -209,6 +211,53 @@ export default function FCTA_Reporting(props: any) {
                 <div style={{ padding: "10px 0px" }}>
                   <Paper elevation={6} style={{ padding: "17px"}}>
                     <div style={{ backgroundColor: "#ffff" }}>
+
+                    {toolInfo === "basic" ? (
+                        <div>
+                          <Paper
+                            style={{
+                              backgroundColor: "#dedcb1",
+                              padding: "15px",
+                              marginBottom: "10px",
+                            }}
+                          >
+                            <Typography>What is FATCA reporting?</Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                            The Foreign Account Tax Compliance Act (FATCA) requires a participating foreign financial institution to report all United States account holders that are specified United States persons.
+                            </Typography>
+                            <Typography style={{ marginTop: "20px" }}>
+                            If you are submitting this form for payments to be made into an account held outside of the United States by a foreign (non U.S) financial institution you will be considered for FATCA Reporting unless you can make a selection from the list provided stating why you are exempt from FATCA reporting.
+                            </Typography>
+                            <Typography style={{ marginTop: "20px" }}>
+                            If you are only submitting this form for payments received into an account you hold in the United States, you do not need to make a FATCA exemption selection.
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>
+                            U.S. Financial Institutions and other U.S withholding agents must:
+ 
+                            </Typography>
+                            <Typography style={{ marginTop: "10px" }}>• Withhold 30% on certain payments to foreign entities that do not document their FATCA status and
+
+</Typography>
+                            <Typography>
+                            • Report information about certain non-financial foreign entities.
+                            </Typography>
+                           
+
+                            <Link
+                              href="#"
+                              underline="none"
+                              style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
+                              onClick={() => {
+                                setToolInfo("");
+                              }}
+                            >
+                              --Show Less--
+                            </Link>
+                          </Paper>
+                        </div>
+                      ) : (
+                        ""
+                      )}
                       {values.isExemptionFATCAReportings == "No" ? (<div style={{ backgroundColor: "#e8e1e1", padding: "10px" }}>
                         <Typography>
                           FATCA100
@@ -248,7 +297,7 @@ export default function FCTA_Reporting(props: any) {
                                 <Typography color="inherit">
                                   TT-450 What is FATCA reporting?
                                 </Typography>
-                                <a >
+                                <a onClick={() => setToolInfo("basic")} >
                                   <Typography
                                     style={{
                                       cursor: "pointer",

@@ -145,6 +145,13 @@ export default function Tin(props: any) {
   const viewPdf = () => {
     history("w9_pdf");
   }
+
+  useEffect(()=>{
+    console.log("tinnnnnn", payload)
+
+  },[payload])
+
+
   return (
 
     <section
@@ -206,7 +213,7 @@ export default function Tin(props: any) {
 
             setSubmitting(true);
             const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
-            const result = { ...new_obj, ...values, tIN_USTIN: values.tIN_USTIN?.replaceAll("-", "") };
+            const result = { ...new_obj, ...values};
             dispatch(
               postW9Form({ ...result, }, () => {
                 localStorage.setItem("PrevStepData", JSON.stringify(result))
@@ -240,7 +247,8 @@ export default function Tin(props: any) {
           handleChange,
           isSubmitting,
           isValid,
-          submitForm
+          submitForm,
+          setFieldError
         }) => (
           <Form onSubmit={handleSubmit}>
             <div className="row w-100">
@@ -464,40 +472,59 @@ export default function Tin(props: any) {
                             )}
                           </FormControl>
                         </div>
+                        
+                        
 
                         <div className="col-md-6 col-12">
 
                           <Typography>U.S. TIN</Typography>
                           <InputMask
-                            name="tIN_USTIN"
-                            value={values.tIN_USTIN}
-                            id="tIN_USTIN"
-                            disabled={values.taxpayerIdTypeID == 0 || values.taxpayerIdTypeID == 1 || values.taxpayerIdTypeID == 7 || values.taxpayerIdTypeID == 8}
-                            onChange={
-                              handleChange
-                            }
+  name="tIN_USTIN"
+  value={values.tIN_USTIN}
+  id="tIN_USTIN"
+  disabled={
+    values.taxpayerIdTypeID == 0 ||
+    values.taxpayerIdTypeID == 1 ||
+    values.taxpayerIdTypeID == 7 ||
+    values.taxpayerIdTypeID == 8
+  }
+  onChange={handleChange}
+  onBlur={(e:any) => {
+    const { value } = e.target;
+    const isSSN = values.taxpayerIdTypeID !== 2;
+    const ssnPattern = /^\d{3}-\d{2}-\d{4}$/;
+    const einPattern = /^\d{2}-\d{7}$/;
 
-                           
-                            className="input-w9-cstm"
-                            mask={
-                              values.taxpayerIdTypeID == 2 ? "99-9999999" : "999-99-9999"
-                            }
-                            onKeyDown={(e: any) => formatTin(e, values)}
-                            fullWidth
+    if (
+      (isSSN && !ssnPattern.test(value)) ||
+      (!isSSN && !einPattern.test(value))
+    ) {
+      // Display error for incomplete or invalid format
+      setFieldError('tIN_USTIN', 'TIN format is incomplete or invalid');
+    } else {
+     
+      // setFieldError('tIN_USTIN', '');
+    }
+  }}
+  className="input-w9-cstm"
+  mask={
+    values.taxpayerIdTypeID == 2 ? "99-9999999" : "999-99-9999"
+  }
+  fullWidth
+  style={{
+    width: "100%",
+    border: "1px solid #d9d9d9",
+    height: "40px",
+    lineHeight: "36px",
+    background: "#fff",
+    fontSize: "13px",
+    color: "#000",
+    fontStyle: "normal",
+    borderRadius: "1px",
+    padding: "0 10px",
+  }}
+/>
 
-                            style={{
-                              width: "100%",
-                              border: " 1px solid #d9d9d9 ",
-                              height: "40px",
-                              lineHeight: "36px ",
-                              background: "#fff ",
-                              fontSize: "13px",
-                              color: " #000 ",
-                              fontStyle: "normal",
-                              borderRadius: "1px",
-                              padding: " 0 10px ",
-                            }}
-                          />
                           <p className="error">{errors.tIN_USTIN?.toString()}</p>
                         </div>
 
@@ -560,7 +587,7 @@ export default function Tin(props: any) {
                 onClick={() => {
                   setcontinueId(1);
                   submitForm().then((data) => {
-                    // history("/US_Purposes/Back/Exemption/Tax/Certificates")
+                    // history("/US_Purposes/Back/Exemption/Tax/Certificates"
                   }).catch((error) => {
                     console.log(error);
                   })

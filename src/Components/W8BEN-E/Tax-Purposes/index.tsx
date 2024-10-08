@@ -293,8 +293,43 @@ export default function Fedral_tax(props: any) {
                   }) => (
                     <Form onSubmit={handleSubmit}>
                       <div style={{ width: "100%" }}>
-                        {
-                          //touched.countryOfIncorporation &&
+
+                      {
+                          
+                          values?.countryOfIncorporation && values?.countryOfIncorporation?.toString() !== "0" &&
+                            values?.countryOfIncorporation !== obValues?.permanentResidentialCountryId
+                            ? (
+                              <div
+                                style={{
+                                  backgroundColor: "#e8e1e1",
+                                  padding: "10px",
+                                }}
+                              >
+                                <Typography>
+                                  ICOR114
+                                  <span>
+                                    <img
+                                      src={Infoicon}
+                                      style={{
+                                        color: "#ffc107",
+                                        height: "22px",
+                                        width: "20px",
+                                        boxShadow: "inherit",
+
+                                        cursor: "pointer",
+                                        marginBottom: "3px",
+                                      }}
+                                    />
+                                    Country of incorporation is different from
+                                    the PRA country.
+                                  </span>
+                                </Typography>
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                        {/* {
+                          
                           values?.countryOfIncorporation && values?.countryOfIncorporation?.toString() !== "0" &&
                             values?.countryOfIncorporation !== obValues?.permanentResidentialCountryId ? (
 
@@ -319,7 +354,7 @@ export default function Fedral_tax(props: any) {
                             as a U.S person for U.S tax purposes. Your agent
                             may need to contact you for further information`} formTypeId={FormTypeId.BENE} />
 
-                          ) : null}
+                          ) : null} */}
 
                         <div>
                           <Typography align="left" style={{ margin: "10px" }}>
@@ -721,7 +756,7 @@ export default function Fedral_tax(props: any) {
                                           onChange={handleChange}
                                           autoComplete="countryOfIncorporation"
                                           // placeholder="Business Name"
-                                          onBlur={handleBlur}
+                                          // onBlur={handleBlur}
                                           style={{
                                             padding: " 0 10px",
                                             color: "#121112",
@@ -1029,7 +1064,7 @@ export default function Fedral_tax(props: any) {
                                             onChange={handleChange}
                                             autoComplete="countryOfIncorporation"
                                             // placeholder="Business Name"
-                                            onBlur={handleBlur}
+                                            // onBlur={handleBlur}
                                             style={{
                                               padding: " 0 10px",
                                               color: "#121112",

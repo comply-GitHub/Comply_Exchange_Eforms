@@ -156,7 +156,7 @@ export default function IndividualUs() {
     permanentResidentialStreetNumberandName1: "",
     permanentResidentialAptSuite1: "",
     permanentResidentialCityorTown1: "",
-    permanentResidentialStateorProvince1: "",
+    permanentResidentialStateorProvince1: 0,
     permanentResidentialZipPostalCode1: "",
     contactFirstName: "",
     contactLastName: "",
@@ -232,7 +232,7 @@ export default function IndividualUs() {
     permanentResidentialStreetNumberandName1: "",
     permanentResidentialAptSuite1: "",
     permanentResidentialCityorTown1: "",
-    permanentResidentialStateorProvince1: "",
+    permanentResidentialStateorProvince1: 0,
     permanentResidentialZipPostalCode1: "",
     contactFirstName: "",
     contactLastName: "",
@@ -3877,6 +3877,7 @@ export default function IndividualUs() {
                                     getAllStateByCountryId1(e.target.value, (data: []) => {
                                       setallStateById1(data);
                                     }));
+                                   
 
 
                                 }}
@@ -4058,7 +4059,10 @@ export default function IndividualUs() {
                                   }}
                                   name="permanentResidentialStateorProvince"
                                   // id="Income"
-                                  onChange={handleChange}
+                                  onChange={(e) => {
+                                    handleChange(e);
+                                   
+                                  }}
                                   value={
                                     values.permanentResidentialStateorProvince
                                   }
@@ -4927,7 +4931,9 @@ export default function IndividualUs() {
                                     dispatch(
                                       getAllStateByCountryId1(e.target.value, (data: []) => {
                                         setallStateById2(data);
-
+                                       
+                                         
+                                      
                                       }));
 
 
@@ -5070,7 +5076,10 @@ export default function IndividualUs() {
                                       }}
                                       name="permanentResidentialStateorProvince1"
                                       // id="Income"
-                                      onChange={handleChange}
+                                      onChange={(e) => {
+                                        handleChange(e);
+                                        localStorage.setItem("select", "1");
+                                      }}
                                       value={
                                         values.permanentResidentialStateorProvince1
                                       }
