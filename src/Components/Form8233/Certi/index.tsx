@@ -494,10 +494,15 @@ export default function Certifications(props: any) {
                                 marginLeft: "5px",
                               }}
                               onClick={() => {
-                                dispatch(GetForm8233Pdf(authDetails?.accountHolderId));
-                              }}
+                                dispatch(GetForm8233Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                    setPopupState({
+                                        status:true,
+                                        data: callbackData?.pdf
+                                    })
+                                }))
+                            }}
                             >
-                              (view Electronic Form)
+                              (View Electronic Form)
                             </span>
                             {errors?.i_Certify_ConfirmYouHaveReviewedTheElectronicForm && typeof errors?.i_Certify_ConfirmYouHaveReviewedTheElectronicForm === 'string' && (
                               <p className="error">{errors?.i_Certify_ConfirmYouHaveReviewedTheElectronicForm}</p>

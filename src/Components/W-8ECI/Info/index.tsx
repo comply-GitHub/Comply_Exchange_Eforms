@@ -206,6 +206,7 @@ export default function Tin(props: any) {
           isSubmitting,
           submitForm,
           setFieldValue,
+          setFieldError,
           isValid,
         }) => (
           <Form onSubmit={handleSubmit}>
@@ -374,11 +375,33 @@ export default function Tin(props: any) {
                               mask={
                                 values.eciUsTinTypeId == 2 ? "99-9999999" : "999-99-9999"
                               }
-                              // onBlur={handleBlur}
+                              onBlur={(e:any) => {
+                                const { value } = e.target;
+                                const isSSN = values.eciUsTinTypeId !== 2;
+                                const ssnPattern = /^\d{3}-\d{2}-\d{4}$/;
+                                const einPattern = /^\d{2}-\d{7}$/;
+                            
+                                if (
+                                  (isSSN && !ssnPattern.test(value)) ||
+                                  (!isSSN && !einPattern.test(value))
+                                ) {
+                             
+                                  setFieldError('tIN_USTIN', 'TIN format is incomplete or invalid');
+                                } else {
+                                 
+                                  // setFieldError('tIN_USTIN', '');
+                                }
+                              }}
                               error={Boolean(errors.eciUsTin)}
                               value={values.eciUsTin}
                             />
-                            {/* <p className="error">{errors.eciUsTin}</p> */}
+                             {touched?.eciUsTin &&
+                            errors?.eciUsTin ? (
+                              <p className="error">
+                                {errors.eciUsTin as string}
+                              </p>
+                            ) : null}
+                          
                           </div>
                           <div className="col-4"></div>
                         </div>

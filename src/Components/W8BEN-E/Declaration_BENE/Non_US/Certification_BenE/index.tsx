@@ -427,9 +427,9 @@ export default function Certifications(props: any) {
                           />
                           <Typography
                             style={{
-                              fontSize: "17px",
+                              fontSize: "14px",
                               color: "black",
-                              marginTop: "7px",
+                              marginTop: "8px",
                             }}
                           >
                             3. The income to which this form relates is:
