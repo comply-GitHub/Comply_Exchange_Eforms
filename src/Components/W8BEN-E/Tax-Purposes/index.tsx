@@ -297,7 +297,7 @@ export default function Fedral_tax(props: any) {
                       {
                           
                           values?.countryOfIncorporation && values?.countryOfIncorporation?.toString() !== "0" &&
-                            values?.countryOfIncorporation !== obValues?.permanentResidentialCountryId
+                            values?.countryOfIncorporation.toString() !== obValues?.permanentResidentialCountryId
                             ? (
                               <div
                                 style={{

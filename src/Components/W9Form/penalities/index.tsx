@@ -81,7 +81,7 @@ export default function Penalties() {
   const obValues = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
   const accountDetails = JSON.parse(localStorage.getItem("accountHolderDetails") || '{}')
   const initialValue = {
-    signedBy:  PrevStepData?.signedBy && PrevStepData?.signedBy || "",
+    signedBy:  PrevStepData?.signedBy || "",
     confirmationCode: PrevStepData?.confirmationCode || PrevStepData?.confirmationCode,
     date: PrevStepData?.date || new Date().toLocaleDateString('en-US', {
       month: '2-digit',
@@ -819,7 +819,7 @@ export default function Penalties() {
 
 
                         <Button
-                          // type="submit"
+                          type="submit"
                           onClick={() => {
                             submitForm().then((data: any) => {
                               

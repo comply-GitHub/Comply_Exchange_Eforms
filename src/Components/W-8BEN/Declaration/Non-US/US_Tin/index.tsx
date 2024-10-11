@@ -72,8 +72,7 @@ export default function Tin(props: any) {
       usTin: W8BENData?.usTin ?? obValues?.usTin,
       notAvailable: W8BENData?.notAvailable ? W8BENData?.notAvailable : false,
       notAvailableReason: W8BENData?.notAvailableReason || "",
-      foreignTINCountry: obValues.foreignTINCountryId == null || obValues.foreignTINCountryId == ""
-        || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId.toString(),
+      foreignTINCountry: W8BENData?.foreignTINCountry ?? obValues?.foreignTINCountry,
       foreignTIN: W8BENData?.foreignTIN ?? obValues?.foreignTIN ,
       isFTINLegally: W8BENData?.isFTINLegally ? W8BENData?.isFTINLegally : false,
       isNotAvailable: W8BENData?.isNotAvailable ? (W8BENData?.isNotAvailable == true && W8BENData?.alternativeTINFormat == false ? "Yes" : "") : "",
@@ -156,8 +155,8 @@ export default function Tin(props: any) {
     tinValue: "",
     notAvailable: false,
     notAvailableReason: "",
-    foreignTINCountry: obValues.foreignTINCountryId == null || obValues.foreignTINCountryId == ""
-      || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId.toString(),
+    
+    foreignTINCountry:  W8BENData?.foreignTINCountry ?? obValues?.foreignTINCountry,
     foreignTIN: W8BENData?.foreignTIN ?? obValues?.foreignTIN ,
     isFTINLegally: false,
     isNotAvailable: "",
