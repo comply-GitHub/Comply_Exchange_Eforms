@@ -16,6 +16,7 @@ import {
 import { Info, Delete, YoutubeSearchedFor } from "@mui/icons-material";
 import { Formik, Form } from "formik";
 import "./index.scss";
+import InputMask from 'react-input-mask';
 import checksolid from "../../../../../assets/img/check-solid.png";
 import { useNavigate } from "react-router-dom";
 import {
@@ -521,7 +522,7 @@ export default function Tin(props: any) {
                               <Typography style={{ fontSize: "14px" }}>
                                 U.S. TIN
                               </Typography>
-                              <Input
+                              <InputMask
                                 disabled={
                                   values.notAvailable ||
                                   values.usTinTypeId === "0" ||
@@ -531,11 +532,13 @@ export default function Tin(props: any) {
                                 fullWidth
                                 type="text"
                                 name="usTin"
-                                onKeyDown={(e) => formatTin(e, values)}
+                                // onKeyDown={(e) => formatTin(e, values)}
                                 value={values.usTin}
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                inputProps={{ maxLength: 10 }}
+                                mask={
+                                  values.usTinTypeId == 2 ? "99-9999999" : "999-99-9999"
+                                }
                                 error={Boolean(touched.usTin && errors.usTin)}
                                 style={{
                                   border: " 1px solid #d9d9d9 ",

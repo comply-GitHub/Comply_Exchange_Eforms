@@ -15,6 +15,7 @@ import {
   RadioGroup,
   Radio,
 } from "@mui/material";
+import InputMask from 'react-input-mask';
 import { CREATE_8233, GetAgentSkippedSteps, GetAllGIINTypes, GetHelpVideoDetails, post8233_EForm, postW81MY_EForm } from "../../../Redux/Actions";
 import { Info, DeleteOutline, Delete } from "@mui/icons-material";
 import { Formik, Form } from "formik";
@@ -440,7 +441,7 @@ export default function Tin(props: any) {
 
                             <div className="col-lg-5 col-12">
                               <Typography style={{ fontSize: "14px" }}>U.S. TIN</Typography>
-                              <Input
+                              <InputMask
                                 disabled
                                 fullWidth
 
@@ -452,7 +453,9 @@ export default function Tin(props: any) {
                                   handleChange(e);
                                   setTimeout(() => { setFieldValue("ReasionForForegionTIN_NotAvailable", ""); }, 200)
                                 }}
-
+                                mask={
+                                  values.usTinTypeId == 2 ? "99-9999999" : "999-99-9999"
+                                }
                                 style={{
                                   border: " 1px solid #d9d9d9 ",
                                   padding: " 0 10px",
@@ -640,13 +643,16 @@ export default function Tin(props: any) {
 
                             <div className="col-lg-5 col-12">
                               <Typography style={{ fontSize: "14px" }}>U.S. TIN</Typography>
-                              <Input
+                              <InputMask
                                 disabled={values.notAvailable}
                                 fullWidth
                                 type="text"
                                 name="usTin"
                                 value={values.usTin}
                                 onBlur={handleBlur}
+                                mask={
+                                  values.usTinTypeId == 2 ? "99-9999999" : "999-99-9999"
+                                }
                                 onChange={handleChange}
                                 error={Boolean(touched.usTin && errors.usTin)}
                                 style={{

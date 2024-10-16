@@ -145,15 +145,15 @@ export default function Certifications(props: any) {
           <div style={{ padding: "10px" }}>
             <Paper >
               <Formik
-                validateOnChange={false}
-                validateOnBlur={false}
+                validateOnChange={true}
+                validateOnBlur={true}
                 initialValues={initialValue}
                 enableReinitialize
                 validationSchema={certificateSchema_BEN_DC}
                 onSubmit={(values, { setSubmitting }) => {
                   const submitPromise = new Promise((resolve, reject) => {
                     setSubmitting(true);
-                    const new_obj = { ...PrevStepData, stepName: `/${urlValue}` }
+                    const new_obj = { ...PrevStepData, stepName: `/${urlValue}`, }
                     const result = { ...new_obj, ...values };
                     dispatch(
                       postSCIndividualEForm([result], () => {

@@ -12,7 +12,7 @@ export const TinSchema = () => {
     }),
     // .required("Field cannot be empty"),
     cityTown: Yup.string().required("Field cannot be empty"),
-    stateProvinceId: Yup.string().required("Field cannot be empty"),
+    stateProvince: Yup.string().required("Field cannot be empty"),
     zipPostalCode: Yup.string().required("Field cannot be empty"),
   });
 };
@@ -217,7 +217,7 @@ export const TaxPayerSchema = () => {
 
 export const IncomeSchema = () => {
   return Yup.object().shape({
-    isAppplicationCheck: Yup.boolean(),
+    isAppplicationCheck: Yup.boolean().required(),
   });
 };
 

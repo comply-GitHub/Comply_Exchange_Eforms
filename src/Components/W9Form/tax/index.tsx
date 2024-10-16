@@ -101,10 +101,11 @@ export default function Tin(props: any) {
     }
   };
   const initialValue = {
-    taxpayerIdTypeID: onBoardingFormValues?.usTinTypeId
-      ? onBoardingFormValues?.usTinTypeId
-      : getReducerData?.taxpayerIdTypeID,
-    tIN_USTIN: onBoardingFormValues?.usTin ? onBoardingFormValues?.usTin : getReducerData?.tiN_USTIN,
+    taxpayerIdTypeID: PrevStepData?.taxpayerIdTypeID
+      ? PrevStepData?.taxpayerIdTypeID
+      : onBoardingFormValues?.usTinTypeId,
+    tIN_USTIN: PrevStepData?.tIN_USTIN ? PrevStepData?.tIN_USTIN : onBoardingFormValues?.usTin,
+  
   };
   const [selectedTaxClassification, setSelectedTaxClassification] =
     useState(0);

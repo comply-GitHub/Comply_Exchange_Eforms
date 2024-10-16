@@ -21,6 +21,7 @@ import { Formik, Form } from "formik";
 import { securitySchema } from "../../schemas";
 import GlobalValues from "../../Utils/constVals";
 import useAuth from "../../customHooks/useAuth";
+//formSelection
 
 const DialogEdit = (props: any) => {
   const { authDetails } = useAuth();
@@ -32,7 +33,9 @@ const DialogEdit = (props: any) => {
   const postSecurityCodeData = useSelector(
     (state: any) => state.postSecurityCodeReducer.postSecurutyCodeData
   );
+  const security = JSON.parse(localStorage.getItem("formSelection") ?? "null");
 
+  const key= JSON.parse(localStorage.getItem("key") ?? "null");
   const getSecurityQuestionsReducer = useSelector(
     (state: any) => state.getSecurityQuestionsReducer.getSecurityQuestionsData
   );
@@ -48,7 +51,7 @@ const DialogEdit = (props: any) => {
   });
 
   var initialValues = {
-    confirmationCode: payload.confirmationCode,
+    confirmationCode: payload?.confirmationCode || security?.confirmationCode,
     securityQuestionId: 0,
     securityAnswer: "",
   };
@@ -59,9 +62,14 @@ const DialogEdit = (props: any) => {
   }, [])
 
   useEffect(() => {
-    dispatch(postSecurityCode(() => console.log("hi")));
-    dispatch(getSecurityQuestions());
-  }, []);
+
+    if (!key && key !== 1) {
+      dispatch(postSecurityCode(() => console.log("hi")));
+      dispatch(getSecurityQuestions());
+     
+      localStorage.setItem("key", JSON.stringify(1));
+    }
+  }, [key, dispatch]);
 
   const handleClose = () => {
     setOpen(false);
@@ -180,16 +188,7 @@ const DialogEdit = (props: any) => {
 
 
 
-                          {/* <Link
-                              href="#"
-                              underline="none"
-                              style={{ marginTop: "10px", fontSize: "16px" }}
-                              onClick={() => {
-                                setToolInfo("");
-                              }}
-                            >
-                              --Show Less--
-                            </Link> */}
+                       
                         </div>
                       </div>
                     ) : (

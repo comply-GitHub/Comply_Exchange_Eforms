@@ -69,6 +69,10 @@ export default function Factors() {
     data:"",
     status:false
 })
+const [isTaxLiabilityJurisdictions, setIsTaxLiabilityJurisdictions] = useState(["no"]);
+const [countryTaxLiability, setCountryTaxLiability] = useState(["no"]);
+const [taxReferenceNumber, setTaxReferenceNumber] = useState([""]);
+const [isTINFormatNotAvailable, setIsTINFormatNotAvailable] = useState([false]);
 
   // const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const initialValue = {
@@ -86,10 +90,10 @@ export default function Factors() {
     dateRenouncedUSCitizenship: obValues.dateRenouncedUSCitizenship,
     permanentResidentialCountryId: 0,
     renouncementProof: "",
-    isTaxLiabilityJurisdictions: "no",
-    countryTaxLiability: "no",
-    taxReferenceNumber: "",
-    isTINFormatNotAvailable: false,
+    // isTaxLiabilityJurisdictions: ["no"],
+    // countryTaxLiability: ["no"],
+    // taxReferenceNumber: [""],
+    // isTINFormatNotAvailable: [false],
     IsPresentAtleast31Days: "No",
     statusId: 1,
     stepName: `/${urlValue}`,
@@ -200,6 +204,51 @@ export default function Factors() {
 
     const foundObject = allCountriesData.find((obj: any) => obj.id === id);
     return foundObject ? foundObject.name : null;
+  }
+
+  function handleChangeIsTaxLiability(e:any, ind:any){
+    if(e.target.value == "yes"){
+      isTaxLiabilityJurisdictions[ind] = e.target.value;
+      setIsTaxLiabilityJurisdictions([...isTaxLiabilityJurisdictions, "no"]);
+      setCountryTaxLiability([...countryTaxLiability, "no"]);
+      setTaxReferenceNumber([...taxReferenceNumber, ""]);
+      setIsTINFormatNotAvailable([...isTINFormatNotAvailable, false]);
+    }else{
+      if(ind == 0){
+        setIsTaxLiabilityJurisdictions(["no"]);
+        setCountryTaxLiability(["no"]);
+        setTaxReferenceNumber([""]);
+        setIsTINFormatNotAvailable([false]);
+      }else{
+        let tempVal = [...isTaxLiabilityJurisdictions];
+        tempVal.splice(ind);
+        let tempVal2 = [...countryTaxLiability];
+        tempVal2.splice(ind);
+        let tempVal3 = [...taxReferenceNumber];
+        tempVal3.splice(ind);
+        let tempVal4 = [...isTINFormatNotAvailable];
+        tempVal4.splice(ind);
+        setIsTaxLiabilityJurisdictions([...tempVal, "no"]);
+        setCountryTaxLiability([...tempVal2]);
+        setTaxReferenceNumber([...tempVal3]);
+        setIsTINFormatNotAvailable([...tempVal4]);
+      }
+    }
+  }
+
+  function handleChangeTaxLiability(e:any, ind:any, type:any){
+    console.log("handleChangeTaxLiability e.target.value==========", e.target.value)
+    console.log("handleChangeTaxLiability e.target.checked==========", e.target.checked)
+    if(type == "taxLiability"){
+      countryTaxLiability[ind] = e.target.value;
+      setCountryTaxLiability([...countryTaxLiability]);
+    }else if(type == "taxReferenceNumber"){
+      taxReferenceNumber[ind] = e.target.value;
+      setTaxReferenceNumber([...taxReferenceNumber]);
+    }else if(type == "isTINFormatNotAvailable"){
+      isTINFormatNotAvailable[ind] = e.target.checked;
+      setIsTINFormatNotAvailable([...isTINFormatNotAvailable]);
+    }
   }
 
   return (
@@ -1213,7 +1262,10 @@ export default function Factors() {
                             ""
                           )}
 
-                          <Typography
+                          {isTaxLiabilityJurisdictions.map((dt, ind)=>{
+                            return (
+                              <>
+                              <Typography
                             style={{
                               fontSize: "17px",
                               marginTop: "10px",
@@ -1230,8 +1282,8 @@ export default function Factors() {
                               row
                               aria-labelledby="demo-row-radio-buttons-group-label"
                               name="isTaxLiabilityJurisdictions"
-                              value={values.isTaxLiabilityJurisdictions}
-                              onChange={handleChange}
+                              value={dt}
+                              onChange={(e)=>handleChangeIsTaxLiability(e, ind)}
                             >
                               <FormControlLabel
                                 value="yes"
@@ -1248,9 +1300,8 @@ export default function Factors() {
                               />
                             </RadioGroup>
                           </FormControl>
-                          <Divider className="dividr" />
 
-                          {values.isTaxLiabilityJurisdictions == "yes" ? (
+                          {dt == "yes" ? (
                             <>
                               <Typography className="mt-3">
                                 Please select the country where the individual
@@ -1268,8 +1319,9 @@ export default function Factors() {
                                   name="permanentResidentialCountryId"
                                   id="Income"
                                   // defaultValue={1}
-                                  onChange={handleChange}
-                                  value={values.permanentResidentialCountryId}
+                                  onChange={(e:any)=>handleChangeTaxLiability(e, ind, "taxLiability")}
+                                  // value={values.permanentResidentialCountryId}
+                                  value={countryTaxLiability[ind]}
                                 >
                                   <option value={0}>---select---</option>
                                   {getCountriesAgentWiseReducer.agentWiseCountriesData
@@ -1348,11 +1400,11 @@ export default function Factors() {
                               )}
                               <div className="d-flex">
                                 <FormControl className="form mt-2">
-                                  {values.permanentResidentialCountryId == 0 ? (
+                                  {countryTaxLiability[ind] == "no" ? (
                                     <Input
                                       name="taxReferenceNumber"
                                       onChange={handleChange}
-                                      value={values.taxReferenceNumber}
+                                      value={taxReferenceNumber[ind]}
                                       disabled
                                       className="input"
                                     />
@@ -1370,11 +1422,11 @@ export default function Factors() {
                                       padding: " 0 10px ",
                                     }}
                                       name="taxReferenceNumber"
-                                      onChange={handleChange}
-                                      value={values.taxReferenceNumber}
+                                      onChange={(e:any)=>handleChangeTaxLiability(e, ind, "taxReferenceNumber")}
+                                      value={taxReferenceNumber[ind]}
                                       className="number"
                                       mask={
-                                        values.isTINFormatNotAvailable ? '' : selectedCountryMask ? selectedCountryMask : "********************"
+                                        isTINFormatNotAvailable[ind] ? '' : selectedCountryMask ? selectedCountryMask : "********************"
                                       }
                                     />
                                   )}
@@ -1384,10 +1436,10 @@ export default function Factors() {
                                   <Checkbox
                                     name="isTINFormatNotAvailable"
                                     onChange={(e) => {
-                                      handleChange(e);
+                                      handleChangeTaxLiability(e, ind, "isTINFormatNotAvailable");
                                       setFieldValue("taxReferenceNumber", "");
                                     }}
-                                    value={values.isTINFormatNotAvailable}
+                                    value={isTINFormatNotAvailable[ind]}
                                     required
                                   />
                                   <div className="mt-2">
@@ -1397,50 +1449,15 @@ export default function Factors() {
                                
                               </div>
                               <Divider className="dividr mt-2" />
-                              <Typography
-                                style={{
-                                  fontSize: "17px",
-                                  marginTop: "10px",
-
-                                  marginBottom: "10px",
-                                }}
-                              >
-                                Does the individual the submission represents
-                                have tax liability in any other jurisdictions?
-                              </Typography>
-
-                              <FormControl>
-                                <RadioGroup
-                                  row
-                                  aria-labelledby="demo-row-radio-buttons-group-label"
-                                  id="isTaxLiabilityJurisdictions"
-                                  defaultValue={"no"}
-                                  value={values.isTaxLiabilityJurisdictions}
-                                  onChange={handleChange}
-                                >
-                                  <FormControlLabel
-                                    control={<Radio />}
-                                    value="yes"
-                                    name="isTaxLiabilityJurisdictions"
-                                    label="Yes"
-                                  />
-                                  <FormControlLabel
-                                    control={<Radio />}
-                                    defaultValue={"no"}
-                                    value="no"
-                                    name="isTaxLiabilityJurisdictions"
-                                    label="No"
-                                  />
-                                </RadioGroup>
-                                <p className="error">
-                                  {errors.isTaxLiabilityJurisdictions}
-                                </p>
-                              </FormControl>
-                              <Divider className="dividr" />
                             </>
                           ) : (
                             ""
                           )}
+                              </>
+                            )
+                          })}
+                          
+                          <Divider className="dividr" />
 
                           <Typography
                             style={{
@@ -1776,7 +1793,7 @@ export default function Factors() {
                             ""
                           )}
 
-                          <Typography
+                          {/* <Typography
                             style={{
                               fontSize: "17px",
                               marginTop: "10px",
@@ -1812,10 +1829,10 @@ export default function Factors() {
                             <p className="error">
                               {errors.isTaxLiabilityJurisdictions}
                             </p>
-                          </FormControl>
+                          </FormControl> */}
                           <Divider className="dividr" />
 
-                          {values.isTaxLiabilityJurisdictions == "yes" ? (
+                          {/* {values.isTaxLiabilityJurisdictions == "yes" ? (
                             <>
                               <Typography>
                                 Please select the country where the individual
@@ -1999,7 +2016,7 @@ export default function Factors() {
                             </>
                           ) : (
                             ""
-                          )}
+                          )} */}
                           <Typography
                             style={{
                               fontSize: "17px",

@@ -608,7 +608,7 @@ export default function Tin(props: any) {
                             <span style={{ color: "red" }}>*</span>
                           </Typography>
                           <select
-                            disabled
+                            
                             style={{
                               border: " 1px solid #d9d9d9 ",
                               padding: " 0 10px",

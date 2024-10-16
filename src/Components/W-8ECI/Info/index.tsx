@@ -68,8 +68,8 @@ export default function Tin(props: any) {
     eciUsTin: W8ECI?.eciUsTin ?? obValues.usTin,
     aptSuite: W8ECI?.aptSuite ?? obValues.permanentResidentialAptSuite1,
     cityTown: W8ECI?.cityTown ?? obValues.permanentResidentialCityorTown1,
-    stateProvinceId:
-      W8ECI?.stateProvinceId ?? obValues.permanentResidentialStateorProvince1,
+    stateProvince :
+      W8ECI?.stateProvince  ?? obValues.permanentResidentialStateorProvince1,
     zipPostalCode:
       W8ECI?.zipPostalCode ?? obValues.permanentResidentialZipPostalCode1,
   });
@@ -84,8 +84,8 @@ export default function Tin(props: any) {
       eciUsTin: W8ECI?.eciUsTin ?? obValues.usTin,
       aptSuite: W8ECI?.aptSuite ?? obValues.permanentResidentialAptSuite1,
       cityTown: W8ECI?.cityTown ?? obValues.permanentResidentialCityorTown1,
-      stateProvinceId:
-        W8ECI?.stateProvinceId ?? obValues.permanentResidentialStateorProvince1,
+      stateProvince :
+        W8ECI?.stateProvince  ?? obValues.permanentResidentialStateorProvince1,
       zipPostalCode:
         W8ECI?.zipPostalCode ?? obValues.permanentResidentialZipPostalCode1,
     });
@@ -174,7 +174,7 @@ export default function Tin(props: any) {
             ...values,
             agentId: authDetails?.agentId,
             accountHolderBasicDetailId: authDetails?.accountHolderId,
-            // stateProvinceId:3,
+            // stateProvince :3,
           };
           setSubmitting(true);
 
@@ -531,18 +531,18 @@ export default function Tin(props: any) {
                                   height: "50px",
                                   width: "100%",
                                 }}
-                                name="stateProvinceId"
+                                name="stateProvince "
                                 // id="Income"
                                 onChange={handleChange}
                                 // onBlur={handleBlur}
-                                value={values.stateProvinceId}
+                                value={values.stateProvince }
                               >
                                 <option value="0">
                                   <em>---select---</em>
                                 </option>
                                 {GetStateByCountryIdReducer?.allCountriesStateIdData?.map(
                                   (ele: any) => (
-                                    <option key={ele?.id} value={ele?.id}>
+                                    <option key={ele?.id} value={ele?.name}>
                                       {ele?.name}
                                     </option>
                                   )
@@ -552,7 +552,7 @@ export default function Tin(props: any) {
                              <FormControl className="w-100">
                              <Input
                                // disabled={
-                               //   values.stateProvinceId == 0
+                               //   values.stateProvince  == 0
                                // }
                                style={{
                                  border: " 1px solid #d9d9d9 ",
@@ -563,13 +563,13 @@ export default function Tin(props: any) {
                                  width: "100%",
                                }}
                                // id="outlined"
-                               name="stateProvinceId"
+                               name="stateProvince "
                                placeholder="Enter State or Province"
                                type="text"
-                               value={values.stateProvinceId}
+                               value={values.stateProvince }
                                // onBlur={handleBlur}
                                onChange={handleChange}
-                               error={Boolean(errors.stateProvinceId)}
+                               error={Boolean(errors.stateProvince )}
                              />
                             </FormControl>
                             }

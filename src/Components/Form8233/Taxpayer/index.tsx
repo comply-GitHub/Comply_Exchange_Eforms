@@ -663,7 +663,7 @@ export default function Tin(props: any) {
                                 type="text"
                                 name="usTin"
                                 mask={
-                                  values.usTin ? "99-9999999" : "999-99-9999"
+                                  values.usTin ? "999-99-9999" :"999-99-9999"
                                 }
                                 value={values.usTin}
                                 onBlur={handleBlur}

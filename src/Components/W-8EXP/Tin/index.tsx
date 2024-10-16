@@ -16,6 +16,7 @@ import {
 import { Info, Delete } from "@mui/icons-material";
 import CloseIcon from '@mui/icons-material/Close';
 import { Formik, Form } from "formik";
+import InputMask from 'react-input-mask';
 import "./index.scss";
 import checksolid from "../../../../../assets/img/check-solid.png";
 import { useNavigate } from "react-router-dom";
@@ -56,7 +57,7 @@ export default function Tin(props: any) {
       usTin: W8EXPData?.usTin ?? obValues?.usTin,
       notAvailable: W8EXPData?.notAvailable ? W8EXPData?.notAvailable : false,
       notAvailableReason: W8EXPData?.notAvailableReason ?? "",
-      foreignTINCountry: W8EXPData?.foreignTINCountry ?? obValues?.foreignTINCountryId ?? obValues.permanentResidentialCountryId,
+      foreignTINCountry: W8EXPData?.foreignTINCountry ?? obValues?.foreignTINCountryId ?? "",
       foreignTIN: W8EXPData?.foreignTIN !== "" ? W8EXPData?.foreignTIN : "",
       isFTINLegally: W8EXPData?.isFTINLegally ? W8EXPData?.isFTINLegally : false,
       isNotAvailable: W8EXPData?.isNotAvailable ? (W8EXPData?.isNotAvailable == true && W8EXPData?.alternativeTINFormat == false ? "Yes" : "") : "",
@@ -110,8 +111,7 @@ export default function Tin(props: any) {
     tinValue: "",
     notAvailable: false,
     notAvailableReason: "",
-    foreignTINCountry: obValues.foreignTINCountryId == null || obValues.foreignTINCountryId == ""
-      || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId,
+    foreignTINCountry: "",
     foreignTIN: "",
     isNotAvailable: "",
     isFTINLegally: false,
@@ -505,7 +505,7 @@ export default function Tin(props: any) {
                                 <Typography style={{ fontSize: "14px" }}>
                                   U.S. TIN
                                 </Typography>
-                                <Input
+                                <InputMask
                                   disabled={
                                     values.notAvailable ||
                                     values.usTinTypeId === "0" ||
@@ -515,11 +515,13 @@ export default function Tin(props: any) {
                                   fullWidth
                                   type="text"
                                   name="usTin"
-                                  onKeyDown={(e) => formatTin(e, values)}
+                                  // onKeyDown={(e) => formatTin(e, values)}
                                   value={values.usTin}
                                   onBlur={handleBlur}
                                   onChange={handleChange}
-                                  inputProps={{ maxLength: 10 }}
+                                  mask={
+                                    values.usTinTypeId == 2 ? "99-9999999" : "999-99-9999"
+                                  }
                                   error={Boolean(touched.usTin && errors.usTin)}
                                   style={{
                                     border: " 1px solid #d9d9d9 ",
@@ -771,7 +773,7 @@ export default function Tin(props: any) {
                               <span style={{ color: "red" }}>*</span>
                             </Typography>
                             <select
-                              disabled={values.foreignTINCountry != undefined && values.foreignTINCountry != null && Number.parseInt(values.foreignTINCountry) > 0}
+                              // disabled={values.foreignTINCountry != undefined && values.foreignTINCountry != null && Number.parseInt(values.foreignTINCountry) > 0}
                               style={{
                                 border: " 1px solid #d9d9d9 ",
                                 padding: " 0 10px",
@@ -922,7 +924,7 @@ export default function Tin(props: any) {
                           <div className="col-lg-5 col-12">
                             <Typography style={{ fontSize: "14px" }}>
                               Foreign TIN{" "}
-                              {values.foreignTINCountry == 257 ? (
+                              {/* {values.foreignTINCountry == 257 ? (
                                 <span>
                                   {" "}
                                   <Tooltip
@@ -954,7 +956,7 @@ export default function Tin(props: any) {
                                 </span>
                               ) : (
                                 ""
-                              )}
+                              )} */}
                             </Typography>
 
                             {values.isNotAvailable === "No" ? (
