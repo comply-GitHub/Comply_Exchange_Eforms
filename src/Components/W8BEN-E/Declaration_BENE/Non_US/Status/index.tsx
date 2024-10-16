@@ -419,6 +419,78 @@ export default function Fedral_tax(props: any) {
                               </Typography>
                             </div>
                             <div>
+
+
+                            {toolInfo === "status" ? (
+  <div className="mt-5">
+    {/* <Paper style={{ backgroundColor: "#d1ecf1", padding: "15px" }}> */}
+      <div id="divEasyMoreHelp" className="alert alert-info mt-2">
+        <div className="row">
+          <div className="col-lg-10 col-md-10 col-sm-10">
+            <h2 className="alert-heading">TT-007 §1.1471-5(e)(4)</h2>
+          </div>
+          <div className="col-lg-2 col-md-2 col-sm-2">
+            <h1
+              // type="button"
+              className="close"
+              onClick={() => {
+                setToolInfo("");
+              }}
+              style={{ float: "right" }}
+            >
+              <span aria-hidden="true" style={{ fontSize: "18px" }}>Close</span>
+            </h1>
+          </div>
+        </div>
+        <br />
+        <div className="summary-help">§1.1471-5(e)(4)</div>
+        <div className="more-help">
+          <hr />
+          (4) Investment entity:
+          <div>&nbsp;</div>
+          (i) In general. The term investment entity means any entity that is described in paragraph (e)(4)(i)(A), (B), or (C) of this section.
+          <div>&nbsp;</div>
+          (A) The entity primarily conducts as a business one or more of the following activities or operations for or on behalf of a customer:
+          <div>&nbsp;</div>
+          (1) Trading in money market instruments (checks, bills, certificates of deposit, derivatives, etc.); foreign currency; foreign exchange, interest rate, and index instruments; transferable securities; or commodity futures;
+          <div>&nbsp;</div>
+          (2) Individual or collective portfolio management; or
+          <div>&nbsp;</div>
+          (3) Otherwise investing, administering, or managing funds, money, or financial assets on behalf of other persons.
+          <div>&nbsp;</div>
+          (B) The entity’s gross income is primarily attributable to investing, reinvesting, or trading in financial assets (as defined in paragraph (e)(4)(ii) of this section) and the entity is managed by another entity that is described in paragraph (e)(1)(i), (ii), (iv), or (e)(4)(i)(A) of this section. For purposes of this paragraph (e)(4)(i)(B), an entity is managed by another entity if the managing entity performs, either directly or through another third-party service provider, any of the activities described in paragraph (e)(4)(i)(A) of this section on behalf of the managed entity.
+          <div>&nbsp;</div>
+          (C) The entity functions or holds itself out as a collective investment vehicle, mutual fund, exchange-traded fund, private equity fund, hedge fund, venture capital fund, leveraged buyout fund, or any similar investment vehicle established with an investment strategy of investing, reinvesting, or trading in financial assets.
+          <div>&nbsp;</div>
+          (ii) Financial assets. For purposes of this paragraph, the term financial asset means a security (as defined in section 475(c)(2) without regard to the last sentence thereof), partnership interest, commodity (as defined in section 475(e)(2)), notional principal contract (as defined in § 1.446–3(c)), insurance contract or annuity contract, or any interest (including a futures or forward contract or option) in a security, partnership interest, commodity, notional Principal contract, insurance contract, or annuity contract.
+          <div>&nbsp;</div>
+          (iii) Primarily conducts as a business:
+          <div>&nbsp;</div>
+          (A) In general. An entity is treated as primarily conducting as a business one or more of the activities described in paragraph (e)(4)(i)(A) of this section if the entity’s gross income attributable to such activities equals or exceeds 50 percent of the entity’s gross income during the shorter of:
+          <div>&nbsp;</div>
+          (1) The three-year period ending on December 31 of the year preceding the year in which the determination is made; or
+          <div>&nbsp;</div>
+          (2) The period during which the entity has been in existence.
+          <div>&nbsp;</div>
+          (B) Special rule for start-up entities. An entity with no operating history as of the date of the determination is treated as primarily conducting as a business one or more of the activities described in paragraph (e)(4)(i)(A) of this section if such entity expects to meet the gross income threshold described in paragraph (e)(4)(iii)(A) of this section based on its anticipated functions, assets, and employees, with due consideration given to any purpose or functions for which the entity is licensed or regulated (including those of any predecessor).
+          <div>&nbsp;</div>
+          (iv) Primarily attributable to investing, reinvesting, or trading in financial assets:
+          <div>&nbsp;</div>
+          (A) In general. An entity’s gross income is primarily attributable to investing, reinvesting, or trading in financial assets for purposes of paragraph (e)(4)(i)(B) of this section if the entity’s gross income attributable to investing, reinvesting, or trading in financial assets equals or exceeds 50 percent of the entity’s gross income during the shorter of:
+          <div>&nbsp;</div>
+          (1) The three-year period ending on December 31 of the year preceding the year in which the determination is made; or
+          <div>&nbsp;</div>
+          (2) The period during which the entity has been in existence.
+          <div>&nbsp;</div>
+          (B) Special rule for start-up entities. An entity with no operating history as of the date of the determination will be considered to have income that is primarily attributable to investing, reinvesting, or trading in financial assets for purposes of paragraph (e)(4)(i)(B) of this section if such entity expects to meet the income threshold described in paragraph (e)(4)(iv)(A) of this section based on its anticipated functions, assets, and employees, with due consideration given to any purpose or functions for which the entity is licensed or regulated (including those of any predecessor).
+        </div>
+      </div>
+    {/* </Paper> */}
+  </div>
+) : (
+  ""
+)}
+
                               {toolInfo === "basic" ? (
                                 <div>
                                   <Paper
@@ -857,7 +929,7 @@ export default function Fedral_tax(props: any) {
                                 </div>
                                 <Paper style={{ backgroundColor: "#e3e3e3", padding: "10px" }}>
                                   <Typography className="my-2">
-                                    Is an FFI solely because it is an investment entity described in <Link style={{ textDecorationLine: "none" }}>
+                                    Is an FFI solely because it is an investment entity described in <Link onClick={() => setToolInfo("status")} style={{ textDecorationLine: "none" , cursor:"pointer" }}>
                                       Regulations section 1.1471-5(e)(4)
                                     </Link>
                                   </Typography>

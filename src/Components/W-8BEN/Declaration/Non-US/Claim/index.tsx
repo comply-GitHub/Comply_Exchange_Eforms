@@ -67,7 +67,7 @@ export default function FCTA_Reporting(props: any) {
     //isClaimTreaty: "No",
     ownerResidentId: "",
    
-    isSubmissionClaimTreaty: "No",
+    isSubmissionClaimTreaty: "",
   });
 
   const urlValue = location.pathname.substring(1);
@@ -112,7 +112,7 @@ export default function FCTA_Reporting(props: any) {
       ...W8BENData,
       isClaimTreaty: W8BENData?.isClaimTreaty === true ? "yes" : "no",
       isSubmissionClaimTreaty:
-        W8BENData?.isSubmissionClaimTreaty === true ? "yes" : "no",
+        W8BENData?.isSubmissionClaimTreaty === true ? "yes" : "",
     };
     setInitialValues(temp);
   };

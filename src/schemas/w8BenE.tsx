@@ -456,7 +456,7 @@ export const US_TINSchemaW8BenE = (isGiinEnabled: boolean) => {
         Yup.string()
           .required("Please Specify Reason"),
     }),
-    foreignTINCountry: Yup.string().when("tinisFTINNotLegallyRequired", {
+    foreignTINCountry: Yup.string().nullable().required().when("tinisFTINNotLegallyRequired", {
       is: (value: any) => value === "No" || value === "",
       then: () =>
         Yup.string()
@@ -465,7 +465,7 @@ export const US_TINSchemaW8BenE = (isGiinEnabled: boolean) => {
     }),
 
 
-    foreignTIN: Yup.string()
+    foreignTIN: Yup.string().nullable()
       .test(
         "Foreign tin",
         "Foreign tin must be provided",

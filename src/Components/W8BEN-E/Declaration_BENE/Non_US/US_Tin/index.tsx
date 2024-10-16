@@ -87,8 +87,7 @@ export default function Tin(props: any) {
       usTin: W8BENEData?.usTin == "" ? obValues?.usTin : W8BENEData?.usTin,
       notAvailable: W8BENEData.notAvailable ? W8BENEData.notAvailable : false,
       notAvailableReason: W8BENEData.notAvailableReason || "",
-      foreignTINCountry: obValues.foreignTINCountryId == null || obValues.foreignTINCountryId == ""
-        || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId,
+      foreignTINCountry: W8BENEData?.foreignTINCountryId == "" ? obValues?.foreignTINCountryId : W8BENEData?.foreignTINCountryId,
       foreignTIN: W8BENEData?.foreignTIN == "" ? obValues?.foreignTIN : W8BENEData?.foreignTIN,
       isFTINLegally: W8BENEData.isFTINLegally ? W8BENEData.isFTINLegally : false,
       isNotAvailable: W8BENEData.isNotAvailable ? (W8BENEData.isNotAvailable == true && W8BENEData.alternativeTINFormat == false ? "Yes" : "") : "",
@@ -156,8 +155,7 @@ export default function Tin(props: any) {
     tinValue: "",
     notAvailable: false,
     notAvailableReason: "",
-    foreignTINCountry: obValues.foreignTINCountryId == null || obValues.foreignTINCountryId == ""
-      || obValues.foreignTINCountryId == "0" ? obValues.permanentResidentialCountryId : obValues.foreignTINCountryId,
+    foreignTINCountry:  obValues.foreignTINCountryId,
     foreignTIN: "",
     isFTINLegally: false,
     isNotAvailable: "",
@@ -789,7 +787,7 @@ export default function Tin(props: any) {
                             <span style={{ color: "red" }}>*</span>
                           </Typography>
                           <select
-                            disabled
+                            
                             style={{
                               border: " 1px solid #d9d9d9 ",
                               padding: " 0 10px",
