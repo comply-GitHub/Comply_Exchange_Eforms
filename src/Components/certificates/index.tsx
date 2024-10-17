@@ -185,7 +185,7 @@ export default function Certificates(props: any) {
       id: "form 8233",
       title: "Form 8233",
       userType: "gen",
-      isHide: !isHide?.visibilty8233, // Hide card if visibilty8233 is false
+      isHide: !isHide?.visibilty8233, 
       enabled: ["usNonIndividual"],
       description:
         "Used by individuals to certify beneficial owner claiming treaty exemption on compensation for personal services",

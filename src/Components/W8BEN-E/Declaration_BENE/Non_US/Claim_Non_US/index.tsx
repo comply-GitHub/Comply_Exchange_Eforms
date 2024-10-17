@@ -54,7 +54,7 @@ export default function FCTA_Reporting(props: any) {
     status:false
 });
   const [initialValues, setInitialValues] = useState({
-    isClaimTreaty: "No",
+    isClaimTreaty: "",
     ownerResidentId: "0",
     limitationBenefitsId: 0,
     isSubmissionClaimTreaty: "",
@@ -70,7 +70,7 @@ export default function FCTA_Reporting(props: any) {
     let temp = {
       ...PrevStepData,
       ...W8BENEData,
-      isClaimTreaty: W8BENEData.isClaimTreaty === true ? "yes" : "no",
+      isClaimTreaty: W8BENEData.isClaimTreaty === true ? "yes" : "",
       isSubmissionClaimTreaty: W8BENEData.isSubmissionClaimTreaty === true ? "yes" : "no",
     };
     setInitialValues(temp);
