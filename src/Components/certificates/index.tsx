@@ -785,62 +785,9 @@ export default function Certificates(props: any) {
         <div
           className="d-flex row forms-card-data"
         >
-        {userType === 'SC' && (
-  <>
-    {cards
-      .filter((card) => !card.isHide && card.userType === 'SC') 
-      .map((card, index1) => (
-        <Card
-          key={card?.id}
-          className={card.enabled.includes(diableForm) ? "mx-3 mt-3" : "mx-3 mt-3 disabled"}
-          sx={{
-            width: "310px",
-            border: selectedCard === card.id ? "7px solid #ffc107" : "7px solid transparent",
-          }}
-          onClick={() => handleCardSelect(card)}
-        >
-          <div
-            tabIndex={index1}
-            onFocus={() => handleCardSelect(card)}
-            onKeyDown={(e: any) => {
-              if (e.code.toLowerCase() === "enter" && e?.target?.tagName?.toUpperCase() === "DIV") {
-                redirectToComponent(selectedCard);
-              }
-            }}
-          >
-            <CardContent>
-              <div className="iconBox text-center">
-                <img src={docIcon} alt="" className="img-fluid mb-2" />
-              </div>
-              <div className="check-div">
-                {card.enabled.includes(diableForm) && <img src={checksolid} alt="Check" />}
-              </div>
-              <Typography align="center" variant="h6" component="div">
-                {card?.title}
-              </Typography>
-              <Typography align="center" style={{ fontSize: "13px", marginTop: "14px" }}>
-                {card?.description}
-                <br />
-              </Typography>
-              <Typography align="center">
-                <Button
-                  onClick={() => {
-                    setInfoMore(card?.id);
-                    setShowInfoMore(!showInfoMore);
-                  }}
-                  className="mt-4"
-                  size="small"
-                  style={{ fontWeight: "bold" }}
-                >
-                  Read More
-                </Button>
-              </Typography>
-            </CardContent>
-          </div>
-        </Card>
-      ))}
-  </>
-)}
+        {/* {userType === 'SC' && ( */}
+ 
+{/* )} */}
 
 
 
@@ -900,7 +847,60 @@ export default function Certificates(props: any) {
       ))}
   </>
 )}
-
+ <>
+    {cards
+      .filter((card) => !card.isHide && card.userType === 'SC') 
+      .map((card, index1) => (
+        <Card
+          key={card?.id}
+          className={card.enabled.includes(diableForm) ? "mx-3 mt-3" : "mx-3 mt-3 disabled"}
+          sx={{
+            width: "310px",
+            border: selectedCard === card.id ? "7px solid #ffc107" : "7px solid transparent",
+          }}
+          onClick={() => handleCardSelect(card)}
+        >
+          <div
+            tabIndex={index1}
+            onFocus={() => handleCardSelect(card)}
+            onKeyDown={(e: any) => {
+              if (e.code.toLowerCase() === "enter" && e?.target?.tagName?.toUpperCase() === "DIV") {
+                redirectToComponent(selectedCard);
+              }
+            }}
+          >
+            <CardContent>
+              <div className="iconBox text-center">
+                <img src={docIcon} alt="" className="img-fluid mb-2" />
+              </div>
+              <div className="check-div">
+                {card.enabled.includes(diableForm) && <img src={checksolid} alt="Check" />}
+              </div>
+              <Typography align="center" variant="h6" component="div">
+                {card?.title}
+              </Typography>
+              <Typography align="center" style={{ fontSize: "13px", marginTop: "14px" }}>
+                {card?.description}
+                <br />
+              </Typography>
+              <Typography align="center">
+                <Button
+                  onClick={() => {
+                    setInfoMore(card?.id);
+                    setShowInfoMore(!showInfoMore);
+                  }}
+                  className="mt-4"
+                  size="small"
+                  style={{ fontWeight: "bold" }}
+                >
+                  Read More
+                </Button>
+              </Typography>
+            </CardContent>
+          </div>
+        </Card>
+      ))}
+  </>
 
 
           {/* <Card className="mx-3 mt-3"sx={{ width:"330px"}}>
