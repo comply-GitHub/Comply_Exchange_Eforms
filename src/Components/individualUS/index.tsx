@@ -548,7 +548,8 @@ export default function IndividualUs() {
     } else setOpen(val);
   };
 
-
+  const visiblePaymentTypes = GetAgentPaymentTypeData?.filter((ele: any) => !ele.hide);
+  console.log(visiblePaymentTypes,"visiblePaymentTypes")
   // useEffect(() => {
   //   const countryData = getCountriesAgentWiseReducer.agentWiseCountriesData.find(
   //     (country:any) => country.id === foreignTINCountryId
@@ -1056,7 +1057,7 @@ export default function IndividualUs() {
 
               }
               }
-              validationSchema={individualSchema(userType, PaymentMandatry, IncomeMandatory)}
+              validationSchema={individualSchema(userType, PaymentMandatry, IncomeMandatory,visiblePaymentTypes)}
             >
               {({
                 errors,
@@ -6064,7 +6065,7 @@ export default function IndividualUs() {
 
                       {/* <hr className="w-100"></hr> */}
                       {/* Payment type */}
-                      {Payment === true ? (
+                      {visiblePaymentTypes?.length > 1 && Payment === true ? (
                         <>
                           <CardHeader
                             className="flex-row-reverse"

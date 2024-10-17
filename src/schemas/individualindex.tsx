@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-export const individualSchema = (Cert: string, payment: boolean, income: boolean) => {
+export const individualSchema = (Cert: string, payment: boolean, income: boolean,visiblePaymentTypes:string) => {
   return Yup.object().shape({
     isUSEntity: Yup.string(),
     isUSIndividual: Yup.string(),
@@ -163,7 +163,7 @@ vat:Cert === "GEN" ? Yup.string().when("vatId", {
     )
     .required('Email is required'),
 
-    paymentTypeId: payment === true ? Yup.number()
+    paymentTypeId: payment === true && visiblePaymentTypes?.length>1 ? Yup.number()
       .required("Please select an option")
       .notOneOf([0], "Please select a valid option") : Yup.number(),
 

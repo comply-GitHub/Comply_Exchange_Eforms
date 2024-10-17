@@ -65,11 +65,17 @@ const DialogEdit = (props: any) => {
 
     if (!key && key !== 1) {
       dispatch(postSecurityCode(() => console.log("hi")));
-      dispatch(getSecurityQuestions());
+     
      
       localStorage.setItem("key", JSON.stringify(1));
     }
   }, [key, dispatch]);
+
+  useEffect(() => {
+
+    dispatch(getSecurityQuestions());
+   
+  }, [ dispatch]);
 
   const handleClose = () => {
     setOpen(false);
