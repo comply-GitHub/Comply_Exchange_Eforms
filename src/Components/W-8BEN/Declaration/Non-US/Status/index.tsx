@@ -70,9 +70,10 @@ export default function Factors() {
     status:false
 })
 const [isTaxLiabilityJurisdictions, setIsTaxLiabilityJurisdictions] = useState(["no"]);
-const [countryTaxLiability, setCountryTaxLiability] = useState(["no"]);
+const [countryTaxLiability, setCountryTaxLiability] = useState([""]);
 const [taxReferenceNumber, setTaxReferenceNumber] = useState([""]);
 const [isTINFormatNotAvailable, setIsTINFormatNotAvailable] = useState([false]);
+
 
   // const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const initialValue = {
@@ -94,6 +95,11 @@ const [isTINFormatNotAvailable, setIsTINFormatNotAvailable] = useState([false]);
     // countryTaxLiability: ["no"],
     // taxReferenceNumber: [""],
     // isTINFormatNotAvailable: [false],
+
+    CountryTaxLiabilityLst:[""],
+    IsTaxLiabilityJurisdictionsLst:[''],
+    IsTINFormatNotAvailableLst:[""],
+    TaxReferenceNumberLst:[""],
     IsPresentAtleast31Days: "No",
     statusId: 1,
     stepName: `/${urlValue}`,
@@ -105,7 +111,19 @@ const [isTINFormatNotAvailable, setIsTINFormatNotAvailable] = useState([false]);
   
 
   useEffect(() => {
-    document.title = "Comply Exchange"
+    document.title = "Comply Exchange";
+    if(PrevStepData?.CountryTaxLiabilityLst?.length){
+      setCountryTaxLiability([...PrevStepData?.CountryTaxLiabilityLst]);
+    }
+    if(PrevStepData?.IsTaxLiabilityJurisdictionsLst?.length){
+      setIsTaxLiabilityJurisdictions([...PrevStepData?.IsTaxLiabilityJurisdictionsLst]);
+    }
+    if(PrevStepData?.TaxReferenceNumberLst?.length){
+      setTaxReferenceNumber([...PrevStepData?.TaxReferenceNumberLst]);
+    }
+    if(PrevStepData?.IsTINFormatNotAvailableLst?.length){
+      setIsTINFormatNotAvailable([...PrevStepData?.IsTINFormatNotAvailableLst]);
+    }
   }, []);
 
   useEffect(() => {
@@ -210,7 +228,7 @@ const [isTINFormatNotAvailable, setIsTINFormatNotAvailable] = useState([false]);
     if(e.target.value == "yes"){
       isTaxLiabilityJurisdictions[ind] = e.target.value;
       setIsTaxLiabilityJurisdictions([...isTaxLiabilityJurisdictions, "no"]);
-      setCountryTaxLiability([...countryTaxLiability, "no"]);
+      setCountryTaxLiability([...countryTaxLiability, ""]);
       setTaxReferenceNumber([...taxReferenceNumber, ""]);
       setIsTINFormatNotAvailable([...isTINFormatNotAvailable, false]);
     }else{
@@ -337,7 +355,12 @@ const [isTINFormatNotAvailable, setIsTINFormatNotAvailable] = useState([false]);
                   setSubmitting(true);
                   const new_obj = { ...PrevStepData, citizenshipCountry: getNameById(PrevStepData.citizenshipCountry) }
                   const result = { ...new_obj, ...values ,agentId: authDetails?.agentId,
-                    accountHolderBasicDetailId: authDetails?.accountHolderId };
+                    accountHolderBasicDetailId: authDetails?.accountHolderId,
+                    CountryTaxLiabilityLst:countryTaxLiability,
+                    IsTaxLiabilityJurisdictionsLst:isTaxLiabilityJurisdictions,
+                    IsTINFormatNotAvailableLst:isTINFormatNotAvailable,
+                    TaxReferenceNumberLst:taxReferenceNumber,
+                  };
                  
                   const returnPromise = new Promise((resolve, reject) => {
                     dispatch(
@@ -1440,7 +1463,7 @@ const [isTINFormatNotAvailable, setIsTINFormatNotAvailable] = useState([false]);
                                       setFieldValue("taxReferenceNumber", "");
                                     }}
                                     value={isTINFormatNotAvailable[ind]}
-                                    required
+                                    
                                   />
                                   <div className="mt-2">
                                     TIN format not available
