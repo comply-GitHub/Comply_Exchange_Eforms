@@ -308,7 +308,7 @@ export default function Entity() {
       setInitialValues(temp);
     }
   }
-
+ 
   useEffect(() => {
     if (skippedSteps.length === 0) {
       dispatch(
@@ -380,7 +380,7 @@ export default function Entity() {
   const getCountriesAgentWiseReducer = useSelector(
     (state: any) => state.getCountriesAgentWiseReducer
   );
-
+ 
   const onUidBlur = (e: any, values: any): any => {
     const value = e.target.value;
     if (agentDetail.showUIDEntryFieldInTheEntityDetailsScreenRequiredFormat === undefined) return;
@@ -449,7 +449,8 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
     return false;
 
   }
-
+  
+  
 
 
   const onChangeUsInit = (values: any) => {
@@ -509,7 +510,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
   const redirectFunc = () => {
     history("/Term");
   };
-
+  const visiblePaymentTypes = GetAgentPaymentTypeData?.filter((ele: any) => !ele.hide);
   const formatTin = (e: any, values: any): any => {
     if (e.key === "Backspace" || e.key === "Delete") return;
     if (e.target.value.length === 2) {
@@ -961,7 +962,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                 setSubmitting(false);
               }
               }
-              validationSchema={EntitySchema(userType, PaymentMandatry, IncomeMandatory, isGiinEnabled)}
+              validationSchema={EntitySchema(userType, PaymentMandatry, IncomeMandatory, isGiinEnabled,visiblePaymentTypes)}
             >
               {({
                 errors,
@@ -4877,7 +4878,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                   ) : ""}
                   {/* <hr className="w-100"></hr> */}
 
-                  {Payment === true ? (
+                  {visiblePaymentTypes?.length > 1 && Payment === true ? (
                     <>
                       <CardHeader
                         className="flex-row-reverse"

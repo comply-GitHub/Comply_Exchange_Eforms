@@ -2,7 +2,7 @@ import * as Yup from "yup";
 // import { isAlphaNumeric } from "../Helpers/convertToFormData";
 const isAlphaNumeric = (value:any) => /^[a-zA-Z0-9]+$/.test(value);
 
-export const EntitySchema = (Cert: string, payment: boolean, income: boolean, isGiinEnabled: boolean) => {
+export const EntitySchema = (Cert: string, payment: boolean, income: boolean, isGiinEnabled: boolean,visiblePaymentTypes:string) => {
   return Yup.object().shape({
     //   firstName: Yup.string()
     //     .required('Please Enter First Name')
@@ -174,7 +174,7 @@ export const EntitySchema = (Cert: string, payment: boolean, income: boolean, is
       'Invalid email address'
     )
     .required('Email is required'),
-    paymentTypeId: payment === true ? Yup.number()
+    paymentTypeId: payment === true && visiblePaymentTypes?.length>1 ? Yup.number()
       .required("Please select an option")
       .notOneOf([0], "Please select a valid option") : Yup.number(),
     accountHolderName: Yup.string().when("paymentTypeId", {

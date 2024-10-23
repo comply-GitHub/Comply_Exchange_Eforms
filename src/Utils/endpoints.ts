@@ -56,7 +56,7 @@ const EndPoint = {
   GetAgentIncomeTypeHiddenAllowAnoymo:"/AgentUSSourceIncome/GetAgentIncomeTypeHiddenAllowAnoym",
   SendOTPMail:"/Mail/SendOTPMail",
   GET_AGENT_BY_ID:"/Agent/GetAgentById",
-
+  
 
   //Form PostAPI's
  InsertW9IndividualEntityUSForm:"/W9IndividualEntity/InsertW9IndividualEntityUSForm",
