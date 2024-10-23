@@ -1462,7 +1462,8 @@ const [isTINFormatNotAvailable, setIsTINFormatNotAvailable] = useState([false]);
                                       handleChangeTaxLiability(e, ind, "isTINFormatNotAvailable");
                                       setFieldValue("taxReferenceNumber", "");
                                     }}
-                                    value={isTINFormatNotAvailable[ind]}
+                                    value={isTINFormatNotAvailable[ind] || false}
+                                    checked={isTINFormatNotAvailable[ind] || false}
                                     
                                   />
                                   <div className="mt-2">

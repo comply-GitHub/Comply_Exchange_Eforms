@@ -552,7 +552,7 @@ export default function Factors() {
                           variant="contained"
                           style={{ color: "white", marginLeft: "15px" }}
                         >
-                          Continue
+                          Continue 
                         </Button>
                       </div>
                       <Typography
