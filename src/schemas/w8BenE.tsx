@@ -434,7 +434,7 @@ export const chapter4Schema = () => {
 };
 
 
-export const US_TINSchemaW8BenE = (isGiinEnabled: boolean) => {
+export const US_TINSchemaW8BenE = (isGiinEnabled: boolean,filteredData:string) => {
   return Yup.object().shape({
     usTinTypeId: Yup.number().required("Please select"),
     usTin: Yup.string().when(["notAvailable", "usTinTypeId"], {
@@ -463,8 +463,13 @@ export const US_TINSchemaW8BenE = (isGiinEnabled: boolean) => {
           .required("Please select Foreign Tin Country"),
 
     }),
-
-
+    NotFTIN: Yup.string().when("isExplanationNotLegallyFTIN", {
+      is: (isExplanationNotLegallyFTIN: any) =>
+        isExplanationNotLegallyFTIN === "Yes" && filteredData.length > 0,
+      then: () =>
+        Yup.string()
+          .required("Please Select One of the Options"),
+    }),
     foreignTIN: Yup.string().nullable()
       .test(
         "Foreign tin",

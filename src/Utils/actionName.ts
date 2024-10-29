@@ -94,6 +94,7 @@ const ActionName = {
     GetByW8EXPIndividualId:"GetByW8EXPIndividualId",
     //errors
     UpdateError:"UpdateError",
+    GET_E_FORM_SELECTION_WARNING:"GET_E_FORM_SELECTION_WARNING",
     GetIGA:"GetIGA",
     getSelfCetHidden:"getSelfCetHidden",
     GetFederalTaxClassification:"GetFederalTaxClassification",

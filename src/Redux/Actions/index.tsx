@@ -454,6 +454,29 @@ export const postOnboarding = (value: any, callback: Function): any => {
     );
   };
 };
+//GET_E_FORM_SELECTION_WARNING
+export const GetFormSelectionWarning = (value:any): any => {
+  return (dispatch: any) => {
+    Utils.api.getApiCall(
+      Utils.EndPoint.GET_E_FORM_SELECTION_WARNING,
+      `?id=${value}`,
+      (resData) => {
+        const { data } = resData;
+        if (resData.status === 200) {
+          dispatch({
+            type: Utils.actionName.GET_E_FORM_SELECTION_WARNING,
+            payload: {
+              GetWarningData: resData.data,
+            },
+          });
+        } else {
+        }
+      },
+      (error: any) => {
+      }
+    );
+  };
+};
 
 
 export const GetAllLanguage = (): any => {

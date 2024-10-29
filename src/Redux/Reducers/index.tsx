@@ -33,6 +33,7 @@ const { LOGIN, formPDFFieldData, GetCountries, GetAgentWiseCountries, GetControl
   UpsertDualCertDetailsControllingPerson,
   GetByW8EXPIndividualId,
   GetAllLanguage,
+  GET_E_FORM_SELECTION_WARNING,
   GetDualCertW9,
   GetDual,
   GetSettings,
@@ -44,7 +45,16 @@ const { LOGIN, formPDFFieldData, GetCountries, GetAgentWiseCountries, GetControl
 
 
 let initialState: any = [];
+//GET_E_FORM_SELECTION_WARNING
 
+export const GetWarningReducer = (state = initialState, action: any) => {
+  switch (action.type) {
+    case GET_E_FORM_SELECTION_WARNING:
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+}
 export const GetAllLanguageReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case GetAllLanguage:

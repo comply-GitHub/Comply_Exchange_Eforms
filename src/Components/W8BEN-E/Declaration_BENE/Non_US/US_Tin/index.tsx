@@ -21,7 +21,7 @@ import checksolid from "../../../../../assets/img/check-solid.png";
 import { useNavigate } from "react-router-dom";
 import {
   W8_state, getTinTypes, getAllCountries, GetHelpVideoDetails, postW8BEN_EForm,
-  GetAgentSkippedSteps,
+  GetAgentSkippedSteps,GetFormSelectionWarning,
   GetAllGIINTypes,getAllCountriesAgentWise
 } from "../../../../../Redux/Actions";
 import PopupModal from "../../../../../Redux/Actions/poupModal";
@@ -77,6 +77,9 @@ export default function Tin(props: any) {
     if (authDetails?.agentId) {
       
       dispatch(getAllCountriesAgentWise(authDetails?.agentId));
+      dispatch(GetFormSelectionWarning(authDetails?.agentId));
+      
+
     }
   }, [authDetails])
   const LoadData = () => {
@@ -87,13 +90,14 @@ export default function Tin(props: any) {
       usTin: W8BENEData?.usTin == "" ? obValues?.usTin : W8BENEData?.usTin,
       notAvailable: W8BENEData.notAvailable ? W8BENEData.notAvailable : false,
       notAvailableReason: W8BENEData.notAvailableReason || "",
-      foreignTINCountry: W8BENEData?.foreignTINCountryId == "" ? obValues?.foreignTINCountryId : W8BENEData?.foreignTINCountryId,
+      foreignTINCountry: PrevStepData?.foreignTINCountry ||"",
       foreignTIN: W8BENEData?.foreignTIN == "" ? obValues?.foreignTIN : W8BENEData?.foreignTIN,
-      isFTINLegally: W8BENEData.isFTINLegally ? W8BENEData.isFTINLegally : false,
+      isFTINLegally: PrevStepData.isFTINLegally ? PrevStepData.isFTINLegally : false,
       isNotAvailable: W8BENEData.isNotAvailable ? (W8BENEData.isNotAvailable == true && W8BENEData.alternativeTINFormat == false ? "Yes" : "") : "",
       fTinNotAvailableReason: W8BENEData.fTinNotAvailableReason || "",
       alternativeTINFormat: W8BENEData.alternativeTINFormat || "",
-      isExplanationNotLegallyFTIN: W8BENEData.isExplanationNotLegallyFTIN || "",
+      isExplanationNotLegallyFTIN: PrevStepData.isExplanationNotLegallyFTIN ? "Yes" : "No",
+      NotFTIN:W8BENEData.NotFTIN || "",
       giinId: W8BENEData?.giinId ?? obValues.giinId ?? "",
       giinTypeId: W8BENEData?.giinTypeId ?? (obValues?.giinId ? 1 : 0) ?? 0,
       giinNotAvailable: W8BENEData?.giinNotAvailable ?? false,
@@ -145,6 +149,13 @@ export default function Tin(props: any) {
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
   );
+
+
+  const GetWarningData = useSelector(
+    (state: any) => state.GetWarningReducer.GetWarningData
+  );
+
+  const filteredData = GetWarningData?.filter((item: any) => item.noFTINProvided);
   const [toolInfo, setToolInfo] = useState("");
   const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
 
@@ -162,6 +173,7 @@ export default function Tin(props: any) {
     fTinNotAvailableReason: "",
     alternativeTINFormat: "",
     isExplanationNotLegallyFTIN: "",
+    NotFTIN:"",
     giinId: "",
     giinTypeId: 0,
     giinNotAvailable: false,
@@ -170,7 +182,7 @@ export default function Tin(props: any) {
   const [payload, setPayload] = useState({ usTin: "" });
   const formatTin = (e: any, values: any): any => {
     if (e.key === "Backspace" || e.key === "Delete") return;
-    if (e.target.value.length === 2) {
+    if (e.target.value?.length === 2) {
       setPayload({ ...payload, usTin: payload.usTin + "-" });
       values.usTin = values.usTin + "-";
     }
@@ -178,7 +190,7 @@ export default function Tin(props: any) {
 
 
   useEffect(() => {
-    if (skippedSteps.length === 0) {
+    if (skippedSteps?.length === 0) {
       dispatch(
         GetAgentSkippedSteps(authDetails?.agentId, (data: any[]) => {
           // mappingAvailable = data; 
@@ -247,7 +259,7 @@ export default function Tin(props: any) {
                 initialValues={initialValue}
                 validateOnMount={true}
                 enableReinitialize
-                validationSchema={US_TINSchemaW8BenE(isGiinEnabled)}
+                validationSchema={US_TINSchemaW8BenE(isGiinEnabled,filteredData)}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
                   const temp = {
@@ -1151,6 +1163,7 @@ export default function Tin(props: any) {
                           )}
                         </FormControl>
                         {values.isExplanationNotLegallyFTIN === "Yes" ? (
+                        <>
                           <div style={{ margin: "20px" }}>
                             <Typography
                               style={{ fontSize: "25px", fontWeight: "550" }}
@@ -1225,6 +1238,33 @@ export default function Tin(props: any) {
                               </Typography>
                             </Typography>
                           </div>
+
+                          <div style={{ margin: "20px" }}>
+    {filteredData?.length > 0 && (
+      <FormControl className="col-12 radio" style={{ marginLeft: "17px" }}>
+        <RadioGroup
+          
+          name="NotFTIN"
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          value={values.NotFTIN}
+          onChange={handleChange}
+        >
+          {filteredData?.map((item: any) => (
+            <FormControlLabel
+            style={{fontSize:"18px"}}
+              key={item.id}
+              value={item.name} 
+              control={<Radio />}
+              label={item.name}
+              name="NotFTIN"
+            />
+          ))}
+        </RadioGroup>
+      </FormControl>
+    )}
+  </div>
+                        
+                        </>
                         ) : values.isExplanationNotLegallyFTIN === "No" ? (
                           ""
                         ) : (
