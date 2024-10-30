@@ -131,7 +131,7 @@ export const FederalTaxSchema_dualCert = () => {
   });
 };
 
-export const TaxPayerSchema = () => {
+export const TaxPayerSchema = (filteredData:string) => {
   return Yup.object().shape({
     usTinTypeId: Yup.number().notOneOf([0], "Please select"),
     usTin: Yup.string().when(["notAvailable", "usTinTypeId"], {
@@ -202,8 +202,14 @@ export const TaxPayerSchema = () => {
           Yup.string()
             .required("please provide an answer")
             .oneOf(["Yes", "No"], "please provide an answer")
-      })
-    ,
+      }),
+    NotFTIN: Yup.string().when("isExplanationNotLegallyFTIN", {
+      is: (isExplanationNotLegallyFTIN: any) =>
+        isExplanationNotLegallyFTIN === "Yes" && filteredData.length > 0,
+      then: () =>
+        Yup.string()
+          .required("Please Select One of the Options"),
+    }),
     // tinisFTINNotLegallyRequired: true,
     // tinAlternativeFormate: true,
     isNotLegallyFTIN: Yup.string().when("isFTINNotLegallyRequired", {

@@ -531,7 +531,7 @@ export default function Tin(props: any) {
                                   height: "50px",
                                   width: "100%",
                                 }}
-                                name="stateProvince "
+                                name="stateProvince"
                                 // id="Income"
                                 onChange={handleChange}
                                 // onBlur={handleBlur}
@@ -563,10 +563,10 @@ export default function Tin(props: any) {
                                  width: "100%",
                                }}
                                // id="outlined"
-                               name="stateProvince "
+                               name="stateProvince"
                                placeholder="Enter State or Province"
-                               type="text"
-                               value={values.stateProvince }
+                            
+                               value={values.stateProvince}
                                // onBlur={handleBlur}
                                onChange={handleChange}
                                error={Boolean(errors.stateProvince )}

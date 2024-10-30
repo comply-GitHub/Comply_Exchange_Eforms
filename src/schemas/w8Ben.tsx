@@ -129,7 +129,7 @@ export const US_TINSchemaW8Ben_Dc = () => {
   });
 };
 
-export const US_TINSchemaW8BenE = () => {
+export const US_TINSchemaW8BenE = (filteredData:string) => {
   return Yup.object().shape({
     usTinTypeId: Yup.number()
     .notOneOf([0], "Please select"),
@@ -146,6 +146,13 @@ export const US_TINSchemaW8BenE = () => {
       then: () =>
         Yup.string()
           .required("Please enter why tin is not available"),
+    }),
+    NotFTIN: Yup.string().when("isExplanationNotLegallyFTIN", {
+      is: (isExplanationNotLegallyFTIN: any) =>
+        isExplanationNotLegallyFTIN === "Yes" && filteredData.length > 0,
+      then: () =>
+        Yup.string()
+          .required("Please Select One of the Options"),
     }),
     foreignTIN: Yup.string().nullable()
       .test(

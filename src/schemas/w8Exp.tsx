@@ -189,7 +189,7 @@ export const chapter4Schema = () => {
   });
 };
 
-export const TaxPayerSchema = (isGiinEnabled: boolean) => {
+export const TaxPayerSchema = (isGiinEnabled: boolean,filteredData:string) => {
   return Yup.object().shape({
     usTinTypeId: Yup.number().required("Please select"),
     usTin: Yup.string().when(["notAvailable", "usTinTypeId"], {
@@ -211,7 +211,7 @@ export const TaxPayerSchema = (isGiinEnabled: boolean) => {
         Yup.string()
           .required("Please Specify Reason"),
     }),
-    foreignTINCountry: Yup.string().when("tinisFTINNotLegallyRequired", {
+    foreignTINCountry: Yup.string().nullable().when("tinisFTINNotLegallyRequired", {
       is: (value: any) => value === "No" || value === "",
       then: () =>
         Yup.string()
@@ -261,8 +261,15 @@ export const TaxPayerSchema = (isGiinEnabled: boolean) => {
           Yup.string()
             .required("please provide an answer")
             .oneOf(["Yes", "No"], "please provide an answer")
-      })
-    ,
+      }),
+    
+    NotFTIN: Yup.string().when("isExplanationNotLegallyFTIN", {
+      is: (isExplanationNotLegallyFTIN: any) =>
+        isExplanationNotLegallyFTIN === "Yes" && filteredData.length > 0,
+      then: () =>
+        Yup.string()
+          .required("Please Select One of the Options"),
+    }),
     // tinisFTINNotLegallyRequired: true,
     // tinAlternativeFormate: true,
     isNotLegallyFTIN: Yup.string().when("isFTINNotLegallyRequired", {

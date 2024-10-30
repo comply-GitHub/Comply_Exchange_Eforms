@@ -25,7 +25,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { US_TINSchema } from "../../../schemas/8233";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode, getAllStateByCountryId, getTinTypes,getAllCountriesAgentWise } from "../../../Redux/Actions";
+import { getAllCountries,GetFormSelectionWarning, getAllCountriesCode, getAllCountriesIncomeCode, getAllStateByCountryId, getTinTypes,getAllCountriesAgentWise } from "../../../Redux/Actions";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import CloseIcon from '@mui/icons-material/Close';
 import useAuth from "../../../customHooks/useAuth";
@@ -52,13 +52,23 @@ export default function Tin(props: any) {
     tinisFTINNotLegallyRequired: "",
     // tinAlternativeFormate: true,
     isNotLegallyFTIN: "",
+    NotFTIN:"",
     ReasionForForegionTIN_NotAvailable: onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable ? onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable : "",
   };
 
   // useEffect(()=>{
   //   document.title = ""
   // },[])
+  useEffect(() => {
+    if (authDetails?.agentId) {
+      dispatch(GetFormSelectionWarning(authDetails?.agentId));
+      }
+  }, [authDetails])
+  const GetWarningData = useSelector(
+    (state: any) => state.GetWarningReducer.GetWarningData
+  );
 
+  const filteredData = GetWarningData?.filter((item: any) => item.noFTINProvided);
   const [ustinArray, setUStinArray] = useState([]);
   const [ustinValue, setUStinvalue] = useState([]);
   const [notUsIndividual, setNonUsIndividual] = useState([]);

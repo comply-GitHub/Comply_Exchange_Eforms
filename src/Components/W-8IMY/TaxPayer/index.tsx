@@ -25,7 +25,7 @@ import checksolid from "../../../assets/img/check-solid.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode, getAllStateByCountryId, getTinTypes } from "../../../Redux/Actions";
+import {GetFormSelectionWarning, getAllCountries, getAllCountriesCode, getAllCountriesIncomeCode, getAllStateByCountryId, getTinTypes } from "../../../Redux/Actions";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import CloseIcon from '@mui/icons-material/Close';
 import useAuth from "../../../customHooks/useAuth";
@@ -54,11 +54,11 @@ export default function Tin(props: any) {
     foreignTIN: onBoardingFormValues?.foreignTIN ? onBoardingFormValues?.foreignTIN : onBoardingFormValuesPrevStepData?.foreignTIN ? onBoardingFormValuesPrevStepData?.foreignTIN : "",
     isFTINNotLegallyRequired: false,
     tinisFTINNotLegallyRequired: "",
-    // tinAlternativeFormate: true,
-    isNotLegallyFTIN: "",
+    NotFTIN:onBoardingFormValuesPrevStepData.NotFTIN || "",
+    isNotLegallyFTIN: onBoardingFormValuesPrevStepData.isNotLegallyFTIN ? "Yes" : "No",
     ReasionForForegionTIN_NotAvailable: onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable ? onBoardingFormValuesPrevStepData?.reasionForForegionTIN_NotAvailable : "",
-    giinId: onBoardingFormValuesPrevStepData?.giinId ?? "",
-    giinTypeId: onBoardingFormValuesPrevStepData?.giinTypeId ?? 0,
+    giinId:onBoardingFormValues?.giinId || onBoardingFormValuesPrevStepData?.giinId || "",
+    giinTypeId: onBoardingFormValuesPrevStepData?.giinTypeId ?? 1,
     giinNotAvailable: onBoardingFormValuesPrevStepData?.giinNotAvailable ?? false,
   };
 
@@ -78,6 +78,16 @@ export default function Tin(props: any) {
   useEffect(() => {
     document.title = "Tax-Payer"
   }, [])
+
+  useEffect(() => {
+    if (authDetails?.agentId) {
+      
+      
+      dispatch(GetFormSelectionWarning(authDetails?.agentId));
+      
+
+    }
+  }, [authDetails])
 
   useEffect(() => {
     dispatch(GetHelpVideoDetails());
@@ -121,7 +131,11 @@ export default function Tin(props: any) {
   );
   const dispatch = useDispatch();
   const [toolInfo, setToolInfo] = useState("");
+  const GetWarningData = useSelector(
+    (state: any) => state.GetWarningReducer.GetWarningData
+  );
 
+  const filteredData = GetWarningData?.filter((item: any) => item.noFTINProvided);
 
   useEffect(() => {
     if (skippedSteps.length === 0) {
@@ -142,12 +156,12 @@ export default function Tin(props: any) {
   return (
     <>
       <Formik
-        validateOnChange={false}
+        validateOnChange={true}
         validateOnBlur={true}
         validateOnMount={false}
         initialValues={initialValue}
         enableReinitialize
-        validationSchema={US_TINSchema8IMY(isGiinEnabled)}
+        validationSchema={US_TINSchema8IMY(isGiinEnabled,filteredData)}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
           const temp = {
@@ -1342,6 +1356,7 @@ export default function Tin(props: any) {
                             )}
                           </FormControl>
                           {values.isNotLegallyFTIN === "Yes" ? (
+                            <>
                             <div style={{ margin: "20px" }}>
                               <Typography
                                 style={{ fontSize: "25px", fontWeight: "550" }}
@@ -1416,6 +1431,31 @@ export default function Tin(props: any) {
                                 </Typography>
                               </Typography>
                             </div>
+                              <div style={{ margin: "20px" }}>
+                              {filteredData?.length > 0 && (
+                                <FormControl className="col-12 radio" style={{ marginLeft: "17px" }}>
+                                  <RadioGroup
+                                    
+                                    name="NotFTIN"
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    value={values.NotFTIN}
+                                    onChange={handleChange}
+                                  >
+                                    {filteredData?.map((item: any) => (
+                                      <FormControlLabel
+                                      style={{fontSize:"18px"}}
+                                        key={item.id}
+                                        value={item.name} 
+                                        control={<Radio />}
+                                        label={item.name}
+                                        name="NotFTIN"
+                                      />
+                                    ))}
+                                  </RadioGroup>
+                                </FormControl>
+                              )}
+                            </div>
+                            </>
                           ) : values.isNotLegallyFTIN === "No" ? (
                             ""
                           ) : (
@@ -1550,7 +1590,7 @@ export default function Tin(props: any) {
                         <Button
                           type="submit"
                           variant="contained"
-                          //disabled={!isValid}
+                          disabled={!isValid}
                           style={{ color: "white", marginLeft: "15px" }}
                         >
                           Continue

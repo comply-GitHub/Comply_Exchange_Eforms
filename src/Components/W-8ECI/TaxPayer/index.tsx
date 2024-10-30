@@ -24,7 +24,7 @@ import "./index.scss";
 import PopupModal from "../../../Redux/Actions/poupModal";
 import { useNavigate } from "react-router-dom";
 import { TaxPayerSchema } from "../../../schemas/w8ECI";
-import { GetHelpVideoDetails, W8_state_ECI, getAllCountries, getTinTypes, postW8ECI_EForm,getAllCountriesAgentWise } from "../../../Redux/Actions";
+import { GetHelpVideoDetails, GetFormSelectionWarning,W8_state_ECI, getAllCountries, getTinTypes, postW8ECI_EForm,getAllCountriesAgentWise } from "../../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import BreadCrumbComponent from "../../reusables/breadCrumb";
 import CloseIcon from '@mui/icons-material/Close';
@@ -57,8 +57,9 @@ export default function Tin(props: any) {
       isFTINLegally: W8ECIData?.isFTINLegally ? W8ECIData?.isFTINLegally : false,
       isNotAvailable: W8ECIData?.isNotAvailable ? "Yes" : W8ECIData?.alternativeTINFormat ? "No" : "",
       fTinNotAvailableReason: W8ECIData?.fTinNotAvailableReason ?? "",
+      NotFTIN: W8ECIData.NotFTIN || "",
       alternativeTINFormat: W8ECIData?.alternativeTINFormat ?? "",
-      isExplanationNotLegallyFTIN: W8ECIData?.isExplanationNotLegallyFTIN === true ? "Yes" : "No" ?? "",
+      isExplanationNotLegallyFTIN: W8ECIData?.isExplanationNotLegallyFTIN === true ? "Yes" : "",
       stepName: null
     }
     setInitialValues(temp);
@@ -106,6 +107,7 @@ export default function Tin(props: any) {
     notAvailableReason: "",
     foreignTINCountry: 0,
     foreignTIN: "",
+    NotFTIN:"",
     isNotAvailable: "",
     isFTINLegally: false,
     fTinNotAvailableReason: "",
@@ -142,10 +144,16 @@ export default function Tin(props: any) {
   
   useEffect(() => {
     if (authDetails?.agentId) {
-      
+      dispatch(GetFormSelectionWarning(authDetails?.agentId));
       dispatch(getAllCountriesAgentWise(authDetails?.agentId));
     }
   }, [authDetails])
+
+  const GetWarningData = useSelector(
+    (state: any) => state.GetWarningReducer.GetWarningData
+  );
+
+  const filteredData = GetWarningData?.filter((item: any) => item.noFTINProvided);
 
   const GethelpData = useSelector(
     (state: any) => state.GetHelpVideoDetailsReducer.GethelpData
@@ -221,7 +229,7 @@ export default function Tin(props: any) {
                   validateOnMount={true}
                   validateOnBlur={false}
                   initialValues={initialValue}
-                  validationSchema={TaxPayerSchema}
+                  validationSchema={TaxPayerSchema(filteredData)}
                   onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
                     const temp = {
@@ -1042,7 +1050,8 @@ export default function Tin(props: any) {
                             )}
                           </FormControl>
                           {values.isExplanationNotLegallyFTIN === "Yes" ? (
-                            <div style={{ margin: "20px" }}>
+                          <>
+                          <div style={{ margin: "20px" }}>
                               <Typography
                                 style={{ fontSize: "25px", fontWeight: "550" }}
                               >
@@ -1116,6 +1125,31 @@ export default function Tin(props: any) {
                                 </Typography>
                               </Typography>
                             </div>
+                             <div style={{ margin: "20px" }}>
+                             {filteredData?.length > 0 && (
+                               <FormControl className="col-12 radio" style={{ marginLeft: "17px" }}>
+                                 <RadioGroup
+                                   
+                                   name="NotFTIN"
+                                   aria-labelledby="demo-row-radio-buttons-group-label"
+                                   value={values.NotFTIN}
+                                   onChange={handleChange}
+                                 >
+                                   {filteredData?.map((item: any) => (
+                                     <FormControlLabel
+                                     style={{fontSize:"18px"}}
+                                       key={item.id}
+                                       value={item.name} 
+                                       control={<Radio />}
+                                       label={item.name}
+                                       name="NotFTIN"
+                                     />
+                                   ))}
+                                 </RadioGroup>
+                               </FormControl>
+                             )}
+                           </div>
+                           </>
                           ) : values.isExplanationNotLegallyFTIN === "No" ? (
                             ""
                           ) : (

@@ -25,7 +25,7 @@ export const TaxPurposeSchemaW81Chapter4 = () => {
   });
 }
 
-export const US_TINSchema8IMY = (isGiinEnabled: boolean) => {
+export const US_TINSchema8IMY = (isGiinEnabled: boolean,filteredData:string) => {
   return Yup.object().shape({
 
 
@@ -65,6 +65,14 @@ export const US_TINSchema8IMY = (isGiinEnabled: boolean) => {
       is: true,
       then: () => Yup.string().required("required"),
       otherwise: () => Yup.string().notRequired(),
+    }),
+
+    NotFTIN: Yup.string().when("isNotLegallyFTIN", {
+      is: (isNotLegallyFTIN: any) =>
+        isNotLegallyFTIN === "Yes" && filteredData.length > 0,
+      then: () =>
+        Yup.string()
+          .required("Please Select One of the Options"),
     }),
     giinId: Yup.string().nullable()
       .test(

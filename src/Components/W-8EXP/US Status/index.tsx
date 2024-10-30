@@ -90,7 +90,7 @@ export default function Fedral_tax(props: any) {
   const [popupState, setPopupState] = useState({
     data:"",
     status:false
-})
+});
   const handleChangestatus =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
