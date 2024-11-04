@@ -132,7 +132,7 @@ export default function Certificates(props: any) {
       title: "W-9",
       userType: "gen",
       enabled: ["usIndividual", "usEntity"],
-      isHide: !isHide?.enableW9, // Hide card if enableW9 is false
+      isHide: !isHide?.enableW9, 
       description:
         "Used by individuals and entities to certify US Tax ID number",
     },
@@ -195,7 +195,7 @@ export default function Certificates(props: any) {
       title: "Cayman Individual 2018",
       userType: "SC",
       isHide: !isHide?.selfcertvisibilty,
-      enabled: ["usNonIndividual"],
+      enabled: userType === 'SC' ? ["usNonIndividual"] : [],
       description: "Used by individuals to declare any/all tax residencies",
     },
     {
@@ -203,7 +203,7 @@ export default function Certificates(props: any) {
       title: "Cayman Entity 2018",
       userType: "SC",
       isHide: !isHide?.selfcertvisibilty,
-      enabled: ["usNonEntity"],
+      enabled: userType === 'SC' ?  ["usNonEntity"]  : [],
       description:
         "Used by an entity to declare any/all tax residencies, US FATCA Status, CRS Classification and/or Controlling Person(s)",
     },
@@ -903,102 +903,7 @@ export default function Certificates(props: any) {
   </>
 
 
-          {/* <Card className="mx-3 mt-3"sx={{ width:"330px"}}>
-      <CardContent>
-       
-        <Typography variant="h5" component="div">
-          W-8BEN
-        </Typography>
-       
-        <Typography style={{fontSize:"12px",marginTop:"14px"}}>
-        Used by individuals to certify beneficial owner, or account holder of financial institution, and claim treaty benefits
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-        <Button className="mt-4"size="small">Read More</Button>
-      </CardContent>
-     
-    </Card>
-    <Card className="mx-3 mt-3"sx={{ width:"330px"}}>
-      <CardContent>
-       
-        <Typography variant="h5" component="div">
-        W-8BEN-E
-        </Typography>
-       
-        <Typography style={{fontSize:"12px",marginTop:"14px"}}>
-        Used by entities to certify beneficial owner, or account holder of financial institution, and claim treaty benefits
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-        <Button className="mt-4"size="small">Read More</Button>
-      </CardContent>
-     
-    </Card>
-    <Card className="mx-3 mt-3"sx={{ width:"330px"}}>
-      <CardContent>
-       
-        <Typography variant="h5" component="div">
-         W-8ECI
-        </Typography>
-       
-        <Typography style={{fontSize:"12px",marginTop:"14px"}}>
-        Used by individuals, or entities, to certify beneficial owner receiving U.S. sourced income that is effectively connected with a U.S. trade or business 
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-        <Button className="mt-4"size="small">Read More</Button>
-      </CardContent>
-     
-    </Card>
-    <Card className="mx-3 mt-3"sx={{ width:"330px"}}>
-      <CardContent>
-       
-        <Typography variant="h5" component="div">
-          W-8EXP
-        </Typography>
-       
-        <Typography style={{fontSize:"12px",marginTop:"14px"}}>
-        Used by governments, or other tax exempt entities, to certify beneficial owner, or account holder of financial institution
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-        <Button className="mt-4"size="small">Read More</Button>
-      </CardContent>
-      
-    </Card>
-    <Card className="mx-3 mt-3"sx={{ width:"330px"}}>
-      <CardContent>
-       
-        <Typography variant="h5" component="div">
-         W-8IMY
-        </Typography>
-       
-        <Typography style={{fontSize:"12px",marginTop:"14px"}}>
-        Used by entities to certify intermediary, or flow through entity, receiving payments on behalf of another person
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-        <Button className="mt-4"size="small">Read More</Button>
-      </CardContent>
-     
-    </Card>
-    <Card className="mx-3 mt-3"sx={{ width:"330px"}}>
-      <CardContent>
-       
-        <Typography variant="h5" component="div">
-         form 8233
-        </Typography>
-       
-        <Typography style={{fontSize:"12px",marginTop:"14px"}}> 
-       Used by individuals to certify beneficial owner claiming treaty exemption on compensation for personal services
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-        <Button className="mt-4"size="small">Read More</Button>
-      </CardContent>
-     
-    </Card> */}
+        
 
           {selectedCard ? (
             <div style={{ marginTop: "25px" }} className="text-center">
