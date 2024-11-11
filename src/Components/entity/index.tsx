@@ -4802,7 +4802,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                             <Typography className="d-flex w-100 pb-2">
                               Income Code
                             </Typography>
-                            {incomeArr.length && incomeArr.length <= 4 &&
+                            {incomeArr.length && incomeArr.length <= 5 &&
                               incomeArr.map((ind, i) => {
                                 // console.log(ind, i,"udvgjudgvfjdbgjfd")
                                 return (

@@ -7,6 +7,7 @@ import { ContentCopy } from "@mui/icons-material";
 import { AppDispatch } from "../../Redux/store";
 import DialogContentText from "@mui/material/DialogContentText";
 import React from "react";
+import CryptoJS from 'crypto-js';
 import { useNavigate } from "react-router-dom";
 import { TextField, Select, Button, Typography, Paper, Tooltip } from "@mui/material";
 import Divider from "@mui/material/Divider";
@@ -39,7 +40,12 @@ const DialogEdit = (props: any) => {
   const getSecurityQuestionsReducer = useSelector(
     (state: any) => state.getSecurityQuestionsReducer.getSecurityQuestionsData
   );
-
+  const encryptedData = localStorage.getItem("formSelection");
+  if (encryptedData) {
+    const bytes = CryptoJS.AES.decrypt(encryptedData, 'your_secret_key');
+    const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    console.log(decryptedData);
+  }
   const accountHolderId = useSelector((state: any) => state?.accountHolder?.returnData?.accountHolderID) ?? GlobalValues.AccountHolderBasicDetailsId
 
   var QuestionObject;
@@ -137,7 +143,9 @@ const DialogEdit = (props: any) => {
                   history("/Certificates");
                 }))
 
-                localStorage.setItem("formSelection", JSON.stringify(submitData));
+                // localStorage.setItem("formSelection", JSON.stringify(submitData));
+                const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(submitData), 'your_secret_key').toString();
+localStorage.setItem("formSelection", encryptedData);
               }}
               validationSchema={securitySchema}
             >

@@ -78,6 +78,8 @@ export default function IndividualUs() {
   const [vatdata, setVatData] = useState("");
   const [tinData, SetTinData] = useState();
   const [incomeData, setIncomeData] = useState<any>([]);
+  const [selectedIncomeArray, setSelectedIncomeArray] = useState<any>([])
+
   const [value, onChange] = useState<Value2>(null);
   const history = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -549,7 +551,7 @@ export default function IndividualUs() {
   };
 
   const visiblePaymentTypes = GetAgentPaymentTypeData?.filter((ele: any) => !ele.hide);
-  console.log(visiblePaymentTypes,"visiblePaymentTypes")
+  console.log(visiblePaymentTypes, "visiblePaymentTypes")
   // useEffect(() => {
   //   const countryData = getCountriesAgentWiseReducer.agentWiseCountriesData.find(
   //     (country:any) => country.id === foreignTINCountryId
@@ -568,7 +570,7 @@ export default function IndividualUs() {
   const [selectedValues, setSelectedValues] = useState(Array(incomeArr.length).fill("0"));
   const [incomeErrors, setIncomeErrors] = useState("");
   const addIncomeType = () => {
- 
+
     setIncomeArr((incomeArr) => [...incomeArr, ""]);
   };
 
@@ -788,13 +790,32 @@ export default function IndividualUs() {
     }
   }, []);
 
+  console.log("selectedIncomeArray", selectedIncomeArray)
+
+
   const handleIcome = (e: any, i: number) => {
     const newValue = e.target.value;
-    setSelectedValues(prevState => {
+
+    if (selectedIncomeArray.includes(newValue)) {
+      // Show alert if the value is already selected
+      alert('This income code has already been selected.');
+      setSelectedValues((prevState: any) => {
+        const newState = [...prevState];
+        newState[i] = "0"; // Reset the value at the specific index to '0'
+        return newState;
+      });
+      return; 
+    }
+  
+    
+    setSelectedIncomeArray((prevState: any) => [...prevState, newValue]);
+  
+    setSelectedValues((prevState: any) => {
       const newState = [...prevState];
-      newState[i] = newValue;
+      newState[i] = newValue; 
       return newState;
     });
+  
   };
 
 
@@ -1006,7 +1027,7 @@ export default function IndividualUs() {
                   paymentTypeId: values?.paymentTypeId,
                   accountHolderName:
                     values?.accountHolderName === ""
-                      ? "": values.accountHolderName,
+                      ? "" : values.accountHolderName,
                   accountBankName: values?.accountBankName,
                   accountBankBranchLocationId:
                     values?.accountBankBranchLocationId,
@@ -1057,7 +1078,7 @@ export default function IndividualUs() {
 
               }
               }
-              validationSchema={individualSchema(userType, PaymentMandatry, IncomeMandatory,visiblePaymentTypes)}
+              validationSchema={individualSchema(userType, PaymentMandatry, IncomeMandatory, visiblePaymentTypes)}
             >
               {({
                 errors,
@@ -1091,7 +1112,7 @@ export default function IndividualUs() {
                 const selectedCountryMask = selectedCountry ? selectedCountry.foreignTinFormat : "";
 
 
-                const handleCheckboxChange = (name:any) => (event:any) => {
+                const handleCheckboxChange = (name: any) => (event: any) => {
                   const isChecked = event.target.checked;
                   if (isChecked) {
                     values.isCorrectPaymentPurposes2 = true;
@@ -1580,8 +1601,8 @@ export default function IndividualUs() {
                                 placeholder="Enter Instructor Identifier"
                                 onChange={(e) => {
                                   const value = e.target.value;
-                              
-                                   if (/^\d*$/.test(value) && value.length <= 10) {
+
+                                  if (/^\d*$/.test(value) && value.length <= 10) {
                                     handleChange(e);
                                   }
                                 }}
@@ -2145,8 +2166,8 @@ export default function IndividualUs() {
                                 placeholder="Enter Instructor Identifier"
                                 onChange={(e) => {
                                   const value = e.target.value;
-                              
-                                  
+
+
                                   if (/^\d*$/.test(value) && value.length <= 10) {
                                     handleChange(e);
                                   }
@@ -2668,15 +2689,15 @@ export default function IndividualUs() {
                                   <FormControl className="w-100" >
                                     <Typography className="d-flex w-100" align="left">
                                       U.S. TIN
-                                     { values.taxpayerIdTypeID == 8 ||
+                                      {values.taxpayerIdTypeID == 8 ||
                                         values.taxpayerIdTypeID == 7 ||
                                         values.taxpayerIdTypeID == 1 ||
-                                        values.taxpayerIdTypeID == 0 ? (""):<span
-                                        style={{
-                                          color: "red",
-                                          verticalAlign: "super",
-                                        }}
-                                      >
+                                        values.taxpayerIdTypeID == 0 ? ("") : <span
+                                          style={{
+                                            color: "red",
+                                            verticalAlign: "super",
+                                          }}
+                                        >
                                         *
                                       </span>}
                                     </Typography>
@@ -3056,14 +3077,14 @@ export default function IndividualUs() {
                               <div className="col-lg-3 col-6 col-md-3 mx-2">
                                 <Typography align="left" className="d-flex w-100">
                                   U.S. TIN{" "}
-                                 { values.taxpayerIdTypeID == 1 ||
-                                      values.taxpayerIdTypeID == 7 ||
-                                      values.taxpayerIdTypeID == 8 ||
-                                      values.taxpayerIdTypeID == 0 ?( ""):<span
+                                  {values.taxpayerIdTypeID == 1 ||
+                                    values.taxpayerIdTypeID == 7 ||
+                                    values.taxpayerIdTypeID == 8 ||
+                                    values.taxpayerIdTypeID == 0 ? ("") : <span
                                       style={{ color: "red", verticalAlign: "super" }}
                                     >
-                                      *
-                                    </span>}
+                                    *
+                                  </span>}
                                 </Typography>
                                 <FormControl className="w-100">
                                   <InputMask
@@ -3116,7 +3137,7 @@ export default function IndividualUs() {
                               <div className="col-lg-3 col-6 col-md-3 ">
                                 <FormControl className="w-100">
                                   <Typography align="left" className="d-flex w-100">
-                                    U.S. TIN Type 
+                                    U.S. TIN Type
                                     <span
                                       style={{
                                         color: "red",
@@ -3186,15 +3207,15 @@ export default function IndividualUs() {
                                 <FormControl className="w-100" >
                                   <Typography className="d-flex w-100" align="left">
                                     U.S. TIN
-                                   {values.taxpayerIdTypeID == 8 ||
+                                    {values.taxpayerIdTypeID == 8 ||
                                       values.taxpayerIdTypeID == 7 ||
                                       values.taxpayerIdTypeID == 1 ||
-                                      values.taxpayerIdTypeID == 0 ? ( ""):<span
-                                      style={{
-                                        color: "red",
-                                        verticalAlign: "super",
-                                      }}
-                                    >
+                                      values.taxpayerIdTypeID == 0 ? ("") : <span
+                                        style={{
+                                          color: "red",
+                                          verticalAlign: "super",
+                                        }}
+                                      >
                                       *
                                     </span>}
                                   </Typography>
@@ -3651,16 +3672,16 @@ export default function IndividualUs() {
                                 <Typography align="left" className="d-flex w-100">
                                   U.S. TIN{" "}
                                   {values.taxpayerIdTypeID == 8 ||
-                                      values.taxpayerIdTypeID == 7 ||
-                                      values.taxpayerIdTypeID == 1 ||
-                                      values.taxpayerIdTypeID == 0 ? ( ""):<span
+                                    values.taxpayerIdTypeID == 7 ||
+                                    values.taxpayerIdTypeID == 1 ||
+                                    values.taxpayerIdTypeID == 0 ? ("") : <span
                                       style={{
                                         color: "red",
                                         verticalAlign: "super",
                                       }}
                                     >
-                                      *
-                                    </span>}
+                                    *
+                                  </span>}
                                 </Typography>
                                 <FormControl className="w-100">
                                   <InputMask
@@ -3878,7 +3899,7 @@ export default function IndividualUs() {
                                     getAllStateByCountryId1(e.target.value, (data: []) => {
                                       setallStateById1(data);
                                     }));
-                                   
+
 
 
                                 }}
@@ -4062,7 +4083,7 @@ export default function IndividualUs() {
                                   // id="Income"
                                   onChange={(e) => {
                                     handleChange(e);
-                                   
+
                                   }}
                                   value={
                                     values.permanentResidentialStateorProvince
@@ -4932,9 +4953,9 @@ export default function IndividualUs() {
                                     dispatch(
                                       getAllStateByCountryId1(e.target.value, (data: []) => {
                                         setallStateById2(data);
-                                       
-                                         
-                                      
+
+
+
                                       }));
 
 
@@ -5767,8 +5788,8 @@ export default function IndividualUs() {
                                 unmountOnExit
                               >
                                 <Typography className="d-flex w-100 pb-2">
-                                  Income Type 
-                                  {IncomeMandatory === true ?(<span style={{ color: "red" }}>*</span>):""}
+                                  Income Type
+                                  {IncomeMandatory === true ? (<span style={{ color: "red" }}>*</span>) : ""}
                                 </Typography>
                                 {/* <>{console.log(incomeArr, "qqq")}</> */}
                                 {incomeArr.length &&
@@ -5987,7 +6008,7 @@ export default function IndividualUs() {
                                 <Typography className="d-flex w-100 pb-2">
                                   Income Code
                                 </Typography>
-                                {incomeArr.length && incomeArr.length <= 4 &&
+                                {incomeArr.length && incomeArr.length <= 5 &&
                                   incomeArr.map((ind, i) => {
                                     // console.log(ind, i,"udvgjudgvfjdbgjfd")
                                     return (
@@ -6008,16 +6029,19 @@ export default function IndividualUs() {
                                               value={selectedValues[i]}
                                             >
                                               <option value="0">---select---</option>
+
                                               {GetAllIncomeCodesAgentWiseReducer.allCountriesIncomeCodeDataAgentWise?.map(
-                                                (ele: any) => (
-                                                  <option
-                                                    key={ele?.id}
-                                                    value={ele?.id}
-                                                  >
-                                                    {ele?.name}
-                                                  </option>
-                                                )
-                                              )}
+          (ele: any) => (
+            <option
+              key={ele?.id}
+              value={ele?.id}
+              
+            >
+              {ele?.name}
+            </option>
+          )
+        )}
+
                                             </select>
                                             {incomeArr.length > 1 && (
                                               <Delete
@@ -6209,7 +6233,7 @@ export default function IndividualUs() {
                             <div className="col-lg-3 col-6 col-md-3 ">
                               <Typography className="d-flex w-100 pb-2">
                                 Payment Type
-                               {PaymentMandatry === true ?(<span style={{ color: "red" }}>*</span>):""}
+                                {PaymentMandatry === true ? (<span style={{ color: "red" }}>*</span>) : ""}
                               </Typography>
 
                               <FormControl className="w-100 d-flex">
@@ -6767,7 +6791,7 @@ export default function IndividualUs() {
                                     <FormControl className="w-100">
                                       <Typography align="left">
                                         Apt/Suite
-                                       
+
                                       </Typography>
                                       <Input
                                         style={{
@@ -6841,7 +6865,7 @@ export default function IndividualUs() {
                                             height: "36px",
                                           }}
                                           name="payStateOrProvince"
-                                       
+
                                           onChange={handleChange}
                                           onBlur={handleBlur}
                                           value={values.payStateOrProvince}
