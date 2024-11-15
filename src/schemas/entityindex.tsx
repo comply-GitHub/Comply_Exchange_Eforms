@@ -18,8 +18,20 @@ export const EntitySchema = (Cert: string, payment: boolean, income: boolean, is
     }),
     taxpayerIdTypeID: Cert === "SC" ? Yup.number() : Yup.number().notOneOf([0], "Please select a valid option"),
     uniqueIdentifier: Yup.string()
-    .required("Please Enter unique Identifier")
-    .matches(/^\d{10}$/, "Unique Identifier must be exactly 10 digits"),
+  .required("Please Enter unique Identifier")
+  .matches(/^[0-9]+$/, "Unique Identifier must be a number") // Ensures only numbers are allowed
+  .test(
+    "len",
+    "Unique Identifier must be exactly 10 digits",
+    (val) => !!val && val.length === 10 // Check if val exists and has exactly 10 digits
+  )
+  .notOneOf(["0000000000"], "Unique Identifier cannot be all zeros") // Disallow "0000000000"
+  .test(
+    "startsWithNonZero",
+    "Unique Identifier must not start with 0",
+    (val) => !!val && val[0] !== "0" 
+  ),
+
     vatId: Cert === "SC" ? Yup.number() : Cert === "GEN" ? Yup.number().when("isUSIndividual", {
       is: 'no',
       then: () =>

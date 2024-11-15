@@ -21,10 +21,17 @@ export const individualSchema = (Cert: string, payment: boolean, income: boolean
     .required("Please Enter unique Identifier")
     .matches(/^[0-9]+$/, "Unique Identifier must be a number") // Ensures only numbers are allowed
     .test(
-      'len',
-      'Unique Identifier must be exactly 10 digits',
+      "len",
+      "Unique Identifier must be exactly 10 digits",
       (val) => !!val && val.length === 10 // Check if val exists and has exactly 10 digits
+    )
+    .notOneOf(["0000000000"], "Unique Identifier cannot be all zeros") // Disallow "0000000000"
+    .test(
+      "startsWithNonZero",
+      "Unique Identifier must not start with 0",
+      (val) => !!val && val[0] !== "0" // Check that the first character is not "0"
     ),
+  
   
     countryOfCitizenshipId: Cert==="SC" ? Yup.number() : Yup.number().when("isUSIndividual", {
       is: "no",
@@ -40,10 +47,17 @@ export const individualSchema = (Cert: string, payment: boolean, income: boolean
     cityOfBirth: Cert === "GEN"  ? Yup.string() : Yup.string().trim().required("Please Enter city of Birth"),
 
     taxpayerIdTypeID: Cert==="SC" ? Yup.number() : Yup.number().notOneOf([0], "Please select a valid option"),
-    dob: Cert === "GEN" ? Yup.date().when("isUSIndividual", {
-      is: "no",
-      then: () => Yup.date().required("Please Enter DOB"),
-    }) : Yup.date().required("Please Enter DOB"),
+    dob: Cert === "GEN"
+    ? Yup.date()
+        .max(new Date(), "Date of Birth cannot be in the future")
+        .when("isUSIndividual", {
+          is: "no",
+          then: () => Yup.date().required("Please Enter DOB"),
+        })
+    : Yup.date()
+        .max(new Date(), "Date of Birth cannot be in the future")
+        .required("Please Enter DOB"),
+  
 
 
     vatId: Cert === "GEN" ? Yup.number().when("isUSIndividual", {

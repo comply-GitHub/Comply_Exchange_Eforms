@@ -75,7 +75,6 @@ const [taxReferenceNumber, setTaxReferenceNumber] = useState([""]);
 const [isTINFormatNotAvailable, setIsTINFormatNotAvailable] = useState([false]);
 
 
-  // const obValues = JSON.parse(localStorage.getItem("agentDetails") || "{}");
   const initialValue = {
     agentId: authDetails?.agentId,
     formTypeSelectionId: obValues.businessTypeId,
@@ -91,14 +90,9 @@ const [isTINFormatNotAvailable, setIsTINFormatNotAvailable] = useState([false]);
     dateRenouncedUSCitizenship: obValues.dateRenouncedUSCitizenship,
     permanentResidentialCountryId: 0,
     renouncementProof: "",
-    // isTaxLiabilityJurisdictions: ["no"],
-    // countryTaxLiability: ["no"],
-    // taxReferenceNumber: [""],
-    // isTINFormatNotAvailable: [false],
-
     CountryTaxLiabilityLst:[""],
     IsTaxLiabilityJurisdictionsLst:[''],
-    IsTINFormatNotAvailableLst:[""],
+    IsTINFormatNotAvailableLst:[false],
     TaxReferenceNumberLst:[""],
     IsPresentAtleast31Days: "No",
     statusId: 1,
