@@ -2,9 +2,20 @@ import * as Yup from "yup";
 const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
 export const SubstantialSchema = () => {
   return Yup.object().shape({
-    daysAvailableInThisYear: Yup.number().max(366).required("Field Cannot be Empty"),
-    daysAvailableIn_OneYearbefore: Yup.number().max(366).required("Field Cannot be Empty"),
-    daysAvailableIn_TwoYearbefore: Yup.number().max(366).required("Field Cannot be Empty"),
+    daysAvailableInThisYear: Yup.number()
+    .min(0, "Value cannot be negative")
+    .max(366, "Value cannot exceed 366")
+    .required("Field cannot be empty"),
+    
+  daysAvailableIn_OneYearbefore: Yup.number()
+    .min(0, "Value cannot be negative")
+    .max(366, "Value cannot exceed 366")
+    .required("Field cannot be empty"),
+    
+  daysAvailableIn_TwoYearbefore: Yup.number()
+    .min(0, "Value cannot be negative")
+    .max(366, "Value cannot exceed 366")
+    .required("Field cannot be empty"),
     totalQualifyingDays: Yup.number(),
   });
 };
@@ -210,7 +221,39 @@ export const partCertiSchema = () => {
     //   is: "no",
     //   then: () => Yup.string().required("Please select owner"),
     // }),
-    signDate: Yup.date(),
+    signDate:Yup.string()
+    .matches(
+      /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d+$/,
+      "Date must be in MM/DD/YYYY format"
+    )
+    .test("isValidYear", "Year must be a valid 4-digit number", (value) => {
+      if (!value) return false;
+
+      const [month, day, year] = value.split("/").map(Number);
+
+      // Check year is exactly 4 digits
+      if (year.toString().length !== 4) return false;
+
+      // Validate year range
+      const currentYear = new Date().getFullYear();
+      if (year < 1900 || year > currentYear) return false;
+
+      return true;
+    })
+    .test("isValidDate", "Invalid date", (value) => {
+      if (!value) return false;
+
+      const [month, day, year] = value.split("/").map(Number);
+
+      // Create the date and validate
+      const date = new Date(year, month - 1, day);
+      return (
+        date.getFullYear() === year &&
+        date.getMonth() === month - 1 &&
+        date.getDate() === day
+      );
+    })
+    .required("Date is required"),
     confirmationOfAcceptanceWithTheAboveDeclarations: Yup.boolean().oneOf(
       [true],
       "Please mark the checkbox"

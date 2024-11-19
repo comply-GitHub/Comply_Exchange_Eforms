@@ -29,7 +29,7 @@ export const individualSchema = (Cert: string, payment: boolean, income: boolean
     .test(
       "startsWithNonZero",
       "Unique Identifier must not start with 0",
-      (val) => !!val && val[0] !== "0" // Check that the first character is not "0"
+      (val) => !!val && val[0] !== "0" 
     ),
   
   

@@ -550,6 +550,7 @@ export default function Tin(props: any) {
                           )}
                           <Input
                             placeholder="$"
+                            type="number"
                             value={
                               values.taxTreaty_TotalCompensationYouExpectForThisCalenderYear
                             }
@@ -838,6 +839,7 @@ export default function Tin(props: any) {
                               value={
                                 values.taxTreaty_TotalCompensationListedon11bExemptFromTax
                               }
+                            type="number"
                               onBlur={handleBlur}
                               onChange={handleChange}
                               error={Boolean(
@@ -880,7 +882,7 @@ export default function Tin(props: any) {
 
                             />
                             <Typography
-                              style={{ marginTop: "3.7rem", fontSize: "15px" }}
+                              style={{ marginTop: "3.1rem", fontSize: "15px" }}
                             >
                               Check for All
                             </Typography>
