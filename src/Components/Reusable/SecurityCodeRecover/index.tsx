@@ -117,6 +117,7 @@ const SecurityCodeRecover = ({ setRecoverPassword, hideBack = false }: any) => {
 
                     <FormControl className="w-98">
                         <Input
+                        readOnly
                             style={{
                                 border: " 1px solid #d9d9d9 ",
                                 height: " 36px",

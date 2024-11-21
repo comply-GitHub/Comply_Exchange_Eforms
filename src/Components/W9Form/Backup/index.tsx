@@ -418,7 +418,15 @@ export default function Backup_witholding(props: any) {
                               payments), and other listed entities. You can learn more
                               about exemption codes in the instructions for 'Line 4'
                               contained in the IRS's{" "}
-                              <Link> PDF version of Form W-9</Link>
+                              <Link  onClick={() => {
+                                                            dispatch(GetW9Pdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                                                setPopupState({
+                                                                    status:true,
+                                                                    data: callbackData?.pdf
+                                                                })
+                                                            }))
+                                                          }} 
+                                                            > PDF version of Form W-9</Link>
                             </Typography>
                             <Typography
                               style={{ marginTop: "30px", fontWeight: "bold" }}

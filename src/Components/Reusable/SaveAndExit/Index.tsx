@@ -191,7 +191,7 @@ const SaveAndExit = ({ Callback, formTypeId }: any) => {
                 Token
                 <Typography color={"#7b7878"}>
                   The Token (PIN) will have been sent to the email address used during the submission process, please enter here,
-                  if not recived please look in your spam or junk mail file.
+                  if not received please look in your spam or junk mail file.
                 </Typography>
               </Typography>
             </div>
