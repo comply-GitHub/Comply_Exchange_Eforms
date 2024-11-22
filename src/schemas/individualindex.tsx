@@ -23,9 +23,9 @@ export const individualSchema = (Cert: string, payment: boolean, income: boolean
     .test(
       "len",
       "Unique Identifier must be exactly 10 digits",
-      (val) => !!val && val.length === 10 // Check if val exists and has exactly 10 digits
+      (val) => !!val && val.length === 10 
     )
-    .notOneOf(["0000000000"], "Unique Identifier cannot be all zeros") // Disallow "0000000000"
+    .notOneOf(["0000000000"], "Unique Identifier cannot be all zeros") 
     .test(
       "startsWithNonZero",
       "Unique Identifier must not start with 0",
@@ -52,7 +52,7 @@ export const individualSchema = (Cert: string, payment: boolean, income: boolean
         .max(new Date(), "Date of Birth cannot be in the future")
         .when("isUSIndividual", {
           is: "no",
-          then: () => Yup.date().required("Please Enter DOB"),
+          then: () => Yup.date().required("Please Enter DOB").max(new Date(), "Date of Birth cannot be in the future"),
         })
     : Yup.date()
         .max(new Date(), "Date of Birth cannot be in the future")
@@ -71,7 +71,7 @@ export const individualSchema = (Cert: string, payment: boolean, income: boolean
 vat:Cert === "GEN" ? Yup.string().when("vatId", {
   is: (vatId: any) =>
     (vatId != 0 && vatId != 2 ),
-  then: () => Yup.string().required("Please Enter Vat Id")
+  then: () => Yup.string().required("Please Enter VAT Id")
 }): Yup.string(),
     // incomeTypeId: income === true ? Yup.array().of(Yup.string())
     // .required("Please select an option")
