@@ -85,7 +85,12 @@ const RetroactiveStatementValue = localStorage.getItem("RetroactiveStatement");
     writtenExplanation: PrevStepData?.writtenExplanation ?? "",
     affidavitSignedBy: PrevStepData?.affidavitSignedBy ?? "",
     affidavitConfirmationCode:PrevStepData?.affidavitConfirmationCode ?? "",
-    affidavitDate:PrevStepData?.affidavitDate ?? "",
+    affidavitDate:new Date()
+    .toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+    }),
     acceptanceConfirmation: PrevStepData?.acceptanceConfirmation ? true : false
   });
 
@@ -151,8 +156,7 @@ const RetroactiveStatementValue = localStorage.getItem("RetroactiveStatement");
           isValid
         }) => (
           <Form onSubmit={handleSubmit}>
-            <>{console.log(values, "values")}</>
-            <>{console.log(errors, "errors")}</>
+           
             <section
               className="inner_content"
               style={{ backgroundColor: "#0c3d69", }}
@@ -1048,11 +1052,18 @@ const RetroactiveStatementValue = localStorage.getItem("RetroactiveStatement");
                               <Input
                                 className="inputTextField"
                                 id="outlined"
-                                type="date"
+                                // type="date"
                                 fullWidth
+                                value={
+                                  new Date().toLocaleDateString('en-US', {
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    year: 'numeric',
+                                  })
+                                }
                                 name="affidavitDate"
                                 disabled={!values.isCircumstanceenable}
-                                value={values.affidavitDate}
+                                // value={values.affidavitDate}
                                 onBlur={handleBlur}
                                 onChange={(e) => {
                                   handleChange(e)
@@ -1061,7 +1072,7 @@ const RetroactiveStatementValue = localStorage.getItem("RetroactiveStatement");
                                 error={Boolean(
                                   touched.affidavitDate && errors.affidavitDate
                                 )}
-                              
+                                readOnly={true}
                               />
 
                             </FormControl>

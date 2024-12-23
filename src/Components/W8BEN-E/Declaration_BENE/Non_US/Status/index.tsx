@@ -2717,8 +2717,6 @@ export default function Fedral_tax(props: any) {
 
 
                               </>
-
-
                             ) : ""}
                           </Typography>
 

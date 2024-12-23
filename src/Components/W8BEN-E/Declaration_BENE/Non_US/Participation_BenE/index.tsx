@@ -87,7 +87,11 @@ export default function Penalties() {
     writtenExplanation: PrevStepData?.writtenExplanation ?? "",
     affidavitSignedBy: PrevStepData?.affidavitSignedBy ?? "",
     affidavitConfirmationCode:PrevStepData?.affidavitConfirmationCode ?? "",
-    affidavitDate:PrevStepData?.affidavitDate ?? "",
+    affidavitDate: W8BENEData?.date ?? new Date().toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+    }),
     acceptanceConfirmation: PrevStepData?.acceptanceConfirmation ? true : false
   };
   const dispatch = useDispatch();
@@ -1213,11 +1217,20 @@ export default function Penalties() {
                               <Input
                                 className="inputTextField"
                                 id="outlined"
-                                type="date"
+                                // type="date"
                                 fullWidth
                                 name="affidavitDate"
-                                value={values.affidavitDate}
+                                
+                                // value={values.affidavitDate}
                                 onBlur={handleBlur}
+                                readOnly={true}
+                                value={
+                                  new Date().toLocaleDateString('en-US', {
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    year: 'numeric',
+                                  })
+                                }
                                 disabled={!values.isCircumstanceenable}
                                 onChange={(e) => {
                                   handleChange(e)

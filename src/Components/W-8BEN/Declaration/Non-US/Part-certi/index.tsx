@@ -120,7 +120,11 @@ export default function Penalties() {
     writtenExplanation: PrevStepData?.writtenExplanation ?? "",
     affidavitSignedBy: PrevStepData?.affidavitSignedBy ?? "",
     affidavitConfirmationCode:PrevStepData?.affidavitConfirmationCode ?? "",
-    affidavitDate:PrevStepData?.affidavitDate ?? "",
+    affidavitDate:new Date().toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+    }),
     acceptanceConfirmation: PrevStepData?.acceptanceConfirmation ? true : false
 
 
@@ -1011,10 +1015,17 @@ export default function Penalties() {
                               <Input
                                 className="inputTextField"
                                 id="outlined"
-                                type="date"
+                                // type="date"
                                 fullWidth
                                 name="affidavitDate"
-                                value={values.affidavitDate}
+                                value={
+                                  new Date().toLocaleDateString('en-US', {
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    year: 'numeric',
+                                  })
+                                }
+                                readOnly={true}
                                 onBlur={handleBlur}
                                 disabled={!values.isCircumstanceenable}
                                 onChange={(e) => {

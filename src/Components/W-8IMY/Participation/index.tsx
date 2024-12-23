@@ -91,7 +91,11 @@ export default function Penalties() {
     writtenExplanation: PrevStepData?.writtenExplanation ?? "",
     affidavitSignedBy: PrevStepData?.affidavitSignedBy ?? "",
     affidavitConfirmationCode:PrevStepData?.affidavitConfirmationCode ?? "",
-    affidavitDate:PrevStepData?.affidavitDate ?? "",
+    affidavitDate:new Date().toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+    }),
     acceptanceConfirmation: PrevStepData?.acceptanceConfirmation ? true : false
   });
 
@@ -1095,15 +1099,23 @@ export default function Penalties() {
                                 className="inputTextField"
                                 id="outlined"
                                 disabled={!values.isCircumstanceenable}
-                                type="date"
+                                // type="date"
                                 fullWidth
                                 name="affidavitDate"
-                                value={values.affidavitDate}
+                                // value={values.affidavitDate}
+                                value={
+                                  new Date().toLocaleDateString('en-US', {
+                                    month: '2-digit',
+                                    day: '2-digit',
+                                    year: 'numeric',
+                                  })
+                                }
                                 onBlur={handleBlur}
                                 onChange={(e) => {
                                   handleChange(e)
                                  
                                 }}
+                                readOnly={true}
                                 error={Boolean(
                                   touched.affidavitDate && errors.affidavitDate
                                 )}
