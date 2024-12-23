@@ -172,9 +172,9 @@ export default function Fedral_tax(props: any) {
       <section
         className="inner_content"
         style={{
-          backgroundColor: "#0c3d69",
+          // backgroundColor: "#0c3d69",
           marginBottom: "10px",
-          height: "100%",
+          height: "100vh",
         }}
       >
         {/* {/ sidebar design /} */}
@@ -344,9 +344,9 @@ export default function Fedral_tax(props: any) {
             submitForm,
           }) => (
             <Form onSubmit={handleSubmit}>
-              <div className="row w-100 h-100">
+              <div className="row w-100">
                 <div className="col-4">
-                  <div style={{ padding: "20px 0px", height: "100%" }}>
+                  <div style={{ padding: "20px 0px"}}>
                     <BreadCrumbComponent breadCrumbCode={1203} formName={1} />
                   </div>
                 </div>
@@ -1213,8 +1213,8 @@ export default function Fedral_tax(props: any) {
                                     statute. Depending on elections made by the
                                     LLC and the number of members, the IRS will
                                     treat an LLC either as a corporation,
-                                    partnership, or as part of the owner?s tax
-                                    return (a disregarded entity?).
+                                    partnership, or as part of the owners tax
+                                    return (a disregarded entity).
                                     Specifically, a domestic LLC with at least
                                     two members is classified as a partnership
                                     for federal income tax purposes unless it
@@ -1240,9 +1240,9 @@ export default function Fedral_tax(props: any) {
                                   >
                                     If a single-member LLC does not elect to be
                                     treated as a corporation, the LLC is a
-                                    ?disregarded entity,? and the LLC?s
+                                    disregarded entity, and the LLCs
                                     activities should be reflected on its
-                                    owner?s federal tax return. If the owner is
+                                    owners federal tax return. If the owner is
                                     an individual, the activities of the LLC
                                     will generally be reflected on: Form 1040
                                     Schedule C, Profit or Loss from Business
@@ -1267,7 +1267,7 @@ export default function Fedral_tax(props: any) {
                                   >
                                     If the single-member LLC is owned by a
                                     corporation or partnership, the LLC should
-                                    be reflected on its owner?s federal tax
+                                    be reflected on its owners federal tax
                                     return as a division of the corporation or
                                     partnership.
                                   </Typography>

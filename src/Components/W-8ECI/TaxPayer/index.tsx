@@ -869,10 +869,7 @@ export default function Tin(props: any) {
                                 disabled={
                                   values.isFTINLegally ||
                                   values.foreignTINCountry == 1
-
-
-
-                                }
+ }
                                 name="foreignTIN"
                                 value={values.foreignTIN}
                                 onBlur={handleBlur}
