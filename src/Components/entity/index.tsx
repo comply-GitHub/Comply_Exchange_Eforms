@@ -972,6 +972,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                 handleSubmit,
                 handleChange,
                 isSubmitting,
+                setFieldError,
                 setFieldValue,
               }) => { 
                 const foreignTINCountryIdNumber = Number(values.foreignTINCountryId);
@@ -1982,6 +1983,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                   e.target.value == 8
                                 )
                                   setFieldValue("usTin", "");
+                                  setFieldError("usTin", "");
                               }}
                               value={values.taxpayerIdTypeID}
                             >
@@ -2552,6 +2554,7 @@ console.log(getAgentByIdReducer,"getAgentByIdReducer")
                                   e.target.value == 8
                                 )
                                   setFieldValue("usTin", "");
+                                  setFieldError("usTin", "");
                               }}
                               value={values.taxpayerIdTypeID}
                             >

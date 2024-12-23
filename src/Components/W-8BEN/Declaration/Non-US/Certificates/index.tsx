@@ -609,7 +609,12 @@ export default function Certifications(props: any) {
                             Form
                             <span
                               onClick={() => {
-                                dispatch(GetBenPdf(authDetails?.accountHolderId))
+                                dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                                  setPopupState({
+                                      status:true,
+                                      data: callbackData?.pdf
+                                  })
+                              }))
                               }}
                               style={{
                                 color: "blue",

@@ -9,7 +9,7 @@ export const individualSchema = (Cert: string, payment: boolean, income: boolean
     usTin: Yup.string().when("taxpayerIdTypeID", {
       is: (taxpayerIdTypeID: any) =>
         (taxpayerIdTypeID != 1 && taxpayerIdTypeID != 7 && taxpayerIdTypeID != 8 && taxpayerIdTypeID != 0),
-      then: () => Yup.string().required("Please Enter TIN name")
+      then: () => Yup.string().matches(/^\d{3}-\d{2}-\d{4}$/, 'Please enter a valid TIN in the format').required("Please Enter TIN name")
     }),
     // .min(3, "First Name should be minimum of 3 characters")
     // .max(50, "First Name should be maximum of 50 characters"),

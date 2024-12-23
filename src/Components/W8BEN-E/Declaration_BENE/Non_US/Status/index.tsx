@@ -2775,7 +2775,7 @@ export default function Fedral_tax(props: any) {
                             onClick={() => {
                               dispatch(GetBenEPdf(authDetails?.accountHolderId, (callbackData:any)=>{
                                 setPopupState({
-                                    status:true,
+                                    status:false,
                                     data: callbackData?.pdf
                                 })
                             }))

@@ -964,21 +964,7 @@ export default function Fedral_tax(props: any) {
                         </AccordionSummary>
                         <AccordionDetails>
                           <Typography align="left">
-                            An LLC is an entity created by state statute.
-                            Depending on elections made by the LLC and the
-                            number of members, the IRS will treat an LLC either
-                            as a corporation, partnership, or as part of the
-                            owner?s tax return (a disregarded entity?).
-                            Specifically, a domestic LLC with at least two
-                            members is classified as a partnership for federal
-                            income tax purposes unless it files Form 8832 and
-                            affirmatively elects to be treated as a corporation.
-                            And an LLC with only one member is treated as an
-                            entity disregarded as separate from its owner for
-                            income tax purposes (but as a separate entity for
-                            purposes of employment tax and certain excise
-                            taxes), unless it files Form 8832 and affirmatively
-                            elects to be treated as a corporation.
+                          An LLC is an entity created by state statute. Depending on elections made by the LLC and the number of members, the IRS will treat an LLC either as a corporation, partnership, or as part of the owner’s tax return (a disregarded entity”). Specifically, a domestic LLC with at least two members is classified as a partnership for federal income tax purposes unless it files Form 8832 and affirmatively elects to be treated as a corporation. And an LLC with only one member is treated as an entity disregarded as separate from its owner for income tax purposes (but as a separate entity for purposes of employment tax and certain excise taxes), unless it files Form 8832 and affirmatively elects to be treated as a corporation.
                           </Typography>
                           <Typography
                             align="left"
@@ -990,16 +976,7 @@ export default function Fedral_tax(props: any) {
                             align="left"
                             style={{ marginTop: "10px" }}
                           >
-                            If a single-member LLC does not elect to be treated
-                            as a corporation, the LLC is a ?disregarded entity,?
-                            and the LLC?s activities should be reflected on its
-                            owner?s federal tax return. If the owner is an
-                            individual, the activities of the LLC will generally
-                            be reflected on: Form 1040 Schedule C, Profit or
-                            Loss from Business (Sole Proprietorship) (PDF) Form
-                            1040 Schedule E, Supplemental Income or Loss (PDF)
-                            Form 1040 Schedule F, Profit or Loss from Farming
-                            (PDF)
+                            If a single-member LLC does not elect to be treated as a corporation, the LLC is a “disregarded entity,” and the LLC’s activities should be reflected on its owner’s federal tax return. If the owner is an individual, the activities of the LLC will generally be reflected on: Form 1040 Schedule C, Profit or Loss from Business (Sole Proprietorship) (PDF) Form 1040 Schedule E, Supplemental Income or Loss (PDF) Form 1040 Schedule F, Profit or Loss from Farming (PDF)
                           </Typography>
                           <Typography
                             align="left"

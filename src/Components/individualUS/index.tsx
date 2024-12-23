@@ -274,6 +274,7 @@ export default function IndividualUs() {
     taxpayerIdTypeName: ""
   });
 
+
   useEffect(() => {
     document.title = "OnBoarding"
   }, [])
@@ -999,9 +1000,7 @@ export default function IndividualUs() {
                   isCareOfAddress:
                     values?.isCareOfAddress == "yes" ? true : false,
                   isalternativebusinessaddress:
-                    values?.isalternativebusinessaddress == "yes"
-                      ? true
-                      : false,
+                    values?.isalternativebusinessaddress == "yes"  ? true : false,
                   permanentResidentialCountryId1:
                     values?.permanentResidentialCountryId1,
                   permanentResidentialStreetNumberandName1:
@@ -2719,6 +2718,7 @@ export default function IndividualUs() {
                                         borderRadius: "1px",
                                         padding: " 0 10px ",
                                       }}
+                                    
                                       id="outlined"
                                       mask={
                                         values.taxpayerIdTypeID == 2 ? "99-9999999" : "999-99-9999"
@@ -3928,6 +3928,7 @@ export default function IndividualUs() {
 
                             </FormControl>
                           </div>
+                        
                           {values.permanentResidentialCountryId == 186 ? (<div className="col-lg-3 col-6 col-md-3 mx-3">
                             <FormControl className="w-100">
                               <Typography align="left">

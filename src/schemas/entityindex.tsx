@@ -10,11 +10,26 @@ export const EntitySchema = (Cert: string, payment: boolean, income: boolean, is
     //     .max(50, 'First Name should be maximum of 50 characters'),
     isUSEntity: Yup.string(),
     entityName: Yup.string().trim().required("Please Enter Entity name"),
-    usTin: Cert === "SC" ? Yup.string() : Yup.string().when("taxpayerIdTypeID", {
-      is: (taxpayerIdTypeID: any) =>
-        (taxpayerIdTypeID !== 1 && taxpayerIdTypeID !== 7 && taxpayerIdTypeID !== 8),
-      then: () => Yup.string()
-        .required("Please Enter TIN name")
+    // usTin: Cert === "SC" ? Yup.string() : Yup.string().when("taxpayerIdTypeID", {
+    //   is: (taxpayerIdTypeID: any) =>
+    //     (taxpayerIdTypeID !== 1 && taxpayerIdTypeID !== 7 && taxpayerIdTypeID !== 8),
+    //   then: () => Yup.string().matches(/^\d{3}-\d{2}-\d{4}$/, 'Please enter a valid TIN in the format XXX-XX-XXXX')
+    //     .required("Please Enter TIN name")
+    // }),
+
+    usTin: Yup.string().when('taxpayerIdTypeID', {
+      is: (taxpayerIdTypeID: number) => taxpayerIdTypeID === 2,
+      then:  () =>Yup.string()
+        .matches(/^\d{2}-\d{7}$/, 'Please enter a valid TIN in the format 99-9999999')
+        .required('Please enter TIN'),
+      otherwise: () => Yup.string().when('taxpayerIdTypeID', {
+        is: (taxpayerIdTypeID: number) =>
+          taxpayerIdTypeID !== 1 && taxpayerIdTypeID !== 7 && taxpayerIdTypeID !== 8,
+        then: () => Yup.string()
+          .matches(/^\d{3}-\d{2}-\d{4}$/, 'Please enter a valid TIN in the format 999-99-9999')
+          .required('Please enter TIN'),
+        otherwise:  () =>Yup.string().nullable(),
+      }),
     }),
     taxpayerIdTypeID: Cert === "SC" ? Yup.number() : Yup.number().notOneOf([0], "Please select a valid option"),
     uniqueIdentifier: Yup.string()

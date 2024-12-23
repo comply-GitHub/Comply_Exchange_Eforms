@@ -72,7 +72,7 @@ export default function Tin(props: any) {
       usTin: W8BENData?.usTin ?? obValues?.usTin,
       notAvailable: W8BENData?.notAvailable ? W8BENData?.notAvailable : false,
       notAvailableReason: W8BENData?.notAvailableReason || "",
-      foreignTINCountry: W8BENData?.foreignTINCountry ?? obValues?.foreignTINCountry,
+      foreignTINCountry: W8BENData?.foreignTINCountryId.toString() ?? obValues?.foreignTINCountryId.toString(),
       foreignTIN: W8BENData?.foreignTIN ?? obValues?.foreignTIN ,
       isFTINLegally: W8BENData?.isFTINLegally ? W8BENData?.isFTINLegally : false,
       isNotAvailable: W8BENData?.isNotAvailable ? (W8BENData?.isNotAvailable == true && W8BENData?.alternativeTINFormat == false ? "Yes" : "") : "",
@@ -171,7 +171,7 @@ export default function Tin(props: any) {
     notAvailable: false,
     notAvailableReason: "",
     
-    foreignTINCountry:  W8BENData?.foreignTINCountry ?? obValues?.foreignTINCountry,
+    foreignTINCountry:  W8BENData?.foreignTINCountryId ?? obValues?.foreignTINCountryId,
     foreignTIN: W8BENData?.foreignTIN ?? obValues?.foreignTIN ,
     isFTINLegally: false,
     isNotAvailable: "",
@@ -641,7 +641,7 @@ export default function Tin(props: any) {
 
                               handleChange(e);
                               if (e.target.value) {
-                                setFieldValue("foreignTIN", "");
+                                // setFieldValue("foreignTIN", "");
                               }
 
                             }}
