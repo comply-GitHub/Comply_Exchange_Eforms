@@ -18,6 +18,7 @@ interface FormData {
   option2: string;
   text: string;
   number: number;
+  selectedOption: string;
 }
 
 interface InputProps {
@@ -50,8 +51,7 @@ const DynamicForm: React.FC<InputProps> = ({
   serviceEnbl,
   setServiceEnbl
 }) => {
-  console.log("incomeTextEnbl====================", incomeTextEnbl)
-  console.log("serviceEnbl====================", serviceEnbl)
+  
   const dispatch = useDispatch();
 
   const initialFormData: FormData = {
@@ -59,6 +59,7 @@ const DynamicForm: React.FC<InputProps> = ({
     option2: "0",
     text: "",
     number: 0,
+    selectedOption:"0",
   };
 //   const [allocation, setAllocation] = useState(0);
   const [toolInfo, setToolInfo] = useState("");
@@ -69,6 +70,8 @@ const DynamicForm: React.FC<InputProps> = ({
     handleAddDefaultOption();
     dispatch(getAllCountries());
   }, []);
+
+
   useEffect(() => {
     setAllocation(formList.reduce((sum: any, obj: any) => sum + obj.number, 0));
   }, [formList]);
@@ -107,7 +110,39 @@ const DynamicForm: React.FC<InputProps> = ({
     }
   };
   
+ const handleDropdownChange = (e: any, index: number) => {
+    const value = e.target.value;
+    setFormList((prevFormList: any) =>
+      prevFormList.map((prevForm: any, i: number) =>
+        i === index
+          ? { ...prevForm, selectedOption: value, option1: value }
+          : prevForm
+      )
+    );
+  };
 
+
+  const handleTextChange = (e: any, index: number) => {
+    const value = e.target.value;
+    setFormList((prevFormList: any) =>
+      prevFormList.map((prevForm: any, i: number) =>
+        i === index ? { ...prevForm, text: value } : prevForm
+      )
+    );
+  };
+
+  const handleNumberChange = (e: any, index: number) => {
+    const value = parseInt(e.target.value, 10);
+    if (value >= 0) {
+      setFormList((prevFormList: any) =>
+        prevFormList.map((prevForm: any, i: number) =>
+          i === index ? { ...prevForm, number: value } : prevForm
+        )
+      );
+    }
+  };
+
+  
   function handleIcomeText(e:any, index:any){
   let value = e.target.value;
   if(selectedOption =="1"){
@@ -627,6 +662,7 @@ const DynamicForm: React.FC<InputProps> = ({
           i === index
             ? { ...prevForm, option1: e.target.value }
             : prevForm 
+            
         )
       );
     }}

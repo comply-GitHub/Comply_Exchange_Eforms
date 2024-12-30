@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+const PrevValues = JSON.parse(localStorage.getItem("PrevStepData") || '{}')
 const obValues = JSON.parse(localStorage.getItem("formSelection") || '{}')
 export const SubstantialSchema = () => {
   return Yup.object().shape({
@@ -31,11 +32,17 @@ export const US_TINSchema = () => {
     // usTinTypeId: Yup.string().required("Field Cannot be Empty"),
     //usTin: Yup.string().required("Field Cannot be Empty"),
     notAvailable: Yup.boolean(),
-    usTin: Yup.string().when("notAvailable", {
-      is: true,
-      then: () => Yup.string().notRequired(),
-      otherwise: () => Yup.string().required(),
-    }),
+   usTin: Yup.string().when(["notAvailable", "usTinTypeId"], {
+         is: (notAvailable: any, usTinTypeId: any) => {
+           const prevUsTinTypeId = PrevValues.tinValue;
+           return !notAvailable &&
+             usTinTypeId !== 8 &&
+             usTinTypeId !== 7 &&
+             usTinTypeId !== 1 &&
+             (prevUsTinTypeId !== null && prevUsTinTypeId !== "");
+         },
+         then: () => Yup.string().required("Please enter US Tin"),
+       }),
     ReasionForForegionTIN_NotAvailable: Yup.string().when("tinisFTINNotLegallyRequired", {
       is: (tinisFTINNotLegallyRequired: any) => tinisFTINNotLegallyRequired == "NO",
       then: () => Yup.string().required('required'),

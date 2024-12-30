@@ -668,12 +668,15 @@ export default function Tin(props: any) {
                             <div className="col-lg-5 col-12">
                               <Typography style={{ fontSize: "14px" }}>U.S. TIN</Typography>
                               <InputMask
-                                disabled={values.notAvailable}
+                                disabled={ values.notAvailable ||
+                                  values.usTinTypeId === "0" ||
+                                  values.usTinTypeId === "7" ||
+                                  values.usTinTypeId === "8"}
                                 fullWidth
                                 type="text"
                                 name="usTin"
                                 mask={
-                                  values.usTin ? "999-99-9999" :"999-99-9999"
+                                  values.usTinTypeId == 2 ? "99-9999999" : "999-99-9999"
                                 }
                                 value={values.usTin}
                                 onBlur={handleBlur}

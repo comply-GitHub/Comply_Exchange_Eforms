@@ -195,7 +195,7 @@ export default function Certificates(props: any) {
       title: "Cayman Individual 2018",
       userType: "SC",
       isHide: !isHide?.selfcertvisibilty,
-      enabled: userType === 'SC' ? ["usNonIndividual"] : [],
+      enabled: userType === 'SC' ? ["usIndividual"] : [],
       description: "Used by individuals to declare any/all tax residencies",
     },
     {
@@ -203,7 +203,7 @@ export default function Certificates(props: any) {
       title: "Cayman Entity 2018",
       userType: "SC",
       isHide: !isHide?.selfcertvisibilty,
-      enabled: userType === 'SC' ?  ["usNonEntity"]  : [],
+      enabled: userType === 'SC' ?  ["usEntity"]  : [],
       description:
         "Used by an entity to declare any/all tax residencies, US FATCA Status, CRS Classification and/or Controlling Person(s)",
     },

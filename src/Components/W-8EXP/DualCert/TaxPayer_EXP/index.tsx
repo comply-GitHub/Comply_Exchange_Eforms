@@ -58,7 +58,7 @@ export default function Tin(props: any) {
       isExplanationNotLegallyFTIN: W8ECIData?.isExplanationNotLegallyFTIN === true ? "Yes" : "No" ?? "",
       stepName: null
     }
-    setInitialValues(temp);
+    setInitialValues({ ...initialValue, ...temp });
   }
 
   useEffect(() => {

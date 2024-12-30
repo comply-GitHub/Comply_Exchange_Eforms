@@ -241,7 +241,7 @@ export default function Tin(props: any) {
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
                   const temp = {
-                    ...values,
+                    // ...values,
                     id: 0,
                     agentId: authDetails?.agentId,
                     FormTypeID: FormTypeId.BEN,
@@ -1156,7 +1156,13 @@ export default function Tin(props: any) {
                         variant="contained"
                         style={{ color: "white", marginLeft: "15px" }}
                         onClick={() => {
-                          dispatch(GetBENDCPdf(authDetails?.accountHolderId))
+                          dispatch(GetBENDCPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+              setPopupState({
+                  status:true,
+                  data: callbackData?.pdf
+              })
+          }))
+         
                         }}
                       >
                         View Form

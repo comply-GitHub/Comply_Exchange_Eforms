@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { getToken } from '.';
 
-const API_URL = 'http://43.230.64.35:8088/api/';
-//const API_URL = 'https://localhost:44319/api/';
+// const API_URL = 'http://43.230.64.35:8088/api/';
+const API_URL = 'http://43.230.64.43:88/api/';
 // export const BASE_URL ='http://122.176.139.248:8088/';
 
 export const apiErrorCode = {
@@ -57,8 +57,10 @@ $axios.interceptors.request.use(
 );
 const constants = {
   apiErrorCode,
-  // API_URL: process.env.REACT_APP_API_URL,
-  API_URL:"http://43.230.64.35:8088/api",
+
+  // API_URL:"http://43.230.64.35:8088/api",
+  API_URL:"http://43.230.64.43:88/api",
+  
   //API_URL:"https://localhost:44319/api",
   apiSuccessCode,
   axios: $axios,
