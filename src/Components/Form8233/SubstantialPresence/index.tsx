@@ -399,7 +399,7 @@ export default function Presence(props: any) {
                         </Typography>
                         <FormControl className="col-lg-4">
                           <Input
-                            type="text"
+                           type="number"
                             name="daysAvailableIn_OneYearbefore"
                             value={values.daysAvailableIn_OneYearbefore}
                             onBlur={handleBlur}
@@ -411,7 +411,7 @@ export default function Presence(props: any) {
                               });
                             }}
                             error={Boolean(
-                              touched.daysAvailableIn_OneYearbefore &&
+                              // touched.daysAvailableIn_OneYearbefore &&
                               errors.daysAvailableIn_OneYearbefore
                             )}
                             style={{
@@ -422,7 +422,7 @@ export default function Presence(props: any) {
                               width: "30%",
                             }}
                           />
-                          {errors?.daysAvailableIn_OneYearbefore && typeof errors?.daysAvailableIn_OneYearbefore === 'string' && (
+                          {touched?.daysAvailableIn_OneYearbefore &&errors?.daysAvailableIn_OneYearbefore && typeof errors?.daysAvailableIn_OneYearbefore === 'string' && (
                             <p className="error">{errors?.daysAvailableIn_OneYearbefore}</p>
                           )}
 
@@ -452,7 +452,7 @@ export default function Presence(props: any) {
                               });
                             }}
                             error={Boolean(
-                              touched.daysAvailableIn_TwoYearbefore &&
+                             
                               errors.daysAvailableIn_TwoYearbefore
                             )}
                             style={{
@@ -463,7 +463,7 @@ export default function Presence(props: any) {
                               width: "30%",
                             }}
                           />
-                          {errors?.daysAvailableIn_TwoYearbefore && typeof errors?.daysAvailableIn_TwoYearbefore === 'string' && (
+                          {touched?.daysAvailableIn_TwoYearbefore &&errors?.daysAvailableIn_TwoYearbefore && typeof errors?.daysAvailableIn_TwoYearbefore === 'string' && (
                             <p className="error">{errors?.daysAvailableIn_TwoYearbefore}</p>
                           )}
                         </FormControl>

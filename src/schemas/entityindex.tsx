@@ -60,54 +60,46 @@ export const EntitySchema = (Cert: string, payment: boolean, income: boolean, is
         (vatId != 0 && vatId != 2),
       then: () => Yup.string().required("Please Enter Vat Id")
     }) : Yup.string(),
-    giinId: Yup.string()
-    .nullable()
-    .test({
-      name: 'Uppercase',
-      message: 'GIIN is required and must be all uppercase',
-      test: (value, context) => {
-        const { isUSEntity } = context.parent;
-        if (isGiinEnabled && isUSEntity === 'no') {
-          if (value) {
-            const hasLowerCase = /[a-z]/.test(value);
-            return !hasLowerCase;
-          } else {
-            return false;
-          }
-        } else {
-          return true;
-        }
-      },
-    })
-    .test({
-      name: 'length',
-      message: 'GIIN length should be 19 characters',
-      test: (value, context) => {
-        const { isUSEntity } = context.parent;
-        if (isGiinEnabled && isUSEntity === 'no') {
-          return value?.length === 19;
-        } else {
-          return true;
-        }
-      },
-    })
-    .test({
-      name: 'format',
-      message: 'GIIN format should be valid',
-      test: (value, context) => {
-        const { isUSEntity } = context.parent;
-        if (isGiinEnabled && isUSEntity === 'no') {
-          if (!value) {
-            return false;
-          }
-          // Check for the exact format based on the mask
-          const regex = /^[0-9]{3}[A-Z]{3}\.[0-9]{5}\.[A-Z]{2}\.[0-9]{3}$/;
-          return regex.test(value);
-        } else {
-          return true;
-        }
-      },
-    }),
+   giinId: Yup.string()
+  .test({
+    name: 'Uppercase',
+    message: 'GIIN must be all uppercase if provided',
+    test: (value, context) => {
+      if (!value) return true; // Skip validation if the field is empty
+      const { isUSEntity } = context.parent;
+      if (isGiinEnabled && isUSEntity === 'no') {
+        const hasLowerCase = /[a-z]/.test(value);
+        return !hasLowerCase;
+      }
+      return true;
+    },
+  })
+  .test({
+    name: 'length',
+    message: 'GIIN length should be 19 characters if provided',
+    test: (value, context) => {
+      if (!value) return true; // Skip validation if the field is empty
+      const { isUSEntity } = context.parent;
+      if (isGiinEnabled && isUSEntity === 'no') {
+        return value?.length === 19;
+      }
+      return true;
+    },
+  })
+  .test({
+    name: 'format',
+    message: 'GIIN format should be valid if provided',
+    test: (value, context) => {
+      if (!value) return true; // Skip validation if the field is empty
+      const { isUSEntity } = context.parent;
+      if (isGiinEnabled && isUSEntity === 'no') {
+        const regex = /^[0-9]{3}[A-Z]{3}\.[0-9]{5}\.[A-Z]{2}\.[0-9]{3}$/;
+        return regex.test(value);
+      }
+      return true;
+    },
+  }),
+
     // countryOfCitizenshipId: Yup.number()
     // .required('Please select a country'),
     // dob: Yup.date()

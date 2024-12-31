@@ -745,6 +745,9 @@ export default function Penalties() {
                             value={values.enterDate}
                             onBlur={handleBlur}
                             onChange={handleChange}
+                            inputProps={{
+                              max: new Date().toISOString().split("T")[0],
+                            }}
                             error={Boolean(touched.enterDate && errors.enterDate)}
                           />
                           <p className="error">{touched.enterDate && typeof (errors.enterDate) === "string" ? errors.enterDate : ""}</p>

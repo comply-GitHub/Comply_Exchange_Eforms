@@ -620,9 +620,10 @@ export default function Certifications(props: any) {
                                 color: "blue",
                                 fontSize: "14px",
                                 marginLeft: "5px",
+                                cursor:"pointer",
                               }}
                             >
-                              (view Electronic Form)
+                              (View Electronic Form)
                             </span>
                           </Typography>
                         </Typography>

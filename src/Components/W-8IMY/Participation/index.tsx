@@ -827,6 +827,9 @@ export default function Penalties() {
                             disabled={!values.isCircumstanceenable}
                             name="enterDate"
                             value={values.enterDate}
+                            inputProps={{
+                              max: new Date().toISOString().split("T")[0],
+                            }}
                             onBlur={handleBlur}
                             onChange={handleChange}
                             error={Boolean(touched.enterDate && errors.enterDate)}
