@@ -26,14 +26,14 @@ interface InputProps {
   setFormList: any;
   allocation: any;
   setAllocation: any;
-  incomeText:any;
-  setIncomeText:any;
-  incomeTextEnbl:any;
-  setIncomeTextEnbl:any;
-  service:any;
-  setService:any;
-  serviceEnbl:any;
-  setServiceEnbl:any;
+  incomeText: any;
+  setIncomeText: any;
+  incomeTextEnbl: any;
+  setIncomeTextEnbl: any;
+  service: any;
+  setService: any;
+  serviceEnbl: any;
+  setServiceEnbl: any;
 
 }
 
@@ -51,7 +51,7 @@ const DynamicForm: React.FC<InputProps> = ({
   serviceEnbl,
   setServiceEnbl
 }) => {
-  
+
   const dispatch = useDispatch();
 
   const initialFormData: FormData = {
@@ -59,9 +59,9 @@ const DynamicForm: React.FC<InputProps> = ({
     option2: "0",
     text: "",
     number: 0,
-    selectedOption:"0",
+    selectedOption: "0",
   };
-//   const [allocation, setAllocation] = useState(0);
+  //   const [allocation, setAllocation] = useState(0);
   const [toolInfo, setToolInfo] = useState("");
   const [formData, setFormData] = useState(initialFormData);
   const [selectedOption, setSelectedOption] = useState("0");
@@ -77,13 +77,13 @@ const DynamicForm: React.FC<InputProps> = ({
   }, [formList]);
 
 
-  useEffect(() => {}, [allocation]);
+  useEffect(() => { }, [allocation]);
 
   const getCountriesReducer = useSelector(
     (state: any) => state.getCountriesReducer
   );
   const handleAddDefaultOption = () => {
-    setFormList([initialFormData]); 
+    setFormList([initialFormData]);
   };
 
   const handleAdd = () => {
@@ -95,12 +95,12 @@ const DynamicForm: React.FC<InputProps> = ({
       setService((prev: any) => [...prev, { option2: "" }]);
     }
   };
-  
+
   const handleRemove = (index: any) => {
     let arr = [...formList];
     arr.splice(index, 1);
     setFormList(arr);
-  
+
     if (selectedOption === "1") {
       let tempData = incomeText.filter((dt: any, ind: any) => ind !== index);
       setIncomeText(tempData);
@@ -109,8 +109,8 @@ const DynamicForm: React.FC<InputProps> = ({
       setService(tempData);
     }
   };
-  
- const handleDropdownChange = (e: any, index: number) => {
+
+  const handleDropdownChange = (e: any, index: number) => {
     const value = e.target.value;
     setFormList((prevFormList: any) =>
       prevFormList.map((prevForm: any, i: number) =>
@@ -142,65 +142,66 @@ const DynamicForm: React.FC<InputProps> = ({
     }
   };
 
-  
-  function handleIcomeText(e:any, index:any){
-  let value = e.target.value;
-  if(selectedOption =="1"){
-  setFormList((prevFormList: any) =>
-    prevFormList.map((prevForm: any, i: any) =>
-      i === index
-        ? { ...prevForm, text: value }
-        : prevForm
-    )
-  )
-  }
-  else{
-  setFormList((prevFormList: any) =>
-    prevFormList.map((prevForm: any, i: any) =>
-      i === index
-        ? { ...prevForm, option2: value }
-        : prevForm
-    )
-  )
-}
-   
+
+  function handleIcomeText(e: any, index: any) {
+    let value = e.target.value;
+    if (selectedOption == "1") {
+      setFormList((prevFormList: any) =>
+        prevFormList.map((prevForm: any, i: any) =>
+          i === index
+            ? { ...prevForm, text: value }
+            : prevForm
+        )
+      )
+    }
+    else {
+      setFormList((prevFormList: any) =>
+        prevFormList.map((prevForm: any, i: any) =>
+          i === index
+            ? { ...prevForm, option2: value }
+            : prevForm
+        )
+      )
+    }
+
   }
 
   useEffect(() => {
-    if (selectedOption === "1") {
+    // if (selectedOption === "1") {
+    //   let total = 0;
+    //   let res = false;
+    //   for (let dt of formList) {
+    //     total += dt.number;
+    //     if (!dt.text) {
+    //       res = true;
+    //     }
+    //   }
+
+    //   if (total === 100 && res === false) {
+    //     setIncomeTextEnbl(false);
+    //   } else {
+    //     setIncomeTextEnbl(true);
+    //   }
+    // } else {
       let total = 0;
       let res = false;
+
       for (let dt of formList) {
         total += dt.number;
-        if (!dt.text) {
-          res = true;
-        }
       }
-  
-      if (total === 100 && res === false) {
-        setIncomeTextEnbl(false);
-      } else {
-        setIncomeTextEnbl(true);
-      }
-    } else {
-      let total = 0;
-      let res = false;
-    
-      for (let dt of formList) {
-        total += dt.number;
-        if (!+dt.option2) {
-          res = true;
-        }
-      }
-  
-      if (total === 100 && res === false) {
+
+      console.log("formList" , total , res)
+
+      if (total == 100 ) {
         setServiceEnbl(false);
       } else {
         setServiceEnbl(true);
       }
-    }
-  }, [formList, selectedOption]);
-  
+    // }
+  }, [formList]);
+
+  console.log({formList})
+
   return (
     <div>
       {formList.map((form: any, index: any) => (
@@ -631,7 +632,7 @@ const DynamicForm: React.FC<InputProps> = ({
                       <Link
                         href="#"
                         underline="none"
-                        style={{ marginTop: "10px", fontSize: "16px",color: "#0000C7" }}
+                        style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                         onClick={() => {
                           setToolInfo("");
                         }}
@@ -643,39 +644,39 @@ const DynamicForm: React.FC<InputProps> = ({
                 ) : (
                   ""
                 )}
-               <FormControl className="w-100">
-  <select
-    className="col-md-6 col-12"
-    style={{
-      padding: "0 10px",
-      color: "#121112",
-      fontStyle: "italic",
-      height: "50px",
-      marginBottom: "20px",
-    }}
-    value={form.option1}
-    onChange={(e) => {
-      localStorage.setItem('optionValue', e.target.value);
-      setSelectedOption(e.target.value);
-      setFormList((prevFormList: any) =>
-        prevFormList.map((prevForm: any, i: any) =>
-          i === index
-            ? { ...prevForm, option1: e.target.value }
-            : prevForm 
-            
-        )
-      );
-    }}
-  >
-    <option value="0">---select---</option>
-    <option value="1">Other</option>
-    <option value="2">Goods</option>
-    <option value="3">Services</option>
-  </select>
-</FormControl>
+                <FormControl className="w-100">
+                  <select
+                    className="col-md-6 col-12"
+                    style={{
+                      padding: "0 10px",
+                      color: "#121112",
+                      fontStyle: "italic",
+                      height: "50px",
+                      marginBottom: "20px",
+                    }}
+                    value={form.option1}
+                    onChange={(e) => {
+                      localStorage.setItem('optionValue', e.target.value);
+                      setSelectedOption(e.target.value);
+                      setFormList((prevFormList: any) =>
+                        prevFormList.map((prevForm: any, i: any) =>
+                          i === index
+                            ? { ...prevForm, option1: e.target.value }
+                            : prevForm
+
+                        )
+                      );
+                    }}
+                  >
+                    <option value="0">---select---</option>
+                    <option value="1">Other</option>
+                    <option value="2">Goods</option>
+                    <option value="3">Services</option>
+                  </select>
+                </FormControl>
 
               </div>
-              {selectedOption === "1" && (
+              {form.option1 === "1" && (
                 <>
                   <Typography
                     align="left"
@@ -687,19 +688,19 @@ const DynamicForm: React.FC<InputProps> = ({
                   <FormControl className="w-100 col-md-12 col-12">
                     <TextField
                       multiline
-                     
+
                       style={{
-                       backgroundColor:"#fff",
-                       color: "#121112",
+                        backgroundColor: "#fff",
+                        color: "#121112",
                         fontStyle: "italic",
-                       
+
                       }}
                       type="text"
                       required
                       value={form.text}
-                      onChange={(e: any) => handleIcomeText(e, index) }
+                      onChange={(e: any) => handleIcomeText(e, index)}
                     />
-                  
+
                   </FormControl>
                   <Typography
                     align="left"
@@ -712,21 +713,23 @@ const DynamicForm: React.FC<InputProps> = ({
                     <input
                       type="number"
                       value={form.number}
+                      onKeyUpCapture={()=>{}}
+                      onKeyDownCapture={()=>{}}
                       onChange={(e) => {
                         const inputValue = parseInt(e.target.value, 10);
                         if (inputValue >= 0) {
-                            setFormList((prevFormList: any) =>
-                                prevFormList.map((prevForm: any, i: any) =>
-                                    i === index
-                                        ? {
-                                            ...prevForm,
-                                            number: inputValue,
-                                        }
-                                        : prevForm
-                                )
-                            );
+                          setFormList((prevFormList: any) =>
+                            prevFormList.map((prevForm: any, i: any) =>
+                              i === index
+                                ? {
+                                  ...prevForm,
+                                  number: inputValue,
+                                }
+                                : prevForm
+                            )
+                          );
                         }
-                    }}
+                      }}
                       className="col-md-6 col-12"
                       style={{
                         padding: " 0 10px",
@@ -739,7 +742,7 @@ const DynamicForm: React.FC<InputProps> = ({
                 </>
               )}
 
-              {selectedOption === "2" && (
+              {form.option1 === "2" && (
                 <>
                   <Typography
                     align="left"
@@ -761,16 +764,16 @@ const DynamicForm: React.FC<InputProps> = ({
                       name="option2"
                       id="option2"
                       value={form.option2}
-                      onChange={(e: any) => handleIcomeText(e, index) }
-                      // onChange={(e) =>
-                      //   setFormList((prevFormList: any) =>
-                      //     prevFormList.map((prevForm: any, i: any) =>
-                      //       i === index
-                      //         ? { ...prevForm, option2: e.target.value }
-                      //         : prevForm
-                      //     )
-                      //   )
-                      // }
+                      onChange={(e: any) => handleIcomeText(e, index)}
+                    // onChange={(e) =>
+                    //   setFormList((prevFormList: any) =>
+                    //     prevFormList.map((prevForm: any, i: any) =>
+                    //       i === index
+                    //         ? { ...prevForm, option2: e.target.value }
+                    //         : prevForm
+                    //     )
+                    //   )
+                    // }
                     >
                       <option value="">---select---</option>
                       <option value={257}>United Kingdom</option>
@@ -795,21 +798,23 @@ const DynamicForm: React.FC<InputProps> = ({
                     <input
                       type="number"
                       value={form.number}
+                      onKeyUpCapture={()=>{}}
+                      onKeyDownCapture={()=>{}}
                       onChange={(e) => {
                         const inputValue = parseInt(e.target.value, 10);
                         if (inputValue >= 0) {
-                            setFormList((prevFormList: any) =>
-                                prevFormList.map((prevForm: any, i: any) =>
-                                    i === index
-                                        ? {
-                                            ...prevForm,
-                                            number: inputValue,
-                                        }
-                                        : prevForm
-                                )
-                            );
+                          setFormList((prevFormList: any) =>
+                            prevFormList.map((prevForm: any, i: any) =>
+                              i === index
+                                ? {
+                                  ...prevForm,
+                                  number: inputValue,
+                                }
+                                : prevForm
+                            )
+                          );
                         }
-                    }}
+                      }}
                       className="col-md-6 col-12"
                       style={{
                         padding: " 0 10px",
@@ -822,7 +827,7 @@ const DynamicForm: React.FC<InputProps> = ({
                 </>
               )}
 
-              {selectedOption === "3" && (
+              {form.option1 === "3" && (
                 <>
                   <Typography
                     align="left"
@@ -885,21 +890,23 @@ const DynamicForm: React.FC<InputProps> = ({
                         height: "3rem",
                       }}
                       value={form.number}
+                      onKeyUpCapture={()=>{}}
+                      onKeyDownCapture={()=>{}}
                       onChange={(e) => {
                         const inputValue = parseInt(e.target.value, 10);
                         if (inputValue >= 0) {
-                            setFormList((prevFormList: any) =>
-                                prevFormList.map((prevForm: any, i: any) =>
-                                    i === index
-                                        ? {
-                                            ...prevForm,
-                                            number: inputValue,
-                                        }
-                                        : prevForm
-                                )
-                            );
+                          setFormList((prevFormList: any) =>
+                            prevFormList.map((prevForm: any, i: any) =>
+                              i === index
+                                ? {
+                                  ...prevForm,
+                                  number: inputValue,
+                                }
+                                : prevForm
+                            )
+                          );
                         }
-                    }}
+                      }}
                     />
                   </FormControl>
                 </>
@@ -935,12 +942,12 @@ const DynamicForm: React.FC<InputProps> = ({
               marginLeft: "10px",
             }}
           >
-          {allocation}
+            {allocation}
           </Typography>
         </div>
       </div>
       <div>
-       
+
       </div>
     </div>
   );

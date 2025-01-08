@@ -44,10 +44,10 @@ export default function Factors() {
   const [serviceEnbl, setServiceEnbl] = useState(true);
   const [formList, setFormList] = useState<FormData[]>([]);
   const dispatch = useDispatch();
-  
+
   const PrevData = JSON.parse(localStorage.getItem("Formvalues") || "{}");
   const value = JSON.parse(localStorage.getItem("optionValue") || "{}");
-  console.log(PrevData,"12333")
+  console.log(PrevData, "12333")
   const IncomeTypes = ["Others", "Goods", "Services"]
 
   const handleAllocationChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +67,7 @@ export default function Factors() {
 
 
   useEffect(() => {
-    const handleKeyDown = (event:any) => {
+    const handleKeyDown = (event: any) => {
       if (event.key === 'Enter') {
         event.preventDefault(); // Prevents Enter key from triggering any action
         console.log('Enter key press prevented globally.');
@@ -82,9 +82,9 @@ export default function Factors() {
   }, []);
 
   const [popupState, setPopupState] = useState({
-    data:"",
-    status:false
-})
+    data: "",
+    status: false
+  })
   useEffect(() => {
     document.title = "Income-Report"
   }, [])
@@ -211,17 +211,17 @@ export default function Factors() {
     >
       <View_Insructions canvaBx={canvaBx} handleCanvaClose={handleCanvaClose} />
       {canvaBx === true ? (<div className="offcanvas-backdrop fade show" onClick={() => { handleCanvaClose() }}></div>) : null}
-              <div className="overlay-div">
-                <div className="overlay-div-group">
-                <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
-          <div className="viewform"  onClick={() => {
-              dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
-                setPopupState({
-                    status:true,
-                    data: callbackData?.pdf
-                })
+      <div className="overlay-div">
+        <div className="overlay-div-group">
+          <div className="viewInstructions" onClick={() => { handleCanvaOpen(); }}>View Instructions</div>
+          <div className="viewform" onClick={() => {
+            dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData: any) => {
+              setPopupState({
+                status: true,
+                data: callbackData?.pdf
+              })
             }))
-        }}>View Form</div>
+          }}>View Form</div>
           <div className="helpvideo">
             {/* <a target="_blank" href="https://youtu.be/SqcY0GlETPk?si=KOwsaYzweOessHw-">Help Video</a> */}
             {GethelpData && GethelpData[3].id === 5 ? (
@@ -351,7 +351,7 @@ export default function Factors() {
                       <Link
                         href="#"
                         underline="none"
-                        style={{ marginTop: "10px", fontSize: "16px" ,color: "#0000C7"}}
+                        style={{ marginTop: "10px", fontSize: "16px", color: "#0000C7" }}
                         onClick={() => {
                           setToolInfo("");
                         }}
@@ -365,8 +365,8 @@ export default function Factors() {
                 )}
 
                 <div className="mt-2">
-                  <DynamicForm formList={formList} setFormList={setFormList} allocation={allocation} setAllocation={setAllocation} incomeText={incomeText} setIncomeText={setIncomeText} incomeTextEnbl={incomeTextEnbl} setIncomeTextEnbl={setIncomeTextEnbl}  service={service} setService={setService} 
-  serviceEnbl={serviceEnbl} setServiceEnbl={setServiceEnbl} />
+                  <DynamicForm formList={formList} setFormList={setFormList} allocation={allocation} setAllocation={setAllocation} incomeText={incomeText} setIncomeText={setIncomeText} incomeTextEnbl={incomeTextEnbl} setIncomeTextEnbl={setIncomeTextEnbl} service={service} setService={setService}
+                    serviceEnbl={serviceEnbl} setServiceEnbl={setServiceEnbl} />
                 </div>
               </div>
               <div
@@ -376,47 +376,53 @@ export default function Factors() {
                   marginTop: "80px",
                 }}
               >
-                
 
-                <SaveAndExit Callback={() => { handleSaveExit()}} formTypeId={FormTypeId.BEN} />
+
+                <SaveAndExit Callback={() => { handleSaveExit() }} formTypeId={FormTypeId.BEN} />
 
                 <Button
                   variant="contained"
                   style={{ color: "white", marginLeft: "15px" }}
                   onClick={() => {
-                    dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData:any)=>{
+                    dispatch(GetBenPdf(authDetails?.accountHolderId, (callbackData: any) => {
                       setPopupState({
-                          status:true,
-                          data: callbackData?.pdf
+                        status: true,
+                        data: callbackData?.pdf
                       })
-                  }))
-              }}
+                    }))
+                  }}
                 >
                   View form
                 </Button>
-               {value == 1 ?( <Button
-                  disabled={incomeTextEnbl}
-                  onClick={handleSubmit}
-                  variant="contained"
-                  style={{ color: "white", marginLeft: "15px" }}
-                >
-                  Confirm
-                </Button>):
-                <Button
-                disabled={serviceEnbl}
-                onClick={handleSubmit}
-                variant="contained"
-                style={{ color: "white", marginLeft: "15px" }}
-              >
-                Confirm
-              </Button>
+                <>
+                {console.log("formList" ,serviceEnbl )}
+
+                </>
+                {
+                // value == 1 ? (<Button
+                //   disabled={incomeTextEnbl}
+                //   onClick={handleSubmit}
+                //   variant="contained"
+                //   style={{ color: "white", marginLeft: "15px" }}
+                // >
+                //   Confirm
+                // </Button>
+                // ) :
+                  <Button
+                    disabled={serviceEnbl}
+                    onClick={handleSubmit}
+                    variant="contained"
+                    style={{ color: "white", marginLeft: "15px" }}
+                  >
+                    Confirm
+                  </Button>
                 }
               </div>
               <Typography
                 align="center"
                 style={{
-                
-                  color: "#505E50",  
+
+                  color: "#505E50",
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: "20px",
@@ -443,7 +449,7 @@ export default function Factors() {
                 </Button>
               </Typography>
             </Paper>
-                                                                    
+
           </div>
         </div>
       </div>
