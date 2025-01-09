@@ -1482,7 +1482,7 @@ export default function Fedral_tax(props: any) {
                                                 <Typography align="center">
                                                     <Button
                                                         onClick={() => {
-                                                            history("");
+                                                            history("/Certificates");
                                                         }}
                                                         variant="contained"
                                                         style={{

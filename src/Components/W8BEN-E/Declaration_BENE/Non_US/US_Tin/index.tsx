@@ -90,7 +90,7 @@ export default function Tin(props: any) {
       usTin: W8BENEData?.usTin == "" ? obValues?.usTin : W8BENEData?.usTin,
       notAvailable: W8BENEData.notAvailable ? W8BENEData.notAvailable : false,
       notAvailableReason: W8BENEData.notAvailableReason || "",
-      foreignTINCountry: PrevStepData?.foreignTINCountry ||"",
+      foreignTINCountry: W8BENEData?.foreignTINCountryId == "" ? obValues?.foreignTINCountryId : W8BENEData?.foreignTINCountryId,
       foreignTIN: W8BENEData?.foreignTIN == "" ? obValues?.foreignTIN : W8BENEData?.foreignTIN,
       isFTINLegally: PrevStepData.isFTINLegally ? PrevStepData.isFTINLegally : false,
       isNotAvailable: W8BENEData.isNotAvailable ? (W8BENEData.isNotAvailable == true && W8BENEData.alternativeTINFormat == false ? "Yes" : "") : "",

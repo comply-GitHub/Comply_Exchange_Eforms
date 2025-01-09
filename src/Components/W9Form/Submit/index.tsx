@@ -218,7 +218,7 @@ const Declaration = (props: any) => {
                             align="left"
                             style={{ fontSize: "17px", marginTop: "13px" }}
                           >
-                            2. The beneficial owner is not a U.S person.
+                            2. The beneficial owner is not a U.S person,or
                           </Typography>
                           <Typography
                             align="left"
