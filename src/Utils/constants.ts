@@ -49,6 +49,8 @@ $axios.interceptors.request.use(
     // } else {
     //   config.headers.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiIxMDA1Iiwicm9sZSI6IkFkbWluIiwiYXVkIjoidXNlciIsImlzcyI6ImFkbWluIiwibmJmIjoxNzA2ODUyNjk2LCJleHAiOjE3Mzc5NjAyOTYsImlhdCI6MTcwNjg1MjY5Nn0.s4sU4DUy2Pp4125VUUfNCnqsSid_A6FIt0lxnbc6Pr8';
     // }
+
+    
     return config;
   },
   (error: any) => {
